@@ -1,0 +1,13 @@
+{
+  "rules": {
+    "eslint constructor-super": "error",
+    "eslint no-confusing-arrow": "error",
+    "eslint no-duplicate-imports": [
+      "error",
+      {
+        "includeExports": true
+      }
+    ],
+    "eslint no-var": "error"
+  }
+}

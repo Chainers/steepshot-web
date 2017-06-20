@@ -1,0 +1,77 @@
+/* Подключение шрифта Google */
+@import url("http://fonts.googleapis.com/css?family=Open+Sans:400,600,700&subset=latin,cyrillic");
+
+.search-results {
+  height: 100%;
+  // overflow: scroll;
+}
+
+/* Стили ссылок внутри плиток */
+.item a {
+  text-decoration: none;
+  color: #359CC6;
+  margin: 0 10px;
+}
+
+/* Стили ссылок при наведении */
+.item a:hover {
+  color: #E88F00;
+  border-bottom: 1px dotted #9F1D35;
+}
+
+.post-container{
+  height: 350px;
+  margin-top: 30px;
+  background-color: white;
+  transition: 0.1s linear;
+  margin-right: 5%;
+  padding: 0 !important;
+}
+
+@media(min-width: 1200px){
+  .container{
+    max-width: 1140px;
+  }
+}
+
+@media(max-width: 1200px){
+  .container{
+    max-width: 940px;
+  }
+}
+
+@media(max-width: 991px){
+  .container{
+    max-width: 940px;
+  }
+}
+
+@media (min-width: 992px){
+  post-details:nth-child(3n-2){
+    margin-left: 8%;
+  }
+}
+
+@media (max-width: 991px){
+  post-details:nth-child(n){
+    margin-left: 25%;
+  }
+}
+
+@media (max-width: 767px){
+  post-details:nth-child(n){
+    margin-left: 17.5%;
+  }
+}
+
+@media (max-width: 544px){
+  post-details:nth-child(n){
+    margin-left: 13%;
+  }
+}
+
+.post-container:hover{
+  box-shadow: 0 0 30px #C2C2C2;
+  -webkit-transform: scale(1.05);
+  transform: scale(1.05);
+}
