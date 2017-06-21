@@ -20,12 +20,12 @@ export default class Home extends React.Component {
     render() {
         return (
             <div className="post-container col-lg-3 col-md-6 col-sm-8 col-xs-9">
-              <div className="row">
+              <div className="row body-row">
                 <img className="post-img col-md-12 col-sm-12 col-xs-1" src={this.state.item.body} />
               </div>
               <div className="row post-footer">
                 <div className="col-lg-2 col-md-2 col-sm-2 col-xs-2">
-                  <img width="40px" height="40px" className="user-avatar" src={this.state.item.avatar} alt="Image" />
+                  <img className="user-avatar" src={this.state.item.avatar} alt="Image" />
                 </div>
                 <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6">
                   <a href={this.state.item.author}><strong>{this.state.item.author}</strong></a>

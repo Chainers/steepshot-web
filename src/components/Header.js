@@ -11,7 +11,9 @@ class Header extends React.Component {
     super(props);
 
     this.state = {
-      localize: LocalizedStrings.getInstance()
+      localize: LocalizedStrings.getInstance(),
+      isSearchOpen: false,
+      searchRequest: ""
     };
   }
 
@@ -40,51 +42,55 @@ class Header extends React.Component {
     });
   }
 
+  searchClick() {
+    this.setState({ isSearchOpen: !this.state.isSearchOpen })
+  }
+
   render() {
+    let searchBlock = <div></div>;
+    let browse;
+
+    if (this.state.isSearchOpen) {
+      searchBlock = <div className="input-group">
+                <input type="text" className="form-control col-md-12" placeholder="Start by typing tag..." />
+            </div>;
+    } else {
+      browse = <ul className="nav navbar-nav">
+        <li className="nav-item">
+          <Link to="/" className="nav-link">browse</Link>
+        </li>
+      </ul>
+    }
+
+
     return (
-      <div>
-        <nav id="navigation-panel" className="navbar navbar-toggleable-md navbar-light bg-faded">
-          <button className="navbar-toggler navbar-toggler-right nav-bar-buttons" type="button" data-toggle="collapse"
-                  data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false"
-                  aria-label="Toggle navigation">
-            <img src="/src/images/50.jpg" alt=""/>
-          </button>
-          <div className="collapse navbar-collapse " id="navbarNavDropdown">
-            <button className="nav-bar-buttons show-on-small-screen" type="button">
-              <img className="" src="/src/images/search.png"/>
+      <nav className="navbar navbar-default header-block">
+        <div className="container-fluid">
+          <div className="navbar-header">
+            <button type="button" className="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+              <img width="60%" src="/src/images/50.jpg" alt="" />
             </button>
-            <ul className="navbar-nav show-search-on-big-screen">
+            <Link to="/" className="navbar-brand">
+              <img width="130px" src="/src/images/steepshotLogo.png" alt="" />
+            </Link>
+          </div>
+          <div className="collapse navbar-collapse" id="myNavbar">
+            <ul className="nav navbar-nav">
               <li className="nav-item">
-                <a id="search-button" className="nav-link" href="#">1</a>
+                <button className="navbar-brand nav-bar-buttons search-image-block" type="button" onClick={this.searchClick.bind(this)}>
+                  <img className="search-image" width="100%" src="/src/images/search.png" />
+                </button>
+                {searchBlock}
               </li>
             </ul>
-            <ul className="navbar-nav">
-              <li className="nav-item">
-              </li>
-            </ul>
-            <ul className="navbar-nav">
-              <li className="nav-item">
-                <a className="nav-link" href="/">browse</a>
-              </li>
-            </ul>
-            <ul className="show-on-big-screen navbar-nav">
-              <li className="">
-                <a className="navbar-brand" href="/">
-                  <img src="/src/images/steepshotLogo.png" alt=""/>
-                </a>
-              </li>
-            </ul>
-            <ul className="navbar-nav">
-              <li>
-                <a className="nav-link sign-in-link">Sign In</a>
-              </li>
-              <li>
-                <a className="nav-link">Sign Up</a>
-              </li>
+            {browse}
+            <ul className="nav navbar-nav navbar-right">
+              <li><Link to="/login">Sign In</Link></li>
+              <li><Link to="/signup">Sign Up</Link></li>
             </ul>
           </div>
-        </nav>
-      </div>
+        </div>
+      </nav>
     );
   }
 }

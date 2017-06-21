@@ -35,11 +35,9 @@ class Home extends React.Component {
       </div>
     }
 		return (
-		  <div className="posts-container">
         <div className="container" id="all-posts">
           {postsComponent}
         </div>
-      </div>
 		);
 	}
 
