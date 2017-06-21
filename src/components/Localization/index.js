@@ -2,7 +2,7 @@ import LocalizedStrings from 'react-localization';
 import { getAllLanguages } from '../../actions/localization';
 
 const Index = (() => {
-  let strings;
+  let strings = [];
   let languagesKey = getAllLanguages;
 
   async function createInstance() {
@@ -17,19 +17,19 @@ const Index = (() => {
   return {
     getInstance: function(callback) {
       if (!strings) {
-        createInstance().then(result => {
-          strings = result;
-
-          if(callback) {
-            callback();
-          }
-
-          return strings;
-        });
+        // createInstance().then(result => {
+        //   strings = result;
+        //
+        //   if(callback) {
+        //     callback();
+        //   }
+        //
+        //   return strings;
+        // });
       } else {
         return strings;
       }
-
+      return strings;
 
     },
     languages: languagesKey,
