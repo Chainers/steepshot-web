@@ -27,10 +27,11 @@ const Index = (() => {
         //   return strings;
         // });
       } else {
+        callback();
         return strings;
       }
+      callback();
       return strings;
-
     },
     languages: languagesKey,
     setNewLanguage: setNewLanguage
