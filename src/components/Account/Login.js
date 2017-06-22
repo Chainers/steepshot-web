@@ -8,7 +8,9 @@ import Messages from '../Messages';
 class Login extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { email: '', password: '' };
+    this.state = {
+      userName: '',
+      password: '' };
   }
 
   handleChange(event) {
@@ -17,7 +19,7 @@ class Login extends React.Component {
 
   handleLogin(event) {
     event.preventDefault();
-    this.props.dispatch(login(this.state.email, this.state.password));
+    // this.props.dispatch(login(this.state.userName, this.state.password));
   }
 
   handleFacebook() {
@@ -42,31 +44,20 @@ class Login extends React.Component {
 
   render() {
     return (
-      <div className="login-container container">
-        <div className="panel">
-          <div className="panel-body">
-            <Messages messages={this.props.messages}/>
-            <form onSubmit={this.handleLogin.bind(this)}>
-              <legend>Log In</legend>
-              <div className="form-group">
-                <label htmlFor="email">Email</label>
-                <input type="email" name="email" id="email" placeholder="Email" autoFocus className="form-control" value={this.state.email} onChange={this.handleChange.bind(this)}/>
-              </div>
-              <div className="form-group">
-                <label htmlFor="password">Password</label>
-                <input type="password" name="password" id="password" placeholder="Password" className="form-control" value={this.state.password} onChange={this.handleChange.bind(this)}/>
-              </div>
-              <div className="form-group"><Link to="/forgot"><strong>Forgot your password?</strong></Link></div>
-              <button type="submit" className="btn btn-success">Log in</button>
-            </form>
-            <div className="hr-title"><span>or</span></div>
-            <div className="btn-toolbar text-center">
-            </div>
+      <div className="col-md-12 sing-container">
+        <div className="col-md-4">
+          <Messages messages={this.props.messages}/>
+          <h2>SignIn</h2>
+          <div className="form-group">
+            <label htmlFor="email">Username</label>
+            <input type="text" name="userName" id="userName" placeholder="userName" autoFocus className="form-control" value={this.state.userName} onChange={this.handleChange.bind(this)}/>
           </div>
+          <div className="form-group">
+            <label htmlFor="password">Password</label>
+            <input type="password" name="password" id="password" placeholder="Password" className="form-control" value={this.state.password} onChange={this.handleChange.bind(this)}/>
+          </div>
+          <button type="submit" onClick={this.handleLogin.bind(this)} className="btn btn-default">Log in</button>
         </div>
-        <p className="text-center">
-          Don't have an account? <Link to="/signup"><strong>Sign up</strong></Link>
-        </p>
       </div>
     );
   }

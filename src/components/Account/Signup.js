@@ -8,7 +8,11 @@ import Messages from '../Messages';
 class Signup extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { name: '', email: '', password: '' };
+    this.state = {
+      userName: '',
+      poskingKey: '',
+      password: ''
+    };
   }
 
   handleChange(event) {
@@ -17,7 +21,7 @@ class Signup extends React.Component {
 
   handleSignup(event) {
     event.preventDefault();
-    this.props.dispatch(signup(this.state.name, this.state.email, this.state.password));
+    // this.props.dispatch(signup(this.state.userName, this.state.poskingKey, this.state.password));
   }
 
   handleFacebook() {
@@ -42,37 +46,24 @@ class Signup extends React.Component {
 
   render() {
     return (
-      <div className="login-container container">
-        <div className="panel">
-          <div className="panel-body">
-            <Messages messages={this.props.messages}/>
-            <form onSubmit={this.handleSignup.bind(this)}>
-              <legend>Create an account</legend>
-              <div className="form-group">
-                <label htmlFor="name">Name</label>
-                <input type="text" name="name" id="name" placeholder="Name" autoFocus className="form-control" value={this.state.name} onChange={this.handleChange.bind(this)}/>
-              </div>
-              <div className="form-group">
-                <label htmlFor="email">Email</label>
-                <input type="email" name="email" id="email" placeholder="Email" className="form-control" value={this.state.email} onChange={this.handleChange.bind(this)}/>
-              </div>
-              <div className="form-group">
-                <label htmlFor="password">Password</label>
-                <input type="password" name="password" id="password" placeholder="Password" className="form-control" value={this.state.password} onChange={this.handleChange.bind(this)}/>
-              </div>
-              <div className="form-group">
-                <small className="text-muted">By signing up, you agree to the <Link to="/">Terms of Service</Link>.</small>
-              </div>
-              <button type="submit" className="btn btn-success">Create an account</button>
-            </form>
-            <div className="hr-title"><span>or</span></div>
-            <div className="btn-toolbar text-center">
-            </div>
+      <div className="col-md-12 sing-container">
+        <div className="col-md-4">
+          <Messages messages={this.props.messages}/>
+          <h2>SignUp</h2>
+          <div className="form-group">
+            <label htmlFor="email">Username</label>
+            <input type="text" name="userName" id="userName" placeholder="userName" autoFocus className="form-control" value={this.state.userName} onChange={this.handleChange.bind(this)}/>
           </div>
+          <div className="form-group">
+            <label htmlFor="password">Password</label>
+            <input type="password" name="password" id="password" placeholder="Password" className="form-control" value={this.state.password} onChange={this.handleChange.bind(this)}/>
+          </div>
+          <div className="form-group">
+            <label htmlFor="password">Posting Key</label>
+            <input type="password" name="poskingKey" id="poskingKey" placeholder="Posting Key" className="form-control" value={this.state.poskingKey} onChange={this.handleChange.bind(this)}/>
+          </div>
+          <button type="submit" onClick={this.handleSignup.bind(this)} className="btn btn-default">Sign up</button>
         </div>
-        <p className="text-center">
-          Already have an account? <Link to="/login"><strong>Log in</strong></Link>
-        </p>
       </div>
     );
   }
