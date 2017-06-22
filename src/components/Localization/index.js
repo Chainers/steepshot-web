@@ -5,9 +5,9 @@ const Index = (() => {
   let strings = [];
   let languagesKey = getAllLanguages;
 
-  async function createInstance() {
-    return getAllLanguages();
-  }
+  /*async function createInstance() {*/
+    //return getAllLanguages();
+  /*}*/
 
   function setNewLanguage(newLang) {
     strings.setLanguage(newLang);
