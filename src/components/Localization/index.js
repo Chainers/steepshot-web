@@ -16,22 +16,23 @@ const Index = (() => {
 
   return {
     getInstance: function(callback) {
-      if (!strings) {
+      if(callback) {
+        callback();
+      }
+      return strings;
+      // if (!strings) {
         // createInstance().then(result => {
         //   strings = result;
         //
-        //   if(callback) {
-        //     callback();
-        //   }
+          // if(callback) {
+          //   callback();
+          // }
         //
-        //   return strings;
+          // return strings;
         // });
-      } else {
-        callback();
-        return strings;
-      }
-      callback();
-      return strings;
+      // } else {
+        // return strings;
+      // }
     },
     languages: languagesKey,
     setNewLanguage: setNewLanguage
