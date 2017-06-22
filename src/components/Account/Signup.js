@@ -21,7 +21,7 @@ class Signup extends React.Component {
 
   handleSignup(event) {
     event.preventDefault();
-    this.props.dispatch(signup(this.state.userName, this.state.poskingKey, this.state.password));
+    // this.props.dispatch(signup(this.state.userName, this.state.poskingKey, this.state.password));
   }
 
   handleFacebook() {

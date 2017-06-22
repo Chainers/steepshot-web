@@ -19,9 +19,7 @@ class Login extends React.Component {
 
   handleLogin(event) {
     event.preventDefault();
-    // this.props.dispatch(login(this.state.userName, this.state.password));
-    console.log(this.state.userName);
-    console.log(this.state.password);
+    this.props.dispatch(login(this.state.userName, this.state.password));
   }
 
   handleFacebook() {
