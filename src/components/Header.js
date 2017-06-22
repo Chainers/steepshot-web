@@ -85,7 +85,7 @@ class Header extends React.Component {
             </ul>
             {browse}
             <ul className="nav navbar-nav navbar-right">
-              <li><Link to="/login">Sign In</Link></li>
+              <li><Link to="/signin">Sign In</Link></li>
               <li><Link to="/signup">Sign Up</Link></li>
             </ul>
           </div>

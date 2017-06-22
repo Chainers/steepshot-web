@@ -204,6 +204,11 @@
 
 /* sing */
 
+.sing-container {
+  display: flex;
+  justify-content: center;
+}
+
 .profile-image{
   width: 15%;
   height: 90%
