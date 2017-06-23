@@ -66,8 +66,8 @@ class Header extends React.Component {
     return (
       <nav className="navbar navbar-default header-block">
         <div className="container-fluid">
-          <div className="navbar-header">
-            <button type="button" className="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+          <div className="navbar-header header-block">
+            <button type="button" className="navbar-toggle nav-bar-toggle-button" data-toggle="collapse" data-target="#myNavbar">
               <img width="60%" src="/src/images/50.jpg" alt="" />
             </button>
             <Link to="/" className="navbar-brand">
