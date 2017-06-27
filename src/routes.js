@@ -7,6 +7,7 @@ import NotFound from './components/NotFound';
 import Localization from './components/Localization/index';
 import Signin from './components/Account/Login';
 import Signup from './components/Account/Signup';
+import UserProfile from './components/UserProfile/index';
 
 export default function getRoutes(store) {
   const ensureAuthenticated = (nextState, replace) => {
@@ -34,6 +35,7 @@ export default function getRoutes(store) {
   return (
     <Route path="/" component={App} onEnter={setLanguages}>
       <IndexRoute component={Home} onLeave={clearMessages} />
+      <Route path="/userProfile/:username" component={UserProfile} onEnter={skipIfAuthenticated} onLeave={clearMessages} />
       <Route path="/signin" component={Signin} onEnter={skipIfAuthenticated} onLeave={clearMessages} />
       <Route path="/signup" component={Signup} onEnter={skipIfAuthenticated} onLeave={clearMessages} />
       <Route path="*" component={NotFound} onLeave={clearMessages} />

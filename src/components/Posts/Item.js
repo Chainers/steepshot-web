@@ -1,22 +1,8 @@
 import React from 'react';
 import Modal from 'react-modal';
+import { Link } from 'react-router';
 import { getPostComments } from '../../actions/posts';
-
-const customStyles = {
-  content : {
-    position              : 'absolute',
-    top                   : '50%',
-    left                  : '50%',
-    right                 : 'auto',
-    bottom                : 'auto',
-    overflow              : 'auto',
-    marginRight           : '-50%',
-    transform             : 'translate(-50%, -50%)',
-    height                : '80%',
-    zIndex                : '999',
-    maxWidth              : '90%'
-  }
-};
+import ReactResizeDetector from 'react-resize-detector';
 
 export default class Home extends React.Component {
     constructor(props) {
@@ -25,6 +11,7 @@ export default class Home extends React.Component {
         this.state = {
           item: this.props.item,
           modalIsOpen: false,
+          currentIndex: this.props.index,
           comments: []
         };
 
@@ -51,14 +38,32 @@ export default class Home extends React.Component {
 
     afterOpenModal() {
       let _this = this;
-      // references are now sync'd and can be accessed.
+
       getPostComments(this.props.item.author, this.props.item.url).then((response) => {
         _this.setState({ comments: response});
+        console.log(response);
   		});
+
+      this._onResize();
     }
 
     closeModal() {
       this.setState({modalIsOpen: false});
+    }
+
+    next() {
+      this.setState({ item: this.props.items[this.state.currentIndex + 1], currentIndex: this.state.currentIndex + 1 });
+    }
+
+    previous() {
+      this.setState({ item: this.props.items[this.state.currentIndex - 1], currentIndex: this.state.currentIndex - 1 });
+    }
+
+    _onResize() {
+      const popupHeight = window.innerHeight - 200;
+
+      $('#popup-image').height(popupHeight);
+      $('#popup-info').height(popupHeight);
     }
 
     render() {
@@ -69,6 +74,18 @@ export default class Home extends React.Component {
           return <p>{item}</p>
         });
       }
+      let itemImage = this.state.item.body;
+
+      var settings = {
+        dots: false,
+        infinite: true,
+        speed: 500,
+        slidesToShow: 1,
+        slidesToScroll: 1
+      };
+
+      const authorLink = `/userProfile/${this.state.item.author}`;
+
       return (
         <div>
           <div className="post-container col-lg-3 col-md-6 col-sm-8 col-xs-9" onClick={this.openModal}>
@@ -80,7 +97,7 @@ export default class Home extends React.Component {
                 <img className="user-avatar" src={this.state.item.avatar} alt="Image"/>
               </div>
               <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                <a href={this.state.item.author}><strong>{this.state.item.author}</strong></a>
+                <Link to={authorLink}><strong>{this.state.item.author}</strong></Link>
               </div>
               <div className="pull-right col-lg-3 col-md-3 col-sm-3 col-xs-3 span-with-no-border">
                 <span className="star rating-text">&#9825; {this.state.item.net_votes}</span>
@@ -103,10 +120,10 @@ export default class Home extends React.Component {
             isOpen={this.state.modalIsOpen}
             onAfterOpen={this.afterOpenModal.bind(_this)}
             onRequestClose={this.closeModal}
-            style={customStyles}
+            className='popout-container'
             contentLabel="Example Modal"
           >
-          <div className="custom-popup">
+          <div id="popup" className="custom-popup">
             <div className="my-modal">
               <div className="">
                 <div className="popup-header">
@@ -116,10 +133,10 @@ export default class Home extends React.Component {
                   <button type="button" className="close col-lg-1 col-md-1 col-sm-1 col-xs-1" onClick={this.closeModal}>&times;</button>
                 </div>
                 <div className="popup-body">
-                  <div className="popup-image-block">
+                  <div className="popup-image-block" id="popup-image">
                     <img className="popup-image" src={this.state.item.body} alt="Image" />
                   </div>
-                  <div className="post-popup-info">
+                  <div className="post-popup-info" id="popup-info">
                     <div className="author-info">
                       <div className="">
                         <img className="user-avatar" src={this.state.item.avatar} alt="Image" />
@@ -153,7 +170,12 @@ export default class Home extends React.Component {
                 </div>
               </div>
             </div>
+            <div className='slick-buttons'>
+              <button className='left-button' onClick={this.previous.bind(_this)}>Previous</button>
+              <button className='right-button' onClick={this.next.bind(_this)}>Next</button>
             </div>
+            </div>
+            <ReactResizeDetector handleWidth handleHeight onResize={this._onResize.bind(this)} />
           </Modal>
         </div>
       );

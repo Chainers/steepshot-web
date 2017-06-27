@@ -1,5 +1,5 @@
 import React from 'react';
-import { getPosts } from '../actions/posts';
+import { getPosts, getPostsNext } from '../actions/posts';
 import PostItem from './Posts/Item';
 import { connect } from 'react-redux';
 import InfiniteScroll from './Scroller/infinityScroll';
@@ -17,15 +17,21 @@ class Home extends React.Component {
   componentDidMount() {
 		let _this = this;
 
-    getPosts().then((response) => {
+    getPostsNext().then((response) => {
       _this.setState({ posts: response});
 		});
 	}
 
 	fetchData() {
 		let _this = this;
+		let offset;
 
-		getPosts().then((response) => {
+		if (this.state.posts.length != 0) {
+			let lastItem = this.state.posts.pop();
+			offset = lastItem.url;
+		}
+
+		getPostsNext(offset).then((response) => {
 			let newPosts = this.state.posts.concat(response);
       _this.setState({ posts: newPosts, hasMore: false});
 		});
@@ -37,21 +43,15 @@ class Home extends React.Component {
 
 	render() {
     let items = [];
+		let _this = this;
 
-    this.state.posts.map((post) => {
-      items.push(<PostItem item={post}/>);
+    this.state.posts.map((post, index) => {
+      items.push(<PostItem item={post} items={_this.state.posts} index={index}/>);
     });
 
     return (
       <div className="container" id="all-posts">
         <InfiniteScroll
-          pullDownToRefresh
-          pullDownToRefreshContent={
-            <h3 style={{textAlign: 'center'}}>&#8595; Pull down to refresh</h3>
-          }
-          releaseToRefreshContent={
-            <h3 style={{textAlign: 'center'}}>&#8593; Release to refresh</h3>
-          }
           refreshFunction={this.refresh}
           next={this.fetchData.bind(this)}
           hasMore={true}
