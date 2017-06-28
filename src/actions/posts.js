@@ -6,7 +6,7 @@ export function getPosts() {
   }).then((response) => {
     if (response.ok) {
       return response.json().then((json) => {
-        return json.results;
+        return json;
       });
     } else {
       return response.json().then(() => {
@@ -28,7 +28,7 @@ export function getPostsNext(offset) {
   }).then((response) => {
     if (response.ok) {
       return response.json().then((json) => {
-        return json.results;
+        return json;
       });
     } else {
       return response.json().then(() => {
@@ -47,7 +47,7 @@ export function getPostComments(author, url) {
   }).then((response) => {
     if (response.ok) {
       return response.json().then((json) => {
-        return json.results;
+        return json;
       });
     } else {
       return response.json().then(() => {
@@ -76,7 +76,7 @@ export function getUserPosts(author, offset) {
   }).then((response) => {
     if (response.ok) {
       return response.json().then((json) => {
-        return json.results;
+        return json;
       });
     } else {
       return response.json().then(() => {

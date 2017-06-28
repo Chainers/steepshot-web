@@ -3,8 +3,9 @@ import Modal from 'react-modal';
 import { Link } from 'react-router';
 import { getPostComments } from '../../actions/posts';
 import ReactResizeDetector from 'react-resize-detector';
+import { connect } from 'react-redux';
 
-export default class Home extends React.Component {
+class Item extends React.Component {
     constructor(props) {
         super(props);
 
@@ -32,19 +33,26 @@ export default class Home extends React.Component {
       this.setState({ item: propsItem });
     }
 
+    goToProfile() {
+
+    }
+
     openModal() {
       this.setState({modalIsOpen: true});
     }
 
     afterOpenModal() {
+      this._getPostCommens();
+
+      this._onResize();
+    }
+
+    _getPostCommens() {
       let _this = this;
 
       getPostComments(this.props.item.author, this.props.item.url).then((response) => {
-        _this.setState({ comments: response});
-        console.log(response);
+        _this.setState({ comments: response.results});
   		});
-
-      this._onResize();
     }
 
     closeModal() {
@@ -53,10 +61,12 @@ export default class Home extends React.Component {
 
     next() {
       this.setState({ item: this.props.items[this.state.currentIndex + 1], currentIndex: this.state.currentIndex + 1 });
+      this._getPostCommens();
     }
 
     previous() {
       this.setState({ item: this.props.items[this.state.currentIndex - 1], currentIndex: this.state.currentIndex - 1 });
+      this._getPostCommens();
     }
 
     _onResize() {
@@ -87,32 +97,36 @@ export default class Home extends React.Component {
       const authorLink = `/userProfile/${this.state.item.author}`;
 
       return (
-        <div>
-          <div className="post-container col-lg-3 col-md-6 col-sm-8 col-xs-9" onClick={this.openModal}>
+        <div className="post-container">
+          <div className="post-container-item" onClick={this.openModal}>
             <div className="row body-row">
-              <img className="post-img col-md-12 col-sm-12 col-xs-1" src={this.state.item.body}/>
+              <img className="post-img col-md-12 col-sm-12 col-xs-12" src={this.state.item.body}/>
             </div>
             <div className="row post-footer">
-              <div className="col-lg-2 col-md-2 col-sm-2 col-xs-2">
-                <img className="user-avatar" src={this.state.item.avatar} alt="Image"/>
+              <div className="main-info">
+                <div className="">
+                  <img className="user-avatar" src={this.state.item.avatar} alt="Image"/>
+                </div>
+                <div className="">
+                  <Link to={authorLink}><strong>{this.state.item.author}</strong></Link>
+                </div>
+                <div className="pull-right span-with-no-border">
+                  <span className="star rating-text">&#9825; {this.state.item.net_votes}</span>
+                </div>
               </div>
-              <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                <Link to={authorLink}><strong>{this.state.item.author}</strong></Link>
-              </div>
-              <div className="pull-right col-lg-3 col-md-3 col-sm-3 col-xs-3 span-with-no-border">
-                <span className="star rating-text">&#9825; {this.state.item.net_votes}</span>
-              </div>
-              <div className="col-lg-8 col-md-8 col-sm-8 col-xs-8">
-                <em>
-                  {
-                    this.state.item.tags.map((tag) => {
-                      return <a href="#" className="tags-urls">{tag}</a>
-                    })
-                  }
-                </em>
-              </div>
-              <div className="payout-reward col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                {this.state.item.total_payout_reward}
+              <div className="author-info">
+                <div className="">
+                  <em className="tags-info">
+                    {
+                      this.state.item.tags.map((tag) => {
+                        return <a href="#" className="tags-urls">{tag}</a>
+                      })
+                    }
+                  </em>
+                </div>
+                <div className="payout-reward ">
+                  {this.state.item.total_payout_reward}
+                </div>
               </div>
             </div>
           </div>
@@ -142,7 +156,7 @@ export default class Home extends React.Component {
                         <img className="user-avatar" src={this.state.item.avatar} alt="Image" />
                       </div>
                       <div className="author-name">
-                        <a href={this.state.item.author}><strong>{this.state.item.author}</strong></a>
+                        <Link to={authorLink} onClick={this.closeModal}><strong>{this.state.item.author}</strong></Link>
                         <span>{this.state.item.about}</span>
                       </div>
                     </div>
@@ -181,3 +195,11 @@ export default class Home extends React.Component {
       );
     }
 }
+
+const mapStateToProps = (state) => {
+  return {
+    localization: state.localization
+  };
+};
+
+export default connect(mapStateToProps)(Item);

@@ -10,7 +10,8 @@ class Home extends React.Component {
 
 		this.state = {
 			posts: [],
-			hasMore: true
+			hasMore: true,
+			offset: null
 		};
 	}
 
@@ -18,22 +19,21 @@ class Home extends React.Component {
 		let _this = this;
 
     getPostsNext().then((response) => {
-      _this.setState({ posts: response});
+      _this.setState({ posts: response.results, offset: response.offset });
 		});
 	}
 
 	fetchData() {
 		let _this = this;
-		let offset;
 
-		if (this.state.posts.length != 0) {
-			let lastItem = this.state.posts.pop();
-			offset = lastItem.url;
-		}
-
-		getPostsNext(offset).then((response) => {
-			let newPosts = this.state.posts.concat(response);
-      _this.setState({ posts: newPosts, hasMore: false});
+		getPostsNext(this.state.offset).then((response) => {
+			this.state.posts.pop();
+			let newPosts = this.state.posts.concat(response.results);
+			if (response.results.lenght == 1) {
+				_this.setState({ posts: newPosts, offset: response.offset, hasMore: false });
+			} else {
+      	_this.setState({ posts: newPosts, offset: response.offset });
+			}
 		});
 	}
 
@@ -54,7 +54,7 @@ class Home extends React.Component {
         <InfiniteScroll
           refreshFunction={this.refresh}
           next={this.fetchData.bind(this)}
-          hasMore={true}
+          hasMore={this.state.hasMore}
           loader={<h4>Loading...</h4>}
           endMessage={
             <p style={{textAlign: 'center'}}>

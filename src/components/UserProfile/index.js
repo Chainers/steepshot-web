@@ -14,7 +14,9 @@ class UserProfile extends React.Component {
       authorName: this.props.routeParams.username,
       profile: null,
       localize: LocalizedStrings.getInstance(),
-      posts: []
+      posts: [],
+      hasMore: true,
+      offset: null
     };
   }
 
@@ -22,7 +24,7 @@ class UserProfile extends React.Component {
     let _this = this;
 
     getUserProfile(this.props.routeParams.username).then((result) => {
-      _this.setState({ profile: result});
+      _this.setState({ profile: result });
     }).then(() => {
       _this.fetchData();
     })
@@ -30,16 +32,16 @@ class UserProfile extends React.Component {
 
   fetchData() {
 		let _this = this;
-		let offset;
 
-		if (this.state.posts.length != 0) {
-			let lastItem = this.state.posts.pop();
-			offset = lastItem.url;
-		}
+		getUserPosts(this.props.routeParams.username, this.state.offset).then((response) => {
+      this.state.posts.pop();
+			let newPosts = this.state.posts.concat(response.results);
 
-		getUserPosts(this.state.profile.username, offset).then((response) => {
-			let newPosts = this.state.posts.concat(response);
-      _this.setState({ posts: newPosts, hasMore: false});
+      if (response.results.lenght == 1) {
+				_this.setState({ posts: newPosts, offset: response.offset, hasMore: false });
+			} else {
+        _this.setState({ posts: newPosts, offset: response.offset });
+      }
 		});
 	}
 
@@ -47,10 +49,14 @@ class UserProfile extends React.Component {
     let items = [];
 		let _this = this;
     let profileComponent = <div> Loading... </div>;
+    let profileImageSrc = "../../images/person";
 
+    if (this.state.profile && this.state.profile.profile_image) {
+      profileImageSrc = this.state.profile.profile_image;
+    }
     if (this.state.profile) {
       profileComponent = <div className='user-profile'>
-          <img className="user-big-avatar" src={this.state.profile.profile_image} alt="Image" />
+          <img className="user-big-avatar" src={profileImageSrc} alt="Image" />
           <div className='profile-info'>
             <div>
               <h3>{this.state.profile.username}</h3>
@@ -61,7 +67,7 @@ class UserProfile extends React.Component {
               <span><strong>{this.state.profile.following_count}</strong> following</span>
             </div>
             <div>
-              <span><strong>{this.state.profile.name}</strong> {this.state.profile.about} <a>{this.state.profile.website}</a></span>
+              <span><strong>{this.state.profile.name}</strong> {this.state.profile.about} <a href={this.state.profile.website}>{this.state.profile.website}</a></span>
             </div>
           </div>
         </div>
@@ -79,7 +85,7 @@ class UserProfile extends React.Component {
         <InfiniteScroll
           refreshFunction={this.refresh}
           next={this.fetchData.bind(this)}
-          hasMore={true}
+          hasMore={this.state.hasMore}
           loader={<h4>Loading...</h4>}
           endMessage={
             <p style={{textAlign: 'center'}}>
