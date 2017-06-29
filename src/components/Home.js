@@ -42,9 +42,7 @@ class Home extends React.Component {
 
   setPostsByCategory(searchValue) {
     let _this = this;
-    let search = searchValue;
-    search = search.slice(1);
-    getPostsByCategory(search).then((response) => {
+    getPostsByCategory(searchValue).then((response) => {
       _this.setState({posts: response.results, offset: response.offset});
     });
   }
@@ -67,7 +65,6 @@ class Home extends React.Component {
   fetchPostsByCategory() {
     let _this = this;
     let search = this.props.search.value;
-    search = search.slice(1);
     getPostsByCategory(search, this.state.offset).then((response) => {
       this.state.posts.pop();
       let newPosts = this.state.posts.concat(response.results);

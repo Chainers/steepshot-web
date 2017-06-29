@@ -1,5 +1,6 @@
 const initialState = {
-  value: ''
+  value: '',
+  text: ''
 };
 
 export default function search(state = initialState, action) {

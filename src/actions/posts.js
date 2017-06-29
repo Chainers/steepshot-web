@@ -95,6 +95,7 @@ export function getUserPosts(author, offset) {
 ///            &limit=5 HTTP/1.1
 /// </summary>
 export function getPostsByCategory(category, offset) {
+  category = category.replace(/[^A-Za-zА-Яа-яЁё(\d)+]/g, "")
   let url = `${baseUrl}/posts/${category}/top`;
   if (offset) {
     url = `${baseUrl}/posts/${category}/top?offset=${offset}&limit=5`;
