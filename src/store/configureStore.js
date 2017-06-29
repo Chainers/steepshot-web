@@ -4,13 +4,24 @@ import promise from 'redux-promise';
 import { createLogger } from 'redux-logger';
 import rootReducer from '../reducers'
 
+let storeBase;
+
 export default function configureStore(initialState) {
   const logger = createLogger();
   const store = createStore(
     rootReducer,
     initialState,
+    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
     applyMiddleware(thunk, promise, logger)
   );
-
+  setStoreBase(store);
   return store;
+}
+
+function setStoreBase(newStore) {
+  storeBase = newStore;
+}
+
+export function getStore() {
+  return storeBase;
 }

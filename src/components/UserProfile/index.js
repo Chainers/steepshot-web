@@ -24,30 +24,30 @@ class UserProfile extends React.Component {
     let _this = this;
 
     getUserProfile(this.props.routeParams.username).then((result) => {
-      _this.setState({ profile: result });
+      _this.setState({profile: result});
     }).then(() => {
       _this.fetchData();
     })
   }
 
   fetchData() {
-		let _this = this;
+    let _this = this;
 
-		getUserPosts(this.props.routeParams.username, this.state.offset).then((response) => {
+    getUserPosts(this.props.routeParams.username, this.state.offset).then((response) => {
       this.state.posts.pop();
-			let newPosts = this.state.posts.concat(response.results);
+      let newPosts = this.state.posts.concat(response.results);
 
       if (response.results.lenght == 1) {
-				_this.setState({ posts: newPosts, offset: response.offset, hasMore: false });
-			} else {
-        _this.setState({ posts: newPosts, offset: response.offset });
+        _this.setState({posts: newPosts, offset: response.offset, hasMore: false});
+      } else {
+        _this.setState({posts: newPosts, offset: response.offset});
       }
-		});
-	}
+    });
+  }
 
   render() {
     let items = [];
-		let _this = this;
+    let _this = this;
     let profileComponent = <div> Loading... </div>;
     let profileImageSrc = "../../images/person";
 
@@ -56,21 +56,22 @@ class UserProfile extends React.Component {
     }
     if (this.state.profile) {
       profileComponent = <div className='user-profile'>
-          <img className="user-big-avatar" src={profileImageSrc} alt="Image" />
-          <div className='profile-info'>
-            <div>
-              <h3>{this.state.profile.username}</h3>
-            </div>
-            <div>
-              <span><strong>{this.state.profile.post_count}</strong> posts</span>
-              <span><strong>{this.state.profile.followers_count}</strong> followers</span>
-              <span><strong>{this.state.profile.following_count}</strong> following</span>
-            </div>
-            <div>
-              <span><strong>{this.state.profile.name}</strong> {this.state.profile.about} <a href={this.state.profile.website}>{this.state.profile.website}</a></span>
-            </div>
+        <img className="user-big-avatar" src={profileImageSrc} alt="Image"/>
+        <div className='profile-info'>
+          <div>
+            <h3>{this.state.profile.username}</h3>
+          </div>
+          <div>
+            <span><strong>{this.state.profile.post_count}</strong> posts</span>
+            <span><strong>{this.state.profile.followers_count}</strong> followers</span>
+            <span><strong>{this.state.profile.following_count}</strong> following</span>
+          </div>
+          <div>
+            <span><strong>{this.state.profile.name}</strong> {this.state.profile.about} <a
+              href={this.state.profile.website}>{this.state.profile.website}</a></span>
           </div>
         </div>
+      </div>
     }
 
     this.state.posts.map((post, index) => {
@@ -97,7 +98,7 @@ class UserProfile extends React.Component {
       </div>
     );
   }
-};
+}
 
 const mapStateToProps = (state) => {
   return {
