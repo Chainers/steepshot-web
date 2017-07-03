@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router';
 import LocalizedStrings from './Localization/index.js';
+import Search from './Search/index.js';
 import { getLanguage, getAllLanguages } from '../actions/localization';
 import { connect } from 'react-redux';
 
@@ -12,9 +13,12 @@ class Header extends React.Component {
 
     this.state = {
       localize: LocalizedStrings.getInstance(),
-      isSearchOpen: false,
-      searchRequest: ""
+      isSearchOpen: false
     };
+  }
+
+  componendDidMount() {
+    this.setState({isSearchOpen: !!this.props.search.value});
   }
 
   handleLogout(event) {
@@ -43,17 +47,15 @@ class Header extends React.Component {
   }
 
   searchClick() {
-    this.setState({ isSearchOpen: !this.state.isSearchOpen })
+    this.setState({isSearchOpen: !this.state.isSearchOpen})
   }
 
   render() {
     let searchBlock = <div></div>;
     let browse;
 
-    if (this.state.isSearchOpen) {
-      searchBlock = <div className="input-group">
-                <input type="text" className="form-control col-md-12" placeholder="Start by typing tag..." />
-            </div>;
+    if (this.state.isSearchOpen || !!this.props.search.value) {
+      searchBlock = <Search />;
     } else {
       browse = <ul className="nav navbar-nav">
         <li className="nav-item">
@@ -67,18 +69,20 @@ class Header extends React.Component {
       <nav className="navbar navbar-default header-block">
         <div className="container-fluid">
           <div className="navbar-header header-block">
-            <button type="button" className="navbar-toggle nav-bar-toggle-button" data-toggle="collapse" data-target="#myNavbar">
-              <img width="60%" src="/src/images/50.jpg" alt="" />
+            <button type="button" className="navbar-toggle nav-bar-toggle-button" data-toggle="collapse"
+                    data-target="#myNavbar">
+              <img width="60%" src="/src/images/50.jpg" alt=""/>
             </button>
             <Link to="/" className="navbar-brand">
-              <img width="130px" src="/src/images/steepshotLogo.png" alt="" />
+              <img width="130px" src="/src/images/steepshotLogo.png" alt=""/>
             </Link>
           </div>
           <div className="collapse navbar-collapse" id="myNavbar">
             <ul className="nav navbar-nav">
               <li className="nav-item">
-                <button className="navbar-brand nav-bar-buttons search-image-block" type="button" onClick={this.searchClick.bind(this)}>
-                  <img className="search-image" width="100%" src="/src/images/search.png" />
+                <button className="navbar-brand nav-bar-buttons search-image-block" type="button"
+                        onClick={this.searchClick.bind(this)}>
+                  <img className="search-image" width="100%" src="/src/images/search.png"/>
                 </button>
                 {searchBlock}
               </li>
@@ -99,7 +103,8 @@ const mapStateToProps = (state) => {
   return {
     token: state.auth.token,
     user: state.auth.user,
-    localization: state.localization
+    localization: state.localization,
+    search: state.search
   };
 };
 

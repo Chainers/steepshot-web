@@ -9,9 +9,6 @@ import LocalizedStrings from './components/Localization/index.js';
 
 const store = configureStore(window.INITIAL_STATE);
 
-console.log('browserHistory');
-console.log(browserHistory);
-
 ReactDOM.render(
   <Provider store={store}>
     <Router history={browserHistory} routes={getRoutes(store)}/>
