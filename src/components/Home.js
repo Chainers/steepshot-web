@@ -96,14 +96,14 @@ class Home extends React.Component {
   render() {
     let items = [];
     let _this = this;
+    let renderElements = <div className='loading-block'><br /><h4>No find results for '{this.props.search.value}' filter</h4></div>
 
-    this.state.posts.map((post, index) => {
-      items.push(<PostItem item={post} items={_this.state.posts} index={index}/>);
-    });
+    if (this.state.posts.length > 0) {
+      this.state.posts.map((post, index) => {
+        items.push(<PostItem item={post} items={_this.state.posts} index={index}/>);
+      });
 
-    return (
-      <div className="container" id="all-posts">
-        <InfiniteScroll
+      renderElements = <InfiniteScroll
           refreshFunction={this.refresh}
           next={this.fetchData.bind(this)}
           hasMore={this.state.hasMore}
@@ -114,7 +114,14 @@ class Home extends React.Component {
             </p>
           }>
           {items}
-        </InfiniteScroll>
+        </InfiniteScroll>;
+    } else if(this.props.search.value == '') {
+      renderElements = <div className='loading-block'><br /><h4>Loading...</h4></div>;
+    }
+
+    return (
+      <div className="container" id="all-posts">
+        {renderElements}
       </div>
     );
   }

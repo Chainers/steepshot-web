@@ -23,13 +23,19 @@ import pngquant from 'imagemin-pngquant';
 import runSequence from 'run-sequence';
 import ghPages from 'gulp-gh-pages';
 
+var bases = {
+ app: 'src/',
+ dist: 'dist/',
+};
+
 const paths = {
   bundle: 'app.js',
   entry: 'src/main.js',
   srcCss: ['src/**/*.scss', 'src/**/*.css'],
-  srcImg: 'src/images/**',
+  srcImg: 'src/images/*',
   srcLint: ['src/**/*.js', 'test/**/*.js'],
   dist: 'dist',
+  images: ['images/**/*.png', 'images/**/*.svg', 'images/**/*.ico', 'images/**/*.jpg'],
   distJs: 'dist/js',
   distImg: 'dist/images',
   distDeploy: './dist/**/*'
@@ -102,14 +108,10 @@ gulp.task('htmlReplace', () => {
   .pipe(gulp.dest(paths.dist));
 });
 
-gulp.task('images', () => {
-  gulp.src(paths.srcImg)
-    .pipe(imagemin({
-      progressive: true,
-      svgoPlugins: [{ removeViewBox: false }],
-      use: [pngquant()]
-    }))
-    .pipe(gulp.dest(paths.distImg));
+gulp.task('imagemin', () => {
+    gulp.src(paths.images, {cwd: bases.app})
+      .pipe(imagemin())
+      .pipe(gulp.dest(bases.dist + 'images/'));
 });
 
 gulp.task('lint', () => {
@@ -121,6 +123,7 @@ gulp.task('lint', () => {
 gulp.task('watchTask', () => {
   gulp.watch(paths.srcCss, ['styles']);
   gulp.watch(paths.srcLint, ['lint']);
+  gulp.watch(paths.srcImg, ['imagemin']);
 });
 
 gulp.task('deploy', () => {
@@ -129,10 +132,10 @@ gulp.task('deploy', () => {
 });
 
 gulp.task('watch', cb => {
-  runSequence('clean', ['browserSync', 'watchTask', 'watchify', 'styles', 'lint', 'images'], cb);
+  runSequence('clean', ['browserSync', 'watchTask', 'watchify', 'styles', 'lint', 'imagemin'], cb);
 });
 
 gulp.task('build', cb => {
   process.env.NODE_ENV = 'production';
-  runSequence('clean', ['browserify', 'styles', 'htmlReplace', 'images'], cb);
+  runSequence('clean', ['browserify', 'styles', 'htmlReplace', 'imagemin'], cb);
 });

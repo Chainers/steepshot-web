@@ -85,6 +85,11 @@ class Item extends React.Component {
     });
   }
 
+  ratingVotes(event) {
+    event.stopPropagation();
+    console.log('Like.. ' + this.state.item.author + ' post');
+  }
+
   render() {
     let _this = this;
     let comments = <div>No comments</div>;
@@ -119,7 +124,7 @@ class Item extends React.Component {
               <div className="">
                 <Link to={authorLink}><strong>{this.state.item.author}</strong></Link>
               </div>
-              <div className="pull-right span-with-no-border">
+              <div className="rating-block pull-right span-with-no-border" onClick={(event) => this.ratingVotes(event)}>
                 <span className="star rating-text">&#9825; {this.state.item.net_votes}</span>
               </div>
             </div>
@@ -172,7 +177,7 @@ class Item extends React.Component {
                     </div>
                     <br/>
                     <div className="post-info">
-                      <div className="rating-block">
+                      <div className="rating-block" onClick={(event) => this.ratingVotes(event)}>
                         <span className="star rating-text">&#9825; {this.state.item.net_votes}</span>
                       </div>
                       <div className="">
@@ -195,8 +200,12 @@ class Item extends React.Component {
               </div>
             </div>
             <div className='slick-buttons'>
-              <button className='left-button' onClick={this.previous.bind(_this)}>Previous</button>
-              <button className='right-button' onClick={this.next.bind(_this)}>Next</button>
+              <div className='left-button' onClick={this.previous.bind(_this)}>
+                <img className='arrow' src="/src/images/arrow_left.png" alt="Previous post"/>
+              </div>
+              <div className='right-button' onClick={this.next.bind(_this)}>
+                <img className='arrow' src="/src/images/arrow_right.png" alt="Next post"/>
+              </div>
             </div>
           </div>
           <ReactResizeDetector handleWidth handleHeight onResize={this._onResize.bind(this)}/>
