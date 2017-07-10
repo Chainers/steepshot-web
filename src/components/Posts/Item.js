@@ -4,6 +4,8 @@ import { Link } from 'react-router';
 import { getPostComments } from '../../actions/posts';
 import ReactResizeDetector from 'react-resize-detector';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import Comments from './Comments';
 
 class Item extends React.Component {
   constructor(props) {
@@ -13,7 +15,9 @@ class Item extends React.Component {
       item: this.props.item,
       modalIsOpen: false,
       currentIndex: this.props.index,
-      comments: []
+      comments: [],
+      disableNext: false,
+      disablePrev: false
     };
 
     this.openModal = this.openModal.bind(this);
@@ -48,6 +52,7 @@ class Item extends React.Component {
 
     getPostComments(this.props.item.author, this.props.item.url).then((response) => {
       _this.setState({comments: response.results});
+      console.log(response);
     });
   }
 
@@ -56,13 +61,26 @@ class Item extends React.Component {
   }
 
   next() {
-    this.setState({item: this.props.items[this.state.currentIndex + 1], currentIndex: this.state.currentIndex + 1});
-    this._getPostCommens();
+    const curIndex = this.state.currentIndex;
+    if (curIndex + 2 == this.props.items.length) {
+      this.props.loadMore();
+    }
+
+    if (curIndex == this.props.items.length) {
+      this.setState({ disableNext: true });
+    } else {
+      this.setState({item: this.props.items[this.state.currentIndex + 1], currentIndex: this.state.currentIndex + 1});
+      this._getPostCommens();
+    }
   }
 
   previous() {
-    this.setState({item: this.props.items[this.state.currentIndex - 1], currentIndex: this.state.currentIndex - 1});
-    this._getPostCommens();
+    if (this.state.currentIndex == 0) {
+      this.setState({ disablePrev: true });
+    } else {
+      this.setState({item: this.props.items[this.state.currentIndex - 1], currentIndex: this.state.currentIndex - 1});
+      this._getPostCommens();
+    }
   }
 
   _onResize() {
@@ -124,7 +142,7 @@ class Item extends React.Component {
               <div className="">
                 <Link to={authorLink}><strong>{this.state.item.author}</strong></Link>
               </div>
-              <div className="rating-block pull-right span-with-no-border" onClick={(event) => this.ratingVotes(event)}>
+              <div className="rating-block pull-right span-with-no-border" onClick={(event) => this.ratingVotes.call(this, event)}>
                 <span className="star rating-text">&#9825; {this.state.item.net_votes}</span>
               </div>
             </div>
@@ -193,7 +211,7 @@ class Item extends React.Component {
                     </div>
                     <hr/>
                     <div className="popup-comments">
-                      {comments}
+                      <Comments item={this.state.item} />
                     </div>
                   </div>
                 </div>
@@ -214,6 +232,11 @@ class Item extends React.Component {
     );
   }
 }
+
+Item.propTypes = {
+  item: PropTypes.object,
+  index: PropTypes.number
+};
 
 const mapStateToProps = (state) => {
   return {

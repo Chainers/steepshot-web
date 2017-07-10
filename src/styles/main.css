@@ -540,3 +540,7 @@
   align-items: center;
   justify-content: center;
 }
+
+.comments-container .comment {
+  margin-top: 5px;
+}

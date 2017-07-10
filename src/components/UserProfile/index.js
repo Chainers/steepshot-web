@@ -75,7 +75,7 @@ class UserProfile extends React.Component {
     }
 
     this.state.posts.map((post, index) => {
-      items.push(<PostItem item={post} items={_this.state.posts} index={index}/>);
+      items.push(<PostItem item={post} items={_this.state.posts} index={index} loadMore={this.fetchData.bind(this)} />);
     });
 
     return (

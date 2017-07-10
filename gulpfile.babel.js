@@ -22,6 +22,9 @@ import imagemin from 'gulp-imagemin';
 import pngquant from 'imagemin-pngquant';
 import runSequence from 'run-sequence';
 import ghPages from 'gulp-gh-pages';
+import livereload from 'gulp-livereload';
+import webserver from 'gulp-webserver';
+import plumber from 'gulp-plumber';
 
 var bases = {
  app: 'src/',
@@ -32,7 +35,7 @@ const paths = {
   bundle: 'app.js',
   entry: 'src/main.js',
   srcCss: ['src/**/*.scss', 'src/**/*.css'],
-  srcImg: 'src/images/*',
+  srcImg: 'src/images/**/*',
   srcLint: ['src/**/*.js', 'test/**/*.js'],
   dist: 'dist',
   images: ['images/**/*.png', 'images/**/*.svg', 'images/**/*.ico', 'images/**/*.jpg'],
@@ -60,6 +63,8 @@ gulp.task('browserSync', () => {
       baseDir: './'
     }
   });
+
+  gulp.watch("index.html").on('change', browserSync.reload);
 });
 
 gulp.task('watchify', () => {
@@ -109,15 +114,20 @@ gulp.task('htmlReplace', () => {
 });
 
 gulp.task('imagemin', () => {
-    gulp.src(paths.images, {cwd: bases.app})
-      .pipe(imagemin())
-      .pipe(gulp.dest(bases.dist + 'images/'));
+    gulp.src(paths.srcImg)
+    .pipe(imagemin({
+      progressive: true,
+      svgoPlugins: [{ removeViewBox: false }],
+      use: [pngquant()]
+    }))
+    .pipe(gulp.dest(paths.distImg))
+    .pipe(browserSync.stream());
 });
 
 gulp.task('lint', () => {
   gulp.src(paths.srcLint)
-  .pipe(eslint())
-  .pipe(eslint.format());
+    .pipe(eslint())
+    .pipe(eslint.format());
 });
 
 gulp.task('watchTask', () => {

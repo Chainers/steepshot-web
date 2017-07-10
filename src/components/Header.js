@@ -71,7 +71,7 @@ class Header extends React.Component {
           <div className="navbar-header header-block">
             <button type="button" className="navbar-toggle nav-bar-toggle-button" data-toggle="collapse"
                     data-target="#myNavbar">
-              <img width="60%" src="/src/images/50.jpg" alt=""/>
+              <img width="60%" src="/src/images/50.1.jpg" alt=""/>
             </button>
             <Link to="/" className="navbar-brand">
               <img width="130px" src="/src/images/steepshotLogo.png" alt=""/>

@@ -100,7 +100,7 @@ class Home extends React.Component {
 
     if (this.state.posts.length > 0) {
       this.state.posts.map((post, index) => {
-        items.push(<PostItem item={post} items={_this.state.posts} index={index}/>);
+        items.push(<PostItem item={post} items={_this.state.posts} index={index} loadMore={this.fetchData.bind(this)}/>);
       });
 
       renderElements = <InfiniteScroll
