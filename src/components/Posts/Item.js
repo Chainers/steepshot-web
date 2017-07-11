@@ -215,7 +215,6 @@ class Item extends React.Component {
                         })
                       }
                     </div>
-                    <br/>
                     <div className="popup-comments">
                       {comments}
                     </div>
