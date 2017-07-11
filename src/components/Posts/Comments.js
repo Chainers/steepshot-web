@@ -35,7 +35,8 @@ class Comments extends React.Component {
     getPostComments(nextProps.item.author, nextProps.item.url).then((response) => {
       _this.setState({
         comments: response.results,
-        loading: false
+        loading: false,
+        avatar: nextProps.item.avatar
       });
     });
   }
