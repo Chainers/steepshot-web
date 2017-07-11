@@ -556,8 +556,16 @@
 
 .comments-container {
   width: 100%;
-  
+
   .comment {
     margin-top: 5px;
+    overflow: hidden;
+
+    .comment-text {
+      display: flex;
+      flex-direction: column;
+      flex-wrap: wrap;
+      overflow-wrap: break-word;
+    }
   }
 }

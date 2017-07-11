@@ -551,4 +551,12 @@
 
 .comments-container .comment {
   margin-top: 5px;
+  overflow: hidden;
+}
+
+.comments-container .comment .comment-text {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  overflow-wrap: break-word;
 }

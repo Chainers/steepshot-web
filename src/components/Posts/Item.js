@@ -46,18 +46,7 @@ class Item extends React.Component {
   }
 
   afterOpenModal() {
-    this._getPostCommens();
-
     this._onResize();
-  }
-
-  _getPostCommens() {
-    let _this = this;
-
-    getPostComments(this.props.item.author, this.props.item.url).then((response) => {
-      _this.setState({comments: response.results});
-      console.log(response);
-    });
   }
 
   closeModal() {
@@ -73,9 +62,9 @@ class Item extends React.Component {
     if (curIndex == this.props.items.length) {
       this.setState({ disableNext: true });
     } else {
-      this.resetDefaultProperties(this.props.items[this.state.currentIndex + 1]);
+      const newItem = this.props.items[this.state.currentIndex + 1];
+      this.resetDefaultProperties(newItem);
       this.setState({ currentIndex: this.state.currentIndex + 1 });
-      this._getPostCommens();
     }
   }
 
@@ -85,7 +74,6 @@ class Item extends React.Component {
     } else {
       this.resetDefaultProperties(this.props.items[this.state.currentIndex - 1]);
       this.setState({ currentIndex: this.state.currentIndex - 1 });
-      this._getPostCommens();
     }
   }
 
@@ -132,14 +120,9 @@ class Item extends React.Component {
 
   render() {
     let _this = this;
-    let comments = <div>No comments</div>;
-    if (this.state.comments.length != 0) {
-      comments = this.state.comments.map((item) => {
-        return <p>{item}</p>
-      });
-    }
     let itemImage = this.state.image || '/src/images/noimage.jpg';
     let authorImage = this.state.avatar || '/src/images/person.png';
+    let comments = <Comments item={this.state.item} />;
 
     let settings = {
       dots: false,
@@ -232,9 +215,9 @@ class Item extends React.Component {
                         })
                       }
                     </div>
-                    <hr/>
+                    <br/>
                     <div className="popup-comments">
-                      <Comments item={this.state.item} />
+                      {comments}
                     </div>
                   </div>
                 </div>

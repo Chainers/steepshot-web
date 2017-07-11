@@ -10,15 +10,33 @@ class Comments extends React.Component {
 
     this.state = {
       comments: [],
-      avatar: this.props.item.avatar
+      avatar: this.props.item.avatar,
+      loading: true
     };
   }
 
   componentDidMount() {
+    this.updatePostComments();
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState({ 
+      comments: [],
+      loading: true
+     });
+
+    this.updatePostComments(nextProps);
+  }
+
+  updatePostComments(nextProps) {
+    nextProps = nextProps || this.props;
     let _this = this;
 
-    getPostComments(this.props.item.author, this.props.item.url).then((response) => {
-      _this.setState({comments: response.results});
+    getPostComments(nextProps.item.author, nextProps.item.url).then((response) => {
+      _this.setState({
+        comments: response.results,
+        loading: false
+      });
     });
   }
 
@@ -28,15 +46,18 @@ class Comments extends React.Component {
 
   render() {
     let _this = this;
-    let comments = <div>No comments</div>;
-
     let authorImage = this.state.avatar || '/src/images/person.png';
     const authorLink = `/userProfile/${this.props.item.author}`;
+    let comments = <div>No comments</div>;
 
-    if (this.state.comments.length != 0) {
+    if (this.state.loading) {
+      comments = <div>Loading...</div>;
+    } 
+    
+    if (this.state.comments && this.state.comments.length != 0) {
       comments = this.state.comments.map((item) => {
         return <div className="comment">
-            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+            <div>
                 <img width="40px" height="40px" className="user-avatar" src={authorImage} alt="Image" onError={this.setDefaultAvatar.bind(this)}/>
             </div>
             <div className="">
