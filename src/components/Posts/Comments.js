@@ -59,10 +59,10 @@ class Comments extends React.Component {
       comments = this.state.comments.map((item) => {
         return <div className="comment">
             <div>
-                <img width="40px" height="40px" className="user-avatar" src={authorImage} alt="Image" onError={this.setDefaultAvatar.bind(this)}/>
+                <img width="40px" height="40px" className="user-avatar" src={item.avatar} alt="Image" onError={this.setDefaultAvatar.bind(this)}/>
             </div>
             <div className="">
-                <Link to={authorLink}><strong>{this.props.item.author}</strong></Link>
+                <Link to={authorLink}><strong>{item.author}</strong></Link>
                 <div className="comment-text">
                     {item.body}
                 </div>
