@@ -11,7 +11,7 @@ class UserProfile extends React.Component {
     super(props);
 
     this.state = {
-      authorName: this.props.routeParams.username,
+      authorName: this.props.match.params.username,
       profile: null,
       localize: LocalizedStrings.getInstance(),
       posts: [],
@@ -23,7 +23,7 @@ class UserProfile extends React.Component {
   componentDidMount() {
     let _this = this;
 
-    getUserProfile(this.props.routeParams.username).then((result) => {
+    getUserProfile(this.props.match.params.username).then((result) => {
       const profile = result;
 
       _this.setState({
@@ -38,11 +38,11 @@ class UserProfile extends React.Component {
   fetchData() {
     let _this = this;
 
-    getUserPosts(this.props.routeParams.username, this.state.offset).then((response) => {
+    getUserPosts(this.props.match.params.username, this.state.offset).then((response) => {
       this.state.posts.pop();
       let newPosts = this.state.posts.concat(response.results);
 
-      if (response.results.lenght == 1) {
+      if (response.results.length < 20 || !response.offset) {
         _this.setState({
           posts: newPosts, 
           offset: response.offset, 
@@ -100,12 +100,7 @@ class UserProfile extends React.Component {
           refreshFunction={this.refresh}
           next={this.fetchData.bind(this)}
           hasMore={this.state.hasMore}
-          loader={<h4>Loading...</h4>}
-          endMessage={
-            <p style={{textAlign: 'center'}}>
-              <b>Yay! You have seen it all</b>
-            </p>
-          }>
+          loader={<h4>Loading...</h4>}>
           {items}
         </InfiniteScroll>
       </div>

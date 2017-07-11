@@ -1,6 +1,6 @@
 import React from 'react';
-import { Link } from 'react-router';
 import { getPostComments } from '../../actions/posts';
+import Comment from './Comment';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
@@ -41,10 +41,6 @@ class Comments extends React.Component {
     });
   }
 
-  setDefaultAvatar() {
-    this.setState({ avatar: '/src/images/person.png' });
-  }
-
   render() {
     let _this = this;
     let comments = <div>No comments</div>;
@@ -55,18 +51,7 @@ class Comments extends React.Component {
     
     if (this.state.comments && this.state.comments.length != 0) {
       comments = this.state.comments.map((item) => {
-        const authorLink = `/userProfile/${item.author}`;
-        return <div className="comment">
-            <div>
-                <img width="40px" height="40px" className="user-avatar" src={item.avatar} alt="Image" onError={this.setDefaultAvatar.bind(this)}/>
-            </div>
-            <div className="">
-                <Link to={authorLink}><strong>{item.author}</strong></Link>
-                <div className="comment-text">
-                    {item.body}
-                </div>
-            </div>
-        </div>
+        return <Comment item={item} />
       });
     }
 

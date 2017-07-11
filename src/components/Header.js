@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import LocalizedStrings from './Localization/index.js';
 import Search from './Search/index.js';
 import { getLanguage, getAllLanguages } from '../actions/localization';

@@ -1,6 +1,6 @@
 import React from 'react';
 import Modal from 'react-modal';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import { getPostComments } from '../../actions/posts';
 import ReactResizeDetector from 'react-resize-detector';
 import { connect } from 'react-redux';

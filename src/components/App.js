@@ -10,6 +10,8 @@ const App = ({ children }) => (
   </div>
 );
 
-App.propTypes = { children: React.PropTypes.object };
+App.propTypes = { 
+  children: React.PropTypes.object 
+};
 
 export default App;

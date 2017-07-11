@@ -1,5 +1,5 @@
 import React from 'react';
-import { IndexRoute, Route } from 'react-router';
+import { Route, Switch } from 'react-router-dom'
 import App from './components/App';
 import Home from './components/Home';
 import Login from './components/Account/Login';
@@ -33,12 +33,14 @@ export default function getRoutes(store) {
   }
 
   return (
-    <Route path="/" component={App} onEnter={setLanguages}>
-      <IndexRoute component={Home} onLeave={clearMessages} />
-      <Route path="/userProfile/:username" component={UserProfile} onEnter={skipIfAuthenticated} onLeave={clearMessages} />
-      <Route path="/signin" component={Signin} onEnter={skipIfAuthenticated} onLeave={clearMessages} />
-      <Route path="/signup" component={Signup} onEnter={skipIfAuthenticated} onLeave={clearMessages} />
-      <Route path="*" component={NotFound} onLeave={clearMessages} />
-    </Route>
+    <App>
+      <Switch>
+        <Route exact path="/" component={Home} onLeave={clearMessages} />
+        <Route path="/userProfile/:username" component={UserProfile} onEnter={skipIfAuthenticated} onLeave={clearMessages} />
+        <Route path="/signin" component={Signin} onEnter={skipIfAuthenticated} onLeave={clearMessages} />
+        <Route path="/signup" component={Signup} onEnter={skipIfAuthenticated} onLeave={clearMessages} />
+        <Route path="*" component={NotFound} onLeave={clearMessages} />
+      </Switch>
+    </App>
   );
 }
