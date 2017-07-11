@@ -47,8 +47,6 @@ class Comments extends React.Component {
 
   render() {
     let _this = this;
-    let authorImage = this.state.avatar || '/src/images/person.png';
-    const authorLink = `/userProfile/${this.props.item.author}`;
     let comments = <div>No comments</div>;
 
     if (this.state.loading) {
@@ -57,6 +55,7 @@ class Comments extends React.Component {
     
     if (this.state.comments && this.state.comments.length != 0) {
       comments = this.state.comments.map((item) => {
+        const authorLink = `/userProfile/${item.author}`;
         return <div className="comment">
             <div>
                 <img width="40px" height="40px" className="user-avatar" src={item.avatar} alt="Image" onError={this.setDefaultAvatar.bind(this)}/>
