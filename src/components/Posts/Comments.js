@@ -9,7 +9,8 @@ class Comments extends React.Component {
     super(props);
 
     this.state = {
-      comments: []
+      comments: [],
+      avatar: this.props.item.avatar
     };
   }
 
@@ -21,17 +22,22 @@ class Comments extends React.Component {
     });
   }
 
+  setDefaultAvatar() {
+    this.setState({ avatar: '/src/images/person.png' });
+  }
+
   render() {
     let _this = this;
     let comments = <div>No comments</div>;
 
+    let authorImage = this.state.avatar || '/src/images/person.png';
     const authorLink = `/userProfile/${this.props.item.author}`;
 
     if (this.state.comments.length != 0) {
       comments = this.state.comments.map((item) => {
         return <div className="comment">
             <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
-                <img width="40px" height="40px" className="user-avatar" src={this.props.item.avatar} alt="Image" />
+                <img width="40px" height="40px" className="user-avatar" src={authorImage} alt="Image" onError={this.setDefaultAvatar.bind(this)}/>
             </div>
             <div className="">
                 <Link to={authorLink}><strong>{this.props.item.author}</strong></Link>

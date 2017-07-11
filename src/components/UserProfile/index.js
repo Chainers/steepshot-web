@@ -1,7 +1,7 @@
 import React from 'react';
 import LocalizedStrings from '../Localization/index.js';
 import { getUserProfile } from '../../actions/profile';
-import { getUserPosts } from '../../actions/posts';
+import { getUserPosts, getUserPostsByCategory } from '../../actions/posts';
 import PostItem from '../Posts/Item';
 import { connect } from 'react-redux';
 import InfiniteScroll from '../Scroller/infinityScroll';
@@ -24,7 +24,12 @@ class UserProfile extends React.Component {
     let _this = this;
 
     getUserProfile(this.props.routeParams.username).then((result) => {
-      _this.setState({profile: result});
+      const profile = result;
+
+      _this.setState({
+        profile: profile,
+        avatar: profile.profile_image
+      });
     }).then(() => {
       _this.fetchData();
     })
@@ -38,25 +43,33 @@ class UserProfile extends React.Component {
       let newPosts = this.state.posts.concat(response.results);
 
       if (response.results.lenght == 1) {
-        _this.setState({posts: newPosts, offset: response.offset, hasMore: false});
+        _this.setState({
+          posts: newPosts, 
+          offset: response.offset, 
+          hasMore: false
+        });
       } else {
-        _this.setState({posts: newPosts, offset: response.offset});
+        _this.setState({ 
+          posts: newPosts, 
+          offset: response.offset
+        });
       }
     });
+  }
+
+  setDefaultAvatar() {
+    this.setState({ avatar: '/src/images/person.png' });
   }
 
   render() {
     let items = [];
     let _this = this;
     let profileComponent = <div> Loading... </div>;
-    let profileImageSrc = "../../images/person";
+    let profileImageSrc = this.state.avatar || "/src/images/person.png";
 
-    if (this.state.profile && this.state.profile.profile_image) {
-      profileImageSrc = this.state.profile.profile_image;
-    }
     if (this.state.profile) {
       profileComponent = <div className='user-profile'>
-        <img className="user-big-avatar" src={profileImageSrc} alt="Image"/>
+        <img className="user-big-avatar" src={profileImageSrc} alt="Image" onError={this.setDefaultAvatar.bind(this)}/>
         <div className='profile-info'>
           <div>
             <h3>{this.state.profile.username}</h3>

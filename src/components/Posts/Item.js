@@ -34,7 +34,11 @@ class Item extends React.Component {
       propsItem.tags[i] = '#' + propsItem.tags[i];
     }
 
-    this.setState({item: propsItem});
+    this.setState({
+      item: propsItem,
+      avatar: propsItem.avatar,
+      image: propsItem.body 
+    });
   }
 
   openModal() {
@@ -69,7 +73,8 @@ class Item extends React.Component {
     if (curIndex == this.props.items.length) {
       this.setState({ disableNext: true });
     } else {
-      this.setState({item: this.props.items[this.state.currentIndex + 1], currentIndex: this.state.currentIndex + 1});
+      this.resetDefaultProperties(this.props.items[this.state.currentIndex + 1]);
+      this.setState({ currentIndex: this.state.currentIndex + 1 });
       this._getPostCommens();
     }
   }
@@ -78,9 +83,18 @@ class Item extends React.Component {
     if (this.state.currentIndex == 0) {
       this.setState({ disablePrev: true });
     } else {
-      this.setState({item: this.props.items[this.state.currentIndex - 1], currentIndex: this.state.currentIndex - 1});
+      this.resetDefaultProperties(this.props.items[this.state.currentIndex - 1]);
+      this.setState({ currentIndex: this.state.currentIndex - 1 });
       this._getPostCommens();
     }
+  }
+
+  resetDefaultProperties(newItem) {
+    this.setState({ 
+      avatar: newItem.avatar,
+      image: newItem.body,
+      item: newItem
+    });
   }
 
   _onResize() {
@@ -108,6 +122,14 @@ class Item extends React.Component {
     console.log('Like.. ' + this.state.item.author + ' post');
   }
 
+  setDefaultAvatar() {
+    this.setState({ avatar: '/src/images/person.png' });
+  }
+
+  setDefaultImage() {
+    this.setState({ image: '/src/images/noimage.jpg' });
+  }
+
   render() {
     let _this = this;
     let comments = <div>No comments</div>;
@@ -116,9 +138,10 @@ class Item extends React.Component {
         return <p>{item}</p>
       });
     }
-    let itemImage = this.state.item.body;
+    let itemImage = this.state.image || '/src/images/noimage.jpg';
+    let authorImage = this.state.avatar || '/src/images/person.png';
 
-    var settings = {
+    let settings = {
       dots: false,
       infinite: true,
       speed: 500,
@@ -132,12 +155,12 @@ class Item extends React.Component {
       <div className="post-container">
         <div className="post-container-item" onClick={this.openModal}>
           <div className="row body-row">
-            <img className="post-img col-md-12 col-sm-12 col-xs-12" src={this.state.item.body}/>
+            <img className="post-img col-md-12 col-sm-12 col-xs-12" src={itemImage} onError={this.setDefaultImage.bind(this)}/>
           </div>
           <div className="row post-footer">
             <div className="main-info">
               <div className="">
-                <img className="user-avatar" src={this.state.item.avatar} alt="Image"/>
+                <img className="user-avatar" src={authorImage} alt="Image" onError={this.setDefaultAvatar.bind(this)}/>
               </div>
               <div className="">
                 <Link to={authorLink}><strong>{this.state.item.author}</strong></Link>
@@ -181,12 +204,12 @@ class Item extends React.Component {
                 </div>
                 <div className="popup-body">
                   <div className="popup-image-block" id="popup-image">
-                    <img className="popup-image" src={this.state.item.body} alt="Image"/>
+                    <img className="popup-image" src={itemImage} onError={this.setDefaultImage.bind(this)} alt="Image"/>
                   </div>
                   <div className="post-popup-info" id="popup-info">
                     <div className="author-info">
                       <div className="">
-                        <img className="user-avatar" src={this.state.item.avatar} alt="Image"/>
+                        <img className="user-avatar" src={authorImage} alt="Image" onError={this.setDefaultAvatar.bind(this)} />
                       </div>
                       <div className="author-name">
                         <Link to={authorLink} onClick={this.closeModal}><strong>{this.state.item.author}</strong></Link>

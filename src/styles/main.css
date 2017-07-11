@@ -541,6 +541,14 @@
   justify-content: center;
 }
 
+.popup-comments {
+  overflow: auto;
+}
+
+.comments-container {
+  width: 100%;
+}
+
 .comments-container .comment {
   margin-top: 5px;
 }
