@@ -2,40 +2,57 @@ import moment from 'moment';
 import cookie from 'react-cookie';
 import { browserHistory } from 'react-router';
 
-export function login(email, password) {
-  return (dispatch) => {
-    dispatch({
-      type: 'CLEAR_MESSAGES'
-    });
-    return fetch('/login', {
-      method: 'post',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        email: email,
-        password: password
-      })
-    }).then((response) => {
-      if (response.ok) {
-        return response.json().then((json) => {
-          dispatch({
-            type: 'LOGIN_SUCCESS',
-            token: json.token,
-            user: json.user
-          });
-          localStorage.setItem('user', JSON.stringify(json.user));
-          cookie.save('token', json.token, { expires: moment().add(1, 'hour').toDate() });
-          browserHistory.push('/account');
-        });
-      } else {
-        return response.json().then((json) => {
-          dispatch({
-            type: 'LOGIN_FAILURE',
-            messages: Array.isArray(json) ? json : [json]
-          });
-        });
-      }
-    });
-  };
+// export function login(email, postingKey) {
+//   return (dispatch) => {
+//     dispatch({
+//       type: 'CLEAR_MESSAGES'
+//     });
+//     return fetch('/login', {
+//       method: 'post',
+//       headers: { 'Content-Type': 'application/json' },
+//       body: JSON.stringify({
+//         email: email,
+//         postingKey: postingKey
+//       })
+//     }).then((response) => {
+//       if (response.ok) {
+//         return response.json().then((json) => {
+//           dispatch({
+//             type: 'LOGIN_SUCCESS',
+//             token: json.token,
+//             user: json.user 
+//           });
+//           localStorage.setItem('user', JSON.stringify(json.user));
+//           localStorage.setItem('postingKey', JSON.stringify(postingKey));
+//           cookie.save('token', json.token, { expires: moment().add(10, 'day').toDate() });
+//           browserHistory.push('/feed');
+//         });
+//       } else {
+//         return response.json().then((json) => {
+//           dispatch({
+//             type: 'LOGIN_FAILURE',
+//             messages: Array.isArray(json) ? json : [json]
+//           });
+//         });
+//       }
+//     });
+//   };
+// }
+
+export function login(userName, postingKey, history) {
+  const customUser = {
+    name: userName,
+    postingKey: postingKey
+  }
+  localStorage.setItem('user', JSON.stringify(customUser));
+  localStorage.setItem('postingKey', JSON.stringify(postingKey));
+  // cookie.save('token', json.token, { expires: moment().add(10, 'day').toDate() });
+  history.push('/feed');
+  return {
+    type: 'LOGIN_SUCCESS',
+    token: 1,
+    user: customUser
+  }
 }
 
 export function signup(name, email, password) {
@@ -69,10 +86,10 @@ export function signup(name, email, password) {
   };
 }
 
-export function logout() {
-  cookie.remove('token');
+export function logout(history) {
   localStorage.removeItem('user');
-  browserHistory.push('/');
+  localStorage.removeItem('postingKey');
+  history.push('/');
   return {
     type: 'LOGOUT_SUCCESS'
   };

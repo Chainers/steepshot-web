@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router';
+import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux'
 import { login } from '../../actions/auth';
 import { facebookLogin, twitterLogin, googleLogin, vkLogin, githubLogin } from '../../actions/oauth';
@@ -10,7 +10,7 @@ class Login extends React.Component {
     super(props);
     this.state = {
       userName: '',
-      password: '' };
+      postingKey: '' };
   }
 
   handleChange(event) {
@@ -19,7 +19,7 @@ class Login extends React.Component {
 
   handleLogin(event) {
     event.preventDefault();
-    // this.props.dispatch(login(this.state.userName, this.state.password));
+    this.props.dispatch(login(this.state.userName, this.state.postingKey, this.props.history));
   }
 
   handleFacebook() {
@@ -53,8 +53,8 @@ class Login extends React.Component {
             <input type="text" name="userName" id="userName" placeholder="userName" autoFocus className="form-control" value={this.state.userName} onChange={this.handleChange.bind(this)}/>
           </div>
           <div className="form-group">
-            <label htmlFor="password">Password</label>
-            <input type="password" name="password" id="password" placeholder="Password" className="form-control" value={this.state.password} onChange={this.handleChange.bind(this)}/>
+            <label htmlFor="password">Posting key</label>
+            <input type="password" name="postingKey" id="postingKey" placeholder="Posting key" className="form-control" value={this.state.postingKey} onChange={this.handleChange.bind(this)}/>
           </div>
           <button type="submit" onClick={this.handleLogin.bind(this)} className="btn btn-default">Log in</button>
         </div>
@@ -67,4 +67,4 @@ const mapStateToProps = (state) => {
     messages: state.messages
   };
 };
-export default connect(mapStateToProps)(Login);
+export default withRouter(connect(mapStateToProps)(Login));

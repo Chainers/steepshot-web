@@ -5,8 +5,8 @@ import { Provider } from 'react-redux';
 import configureStore from './store/configureStore';
 import getRoutes from './routes';
 import LocalizedStrings from './components/Localization/index.js';
-import { Router } from 'react-router'
-import { BrowserRouter } from 'react-router-dom'
+// import { Router } from 'react-router'
+import { BrowserRouter, Router } from 'react-router-dom';
 import createBrowserHistory from 'history/createBrowserHistory';
 
 const history = createBrowserHistory()
@@ -17,9 +17,9 @@ const location = window.location.pathname;
 
 ReactDOM.render(
   <Provider store={store}>
-    <BrowserRouter basename={location} history={history}>
+    <Router basename={location} history={history}>
       {getRoutes(store)}
-    </BrowserRouter>
+    </Router>
   </Provider>,
   document.getElementById('content')
 );

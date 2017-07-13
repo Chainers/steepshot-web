@@ -6,19 +6,19 @@ import Login from './components/Account/Login';
 import NotFound from './components/NotFound';
 import Localization from './components/Localization/index';
 import Signin from './components/Account/Login';
-import Signup from './components/Account/Signup';
 import UserProfile from './components/UserProfile/index';
+import PrivateRoute from './components/Routes/PrivateRoute';
 
 export default function getRoutes(store) {
   const ensureAuthenticated = (nextState, replace) => {
-    if (!store.getState().auth.token) {
-      replace('/login');
+    if (!store.getState().auth.user) {
+      replace('/signin');
     }
   };
 
   const skipIfAuthenticated = (nextState, replace) => {
-    if (store.getState().auth.token) {
-      replace('/');
+    if (store.getState().auth.user) {
+      replace('/feed');
     }
   };
 
@@ -38,7 +38,7 @@ export default function getRoutes(store) {
         <Route exact path="/" component={Home} onLeave={clearMessages} />
         <Route path="/userProfile/:username" component={UserProfile} onEnter={skipIfAuthenticated} onLeave={clearMessages} />
         <Route path="/signin" component={Signin} onEnter={skipIfAuthenticated} onLeave={clearMessages} />
-        <Route path="/signup" component={Signup} onEnter={skipIfAuthenticated} onLeave={clearMessages} />
+        <Route path="/account" component={Signin} onEnter={skipIfAuthenticated} onLeave={clearMessages} />
         <Route path="*" component={NotFound} onLeave={clearMessages} />
       </Switch>
     </App>

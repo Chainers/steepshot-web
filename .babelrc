@@ -1,3 +1,8 @@
 {
-  "presets": ["es2015", "react"]
+  "presets": ["es2015", "react"],
+  "env": {
+    "development": {
+      "plugins": ["rewire", "transform-object-rest-spread", "transform-object-assign"]
+    }
+  }
 }

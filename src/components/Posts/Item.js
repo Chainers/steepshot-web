@@ -1,6 +1,6 @@
 import React from 'react';
 import Modal from 'react-modal';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { getPostComments } from '../../actions/posts';
 import ReactResizeDetector from 'react-resize-detector';
 import { connect } from 'react-redux';
@@ -17,7 +17,8 @@ class Item extends React.Component {
       currentIndex: this.props.index,
       comments: [],
       disableNext: false,
-      disablePrev: false
+      disablePrev: false,
+      redirectToReferrer: false
     };
 
     this.openModal = this.openModal.bind(this);
@@ -68,6 +69,10 @@ class Item extends React.Component {
     }
   }
 
+  componentWillUnmount() {
+    this.closeModal();
+  }
+
   previous() {
     if (this.state.currentIndex == 0) {
       this.setState({ disablePrev: true });
@@ -108,6 +113,10 @@ class Item extends React.Component {
   ratingVotes(event) {
     event.stopPropagation();
     console.log('Like.. ' + this.state.item.author + ' post');
+  }
+
+  redirectToUserProfile() {
+    this.setState({ redirectToReferrer: true });
   }
 
   setDefaultAvatar() {
