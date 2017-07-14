@@ -53,6 +53,7 @@ class Header extends React.Component {
   }
 
   render() {
+    const isUserAuth = this.props.user && this.props.postingKey;
     let rightNav = (
       <ul className="nav navbar-nav navbar-right">
          <li><Link to="/signin">Sign In</Link></li>
@@ -61,13 +62,13 @@ class Header extends React.Component {
     let searchBlock = <div></div>;
     let browse;
 
-    if (this.props.user && this.props.user.name) {
+    if (isUserAuth) {
       rightNav = (
         <ul className="nav navbar-nav navbar-right">
         <li className="dropdown">
           <a href="#" data-toggle="dropdown" className="navbar-avatar dropdown-toggle">
             <img src={this.props.user.picture || this.props.user.gravatar}/>
-            {' '}{this.props.user.name || this.props.user.email || this.props.user.id}{' '}
+            {' '}{this.props.user}{' '}
             <i className="caret"></i>
           </a>
           <ul className="dropdown-menu">
@@ -88,7 +89,7 @@ class Header extends React.Component {
           <Link to="/" className="nav-link">browse</Link>
         </li>
         {
-          (this.props.user && this.props.user.name) ? (
+          (isUserAuth) ? (
             <li className="nav-item">
               <Link to="/feed" className="nav-link">feed</Link>
             </li>
@@ -134,7 +135,7 @@ Header.propTypes = {
 
 const mapStateToProps = (state) => {
   return {
-    token: state.auth.token,
+    postingKey: state.auth.postingKey,
     user: state.auth.user,
     localization: state.localization,
     search: state.search

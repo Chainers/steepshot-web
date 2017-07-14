@@ -5,6 +5,10 @@ import { connect, store } from 'react-redux';
 import InfiniteScroll from './Scroller/infinityScroll';
 import PropTypes from 'prop-types';
 import { getStore } from '../store/configureStore';
+import PostFilterBlock from './Filters/PostFilterBlock';
+
+// constants
+import constants from '../common/constants';
 
 class Home extends React.Component {
   constructor(props) {
@@ -16,8 +20,10 @@ class Home extends React.Component {
       offset: null
     };
 
+    
     this.store = getStore();
     this.outputUpdate();
+    this.resetPosts();
   }
 
   outputUpdate() {
@@ -27,16 +33,22 @@ class Home extends React.Component {
   }
 
   componentDidMount() {
-    this.resetPosts();
+    this.unsubscribe();
   }
 
-  resetPosts(searchValue) {
+  updatePostsByFolter(key) {
+    this.resetPosts(null, key);
+  }
+
+  resetPosts(searchValue, key) {
     this.setState({posts: [], offset: null});
 
-    if (!searchValue) {
+    if (searchValue) {
+      this.setPostsByCategory(searchValue);
+    } else if(key == constants.POST_FILTERS.TRANDING) {
       this.setPostsNext();
     } else {
-      this.setPostsByCategory(searchValue);
+      this.setPostsNext();
     }
   }
 
@@ -89,14 +101,10 @@ class Home extends React.Component {
     });
   }
 
-  refresh() {
-    console.log("refresh");
-  }
-
   render() {
     let items = [];
     let _this = this;
-    let renderElements = <div className='loading-block'><br /><h4>No find results for '{this.props.search.value}' filter</h4></div>
+    let renderElements = <div className='loading-block'><br /><h4>No find results for '{this.props.search.value}' filter</h4></div>;
 
     if (this.state.posts.length > 0) {
       this.state.posts.map((post, index) => {
@@ -104,7 +112,6 @@ class Home extends React.Component {
       });
 
       renderElements = <InfiniteScroll
-          refreshFunction={this.refresh}
           next={this.fetchData.bind(this)}
           hasMore={this.state.hasMore}
           loader={<div className='loading-block'><br /><h4>Loading...</h4></div>}
@@ -121,13 +128,7 @@ class Home extends React.Component {
 
     return (
       <div className="container" id="all-posts">
-        <div className="filter-container">
-          <div className="filter-block">
-            <div className="filter-item">Tranding</div>
-            <div className="filter-item">Hot</div>
-            <div className="filter-item">New</div>
-          </div>
-        </div>
+        <PostFilterBlock updatePostsCallback={this.updatePostsByFolter.bind(this)}/>
         {renderElements}
       </div>
     );

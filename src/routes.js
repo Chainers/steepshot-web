@@ -8,20 +8,10 @@ import Localization from './components/Localization/index';
 import Signin from './components/Account/Login';
 import UserProfile from './components/UserProfile/index';
 import PrivateRoute from './components/Routes/PrivateRoute';
+import Feed from './components/Feed';
+import Account from './components/Account/AccountProfile';
 
 export default function getRoutes(store) {
-  const ensureAuthenticated = (nextState, replace) => {
-    if (!store.getState().auth.user) {
-      replace('/signin');
-    }
-  };
-
-  const skipIfAuthenticated = (nextState, replace) => {
-    if (store.getState().auth.user) {
-      replace('/feed');
-    }
-  };
-
   const clearMessages = () => {
     store.dispatch({
       type: 'CLEAR_MESSAGES'
@@ -36,9 +26,10 @@ export default function getRoutes(store) {
     <App>
       <Switch>
         <Route exact path="/" component={Home} onLeave={clearMessages} />
-        <Route path="/userProfile/:username" component={UserProfile} onEnter={skipIfAuthenticated} onLeave={clearMessages} />
-        <Route path="/signin" component={Signin} onEnter={skipIfAuthenticated} onLeave={clearMessages} />
-        <Route path="/account" component={Signin} onEnter={skipIfAuthenticated} onLeave={clearMessages} />
+        <Route path="/userProfile/:username" component={UserProfile} onLeave={clearMessages} />
+        <Route path="/signin" component={Signin} onLeave={clearMessages} />
+        <PrivateRoute path="/account" component={Account} onLeave={clearMessages} />
+        <PrivateRoute path="/feed" component={Feed} onLeave={clearMessages} />
         <Route path="*" component={NotFound} onLeave={clearMessages} />
       </Switch>
     </App>

@@ -1,4 +1,5 @@
-const baseUrl = 'https://steepshot.org/api/v1';
+import constants from '../common/constants';
+const baseUrl = constants.URLS.baseUrl;
 
 export function getPosts() {
   return fetch(`${baseUrl}/posts/new`, {

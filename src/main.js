@@ -9,7 +9,7 @@ import LocalizedStrings from './components/Localization/index.js';
 import { BrowserRouter, Router } from 'react-router-dom';
 import createBrowserHistory from 'history/createBrowserHistory';
 
-const history = createBrowserHistory()
+const history = createBrowserHistory();
 
 const store = configureStore(window.INITIAL_STATE);
 

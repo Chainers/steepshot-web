@@ -1,6 +1,5 @@
 const initialState = {
-  token: null,
-  user: JSON.parse(localStorage.getItem('user')) || {},
+  user: JSON.parse(localStorage.getItem('user')) || null,
   postingKey: JSON.parse(localStorage.getItem('postingKey')) || null
 };
 
@@ -13,14 +12,12 @@ export default function auth(state = initialState, action) {
     case 'SIGNUP_SUCCESS':
     case 'OAUTH_SUCCESS':
       return Object.assign({}, state, {
-        token: action.token,
         user: action.user,
         postingKey: action.postingKey
       });
     case 'LOGOUT_SUCCESS':
       return {
-        token: null,
-        user: JSON.parse(localStorage.getItem('user')) || {},
+        user: JSON.parse(localStorage.getItem('user')) || null,
         postingKey: JSON.parse(localStorage.getItem('postingKey')) || null
       };
     default:

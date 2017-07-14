@@ -4,7 +4,7 @@ import Header from './Header';
 const App = ({ children }) => (
   <div>
     <Header />
-    <div>
+    <div className="main-container-chuldren">
       {children || 'Welcome to React Starterify'}
     </div>
   </div>
