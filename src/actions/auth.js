@@ -23,11 +23,6 @@ export function login(username, postingKey) {
       .then((response) => {
       if (response.ok) {
         response.json().then((json) => {
-          // callback({
-          //   type: 'LOGIN_SUCCESS',
-          //   token: postingKey,
-          //   user: username
-          // });
           localStorage.setItem('user', JSON.stringify(username));
           localStorage.setItem('postingKey', JSON.stringify(postingKey));
           fakeAuth.authenticate(() => history.push('/feed'));
@@ -47,21 +42,6 @@ export function login(username, postingKey) {
       }
     });
 }
-
-// export function login(userName, postingKey, history) {
-//   const customUser = {
-//     name: userName,
-//     postingKey: postingKey
-//   }
-//   localStorage.setItem('user', JSON.stringify(customUser));
-//   localStorage.setItem('postingKey', JSON.stringify(postingKey));
-//   fakeAuth.authenticate(() => history.push('/feed'));
-//   return {
-//     type: 'LOGIN_SUCCESS',
-//     token: 1,
-//     user: customUser
-//   }
-// }
 
 export function logout(history) {
   localStorage.removeItem('user');

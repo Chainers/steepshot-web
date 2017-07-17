@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Comments from './Comments';
 import constants from '../../common/constants';
+import VouteComponent from './VouteComponent';
 
 class Item extends React.Component {
   constructor(props) {
@@ -133,6 +134,14 @@ class Item extends React.Component {
     this.setState({ image: '/src/images/noimage.jpg' });
   }
 
+  updateComponent(voute) {
+    let currentItem = this.state.item;
+    currentItem.voute = voute;
+    this.setState({ 
+      item: currentItem
+    });
+  }
+
   render() {
     let _this = this;
     let itemImage = this.state.image || '/src/images/noimage.jpg';
@@ -163,9 +172,7 @@ class Item extends React.Component {
               <div className="">
                 <Link to={authorLink}><strong>{this.state.item.author}</strong></Link>
               </div>
-              <div className="rating-block pull-right span-with-no-border" onClick={(event) => this.ratingVotes.call(this, event)}>
-                <span className="star rating-text">&#9825; {this.state.item.net_votes}</span>
-              </div>
+              <VouteComponent item={this.state.item} updateComponent={this.updateComponent.bind(this)} />
             </div>
             <div className="author-info">
               <div className="">
@@ -216,9 +223,7 @@ class Item extends React.Component {
                     </div>
                     <br/>
                     <div className="post-info">
-                      <div className="rating-block" onClick={(event) => this.ratingVotes(event)}>
-                        <span className="star rating-text">&#9825; {this.state.item.net_votes}</span>
-                      </div>
+                      <VouteComponent item={this.state.item} updateComponent={this.updateComponent.bind(this)}/>
                       <div className="">
                         <span className="payout-reward">{this.state.item.total_payout_reward} </span>
                       </div>
