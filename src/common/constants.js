@@ -6,5 +6,9 @@ export default {
     },
     URLS: {
         baseUrl: 'https://steepshot.org/api/v1'
+    },
+    CATEGORIES: {
+        user: 'user',
+        tag: 'tag'
     }
 }

@@ -1,38 +1,26 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import Select from 'react-select';
-
-React.createElement(
-  'i',
-  {className: 'glyphicon glyphicon-home'},
-  null
-)
+import constants from '../../common/constants';
 
 const options = [
-  {
-    value: 'user',
-    label: React.createElement(
-      'i',
-      {
-        className: 'glyphicon glyphicon-user'
-      },
-      'user'
-    ),
-    placeholder: 'Start by typing user name...'
-
-  },
-  {
-    value: 'tag',
-    label: React.createElement(
-      'i',
-      {
-        className: 'glyphicon glyphicon-search'
-      },
-      'tag'
-    ),
-    placeholder: 'Start by typing tag...'
-  }
+  createOption('user', constants.CATEGORIES.user, 'glyphicon glyphicon-user', 'Start by typing user name...'),
+  createOption('tag', constants.CATEGORIES.tag, 'glyphicon glyphicon-search', 'Start by typing tag...')
 ];
+
+function createOption(name, value, className, placeholder) {
+  return {
+    value: value,
+    label: React.createElement(
+      'i',
+      {
+        className: className
+      },
+      name
+    ),
+    placeholder: placeholder
+  }
+}
 
 class Search extends React.Component {
   constructor(props) {
@@ -40,16 +28,19 @@ class Search extends React.Component {
 
     this.state = {
       searchValue: this.props.search.value,
-      selectValue: options[0].value,
+      selectValue: this.props.search.category
     };
   }
 
   handleChange(event) {
     const newValue = event.target.value;
-    this.setState({[event.target.name]: newValue});
+    this.setState({
+      [event.target.name]: newValue
+    });
     this.props.dispatch({
       type: 'SET_VALUE',
-      value: newValue
+      value: newValue,
+      category: this.state.selectValue
     });
   }
 
@@ -59,34 +50,42 @@ class Search extends React.Component {
     }
     
     const newValue = "";
-    this.setState({ searchValue: newValue});
+    this.setState({ 
+      searchValue: newValue
+    });
+
     this.props.dispatch({
       type: 'SET_VALUE',
-      value: newValue
+      value: newValue,
+      category: this.props.search.category
     });
   }
 
   updateValue(newValue) {
-    console.log("Selected: " + JSON.stringify(newValue));
+    this.props.dispatch({
+      type: 'SET_VALUE',
+      value: this.props.search.value,
+      category: newValue
+    });
     this.setState({
 			selectValue: newValue
-		});
+    });
   }
 
   render() {
-    const defaultOptions = options[0];
+    const selectedValue = this.props.search.category || options[0].value;
 
     return (
       <div className="input-group">
         <Select 
           ref="stateSelect" 
           autofocus 
-          options={options} 
+          options={options}
           simpleValue
           clearable={false} 
           name="selected-state" 
-          disabled={false} 
-          value={this.state.selectValue}
+          disabled={false}
+          value={selectedValue}
           onChange={this.updateValue.bind(this)} 
           searchable={this.state.searchable}
         />

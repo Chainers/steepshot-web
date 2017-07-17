@@ -2,14 +2,15 @@ import React from 'react';
 import createClass from 'create-react-class';
 import PropTypes from 'prop-types';
 import Select from 'react-select';
+import constants from '../../common/constants';
 
 const STATES = [
   {
-    value: 'user',
+    value: constants.CATEGORIES.user,
     label: 'user'
   },
   {
-    value: 'posts',
+    value: constants.CATEGORIES.user,
     label: 'posts'
   }
 ];
@@ -24,7 +25,7 @@ var StatesField = createClass({
 		return {
 			disabled: false,
 			searchable: this.props.searchable,
-			selectValue: this.props.options[0].value,
+			selectValue: this.props.activeOption,
 			clearable: false,
 		};
 	},
@@ -38,17 +39,17 @@ var StatesField = createClass({
 		return (
 			<div className="section">
 				<Select 
-                    ref="stateSelect" 
-                    autofocus 
-                    options={STATES} 
-                    simpleValue
-                    clearable={this.state.clearable} 
-                    name="selected-state" 
-                    disabled={this.state.disabled} 
-                    value={this.state.selectValue} 
-                    onChange={this.updateValue} 
-                    searchable={this.state.searchable}
-                />
+          ref="stateSelect" 
+          autofocus 
+          options={STATES} 
+          simpleValue
+          clearable={this.state.clearable} 
+          name="selected-state" 
+          disabled={this.state.disabled} 
+          value={this.state.selectValue} 
+          onChange={this.updateValue} 
+          searchable={this.state.searchable}
+        />
 			</div>
 		);
 	}

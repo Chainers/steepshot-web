@@ -6,6 +6,7 @@ import ReactResizeDetector from 'react-resize-detector';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Comments from './Comments';
+import constants from '../../common/constants';
 
 class Item extends React.Component {
   constructor(props) {
@@ -43,7 +44,9 @@ class Item extends React.Component {
   }
 
   openModal() {
-    this.setState({modalIsOpen: true});
+    this.setState({
+      modalIsOpen: true
+    });
   }
 
   afterOpenModal() {
@@ -51,7 +54,9 @@ class Item extends React.Component {
   }
 
   closeModal() {
-    this.setState({modalIsOpen: false});
+    this.setState({
+      modalIsOpen: false
+    });
   }
 
   next() {
@@ -106,7 +111,8 @@ class Item extends React.Component {
 
     this.props.dispatch({
       type: 'SET_VALUE',
-      value: tagValue
+      value: tagValue,
+      category: constants.CATEGORIES.tag
     });
   }
 
