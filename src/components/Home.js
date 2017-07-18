@@ -28,7 +28,6 @@ class Home extends React.Component {
       offset: null,
       activeMode: constants.POST_FILTERS.TRANDING
     };
-
     
     this.store = getStore();
     this.outputUpdate();

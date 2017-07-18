@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Switch } from 'react-router-dom'
+import { Route, Switch, Redirect } from 'react-router-dom'
 import App from './components/App';
 import Home from './components/Home';
 import Login from './components/Account/Login';
@@ -23,10 +23,19 @@ export default function getRoutes(store) {
     Localization.getInstance(callback);
   }
 
+  let isUserLogin = !!store.getState().auth.user && !!store.getState().auth.postingKey;
+
   return (
     <App>
       <Switch>
-        <Route exact path="/" component={Home} onLeave={clearMessages} />
+        <Route exact path="/" render={() => (
+          isUserLogin ? (
+            <Redirect to="/feed"/>
+          ) : (
+            <Redirect to="/browse"/>
+          )
+        )}/>
+        <Route path="/browse" component={Home} onLeave={clearMessages} />
         <Route path="/userProfile/:username" component={UserProfile} onLeave={clearMessages} />
         <Route path="/signin" component={Signin} onLeave={clearMessages} />
         <PrivateRoute path="/account" component={Account} onLeave={clearMessages} />

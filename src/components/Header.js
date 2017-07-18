@@ -88,7 +88,7 @@ class Header extends React.Component {
     } else {
       browse = <ul className="nav navbar-nav">
         <li className="nav-item">
-          <Link to="/" className="nav-link" activeStyle={active}>browse</Link>
+          <Link to="/browse" className="nav-link" activeStyle={active}>browse</Link>
         </li>
         {
           (isUserAuth) ? (

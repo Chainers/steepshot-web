@@ -4,13 +4,15 @@ import { connect } from 'react-redux'
 import { login } from '../../actions/auth';
 import { facebookLogin, twitterLogin, googleLogin, vkLogin, githubLogin } from '../../actions/oauth';
 import Messages from '../Messages';
+import steemconnect from 'steemconnect';
 
 class Login extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       userName: '',
-      postingKey: '' };
+      postingKey: '' 
+    };
   }
 
   handleChange(event) {
