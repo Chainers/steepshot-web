@@ -1,12 +1,12 @@
 import React from 'react';
-import { getUserFeed } from '../../actions/posts';
+import { getUserPosts } from '../../actions/posts';
 import PostItem from '../Posts/Item';
 import { connect, store } from 'react-redux';
 import InfiniteScroll from '../Scroller/infinityScroll';
 import PropTypes from 'prop-types';
 import { getStore } from '../../store/configureStore';
 
-class Feed extends React.Component {
+class Blog extends React.Component {
     constructor(props) {
         super(props);
 
@@ -33,7 +33,7 @@ class Feed extends React.Component {
     setUserPosts() {
         let _this = this;
 
-        getUserFeed(this.props.user).then((response) => {
+        getUserPosts(this.props.user).then((response) => {
             _this.setState({
                 posts: response.results, 
                 offset: response.offset
@@ -44,7 +44,7 @@ class Feed extends React.Component {
     fetchPostsNext() {
         let _this = this;
 
-        getUserFeed(this.props.user, this.state.offset).then((response) => {
+        getUserPosts(this.props.user, this.state.offset).then((response) => {
             this.state.posts.pop();
             let newPosts = this.state.posts.concat(response.results);
             if (response.count < 20) {
@@ -94,11 +94,11 @@ class Feed extends React.Component {
     }
 }
 
-Feed.propTypes = {
+Blog.propTypes = {
   search: PropTypes.object.isRequired
 };
 
-Feed.contextTypes = {
+Blog.contextTypes = {
   store: React.PropTypes.object
 };
 
@@ -110,4 +110,4 @@ const mapStateToProps = (state, props) => {
   };
 };
 
-export default connect(mapStateToProps)(Feed);
+export default connect(mapStateToProps)(Blog);

@@ -134,6 +134,11 @@ class Item extends React.Component {
     this.setState({ image: '/src/images/noimage.jpg' });
   }
 
+  callPreventDefault(e) {
+    e.stopPropagation();
+    e.preventDefault();
+  }
+
   updateComponent(voute) {
     let currentItem = this.state.item;
     currentItem.voute = voute;
@@ -172,7 +177,9 @@ class Item extends React.Component {
               <div className="">
                 <Link to={authorLink}><strong>{this.state.item.author}</strong></Link>
               </div>
-              <VouteComponent item={this.state.item} updateComponent={this.updateComponent.bind(this)} />
+              <div onClick={(e)=>{this.callPreventDefault(e)}}>
+                <VouteComponent item={this.state.item} updateComponent={this.updateComponent.bind(this)}/>
+              </div>
             </div>
             <div className="author-info">
               <div className="">

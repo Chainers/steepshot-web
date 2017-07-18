@@ -172,9 +172,9 @@ class Home extends React.Component {
     this.state.posts.pop();
     let newPosts = this.state.posts.concat(response.results);
 
-    if (response.results.lenght < 20) {
+    if (response.count < 20) {
       this.setState({
-        posts: newPosts, 
+        posts: newPosts,
         offset: response.offset, 
         hasMore: false
       });
@@ -227,7 +227,7 @@ class Home extends React.Component {
           hasMore={this.state.hasMore}
           loader={<div className='loading-block'><br /><h4>Loading...</h4></div>}
           endMessage={
-            <p style={{textAlign: 'center'}}>
+            <p className='loading-block'>
               <b>Yay! You have seen it all</b>
             </p>
           }>

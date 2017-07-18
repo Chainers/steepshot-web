@@ -15,7 +15,6 @@ class VouteComponent extends React.Component {
   }
 
   ratingVotes() {
-    event.stopPropagation();
     voute(!this.state.voute, this.state.item.url)
       .then((json) => {
         console.log(json);

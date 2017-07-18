@@ -46,7 +46,7 @@ class UserProfile extends React.Component {
       this.state.posts.pop();
       let newPosts = this.state.posts.concat(response.results);
 
-      if (response.results.length < 20 || !response.offset) {
+      if (response.count < 20 || !response.offset) {
         _this.setState({
           posts: newPosts, 
           offset: response.offset, 
@@ -104,7 +104,12 @@ class UserProfile extends React.Component {
           refreshFunction={this.refresh}
           next={this.fetchData.bind(this)}
           hasMore={this.state.hasMore}
-          loader={<h4>Loading...</h4>}>
+          loader={<h4>Loading...</h4>}
+          endMessage={
+            <p className='loading-block'>
+              <b>Yay! You have seen it all</b>
+            </p>
+          }>
           {items}
         </InfiniteScroll>
       </div>

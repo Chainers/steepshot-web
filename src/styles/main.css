@@ -628,3 +628,11 @@
   font-size: 16px;
   margin-bottom: 10px;
 }
+
+.dropdown-menu li a {
+  padding: 3px 15px;
+}
+
+.dropdown-menu li a i {
+  margin-right: 5px;
+}

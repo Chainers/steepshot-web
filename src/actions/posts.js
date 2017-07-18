@@ -111,9 +111,38 @@ export function getPostComments(author, url) {
 /// </summary>
 
 export function getUserPosts(author, offset) {
-  let url = `${baseUrl}/user/${author}/posts`;
+  let url = `${baseUrl}/watcher/user/${author}/posts`;
   if (offset) {
-    url = `${baseUrl}/user/${author}/posts?offset=${offset}&limit=3`;
+    url = `${baseUrl}/watcher/user/${author}/posts?offset=${offset}&limit=3`;
+  }
+  return fetch(url, {
+    method: 'GET'
+  }).then((response) => {
+    if (response.ok) {
+      return response.json().then((json) => {
+        return json;
+      });
+    } else {
+      return response.json().then(() => {
+        return [];
+      });
+    }
+  });
+}
+
+/// <summary>
+///     Examples:
+///     1) GET https://steepshot.org/api/v1/user/joseph.kalu/posts HTTP/1.1
+///     2) GET https://steepshot.org/api/v1/user/joseph.kalu/posts?
+///            offset=%2Fcat1%2F%40joseph.kalu%2Fcat636203389144533548
+///            &limit=3 HTTP/1.1
+///            Cookie: sessionid=q9umzz8q17bclh8yvkkipww3e96dtdn3
+/// </summary>
+
+export function getUserFeed(author, offset) {
+  let url = `${baseUrl}/watcher/recent/${author}/posts`;
+  if (offset) {
+    url = `${baseUrl}/watcher/recent/${author}/posts?offset=${offset}&limit=3`;
   }
   return fetch(url, {
     method: 'GET'

@@ -640,3 +640,16 @@
     margin-bottom: 10px;
   }
 }
+
+
+// Fix dropdown view 
+.dropdown-menu {
+  li {
+    a {
+      padding: 3px 15px;
+      i {
+        margin-right: 5px;
+      }
+    }
+  }
+}
