@@ -37,7 +37,6 @@ export default function getRoutes(store) {
         <Route path="/browse" component={Home} onLeave={clearMessages} />
         <Route path="/userProfile/:username" component={UserProfile} onLeave={clearMessages} />
         <Route path="/signin" component={Signin} onLeave={clearMessages} />
-        <PrivateRoute path="/account" component={Account} onLeave={clearMessages} />
         <PrivateRoute path="/feed" component={Feed} onLeave={clearMessages} />
         <PrivateRoute path="/blog" component={Blog} onLeave={clearMessages} />
         <Route path="*" component={NotFound} onLeave={clearMessages} />
