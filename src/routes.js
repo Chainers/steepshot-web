@@ -10,7 +10,6 @@ import UserProfile from './components/UserProfile/index';
 import PrivateRoute from './components/Routes/PrivateRoute';
 import Feed from './components/Feed';
 import Blog from './components/Blog';
-import Account from './components/Account/AccountProfile';
 
 export default function getRoutes(store) {
   const clearMessages = () => {
