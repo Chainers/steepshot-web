@@ -6,6 +6,17 @@ import constants from '../common/constants';
 
 const baseUrl = constants.URLS.baseUrl;
 
+
+// User Auth  
+// console.log(steem.auth.isWif(wif));
+
+// console.log(steem.utils.validateAccountName(username));
+// or
+// steem.api.getAccounts([username], function(err, result) {
+//   console.log(err, result);
+// });
+
+
 export function login(username, postingKey) {
     const url = `${baseUrl}/login-with-posting`;
     const bodyObject = {

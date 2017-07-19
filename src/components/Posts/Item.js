@@ -142,6 +142,7 @@ class Item extends React.Component {
   updateComponent(voute) {
     let currentItem = this.state.item;
     currentItem.voute = voute;
+    voute ? currentItem.net_votes++ : currentItem.net_votes--;
     this.setState({ 
       item: currentItem
     });

@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { voute } from '../../actions/raitingVoute';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import steem from 'steem';
 
 class VouteComponent extends React.Component {
   constructor(props) {
@@ -10,7 +11,7 @@ class VouteComponent extends React.Component {
 
     this.state = {
       item: this.props.item,
-      voute: this.props.item.voute
+      vote: this.props.item.vote
     }
   }
 
@@ -19,15 +20,32 @@ class VouteComponent extends React.Component {
       .then((json) => {
         console.log(json);
       });
-    this.props.updateComponent(!this.state.voute);
+    const _this = this;
+
+    const urlObject = this.state.item.url.split('/');
+    const username = this.props.username;
+    const wif = this.props.postingKey;
+    const author = this.state.item.author;
+
+    const resultP = steem.api.getContentAsync(author, urlObject[urlObject.length-1]);
+    resultP.then((result) => {
+      console.log(result);
+      steem.broadcast.vote(wif, username, result.author, result.permlink, result.reward_weight, 
+        function(err, result) {
+          console.log(err, result);
+        }
+      );
+    });
+
+    this.props.updateComponent(!this.state.vote);
     this.setState({ 
-      voute: !this.state.voute
+      vote: !this.state.vote
     });
   }
 
   render() {
     let component = <span className='star rating-text'>&#9825; {this.state.item.net_votes}</span>
-    if (this.state.voute) {
+    if (this.state.vote) {
       component = <span className='star rating-text filled'>&hearts; {this.state.item.net_votes}</span>
     }
     return (
@@ -44,7 +62,9 @@ VouteComponent.propTypes = {
 
 const mapStateToProps = (state) => {
   return {
-    localization: state.localization
+    localization: state.localization,
+    username: state.auth.user,
+    postingKey: state.auth.postingKey
   };
 };
 
