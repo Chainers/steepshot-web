@@ -1,142 +1,54 @@
 import moment from 'moment';
 import cookie from 'react-cookie';
 import { browserHistory } from 'react-router';
+import fakeAuth from '../components/Routes/fakeAuth';
+import constants from '../common/constants';
 
-export function login(email, password) {
-  return (dispatch) => {
-    dispatch({
-      type: 'CLEAR_MESSAGES'
-    });
-    return fetch('/login', {
+const baseUrl = constants.URLS.baseUrl;
+
+export function login(username, postingKey) {
+    const url = `${baseUrl}/login-with-posting`;
+    const bodyObject = {
+      'username': username,
+      'password': postingKey 
+    };
+    
+    return fetch(url, {
       method: 'post',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        email: email,
-        password: password
-      })
-    }).then((response) => {
+      body: JSON.stringify(bodyObject),
+      headers: { 
+        'Content-Type': 'application/json' 
+      }
+    })
+      .then((response) => {
       if (response.ok) {
-        return response.json().then((json) => {
-          dispatch({
+        response.json().then((json) => {
+          localStorage.setItem('user', JSON.stringify(username));
+          localStorage.setItem('postingKey', JSON.stringify(postingKey));
+          fakeAuth.authenticate(() => history.push('/feed'));
+          return {
             type: 'LOGIN_SUCCESS',
-            token: json.token,
-            user: json.user
-          });
-          localStorage.setItem('user', JSON.stringify(json.user));
-          cookie.save('token', json.token, { expires: moment().add(1, 'hour').toDate() });
-          browserHistory.push('/account');
+            postingKey: postingKey,
+            user: username
+          };
         });
       } else {
-        return response.json().then((json) => {
-          dispatch({
+        response.json().then((json) => {
+          return {
             type: 'LOGIN_FAILURE',
             messages: Array.isArray(json) ? json : [json]
-          });
+          };
         });
       }
     });
-  };
 }
 
-export function signup(name, email, password) {
-  return (dispatch) => {
-    dispatch({
-      type: 'CLEAR_MESSAGES'
-    });
-    return fetch('/signup', {
-      method: 'post',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name: name, email: email, password: password })
-    }).then((response) => {
-      return response.json().then((json) => {
-        if (response.ok) {
-          dispatch({
-            type: 'SIGNUP_SUCCESS',
-            token: json.token,
-            user: json.user
-          });
-          localStorage.setItem('user', JSON.stringify(json.user));
-          browserHistory.push('/');
-          cookie.save('token', json.token, { expires: moment().add(1, 'hour').toDate() });
-        } else {
-          dispatch({
-            type: 'SIGNUP_FAILURE',
-            messages: Array.isArray(json) ? json : [json]
-          });
-        }
-      });
-    });
-  };
-}
-
-export function logout() {
-  cookie.remove('token');
+export function logout(history) {
   localStorage.removeItem('user');
-  browserHistory.push('/');
+  localStorage.removeItem('postingKey');
+  fakeAuth.signout(() => history.push('/'));
   return {
     type: 'LOGOUT_SUCCESS'
-  };
-}
-
-export function forgotPassword(email) {
-  return (dispatch) => {
-    dispatch({
-      type: 'CLEAR_MESSAGES'
-    });
-    return fetch('/forgot', {
-      method: 'post',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email: email })
-    }).then((response) => {
-      if (response.ok) {
-        return response.json().then((json) => {
-          dispatch({
-            type: 'FORGOT_PASSWORD_SUCCESS',
-            messages: [json]
-          });
-        });
-      } else {
-        return response.json().then((json) => {
-          dispatch({
-            type: 'FORGOT_PASSWORD_FAILURE',
-            messages: Array.isArray(json) ? json : [json]
-          });
-        });
-      }
-    });
-  };
-}
-
-export function resetPassword(password, confirm, pathToken) {
-  return (dispatch) => {
-    dispatch({
-      type: 'CLEAR_MESSAGES'
-    });
-    return fetch(`/reset/${pathToken}`, {
-      method: 'post',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        password: password,
-        confirm: confirm
-      })
-    }).then((response) => {
-      if (response.ok) {
-        return response.json().then((json) => {
-          browserHistory.push('/login');
-          dispatch({
-            type: 'RESET_PASSWORD_SUCCESS',
-            messages: [json]
-          });
-        });
-      } else {
-        return response.json().then((json) => {
-          dispatch({
-            type: 'RESET_PASSWORD_FAILURE',
-            messages: Array.isArray(json) ? json : [json]
-          });
-        });
-      }
-    });
   };
 }
 

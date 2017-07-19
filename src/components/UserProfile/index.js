@@ -1,7 +1,7 @@
 import React from 'react';
 import LocalizedStrings from '../Localization/index.js';
 import { getUserProfile } from '../../actions/profile';
-import { getUserPosts } from '../../actions/posts';
+import { getUserPosts, getUserPostsByCategory } from '../../actions/posts';
 import PostItem from '../Posts/Item';
 import { connect } from 'react-redux';
 import InfiniteScroll from '../Scroller/infinityScroll';
@@ -11,7 +11,7 @@ class UserProfile extends React.Component {
     super(props);
 
     this.state = {
-      authorName: this.props.routeParams.username,
+      authorName: this.props.match.params.username,
       profile: null,
       localize: LocalizedStrings.getInstance(),
       posts: [],
@@ -23,40 +23,57 @@ class UserProfile extends React.Component {
   componentDidMount() {
     let _this = this;
 
-    getUserProfile(this.props.routeParams.username).then((result) => {
-      _this.setState({profile: result});
+    getUserProfile(this.props.match.params.username).then((result) => {
+      const profile = result;
+
+      _this.setState({
+        profile: profile,
+        avatar: profile.profile_image
+      });
     }).then(() => {
       _this.fetchData();
     })
   }
 
+  componentWillReceiveProps(nextProps) {
+    this.forceUpdate();
+  }
+
   fetchData() {
     let _this = this;
 
-    getUserPosts(this.props.routeParams.username, this.state.offset).then((response) => {
+    getUserPosts(this.props.match.params.username, this.state.offset).then((response) => {
       this.state.posts.pop();
       let newPosts = this.state.posts.concat(response.results);
 
-      if (response.results.lenght == 1) {
-        _this.setState({posts: newPosts, offset: response.offset, hasMore: false});
+      if (response.count < 20 || !response.offset) {
+        _this.setState({
+          posts: newPosts, 
+          offset: response.offset, 
+          hasMore: false
+        });
       } else {
-        _this.setState({posts: newPosts, offset: response.offset});
+        _this.setState({ 
+          posts: newPosts, 
+          offset: response.offset
+        });
       }
     });
+  }
+
+  setDefaultAvatar() {
+    this.setState({ avatar: '/src/images/person.png' });
   }
 
   render() {
     let items = [];
     let _this = this;
     let profileComponent = <div> Loading... </div>;
-    let profileImageSrc = "../../images/person";
+    let profileImageSrc = this.state.avatar || "/src/images/person.png";
 
-    if (this.state.profile && this.state.profile.profile_image) {
-      profileImageSrc = this.state.profile.profile_image;
-    }
     if (this.state.profile) {
       profileComponent = <div className='user-profile'>
-        <img className="user-big-avatar" src={profileImageSrc} alt="Image"/>
+        <img className="user-big-avatar" src={profileImageSrc} alt="Image" onError={this.setDefaultAvatar.bind(this)}/>
         <div className='profile-info'>
           <div>
             <h3>{this.state.profile.username}</h3>
@@ -75,7 +92,7 @@ class UserProfile extends React.Component {
     }
 
     this.state.posts.map((post, index) => {
-      items.push(<PostItem item={post} items={_this.state.posts} index={index}/>);
+      items.push(<PostItem key={index} item={post} items={_this.state.posts} index={index} loadMore={this.fetchData.bind(this)} />);
     });
 
     return (
@@ -89,7 +106,7 @@ class UserProfile extends React.Component {
           hasMore={this.state.hasMore}
           loader={<h4>Loading...</h4>}
           endMessage={
-            <p style={{textAlign: 'center'}}>
+            <p className='loading-block'>
               <b>Yay! You have seen it all</b>
             </p>
           }>

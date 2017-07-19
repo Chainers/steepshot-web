@@ -1,9 +1,13 @@
 import React from 'react';
 import Modal from 'react-modal';
-import { Link } from 'react-router';
+import { Link, Redirect } from 'react-router-dom';
 import { getPostComments } from '../../actions/posts';
 import ReactResizeDetector from 'react-resize-detector';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import Comments from './Comments';
+import constants from '../../common/constants';
+import VouteComponent from './VouteComponent';
 
 class Item extends React.Component {
   constructor(props) {
@@ -13,7 +17,10 @@ class Item extends React.Component {
       item: this.props.item,
       modalIsOpen: false,
       currentIndex: this.props.index,
-      comments: []
+      comments: [],
+      disableNext: false,
+      disablePrev: false,
+      redirectToReferrer: false
     };
 
     this.openModal = this.openModal.bind(this);
@@ -30,39 +37,63 @@ class Item extends React.Component {
       propsItem.tags[i] = '#' + propsItem.tags[i];
     }
 
-    this.setState({item: propsItem});
-  }
-
-  openModal() {
-    this.setState({modalIsOpen: true});
-  }
-
-  afterOpenModal() {
-    this._getPostCommens();
-
-    this._onResize();
-  }
-
-  _getPostCommens() {
-    let _this = this;
-
-    getPostComments(this.props.item.author, this.props.item.url).then((response) => {
-      _this.setState({comments: response.results});
+    this.setState({
+      item: propsItem,
+      avatar: propsItem.avatar,
+      image: propsItem.body 
     });
   }
 
+  openModal() {
+    this.setState({
+      modalIsOpen: true
+    });
+  }
+
+  afterOpenModal() {
+    this._onResize();
+  }
+
   closeModal() {
-    this.setState({modalIsOpen: false});
+    this.setState({
+      modalIsOpen: false
+    });
   }
 
   next() {
-    this.setState({item: this.props.items[this.state.currentIndex + 1], currentIndex: this.state.currentIndex + 1});
-    this._getPostCommens();
+    const curIndex = this.state.currentIndex;
+    if (curIndex + 2 == this.props.items.length) {
+      this.props.loadMore();
+    }
+
+    if (curIndex == this.props.items.length) {
+      this.setState({ disableNext: true });
+    } else {
+      const newItem = this.props.items[this.state.currentIndex + 1];
+      this.resetDefaultProperties(newItem);
+      this.setState({ currentIndex: this.state.currentIndex + 1 });
+    }
+  }
+
+  componentWillUnmount() {
+    this.closeModal();
   }
 
   previous() {
-    this.setState({item: this.props.items[this.state.currentIndex - 1], currentIndex: this.state.currentIndex - 1});
-    this._getPostCommens();
+    if (this.state.currentIndex == 0) {
+      this.setState({ disablePrev: true });
+    } else {
+      this.resetDefaultProperties(this.props.items[this.state.currentIndex - 1]);
+      this.setState({ currentIndex: this.state.currentIndex - 1 });
+    }
+  }
+
+  resetDefaultProperties(newItem) {
+    this.setState({ 
+      avatar: newItem.avatar,
+      image: newItem.body,
+      item: newItem
+    });
   }
 
   _onResize() {
@@ -81,21 +112,48 @@ class Item extends React.Component {
 
     this.props.dispatch({
       type: 'SET_VALUE',
-      value: tagValue
+      value: tagValue,
+      category: constants.CATEGORIES.tag
+    });
+  }
+
+  ratingVotes(event) {
+    event.stopPropagation();
+    console.log('Like.. ' + this.state.item.author + ' post');
+  }
+
+  redirectToUserProfile() {
+    this.setState({ redirectToReferrer: true });
+  }
+
+  setDefaultAvatar() {
+    this.setState({ avatar: '/src/images/person.png' });
+  }
+
+  setDefaultImage() {
+    this.setState({ image: '/src/images/noimage.jpg' });
+  }
+
+  callPreventDefault(e) {
+    e.stopPropagation();
+    e.preventDefault();
+  }
+
+  updateComponent(voute) {
+    let currentItem = this.state.item;
+    currentItem.voute = voute;
+    this.setState({ 
+      item: currentItem
     });
   }
 
   render() {
     let _this = this;
-    let comments = <div>No comments</div>;
-    if (this.state.comments.length != 0) {
-      comments = this.state.comments.map((item) => {
-        return <p>{item}</p>
-      });
-    }
-    let itemImage = this.state.item.body;
+    let itemImage = this.state.image || '/src/images/noimage.jpg';
+    let authorImage = this.state.avatar || '/src/images/person.png';
+    let comments = <Comments item={this.state.item} />;
 
-    var settings = {
+    let settings = {
       dots: false,
       infinite: true,
       speed: 500,
@@ -109,18 +167,18 @@ class Item extends React.Component {
       <div className="post-container">
         <div className="post-container-item" onClick={this.openModal}>
           <div className="row body-row">
-            <img className="post-img col-md-12 col-sm-12 col-xs-12" src={this.state.item.body}/>
+            <img className="post-img col-md-12 col-sm-12 col-xs-12" src={itemImage} onError={this.setDefaultImage.bind(this)}/>
           </div>
           <div className="row post-footer">
             <div className="main-info">
               <div className="">
-                <img className="user-avatar" src={this.state.item.avatar} alt="Image"/>
+                <img className="user-avatar" src={authorImage} alt="Image" onError={this.setDefaultAvatar.bind(this)}/>
               </div>
               <div className="">
                 <Link to={authorLink}><strong>{this.state.item.author}</strong></Link>
               </div>
-              <div className="pull-right span-with-no-border">
-                <span className="star rating-text">&#9825; {this.state.item.net_votes}</span>
+              <div onClick={(e)=>{this.callPreventDefault(e)}}>
+                <VouteComponent item={this.state.item} updateComponent={this.updateComponent.bind(this)}/>
               </div>
             </div>
             <div className="author-info">
@@ -158,12 +216,12 @@ class Item extends React.Component {
                 </div>
                 <div className="popup-body">
                   <div className="popup-image-block" id="popup-image">
-                    <img className="popup-image" src={this.state.item.body} alt="Image"/>
+                    <img className="popup-image" src={itemImage} onError={this.setDefaultImage.bind(this)} alt="Image"/>
                   </div>
                   <div className="post-popup-info" id="popup-info">
                     <div className="author-info">
                       <div className="">
-                        <img className="user-avatar" src={this.state.item.avatar} alt="Image"/>
+                        <img className="user-avatar" src={authorImage} alt="Image" onError={this.setDefaultAvatar.bind(this)} />
                       </div>
                       <div className="author-name">
                         <Link to={authorLink} onClick={this.closeModal}><strong>{this.state.item.author}</strong></Link>
@@ -172,9 +230,7 @@ class Item extends React.Component {
                     </div>
                     <br/>
                     <div className="post-info">
-                      <div className="rating-block">
-                        <span className="star rating-text">&#9825; {this.state.item.net_votes}</span>
-                      </div>
+                      <VouteComponent item={this.state.item} updateComponent={this.updateComponent.bind(this)}/>
                       <div className="">
                         <span className="payout-reward">{this.state.item.total_payout_reward} </span>
                       </div>
@@ -186,7 +242,6 @@ class Item extends React.Component {
                         })
                       }
                     </div>
-                    <hr/>
                     <div className="popup-comments">
                       {comments}
                     </div>
@@ -195,8 +250,12 @@ class Item extends React.Component {
               </div>
             </div>
             <div className='slick-buttons'>
-              <button className='left-button' onClick={this.previous.bind(_this)}>Previous</button>
-              <button className='right-button' onClick={this.next.bind(_this)}>Next</button>
+              <div className='left-button' onClick={this.previous.bind(_this)}>
+                <img className='arrow' src="/src/images/arrow_left.png" alt="Previous post"/>
+              </div>
+              <div className='right-button' onClick={this.next.bind(_this)}>
+                <img className='arrow' src="/src/images/arrow_right.png" alt="Next post"/>
+              </div>
             </div>
           </div>
           <ReactResizeDetector handleWidth handleHeight onResize={this._onResize.bind(this)}/>
@@ -205,6 +264,11 @@ class Item extends React.Component {
     );
   }
 }
+
+Item.propTypes = {
+  item: PropTypes.object,
+  index: PropTypes.number
+};
 
 const mapStateToProps = (state) => {
   return {

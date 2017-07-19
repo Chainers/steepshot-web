@@ -1,9 +1,11 @@
 import React from 'react';
-import { Link } from 'react-router';
+import { Link, withRouter } from 'react-router-dom';
 import LocalizedStrings from './Localization/index.js';
 import Search from './Search/index.js';
 import { getLanguage, getAllLanguages } from '../actions/localization';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { logout } from '../actions/auth';
 
 let localizedStrings = LocalizedStrings.getInstance();
 
@@ -23,7 +25,7 @@ class Header extends React.Component {
 
   handleLogout(event) {
     event.preventDefault();
-    this.props.dispatch(logout());
+    this.props.dispatch(logout(this.props.history));
   }
 
   _changeLanguageEn() {
@@ -51,19 +53,52 @@ class Header extends React.Component {
   }
 
   render() {
+    const active = { borderBottomColor: '#3f51b5' };
+    const isUserAuth = this.props.user && this.props.postingKey;
+    let rightNav = (
+      <ul className="nav navbar-nav navbar-right">
+         <li><Link to="/signin">Sign In</Link></li>
+      </ul>
+    );
     let searchBlock = <div></div>;
     let browse;
+
+    if (isUserAuth) {
+      rightNav = (
+        <ul className="nav navbar-nav navbar-right">
+        <li className="dropdown">
+          <a href="#" data-toggle="dropdown" className="navbar-avatar dropdown-toggle">
+            <img src={this.props.user.picture || this.props.user.gravatar}/>
+            {' '}{this.props.user}{' '}
+            <i className="caret"></i>
+          </a>
+          <ul className="dropdown-menu">
+            <li><Link to="/feed" activeStyle={active}><i className='glyphicon glyphicon-home'></i> Feed</Link></li>
+            <li><Link to="/blog" activeStyle={active}><i className='glyphicon glyphicon-list-alt'></i> Blog</Link></li>
+            <li className="divider"></li>
+            <li><a href="#" onClick={this.handleLogout.bind(this)}><i className='glyphicon glyphicon-log-out'></i> Logout</a></li>
+          </ul>
+        </li>
+      </ul>
+      )
+    }
 
     if (this.state.isSearchOpen || !!this.props.search.value) {
       searchBlock = <Search />;
     } else {
       browse = <ul className="nav navbar-nav">
         <li className="nav-item">
-          <Link to="/" className="nav-link">browse</Link>
+          <Link to="/browse" className="nav-link" activeStyle={active}>browse</Link>
         </li>
+        {
+          (isUserAuth) ? (
+            <li className="nav-item">
+              <Link to="/feed" className="nav-link" activeStyle={active}>feed</Link>
+            </li>
+          ) : null
+        }
       </ul>
     }
-
 
     return (
       <nav className="navbar navbar-default header-block">
@@ -88,10 +123,7 @@ class Header extends React.Component {
               </li>
             </ul>
             {browse}
-            <ul className="nav navbar-nav navbar-right">
-              <li><Link to="/signin">Sign In</Link></li>
-              <li><Link to="/signup">Sign Up</Link></li>
-            </ul>
+            {rightNav}
           </div>
         </div>
       </nav>
@@ -99,13 +131,17 @@ class Header extends React.Component {
   }
 }
 
+Header.propTypes = {
+    history: PropTypes.object.isRequired
+}
+
 const mapStateToProps = (state) => {
   return {
-    token: state.auth.token,
+    postingKey: state.auth.postingKey,
     user: state.auth.user,
     localization: state.localization,
     search: state.search
   };
 };
 
-export default connect(mapStateToProps)(Header);
+export default withRouter(connect(mapStateToProps)(Header));

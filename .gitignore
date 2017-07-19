@@ -2,3 +2,5 @@ node_modules
 .tmp
 .idea
 dist
+public
+npm-debug.log

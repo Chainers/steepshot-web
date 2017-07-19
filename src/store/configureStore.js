@@ -23,5 +23,8 @@ function setStoreBase(newStore) {
 }
 
 export function getStore() {
+  if (!storeBase) {
+    return configureStore();
+  }
   return storeBase;
 }
