@@ -16,11 +16,10 @@ class VouteComponent extends React.Component {
   }
 
   ratingVotes() {
-    voute(!this.state.voute, this.state.item.url)
-      .then((json) => {
-        console.log(json);
-      });
-    const _this = this;
+    this.props.updateComponent(!this.state.vote);
+    this.setState({ 
+      vote: !this.state.vote
+    });
 
     const urlObject = this.state.item.url.split('/');
     const username = this.props.username;
@@ -29,17 +28,7 @@ class VouteComponent extends React.Component {
 
     const resultP = steem.api.getContentAsync(author, urlObject[urlObject.length-1]);
     resultP.then((result) => {
-      console.log(result);
-      steem.broadcast.vote(wif, username, result.author, result.permlink, result.reward_weight, 
-        function(err, result) {
-          console.log(err, result);
-        }
-      );
-    });
-
-    this.props.updateComponent(!this.state.vote);
-    this.setState({ 
-      vote: !this.state.vote
+      steem.broadcast.vote(wif, username, result.author, result.permlink, result.reward_weight, () => { return; });
     });
   }
 
