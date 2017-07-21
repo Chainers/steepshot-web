@@ -5,6 +5,7 @@ import { getUserPosts, getUserPostsByCategory } from '../../actions/posts';
 import PostItem from '../Posts/Item';
 import { connect } from 'react-redux';
 import InfiniteScroll from '../Scroller/infinityScroll';
+import FollowComponent from '../Posts/FollowComponent';
 
 class UserProfile extends React.Component {
   constructor(props) {
@@ -86,6 +87,9 @@ class UserProfile extends React.Component {
           <div>
             <span><strong>{this.state.profile.name}</strong> {this.state.profile.about} <a
               href={this.state.profile.website}>{this.state.profile.website}</a></span>
+          </div>
+          <div>
+            <FollowComponent item={this.state.profile} />
           </div>
         </div>
       </div>

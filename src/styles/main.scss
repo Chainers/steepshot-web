@@ -653,3 +653,30 @@
     }
   }
 }
+
+.follow-block {
+  cursor: pointer;
+  margin-top: 10px;
+
+  .follow, .unfollow {
+    padding: 5px 10px;
+    border-radius: 4px;
+
+    &:hover {
+      box-shadow: 0 0 30px #C0C0C0;
+      -webkit-transform: scale(1.05);
+      transform: scale(1.05);
+    }
+  }
+
+  .follow {
+    border: 1px solid skyblue;
+    background-color: skyblue;
+    color: white;
+  }
+
+  .unfollow {
+    border: 1px solid grey;
+    background-color: grey;
+  }
+}
