@@ -153,6 +153,12 @@
   justify-content: space-between;
 }
 
+.post-footer .author-info .author-info-block {
+  overflow-y: auto;
+  overflow-x: hidden;
+  max-height: 50px;
+}
+
 .post-footer .author-info .tags-info {
   display: flex;
   flex-direction: row;
@@ -477,6 +483,81 @@
   border-top: 1px solid #e5e5e5;
   display: flex;
   flex-grow: 1;
+}
+
+.post-popup-info .add-comment {
+  margin-top: 5px;
+  margin-bottom: 5px;
+  padding: 0 5px;
+  cursor: pointer;
+}
+
+.post-popup-info .add-comment .add, .post-popup-info .add-comment .register {
+  text-align: center;
+  color: white;
+  border-radius: 6px;
+}
+
+.post-popup-info .add-comment .add {
+  border: 1px solid #E9967A;
+  background-color: #E9967A;
+}
+
+.post-popup-info .add-comment .register {
+  border: 1px solid skyblue;
+  background-color: skyblue;
+}
+
+.add-comment-container {
+  position: absolute;
+  width: 500px;
+  height: 300px;
+  top: 50%;
+  left: 50%;
+  margin-left: -250px;
+  margin-top: -150px;
+  border: 1px solid #cccccc;
+  background: white;
+  border-radius: 4px;
+  padding: 5px;
+}
+
+.add-comment-container .text-block {
+  width: 490px;
+  height: 195px;
+  resize: none;
+  border-radius: 6px;
+  margin-top: 5px;
+  box-shadow: 0 0 30px #C0C0C0;
+}
+
+.add-comment-container .buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+}
+
+.add-comment-container .buttons .button {
+  padding: 5px 10px;
+  border-radius: 5px;
+  margin-left: 5px;
+  cursor: pointer;
+}
+
+.add-comment-container .buttons .button:hover {
+  -webkit-transform: scale(1.05);
+  transform: scale(1.05);
+}
+
+.add-comment-container .buttons .add {
+  background-color: #E9967A;
+  border: 1px solid #E9967A;
+  color: white;
+}
+
+.add-comment-container .buttons .close-modal {
+  background-color: white;
+  border: 1px solid black;
 }
 
 .rating-block {

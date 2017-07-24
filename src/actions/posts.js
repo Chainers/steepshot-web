@@ -140,9 +140,9 @@ export function getUserPosts(author, offset) {
 /// </summary>
 
 export function getUserFeed(author, offset) {
-  let url = `${baseUrl}/watcher/recent/${author}/posts`;
+  let url = `${baseUrl}/${author}/recent/posts`;
   if (offset) {
-    url = `${baseUrl}/watcher/recent/${author}/posts?offset=${offset}&limit=3`;
+    url = `${baseUrl}/${author}/recent/posts?offset=${offset}&limit=3`;
   }
   return fetch(url, {
     method: 'GET'

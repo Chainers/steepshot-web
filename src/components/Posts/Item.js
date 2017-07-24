@@ -8,6 +8,7 @@ import PropTypes from 'prop-types';
 import Comments from './Comments';
 import constants from '../../common/constants';
 import VouteComponent from './VouteComponent';
+import AddComment from './AddComment';
 
 class Item extends React.Component {
   constructor(props) {
@@ -183,7 +184,7 @@ class Item extends React.Component {
               </div>
             </div>
             <div className="author-info">
-              <div className="">
+              <div className="author-info-block">
                 <em className="tags-info">
                   {
                     this.state.item.tags.map((tag) => {
@@ -246,6 +247,7 @@ class Item extends React.Component {
                     <div className="popup-comments">
                       {comments}
                     </div>
+                    <AddComment item={this.state.item} />
                   </div>
                 </div>
               </div>

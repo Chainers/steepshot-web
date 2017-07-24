@@ -155,6 +155,12 @@
   .author-info {
     justify-content: space-between;
 
+    .author-info-block {
+      overflow-y: auto;
+      overflow-x: hidden;
+      max-height: 50px;
+    }
+
     .tags-info {
       display: flex;
       flex-direction: row;
@@ -485,8 +491,87 @@
     display: flex;
     flex-grow: 1;
   }
+
+  .add-comment {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    padding: 0 5px;
+    cursor: pointer;
+
+    .add, .register {
+      text-align: center;
+      color: white;
+      border-radius: 6px;
+    }
+
+    .add {
+      border: 1px solid #E9967A;
+      background-color: #E9967A;
+    }
+
+    .register {
+      border: 1px solid skyblue;
+      background-color: skyblue;
+    }
+
+    
+  }
 }
 
+$popupWidth: 500px;
+$popupHeight: 300px;
+
+.add-comment-container {
+  position: absolute;
+  width: $popupWidth;
+  height: $popupHeight;
+  top: 50%;
+  left: 50%;
+  margin-left: -($popupWidth/2);
+  margin-top: -($popupHeight/2);
+  border: 1px solid rgb(204, 204, 204);
+  background: rgb(255, 255, 255);
+  border-radius: 4px;
+  padding: 5px;
+
+  .text-block {
+    width: $popupWidth - 10px;
+    height: $popupHeight - 105px;
+    resize: none;
+    border-radius: 6px;
+    margin-top: 5px;
+    box-shadow: 0 0 30px #C0C0C0;
+  }
+
+  .buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+
+    .button {
+      padding: 5px 10px;
+      border-radius: 5px;
+      margin-left: 5px;
+      cursor: pointer;
+      &:hover {
+        -webkit-transform: scale(1.05);
+        transform: scale(1.05);
+      }
+    }
+
+    .add {
+      background-color: #E9967A;
+      border: 1px solid #E9967A;
+      color: white;
+    }
+
+    .close-modal {
+      background-color: white;
+      border: 1px solid black;
+    }
+  }
+}
+  
 .rating-block {
     cursor: pointer;
 
