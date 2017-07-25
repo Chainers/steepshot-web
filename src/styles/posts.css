@@ -1,9 +1,8 @@
+@charset "UTF-8";
 /* Подключение шрифта Google */
 @import url("http://fonts.googleapis.com/css?family=Open+Sans:400,600,700&subset=latin,cyrillic");
-
 .search-results {
   height: 100%;
-  // overflow: scroll;
 }
 
 /* Стили ссылок внутри плиток */
@@ -19,7 +18,7 @@
   border-bottom: 1px dotted #9F1D35;
 }
 
-.post-container{
+.post-container {
   height: 350px;
   margin-top: 30px;
   background-color: white;
@@ -28,7 +27,7 @@
   padding: 0 !important;
 }
 
-.post-container:hover{
+.post-container:hover {
   box-shadow: 0 0 30px #C2C2C2;
   -webkit-transform: scale(1.05);
   transform: scale(1.05);

@@ -237,7 +237,7 @@ class Home extends React.Component {
     }
 
     return (
-      <div className="container" id="all-posts">
+      <div className="container-block" id="all-posts">
         <PostFilterBlock updatePostsCallback={this.updatePostsByFolter.bind(this)}/>
         {renderElements}
       </div>
