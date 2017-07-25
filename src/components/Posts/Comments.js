@@ -69,7 +69,8 @@ Comments.propTypes = {
 
 const mapStateToProps = (state) => {
   return {
-    localization: state.localization
+    localization: state.localization,
+    posts: state.post
   };
 };
 

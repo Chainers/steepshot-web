@@ -10,6 +10,9 @@ export default function post(state = {}, action) {
             });
         case 'GET_POSTS__FAILURE':
             return initialState;
+        case 'UPDATE_COMMENTS': {
+            return initialState;
+        }
         default:
             return state;
     }

@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Modal from 'react-modal';
+import steem from 'steem';
 
 class AddComment extends React.Component {
   constructor(props) {
@@ -21,19 +22,46 @@ class AddComment extends React.Component {
     });
   }
 
-  handleChange(event) {
+  handleChangeTextarea(event) {
     this.setState({
       value: event.target.value
     });
   }
 
   afterOpenModal() {
-    
+    //@TODO: if need
   }
 
   closeModal() {
     this.setState({
       modalIsOpen: false
+    });
+  }
+
+  addComment() {
+    const _this = this;
+    const wif = this.props.postingKey;
+    const urlObject = this.state.item.url.split('/');
+    const permlink = new Date().toISOString().replace(/[^a-zA-Z0-9]+/g, '').toLowerCase();
+    const parentAuthor = this.state.item.author;
+    const author = this.props.username;
+    const title = "";
+    const body = this.state.value;
+    const jsonMetadata = {
+      tags: this.state.item.tags,
+      app: 'steepshot/0.0.5' //@TODO get metadata from Backend
+    };
+    const parentPermlink = urlObject[urlObject.length-1];
+
+    steem.broadcast.comment(wif, parentAuthor, parentPermlink, author, permlink, title, body, jsonMetadata, function(err, result) {
+      if(err) {
+        console.log(err);
+      } else {
+        this.props.dispatch({
+          type: 'UPDATE_COMMENTS'
+        });
+        _this.closeModal();
+      }
     });
   }
 
@@ -59,11 +87,11 @@ class AddComment extends React.Component {
                             onClick={this.closeModal.bind(_this)}>&times;</button>
             </div>
             <div>
-              <textarea className="text-block" placeholder="Input comment..." value={this.state.value} onChange={this.handleChange}></textarea>
+              <textarea className="text-block" placeholder="Input comment..." value={this.state.value} onChange={(e) => this.handleChangeTextarea.call(_this, e)}></textarea>
             </div>
             <div className="buttons">
-              <div className="button add">Add</div>
-              <div className="button close-modal">Close</div>
+              <div className="button add" onClick={this.addComment.bind(_this)}>Add</div>
+              <div className="button close-modal" onClick={this.closeModal.bind(_this)}>Close</div>
             </div>
           </Modal>
         </div>;
@@ -84,7 +112,8 @@ AddComment.propTypes = {
 const mapStateToProps = (state) => {
   return {
     localization: state.localization,
-    username: state.auth.user
+    username: state.auth.user,
+    postingKey: state.auth.postingKey
   };
 };
 

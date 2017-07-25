@@ -247,7 +247,7 @@ class Item extends React.Component {
                     <div className="popup-comments">
                       {comments}
                     </div>
-                    <AddComment item={this.state.item} />
+                    <AddComment item={this.props.item} />
                   </div>
                 </div>
               </div>
