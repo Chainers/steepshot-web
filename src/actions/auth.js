@@ -7,7 +7,7 @@ import steem from 'steem';
 
 const baseUrl = constants.URLS.baseUrl;
 
-export function login(username, postingKey, history) {
+export function login(username, postingKey, history, dispatch) {
   const account = null;
   steem.api.getAccounts([username], function(err, result) {
     if (err || !steem.auth.isWif(postingKey)) {
@@ -18,23 +18,23 @@ export function login(username, postingKey, history) {
     } else if (result && steem.auth.isWif(postingKey)){
       localStorage.setItem('user', JSON.stringify(username));
       localStorage.setItem('postingKey', JSON.stringify(postingKey));
-      fakeAuth.authenticate(() => history.push('/feed'));
-      return {
+      dispatch({
         type: 'LOGIN_SUCCESS',
         postingKey: postingKey,
         user: username
-      };
+      });
+      fakeAuth.authenticate(() => history.push('/feed'));
     }
   });
 }
 
-export function logout(history) {
+export function logout(history, dispatch) {
   localStorage.removeItem('user');
   localStorage.removeItem('postingKey');
-  fakeAuth.signout(() => history.push('/'));
-  return {
+  dispatch({
     type: 'LOGOUT_SUCCESS'
-  };
+  });
+  fakeAuth.signout(() => history.push('/browse'));
 }
 
 export function updateProfile(state, token) {

@@ -706,3 +706,8 @@
   border: 1px solid grey;
   background-color: grey;
 }
+
+.loading {
+  width: 100px;
+  height: 100px;
+}

@@ -25,7 +25,7 @@ class Header extends React.Component {
 
   handleLogout(event) {
     event.preventDefault();
-    this.props.dispatch(logout(this.props.history));
+    logout(this.props.history, this.props.dispatch);
   }
 
   _changeLanguageEn() {

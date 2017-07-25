@@ -1,6 +1,6 @@
 export default {
     POST_FILTERS: {
-        TRANDING: 'Tranding',
+        TRENDING: 'Trending',
         HOT: 'Hot',
         NEW: 'New'
     },

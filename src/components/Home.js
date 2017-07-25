@@ -13,6 +13,7 @@ import { connect, store } from 'react-redux';
 import InfiniteScroll from './Scroller/infinityScroll';
 import PropTypes from 'prop-types';
 import PostFilterBlock from './Filters/PostFilterBlock';
+import Loading from 'react-loading-spinner';
 
 // constants
 import constants from '../common/constants';
@@ -25,7 +26,7 @@ class Home extends React.Component {
       posts: [],
       hasMore: true,
       offset: null,
-      activeMode: constants.POST_FILTERS.TRANDING
+      activeMode: constants.POST_FILTERS.TRENDING
     };
 
     this.resetPosts();
@@ -73,7 +74,7 @@ class Home extends React.Component {
   setPostsByCategory(key, searchValue, isContinue, offset) {
     const callback = this.getCallback(isContinue); 
 
-    if(key == constants.POST_FILTERS.TRANDING) {
+    if(key == constants.POST_FILTERS.TRENDING) {
       this.setTopPostsByCategory(searchValue, offset, callback);
     } else if(key == constants.POST_FILTERS.HOT) {
       this.setHotPostsByCategory(searchValue, offset, callback);
@@ -115,7 +116,7 @@ class Home extends React.Component {
   setDefaultPosts(key, isContinue, offset) {
     const callback = this.getCallback(isContinue); 
 
-    if(key == constants.POST_FILTERS.TRANDING) {
+    if(key == constants.POST_FILTERS.TRENDING) {
       this.setTopPosts(offset, callback);
     } else if(key == constants.POST_FILTERS.HOT) {
       this.setHotPosts(offset, callback);
@@ -215,7 +216,12 @@ class Home extends React.Component {
       renderElements = <InfiniteScroll
           next={this.fetchData.bind(this)}
           hasMore={this.state.hasMore}
-          loader={<div className='loading-block'><br /><h4>Loading...</h4></div>}
+          loader={<div className='loading-block'>
+            <br />
+            <Loading isLoading={this.state.posts.length == 0} loadingClassName='loading'>
+            </Loading>
+            </div>
+          }
           endMessage={
             <p className='loading-block'>
               <b>Yay! You have seen it all</b>
@@ -224,7 +230,10 @@ class Home extends React.Component {
           {items}
         </InfiniteScroll>;
     } else if(this.props.search.value == '') {
-      renderElements = <div className='loading-block'><br /><h4>Loading...</h4></div>;
+      renderElements = <div className='loading-block'><br />
+        <Loading isLoading={this.state.posts.length == 0} loadingClassName='loading'>
+        </Loading>
+      </div>;
     }
 
     return (
