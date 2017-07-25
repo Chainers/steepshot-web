@@ -35,10 +35,6 @@ class Home extends React.Component {
     this.resetPosts(this.props.search.value);
   }
 
-  componentWillUnmount() {
-    this.unsubscribe();
-  }
-
   updatePostsByFolter(key) {
     this.setState({ 
       activeMode: key 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Modal from 'react-modal';
@@ -65,9 +65,14 @@ class AddComment extends React.Component {
     });
   }
 
+  redirectToLoginPage() {
+    this.closeModal();
+    this.props.history.push('/signin');
+  }
+
   render() {
     const _this = this;
-    let textComponent = <div className="register" onClick={this.openModal.bind(this)}>Register</div>;
+    let textComponent = <div className="register" onClick={this.redirectToLoginPage.bind(this)}>Register</div>;
 
     if (this.props.username) {
         textComponent = <div className="add" onClick={this.openModal.bind(this)}>
@@ -117,4 +122,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps)(AddComment);
+export default withRouter(connect(mapStateToProps)(AddComment));
