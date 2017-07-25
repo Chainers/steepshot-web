@@ -57,7 +57,7 @@ class AddComment extends React.Component {
       if(err) {
         console.log(err);
       } else {
-        this.props.dispatch({
+        _this.props.dispatch({
           type: 'UPDATE_COMMENTS'
         });
         _this.closeModal();

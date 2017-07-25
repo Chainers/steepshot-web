@@ -12,7 +12,6 @@ import PostItem from './Posts/Item';
 import { connect, store } from 'react-redux';
 import InfiniteScroll from './Scroller/infinityScroll';
 import PropTypes from 'prop-types';
-import { getStore } from '../store/configureStore';
 import PostFilterBlock from './Filters/PostFilterBlock';
 
 // constants
@@ -28,16 +27,12 @@ class Home extends React.Component {
       offset: null,
       activeMode: constants.POST_FILTERS.TRANDING
     };
-    
-    this.store = getStore();
-    this.outputUpdate();
+
     this.resetPosts();
   }
 
-  outputUpdate() {
-    this.unsubscribe = this.store.subscribe(() => {
-      this.resetPosts(this.store.getState().search.value);
-    });
+  componentWillReceiveProps(nextProps) {
+    this.resetPosts(this.props.search.value);
   }
 
   componentWillUnmount() {
