@@ -4,8 +4,17 @@ import { browserHistory } from 'react-router';
 import fakeAuth from '../components/Routes/fakeAuth';
 import constants from '../common/constants';
 import steem from 'steem';
+import { getStore } from '../store/configureStore';
 
 const baseUrl = constants.URLS.baseUrl;
+
+function getUrl() {
+  if (getStore().getState().auth.user){
+    return baseUrl + '/' + getStore().getState().auth.user
+  }
+
+  return baseUrl;
+}
 
 export function login(username, postingKey, history, dispatch) {
   const account = null;
