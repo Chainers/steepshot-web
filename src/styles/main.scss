@@ -682,8 +682,18 @@ $popupHeight: 300px;
 .glyphicon {
   span {
     font-size: 16px;
-    margin-bottom: 10px;
+    margin-bottom: 5px;
+    padding-left: 3px; 
   }
+}
+
+.custom-styles {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 5px 0;
+  margin-left: -15px;
 }
 
 

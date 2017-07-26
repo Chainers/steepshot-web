@@ -4,19 +4,19 @@ import Select from 'react-select';
 import constants from '../../common/constants';
 
 const options = [
-  createOption('user', constants.CATEGORIES.user, 'glyphicon glyphicon-user', 'Start by typing user name...'),
-  createOption('tag', constants.CATEGORIES.tag, 'glyphicon glyphicon-search', 'Start by typing tag...')
+  createOption('user', constants.CATEGORIES.user, 'glyphicon glyphicon-user custom-styles', 'Start by typing user name...'),
+  createOption('tag', constants.CATEGORIES.tag, 'glyphicon glyphicon-search custom-styles', 'Start by typing tag...')
 ];
 
 function createOption(name, value, className, placeholder) {
   return {
     value: value,
     label: React.createElement(
-      'i',
+      'div',
       {
         className: className
       },
-      name
+      <span>{name}</span>
     ),
     placeholder: placeholder
   }
