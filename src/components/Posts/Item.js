@@ -29,6 +29,21 @@ class Item extends React.Component {
     this.closeModal = this.closeModal.bind(this);
   }
 
+  initKeypress() {
+    const _this = this;
+
+    document.onkeydown = function(e) {
+      switch (e.keyCode) {
+        case 37:
+          _this.previous();
+          break;
+        case 39:
+          _this.next();
+          break;
+      }
+    };
+  }
+
   componentDidMount() {
     let propsItem = this.state.item;
 
@@ -53,6 +68,7 @@ class Item extends React.Component {
 
   afterOpenModal() {
     this._onResize();
+    this.initKeypress();
   }
 
   closeModal() {
