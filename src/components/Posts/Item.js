@@ -165,6 +165,18 @@ class Item extends React.Component {
     });
   }
 
+  _getPostImageStyles(itemImage) {
+    return {
+      backgroundImage: `url(${itemImage})`, 
+      backgroundPosition: 'fixed', 
+      backgroundRepeat: 'no-repeat', 
+      backgroundOrigin: 'center', 
+      backgroundClip: 'content-box', 
+      backgroundSize: 'cover', 
+      backgroundPosition: 'center'
+    };
+  }
+
   render() {
     let _this = this;
     let itemImage = this.state.image || '/src/images/noimage.jpg';
@@ -185,7 +197,7 @@ class Item extends React.Component {
       <div className="post-container">
         <div className="post-container-item" onClick={this.openModal}>
           <div className="row body-row">
-            <img className="post-img col-md-12 col-sm-12 col-xs-12" src={itemImage} onError={this.setDefaultImage.bind(this)}/>
+            <div className="post-img col-md-12 col-sm-12 col-xs-12" style={this._getPostImageStyles(itemImage)}></div>
           </div>
           <div className="row post-footer">
             <div className="main-info">
