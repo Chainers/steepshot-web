@@ -26,6 +26,7 @@ class Home extends React.Component {
       posts: [],
       hasMore: true,
       offset: null,
+      loading: true,
       activeMode: constants.POST_FILTERS.TRENDING
     };
 
@@ -60,7 +61,8 @@ class Home extends React.Component {
   setDefaultData() {
     this.setState({
       posts: [],
-      offset: null
+      offset: null,
+      loading: true
     });
   }
 
@@ -155,7 +157,8 @@ class Home extends React.Component {
   handleDefaultPostsResponce(response) {
     this.setState({
       posts: response.results, 
-      offset: response.offset
+      offset: response.offset,
+      loading: false
     });
   }
 
@@ -167,12 +170,14 @@ class Home extends React.Component {
       this.setState({
         posts: newPosts,
         offset: response.offset, 
-        hasMore: false
+        hasMore: false,
+        loading: false
       });
     } else {
       this.setState({
         posts: newPosts, 
-        offset: response.offset
+        offset: response.offset,
+        loading: false
       });
     }
   }
@@ -206,7 +211,11 @@ class Home extends React.Component {
   render() {
     let items = [];
     let _this = this;
-    let renderElements = <div className='loading-block'><br /><h4>No find results for '{this.props.search.value}' filter</h4></div>;
+    let renderElements = <div className='loading-block'><br /><h4>Loading...</h4></div>;
+
+    if (!this.state.loading && this.state.posts.length == 0) {
+      renderElements = <div className='loading-block'><br /><h4>No find results for '{this.props.search.value}' filter</h4></div>;
+    }
 
     if (this.state.posts.length > 0) {
       this.state.posts.map((post, index) => {

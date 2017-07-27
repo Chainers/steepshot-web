@@ -25,23 +25,34 @@
 
 .post-container {
   margin-top: 30px;
+  display: flex;
+  flex-basis: 25%;
   transition: 0.1s linear;
   padding: 0 !important;
+  background-color: transparent;
+  justify-content: center;
+  align-items: center;
 }
 
 .post-container, .post-container-item {
   height: 350px;
   width: 300px;
-  background-color: white;
   padding: 0 !important;
 }
 
 .post-container-item {
   cursor: pointer;
+  background-color: white;
 }
 
 .post-container-item .body-row {
   height: 250px;
+}
+
+.post-container-item:hover {
+  box-shadow: 0 0 30px #C2C2C2;
+  -webkit-transform: scale(1.05);
+  transform: scale(1.05);
 }
 
 .container-block .filter-container {
@@ -78,12 +89,6 @@
 
 .container-block .filter-container .filter-block .filter-item.active {
   box-shadow: 0 0 30px #C0C0C0;
-}
-
-.post-container:hover {
-  box-shadow: 0 0 30px #C2C2C2;
-  -webkit-transform: scale(1.05);
-  transform: scale(1.05);
 }
 
 .post-img {
