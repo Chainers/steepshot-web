@@ -15,6 +15,7 @@ import PropTypes from 'prop-types';
 import PostFilterBlock from './Filters/PostFilterBlock';
 import { getStore } from '../store/configureStore';
 import Loading from 'react-loading-spinner';
+import LoadingSpinner from './LoadingSpinner';
 
 // constants
 import constants from '../common/constants';
@@ -220,7 +221,7 @@ class Home extends React.Component {
   render() {
     let items = [];
     let _this = this;
-    let renderElements = <div className='loading-block'><br /><h4>Loading...</h4></div>;
+    let renderElements = <div className='loading-block'><LoadingSpinner /></div>;
 
     if (!this.state.loading && this.state.posts.length == 0) {
       renderElements = <div className='loading-block'><br /><h4>No find results for '{this.props.search.value}' filter</h4></div>;
@@ -235,9 +236,7 @@ class Home extends React.Component {
           next={this.fetchData.bind(this)}
           hasMore={this.state.hasMore}
           loader={<div className='loading-block'>
-            <br />
-            <Loading isLoading={this.state.posts.length == 0} loadingClassName='loading'>
-            </Loading>
+            <LoadingSpinner />
             </div>
           }
           endMessage={
@@ -248,9 +247,8 @@ class Home extends React.Component {
           {items}
         </InfiniteScroll>;
     } else if(this.props.search.value == '') {
-      renderElements = <div className='loading-block'><br />
-        <Loading isLoading={this.state.posts.length == 0} loadingClassName='loading'>
-        </Loading>
+      renderElements = <div className='loading-block'>
+        <LoadingSpinner />
       </div>;
     }
 
