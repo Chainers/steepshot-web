@@ -1,9 +1,9 @@
 import React from 'react';
-import { 
+import {
   getPosts, 
-  getNewPosts, 
-  getHotPosts, 
-  getTopPosts, 
+  getNewPosts,
+  getHotPosts,
+  getTopPosts,
   getNewPostsByCategory,
   getHotPostsByCategory,
   getTopPostsByCategory
@@ -13,6 +13,7 @@ import { connect, store } from 'react-redux';
 import InfiniteScroll from './Scroller/infinityScroll';
 import PropTypes from 'prop-types';
 import PostFilterBlock from './Filters/PostFilterBlock';
+import { getStore } from '../store/configureStore';
 import Loading from 'react-loading-spinner';
 
 // constants
@@ -30,11 +31,19 @@ class Home extends React.Component {
       activeMode: constants.POST_FILTERS.TRENDING
     };
 
+    this.store = getStore();
+    this.outputUpdate();
     this.resetPosts();
   }
 
-  componentWillReceiveProps(nextProps) {
-    this.resetPosts(this.props.search.value);
+ outputUpdate() {
+    this.unsubscribe = this.store.subscribe(() => {
+      this.resetPosts(this.store.getState().search.value);
+    });
+  }
+
+  componentWillUnmount() {
+    this.unsubscribe();
   }
 
   updatePostsByFolter(key) {

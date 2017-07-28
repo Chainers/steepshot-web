@@ -128,8 +128,9 @@ class Item extends React.Component {
     }
 
     this.props.dispatch({
-      type: 'SET_VALUE',
+      type: 'SET_SEARCH_VALUE',
       value: tagValue,
+      text: tagValue.slice(1, tagValue.lenght),
       category: constants.CATEGORIES.tag
     });
   }
@@ -156,10 +157,10 @@ class Item extends React.Component {
     e.preventDefault();
   }
 
-  updateComponent(voute) {
+  updateComponent(vote) {
     let currentItem = this.state.item;
-    currentItem.voute = voute;
-    voute ? currentItem.net_votes++ : currentItem.net_votes--;
+    currentItem.vote = vote;
+    vote ? currentItem.net_votes++ : currentItem.net_votes--;
     this.setState({ 
       item: currentItem
     });
