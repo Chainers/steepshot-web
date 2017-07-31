@@ -33,7 +33,7 @@ class Search extends React.Component {
   }
 
   handleChange(event) {
-    const newValue = event.target.text;
+    const newValue = event.target.value;
     this.setState({
       [event.target.name]: newValue
     });
