@@ -73,8 +73,8 @@ class Header extends React.Component {
             <i className="caret"></i>
           </a>
           <ul className="dropdown-menu">
-            <li><Link to="/feed" activeStyle={active}><i className='glyphicon glyphicon-home'></i> Feed</Link></li>
-            <li><Link to="/blog" activeStyle={active}><i className='glyphicon glyphicon-list-alt'></i> Blog</Link></li>
+            <li><Link to="/feed"><i className='glyphicon glyphicon-home'></i> Feed</Link></li>
+            <li><Link to="/blog"><i className='glyphicon glyphicon-list-alt'></i> Blog</Link></li>
             <li className="divider"></li>
             <li><a href="#" onClick={this.handleLogout.bind(this)}><i className='glyphicon glyphicon-log-out'></i> Logout</a></li>
           </ul>
@@ -88,12 +88,12 @@ class Header extends React.Component {
     } else {
       browse = <ul className="nav navbar-nav">
         <li className="nav-item">
-          <Link to="/browse" className="nav-link" activeStyle={active}>browse</Link>
+          <Link to="/browse" className="nav-link">browse</Link>
         </li>
         {
           (isUserAuth) ? (
             <li className="nav-item">
-              <Link to="/feed" className="nav-link" activeStyle={active}>feed</Link>
+              <Link to="/feed" className="nav-link">feed</Link>
             </li>
           ) : null
         }

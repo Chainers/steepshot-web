@@ -182,7 +182,7 @@ class Item extends React.Component {
     let _this = this;
     let itemImage = this.state.image || '/src/images/noimage.jpg';
     let authorImage = this.state.avatar || '/src/images/person.png';
-    let comments = <Comments item={this.state.item} />;
+    let comments = <Comments key="comments" item={this.state.item} />;
 
     let settings = {
       dots: false,
@@ -209,15 +209,15 @@ class Item extends React.Component {
                 <Link to={authorLink}><strong>{this.state.item.author}</strong></Link>
               </div>
               <div onClick={(e)=>{this.callPreventDefault(e)}}>
-                <VouteComponent item={this.state.item} updateComponent={this.updateComponent.bind(this)}/>
+                <VouteComponent key="vote" item={this.state.item} updateComponent={this.updateComponent.bind(this)}/>
               </div>
             </div>
             <div className="author-info">
               <div className="author-info-block">
                 <em className="tags-info">
                   {
-                    this.state.item.tags.map((tag) => {
-                      return <a onClick={(event) => _this._research(event, tag)} className="tags-urls">{tag}</a>
+                    this.state.item.tags.map((tag, index) => {
+                      return <a key={index} onClick={(event) => _this._research(event, tag)} className="tags-urls">{tag}</a>
                     })
                   }
                 </em>
@@ -261,22 +261,22 @@ class Item extends React.Component {
                     </div>
                     <br/>
                     <div className="post-info">
-                      <VouteComponent item={this.state.item} updateComponent={this.updateComponent.bind(this)}/>
+                      <VouteComponent key="vote" item={this.state.item} updateComponent={this.updateComponent.bind(this)}/>
                       <div className="">
                         <span className="payout-reward">{this.state.item.total_payout_reward} </span>
                       </div>
                     </div>
                     <div className="hash-tags">
                       {
-                        this.state.item.tags.map((tag) => {
-                          return <a onClick={(event) => _this._research(event, tag)} className="tags-urls">{tag}</a>
+                        this.state.item.tags.map((tag, index) => {
+                          return <a key={index} onClick={(event) => _this._research(event, tag)} className="tags-urls">{tag}</a>
                         })
                       }
                     </div>
                     <div className="popup-comments">
                       {comments}
                     </div>
-                    <AddComment item={this.props.item} />
+                    <AddComment key="comment" item={this.props.item} />
                   </div>
                 </div>
               </div>
