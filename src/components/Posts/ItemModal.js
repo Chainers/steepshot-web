@@ -14,6 +14,7 @@ class ItemModal extends React.Component {
         this.state = {
             item: this.props.item,
             currentIndex: this.props.index,
+            image: this.props.item.body,
             comments: [],
             disableNext: false,
             disablePrev: false,
@@ -84,7 +85,7 @@ class ItemModal extends React.Component {
 
     render() {
         let _this = this;
-        let itemImage = this.state.item.body || '/src/images/noimage.jpg';
+        let itemImage = this.state.image || '/src/images/noimage.jpg';
         let authorImage = this.state.avatar || '/src/images/person.png';
         let comments = <Comments key="comments" item={this.state.item} />;
 
