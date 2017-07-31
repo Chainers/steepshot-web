@@ -193,7 +193,7 @@ class Item extends React.Component {
             items={this.props.items} 
             index={this.props.index}
             updateComponent={this.updateComponent.bind(this)}
-            _research={this._research}
+            _research={this._research.bind(this)}
           />
           <ReactResizeDetector handleWidth handleHeight onResize={this._onResize.bind(this)}/>
         </Modal>
