@@ -398,6 +398,7 @@
   margin-top: 0px;
   width: auto;
   height: auto;
+  object-fit: contain;
 }
 
 .custom-popup {
