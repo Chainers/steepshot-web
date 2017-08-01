@@ -897,3 +897,80 @@
     transform: scale(1);
   }
 }
+
+.glyphicon-plus-sign {
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.choose-image {
+  position: relative !important;
+  opacity: 1 !important;
+  z-index: 1;
+}
+
+.preview-component {
+  display: flex;
+  flex-direction: row;
+}
+
+.preview-component .file-input {
+  border: 1px solid gray;
+  border-radius: 4px;
+  padding: 10px 5px;
+  cursor: pointer;
+}
+
+.preview-component .img-preview {
+  text-align: center;
+  margin: 5px 15px;
+  height: 200px;
+  width: 500px;
+  border: 1px solid gray;
+  border-radius: 4px;
+}
+
+.preview-component .img-preview img {
+  width: 100%;
+  height: 100%;
+}
+
+.preview-component .preview-text {
+  width: 100%;
+  margin-top: 20px;
+}
+
+.preview-component .submit-button {
+  padding: 5px;
+  background: white;
+  border: 2px solid lightgray;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.preview-component .submit-button:hover {
+  background: #efefef;
+}
+
+.preview-component .center-text {
+  text-align: center;
+  width: 500px;
+}
+
+.preview-component .post-info {
+  padding: 5px 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.preview-component .post-info .info-block {
+  display: flex;
+  flex-direction: column;
+}
+
+.preview-component .post-info .info-block input {
+  margin-bottom: 5px;
+  border-radius: 4px;
+  border: 1px solid gray;
+}

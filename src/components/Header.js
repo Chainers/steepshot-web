@@ -66,6 +66,9 @@ class Header extends React.Component {
     if (isUserAuth) {
       rightNav = (
         <ul className="nav navbar-nav navbar-right">
+        <li>
+          <Link to="/post"><span className="glyphicon glyphicon-plus-sign"></span></Link>
+        </li>
         <li className="dropdown">
           <a href="#" data-toggle="dropdown" className="navbar-avatar dropdown-toggle">
             <img src={this.props.user.picture || this.props.user.gravatar}/>
