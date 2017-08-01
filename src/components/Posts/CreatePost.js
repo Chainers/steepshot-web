@@ -9,7 +9,11 @@ class CreatePost extends React.Component {
             file: '',
             imagePreviewUrl: '',
             title: '',
-            tags: ''
+            tagFirst: '',
+            tagSecond: '',
+            tagThird: '',
+            tagFouth: '',
+            tagFifth: '',
         };
     }
 
@@ -24,8 +28,9 @@ class CreatePost extends React.Component {
         const wif = this.props.postingKey;
         const permlink = new Date().toISOString().replace(/[^a-zA-Z0-9]+/g, '').toLowerCase();
         const author = this.props.username;
+        const tags = this._getTags();
         const jsonMetadata = {
-            tags: [this.state.tags],
+            tags: tags,
             app: 'steepshot/0.0.5' //@TODO get metadata from Backend
         };
 
@@ -33,7 +38,7 @@ class CreatePost extends React.Component {
         steem.broadcast.comment(
             wif,
             '', // Leave parent author empty
-            this.state.tags, // Main tag
+            tags[0], // Main tag
             author, // Author
             permlink + '-post', // Permlink
             this.state.title, // Title
@@ -43,6 +48,19 @@ class CreatePost extends React.Component {
               console.log(err, result);
             }
         );
+    }
+
+    _getTags() {
+        let tags = [];
+        const tagsNames = ['tagFirst', 'tagSecond', 'tagThird', 'tagFouth', 'tagFifth'];
+
+        tagsNames.forEach((tagName) => {
+            if (this.state[tagName]) {
+                tags.push(this.state[tagName]);
+            }
+        });
+
+        return tags;
     }
 
     _handleImageChange(e) {
@@ -61,24 +79,48 @@ class CreatePost extends React.Component {
         reader.readAsDataURL(file)
     }
 
+    _getPostImageStyles(itemImage) {
+        return {
+        backgroundImage: `url(${itemImage})`, 
+        backgroundPosition: 'fixed', 
+        backgroundRepeat: 'no-repeat', 
+        backgroundOrigin: 'center', 
+        backgroundClip: 'content-box', 
+        backgroundSize: 'cover', 
+        backgroundPosition: 'center'
+        };
+    }
+
     render() {
         let {imagePreviewUrl} = this.state;
         let $imagePreview = null;
         if (imagePreviewUrl) {
-        $imagePreview = (<img src={imagePreviewUrl} />);
+            $imagePreview = (<img src={imagePreviewUrl} />);
         } else {
-        $imagePreview = (<div className="preview-text">Please select an Image for Preview</div>);
+            $imagePreview = (<div className="preview-text">Please select an Image for Preview</div>);
         }
 
         return (
         <div className="preview-component">
-            <div className="img-preview">
-            {$imagePreview}
+            <div className="image-block">
+                <label>Image preview</label>
+                <div className="img-preview">
+                    {$imagePreview}
+                </div>
             </div>
             <div className="post-info">
                 <div className="info-block">
+                    <label>Title</label>
                     <input placeholder="Input titile" type="text" name="title" id="title" value={this.state.title} onChange={this.handleChange.bind(this)}/>
-                    <input placeholder="Input tag" type="text" name="tags" id="tags" value={this.state.tags} onChange={this.handleChange.bind(this)}/>
+
+                    <label>Input tags</label>
+                    <input placeholder="Input first tag and main tag" type="text" name="tagFirst" id="tagFirst" value={this.state.tagFirst} onChange={this.handleChange.bind(this)}/>
+                    <input placeholder="Input second tag" type="text" name="tagSecond" id="tagSecond" value={this.state.tagSecond} onChange={this.handleChange.bind(this)}/>
+                    <input placeholder="Input third tag" type="text" name="tagThird" id="tagThird" value={this.state.tagThird} onChange={this.handleChange.bind(this)}/>
+                    <input placeholder="Input fouth tag" type="text" name="tagFouth" id="tagFouth" value={this.state.tagFouth} onChange={this.handleChange.bind(this)}/>
+                    <input placeholder="Input fifth tag" type="text" name="tagFifth" id="tagFifth" value={this.state.tagFifth} onChange={this.handleChange.bind(this)}/>
+
+                    <label>Choose you photo</label>
                     <input className="file-input" 
                         type="file"
                         onChange={(e)=>this._handleImageChange(e)} />
