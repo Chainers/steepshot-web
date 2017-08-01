@@ -143,19 +143,3 @@ const mapStateToProps = (state) => {
 };
 
 export default connect(mapStateToProps)(CreatePost);
-
-/** Broadcast a post */
-//   var permlink = new Date().toISOString().replace(/[^a-zA-Z0-9]+/g, '').toLowerCase();
-//   steem.broadcast.comment(
-//     postingWif,
-//     '', // Leave parent author empty
-//     'photography', // Main tag
-//     username, // Author
-//     permlink + '-post', // Permlink
-//     'This is just a test!', // Title
-//     'Nothing to see here', // Body
-//     { tags: ['test'], app: 'steemjs/examples' }, // Json Metadata
-//     function(err, result) {
-//       console.log(err, result);
-//     }
-//   );
