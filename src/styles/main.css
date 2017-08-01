@@ -912,6 +912,7 @@
 .preview-component {
   display: flex;
   flex-direction: row;
+  justify-content: center;
 }
 
 .preview-component .image-block {
@@ -952,14 +953,16 @@
 
 .preview-component .submit-button {
   padding: 5px;
-  background: white;
-  border: 2px solid lightgray;
+  background: #e9967a;
+  border: 2px solid #e9967a;
   border-radius: 8px;
+  color: white;
   cursor: pointer;
 }
 
 .preview-component .submit-button:hover {
-  background: #efefef;
+  -webkit-transform: scale(1.05);
+  transform: scale(1.05);
 }
 
 .preview-component .center-text {
