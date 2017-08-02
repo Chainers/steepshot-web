@@ -3,7 +3,7 @@ import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Modal from 'react-modal';
-import steem from 'steem';
+import Steem from '../../libs/steem';
 
 class AddComment extends React.Component {
   constructor(props) {
@@ -40,26 +40,15 @@ class AddComment extends React.Component {
 
   addComment() {
     const _this = this;
-    const wif = this.props.postingKey;
     const urlObject = this.state.item.url.split('/');
-    const permlink = new Date().toISOString().replace(/[^a-zA-Z0-9]+/g, '').toLowerCase();
-    const parentAuthor = this.state.item.author;
-    const author = this.props.username;
-    const title = "";
-    const body = this.state.value;
-    const jsonMetadata = {
-      tags: this.state.item.tags,
-      app: 'steepshot/0.0.5' //@TODO get metadata from Backend
-    };
     const parentPermlink = urlObject[urlObject.length-1];
 
-    steem.broadcast.comment(wif, parentAuthor, parentPermlink, author, permlink, title, body, jsonMetadata, function(err, result) {
-      if(err) {
-        console.log(err);
-      } else {
-        _this.props.dispatch({
-          type: 'UPDATE_COMMENTS'
-        });
+    new Promise((resolve, reject) => {
+      Steem.comment(this.props.postingKey, this.state.item.author, parentPermlink, 
+        this.props.username, this.state.value, this.state.item.tags, resolve);
+    }).then((result) => {
+      if (result) {
+        this.props.dispatch(result);
         _this.closeModal();
       }
     });

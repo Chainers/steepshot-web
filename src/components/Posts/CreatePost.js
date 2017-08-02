@@ -1,5 +1,5 @@
 import React from 'react';
-import steem from 'steem';
+import Steem from '../../libs/steem';
 import { connect } from 'react-redux';
 
 class CreatePost extends React.Component {
@@ -23,31 +23,9 @@ class CreatePost extends React.Component {
 
     _handleSubmit(e) {
         e.preventDefault();
-        // TODO: do something with -> this.state.file
-        const _this = this;
-        const wif = this.props.postingKey;
-        const permlink = new Date().toISOString().replace(/[^a-zA-Z0-9]+/g, '').toLowerCase();
-        const author = this.props.username;
-        const tags = this._getTags();
-        const jsonMetadata = {
-            tags: tags,
-            app: 'steepshot/0.0.5' //@TODO get metadata from Backend
-        };
+        // TODO: not implemented get image
 
-        /** Broadcast a post */
-        steem.broadcast.comment(
-            wif,
-            '', // Leave parent author empty
-            tags[0], // Main tag
-            author, // Author
-            permlink + '-post', // Permlink
-            this.state.title, // Title
-            this.state.file, // Body
-            jsonMetadata, // Json Metadata
-            function(err, result) {
-              console.log(err, result);
-            }
-        );
+        Steem.createPost(this.props.postingKey, this._getTags(), this.props.username, this.state.title, this.state.file);
     }
 
     _getTags() {

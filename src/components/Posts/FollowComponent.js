@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { voute } from '../../actions/raitingVoute';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import steem from 'steem';
+import Steem from '../../libs/steem';
 
 class FollowComponent extends React.Component {
   constructor(props) {
@@ -24,52 +24,12 @@ class FollowComponent extends React.Component {
     this.setState({ follow: !this.state.follow });
   }
 
-  /** Follow an user */
   followToUser() {
-    const follower = this.props.username; // Your username
-    const following = this.state.item.username; // User to follow
-    const postingWif = this.props.postingKey;
-    var json = JSON.stringify(
-        ['follow', {
-        follower: follower,
-        following: following,
-        what: ['blog']
-        }]
-    );
-    steem.broadcast.customJson(
-        postingWif,
-        [], // Required_auths
-        [follower], // Required Posting Auths
-        'follow', // Id
-        json, //
-        function(err, result) {
-            console.log(err, result);
-        }
-    );
+    Steem.followUser(this.props.postingKey, this.props.username, this.state.item.username);
   }
 
-  /** Unfollow an user */
   unfollowToUser() {
-    const follower = this.props.username; // Your username
-    const following = this.state.item.username; // User to follow
-    const postingWif = this.props.postingKey;
-    const json = JSON.stringify(
-        ['follow', {
-            follower: follower,
-            following: following,
-            what: []
-        }]
-    );
-    steem.broadcast.customJson(
-        postingWif,
-        [], // Required_auths
-        [follower], // Required Posting Auths
-        'follow', // Id
-        json, //
-        function(err, result) {
-            console.log(err, result);
-        }
-    );
+    Steem.followUser(this.props.postingKey, this.props.username, this.state.item.username);
   }
 
   render() {
