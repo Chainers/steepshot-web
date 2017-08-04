@@ -17,20 +17,23 @@ class VouteComponent extends React.Component {
 
   ratingVotes() {
     const newVoteState = !this.state.vote;
+    const urlObject = this.state.item.url.split('/');
+
     this.props.updateComponent(newVoteState);
     this.setState({ 
       vote: newVoteState
     });
-    const urlObject = this.state.item.url.split('/');
 
     Steem.vote(this.props.postingKey, this.props.username, this.state.item.author, urlObject[urlObject.length-1], newVoteState);
   }
 
   render() {
     let component = <span className='star rating-text'>&#9825; {this.state.item.net_votes}</span>
+
     if (this.state.vote) {
       component = <span className='star rating-text filled'>&hearts; {this.state.item.net_votes}</span>
     }
+    
     return (
         <div className="rating-block pull-right span-with-no-border" onClick={(event) => this.ratingVotes.call(this, event)}>
           {component}
