@@ -19,6 +19,7 @@ function getUrl() {
 export function login(username, postingKey, history, dispatch) {
   const account = null;
   steem.api.getAccounts([username], function(err, result) {
+    console.log(result);
     if (err || !steem.auth.isWif(postingKey)) {
       return {
         type: 'LOGIN_FAILURE',

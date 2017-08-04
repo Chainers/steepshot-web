@@ -59,13 +59,13 @@ class CreatePost extends React.Component {
 
     _getPostImageStyles(itemImage) {
         return {
-        backgroundImage: `url(${itemImage})`, 
-        backgroundPosition: 'fixed', 
-        backgroundRepeat: 'no-repeat', 
-        backgroundOrigin: 'center', 
-        backgroundClip: 'content-box', 
-        backgroundSize: 'cover', 
-        backgroundPosition: 'center'
+            backgroundImage: `url(${itemImage})`, 
+            backgroundPosition: 'fixed', 
+            backgroundRepeat: 'no-repeat', 
+            backgroundOrigin: 'center', 
+            backgroundClip: 'content-box', 
+            backgroundSize: 'cover', 
+            backgroundPosition: 'center'
         };
     }
 

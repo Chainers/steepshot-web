@@ -16,13 +16,14 @@ class VouteComponent extends React.Component {
   }
 
   ratingVotes() {
-    this.props.updateComponent(!this.state.vote);
+    const newVoteState = !this.state.vote;
+    this.props.updateComponent(newVoteState);
     this.setState({ 
-      vote: !this.state.vote
+      vote: newVoteState
     });
     const urlObject = this.state.item.url.split('/');
 
-    Steem.vote(this.props.postingKey, this.props.username, this.state.item.author, urlObject[urlObject.length-1])
+    Steem.vote(this.props.postingKey, this.props.username, this.state.item.author, urlObject[urlObject.length-1], newVoteState);
   }
 
   render() {
