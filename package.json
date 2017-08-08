@@ -41,6 +41,7 @@
   "dependencies": {
     "bluebird": "^3.5.0",
     "create-react-class": "^15.6.0",
+    "form-data": "^2.2.0",
     "gulp": "^3.9.1",
     "gulp-livereload": "^3.8.1",
     "gulp-util": "^3.0.8",

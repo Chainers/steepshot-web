@@ -23,7 +23,7 @@ class CreatePost extends React.Component {
 
     _handleSubmit(e) {
         e.preventDefault();
-        Steem.createPost(this.props.postingKey, this._getTags(), this.props.username, this.state.title, this.state.file);
+        Steem.createPost(this.props.postingKey, this._getTags(), this.props.username, this.state.title, this.state.file, this.state.imagePreviewUrl);
     }
 
     _getTags() {

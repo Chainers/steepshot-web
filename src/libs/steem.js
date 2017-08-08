@@ -2,6 +2,7 @@ import steem from 'steem';
 import constants from '../common/constants';
 import Promise from 'bluebird';
 import { getStore } from '../store/configureStore';
+import { preparePost } from '../actions/steemPayout';
 
 const getUserName = () => {
     return getStore().getState().auth.user
@@ -149,7 +150,7 @@ class Steem {
     handleBroadcastMessages(message, extetion, postingKey, callback) {
         this._preCompileTransaction(message, postingKey)
         .then((compiledTransaction) => {
-            //@TODO: Update message body with new image link
+            message.body = compiledTransaction.body;
 
             const operations = [message, this._getBeneficiaries(message[1].permlink)];
 
@@ -158,7 +159,9 @@ class Steem {
                 { posting: postingKey }
             );
 
-            callback();
+            if(callback && typeof callback == 'function') {
+                callback();
+            }
         });
     }
 
@@ -175,7 +178,11 @@ class Steem {
         })
         .spread((transaction, signedTransaction) => {
             //Send to backend validate item
-            return signedTransaction;
+            preparePost(message, signedTransaction)
+                .then((result) => {
+                    console.log(result);
+                    return signedTransaction;
+                });
         });
     }
 
