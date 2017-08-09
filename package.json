@@ -66,6 +66,7 @@
     "redux-thunk": "^2.2.0",
     "steem": "^0.6.1",
     "steemconnect": "0.0.35",
+    "underscore": "^1.8.3",
     "webpack": "^3.1.0"
   },
   "devDependencies": {

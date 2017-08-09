@@ -9,20 +9,16 @@ export function preparePost(message, transaction) {
   form.append('title', message[1].title);
   form.append('username', message[1].author);
   form.append('photo', message[1].body);
-  form.append('trx', transaction);
+  form.append('trx', JSON.stringify(transaction));
 
   return fetch(`${baseUrl}/post/prepare`, {
     method: 'POST',
-    headers: {
-      'Accept': 'application/json, application/xml, text/plain, text/html, *.*',
-      'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8'
-    },
     body: form
   }).then(response => {
     if (response.ok) {
-      console.log(response);
-      console.log(JSON.parse(response));
-      return JSON.parse(response);
+      return response.json().then((json) => {
+        return json;
+      });
     }
   });
 }
