@@ -37,7 +37,7 @@ class Home extends React.Component {
     this.resetPosts();
   }
 
- outputUpdate() {
+  outputUpdate() {
     this.unsubscribe = this.store.subscribe(() => {
       this.resetPosts(this.store.getState().search.value);
     });

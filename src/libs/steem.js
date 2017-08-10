@@ -12,8 +12,7 @@ const getUserName = () => {
 class Steem {
     comment(wif, parentAuthor, parentPermlink, author, body, tags, resolve) {
         const permlink = this._getPermLink();
-
-        const operation = [constants.OPERATIONS.COMMENT, {
+        const commentObject = {
             parent_author: parentAuthor,
             parent_permlink: parentPermlink,
             author: author,
@@ -21,7 +20,9 @@ class Steem {
             title: "",
             body: body,
             json_metadata: JSON.stringify(this._createJsonMetadata(tags))
-        }];
+        };
+
+        const operations = [[constants.OPERATIONS.COMMENT, commentObject]];
 
         const callback = (err, result) => {
             if(err) {
@@ -29,12 +30,18 @@ class Steem {
                 return resolve(null);
             } else {
                 return resolve({
-                    type: 'UPDATE_COMMENTS'
+                    type: 'ADD_COMMENT_SUCCESS',
+                    comment: commentObject
                 });
             }
         }
 
-        this.handleBroadcastMessages(operation, [], wif, callback)
+        steem.broadcast.sendAsync(
+            { operations, extensions: [] },
+            { posting: wif }
+        );
+
+        callback(null);
     }
 
     vote(wif, username, author, url, isUpVote) {
@@ -60,7 +67,7 @@ class Steem {
         beneficiaries
         let beneficiariesObject = _.extend({}, {
             author: getUserName(),
-            permlink,
+            permlink: permlink,
             max_accepted_payout: constants.STEEM_PATLOAD.MAX_ACCEPTED_PAYOUT,
             percent_steem_dollars: constants.STEEM_PATLOAD.PERCENT_STEMM_DOLLARS,
             allow_votes: true,
@@ -121,13 +128,14 @@ class Steem {
     }
 
     /** Broadcast a post */
-    createPost(wif, tags, author, title, file) {
+    createPost(wif, tags, author, title, file, callback) {
         const jsonMetadata = this._createJsonMetadata(tags);
         const permlink = this._getPermLink();
+        const category = jsonMetadata.tags.shift();
 
         const operation = [constants.OPERATIONS.COMMENT, {
             parent_author: "",
-            parent_permlink: permlink + '-post',
+            parent_permlink: category,
             author: author,
             permlink: permlink + '-post',
             title: title,
@@ -135,7 +143,7 @@ class Steem {
             json_metadata: JSON.stringify(jsonMetadata)
         }];
 
-        this.handleBroadcastMessages(operation, [], wif);
+        this.handleBroadcastMessages(operation, [], wif, callback);
     }
 
     handleBroadcastMessages(message, extetion, postingKey, callback) {
@@ -155,7 +163,7 @@ class Steem {
             }
 
             if(callback && typeof callback == 'function') {
-                callback();
+                callback(result);
             }
         });
     }

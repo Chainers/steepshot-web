@@ -1,15 +1,16 @@
 const initialState = {
-    posts: []
+    comment: {}
 };
 
-export default function post(state = {}, action) {
+export default function comment(state = {}, action) {
     switch (action.type) {
-        case 'GET_POST_SUCCESS':
+        case 'ADD_COMMENT_SUCCESS':
             return Object.assign({}, state, {
-                posts: action.posts
+                comment: action.comment
             });
-        case 'GET_POSTS__FAILURE':
+        case 'UPDATE_COMMENTS': {
             return initialState;
+        }
         default:
             return state;
     }
