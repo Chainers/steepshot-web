@@ -13,7 +13,6 @@ class CreatePost extends React.Component {
             tagSecond: '',
             tagThird: '',
             tagFouth: '',
-            tagFifth: '',
         };
     }
 
@@ -36,13 +35,15 @@ class CreatePost extends React.Component {
 
     _getTags() {
         let tags = [];
-        const tagsNames = ['tagFirst', 'tagSecond', 'tagThird', 'tagFouth', 'tagFifth'];
+        const tagsNames = ['tagFirst', 'tagSecond', 'tagThird', 'tagFouth'];
 
         tagsNames.forEach((tagName) => {
             if (this.state[tagName]) {
                 tags.push(this.state[tagName]);
             }
         });
+
+        tags.push('steepshot');
 
         return tags;
     }
@@ -102,7 +103,6 @@ class CreatePost extends React.Component {
                     <input placeholder="Input second tag" type="text" name="tagSecond" id="tagSecond" value={this.state.tagSecond} onChange={this.handleChange.bind(this)}/>
                     <input placeholder="Input third tag" type="text" name="tagThird" id="tagThird" value={this.state.tagThird} onChange={this.handleChange.bind(this)}/>
                     <input placeholder="Input fouth tag" type="text" name="tagFouth" id="tagFouth" value={this.state.tagFouth} onChange={this.handleChange.bind(this)}/>
-                    <input placeholder="Input fifth tag" type="text" name="tagFifth" id="tagFifth" value={this.state.tagFifth} onChange={this.handleChange.bind(this)}/>
 
                     <label>Choose you photo</label>
                     <input className="file-input" 

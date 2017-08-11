@@ -21,8 +21,13 @@ class Steem {
             body: body,
             json_metadata: JSON.stringify(this._createJsonMetadata(tags))
         };
+        const commentOperation = [constants.OPERATIONS.COMMENT, commentObject];
+        const operations = [commentOperation, this._getCommentBenificiaries(commentObject.permlink)];
 
-        const operations = [[constants.OPERATIONS.COMMENT, commentObject]];
+        steem.broadcast.sendAsync(
+            { operations, extensions: [] },
+            { posting: wif }
+        );
 
         const callback = (err, result) => {
             if(err) {
@@ -36,12 +41,31 @@ class Steem {
             }
         }
 
-        steem.broadcast.sendAsync(
-            { operations, extensions: [] },
-            { posting: wif }
-        );
-
         callback(null);
+    }
+
+    _getCommentBenificiaries(permlink) {
+        let beneficiariesObject = _.extend({}, {
+            author: getUserName(),
+            permlink: permlink,
+            max_accepted_payout: constants.STEEM_PATLOAD.MAX_ACCEPTED_PAYOUT,
+            percent_steem_dollars: constants.STEEM_PATLOAD.PERCENT_STEMM_DOLLARS,
+            allow_votes: true,
+            allow_curation_rewards: true,
+            extensions: [
+                [0, {
+                    beneficiaries: [
+                        { 
+                            account: 'steepshot', 
+                            weight: 1000 
+                        }
+                    ]
+                }]
+            ]
+        });
+
+
+        return [constants.OPERATIONS.COMMENT_OPTIONS, beneficiariesObject];
     }
 
     vote(wif, username, author, url, isUpVote) {
@@ -64,7 +88,6 @@ class Steem {
     }
 
     _getBeneficiaries(permlink, beneficiaries) {
-        beneficiaries
         let beneficiariesObject = _.extend({}, {
             author: getUserName(),
             permlink: permlink,
@@ -94,7 +117,7 @@ class Steem {
             [], // Required_auths
             [follower], // Required Posting Auths
             'follow', // Id
-            json, //
+            json,
             (err, result) => {
                 if (err) {
                     console.log(err);

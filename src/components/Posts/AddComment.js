@@ -38,14 +38,25 @@ class AddComment extends React.Component {
     });
   }
 
+  _prepareTags(tags) {
+    let preparedTags = [];
+
+    tags.forEach((item) => {
+      preparedTags.push(item.substr(1));
+    });
+
+    return preparedTags;
+  }
+
   addComment() {
     const _this = this;
     const urlObject = this.state.item.url.split('/');
     const parentPermlink = urlObject[urlObject.length-1];
+    const tags = this._prepareTags(this.state.item.tags);
 
     new Promise((resolve, reject) => {
       Steem.comment(this.props.postingKey, this.state.item.author, parentPermlink, 
-        this.props.username, this.state.value, this.state.item.tags, resolve);
+        this.props.username, this.state.value, tags, resolve);
     }).then((result) => {
       if (result) {
         this.props.dispatch(result);
