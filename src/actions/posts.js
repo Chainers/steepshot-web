@@ -256,3 +256,21 @@ export function getHotPostsByCategory(category, offset) {
     }
   });
 }
+
+export function getPostShaddow(urlPost) {
+  let url = `${baseUrl}/post/${urlPost}/info`;
+  
+  return fetch(url, {
+    method: 'GET'
+  }).then((response) => {
+    if (response.ok) {
+      return response.json().then((json) => {
+        return json;
+      });
+    } else {
+      return response.json().then(() => {
+        return [];
+      });
+    }
+  });
+}

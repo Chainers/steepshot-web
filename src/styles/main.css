@@ -973,8 +973,14 @@
 .preview-component .post-info {
   padding: 5px 0;
   display: flex;
+  width: 45%;
   flex-direction: column;
   justify-content: space-between;
+}
+
+.preview-component .post-info .error {
+  color: red;
+  text-align: center;
 }
 
 .preview-component .post-info .info-block {

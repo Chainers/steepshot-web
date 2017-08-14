@@ -943,8 +943,14 @@ $popupHeight: 300px;
   .post-info {
     padding: 5px 0;
     display: flex;
+    width: 45%;
     flex-direction: column;
     justify-content: space-between;
+
+    .error {
+      color: red;
+      text-align: center;
+    }
 
     .info-block {
       display: flex;

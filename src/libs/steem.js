@@ -186,7 +186,7 @@ class Steem {
             }
 
             if(callback && typeof callback == 'function') {
-                callback(result);
+                callback(result, message);
             }
         });
     }

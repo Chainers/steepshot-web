@@ -1,6 +1,7 @@
 import React from 'react';
 import Steem from '../../libs/steem';
 import { connect } from 'react-redux';
+import { getPostShaddow } from '../../actions/posts';
 
 class CreatePost extends React.Component {
     constructor(props) {
@@ -13,6 +14,7 @@ class CreatePost extends React.Component {
             tagSecond: '',
             tagThird: '',
             tagFouth: '',
+            message: ''
         };
     }
 
@@ -22,15 +24,30 @@ class CreatePost extends React.Component {
 
     _handleSubmit(e) {
         e.preventDefault();
-        const callback = (result) => { 
+        const callback = (result, message) => { 
             if (result) {
+                this._getPostShaddow(message);
                 this.props.history.push('/blog'); 
             } else {
-                //@TODO: Add logic to show message
+                this.setState({ 
+                    message: 'You can only create posts after 5 minutes after previous.' 
+                });
             }
             
         };
         Steem.createPost(this.props.postingKey, this._getTags(), this.props.username, this.state.title, this.state.file, callback);
+    }
+
+    _getPostShaddow(message) {
+        const _this = this;
+        const url = '@' + message[1].author + '/' + message[1].permlink;
+
+        getPostShaddow(url).then((result) => {
+            if (result && result.length === 0) {
+                return _this._getPostShaddow(message);
+            }
+            _this.props.history.push('/blog'); 
+        });
     }
 
     _getTags() {
@@ -108,6 +125,9 @@ class CreatePost extends React.Component {
                     <input className="file-input" 
                         type="file"
                         onChange={(e)=>this._handleImageChange(e)} />
+                </div>
+                <div className='error'>
+                    { this.state.message }
                 </div>
                 <button className="submit-button" 
                         type="submit" 
