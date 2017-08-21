@@ -1,4 +1,5 @@
 import gulp from 'gulp';
+import debug from 'gulp-debug';
 import autoprefixer from 'autoprefixer';
 import browserify from 'browserify';
 import watchify from 'watchify';
@@ -26,10 +27,32 @@ import livereload from 'gulp-livereload';
 import webserver from 'gulp-webserver';
 import plumber from 'gulp-plumber';
 
+import awspublish from 'gulp-awspublish';
+import s3_index from 'gulp-s3-index';
+import revall from 'gulp-rev-all';
+
 var bases = {
  app: 'src/',
  dist: 'dist/',
 };
+
+
+var AWSConfig = {
+  "key":    process.env.AWS_ACCESS_KEY_ID,
+  "secret": process.env.AWS_SECRET_ACCESS_KEY,
+  "bucket": "steepshot-pics-1",
+  "region": "us-west-2"
+}
+var publisher = awspublish.create({
+  region: AWSConfig.region,
+  params: {
+    Bucket: AWSConfig.bucket,
+    Key: AWSConfig.key,
+    Secret: AWSConfig.secret,
+  }
+});
+
+var aws_headers = {'Cache-Control': 'max-age=315360000, no-transform, public'};
 
 const paths = {
   bundle: 'app.js',
@@ -41,7 +64,8 @@ const paths = {
   images: ['images/**/*.png', 'images/**/*.svg', 'images/**/*.ico', 'images/**/*.jpg'],
   distJs: 'dist/js',
   distImg: 'dist/images',
-  distDeploy: './dist/**/*'
+  distStyles: 'dist/styles',
+  distDeploy: ['dist/**/*', '!dist/index.html']
 };
 
 const customOpts = {
@@ -136,11 +160,6 @@ gulp.task('watchTask', () => {
   gulp.watch(paths.srcImg, ['imagemin']);
 });
 
-gulp.task('deploy', () => {
-  gulp.src(paths.distDeploy)
-    .pipe(ghPages());
-});
-
 gulp.task('watch', cb => {
   runSequence('clean', ['browserSync', 'watchTask', 'watchify', 'styles', 'lint', 'imagemin'], cb);
 });
@@ -148,4 +167,14 @@ gulp.task('watch', cb => {
 gulp.task('build', cb => {
   process.env.NODE_ENV = 'production';
   runSequence('clean', ['browserify', 'styles', 'htmlReplace', 'imagemin'], cb);
+});
+
+gulp.task('deploy', () => {
+  gulp.src(paths.distDeploy)
+    .pipe(revall.revision())
+    .pipe(awspublish.gzip())
+    .pipe(publisher.publish(aws_headers))
+    .pipe(publisher.cache())
+    .pipe(awspublish.reporter())
+    .pipe(s3_index(AWSConfig))
 });
