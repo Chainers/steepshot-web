@@ -91,6 +91,22 @@
   box-shadow: 0 0 30px #C0C0C0;
 }
 
+.container-block .checkbox-block {
+  display: flex;
+  padding: 10px;
+}
+
+.container-block .checkbox-block label {
+  margin-left: 5px;
+}
+
+.container-block .upload-button {
+  border: 1 solid black;
+  padding: 5px;
+  background-color: white;
+  cursor: pointer;
+}
+
 .post-img {
   clear: inherit;
   max-width: 100%;

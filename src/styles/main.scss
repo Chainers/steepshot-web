@@ -91,6 +91,22 @@
       }
     }
   }
+
+  .checkbox-block {
+    display: flex;
+    padding: 10px;
+
+    label {
+      margin-left: 5px;
+    }
+  }
+
+  .upload-button {
+    border: 1 solid black;
+    padding: 5px;
+    background-color: white;
+    cursor: pointer;
+  }
 }
 
 .post-img {
