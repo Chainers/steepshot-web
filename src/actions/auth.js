@@ -28,6 +28,10 @@ export function login(username, postingKey, history, dispatch) {
     } else if (result && steem.auth.isWif(postingKey)){
       localStorage.setItem('user', JSON.stringify(username));
       localStorage.setItem('postingKey', JSON.stringify(postingKey));
+      localStorage.setItem('settings', JSON.stringify({ 
+        nsfw: false,
+        lowRated: false
+      }));
       dispatch({
         type: 'LOGIN_SUCCESS',
         postingKey: postingKey,
@@ -41,6 +45,7 @@ export function login(username, postingKey, history, dispatch) {
 export function logout(history, dispatch) {
   localStorage.removeItem('user');
   localStorage.removeItem('postingKey');
+  localStorage.removeItem('settings');
   dispatch({
     type: 'LOGOUT_SUCCESS'
   });

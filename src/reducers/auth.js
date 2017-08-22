@@ -1,6 +1,7 @@
 const initialState = {
   user: JSON.parse(localStorage.getItem('user')) || null,
-  postingKey: JSON.parse(localStorage.getItem('postingKey')) || null
+  postingKey: JSON.parse(localStorage.getItem('postingKey')) || null,
+  settings: JSON.parse(localStorage.getItem('settings')) || null
 };
 
 export default function auth(state = initialState, action) {
@@ -13,12 +14,14 @@ export default function auth(state = initialState, action) {
     case 'OAUTH_SUCCESS':
       return Object.assign({}, state, {
         user: action.user,
-        postingKey: action.postingKey
+        postingKey: action.postingKey,
+        settings: action.settins
       });
     case 'LOGOUT_SUCCESS':
       return {
         user: JSON.parse(localStorage.getItem('user')) || null,
-        postingKey: JSON.parse(localStorage.getItem('postingKey')) || null
+        postingKey: JSON.parse(localStorage.getItem('postingKey')) || null,
+        settings: JSON.parse(localStorage.getItem('settings')) || null
       };
     default:
       return state;

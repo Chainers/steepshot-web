@@ -2,7 +2,10 @@ import React from 'react';
 import { 
     getNSFW, 
     getLowRated, 
-    updateLowRated 
+    updateLowRated,
+    updateNSFW,
+    getSettings,
+    updateSettings
 } from '../../actions/settings';
 import { 
     connect, 
@@ -18,22 +21,15 @@ class Settings extends React.Component {
             settings: {
                 nsfw: false,
                 lowRated: false
-            }
+            },
+            saveSettings: {}
         };
     }
 
     componentDidMount() {
-        getNSFW().then((result) => {
-            let settings = this.state.settings;
-            settings.nsfw = result.show_nsfw;
-            this.setState({ settings: settings});
-        });
+        const settings = getSettings();
 
-        getLowRated().then((result) => {
-            let settings = this.state.settings;
-            settings.lowRated = result.show_low_rated;
-            this.setState({ settings: settings});
-        });
+        this.setState({ settings: settings });
     }
 
     handleInputChange(event) {
@@ -44,12 +40,7 @@ class Settings extends React.Component {
     }
 
     upateSettings() {
-        //@TODO: Update user settings || Not intergated method
-        // updateLowRated(this.state.settings.lowRated);
-        // updateNSFW(this.state.settings.lowRated);
-        
-        console.log(this.state.settings);
-        console.log('Update settings');
+        updateSettings(this.state.settings);
     }
 
     render() {
