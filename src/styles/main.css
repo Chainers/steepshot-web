@@ -96,6 +96,13 @@
   padding: 10px;
 }
 
+.container-block .checkbox-block .message {
+  color: green;
+  font-weight: 800;
+  font-size: 15px;
+  padding: 5px;
+}
+
 .container-block .checkbox-block label {
   margin-left: 5px;
 }

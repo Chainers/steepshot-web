@@ -22,28 +22,52 @@ class Settings extends React.Component {
                 nsfw: false,
                 lowRated: false
             },
-            saveSettings: {}
+            saveSettings: getSettings(),
+            showMessage: false,
+            message: ''
         };
     }
 
     componentDidMount() {
-        const settings = getSettings();
+        const userSettings = getSettings();
 
-        this.setState({ settings: settings });
+        this.setState({ 
+            settings: userSettings
+        });
+    }
+
+    _setDefaultMessageOptions() {
+        this.setState({ 
+            showMessage: false, 
+            message: ''
+        });
     }
 
     handleInputChange(event) {
         let settings = this.state.settings;
+
+        this._setDefaultMessageOptions();
 
         settings[event.target.name] = !this.state.settings[event.target.name];
         this.setState({ settings: settings });
     }
 
     upateSettings() {
-        updateSettings(this.state.settings);
+        if (this.state.saveSettings.nsfw != this.state.settings.nsfw ||
+            this.state.saveSettings.lowRated != this.state.settings.lowRated) {
+                this.setState({ 
+                    showMessage: true, 
+                    message: 'Successfuly updated',
+                    saveSettings: this.state.settings
+                });
+                updateSettings(this.state.settings);
+        } else {
+            this.setState({ showMessage: true, message: 'Nothing to update' });
+        }
     }
 
     render() {
+        const message = <div className='message'>{this.state.message}</div>;
         return(
             <div className="container-block">
                 <div className='checkbox-block'>
@@ -68,7 +92,9 @@ class Settings extends React.Component {
                     <div className="upload-button">
                         Upload
                     </div>
+                    {this.state.showMessage ? message : null}
                 </div>
+                
             </div>
         );
     }

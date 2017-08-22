@@ -96,6 +96,13 @@
     display: flex;
     padding: 10px;
 
+    .message {
+      color: green;
+      font-weight: 800;
+      font-size: 15px;
+      padding: 5px;
+    }
+
     label {
       margin-left: 5px;
     }
