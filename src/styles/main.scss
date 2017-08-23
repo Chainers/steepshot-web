@@ -103,8 +103,9 @@
       padding: 5px;
     }
 
-    label {
+    label, input {
       margin-left: 5px;
+      cursor: pointer;
     }
   }
 
@@ -144,9 +145,8 @@
     justify-content: space-between;
 
     .author-info-block {
-      overflow-y: auto;
       overflow-x: hidden;
-      max-height: 50px;
+      max-height: 55px;
     }
 
     .tags-info {

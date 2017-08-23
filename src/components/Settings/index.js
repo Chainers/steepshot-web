@@ -43,12 +43,12 @@ class Settings extends React.Component {
         });
     }
 
-    handleInputChange(event) {
+    handleInputChange(name) {
         let settings = this.state.settings;
 
         this._setDefaultMessageOptions();
 
-        settings[event.target.name] = !this.state.settings[event.target.name];
+        settings[name] = !this.state.settings[name];
         this.setState({ settings: settings });
     }
 
@@ -72,25 +72,21 @@ class Settings extends React.Component {
             <div className="container-block">
                 <div className='checkbox-block'>
                     <input
-                        name="lowRated"
                         type="checkbox"
-                        value="lowRated"
                         checked={this.state.settings.lowRated}
-                        onChange={this.handleInputChange.bind(this)} />
-                    <label>Show low rate posts</label>
+                        onChange={this.handleInputChange.bind(this, "lowRated")} />
+                    <label onClick={this.handleInputChange.bind(this, "lowRated")}>Show low rate posts</label>
                 </div>
                 <div className='checkbox-block'>
                     <input
-                        name="nsfw"
                         type="checkbox"
-                        value="nsfw"
                         checked={this.state.settings.nsfw}
-                        onChange={this.handleInputChange.bind(this)} />
-                    <label>Use NSFW setting</label>
+                        onChange={this.handleInputChange.bind(this, "nsfw")} />
+                    <label onClick={this.handleInputChange.bind(this, "nsfw")}>Use NSFW setting</label>
                 </div>
                 <div className='checkbox-block' onClick={this.upateSettings.bind(this)}>
                     <div className="upload-button">
-                        Upload
+                        Save
                     </div>
                     {this.state.showMessage ? message : null}
                 </div>

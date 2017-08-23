@@ -154,7 +154,7 @@ class Steem {
     createPost(wif, tags, author, title, file, callback) {
         const jsonMetadata = this._createJsonMetadata(tags);
         const permlink = this._getPermLink();
-        const category = jsonMetadata.tags.shift();
+        const category = jsonMetadata.tags[0];
 
         const operation = [constants.OPERATIONS.COMMENT, {
             parent_author: "",
