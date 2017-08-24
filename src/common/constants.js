@@ -1,6 +1,6 @@
 export default {
     POST_FILTERS: {
-        TRANDING: 'Tranding',
+        TRENDING: 'Trending',
         HOT: 'Hot',
         NEW: 'New'
     },
@@ -10,5 +10,17 @@ export default {
     CATEGORIES: {
         user: 'user',
         tag: 'tag'
+    },
+    OPERATIONS: {
+        COMMENT: 'comment',
+        VOTE: 'vote',
+        POST: 'post',
+        FOLLOW: 'follow',
+        COMMENT_OPTIONS: 'comment_options'
+    },
+    STEEM_PATLOAD: {
+        MAX_ACCEPTED_PAYOUT: '1000000.000 SBD',
+        PERCENT_STEMM_DOLLARS: 10000
     }
+
 }

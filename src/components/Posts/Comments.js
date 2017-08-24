@@ -9,6 +9,7 @@ class Comments extends React.Component {
     super(props);
 
     this.state = {
+      comment: this.props.comment,
       comments: [],
       avatar: this.props.item.avatar,
       loading: true
@@ -20,12 +21,21 @@ class Comments extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    this.setState({ 
-      comments: [],
-      loading: true
-     });
+    if (this.state.comment.comment != nextProps.comment.comment) {
+      this.state.comments.push(nextProps.comment.comment);
 
-    this.updatePostComments(nextProps);
+      this.setState({ 
+        comments: this.state.comments,
+        comment: nextProps.comment
+      });
+    } else {
+      this.setState({ 
+        comments: [],
+        loading: true
+      });
+
+      this.updatePostComments(nextProps);
+    }
   }
 
   updatePostComments(nextProps) {
@@ -50,8 +60,8 @@ class Comments extends React.Component {
     } 
     
     if (this.state.comments && this.state.comments.length != 0) {
-      comments = this.state.comments.map((item) => {
-        return <Comment item={item} />
+      comments = this.state.comments.map((item, index) => {
+        return <Comment key={index} item={item} />
       });
     }
 
@@ -69,7 +79,9 @@ Comments.propTypes = {
 
 const mapStateToProps = (state) => {
   return {
-    localization: state.localization
+    localization: state.localization,
+    posts: state.post,
+    comment: state.comment
   };
 };
 

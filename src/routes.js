@@ -10,6 +10,8 @@ import UserProfile from './components/UserProfile/index';
 import PrivateRoute from './components/Routes/PrivateRoute';
 import Feed from './components/Feed';
 import Blog from './components/Blog';
+import Settings from './components/Settings';
+import CreatePost from './components/Posts/CreatePost';
 
 export default function getRoutes(store) {
   const clearMessages = () => {
@@ -38,7 +40,9 @@ export default function getRoutes(store) {
         <Route path="/userProfile/:username" component={UserProfile} onLeave={clearMessages} />
         <Route path="/signin" component={Signin} onLeave={clearMessages} />
         <PrivateRoute path="/feed" component={Feed} onLeave={clearMessages} />
+        <PrivateRoute path="/post" component={CreatePost} onLeave={clearMessages} />
         <PrivateRoute path="/blog" component={Blog} onLeave={clearMessages} />
+        <PrivateRoute path="/settings" component={Settings} onLeave={clearMessages} />
         <Route path="*" component={NotFound} onLeave={clearMessages} />
       </Switch>
     </App>
