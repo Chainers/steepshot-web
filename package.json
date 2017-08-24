@@ -30,6 +30,7 @@
     "build": "gulp build",
     "deploy": "gulp deploy",
     "test": "ava --tap | tap-nyan",
+    "lint": "gulp lint",
     "server": "webpack-dev-server --content-base ./public --inline --hot"
   },
   "author": "Maurizio Mangione",
