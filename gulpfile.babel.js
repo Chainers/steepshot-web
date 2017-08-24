@@ -133,7 +133,10 @@ gulp.task('styles', () => {
 
 gulp.task('htmlReplace', () => {
   gulp.src('index.html')
-  .pipe(htmlReplace({ css: 'styles/main.css', js: 'js/app.js' }))
+  .pipe(htmlReplace({
+    css: ['styles/normalize.css', 'styles/bootstrap.css', 'styles/main.min.css', 'styles/posts.min.css'],
+    js: ['js/app.js',]
+   }))
   .pipe(gulp.dest(paths.dist));
 });
 
@@ -170,8 +173,8 @@ gulp.task('build', cb => {
 });
 
 gulp.task('deploy', () => {
-  gulp.src(paths.distDeploy)
-    .pipe(revall.revision())
+  gulp.src('dist/**/**')
+    // .pipe(revall.revision())
     .pipe(awspublish.gzip())
     .pipe(publisher.publish(aws_headers))
     .pipe(publisher.cache())
