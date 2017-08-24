@@ -55,12 +55,12 @@ class Settings extends React.Component {
     upateSettings() {
         if (this.state.saveSettings.nsfw != this.state.settings.nsfw ||
             this.state.saveSettings.lowRated != this.state.settings.lowRated) {
+                updateSettings(this.state.settings);
                 this.setState({ 
                     showMessage: true, 
                     message: 'Successfuly updated',
-                    saveSettings: this.state.settings
+                    saveSettings: getSettings()
                 });
-                updateSettings(this.state.settings);
         } else {
             this.setState({ showMessage: true, message: 'Nothing to update' });
         }
