@@ -30,7 +30,7 @@
     "build": "gulp build",
     "deploy": "gulp deploy",
     "test": "ava --tap | tap-nyan",
-    "lint": "gulp lint",
+    "lint": "./node_modules/.bin/eslint src/**/*.js",
     "server": "webpack-dev-server --content-base ./public --inline --hot"
   },
   "author": "Maurizio Mangione",
@@ -89,7 +89,7 @@
     "browserify": "^13.0.0",
     "copy-webpack-plugin": "^4.0.1",
     "cssnano": "^3.5.2",
-    "eslint": "^2.8.0",
+    "eslint": "^2.13.1",
     "eslint-config-airbnb": "^9.0.1",
     "eslint-plugin-import": "^1.6.0",
     "eslint-plugin-jsx-a11y": "^1.0.3",
