@@ -66,24 +66,24 @@ class Header extends React.Component {
     if (isUserAuth) {
       rightNav = (
         <ul className="nav navbar-nav navbar-right">
-        <li>
-          <Link to="/post"><span className="glyphicon glyphicon-plus-sign"></span></Link>
-        </li>
-        <li className="dropdown">
-          <a href="#" data-toggle="dropdown" className="navbar-avatar dropdown-toggle">
-            <img src={this.props.user.picture || this.props.user.gravatar}/>
-            {' '}{this.props.user}{' '}
-            <i className="caret"></i>
-          </a>
-          <ul className="dropdown-menu">
-            <li><Link to="/feed"><i className='glyphicon glyphicon-home'></i> Feed</Link></li>
-            <li><Link to="/blog"><i className='glyphicon glyphicon-list-alt'></i> Blog</Link></li>
-            <li><Link to="/settings"><i className='glyphicon glyphicon-cog'></i> Settings</Link></li>
-            <li className="divider"></li>
-            <li><a href="#" onClick={this.handleLogout.bind(this)}><i className='glyphicon glyphicon-log-out'></i> Logout</a></li>
-          </ul>
-        </li>
-      </ul>
+          <li className="dropdown">
+            <a href="#" data-toggle="dropdown" className="navbar-avatar dropdown-toggle">
+              <img src={this.props.user.picture || this.props.user.gravatar}/>
+              {' '}{this.props.user}{' '}
+              <i className="caret"></i>
+            </a>
+            <ul className="dropdown-menu">
+              <li><Link to="/feed"><i className='glyphicon glyphicon-home'></i> Feed</Link></li>
+              <li><Link to="/blog"><i className='glyphicon glyphicon-list-alt'></i> Blog</Link></li>
+              <li><Link to="/settings"><i className='glyphicon glyphicon-cog'></i> Settings</Link></li>
+              <li className="divider"></li>
+              <li><a href="#" onClick={this.handleLogout.bind(this)}><i className='glyphicon glyphicon-log-out'></i> Logout</a></li>
+            </ul>
+          </li>
+          <li className="add-block">
+            <Link to="/post"><span className="add-icon glyphicon glyphicon-plus-sign"></span></Link>
+          </li>
+        </ul>
       )
     }
 
