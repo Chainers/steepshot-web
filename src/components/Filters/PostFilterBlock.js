@@ -9,7 +9,7 @@ class PostFilterBlock extends React.Component {
         this.state = {
             filterContainer: [
                 {
-                    label: constants.POST_FILTERS.TRANDING,
+                    label: constants.POST_FILTERS.TRENDING,
                     isActive: true
                 },
                 {

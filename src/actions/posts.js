@@ -1,8 +1,9 @@
-import constants from '../common/constants';
-const baseUrl = constants.URLS.baseUrl;
+import RequestService from '../services/requestService';
 
 export function getPosts() {
-  return fetch(`${baseUrl}/posts/new`, {
+  const url = RequestService.handleRequestPosts(`posts/new`);
+
+  return fetch(url, {
     method: 'GET'
   }).then((response) => {
     if (response.ok) {
@@ -20,10 +21,11 @@ export function getPosts() {
 // New posts
 //https://steepshot.org/api/v1/posts/top?limit=10&offset=/reiki-trail/@reiki-trail/reiki-boost-healing-invocation-9
 export function getNewPosts(offset) {
-  let url = `${baseUrl}/posts/new`;
-  if (offset) {
-    url = `${baseUrl}/posts/new?limit=10&offset=${offset}`;
-  }
+  const url = RequestService.handleRequestPosts(`posts/new`, {
+    offset: offset,
+    limit: 10
+  });
+
   return fetch(url, {
     method: 'GET'
   }).then((response) => {
@@ -42,10 +44,11 @@ export function getNewPosts(offset) {
 // Traiding posts
 //https://steepshot.org/api/v1/posts/top?limit=10&offset=/reiki-trail/@reiki-trail/reiki-boost-healing-invocation-9
 export function getTopPosts(offset) {
-  let url = `${baseUrl}/posts/top`;
-  if (offset) {
-    url = `${baseUrl}/posts/top?limit=10&offset=${offset}`;
-  }
+  const url = RequestService.handleRequestPosts(`posts/top`, {
+    offset: offset,
+    limit: 10
+  });
+  
   return fetch(url, {
     method: 'GET'
   }).then((response) => {
@@ -64,10 +67,11 @@ export function getTopPosts(offset) {
 // Hot posts
 //https://steepshot.org/api/v1/posts/hot?limit=10&offset=/reiki-trail/@reiki-trail/reiki-boost-healing-invocation-9
 export function getHotPosts(offset) {
-  let url = `${baseUrl}/posts/hot`;
-  if (offset) {
-    url = `${baseUrl}/posts/hot?limit=10&offset=${offset}`;
-  }
+  const url = RequestService.handleRequestPosts(`posts/hot`, {
+    offset: offset,
+    limit: 10
+  });
+
   return fetch(url, {
     method: 'GET'
   }).then((response) => {
@@ -85,8 +89,10 @@ export function getHotPosts(offset) {
 
 
 //https://steepshot.org/api/v1/post/joseph//steemfest/@joseph/win-a-free-trip-to-lisbon-portugal-to-attend-steemfest-ii/comments
-export function getPostComments(author, url) {
-  return fetch(`${baseUrl}/post/${author}/${url}/comments`, {
+export function getPostComments(author, authorUrl) {
+  const url = RequestService.handleBaseRequestPosts(`post/${author}/${authorUrl}/comments`);
+
+  return fetch(url, {
     method: 'GET'
   }).then((response) => {
     if (response.ok) {
@@ -111,10 +117,11 @@ export function getPostComments(author, url) {
 /// </summary>
 
 export function getUserPosts(author, offset) {
-  let url = `${baseUrl}/watcher/user/${author}/posts`;
-  if (offset) {
-    url = `${baseUrl}/watcher/user/${author}/posts?offset=${offset}&limit=3`;
-  }
+  const url = RequestService.handleBaseRequestPosts(`watcher/user/${author}/posts`, {
+    offset: offset,
+    limit: 3
+  });
+
   return fetch(url, {
     method: 'GET'
   }).then((response) => {
@@ -140,10 +147,11 @@ export function getUserPosts(author, offset) {
 /// </summary>
 
 export function getUserFeed(author, offset) {
-  let url = `${baseUrl}/watcher/recent/${author}/posts`;
-  if (offset) {
-    url = `${baseUrl}/watcher/recent/${author}/posts?offset=${offset}&limit=3`;
-  }
+  const url = RequestService.handleRequestPosts('recent/posts', {
+    offset: offset,
+    limit: 3
+  });
+  console.log(url);
   return fetch(url, {
     method: 'GET'
   }).then((response) => {
@@ -170,10 +178,11 @@ export function getUserFeed(author, offset) {
 /// </summary>
 export function getNewPostsByCategory(category, offset) {
   category = category.replace(/[^A-Za-zА-Яа-яЁё(\d)+]/g, "")
-  let url = `${baseUrl}/posts/${category}/new`;
-  if (offset) {
-    url = `${baseUrl}/posts/${category}/new?offset=${offset}&limit=5`;
-  }
+
+  const url = RequestService.handleBaseRequestPosts(`posts/${category}`, {
+    offset: offset,
+    limit: 5
+  });
   return fetch(url, {
     method: 'GET'
   }).then((response) => {
@@ -198,11 +207,12 @@ export function getNewPostsByCategory(category, offset) {
 ///            &limit=5 HTTP/1.1
 /// </summary>
 export function getTopPostsByCategory(category, offset) {
-  category = category.replace(/[^A-Za-zА-Яа-яЁё(\d)+]/g, "")
-  let url = `${baseUrl}/posts/${category}/top`;
-  if (offset) {
-    url = `${baseUrl}/posts/${category}/top?offset=${offset}&limit=5`;
-  }
+  category = category.replace(/[^A-Za-zА-Яа-яЁё(\d)+]/g, "");
+
+  const url = RequestService.handleBaseRequestPosts(`posts/${category}`, {
+    offset: offset,
+    limit: 5
+  });
   return fetch(url, {
     method: 'GET'
   }).then((response) => {
@@ -228,10 +238,30 @@ export function getTopPostsByCategory(category, offset) {
 /// </summary>
 export function getHotPostsByCategory(category, offset) {
   category = category.replace(/[^A-Za-zА-Яа-яЁё(\d)+]/g, "")
-  let url = `${baseUrl}/posts/${category}/hot`;
-  if (offset) {
-    url = `${baseUrl}/posts/${category}/hot?offset=${offset}&limit=5`;
-  }
+
+  const url = RequestService.handleBaseRequestPosts(`posts/${category}/hot`, {
+    offset: offset,
+    limit: 5
+  });
+
+  return fetch(url, {
+    method: 'GET'
+  }).then((response) => {
+    if (response.ok) {
+      return response.json().then((json) => {
+        return json;
+      });
+    } else {
+      return response.json().then(() => {
+        return [];
+      });
+    }
+  });
+}
+
+export function getPostShaddow(urlPost) {
+  const url = RequestService.handleBaseRequestPosts(`post/${urlPost}/info`);
+  
   return fetch(url, {
     method: 'GET'
   }).then((response) => {

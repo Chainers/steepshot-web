@@ -1,5 +1,15 @@
 import constants from '../common/constants';
+import { getStore } from '../store/configureStore';
+
 const baseUrl = constants.URLS.baseUrl;
+
+function getUrl() {
+  if (getStore().getState().auth.user){
+    return baseUrl + '/' + getStore().getState().auth.user
+  }
+
+  return baseUrl;
+}
 
 /// <summary>
 ///     Examples:
@@ -7,7 +17,7 @@ const baseUrl = constants.URLS.baseUrl;
 /// </summary>
 
 export function getUserProfile(userName) {
-  return fetch(`${baseUrl}/user/${userName}/info`, {
+  return fetch(`${getUrl()}/user/${userName}/info`, {
     method: 'GET'
   }).then((response) => {
     if (response.ok) {

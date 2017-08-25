@@ -8,6 +8,7 @@ import PropTypes from 'prop-types';
 import Comments from './Comments';
 import constants from '../../common/constants';
 import VouteComponent from './VouteComponent';
+import ItemModal from './ItemModal';
 
 class Item extends React.Component {
   constructor(props) {
@@ -60,32 +61,8 @@ class Item extends React.Component {
     });
   }
 
-  next() {
-    const curIndex = this.state.currentIndex;
-    if (curIndex + 2 == this.props.items.length) {
-      this.props.loadMore();
-    }
-
-    if (curIndex == this.props.items.length) {
-      this.setState({ disableNext: true });
-    } else {
-      const newItem = this.props.items[this.state.currentIndex + 1];
-      this.resetDefaultProperties(newItem);
-      this.setState({ currentIndex: this.state.currentIndex + 1 });
-    }
-  }
-
   componentWillUnmount() {
     this.closeModal();
-  }
-
-  previous() {
-    if (this.state.currentIndex == 0) {
-      this.setState({ disablePrev: true });
-    } else {
-      this.resetDefaultProperties(this.props.items[this.state.currentIndex - 1]);
-      this.setState({ currentIndex: this.state.currentIndex - 1 });
-    }
   }
 
   resetDefaultProperties(newItem) {
@@ -111,15 +88,11 @@ class Item extends React.Component {
     }
 
     this.props.dispatch({
-      type: 'SET_VALUE',
+      type: 'SET_SEARCH_VALUE',
       value: tagValue,
+      text: tagValue.slice(1, tagValue.lenght),
       category: constants.CATEGORIES.tag
     });
-  }
-
-  ratingVotes(event) {
-    event.stopPropagation();
-    console.log('Like.. ' + this.state.item.author + ' post');
   }
 
   redirectToUserProfile() {
@@ -130,28 +103,37 @@ class Item extends React.Component {
     this.setState({ avatar: '/src/images/person.png' });
   }
 
-  setDefaultImage() {
-    this.setState({ image: '/src/images/noimage.jpg' });
-  }
-
   callPreventDefault(e) {
     e.stopPropagation();
     e.preventDefault();
   }
 
-  updateComponent(voute) {
+  updateComponent(vote) {
     let currentItem = this.state.item;
-    currentItem.voute = voute;
+    currentItem.vote = vote;
+    vote ? currentItem.net_votes++ : currentItem.net_votes--;
     this.setState({ 
       item: currentItem
     });
+  }
+
+  _getPostImageStyles(itemImage) {
+    return {
+      backgroundImage: `url(${itemImage})`, 
+      backgroundPosition: 'fixed', 
+      backgroundRepeat: 'no-repeat', 
+      backgroundOrigin: 'center', 
+      backgroundClip: 'content-box', 
+      backgroundSize: 'cover', 
+      backgroundPosition: 'center'
+    };
   }
 
   render() {
     let _this = this;
     let itemImage = this.state.image || '/src/images/noimage.jpg';
     let authorImage = this.state.avatar || '/src/images/person.png';
-    let comments = <Comments item={this.state.item} />;
+    let comments = <Comments key="comments" item={this.state.item} />;
 
     let settings = {
       dots: false,
@@ -167,7 +149,7 @@ class Item extends React.Component {
       <div className="post-container">
         <div className="post-container-item" onClick={this.openModal}>
           <div className="row body-row">
-            <img className="post-img col-md-12 col-sm-12 col-xs-12" src={itemImage} onError={this.setDefaultImage.bind(this)}/>
+            <div className="post-img col-md-12 col-sm-12 col-xs-12" style={this._getPostImageStyles(itemImage)}></div>
           </div>
           <div className="row post-footer">
             <div className="main-info">
@@ -178,15 +160,15 @@ class Item extends React.Component {
                 <Link to={authorLink}><strong>{this.state.item.author}</strong></Link>
               </div>
               <div onClick={(e)=>{this.callPreventDefault(e)}}>
-                <VouteComponent item={this.state.item} updateComponent={this.updateComponent.bind(this)}/>
+                <VouteComponent key="vote" item={this.state.item} updateComponent={this.updateComponent.bind(this)}/>
               </div>
             </div>
             <div className="author-info">
-              <div className="">
+              <div className="author-info-block">
                 <em className="tags-info">
                   {
-                    this.state.item.tags.map((tag) => {
-                      return <a onClick={(event) => _this._research(event, tag)} className="tags-urls">{tag}</a>
+                    this.state.item.tags.map((tag, index) => {
+                      return <a key={index} onClick={(event) => _this._research(event, tag)} className="tags-urls">{tag}</a>
                     })
                   }
                 </em>
@@ -204,60 +186,15 @@ class Item extends React.Component {
           className='popout-container'
           contentLabel="Example Modal"
         >
-          <div id="popup" className="custom-popup">
-            <div className="my-modal">
-              <div className="">
-                <div className="popup-header">
-                  <div className="popup-title">
-                    {this.state.item.title}
-                  </div>
-                  <button type="button" className="close col-lg-1 col-md-1 col-sm-1 col-xs-1"
-                          onClick={this.closeModal}>&times;</button>
-                </div>
-                <div className="popup-body">
-                  <div className="popup-image-block" id="popup-image">
-                    <img className="popup-image" src={itemImage} onError={this.setDefaultImage.bind(this)} alt="Image"/>
-                  </div>
-                  <div className="post-popup-info" id="popup-info">
-                    <div className="author-info">
-                      <div className="">
-                        <img className="user-avatar" src={authorImage} alt="Image" onError={this.setDefaultAvatar.bind(this)} />
-                      </div>
-                      <div className="author-name">
-                        <Link to={authorLink} onClick={this.closeModal}><strong>{this.state.item.author}</strong></Link>
-                        <span>{this.state.item.about}</span>
-                      </div>
-                    </div>
-                    <br/>
-                    <div className="post-info">
-                      <VouteComponent item={this.state.item} updateComponent={this.updateComponent.bind(this)}/>
-                      <div className="">
-                        <span className="payout-reward">{this.state.item.total_payout_reward} </span>
-                      </div>
-                    </div>
-                    <div className="hash-tags">
-                      {
-                        this.state.item.tags.map((tag) => {
-                          return <a onClick={(event) => _this._research(event, tag)} className="tags-urls">{tag}</a>
-                        })
-                      }
-                    </div>
-                    <div className="popup-comments">
-                      {comments}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className='slick-buttons'>
-              <div className='left-button' onClick={this.previous.bind(_this)}>
-                <img className='arrow' src="/src/images/arrow_left.png" alt="Previous post"/>
-              </div>
-              <div className='right-button' onClick={this.next.bind(_this)}>
-                <img className='arrow' src="/src/images/arrow_right.png" alt="Next post"/>
-              </div>
-            </div>
-          </div>
+          <ItemModal 
+            openModal={this.openModal} 
+            closeModal={this.closeModal} 
+            item={this.props.item} 
+            items={this.props.items} 
+            index={this.props.index}
+            updateComponent={this.updateComponent.bind(this)}
+            _research={this._research.bind(this)}
+          />
           <ReactResizeDetector handleWidth handleHeight onResize={this._onResize.bind(this)}/>
         </Modal>
       </div>
