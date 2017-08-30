@@ -3,53 +3,53 @@ import cookie from 'react-cookie';
 import { browserHistory } from 'react-router';
 import fakeAuth from '../components/Routes/fakeAuth';
 import constants from '../common/constants';
+import steem from 'steem';
+import { getStore } from '../store/configureStore';
 
 const baseUrl = constants.URLS.baseUrl;
 
-export function login(username, postingKey) {
-    const url = `${baseUrl}/login-with-posting`;
-    const bodyObject = {
-      'username': username,
-      'password': postingKey 
-    };
-    
-    return fetch(url, {
-      method: 'post',
-      body: JSON.stringify(bodyObject),
-      headers: { 
-        'Content-Type': 'application/json' 
-      }
-    })
-      .then((response) => {
-      if (response.ok) {
-        response.json().then((json) => {
-          localStorage.setItem('user', JSON.stringify(username));
-          localStorage.setItem('postingKey', JSON.stringify(postingKey));
-          fakeAuth.authenticate(() => history.push('/feed'));
-          return {
-            type: 'LOGIN_SUCCESS',
-            postingKey: postingKey,
-            user: username
-          };
-        });
-      } else {
-        response.json().then((json) => {
-          return {
-            type: 'LOGIN_FAILURE',
-            messages: Array.isArray(json) ? json : [json]
-          };
-        });
-      }
-    });
+function getUrl() {
+  if (getStore().getState().auth.user){
+    return baseUrl + '/' + getStore().getState().auth.user
+  }
+
+  return baseUrl;
 }
 
-export function logout(history) {
+export function login(username, postingKey, history, dispatch) {
+  const account = null;
+  steem.api.getAccounts([username], function(err, result) {
+    console.log(result);
+    if (err || !steem.auth.isWif(postingKey)) {
+      return {
+        type: 'LOGIN_FAILURE',
+        messages: "Not valid user name or posting key"
+      };
+    } else if (result && steem.auth.isWif(postingKey)){
+      localStorage.setItem('user', JSON.stringify(username));
+      localStorage.setItem('postingKey', JSON.stringify(postingKey));
+      localStorage.setItem('settings', JSON.stringify({ 
+        nsfw: false,
+        lowRated: false
+      }));
+      dispatch({
+        type: 'LOGIN_SUCCESS',
+        postingKey: postingKey,
+        user: username
+      });
+      fakeAuth.authenticate(() => history.push('/feed'));
+    }
+  });
+}
+
+export function logout(history, dispatch) {
   localStorage.removeItem('user');
   localStorage.removeItem('postingKey');
-  fakeAuth.signout(() => history.push('/'));
-  return {
+  localStorage.removeItem('settings');
+  dispatch({
     type: 'LOGOUT_SUCCESS'
-  };
+  });
+  fakeAuth.signout(() => history.push('/browse'));
 }
 
 export function updateProfile(state, token) {

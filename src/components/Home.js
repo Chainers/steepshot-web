@@ -1,9 +1,9 @@
 import React from 'react';
-import { 
+import {
   getPosts, 
-  getNewPosts, 
-  getHotPosts, 
-  getTopPosts, 
+  getNewPosts,
+  getHotPosts,
+  getTopPosts,
   getNewPostsByCategory,
   getHotPostsByCategory,
   getTopPostsByCategory
@@ -12,8 +12,10 @@ import PostItem from './Posts/Item';
 import { connect, store } from 'react-redux';
 import InfiniteScroll from './Scroller/infinityScroll';
 import PropTypes from 'prop-types';
-import { getStore } from '../store/configureStore';
 import PostFilterBlock from './Filters/PostFilterBlock';
+import { getStore } from '../store/configureStore';
+import Loading from 'react-loading-spinner';
+import LoadingSpinner from './LoadingSpinner';
 
 // constants
 import constants from '../common/constants';
@@ -26,9 +28,10 @@ class Home extends React.Component {
       posts: [],
       hasMore: true,
       offset: null,
-      activeMode: constants.POST_FILTERS.TRANDING
+      loading: true,
+      activeMode: constants.POST_FILTERS.TRENDING
     };
-    
+
     this.store = getStore();
     this.outputUpdate();
     this.resetPosts();
@@ -68,7 +71,8 @@ class Home extends React.Component {
   setDefaultData() {
     this.setState({
       posts: [],
-      offset: null
+      offset: null,
+      loading: true
     });
   }
 
@@ -82,7 +86,7 @@ class Home extends React.Component {
   setPostsByCategory(key, searchValue, isContinue, offset) {
     const callback = this.getCallback(isContinue); 
 
-    if(key == constants.POST_FILTERS.TRANDING) {
+    if(key == constants.POST_FILTERS.TRENDING) {
       this.setTopPostsByCategory(searchValue, offset, callback);
     } else if(key == constants.POST_FILTERS.HOT) {
       this.setHotPostsByCategory(searchValue, offset, callback);
@@ -124,7 +128,7 @@ class Home extends React.Component {
   setDefaultPosts(key, isContinue, offset) {
     const callback = this.getCallback(isContinue); 
 
-    if(key == constants.POST_FILTERS.TRANDING) {
+    if(key == constants.POST_FILTERS.TRENDING) {
       this.setTopPosts(offset, callback);
     } else if(key == constants.POST_FILTERS.HOT) {
       this.setHotPosts(offset, callback);
@@ -163,7 +167,8 @@ class Home extends React.Component {
   handleDefaultPostsResponce(response) {
     this.setState({
       posts: response.results, 
-      offset: response.offset
+      offset: response.offset,
+      loading: false
     });
   }
 
@@ -175,12 +180,14 @@ class Home extends React.Component {
       this.setState({
         posts: newPosts,
         offset: response.offset, 
-        hasMore: false
+        hasMore: false,
+        loading: false
       });
     } else {
       this.setState({
         posts: newPosts, 
-        offset: response.offset
+        offset: response.offset,
+        loading: false
       });
     }
   }
@@ -214,7 +221,11 @@ class Home extends React.Component {
   render() {
     let items = [];
     let _this = this;
-    let renderElements = <div className='loading-block'><br /><h4>No find results for '{this.props.search.value}' filter</h4></div>;
+    let renderElements = <div className='loading-block'><LoadingSpinner /></div>;
+
+    if (!this.state.loading && this.state.posts.length == 0) {
+      renderElements = <div className='loading-block'><br /><h4>No find results for '{this.props.search.value}' filter</h4></div>;
+    }
 
     if (this.state.posts.length > 0) {
       this.state.posts.map((post, index) => {
@@ -224,7 +235,10 @@ class Home extends React.Component {
       renderElements = <InfiniteScroll
           next={this.fetchData.bind(this)}
           hasMore={this.state.hasMore}
-          loader={<div className='loading-block'><br /><h4>Loading...</h4></div>}
+          loader={<div className='loading-block'>
+            <LoadingSpinner />
+            </div>
+          }
           endMessage={
             <p className='loading-block'>
               <b>Yay! You have seen it all</b>
@@ -233,11 +247,13 @@ class Home extends React.Component {
           {items}
         </InfiniteScroll>;
     } else if(this.props.search.value == '') {
-      renderElements = <div className='loading-block'><br /><h4>Loading...</h4></div>;
+      renderElements = <div className='loading-block'>
+        <LoadingSpinner />
+      </div>;
     }
 
     return (
-      <div className="container" id="all-posts">
+      <div className="container-block" id="all-posts">
         <PostFilterBlock updatePostsCallback={this.updatePostsByFolter.bind(this)}/>
         {renderElements}
       </div>

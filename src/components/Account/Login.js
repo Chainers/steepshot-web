@@ -21,7 +21,7 @@ class Login extends React.Component {
 
   handleLogin(event) {
     event.preventDefault();
-    this.props.dispatch(login(this.state.userName, this.state.postingKey, this.props.history));
+    login(this.state.userName, this.state.postingKey, this.props.history, this.props.dispatch)
   }
 
   handleFacebook() {

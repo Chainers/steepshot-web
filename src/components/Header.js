@@ -25,7 +25,7 @@ class Header extends React.Component {
 
   handleLogout(event) {
     event.preventDefault();
-    this.props.dispatch(logout(this.props.history));
+    logout(this.props.history, this.props.dispatch);
   }
 
   _changeLanguageEn() {
@@ -66,20 +66,24 @@ class Header extends React.Component {
     if (isUserAuth) {
       rightNav = (
         <ul className="nav navbar-nav navbar-right">
-        <li className="dropdown">
-          <a href="#" data-toggle="dropdown" className="navbar-avatar dropdown-toggle">
-            <img src={this.props.user.picture || this.props.user.gravatar}/>
-            {' '}{this.props.user}{' '}
-            <i className="caret"></i>
-          </a>
-          <ul className="dropdown-menu">
-            <li><Link to="/feed" activeStyle={active}><i className='glyphicon glyphicon-home'></i> Feed</Link></li>
-            <li><Link to="/blog" activeStyle={active}><i className='glyphicon glyphicon-list-alt'></i> Blog</Link></li>
-            <li className="divider"></li>
-            <li><a href="#" onClick={this.handleLogout.bind(this)}><i className='glyphicon glyphicon-log-out'></i> Logout</a></li>
-          </ul>
-        </li>
-      </ul>
+          <li className="dropdown">
+            <a href="#" data-toggle="dropdown" className="navbar-avatar dropdown-toggle">
+              <img src={this.props.user.picture || this.props.user.gravatar}/>
+              {' '}{this.props.user}{' '}
+              <i className="caret"></i>
+            </a>
+            <ul className="dropdown-menu">
+              <li><Link to="/feed"><i className='glyphicon glyphicon-home'></i> Feed</Link></li>
+              <li><Link to="/blog"><i className='glyphicon glyphicon-list-alt'></i> Blog</Link></li>
+              <li><Link to="/settings"><i className='glyphicon glyphicon-cog'></i> Settings</Link></li>
+              <li className="divider"></li>
+              <li><a href="#" onClick={this.handleLogout.bind(this)}><i className='glyphicon glyphicon-log-out'></i> Logout</a></li>
+            </ul>
+          </li>
+          <li className="add-block">
+            <Link to="/post"><span className="add-icon glyphicon glyphicon-plus-sign"></span></Link>
+          </li>
+        </ul>
       )
     }
 
@@ -88,12 +92,12 @@ class Header extends React.Component {
     } else {
       browse = <ul className="nav navbar-nav">
         <li className="nav-item">
-          <Link to="/browse" className="nav-link" activeStyle={active}>browse</Link>
+          <Link to="/browse" className="nav-link">browse</Link>
         </li>
         {
           (isUserAuth) ? (
             <li className="nav-item">
-              <Link to="/feed" className="nav-link" activeStyle={active}>feed</Link>
+              <Link to="/feed" className="nav-link">feed</Link>
             </li>
           ) : null
         }

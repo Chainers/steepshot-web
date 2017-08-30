@@ -5,6 +5,7 @@ import { connect, store } from 'react-redux';
 import InfiniteScroll from '../Scroller/infinityScroll';
 import PropTypes from 'prop-types';
 import { getStore } from '../../store/configureStore';
+import LoadingSpinner from '../LoadingSpinner';
 
 class Feed extends React.Component {
     constructor(props) {
@@ -64,7 +65,7 @@ class Feed extends React.Component {
     render() {
         let items = [];
         let _this = this;
-        let renderElements = <div className='loading-block'><br /><h4>No find results for '{this.props.search.value}' filter</h4></div>;
+        let renderElements = <div className='loading-block'><LoadingSpinner /></div>;
 
         if (this.state.posts.length > 0) {
             this.state.posts.map((post, index) => {
@@ -74,7 +75,7 @@ class Feed extends React.Component {
             renderElements = <InfiniteScroll
                 next={this.fetchPostsNext.bind(this)}
                 hasMore={this.state.hasMore}
-                loader={<div className='loading-block'><br /><h4>Loading...</h4></div>}
+                loader={<div className='loading-block'><LoadingSpinner /></div>}
                 endMessage={
                     <p className='loading-block'>
                         <b>Yay! You have seen it all</b>
@@ -83,11 +84,11 @@ class Feed extends React.Component {
                 {items}
             </InfiniteScroll>;
         } else if(this.props.search.value == '') {
-            renderElements = <div className='loading-block'><br /><h4>Loading...</h4></div>;
+            renderElements = <div className='loading-block'><LoadingSpinner /></div>;
         }
 
         return(
-            <div className="container" id="all-posts">
+            <div className="container-block" id="all-posts">
                 {renderElements}
             </div>
         );
