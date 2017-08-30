@@ -415,6 +415,7 @@
 .popup-header {
   display: flex;
   flex-direction: row;
+  min-height: 50px;
   justify-content: space-between;
   padding: 15px;
   border-bottom: 1px solid #e5e5e5;
@@ -425,6 +426,13 @@
   flex-direction: row;
   margin-top: 10px;
   padding: 15px;
+}
+
+.popup-follow-body {
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
 }
 
 .popup-image-block {
@@ -449,6 +457,37 @@
   display: flex;
   flex-direction: column;
   overflow: hidden;
+}
+
+.custom-follow-popup {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+
+  .my-modal {
+    height: inherit;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .popup-follow-body {
+    .follow-info {
+      height: 45px;
+    }
+
+    .follow-info {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 10px;
+
+      .follow-button {
+        border: 1px solid black;
+      }
+    }
+  }
 }
 
 .post-popup-info {
@@ -668,6 +707,15 @@ $popupHeight: 300px;
     div {
       span {
         margin-right: 5px;
+      }
+
+      .follow-text {
+        cursor: pointer;
+        color: orange;
+
+        &:hover {
+          color: black;
+        }
       }
     }
   }

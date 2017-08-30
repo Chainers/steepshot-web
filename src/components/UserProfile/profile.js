@@ -1,11 +1,21 @@
 import React from 'react';
 import LocalizedStrings from '../Localization/index.js';
-import { getUserProfile } from '../../actions/profile';
-import { getUserPosts, getUserPostsByCategory } from '../../actions/posts';
+import { 
+  getUserProfile,
+  getFollowers,
+  getFollowing
+} from '../../actions/profile';
+import { 
+  getUserPosts, 
+  getUserPostsByCategory 
+} from '../../actions/posts';
 import PostItem from '../Posts/Item';
 import { connect } from 'react-redux';
 import InfiniteScroll from '../Scroller/infinityScroll';
 import FollowComponent from '../Posts/FollowComponent';
+import Modal from 'react-modal';
+import PopoutFollow from './popoutFollow';
+import LoadingSpinner from '../LoadingSpinner';
 
 class UserProfile extends React.Component {
   constructor(props) {
@@ -17,8 +27,30 @@ class UserProfile extends React.Component {
       localize: LocalizedStrings.getInstance(),
       posts: [],
       hasMore: true,
-      offset: null
+      offset: null,
+      modalIsOpen: false,
+      followCallback: () => {},
+      followTitle: ''
     };
+
+    this.openModal = this.openModal.bind(this);
+    this.afterOpenModal = this.afterOpenModal.bind(this);
+    this.closeModal = this.closeModal.bind(this);
+  }
+
+  openModal() {
+    this.setState({
+      modalIsOpen: true
+    });
+  }
+
+  afterOpenModal() {
+  }
+
+  closeModal() {
+    this.setState({
+      modalIsOpen: false
+    });
   }
 
   componentDidMount() {
@@ -40,6 +72,23 @@ class UserProfile extends React.Component {
     }).then(() => {
       _this.fetchData();
     });
+  }
+
+  showFollowersPopup() {
+    this.setState({ 
+      followCallback: getFollowers.bind(this),
+      followTitle: 'Followers' 
+    });
+    this.openModal();
+  }
+
+
+  showFollowingPopup() {
+    this.setState({ 
+      followCallback: getFollowing.bind(this),
+      followTitle: 'Following' 
+    });
+    this.openModal();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -87,7 +136,7 @@ class UserProfile extends React.Component {
   render() {
     let items = [];
     let _this = this;
-    let profileComponent = <div> Loading... </div>;
+    let profileComponent = <div className='loading-block'><LoadingSpinner /></div>;
     let profileImageSrc = this.state.avatar || "/src/images/person.png";
 
     if (this.state.profile) {
@@ -99,9 +148,26 @@ class UserProfile extends React.Component {
           </div>
           <div>
             <span><strong>{this.state.profile.post_count}</strong> posts</span>
-            <span><strong>{this.state.profile.followers_count}</strong> followers</span>
-            <span><strong>{this.state.profile.following_count}</strong> following</span>
+            <span onClick={this.showFollowersPopup.bind(this)}>
+              <strong className="follow-text">{this.state.profile.followers_count}</strong> followers
+            </span>
+            <span onClick={this.showFollowingPopup.bind(this)}>
+              <strong className="follow-text">{this.state.profile.following_count}</strong> following
+            </span>
           </div>
+          <Modal
+            isOpen={this.state.modalIsOpen}
+            onAfterOpen={this.afterOpenModal.bind(_this)}
+            onRequestClose={this.closeModal}
+            className='popout-container'
+            contentLabel="Example Modal"
+          >
+            <PopoutFollow
+              followCallback={this.state.followCallback}
+              title={this.state.followTitle}
+              requestKey={this.props.username}
+              closeModal={this.closeModal}/>
+          </Modal>
           <div>
             <span><strong>{this.state.profile.name}</strong> {this.state.profile.about} <a
               href={this.state.profile.website}>{this.state.profile.website}</a></span>
@@ -126,7 +192,7 @@ class UserProfile extends React.Component {
           refreshFunction={this.refresh}
           next={this.fetchData.bind(this)}
           hasMore={this.state.hasMore}
-          loader={<h4>Loading...</h4>}
+          loader={<div className='loading-block'><LoadingSpinner /></div>}
           endMessage={
             <p className='loading-block'>
               <b>Yay! You have seen it all</b>

@@ -37,6 +37,14 @@ class BaseRequestService {
     getBaseUrl() {
         return baseUrl;
     }
+
+    handleBaseUrl(request) {
+        if (!request) {
+            return this.getBaseUrl();
+        }
+
+        return this.getBaseUrl() + '/' + request;
+    }
 }
 
 export default BaseRequestService;
