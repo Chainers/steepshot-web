@@ -17,9 +17,9 @@ const location = window.location.pathname;
 
 ReactDOM.render(
   <Provider store={store}>
-    <Router basename={location} history={history}>
+    <BrowserRouter basename={location} history={history}>
       {getRoutes(store)}
-    </Router>
+    </BrowserRouter>
   </Provider>,
   document.getElementById('content')
 );

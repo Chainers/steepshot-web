@@ -63,7 +63,7 @@ const paths = {
   dist: 'dist',
   images: ['images/**/*.png', 'images/**/*.svg', 'images/**/*.ico', 'images/**/*.jpg'],
   distJs: 'dist/js',
-  distImg: 'dist/images',
+  distImg: 'dist/src/images',
   distStyles: 'dist/styles',
   distDeploy: ['dist/**/*', '!dist/index.html']
 };

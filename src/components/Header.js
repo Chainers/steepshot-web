@@ -110,10 +110,10 @@ class Header extends React.Component {
           <div className="navbar-header header-block">
             <button type="button" className="navbar-toggle nav-bar-toggle-button" data-toggle="collapse"
                     data-target="#myNavbar">
-              <img width="60%" src="/src/images/50.jpg" alt=""/>
+              <img width="60%" src="../src/images/50.jpg" alt=""/>
             </button>
             <Link to="/" className="navbar-brand">
-              <img width="130px" src="/src/images/steepshotLogo.png" alt=""/>
+              <img width="130px" src="../src/images/steepshotLogo.png" alt=""/>
             </Link>
           </div>
           <div className="collapse navbar-collapse" id="myNavbar">
@@ -121,7 +121,7 @@ class Header extends React.Component {
               <li className="nav-item">
                 <button className="navbar-brand nav-bar-buttons search-image-block" type="button"
                         onClick={this.searchClick.bind(this)}>
-                  <img className="search-image" width="100%" src="/src/images/search.png"/>
+                  <img className="search-image" width="100%" src="../src/images/search.png"/>
                 </button>
                 {searchBlock}
               </li>
