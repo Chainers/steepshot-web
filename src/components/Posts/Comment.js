@@ -13,11 +13,11 @@ class Comment extends React.Component {
   }
 
   setDefaultAvatar() {
-    this.setState({ avatar: '/src/images/person.png' });
+    this.setState({ avatar: 'src/images/person.png' });
   }
 
   render() {
-    let avatar = this.state.avatar || '/src/images/person.png';
+    let avatar = this.state.avatar || 'src/images/person.png';
     const authorLink = `/userProfile/${this.props.item.author}`;
 
     return (

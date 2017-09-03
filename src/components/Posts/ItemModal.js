@@ -40,11 +40,11 @@ class ItemModal extends React.Component {
     }
 
     setDefaultAvatar() {
-        this.setState({ avatar: '/src/images/person.png' });
+        this.setState({ avatar: 'src/images/person.png' });
     }
 
     setDefaultImage() {
-        this.setState({ image: '/src/images/noimage.jpg' });
+        this.setState({ image: 'src/images/noimage.jpg' });
     }
 
     redirectToUserProfile() {
@@ -85,8 +85,8 @@ class ItemModal extends React.Component {
 
     render() {
         let _this = this;
-        let itemImage = this.state.image || '/src/images/noimage.jpg';
-        let authorImage = this.state.avatar || '/src/images/person.png';
+        let itemImage = this.state.image || 'src/images/noimage.jpg';
+        let authorImage = this.state.avatar || 'src/images/person.png';
         let comments = <Comments key="comments" item={this.state.item} />;
 
         let settings = {
@@ -149,10 +149,10 @@ class ItemModal extends React.Component {
             </div>
             <div className='slick-buttons'>
               <div className='left-button' onClick={this.previous.bind(_this)}>
-                <img className='arrow' src="/src/images/arrow_left.png" alt="Previous post"/>
+                <img className='arrow' src="src/images/arrow_left.png" alt="Previous post"/>
               </div>
               <div className='right-button' onClick={this.next.bind(_this)}>
-                <img className='arrow' src="/src/images/arrow_right.png" alt="Next post"/>
+                <img className='arrow' src="src/images/arrow_right.png" alt="Next post"/>
               </div>
             </div>
           </div>

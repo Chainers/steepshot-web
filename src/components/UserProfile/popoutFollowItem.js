@@ -17,7 +17,7 @@ class PopoutFollowItem extends React.Component {
     }
 
     setDefaultAvatar() {
-        this.setState({ avatar: '/src/images/person.png' });
+        this.setState({ avatar: 'src/images/person.png' });
     }
 
     redirectToUserProfile() {
@@ -34,7 +34,7 @@ class PopoutFollowItem extends React.Component {
 
     render() {
         let _this = this;
-        let authorImage = this.state.avatar || '/src/images/person.png';
+        let authorImage = this.state.avatar || 'src/images/person.png';
 
         let settings = {
         dots: false,

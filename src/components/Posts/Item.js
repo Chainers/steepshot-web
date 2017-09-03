@@ -100,7 +100,7 @@ class Item extends React.Component {
   }
 
   setDefaultAvatar() {
-    this.setState({ avatar: '/src/images/person.png' });
+    this.setState({ avatar: 'src/images/person.png' });
   }
 
   callPreventDefault(e) {
@@ -131,8 +131,8 @@ class Item extends React.Component {
 
   render() {
     let _this = this;
-    let itemImage = this.state.image || '/src/images/noimage.jpg';
-    let authorImage = this.state.avatar || '/src/images/person.png';
+    let itemImage = this.state.image || 'src/images/noimage.jpg';
+    let authorImage = this.state.avatar || 'src/images/person.png';
     let comments = <Comments key="comments" item={this.state.item} />;
 
     let settings = {

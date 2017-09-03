@@ -130,14 +130,14 @@ class UserProfile extends React.Component {
   }
 
   setDefaultAvatar() {
-    this.setState({ avatar: '/src/images/person.png' });
+    this.setState({ avatar: 'src/images/person.png' });
   }
 
   render() {
     let items = [];
     let _this = this;
     let profileComponent = <div className='loading-block'><LoadingSpinner /></div>;
-    let profileImageSrc = this.state.avatar || "/src/images/person.png";
+    let profileImageSrc = this.state.avatar || "src/images/person.png";
 
     if (this.state.profile) {
       profileComponent = <div className='user-profile'>
