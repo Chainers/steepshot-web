@@ -34,6 +34,8 @@ class Item extends React.Component {
 
     propsItem.total_payout_reward = '$' + parseFloat(propsItem.total_payout_reward).toFixed(2);
 
+    propsItem.tags = (propsItem.tags instanceof Array) ? propsItem.tags : propsItem.tags.split(',');
+
     for (let i = 0; i < propsItem.tags.length; i++) {
       propsItem.tags[i] = '#' + propsItem.tags[i];
     }
