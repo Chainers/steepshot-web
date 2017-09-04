@@ -73,7 +73,6 @@ class Header extends React.Component {
               <i className="caret"></i>
             </a>
             <ul className="dropdown-menu">
-              <li><Link to="/feed"><i className='glyphicon glyphicon-home'></i> Feed</Link></li>
               <li><Link to="/blog"><i className='glyphicon glyphicon-list-alt'></i> Blog</Link></li>
               <li><Link to="/settings"><i className='glyphicon glyphicon-cog'></i> Settings</Link></li>
               <li className="divider"></li>
@@ -91,9 +90,6 @@ class Header extends React.Component {
       searchBlock = <Search />;
     } else {
       browse = <ul className="nav navbar-nav">
-        <li className="nav-item">
-          <Link to="/browse" className="nav-link">browse</Link>
-        </li>
         {
           (isUserAuth) ? (
             <li className="nav-item">
@@ -101,6 +97,9 @@ class Header extends React.Component {
             </li>
           ) : null
         }
+        <li className="nav-item">
+          <Link to="/browse" className="nav-link">browse</Link>
+        </li>
       </ul>
     }
 
