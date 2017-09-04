@@ -1,7 +1,13 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { voute } from '../../actions/raitingVoute';
-import { connect } from 'react-redux';
+import {
+  Link
+} from 'react-router-dom';
+import {
+  voute
+} from '../../actions/raitingVoute';
+import {
+  connect
+} from 'react-redux';
 import PropTypes from 'prop-types';
 import Steem from '../../libs/steem';
 

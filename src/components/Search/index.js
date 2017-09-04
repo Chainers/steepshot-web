@@ -1,5 +1,7 @@
 import React from 'react';
-import { connect } from 'react-redux';
+import {
+  connect
+} from 'react-redux';
 import Select from 'react-select';
 import constants from '../../common/constants';
 
@@ -92,8 +94,11 @@ class Search extends React.Component {
           onChange={this.updateValue.bind(this)} 
           searchable={this.state.searchable}
         />
-        <input type="text" name="searchValue" value={this.props.search.text} onChange={this.handleChange.bind(this)}
-               className="form-control col-md-12" placeholder="Start by typing tag..."/>
+        <input type="text" 
+          name="searchValue" 
+          value={this.props.search.text} 
+          onChange={this.handleChange.bind(this)}
+          className="form-control col-md-12" placeholder="Start by typing tag..."/>
         <div className='clear' onClick={this.clearSearch.bind(this)}>&#10006;</div>
       </div>
     );

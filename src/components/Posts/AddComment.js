@@ -1,6 +1,11 @@
 import React from 'react';
-import { Link, withRouter } from 'react-router-dom';
-import { connect } from 'react-redux';
+import {
+  Link,
+  withRouter
+} from 'react-router-dom';
+import {
+  connect
+} from 'react-redux';
 import PropTypes from 'prop-types';
 import Modal from 'react-modal';
 import Steem from '../../libs/steem';
@@ -92,7 +97,11 @@ class AddComment extends React.Component {
                             onClick={this.closeModal.bind(_this)}>&times;</button>
             </div>
             <div>
-              <textarea className="text-block" placeholder="Input comment..." value={this.state.value} onChange={(e) => this.handleChangeTextarea.call(_this, e)}></textarea>
+              <textarea className="text-block" 
+                placeholder="Input comment..." 
+                value={this.state.value} 
+                onChange={(e) => this.handleChangeTextarea.call(_this, e)}>
+              </textarea>
             </div>
             <div className="buttons">
               <div className="button add" onClick={this.addComment.bind(_this)}>Add</div>

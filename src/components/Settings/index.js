@@ -1,15 +1,15 @@
 import React from 'react';
-import { 
-    getNSFW, 
-    getLowRated, 
+import {
+    getNSFW,
+    getLowRated,
     updateLowRated,
     updateNSFW,
     getSettings,
     updateSettings
 } from '../../actions/settings';
-import { 
-    connect, 
-    store 
+import {
+    connect,
+    store
 } from 'react-redux';
 import PropTypes from 'prop-types';
 

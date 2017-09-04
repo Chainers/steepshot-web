@@ -1,7 +1,11 @@
 import React from 'react';
 import Steem from '../../libs/steem';
-import { connect } from 'react-redux';
-import { getPostShaddow } from '../../actions/posts';
+import {
+    connect
+} from 'react-redux';
+import {
+    getPostShaddow
+} from '../../actions/posts';
 
 class CreatePost extends React.Component {
     constructor(props) {
@@ -116,10 +120,30 @@ class CreatePost extends React.Component {
                     <input placeholder="Input titile" type="text" name="title" id="title" value={this.state.title} onChange={this.handleChange.bind(this)}/>
 
                     <label>Input tags</label>
-                    <input placeholder="Input first tag and main tag" type="text" name="tagFirst" id="tagFirst" value={this.state.tagFirst} onChange={this.handleChange.bind(this)}/>
-                    <input placeholder="Input second tag" type="text" name="tagSecond" id="tagSecond" value={this.state.tagSecond} onChange={this.handleChange.bind(this)}/>
-                    <input placeholder="Input third tag" type="text" name="tagThird" id="tagThird" value={this.state.tagThird} onChange={this.handleChange.bind(this)}/>
-                    <input placeholder="Input fouth tag" type="text" name="tagFouth" id="tagFouth" value={this.state.tagFouth} onChange={this.handleChange.bind(this)}/>
+                    <input placeholder="Input first tag and main tag"
+                        type="text"
+                        name="tagFirst"
+                        id="tagFirst"
+                        value={this.state.tagFirst}
+                        onChange={this.handleChange.bind(this)}/>
+                    <input placeholder="Input second tag"
+                        type="text"
+                        name="tagSecond"
+                        id="tagSecond"
+                        value={this.state.tagSecond}
+                        onChange={this.handleChange.bind(this)}/>
+                    <input placeholder="Input third tag"
+                        type="text"
+                        name="tagThird"
+                        id="tagThird"
+                        value={this.state.tagThird}
+                        onChange={this.handleChange.bind(this)}/>
+                    <input placeholder="Input fouth tag"
+                        type="text"
+                        name="tagFouth"
+                        id="tagFouth"
+                        value={this.state.tagFouth}
+                        onChange={this.handleChange.bind(this)}/>
 
                     <label>Choose you photo</label>
                     <input className="file-input" 

@@ -1,8 +1,21 @@
 import React from 'react';
-import { Link, withRouter } from 'react-router-dom';
-import { connect } from 'react-redux'
-import { login } from '../../actions/auth';
-import { facebookLogin, twitterLogin, googleLogin, vkLogin, githubLogin } from '../../actions/oauth';
+import {
+  Link,
+  withRouter
+} from 'react-router-dom';
+import {
+  connect
+} from 'react-redux'
+import {
+  login
+} from '../../actions/auth';
+import {
+  facebookLogin,
+  twitterLogin,
+  googleLogin,
+  vkLogin,
+  githubLogin
+} from '../../actions/oauth';
 import Messages from '../Messages';
 import steemconnect from 'steemconnect';
 
@@ -16,7 +29,9 @@ class Login extends React.Component {
   }
 
   handleChange(event) {
-    this.setState({ [event.target.name]: event.target.value });
+    this.setState({ 
+      [event.target.name]: event.target.value 
+    });
   }
 
   handleLogin(event) {
@@ -56,13 +71,32 @@ class Login extends React.Component {
           <h2>SignIn</h2>
           <div className="form-group">
             <label htmlFor="email">Username</label>
-            <input type="text" name="userName" id="userName" placeholder="userName" autoFocus className="form-control" value={this.state.userName} onChange={this.handleChange.bind(this)}/>
+            <input type="text"
+              name="userName"
+              id="userName"
+              placeholder="userName"
+              className="form-control"
+              value={this.state.userName}
+              onChange={this.handleChange.bind(this)}
+            />
           </div>
           <div className="form-group">
             <label htmlFor="password">Posting key</label>
-            <input type="password" name="postingKey" id="postingKey" placeholder="Posting key" className="form-control" value={this.state.postingKey} onChange={this.handleChange.bind(this)}/>
+            <input type="password"
+              name="postingKey"
+              id="postingKey"
+              placeholder="Posting key"
+              autoFocus
+              className="form-control"
+              value={this.state.postingKey}
+              onChange={this.handleChange.bind(this)}
+            />
           </div>
-          <button type="submit" onClick={this.handleLogin.bind(this)} className="btn btn-default">Log in</button>
+          <button type="submit" 
+            onClick={this.handleLogin.bind(this)} 
+            className="btn btn-default">
+            Log in
+          </button>
           <br/>
           <br/>
           <a onClick={this.openRegisterSite}>Register</a>

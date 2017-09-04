@@ -1,9 +1,11 @@
 import React from 'react';
-import { 
-    Link, 
-    Redirect 
+import {
+    Link,
+    Redirect
 } from 'react-router-dom';
-import { connect } from 'react-redux';
+import {
+  connect
+} from 'react-redux';
 import PropTypes from 'prop-types';
 import PopoupFollowItem from './popoutFollowItem';
 import LoadingSpinner from '../LoadingSpinner';
@@ -96,8 +98,11 @@ class PopoutFollow extends React.Component {
               <div className="popup-title">
                 {this.props.title}
               </div>
-              <button type="button" className="close col-lg-1 col-md-1 col-sm-1 col-xs-1"
-                      onClick={this.props.closeModal}>&times;</button>
+              <button type="button" 
+                className="close col-lg-1 col-md-1 col-sm-1 col-xs-1"
+                onClick={this.props.closeModal}>
+                  &times;
+              </button>
             </div>
             <div className="popup-follow-body">
               { renderElements }

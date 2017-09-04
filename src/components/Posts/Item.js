@@ -1,9 +1,16 @@
 import React from 'react';
 import Modal from 'react-modal';
-import { Link, Redirect } from 'react-router-dom';
-import { getPostComments } from '../../actions/posts';
+import {
+  Link,
+  Redirect
+} from 'react-router-dom';
+import {
+  getPostComments
+} from '../../actions/posts';
 import ReactResizeDetector from 'react-resize-detector';
-import { connect } from 'react-redux';
+import {
+  connect
+} from 'react-redux';
 import PropTypes from 'prop-types';
 import Comments from './Comments';
 import constants from '../../common/constants';
@@ -95,6 +102,8 @@ class Item extends React.Component {
       text: tagValue.slice(1, tagValue.lenght),
       category: constants.CATEGORIES.tag
     });
+
+    this.props.history.push('/browse');
   }
 
   redirectToUserProfile() {
@@ -162,7 +171,10 @@ class Item extends React.Component {
                 <Link to={authorLink}><strong>{this.state.item.author}</strong></Link>
               </div>
               <div onClick={(e)=>{this.callPreventDefault(e)}}>
-                <VouteComponent key="vote" item={this.state.item} updateComponent={this.updateComponent.bind(this)}/>
+                <VouteComponent key="vote" 
+                  item={this.state.item} 
+                  updateComponent={this.updateComponent.bind(this)}
+                />
               </div>
             </div>
             <div className="author-info">
@@ -170,7 +182,11 @@ class Item extends React.Component {
                 <em className="tags-info">
                   {
                     this.state.item.tags.map((tag, index) => {
-                      return <a key={index} onClick={(event) => _this._research(event, tag)} className="tags-urls">{tag}</a>
+                      return <a key={index} 
+                        onClick={(event) => _this._research.bind(_this, event, tag)} 
+                        className="tags-urls">
+                          {tag}
+                        </a>
                     })
                   }
                 </em>
@@ -197,7 +213,11 @@ class Item extends React.Component {
             updateComponent={this.updateComponent.bind(this)}
             _research={this._research.bind(this)}
           />
-          <ReactResizeDetector handleWidth handleHeight onResize={this._onResize.bind(this)}/>
+          <ReactResizeDetector 
+            handleWidth 
+            handleHeight 
+            onResize={this._onResize.bind(this)}
+          />
         </Modal>
       </div>
     );

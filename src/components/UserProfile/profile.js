@@ -142,7 +142,10 @@ class UserProfile extends React.Component {
 
     if (this.state.profile) {
       profileComponent = <div className='user-profile'>
-        <img className="user-big-avatar" src={profileImageSrc} alt="Image" onError={this.setDefaultAvatar.bind(this)}/>
+        <img className="user-big-avatar" 
+          src={profileImageSrc} 
+          alt="Image" 
+          onError={this.setDefaultAvatar.bind(this)}/>
         <div className='profile-info'>
           <div>
             <h3>{this.state.profile.username}</h3>
@@ -181,7 +184,14 @@ class UserProfile extends React.Component {
     }
 
     this.state.posts.map((post, index) => {
-      items.push(<PostItem key={index} item={post} items={_this.state.posts} index={index} loadMore={this.fetchData.bind(this)} />);
+      items.push(<PostItem
+        key={index}
+        item={post}
+        items={_this.state.posts}
+        index={index}
+        history={this.props.history}
+        loadMore={this.fetchData.bind(this)} />
+      );
     });
 
     return (

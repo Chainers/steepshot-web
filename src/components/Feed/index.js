@@ -1,10 +1,17 @@
 import React from 'react';
-import { getUserFeed } from '../../actions/posts';
+import { 
+    getUserFeed 
+} from '../../actions/posts';
 import PostItem from '../Posts/Item';
-import { connect, store } from 'react-redux';
+import {
+    connect,
+    store
+} from 'react-redux';
 import InfiniteScroll from '../Scroller/infinityScroll';
 import PropTypes from 'prop-types';
-import { getStore } from '../../store/configureStore';
+import {
+    getStore
+} from '../../store/configureStore';
 import LoadingSpinner from '../LoadingSpinner';
 
 class Feed extends React.Component {
@@ -69,7 +76,14 @@ class Feed extends React.Component {
 
         if (this.state.posts.length > 0) {
             this.state.posts.map((post, index) => {
-                items.push(<PostItem key={index} item={post} items={_this.state.posts} index={index} loadMore={this.fetchPostsNext.bind(this)}/>);
+                items.push(<PostItem
+                    key={index}
+                    item={post}
+                    items={_this.state.posts}
+                    index={index}
+                    history={this.props.history}
+                    loadMore={this.fetchPostsNext.bind(this)}/>
+                );
             });
 
             renderElements = <InfiniteScroll

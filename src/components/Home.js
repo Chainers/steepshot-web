@@ -9,11 +9,16 @@ import {
   getTopPostsByCategory
 } from '../actions/posts';
 import PostItem from './Posts/Item';
-import { connect, store } from 'react-redux';
+import { 
+  connect, 
+  store 
+} from 'react-redux';
 import InfiniteScroll from './Scroller/infinityScroll';
 import PropTypes from 'prop-types';
 import PostFilterBlock from './Filters/PostFilterBlock';
-import { getStore } from '../store/configureStore';
+import { 
+  getStore 
+} from '../store/configureStore';
 import Loading from 'react-loading-spinner';
 import LoadingSpinner from './LoadingSpinner';
 
@@ -229,7 +234,14 @@ class Home extends React.Component {
 
     if (this.state.posts.length > 0) {
       this.state.posts.map((post, index) => {
-        items.push(<PostItem key={index} item={post} items={_this.state.posts} index={index} loadMore={this.fetchData.bind(this)}/>);
+        items.push(<PostItem
+          key={index}
+          item={post}
+          items={_this.state.posts}
+          index={index}
+          history={this.props.history}
+          loadMore={this.fetchData.bind(this)}
+        />);
       });
 
       renderElements = <InfiniteScroll

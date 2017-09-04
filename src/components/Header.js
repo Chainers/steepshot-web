@@ -1,11 +1,21 @@
 import React from 'react';
-import { Link, withRouter } from 'react-router-dom';
+import {
+  Link,
+  withRouter
+} from 'react-router-dom';
 import LocalizedStrings from './Localization/index.js';
 import Search from './Search/index.js';
-import { getLanguage, getAllLanguages } from '../actions/localization';
-import { connect } from 'react-redux';
+import {
+  getLanguage,
+  getAllLanguages
+} from '../actions/localization';
+import {
+  connect
+} from 'react-redux';
 import PropTypes from 'prop-types';
-import { logout } from '../actions/auth';
+import {
+  logout
+} from '../actions/auth';
 
 let localizedStrings = LocalizedStrings.getInstance();
 
@@ -73,14 +83,31 @@ class Header extends React.Component {
               <i className="caret"></i>
             </a>
             <ul className="dropdown-menu">
-              <li><Link to="/profile"><i className='glyphicon glyphicon-list-alt'></i> Profile</Link></li>
-              <li><Link to="/settings"><i className='glyphicon glyphicon-cog'></i> Settings</Link></li>
+              <li>
+                <Link to="/profile">
+                  <i className='glyphicon glyphicon-list-alt'></i>
+                  Profile
+                </Link>
+              </li>
+              <li>
+                <Link to="/settings">
+                  <i className='glyphicon glyphicon-cog'></i>
+                  Settings
+                </Link>
+              </li>
               <li className="divider"></li>
-              <li><a href="#" onClick={this.handleLogout.bind(this)}><i className='glyphicon glyphicon-log-out'></i> Logout</a></li>
+              <li>
+                <a href="#" onClick={this.handleLogout.bind(this)}>
+                  <i className='glyphicon glyphicon-log-out'></i>
+                  Logout
+                </a>
+              </li>
             </ul>
           </li>
           <li className="add-block">
-            <Link to="/post"><span className="add-icon glyphicon glyphicon-plus-sign"></span></Link>
+            <Link to="/post">
+              <span className="add-icon glyphicon glyphicon-plus-sign"></span>
+            </Link>
           </li>
         </ul>
       )
@@ -107,20 +134,32 @@ class Header extends React.Component {
       <nav className="navbar navbar-default header-block">
         <div className="container-fluid">
           <div className="navbar-header header-block">
-            <button type="button" className="navbar-toggle nav-bar-toggle-button" data-toggle="collapse"
-                    data-target="#myNavbar">
-              <img width="60%" src="src/images/50.jpg" alt=""/>
+            <button type="button" 
+              className="navbar-toggle nav-bar-toggle-button"
+              data-toggle="collapse"
+              data-target="#myNavbar">
+              <img width="60%" 
+                src="src/images/50.jpg" 
+                alt=""
+              />
             </button>
             <Link to="/" className="navbar-brand">
-              <img width="130px" src="src/images/steepshotLogo.png" alt=""/>
+              <img width="130px" 
+                src="src/images/steepshotLogo.png" 
+                alt=""
+              />
             </Link>
           </div>
           <div className="collapse navbar-collapse" id="myNavbar">
             <ul className="nav navbar-nav">
               <li className="nav-item">
-                <button className="navbar-brand nav-bar-buttons search-image-block" type="button"
-                        onClick={this.searchClick.bind(this)}>
-                  <img className="search-image" width="100%" src="src/images/search.png"/>
+                <button className="navbar-brand nav-bar-buttons search-image-block" 
+                  type="button"
+                  onClick={this.searchClick.bind(this)}>
+                  <img className="search-image"
+                    width="100%"
+                    src="src/images/search.png"
+                  />
                 </button>
                 {searchBlock}
               </li>

@@ -1,7 +1,11 @@
 import React from 'react';
-import { getPostComments } from '../../actions/posts';
+import {
+  getPostComments
+} from '../../actions/posts';
 import Comment from './Comment';
-import { connect } from 'react-redux';
+import {
+  connect
+} from 'react-redux';
 import PropTypes from 'prop-types';
 
 class Comments extends React.Component {

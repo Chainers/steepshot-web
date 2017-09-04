@@ -1,7 +1,13 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { voute } from '../../actions/raitingVoute';
-import { connect } from 'react-redux';
+import {
+  Link
+} from 'react-router-dom';
+import {
+  voute
+} from '../../actions/raitingVoute';
+import {
+  connect
+} from 'react-redux';
 import PropTypes from 'prop-types';
 import Steem from '../../libs/steem';
 
@@ -35,7 +41,8 @@ class VouteComponent extends React.Component {
     }
     
     return (
-        <div className="rating-block pull-right span-with-no-border" onClick={(event) => this.ratingVotes.call(this, event)}>
+        <div className="rating-block pull-right span-with-no-border" 
+          onClick={(event) => this.ratingVotes.call(this, event)}>
           {component}
         </div>
     );
