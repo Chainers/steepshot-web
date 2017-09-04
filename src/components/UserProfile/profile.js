@@ -25,6 +25,7 @@ class UserProfile extends React.Component {
       authorName: this.props.username,
       profile: null,
       localize: LocalizedStrings.getInstance(),
+      showFollow: this.props.showFollow != undefined ? this.props.showFollow  : true,
       posts: [],
       hasMore: true,
       offset: null,
@@ -173,7 +174,7 @@ class UserProfile extends React.Component {
               href={this.state.profile.website}>{this.state.profile.website}</a></span>
           </div>
           <div>
-            <FollowComponent item={this.state.profile} />
+            { this.state.showFollow ? <FollowComponent item={this.state.profile} /> : null }
           </div>
         </div>
       </div>

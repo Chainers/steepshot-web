@@ -27,7 +27,7 @@ class CreatePost extends React.Component {
         const callback = (result, message) => { 
             if (result) {
                 this._getPostShaddow(message);
-                this.props.history.push('/blog'); 
+                this.props.history.push('/profile'); 
             } else {
                 this.setState({ 
                     message: 'You can only create posts after 5 minutes after previous.' 
@@ -46,7 +46,7 @@ class CreatePost extends React.Component {
             if (result && result.length === 0) {
                 return _this._getPostShaddow(message);
             }
-            _this.props.history.push('/blog'); 
+            _this.props.history.push('/profile'); 
         });
     }
 

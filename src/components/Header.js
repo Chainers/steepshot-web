@@ -73,7 +73,7 @@ class Header extends React.Component {
               <i className="caret"></i>
             </a>
             <ul className="dropdown-menu">
-              <li><Link to="/blog"><i className='glyphicon glyphicon-list-alt'></i> Blog</Link></li>
+              <li><Link to="/profile"><i className='glyphicon glyphicon-list-alt'></i> Profile</Link></li>
               <li><Link to="/settings"><i className='glyphicon glyphicon-cog'></i> Settings</Link></li>
               <li className="divider"></li>
               <li><a href="#" onClick={this.handleLogout.bind(this)}><i className='glyphicon glyphicon-log-out'></i> Logout</a></li>
