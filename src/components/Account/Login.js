@@ -44,6 +44,10 @@ class Login extends React.Component {
     this.props.dispatch(githubLogin())
   }
 
+  openRegisterSite() {
+    window.open('https://steemit.com/pick_account');
+  }
+
   render() {
     return (
       <div className="col-md-12 sing-container">
@@ -59,6 +63,9 @@ class Login extends React.Component {
             <input type="password" name="postingKey" id="postingKey" placeholder="Posting key" className="form-control" value={this.state.postingKey} onChange={this.handleChange.bind(this)}/>
           </div>
           <button type="submit" onClick={this.handleLogin.bind(this)} className="btn btn-default">Log in</button>
+          <br/>
+          <br/>
+          <a onClick={this.openRegisterSite}>Register</a>
         </div>
       </div>
     );
