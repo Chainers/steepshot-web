@@ -479,6 +479,7 @@
 
 .custom-follow-popup .popup-follow-body .follow-info .follow-button {
   border: 1px solid black;
+  cursor: pointer;
 }
 
 .post-popup-info {

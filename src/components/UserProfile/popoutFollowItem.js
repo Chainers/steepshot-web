@@ -5,6 +5,7 @@ import {
 } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import FollowComponent from '../Posts/FollowComponent';
 
 class PopoutFollowItem extends React.Component {
     constructor(props) {
@@ -32,6 +33,10 @@ class PopoutFollowItem extends React.Component {
         });
     }
 
+    followUser(event, isFollow) {
+      <FollowComponent item={this.state.profile} />
+    }
+
     render() {
         let _this = this;
         let authorImage = this.state.avatar || 'src/images/person.png';
@@ -47,7 +52,8 @@ class PopoutFollowItem extends React.Component {
         const authorLink = `/userProfile/${this.state.item.author}`;
 
         const followElement = this.state.item.has_followed ?
-          <div className="follow-button">Follow</div> : <div className="follow-button">Unfollow</div>
+          <div className="follow-button" onClick={(e) => this.followUser.bind(this, e, true)}>+ Follow</div> 
+          : <div className="follow-button" onClick={(e) => this.followUser.bind(this, e, false)}>- Unfollow</div>
 
 
         return(
@@ -65,7 +71,7 @@ class PopoutFollowItem extends React.Component {
                 </Link>
               </div>
               <div>
-                { followElement }
+                <FollowComponent item={this.state.item} />
               </div>
             </div>
           </div>
