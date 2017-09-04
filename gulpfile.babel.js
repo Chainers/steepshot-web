@@ -134,7 +134,7 @@ gulp.task('styles', () => {
 gulp.task('htmlReplace', () => {
   gulp.src('index.html')
   .pipe(htmlReplace({
-    css: ['styles/normalize.css', 'styles/bootstrap.css', 'styles/main.css', 'styles/posts.css'],
+    css: ['styles/normalize.css', 'styles/main.css', 'styles/posts.css'],
     js: ['js/app.js',]
    }))
   .pipe(gulp.dest(paths.dist));
