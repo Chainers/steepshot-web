@@ -144,6 +144,13 @@ class Item extends React.Component {
     };
   }
 
+  getFormatedDate() {
+    const date = new Date(this.state.item.created);
+    const locale = "en-us";
+
+    return date.getDate() + ' ' + date.toLocaleString(locale, { month: "short" }) + ' ' + date.getFullYear();
+  }
+
   render() {
     let _this = this;
     let itemImage = this.state.image || 'src/images/noimage.jpg';
@@ -164,7 +171,7 @@ class Item extends React.Component {
       <div className="item-wrap">
         <div className="post-card" >
           <div className="card-head clearfix">
-            <div className="date">{this.state.item.created}</div>
+            <div className="date">{this.getFormatedDate()}</div>
             <Link to={authorLink} className="user">
               <div className="photo">
                 <img src={authorImage} alt="User" onError={this.setDefaultAvatar.bind(this)}/>
