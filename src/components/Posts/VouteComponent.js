@@ -34,15 +34,14 @@ class VouteComponent extends React.Component {
   }
 
   render() {
-    let component = <span className='star rating-text'>&#9825; {this.state.item.net_votes}</span>
+    let component = <button type="button" className="btn-like"></button>;
 
     if (this.state.vote) {
-      component = <span className='star rating-text filled'>&hearts; {this.state.item.net_votes}</span>
+      component = <button type="button" className="btn-like liked"></button>;
     }
     
     return (
-        <div className="rating-block pull-right span-with-no-border" 
-          onClick={(event) => this.ratingVotes.call(this, event)}>
+        <div className="wrap-btn" onClick={(event) => this.ratingVotes.call(this, event)}>
           {component}
         </div>
     );

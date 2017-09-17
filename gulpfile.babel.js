@@ -31,6 +31,8 @@ import awspublish from 'gulp-awspublish';
 import s3_index from 'gulp-s3-index';
 import revall from 'gulp-rev-all';
 
+import historyApiFallback from 'connect-history-api-fallback';
+
 var bases = {
  app: 'src/',
  dist: 'dist/',
@@ -84,7 +86,9 @@ gulp.task('clean', cb => {
 gulp.task('browserSync', () => {
   browserSync({
     server: {
-      baseDir: './'
+      baseDir: './',
+      middleware: [ historyApiFallback() ],
+      index: 'index.html'
     }
   });
 

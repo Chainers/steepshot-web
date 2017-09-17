@@ -116,59 +116,74 @@ class Header extends React.Component {
     if (this.state.isSearchOpen || !!this.props.search.value) {
       searchBlock = <Search />;
     } else {
-      browse = <ul className="nav navbar-nav">
+      browse = <div className="section menu">
+        <div className="wrap-menu">
         {
           (isUserAuth) ? (
-            <li className="nav-item">
-              <Link to="/feed" className="nav-link">feed</Link>
-            </li>
-          ) : null
+          <div className="item active">
+            <Link to="/feed">Feed</Link>
+          </div>
+          ) : null 
         }
-        <li className="nav-item">
-          <Link to="/browse" className="nav-link">browse</Link>
-        </li>
-      </ul>
+          <div className="item">
+            <Link to="/browse">Browse</Link>
+          </div>
+        </div>
+      </div>
     }
 
     return (
-      <nav className="navbar navbar-default header-block">
-        <div className="container-fluid">
-          <div className="navbar-header header-block">
-            <button type="button" 
-              className="navbar-toggle nav-bar-toggle-button"
-              data-toggle="collapse"
-              data-target="#myNavbar">
-              <img width="60%" 
-                src="src/images/50.jpg" 
-                alt=""
-              />
-            </button>
-            <Link to="/" className="navbar-brand">
-              <img width="130px" 
-                src="src/images/steepshotLogo.png" 
-                alt=""
-              />
-            </Link>
-          </div>
-          <div className="collapse navbar-collapse" id="myNavbar">
-            <ul className="nav navbar-nav">
-              <li className="nav-item">
-                <button className="navbar-brand nav-bar-buttons search-image-block" 
-                  type="button"
-                  onClick={this.searchClick.bind(this)}>
-                  <img className="search-image"
-                    width="100%"
-                    src="src/images/search.png"
-                  />
-                </button>
-                {searchBlock}
-              </li>
-            </ul>
-            {browse}
-            {rightNav}
+      <div className="g-header">
+        <div className="container">
+          <div className="user-panel">
+            <div className="wrap-panel clearfix">
+              <div className="section hamburger">
+                <div className="wrap-hamburger">
+                  <button type="button" className="mm-opener">
+                    <span className="ico"></span>
+                  </button>
+                </div>
+              </div>
+              <div className="section controls">
+                <div className="wrap-controls">
+                  <a href="#" className="btn-control settings"></a>
+                  <a href="#" className="btn-control logout"></a>
+                </div>
+              </div>
+              <div className="section create">
+                <div className="wrap-create">
+                  <button type="button" className="btn btn-primary btn-xs btn-create">
+                    <Link to="post">Create post</Link>
+                  </button>
+                  <button type="button" className="btn btn-primary btn-create-mob"></button>
+                </div>
+              </div>
+              <div className="section user">
+                <div className="wrap-user">
+                  <a href="#" className="user-link clearfix">
+                    <div className="photo">
+                      <img src="src/images/tmp/user-photo-small.jpg" alt="user" />
+                    </div>
+                    <div className="name">{this.props.user}</div>
+                  </a>
+                </div>
+              </div>
+              <div className="section logo">
+                <a href="/" className="wrap-logo">
+                  <img src="src/images/logo.svg" alt="logo" />
+                </a>
+              </div>
+              <div className="section search">
+                <div className="wrap-search">
+                  <a href="#" className="lnk-search">Search</a>
+                  <a href="#" className="lnk-search-mob"></a>
+                </div>
+              </div>
+              {browse}
+            </div>
           </div>
         </div>
-      </nav>
+      </div>
     );
   }
 }

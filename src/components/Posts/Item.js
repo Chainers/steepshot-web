@@ -114,6 +114,10 @@ class Item extends React.Component {
     this.setState({ avatar: 'src/images/person.png' });
   }
 
+  setDefaultImage() {
+    this.setState({ image: 'src/images/noimage.jpg' });
+  }
+
   callPreventDefault(e) {
     e.stopPropagation();
     e.preventDefault();
@@ -157,42 +161,45 @@ class Item extends React.Component {
     const authorLink = `/userProfile/${this.state.item.author}`;
 
     return (
-      <div className="post-container">
-        <div className="post-container-item" onClick={this.openModal}>
-          <div className="row body-row">
-            <div className="post-img col-md-12 col-sm-12 col-xs-12" style={this._getPostImageStyles(itemImage)}></div>
+      <div className="item-wrap">
+        <div className="post-card" >
+          <div className="card-head clearfix">
+            <div className="date">{this.state.item.created}</div>
+            <Link to={authorLink} className="user">
+              <div className="photo">
+                <img src={authorImage} alt="User" onError={this.setDefaultAvatar.bind(this)}/>
+              </div>
+              <div className="name">{this.state.item.author}</div>
+            </Link>
           </div>
-          <div className="row post-footer">
-            <div className="main-info">
-              <div className="">
-                <img className="user-avatar" src={authorImage} alt="Image" onError={this.setDefaultAvatar.bind(this)}/>
+          <div className="card-body" >
+            <div className="card-pic" onClick={this.openModal}>
+                <img src={itemImage} alt="User" onError={this.setDefaultImage.bind(this)}/>
               </div>
-              <div className="">
-                <Link to={authorLink}><strong>{this.state.item.author}</strong></Link>
+            <div className="card-wrap">
+              <div className="card-controls clearfix">
+                <div className="wrap-btn" onClick={(e)=>{this.callPreventDefault(e)}}>
+                  <VouteComponent key="vote" 
+                    item={this.state.item} 
+                    updateComponent={this.updateComponent.bind(this)}
+                  />
+                </div>
+                <div className="wrap-counts clearfix">
+                  <div className="likes">{this.state.item.net_votes} likes</div>
+                  <div className="amount">{this.state.item.total_payout_reward}</div>
+                </div>
               </div>
-              <div onClick={(e)=>{this.callPreventDefault(e)}}>
-                <VouteComponent key="vote" 
-                  item={this.state.item} 
-                  updateComponent={this.updateComponent.bind(this)}
-                />
-              </div>
-            </div>
-            <div className="author-info">
-              <div className="author-info-block">
-                <em className="tags-info">
-                  {
-                    this.state.item.tags.map((tag, index) => {
-                      return <a key={index} 
-                        onClick={(event) => _this._research.bind(_this, event, tag)} 
-                        className="tags-urls">
-                          {tag}
-                        </a>
-                    })
-                  }
-                </em>
-              </div>
-              <div className="payout-reward ">
-                {this.state.item.total_payout_reward}
+              <div className="card-preview">{this.state.item.title}</div>
+              <div className="card-tags clearfix">
+                {
+                  this.state.item.tags.map((tag, index) => {
+                    return <a key={index} 
+                      onClick={(event) => _this._research.bind(_this, event, tag)} 
+                      >
+                        {tag}
+                      </a>
+                  })
+                }
               </div>
             </div>
           </div>

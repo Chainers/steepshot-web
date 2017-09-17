@@ -102,8 +102,8 @@ class Feed extends React.Component {
         }
 
         return(
-            <div className="container-block" id="all-posts">
-                {renderElements}
+            <div className="posts-list clearfix" id="all-posts">
+                {items}
             </div>
         );
     }
