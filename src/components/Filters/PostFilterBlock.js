@@ -61,7 +61,7 @@ class PostFilterBlock extends React.Component {
                                 styles = 'filter-item active';
                             }
 
-                            return <div className={styles} 
+                            return <div className={styles} key={index}
                                 onClick={this.switchFilter.bind(this, index)}>
                                 {item.label}
                             </div>

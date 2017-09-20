@@ -27,31 +27,14 @@ class UserProfile extends React.Component {
       localize: LocalizedStrings.getInstance(),
       showFollow: this.props.showFollow != undefined ? this.props.showFollow  : true,
       posts: [],
+      followers: [],
+      following: [],
       hasMore: true,
       offset: null,
       modalIsOpen: false,
       followCallback: () => {},
       followTitle: ''
     };
-
-    this.openModal = this.openModal.bind(this);
-    this.afterOpenModal = this.afterOpenModal.bind(this);
-    this.closeModal = this.closeModal.bind(this);
-  }
-
-  openModal() {
-    this.setState({
-      modalIsOpen: true
-    });
-  }
-
-  afterOpenModal() {
-  }
-
-  closeModal() {
-    this.setState({
-      modalIsOpen: false
-    });
   }
 
   componentDidMount() {
@@ -80,7 +63,6 @@ class UserProfile extends React.Component {
       followCallback: getFollowers.bind(this),
       followTitle: 'Followers' 
     });
-    this.openModal();
   }
 
 
@@ -89,7 +71,6 @@ class UserProfile extends React.Component {
       followCallback: getFollowing.bind(this),
       followTitle: 'Following' 
     });
-    this.openModal();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -139,48 +120,66 @@ class UserProfile extends React.Component {
     let _this = this;
     let profileComponent = <div className='loading-block'><LoadingSpinner /></div>;
     let profileImageSrc = this.state.avatar || "src/images/person.png";
+    let name = '';
+    let website = '';
+    let about = '';
+    let location = '';
+    let balance = 0;
+    let postsCount = 0;
+    let followersCount = 0;
+    let followingCount = 0;
+
 
     if (this.state.profile) {
-      profileComponent = <div className='user-profile'>
-        <img className="user-big-avatar" 
-          src={profileImageSrc} 
-          alt="Image" 
-          onError={this.setDefaultAvatar.bind(this)}/>
-        <div className='profile-info'>
-          <div>
-            <h3>{this.state.profile.username}</h3>
-          </div>
-          <div>
-            <span><strong>{this.state.profile.post_count}</strong> posts</span>
-            <span onClick={this.showFollowersPopup.bind(this)}>
-              <strong className="follow-text">{this.state.profile.followers_count}</strong> followers
-            </span>
-            <span onClick={this.showFollowingPopup.bind(this)}>
-              <strong className="follow-text">{this.state.profile.following_count}</strong> following
-            </span>
-          </div>
-          <Modal
-            isOpen={this.state.modalIsOpen}
-            onAfterOpen={this.afterOpenModal.bind(_this)}
-            onRequestClose={this.closeModal}
-            className='popout-container'
-            contentLabel="Example Modal"
-          >
-            <PopoutFollow
-              followCallback={this.state.followCallback}
-              title={this.state.followTitle}
-              requestKey={this.props.username}
-              closeModal={this.closeModal}/>
-          </Modal>
-          <div>
-            <span><strong>{this.state.profile.name}</strong> {this.state.profile.about} <a
-              href={this.state.profile.website}>{this.state.profile.website}</a></span>
-          </div>
-          <div>
-            { this.state.showFollow ? <FollowComponent item={this.state.profile} /> : null }
-          </div>
-        </div>
-      </div>
+      name = this.state.profile.name;
+      website = this.state.profile.website;
+      about = this.state.profile.about;
+      location = this.state.profile.location;
+      balance = this.state.profile.estimated_balance;
+      postsCount = this.state.profile.post_count;
+      followersCount = this.state.profile.followers_count;
+      followingCount = this.state.profile.following_count;
+
+      // profileComponent = <div className='user-profile'>
+      //   <img className="user-big-avatar" 
+      //     src={profileImageSrc} 
+      //     alt="Image" 
+      //     onError={this.setDefaultAvatar.bind(this)}/>
+      //   <div className='profile-info'>
+      //     <div>
+      //       <h3>{this.state.profile.username}</h3>
+      //     </div>
+      //     <div>
+      //       <span><strong>{this.state.profile.post_count}</strong> posts</span>
+      //       <span onClick={this.showFollowersPopup.bind(this)}>
+      //         <strong className="follow-text">{this.state.profile.followers_count}</strong> followers
+      //       </span>
+      //       <span onClick={this.showFollowingPopup.bind(this)}>
+      //         <strong className="follow-text">{this.state.profile.following_count}</strong> following
+      //       </span>
+      //     </div>
+      //     <Modal
+      //       isOpen={this.state.modalIsOpen}
+      //       onAfterOpen={this.afterOpenModal.bind(_this)}
+      //       onRequestClose={this.closeModal}
+      //       className='popout-container'
+      //       contentLabel="Example Modal"
+      //     >
+      //       <PopoutFollow
+      //         followCallback={this.state.followCallback}
+      //         title={this.state.followTitle}
+      //         requestKey={this.props.username}
+      //         closeModal={this.closeModal}/>
+      //     </Modal>
+      //     <div>
+      //       <span><strong>{this.state.profile.name}</strong> {this.state.profile.about} <a
+      //         href={this.state.profile.website}>{this.state.profile.website}</a></span>
+      //     </div>
+      //     <div>
+      //       { this.state.showFollow ? <FollowComponent item={this.state.profile} /> : null }
+      //     </div>
+      //   </div>
+      // </div>
     }
 
     this.state.posts.map((post, index) => {
@@ -195,22 +194,270 @@ class UserProfile extends React.Component {
     });
 
     return (
-      <div>
-        <br/>
-        {profileComponent}
-        <hr/>
-        <InfiniteScroll
-          refreshFunction={this.refresh}
-          next={this.fetchData.bind(this)}
-          hasMore={this.state.hasMore}
-          loader={<div className='loading-block'><LoadingSpinner /></div>}
-          endMessage={
-            <p className='loading-block'>
-              <b>Yay! You have seen it all</b>
-            </p>
-          }>
-          {items}
-        </InfiniteScroll>
+      <div className="g-main_i container">
+        <div className="g-content col-xs-12 clearfix" id="workspace">
+          <div className="row">
+            <div className="col-xs-12 col-md-4 col-lg-3">
+              <div className="user-information">
+                <div className="pic-wrap clearfix">
+                  <div className="pic">
+                    <img src={profileImageSrc} 
+                      alt="" 
+                      onError={this.setDefaultAvatar.bind(this)}/> />
+                  </div>
+                  <div className="btn-wrap">
+                    <button type="button" className="btn btn-default">Follow</button>
+                  </div>
+                </div>
+                <div className="name">{name}</div>
+                <div className="location">{location}</div>
+                <p>{about}</p>
+                <p>
+                  <a href={website}>{website}</a>
+                </p>
+                <div className="amount">
+                  <div className="count">$ {balance}</div>
+                  <div className="description">This is the current amount of funds in your account in the application.</div>
+                </div>
+              </div>
+            </div>
+            <div className="col-xs-12 col-md-8 col-lg-9">
+              <div className="user-tabs">
+                <ul role="tablist" className="nav nav-tabs list-reset">
+                  <li role="presentation" className="active">
+                    <a href="#tab-profile-1" 
+                      aria-controls="tab-profile-1" 
+                      role="tab" 
+                      data-toggle="tab" 
+                      className="tab-head"
+                    >
+                      {postsCount} Posts
+                    </a>
+                  </li>
+                  <li role="presentation">
+                    <a href="#tab-profile-2" 
+                      aria-controls="tab-profile-2" 
+                      role="tab" data-toggle="tab" 
+                      className="tab-head"
+                    >
+                      {followingCount} Following
+                    </a>
+                  </li>
+                  <li role="presentation">
+                    <a href="#tab-profile-3" 
+                      aria-controls="tab-profile-3" 
+                      role="tab" 
+                      data-toggle="tab" 
+                      className="tab-head"
+                    >
+                      {followersCount} Followers
+                    </a>
+                  </li>
+                </ul>
+                <div className="tab-content">
+                  <div id="tab-profile-1" role="tabpanel" className="tab-pane fade in active">
+                    <div className="posts-list clearfix type-2">
+                      {items}
+                    </div>
+                    <div className="load-more">
+                      <button type="button" className="btn btn-index">Upload more posts</button>
+                    </div>
+                  </div>
+                  <div id="tab-profile-2" role="tabpanel" className="tab-pane fade">
+                    <div className="posts-list clearfix type-2">
+                      <div className="item-wrap">
+                        <div className="user-card">
+                          <div className="card-wrap clearfix">
+                            <div className="pic"><a href="#"><img src="images/tmp/user-avatar-1.png" alt="user"/></a></div>
+                            <div className="text"><a href="#" className="name">@ellenwalters</a>
+                              <div className="location">London, United Kindom</div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="item-wrap">
+                        <div className="user-card">
+                          <div className="card-wrap clearfix">
+                            <div className="pic"><a href="#"><img src="images/tmp/user-avatar-2.png" alt="user"/></a></div>
+                            <div className="text"><a href="#" className="name">@ellenwalters</a>
+                              <div className="location">London, United Kindom</div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="item-wrap">
+                        <div className="user-card">
+                          <div className="card-wrap clearfix">
+                            <div className="pic"><a href="#"><img src="images/tmp/user-avatar-3.png" alt="user"/></a></div>
+                            <div className="text"><a href="#" className="name">@ellenwalters</a>
+                              <div className="location">London, United Kindom</div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="item-wrap">
+                        <div className="user-card">
+                          <div className="card-wrap clearfix">
+                            <div className="pic"><a href="#"><img src="images/tmp/user-avatar-4.png" alt="user"/></a></div>
+                            <div className="text"><a href="#" className="name">@ellenwalters</a>
+                              <div className="location">London, United Kindom</div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="item-wrap">
+                        <div className="user-card">
+                          <div className="card-wrap clearfix">
+                            <div className="pic"><a href="#"><img src="images/tmp/user-avatar-5.png" alt="user"/></a></div>
+                            <div className="text"><a href="#" className="name">@ellenwalters</a>
+                              <div className="location">London, United Kindom</div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="item-wrap">
+                        <div className="user-card">
+                          <div className="card-wrap clearfix">
+                            <div className="pic"><a href="#"><img src="images/tmp/user-avatar-6.png" alt="user"/></a></div>
+                            <div className="text"><a href="#" className="name">@ellenwalters</a>
+                              <div className="location">London, United Kindom</div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="item-wrap">
+                        <div className="user-card">
+                          <div className="card-wrap clearfix">
+                            <div className="pic"><a href="#"><img src="images/tmp/user-avatar-7.png" alt="user"/></a></div>
+                            <div className="text"><a href="#" className="name">@ellenwalters</a>
+                              <div className="location">London, United Kindom</div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="item-wrap">
+                        <div className="user-card">
+                          <div className="card-wrap clearfix">
+                            <div className="pic"><a href="#"><img src="images/tmp/user-avatar-8.png" alt="user"/></a></div>
+                            <div className="text"><a href="#" className="name">@ellenwalters</a>
+                              <div className="location">London, United Kindom</div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="item-wrap">
+                        <div className="user-card">
+                          <div className="card-wrap clearfix">
+                            <div className="pic"><a href="#"><img src="images/tmp/user-avatar-9.png" alt="user"/></a></div>
+                            <div className="text"><a href="#" className="name">@ellenwalters</a>
+                              <div className="location">London, United Kindom</div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="item-wrap">
+                        <div className="user-card">
+                          <div className="card-wrap clearfix">
+                            <div className="pic"><a href="#"><img src="images/tmp/user-avatar-10.png" alt="user"/></a></div>
+                            <div className="text"><a href="#" className="name">@ellenwalters</a>
+                              <div className="location">London, United Kindom</div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="item-wrap">
+                        <div className="user-card">
+                          <div className="card-wrap clearfix">
+                            <div className="pic"><a href="#"><img src="images/tmp/user-avatar-11.png" alt="user"/></a></div>
+                            <div className="text"><a href="#" className="name">@ellenwalters</a>
+                              <div className="location">London, United Kindom</div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="item-wrap">
+                        <div className="user-card">
+                          <div className="card-wrap clearfix">
+                            <div className="pic"><a href="#"><img src="images/tmp/user-avatar-12.png" alt="user"/></a></div>
+                            <div className="text"><a href="#" className="name">@ellenwalters</a>
+                              <div className="location">London, United Kindom</div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="item-wrap">
+                        <div className="user-card">
+                          <div className="card-wrap clearfix">
+                            <div className="pic"><a href="#"><img src="images/tmp/user-avatar-13.png" alt="user"/></a></div>
+                            <div className="text"><a href="#" className="name">@ellenwalters</a>
+                              <div className="location">London, United Kindom</div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="item-wrap">
+                        <div className="user-card">
+                          <div className="card-wrap clearfix">
+                            <div className="pic"><a href="#"><img src="images/tmp/user-avatar-14.png" alt="user"/></a></div>
+                            <div className="text"><a href="#" className="name">@ellenwalters</a>
+                              <div className="location">London, United Kindom</div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="item-wrap">
+                        <div className="user-card">
+                          <div className="card-wrap clearfix">
+                            <div className="pic"><a href="#"><img src="images/tmp/user-avatar-15.png" alt="user"/></a></div>
+                            <div className="text"><a href="#" className="name">@ellenwalters</a>
+                              <div className="location">London, United Kindom</div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="item-wrap">
+                        <div className="user-card">
+                          <div className="card-wrap clearfix">
+                            <div className="pic"><a href="#"><img src="images/tmp/user-avatar-16.png" alt="user"/></a></div>
+                            <div className="text"><a href="#" className="name">@ellenwalters</a>
+                              <div className="location">London, United Kindom</div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="item-wrap">
+                        <div className="user-card">
+                          <div className="card-wrap clearfix">
+                            <div className="pic"><a href="#"><img src="images/tmp/user-avatar-17.png" alt="user"/></a></div>
+                            <div className="text"><a href="#" className="name">@ellenwalters</a>
+                              <div className="location">London, United Kindom</div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="item-wrap">
+                        <div className="user-card">
+                          <div className="card-wrap clearfix">
+                            <div className="pic"><a href="#"><img src="images/tmp/user-avatar-18.png" alt="user"/></a></div>
+                            <div className="text"><a href="#" className="name">@ellenwalters</a>
+                              <div className="location">London, United Kindom</div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="load-more">
+                      <button type="button" className="btn btn-index">Upload more following</button>
+                    </div>
+                  </div>
+                  <div id="tab-profile-3" role="tabpanel" className="tab-pane fade">
+                    <div className="empty-query-message">The user has not created any entries yet. Perhaps you need to wait a bit ...</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     );
   }

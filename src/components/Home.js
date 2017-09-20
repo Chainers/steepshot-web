@@ -199,6 +199,9 @@ class Home extends React.Component {
   
   // Fetch data
   fetchData() {
+    this.setState({
+      loading: true
+    })
     if (this.props.search.value) {
       this.fetchPostsByCategory();
     } else {
@@ -244,30 +247,31 @@ class Home extends React.Component {
         />);
       });
 
-      renderElements = <InfiniteScroll
-          next={this.fetchData.bind(this)}
-          hasMore={this.state.hasMore}
-          loader={<div className='loading-block'>
-            <LoadingSpinner />
-            </div>
-          }
-          endMessage={
-            <p className='loading-block'>
-              <b>Yay! You have seen it all</b>
-            </p>
-          }>
-          {items}
-        </InfiniteScroll>;
-    } else if(this.props.search.value == '') {
+      renderElements = items;
+    } else if (this.props.search.value == '') {
       renderElements = <div className='loading-block'>
         <LoadingSpinner />
       </div>;
     }
 
     return (
-      <div className="container-block" id="all-posts">
-        <PostFilterBlock updatePostsCallback={this.updatePostsByFolter.bind(this)}/>
-        {renderElements}
+      <div className="g-main_i container">
+        <div className="posts-list clearfix" id="all-posts">
+          <PostFilterBlock updatePostsCallback={this.updatePostsByFolter.bind(this)}/>
+          {renderElements}
+        </div>
+        { 
+          this.state.hasMore && !this.state.loading ? 
+            <div className="load-more" onClick={this.fetchData.bind(this)}>
+              <button type="button" className="btn btn-index">Upload more posts</button>
+            </div> : null 
+        }
+        {
+          this.state.hasMore && this.state.loading && this.state.posts.length !== 0 ? 
+          <div className='loading-block'>
+            <LoadingSpinner />
+          </div> : null 
+        }
       </div>
     );
   }

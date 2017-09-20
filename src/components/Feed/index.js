@@ -21,7 +21,8 @@ class Feed extends React.Component {
         this.state = {
             posts: [],
             hasMore: true,
-            offset: null
+            offset: null,
+            loading: true
         };
 
         this.store = getStore();
@@ -33,7 +34,9 @@ class Feed extends React.Component {
 
     loadUserPosts() {
         this.setState({
-            posts: [], offset: null
+            posts: [], 
+            offset: null,
+            loading: true
         });
         this.setUserPosts();
     }
@@ -44,13 +47,17 @@ class Feed extends React.Component {
         getUserFeed(this.props.user).then((response) => {
             _this.setState({
                 posts: response.results, 
-                offset: response.offset
+                offset: response.offset,
+                loading: false
             });
         });
     }
 
     fetchPostsNext() {
         let _this = this;
+        this.setState({
+            loading: true
+        });
 
         getUserFeed(this.props.user, this.state.offset).then((response) => {
             this.state.posts.pop();
@@ -59,11 +66,14 @@ class Feed extends React.Component {
                 _this.setState({
                     posts: newPosts, 
                     offset: response.offset, 
-                    hasMore: false});
+                    hasMore: false,
+                    loading: false
+                });
             } else {
                 _this.setState({
                     posts: newPosts, 
-                    offset: response.offset
+                    offset: response.offset,
+                    loading: false
                 });
             }
         });
@@ -86,24 +96,28 @@ class Feed extends React.Component {
                 );
             });
 
-            renderElements = <InfiniteScroll
-                next={this.fetchPostsNext.bind(this)}
-                hasMore={this.state.hasMore}
-                loader={<div className='loading-block'><LoadingSpinner /></div>}
-                endMessage={
-                    <p className='loading-block'>
-                        <b>Yay! You have seen it all</b>
-                    </p>
-                }>
-                {items}
-            </InfiniteScroll>;
+            renderElements = items;
         } else if(this.props.search.value == '') {
             renderElements = <div className='loading-block'><LoadingSpinner /></div>;
         }
 
         return(
-            <div className="posts-list clearfix" id="all-posts">
-                {items}
+            <div className="g-main_i container">
+                <div className="posts-list clearfix" id="all-posts">
+                    {renderElements}
+                </div>
+                { 
+                    this.state.hasMore && !this.state.loading ? 
+                        <div className="load-more" onClick={this.fetchPostsNext.bind(this)}>
+                        <button type="button" className="btn btn-index">Upload more posts</button>
+                        </div> : null 
+                }
+                {
+                    this.state.hasMore && this.state.loading && this.state.posts.length !== 0 ? 
+                    <div className='loading-block'>
+                        <LoadingSpinner />
+                    </div> : null 
+                }
             </div>
         );
     }

@@ -72,8 +72,10 @@ class Header extends React.Component {
     );
     let searchBlock = <div></div>;
     let browse;
+    let authorLink = '';
 
     if (isUserAuth) {
+      authorLink = `/userProfile/${this.props.user}`;
       rightNav = (
         <ul className="nav navbar-nav navbar-right">
           <li className="dropdown">
@@ -160,12 +162,12 @@ class Header extends React.Component {
               </div>
               <div className="section user">
                 <div className="wrap-user">
-                  <a href="#" className="user-link clearfix">
+                  <Link to={authorLink} className="user-link clearfix">
                     <div className="photo">
                       <img src="src/images/tmp/user-photo-small.jpg" alt="user" />
                     </div>
                     <div className="name">{this.props.user}</div>
-                  </a>
+                  </Link>
                 </div>
               </div>
               <div className="section logo">
