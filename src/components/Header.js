@@ -164,7 +164,7 @@ class Header extends React.Component {
                 <div className="wrap-user">
                   <Link to={authorLink} className="user-link clearfix">
                     <div className="photo">
-                      <img src="src/images/tmp/user-photo-small.jpg" alt="user" />
+                      <img src="/src/images/person.png" alt="user" />
                     </div>
                     <div className="name">{this.props.user}</div>
                   </Link>

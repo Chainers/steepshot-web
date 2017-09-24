@@ -111,11 +111,11 @@ class Item extends React.Component {
   }
 
   setDefaultAvatar() {
-    this.setState({ avatar: 'src/images/person.png' });
+    this.setState({ avatar: constants.NO_AVATAR });
   }
 
   setDefaultImage() {
-    this.setState({ image: 'src/images/noimage.jpg' });
+    this.setState({ image: constants.NO_IMAGE });
   }
 
   callPreventDefault(e) {
@@ -153,8 +153,8 @@ class Item extends React.Component {
 
   render() {
     let _this = this;
-    let itemImage = this.state.image || 'src/images/noimage.jpg';
-    let authorImage = this.state.avatar || 'src/images/person.png';
+    let itemImage = this.state.image || constants.NO_IMAGE;
+    let authorImage = this.state.avatar || constants.NO_AVATAR;
     let comments = <Comments key="comments" item={this.state.item} />;
 
     let settings = {
@@ -200,8 +200,8 @@ class Item extends React.Component {
               <div className="card-tags clearfix">
                 {
                   this.state.item.tags.map((tag, index) => {
-                    return <a key={index} 
-                      onClick={(event) => _this._research.bind(_this, event, tag)} 
+                    return <a key={index}
+                      onClick={(event) => this._research.bind(this, event, tag)} 
                       >
                         {tag}
                       </a>

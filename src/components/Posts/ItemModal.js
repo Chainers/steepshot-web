@@ -46,13 +46,13 @@ class ItemModal extends React.Component {
 
     setDefaultAvatar() {
       this.setState({ 
-        avatar: 'src/images/person.png' 
+        avatar: constants.NO_AVATAR 
       });
     }
 
     setDefaultImage() {
       this.setState({
-        image: 'src/images/noimage.jpg'
+        image: constants.NO_IMAGE
       });
     }
 
@@ -94,8 +94,8 @@ class ItemModal extends React.Component {
 
     render() {
       let _this = this;
-      let itemImage = this.state.image || 'src/images/noimage.jpg';
-      let authorImage = this.state.avatar || 'src/images/person.png';
+      let itemImage = this.state.image || constants.NO_IMAGE;
+      let authorImage = this.state.avatar || constants.NO_AVATAR;
       let comments = <Comments key="comments" item={this.state.item} />;
 
       let settings = {
@@ -179,13 +179,13 @@ class ItemModal extends React.Component {
           <div className='slick-buttons'>
             <div className='left-button' onClick={this.previous.bind(_this)}>
               <img className='arrow'
-                src="src/images/arrow_left.png"
+                src="/src/images/arrow_left.png"
                 alt="Previous post"
               />
             </div>
             <div className='right-button' onClick={this.next.bind(_this)}>
               <img className='arrow'
-                src="src/images/arrow_right.png"
+                src="/src/images/arrow_right.png"
                 alt="Next post"
               />
             </div>

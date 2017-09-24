@@ -17,7 +17,7 @@ class FollowComponent extends React.Component {
 
     this.state = {
       item: this.props.item,
-      follow: this.props.item.has_followed != 0
+      follow: this.props.item ? this.props.item.has_followed != 0 : false
     }
   }
 
@@ -38,18 +38,31 @@ class FollowComponent extends React.Component {
     Steem.followUser(this.props.postingKey, this.props.username, this.state.item.username);
   }
 
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+        item: nextProps.item,
+        profile: nextProps.item.has_followed != 0
+    });
+  }
+
   render() {
-    let componentClassNames = 'follow';
+    let componentClassNames = 'btn btn-default';
     let componentName = 'Follow';
 
     if (this.state.follow) {
-        componentClassNames = 'unfollow';
+        componentClassNames = 'btn btn-primary';
         componentName = 'Unfollow';
     }
 
+    let renderItem = null;
+
+    if (this.state.item) {
+      renderItem = <div className={componentClassNames}>{componentName}</div>
+    }
+
     return (
-        <div className="follow-block" onClick={this.handleFollow.bind(this)}>
-          <div className={componentClassNames}>{componentName}</div>
+        <div className="btn-wrap" onClick={this.handleFollow.bind(this)}>
+          {renderItem}
         </div>
     );
   }

@@ -65,42 +65,43 @@ class Login extends React.Component {
 
   render() {
     return (
-      <div className="col-md-12 sing-container">
-        <div className="col-md-4">
-          <Messages messages={this.props.messages}/>
-          <h2>SignIn</h2>
+      <div className="col-xs-12 col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3">
+        <div className="lead">Sign in to Steepshot</div>
+        <form className="form-login form-horizontal">
           <div className="form-group">
-            <label htmlFor="email">Username</label>
-            <input type="text"
-              name="userName"
-              id="userName"
-              placeholder="userName"
-              className="form-control"
-              value={this.state.userName}
-              onChange={this.handleChange.bind(this)}
-            />
+            <div className="input-container col-xs-12">
+              <input type="text"
+                name="userName"
+                id="userName"
+                placeholder="userName"
+                className="form-control"
+                value={this.state.userName}
+                onChange={this.handleChange.bind(this)}
+              />
+              <label for="formNAME" className="name">Name</label>
+            </div>
           </div>
           <div className="form-group">
-            <label htmlFor="password">Posting key</label>
-            <input type="password"
-              name="postingKey"
-              id="postingKey"
-              placeholder="Posting key"
-              autoFocus
-              className="form-control"
-              value={this.state.postingKey}
-              onChange={this.handleChange.bind(this)}
-            />
+            <div className="input-container col-xs-12">
+              <input type="password"
+                name="postingKey"
+                id="postingKey"
+                placeholder="Posting key"
+                autoFocus
+                className="form-control"
+                value={this.state.postingKey}
+                onChange={this.handleChange.bind(this)}
+              />
+              <label for="formPOSTKEY" className="name">Posting Key</label>
+            </div>
           </div>
-          <button type="submit" 
-            onClick={this.handleLogin.bind(this)} 
-            className="btn btn-default">
-            Log in
-          </button>
-          <br/>
-          <br/>
-          <a onClick={this.openRegisterSite}>Register</a>
-        </div>
+          <div className="form-group">
+            <div className="buttons-container col-xs-12">
+              <a onClick={this.openRegisterSite} className="btn btn-index">Registration</a>
+              <button onClick={this.handleLogin.bind(this)} type="submit" className="btn btn-default">Sign In</button>
+            </div>
+          </div>
+        </form>
       </div>
     );
   }

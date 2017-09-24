@@ -6,6 +6,7 @@ import {
   connect
 } from 'react-redux';
 import PropTypes from 'prop-types';
+import constants from '../../common/constants';
 
 class Comment extends React.Component {
   constructor(props) {
@@ -17,11 +18,11 @@ class Comment extends React.Component {
   }
 
   setDefaultAvatar() {
-    this.setState({ avatar: 'src/images/person.png' });
+    this.setState({ avatar: constants.NO_AVATAR });
   }
 
   render() {
-    let avatar = this.state.avatar || 'src/images/person.png';
+    let avatar = this.state.avatar || constants.NO_AVATAR;
     const authorLink = `/userProfile/${this.props.item.author}`;
 
     return (

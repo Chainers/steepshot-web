@@ -1,21 +1,14 @@
 import React from 'react';
 import LocalizedStrings from '../Localization/index.js';
 import { 
-  getUserProfile,
-  getFollowers,
-  getFollowing
+  getUserProfile
 } from '../../actions/profile';
-import { 
-  getUserPosts, 
-  getUserPostsByCategory 
-} from '../../actions/posts';
-import PostItem from '../Posts/Item';
 import { connect } from 'react-redux';
-import InfiniteScroll from '../Scroller/infinityScroll';
+import FollowersComponent from './followersComponent';
+import FollowingComponent from './followingComponent';
 import FollowComponent from '../Posts/FollowComponent';
-import Modal from 'react-modal';
-import PopoutFollow from './popoutFollow';
-import LoadingSpinner from '../LoadingSpinner';
+import ItemsComponent from './itemsComponent';
+import constants from '../../common/constants';
 
 class UserProfile extends React.Component {
   constructor(props) {
@@ -25,15 +18,7 @@ class UserProfile extends React.Component {
       authorName: this.props.username,
       profile: null,
       localize: LocalizedStrings.getInstance(),
-      showFollow: this.props.showFollow != undefined ? this.props.showFollow  : true,
-      posts: [],
-      followers: [],
-      following: [],
-      hasMore: true,
-      offset: null,
-      modalIsOpen: false,
-      followCallback: () => {},
-      followTitle: ''
+      showFollow: this.props.showFollow != undefined ? this.props.showFollow  : true
     };
   }
 
@@ -53,23 +38,6 @@ class UserProfile extends React.Component {
         profile: profile,
         avatar: profile.profile_image
       });
-    }).then(() => {
-      _this.fetchData();
-    });
-  }
-
-  showFollowersPopup() {
-    this.setState({ 
-      followCallback: getFollowers.bind(this),
-      followTitle: 'Followers' 
-    });
-  }
-
-
-  showFollowingPopup() {
-    this.setState({ 
-      followCallback: getFollowing.bind(this),
-      followTitle: 'Following' 
     });
   }
 
@@ -80,46 +48,18 @@ class UserProfile extends React.Component {
 
     this.setState({
         authorName: nextProps.username,
-        profile: null,
-        posts: [],
-        hasMore: true,
-        offset: null
+        profile: null
     });
 
     this.getUserProfile(nextProps.username);
   }
 
-  fetchData() {
-    let _this = this;
-
-    getUserPosts(this.props.username, this.state.offset).then((response) => {
-      this.state.posts.pop();
-      let newPosts = this.state.posts.concat(response.results);
-
-      if (response.count < 20 || !response.offset) {
-        _this.setState({
-          posts: newPosts, 
-          offset: response.offset, 
-          hasMore: false
-        });
-      } else {
-        _this.setState({ 
-          posts: newPosts, 
-          offset: response.offset
-        });
-      }
-    });
-  }
-
   setDefaultAvatar() {
-    this.setState({ avatar: 'src/images/person.png' });
+    this.setState({ avatar: constants.NO_AVATAR });
   }
 
   render() {
-    let items = [];
-    let _this = this;
-    let profileComponent = <div className='loading-block'><LoadingSpinner /></div>;
-    let profileImageSrc = this.state.avatar || "src/images/person.png";
+    let profileImageSrc = this.state.avatar || constants.NO_AVATAR;
     let name = '';
     let website = '';
     let about = '';
@@ -128,7 +68,6 @@ class UserProfile extends React.Component {
     let postsCount = 0;
     let followersCount = 0;
     let followingCount = 0;
-
 
     if (this.state.profile) {
       name = this.state.profile.name;
@@ -139,59 +78,7 @@ class UserProfile extends React.Component {
       postsCount = this.state.profile.post_count;
       followersCount = this.state.profile.followers_count;
       followingCount = this.state.profile.following_count;
-
-      // profileComponent = <div className='user-profile'>
-      //   <img className="user-big-avatar" 
-      //     src={profileImageSrc} 
-      //     alt="Image" 
-      //     onError={this.setDefaultAvatar.bind(this)}/>
-      //   <div className='profile-info'>
-      //     <div>
-      //       <h3>{this.state.profile.username}</h3>
-      //     </div>
-      //     <div>
-      //       <span><strong>{this.state.profile.post_count}</strong> posts</span>
-      //       <span onClick={this.showFollowersPopup.bind(this)}>
-      //         <strong className="follow-text">{this.state.profile.followers_count}</strong> followers
-      //       </span>
-      //       <span onClick={this.showFollowingPopup.bind(this)}>
-      //         <strong className="follow-text">{this.state.profile.following_count}</strong> following
-      //       </span>
-      //     </div>
-      //     <Modal
-      //       isOpen={this.state.modalIsOpen}
-      //       onAfterOpen={this.afterOpenModal.bind(_this)}
-      //       onRequestClose={this.closeModal}
-      //       className='popout-container'
-      //       contentLabel="Example Modal"
-      //     >
-      //       <PopoutFollow
-      //         followCallback={this.state.followCallback}
-      //         title={this.state.followTitle}
-      //         requestKey={this.props.username}
-      //         closeModal={this.closeModal}/>
-      //     </Modal>
-      //     <div>
-      //       <span><strong>{this.state.profile.name}</strong> {this.state.profile.about} <a
-      //         href={this.state.profile.website}>{this.state.profile.website}</a></span>
-      //     </div>
-      //     <div>
-      //       { this.state.showFollow ? <FollowComponent item={this.state.profile} /> : null }
-      //     </div>
-      //   </div>
-      // </div>
     }
-
-    this.state.posts.map((post, index) => {
-      items.push(<PostItem
-        key={index}
-        item={post}
-        items={_this.state.posts}
-        index={index}
-        history={this.props.history}
-        loadMore={this.fetchData.bind(this)} />
-      );
-    });
 
     return (
       <div className="g-main_i container">
@@ -205,9 +92,7 @@ class UserProfile extends React.Component {
                       alt="" 
                       onError={this.setDefaultAvatar.bind(this)}/> />
                   </div>
-                  <div className="btn-wrap">
-                    <button type="button" className="btn btn-default">Follow</button>
-                  </div>
+                  { this.state.showFollow ? <FollowComponent item={this.state.profile} /> : null }
                 </div>
                 <div className="name">{name}</div>
                 <div className="location">{location}</div>
@@ -225,233 +110,30 @@ class UserProfile extends React.Component {
               <div className="user-tabs">
                 <ul role="tablist" className="nav nav-tabs list-reset">
                   <li role="presentation" className="active">
-                    <a href="#tab-profile-1" 
-                      aria-controls="tab-profile-1" 
-                      role="tab" 
-                      data-toggle="tab" 
-                      className="tab-head"
-                    >
+                    <a href="#tab-profile-1" aria-controls="tab-profile-1" role="tab" data-toggle="tab" className="tab-head">
                       {postsCount} Posts
                     </a>
                   </li>
                   <li role="presentation">
-                    <a href="#tab-profile-2" 
-                      aria-controls="tab-profile-2" 
-                      role="tab" data-toggle="tab" 
-                      className="tab-head"
-                    >
+                    <a href="#tab-profile-2" aria-controls="tab-profile-2" role="tab" data-toggle="tab" className="tab-head">
                       {followingCount} Following
                     </a>
                   </li>
                   <li role="presentation">
-                    <a href="#tab-profile-3" 
-                      aria-controls="tab-profile-3" 
-                      role="tab" 
-                      data-toggle="tab" 
-                      className="tab-head"
-                    >
+                    <a href="#tab-profile-3" aria-controls="tab-profile-3" role="tab" data-toggle="tab" className="tab-head">
                       {followersCount} Followers
                     </a>
                   </li>
                 </ul>
                 <div className="tab-content">
                   <div id="tab-profile-1" role="tabpanel" className="tab-pane fade in active">
-                    <div className="posts-list clearfix type-2">
-                      {items}
-                    </div>
-                    <div className="load-more">
-                      <button type="button" className="btn btn-index">Upload more posts</button>
-                    </div>
+                    <ItemsComponent username={this.state.authorName}/>
                   </div>
                   <div id="tab-profile-2" role="tabpanel" className="tab-pane fade">
-                    <div className="posts-list clearfix type-2">
-                      <div className="item-wrap">
-                        <div className="user-card">
-                          <div className="card-wrap clearfix">
-                            <div className="pic"><a href="#"><img src="images/tmp/user-avatar-1.png" alt="user"/></a></div>
-                            <div className="text"><a href="#" className="name">@ellenwalters</a>
-                              <div className="location">London, United Kindom</div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="item-wrap">
-                        <div className="user-card">
-                          <div className="card-wrap clearfix">
-                            <div className="pic"><a href="#"><img src="images/tmp/user-avatar-2.png" alt="user"/></a></div>
-                            <div className="text"><a href="#" className="name">@ellenwalters</a>
-                              <div className="location">London, United Kindom</div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="item-wrap">
-                        <div className="user-card">
-                          <div className="card-wrap clearfix">
-                            <div className="pic"><a href="#"><img src="images/tmp/user-avatar-3.png" alt="user"/></a></div>
-                            <div className="text"><a href="#" className="name">@ellenwalters</a>
-                              <div className="location">London, United Kindom</div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="item-wrap">
-                        <div className="user-card">
-                          <div className="card-wrap clearfix">
-                            <div className="pic"><a href="#"><img src="images/tmp/user-avatar-4.png" alt="user"/></a></div>
-                            <div className="text"><a href="#" className="name">@ellenwalters</a>
-                              <div className="location">London, United Kindom</div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="item-wrap">
-                        <div className="user-card">
-                          <div className="card-wrap clearfix">
-                            <div className="pic"><a href="#"><img src="images/tmp/user-avatar-5.png" alt="user"/></a></div>
-                            <div className="text"><a href="#" className="name">@ellenwalters</a>
-                              <div className="location">London, United Kindom</div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="item-wrap">
-                        <div className="user-card">
-                          <div className="card-wrap clearfix">
-                            <div className="pic"><a href="#"><img src="images/tmp/user-avatar-6.png" alt="user"/></a></div>
-                            <div className="text"><a href="#" className="name">@ellenwalters</a>
-                              <div className="location">London, United Kindom</div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="item-wrap">
-                        <div className="user-card">
-                          <div className="card-wrap clearfix">
-                            <div className="pic"><a href="#"><img src="images/tmp/user-avatar-7.png" alt="user"/></a></div>
-                            <div className="text"><a href="#" className="name">@ellenwalters</a>
-                              <div className="location">London, United Kindom</div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="item-wrap">
-                        <div className="user-card">
-                          <div className="card-wrap clearfix">
-                            <div className="pic"><a href="#"><img src="images/tmp/user-avatar-8.png" alt="user"/></a></div>
-                            <div className="text"><a href="#" className="name">@ellenwalters</a>
-                              <div className="location">London, United Kindom</div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="item-wrap">
-                        <div className="user-card">
-                          <div className="card-wrap clearfix">
-                            <div className="pic"><a href="#"><img src="images/tmp/user-avatar-9.png" alt="user"/></a></div>
-                            <div className="text"><a href="#" className="name">@ellenwalters</a>
-                              <div className="location">London, United Kindom</div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="item-wrap">
-                        <div className="user-card">
-                          <div className="card-wrap clearfix">
-                            <div className="pic"><a href="#"><img src="images/tmp/user-avatar-10.png" alt="user"/></a></div>
-                            <div className="text"><a href="#" className="name">@ellenwalters</a>
-                              <div className="location">London, United Kindom</div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="item-wrap">
-                        <div className="user-card">
-                          <div className="card-wrap clearfix">
-                            <div className="pic"><a href="#"><img src="images/tmp/user-avatar-11.png" alt="user"/></a></div>
-                            <div className="text"><a href="#" className="name">@ellenwalters</a>
-                              <div className="location">London, United Kindom</div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="item-wrap">
-                        <div className="user-card">
-                          <div className="card-wrap clearfix">
-                            <div className="pic"><a href="#"><img src="images/tmp/user-avatar-12.png" alt="user"/></a></div>
-                            <div className="text"><a href="#" className="name">@ellenwalters</a>
-                              <div className="location">London, United Kindom</div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="item-wrap">
-                        <div className="user-card">
-                          <div className="card-wrap clearfix">
-                            <div className="pic"><a href="#"><img src="images/tmp/user-avatar-13.png" alt="user"/></a></div>
-                            <div className="text"><a href="#" className="name">@ellenwalters</a>
-                              <div className="location">London, United Kindom</div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="item-wrap">
-                        <div className="user-card">
-                          <div className="card-wrap clearfix">
-                            <div className="pic"><a href="#"><img src="images/tmp/user-avatar-14.png" alt="user"/></a></div>
-                            <div className="text"><a href="#" className="name">@ellenwalters</a>
-                              <div className="location">London, United Kindom</div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="item-wrap">
-                        <div className="user-card">
-                          <div className="card-wrap clearfix">
-                            <div className="pic"><a href="#"><img src="images/tmp/user-avatar-15.png" alt="user"/></a></div>
-                            <div className="text"><a href="#" className="name">@ellenwalters</a>
-                              <div className="location">London, United Kindom</div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="item-wrap">
-                        <div className="user-card">
-                          <div className="card-wrap clearfix">
-                            <div className="pic"><a href="#"><img src="images/tmp/user-avatar-16.png" alt="user"/></a></div>
-                            <div className="text"><a href="#" className="name">@ellenwalters</a>
-                              <div className="location">London, United Kindom</div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="item-wrap">
-                        <div className="user-card">
-                          <div className="card-wrap clearfix">
-                            <div className="pic"><a href="#"><img src="images/tmp/user-avatar-17.png" alt="user"/></a></div>
-                            <div className="text"><a href="#" className="name">@ellenwalters</a>
-                              <div className="location">London, United Kindom</div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="item-wrap">
-                        <div className="user-card">
-                          <div className="card-wrap clearfix">
-                            <div className="pic"><a href="#"><img src="images/tmp/user-avatar-18.png" alt="user"/></a></div>
-                            <div className="text"><a href="#" className="name">@ellenwalters</a>
-                              <div className="location">London, United Kindom</div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="load-more">
-                      <button type="button" className="btn btn-index">Upload more following</button>
-                    </div>
+                    <FollowingComponent username={this.state.authorName}/>
                   </div>
                   <div id="tab-profile-3" role="tabpanel" className="tab-pane fade">
-                    <div className="empty-query-message">The user has not created any entries yet. Perhaps you need to wait a bit ...</div>
+                    <FollowersComponent username={this.state.authorName}/>
                   </div>
                 </div>
               </div>
