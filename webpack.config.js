@@ -51,8 +51,8 @@ module.exports = {
         new webpack.HotModuleReplacementPlugin(),
         new webpack.NoErrorsPlugin(),
         new CopyWebpackPlugin([
-            { from: './src/images/**/*', to: '/public/images' },
-            { from: './src/styles/**/*', to: '/public/styles' }
+            { from: './static/images/**/*', to: '/public/images' },
+            { from: './static/styles/**/*', to: '/public/styles' }
         ])
   ]
 };

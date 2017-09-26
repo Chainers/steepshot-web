@@ -179,13 +179,13 @@ class ItemModal extends React.Component {
           <div className='slick-buttons'>
             <div className='left-button' onClick={this.previous.bind(_this)}>
               <img className='arrow'
-                src="/src/images/arrow_left.png"
+                src="/static/images/arrow_left.png"
                 alt="Previous post"
               />
             </div>
             <div className='right-button' onClick={this.next.bind(_this)}>
               <img className='arrow'
-                src="/src/images/arrow_right.png"
+                src="/static/images/arrow_right.png"
                 alt="Next post"
               />
             </div>
