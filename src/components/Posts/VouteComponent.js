@@ -22,6 +22,9 @@ class VouteComponent extends React.Component {
   }
 
   ratingVotes() {
+    if (!(this.props.username || this.props.postingKey)) {
+      return;
+    }
     const newVoteState = !this.state.vote;
     const urlObject = this.state.item.url.split('/');
 

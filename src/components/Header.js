@@ -65,54 +65,27 @@ class Header extends React.Component {
   render() {
     const active = { borderBottomColor: '#3f51b5' };
     const isUserAuth = this.props.user && this.props.postingKey;
-    let rightNav = (
-      <ul className="nav navbar-nav navbar-right">
-         <li><Link to="/signin">Sign In</Link></li>
-      </ul>
-    );
     let searchBlock = <div></div>;
     let browse;
     let authorLink = '';
 
+
+    let loginComponent = <div className="section login">
+      <div className="wrap-login">
+        <Link to="/signin" className="btn btn-default btn-xs">
+          Sign in
+        </Link>
+      </div>
+    </div>
+
     if (isUserAuth) {
       authorLink = `/userProfile/${this.props.user}`;
-      rightNav = (
-        <ul className="nav navbar-nav navbar-right">
-          <li className="dropdown">
-            <a href="#" data-toggle="dropdown" className="navbar-avatar dropdown-toggle">
-              <img src={this.props.user.picture || this.props.user.gravatar}/>
-              {' '}{this.props.user}{' '}
-              <i className="caret"></i>
-            </a>
-            <ul className="dropdown-menu">
-              <li>
-                <Link to="/profile">
-                  <i className='glyphicon glyphicon-list-alt'></i>
-                  Profile
-                </Link>
-              </li>
-              <li>
-                <Link to="/settings">
-                  <i className='glyphicon glyphicon-cog'></i>
-                  Settings
-                </Link>
-              </li>
-              <li className="divider"></li>
-              <li>
-                <a href="#" onClick={this.handleLogout.bind(this)}>
-                  <i className='glyphicon glyphicon-log-out'></i>
-                  Logout
-                </a>
-              </li>
-            </ul>
-          </li>
-          <li className="add-block">
-            <Link to="/post">
-              <span className="add-icon glyphicon glyphicon-plus-sign"></span>
-            </Link>
-          </li>
-        </ul>
-      )
+      loginComponent = <div className="section controls">
+        <div className="wrap-controls">
+          <Link to="/settings" className="btn-control settings"></Link>
+          <a onClick={this.handleLogout.bind(this)} className="btn-control logout"></a>
+        </div>
+      </div>
     }
 
     if (this.state.isSearchOpen || !!this.props.search.value) {
@@ -146,16 +119,11 @@ class Header extends React.Component {
                   </button>
                 </div>
               </div>
-              <div className="section controls">
-                <div className="wrap-controls">
-                  <a href="#" className="btn-control settings"></a>
-                  <a href="#" className="btn-control logout"></a>
-                </div>
-              </div>
+              {loginComponent}
               <div className="section create">
                 <div className="wrap-create">
                   <button type="button" className="btn btn-primary btn-xs btn-create">
-                    <Link to="post">Create post</Link>
+                    <Link to="/post">Create post</Link>
                   </button>
                   <button type="button" className="btn btn-primary btn-create-mob"></button>
                 </div>
@@ -172,7 +140,7 @@ class Header extends React.Component {
               </div>
               <div className="section logo">
                 <a href="/" className="wrap-logo">
-                  <img src="src/images/logo.svg" alt="logo" />
+                  <img src="/src/images/logo.svg" alt="logo" />
                 </a>
               </div>
               <div className="section search">

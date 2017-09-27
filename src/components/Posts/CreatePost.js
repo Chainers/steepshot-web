@@ -101,13 +101,85 @@ class CreatePost extends React.Component {
         let {imagePreviewUrl} = this.state;
         let $imagePreview = null;
         if (imagePreviewUrl) {
-            $imagePreview = (<img src={imagePreviewUrl} />);
+            $imagePreview = (<div className="preview-component">
+                <div className="post-info">
+                    <div className="info-block">
+                        <div className="img-preview">
+                            <img src={imagePreviewUrl} />
+                        </div>
+                    </div>
+                </div>
+            </div>);
         } else {
-            $imagePreview = (<div className="preview-text">Please select an Image for Preview</div>);
+            $imagePreview = (<div className="upload-field empty">
+                <div className="uf-preview">
+                    <div className="uf-icon"></div>
+                    <div className="uf-text">Click to download a picture</div>
+                </div>
+                <input id="upload-file" className="file-input" onChange={(e)=>this._handleImageChange(e)} type="file" />
+            </div>);
         }
 
         return (
-        <div className="preview-component">
+            <div className="col-xs-12 col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3">
+                <form className="form-create form-horizontal">
+                    <div className="form-group">
+                        <div className="input-container col-xs-12">
+                            <div className="upload">
+                                {$imagePreview}
+                            </div>
+                        </div>
+                    </div>
+                    <div className="form-group">
+                        <div className="input-container col-xs-12">
+                            <input id="formPOINTERS" type="text" name="formPOINTERS" value="" required="" autocomplete="off" className="form-control" />
+                            <label for="formPOINTERS" className="name">Pointers</label>
+                        </div>
+                    </div>
+                    <div className="form-group">
+                        <div className="input-container col-xs-12">
+                            <input id="formDESCRIPTION" type="text" name="formDESCRIPTION" value="" required="" autocomplete="off" className="form-control" />
+                            <label for="formDESCRIPTION" className="name">Description</label>
+                        </div>
+                    </div>
+                    <div className="form-group">
+                        <div className="input-container col-xs-12">
+                            <input id="formHASHTAG" type="text" name="formHASHTAG" value="" required="" autocomplete="off" className="form-control" />
+                            <label for="formHASHTAG" className="name">Hashtag</label>
+                            <div className="tags-list clearfix">
+                                <div className="tag">Photo
+                                    <button type="button" className="btn-close"></button>
+                                </div>
+                                <div className="tag">Photoshop
+                                    <button type="button" className="btn-close"></button>
+                                </div>
+                            </div>
+                            <div className="help-block">Enter a hashtag through a comma in order for each word to be a separate tag. But not more than 10 words</div>
+                        </div>
+                    </div>
+                    <div className="form-group">
+                        <div className="buttons-container col-xs-12">
+                            <button type="reset" className="btn btn-index">Cancel</button>
+                            <button onClick={(e)=>this._handleSubmit(e)} type="submit" className="btn btn-default">Create new post</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        )
+    }
+}
+
+const mapStateToProps = (state) => {
+  return {
+    localization: state.localization,
+    username: state.auth.user,
+    postingKey: state.auth.postingKey
+  };
+};
+
+export default connect(mapStateToProps)(CreatePost);
+
+{/* <div className="preview-component">
             <div className="image-block">
                 <label>Image preview</label>
                 <div className="img-preview">
@@ -157,17 +229,4 @@ class CreatePost extends React.Component {
                         type="submit" 
                         onClick={(e)=>this._handleSubmit(e)}>Create post</button>
             </div>
-        </div>
-        )
-    }
-}
-
-const mapStateToProps = (state) => {
-  return {
-    localization: state.localization,
-    username: state.auth.user,
-    postingKey: state.auth.postingKey
-  };
-};
-
-export default connect(mapStateToProps)(CreatePost);
+        </div> */}

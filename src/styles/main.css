@@ -4,6 +4,12 @@
   background-color: #F8F8F8;
 }
 
+#upload-file {
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+}
+
 /*Posts styles*/
 /* Подключение шрифта Google */
 .search-results {
@@ -1237,12 +1243,6 @@ figure {
 
 img {
   vertical-align: middle;
-}
-
-.img-responsive, .modal img {
-  display: block;
-  max-width: 100%;
-  height: auto;
 }
 
 .img-rounded {
@@ -4175,6 +4175,7 @@ html body {
 }
 
 .post-card .photo {
+  position: relative;
   width: 20px;
   height: 20px;
   overflow: hidden;
@@ -4185,8 +4186,15 @@ html body {
 
 .post-card .photo img {
   display: block;
-  max-width: 100%;
-  max-height: 100%;
+  position: absolute;
+  min-width: 100%;
+  min-height: 100%;
+  width: auto;
+  height: auto;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
 }
 
 .post-card .name {
@@ -4206,6 +4214,7 @@ html body {
 }
 
 .post-card .card-pic {
+  position: relative;
   overflow: hidden;
   border-top-left-radius: 4px;
   border-top-right-radius: 4px;
@@ -4218,10 +4227,13 @@ html body {
 }
 
 .post-card .card-pic img {
+  position: absolute;
   display: block;
-  max-width: 100%;
-  max-height: 100%;
-  width: 100%;
+  max-width: none;
+  max-height: none;
+  min-width: 100%;
+  min-height: 100%;
+  width: auto;
   height: auto;
 }
 
@@ -4300,6 +4312,7 @@ html body {
 }
 
 .user-card .pic {
+  position: relative;
   overflow: hidden;
   width: 60px;
   height: 60px;
@@ -4315,8 +4328,15 @@ html body {
 
 .user-card .pic img {
   display: block;
-  max-width: 100%;
-  max-height: 100%;
+  position: absolute;
+  min-width: 100%;
+  min-height: 100%;
+  width: auto;
+  height: auto;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
 }
 
 .user-card .text {
@@ -5183,15 +5203,15 @@ fieldset[disabled] input[type=checkbox] ~ .box, fieldset[disabled] input[type=ch
 .upload .uf-bar-wrap .uf-bar {
   background: #e74800;
   height: 100%;
-  width: 30%;
+  width: 0;
 }
 
 .upload input[type=file] {
   position: absolute;
+  z-index: -1;
+  left: 0;
   bottom: 0;
   opacity: 0;
-  height: 0;
-  width: 0;
 }
 
 .upload .upload-list {
@@ -5203,7 +5223,6 @@ fieldset[disabled] input[type=checkbox] ~ .box, fieldset[disabled] input[type=ch
   padding: 0 10px;
   width: 25%;
   float: left;
-  margin-top: 10px;
 }
 
 .upload .uf-item {
@@ -5212,28 +5231,43 @@ fieldset[disabled] input[type=checkbox] ~ .box, fieldset[disabled] input[type=ch
   border-radius: 10px;
   border: 1px dashed #e7e7e7;
   overflow: hidden;
+  margin-top: 10px;
 }
 
 .upload .uf-item .uf-bar-wrap {
   margin: 0;
 }
 
-.upload .uf-item .uf-pic {
+.upload .uf-pic {
   position: relative;
+  overflow: hidden;
   z-index: 1;
   width: 100%;
   height: 100%;
+  border-radius: 10px;
 }
 
-.upload .uf-item .uf-pic img {
-  position: absolute;
+.upload .uf-pic img {
   display: block;
-  max-width: 100%;
-  max-height: 100%;
-  top: 50%;
-  left: 50%;
-  -webkit-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
+}
+
+.upload .uf-controls {
+  position: absolute;
+  z-index: 5;
+  top: 10px;
+  right: 5px;
+}
+
+.upload .uf-controls .btn-add, .upload .uf-controls .btn-remove {
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  line-height: 20px;
+  color: #fff;
+  margin: 0 5px;
+  border: none;
+  border-radius: 50%;
+  background: #000;
 }
 
 .btn {
@@ -5863,42 +5897,6 @@ input[type=button].btn-block, input[type=reset].btn-block, input[type=submit].bt
   padding: 0 10px;
 }
 
-.posts-filter {
-  margin-bottom: 30px;
-  border-bottom: 1px solid #f4f4f6;
-}
-
-.posts-filter .wrap {
-  position: relative;
-  top: 1px;
-}
-
-.posts-filter .item {
-  display: block;
-  text-decoration: none;
-  float: left;
-  color: #979b9e;
-  font-size: 14px;
-  line-height: 1.4;
-  padding: 10px 20px 16px;
-  border-bottom: 2px solid transparent;
-  font-family: OpenSans-SemiBold,Helvetica,Arial,sans-serif;
-}
-
-.posts-filter .item:hover {
-  color: #555;
-}
-
-.posts-filter .item + .item {
-  margin-left: 20px;
-}
-
-.posts-filter .item.active {
-  color: #0f181e;
-  font-family: OpenSans-SemiBold,Helvetica,Arial,sans-serif;
-  border-color: #e74800;
-}
-
 .posts-list {
   margin-left: -10px;
   margin-right: -10px;
@@ -5962,6 +5960,7 @@ input[type=button].btn-block, input[type=reset].btn-block, input[type=submit].bt
 }
 
 .post-single .user-wrap .photo {
+  position: relative;
   width: 20px;
   height: 20px;
   overflow: hidden;
@@ -5972,8 +5971,15 @@ input[type=button].btn-block, input[type=reset].btn-block, input[type=submit].bt
 
 .post-single .user-wrap .photo img {
   display: block;
-  max-width: 100%;
-  max-height: 100%;
+  position: absolute;
+  min-width: 100%;
+  min-height: 100%;
+  width: auto;
+  height: auto;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
 }
 
 .post-single .user-wrap .name {
@@ -6257,6 +6263,7 @@ input[type=button].btn-block, input[type=reset].btn-block, input[type=submit].bt
 }
 
 .user-information .pic {
+  position: relative;
   width: 100px;
   height: 100px;
   overflow: hidden;
@@ -6265,10 +6272,29 @@ input[type=button].btn-block, input[type=reset].btn-block, input[type=submit].bt
   margin-right: 25px;
 }
 
+.user-information .pic img {
+  display: block;
+  position: absolute;
+  min-width: 100%;
+  min-height: 100%;
+  width: auto;
+  height: auto;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+
 .user-information .btn-wrap {
   padding-top: 30px;
   padding-bottom: 30px;
   margin-left: 125px;
+}
+
+.user-information .btn-wrap .btn {
+  width: 125px;
+  padding-left: 10px;
+  padding-right: 10px;
 }
 
 .user-information .name {
@@ -6460,6 +6486,7 @@ input[type=button].btn-block, input[type=reset].btn-block, input[type=submit].bt
 }
 
 .user-panel .user .photo {
+  position: relative;
   width: 20px;
   height: 20px;
   overflow: hidden;
@@ -6470,8 +6497,15 @@ input[type=button].btn-block, input[type=reset].btn-block, input[type=submit].bt
 
 .user-panel .user .photo img {
   display: block;
-  max-width: 100%;
-  max-height: 100%;
+  position: absolute;
+  min-width: 100%;
+  min-height: 100%;
+  width: auto;
+  height: auto;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
 }
 
 .user-panel .user .name {
@@ -7249,6 +7283,12 @@ input[type=button].btn-block, input[type=reset].btn-block, input[type=submit].bt
   .row-clear .col-sm-3:nth-child(4n+1), .row-clear .col-sm-4:nth-child(3n+1), .row-clear .col-sm-6:nth-child(2n+1) {
     clear: both;
   }
+  .post-card .card-pic img {
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+  }
   .control-group.form-group .controls {
     float: right;
   }
@@ -7308,6 +7348,15 @@ input[type=button].btn-block, input[type=reset].btn-block, input[type=submit].bt
   }
   .form-horizontal .form-group-sm .control-label {
     padding-top: 6px;
+  }
+  .upload .uf-pic img {
+    position: absolute;
+    max-width: 100%;
+    max-height: 100%;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
   }
   .nav-tabs.tabs-reset > li .tab-head {
     margin-right: 5px;
@@ -7829,6 +7878,22 @@ input[type=button].btn-block, input[type=reset].btn-block, input[type=submit].bt
     width: 100%;
     min-width: 300px;
   }
+  .post-card .photo {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+  .post-card .card-pic {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+  .user-card .pic {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+  .upload .uf-pic {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
   .posts-list:not(.type-2) > .item-wrap {
     width: 50%;
   }
@@ -7848,6 +7913,10 @@ input[type=button].btn-block, input[type=reset].btn-block, input[type=submit].bt
     border-top-right-radius: 0;
     border-bottom-right-radius: 4px;
     border-bottom-left-radius: 4px;
+  }
+  .post-single .user-wrap .photo {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
   }
   .post-single .list-scroll {
     overflow: inherit;
@@ -7874,6 +7943,10 @@ input[type=button].btn-block, input[type=reset].btn-block, input[type=submit].bt
   }
   .user-information {
     padding-right: 0;
+  }
+  .user-information .pic {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
   }
   .user-panel .logo {
     margin-right: 0;
@@ -7996,7 +8069,9 @@ input[type=button].btn-block, input[type=reset].btn-block, input[type=submit].bt
     height: auto;
   }
   .post-card .card-pic img {
-    max-height: none;
+    position: relative;
+    width: 100%;
+    min-height: inherit;
   }
   .form-group .buttons-container {
     padding-left: 5px;
@@ -8027,7 +8102,20 @@ input[type=button].btn-block, input[type=reset].btn-block, input[type=submit].bt
     margin-left: -15px;
     margin-right: -15px;
   }
+  .upload .upload-field {
+    height: auto;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 400px;
+  }
+  .upload .upload-field.empty {
+    min-height: 180px;
+  }
+  .upload .upload-list {
+    margin: 0;
+  }
   .upload .list-item {
+    padding: 0;
     width: auto;
     float: none;
     margin-left: auto;
@@ -8036,18 +8124,11 @@ input[type=button].btn-block, input[type=reset].btn-block, input[type=submit].bt
   }
   .upload .uf-item {
     height: auto;
-    min-height: 140px;
   }
-  .upload .uf-item .uf-pic img {
+  .upload .uf-pic img {
     position: relative;
     width: 100%;
     height: auto;
-    max-width: none;
-    max-height: none;
-    top: auto;
-    left: auto;
-    -webkit-transform: none;
-    transform: none;
   }
   .nav-tabs:not(.tabs-reset) {
     margin-left: 0;
@@ -8092,12 +8173,6 @@ input[type=button].btn-block, input[type=reset].btn-block, input[type=submit].bt
     padding-left: 15px;
     padding-right: 15px;
     margin-bottom: 15px;
-  }
-  .posts-filter .item {
-    padding: 10px 15px;
-  }
-  .posts-filter .item + .item {
-    margin-left: 12px;
   }
   .posts-list {
     margin-left: -15px;

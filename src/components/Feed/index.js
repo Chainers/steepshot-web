@@ -62,7 +62,7 @@ class Feed extends React.Component {
         getUserFeed(this.props.user, this.state.offset).then((response) => {
             this.state.posts.pop();
             let newPosts = this.state.posts.concat(response.results);
-            if (response.count < 20) {
+            if (!response.offset) {
                 _this.setState({
                     posts: newPosts, 
                     offset: response.offset, 

@@ -181,7 +181,7 @@ class Home extends React.Component {
     this.state.posts.pop();
     let newPosts = this.state.posts.concat(response.results);
 
-    if (response.count < 20) {
+    if (!response.offset) {
       this.setState({
         posts: newPosts,
         offset: response.offset, 
@@ -256,22 +256,26 @@ class Home extends React.Component {
 
     return (
       <div className="g-main_i container">
-        <div className="posts-list clearfix" id="all-posts">
+        <div id="workspace" className="g-content col-xs-12 clearfix">
           <PostFilterBlock updatePostsCallback={this.updatePostsByFolter.bind(this)}/>
-          {renderElements}
+          <div class="tab-content">
+            <div className="posts-list clearfix" id="all-posts">
+              {renderElements}
+            </div>
+            { 
+              this.state.hasMore && !this.state.loading ? 
+                <div className="load-more" onClick={this.fetchData.bind(this)}>
+                  <button type="button" className="btn btn-index">Upload more posts</button>
+                </div> : null 
+            }
+            {
+              this.state.hasMore && this.state.loading && this.state.posts.length !== 0 ? 
+              <div className='loading-block'>
+                <LoadingSpinner />
+              </div> : null 
+            }
+          </div>
         </div>
-        { 
-          this.state.hasMore && !this.state.loading ? 
-            <div className="load-more" onClick={this.fetchData.bind(this)}>
-              <button type="button" className="btn btn-index">Upload more posts</button>
-            </div> : null 
-        }
-        {
-          this.state.hasMore && this.state.loading && this.state.posts.length !== 0 ? 
-          <div className='loading-block'>
-            <LoadingSpinner />
-          </div> : null 
-        }
       </div>
     );
   }

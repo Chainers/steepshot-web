@@ -90,7 +90,7 @@ class UserProfile extends React.Component {
                   <div className="pic">
                     <img src={profileImageSrc} 
                       alt="" 
-                      onError={this.setDefaultAvatar.bind(this)}/> />
+                      onError={this.setDefaultAvatar.bind(this)}/>
                   </div>
                   { this.state.showFollow ? <FollowComponent item={this.state.profile} /> : null }
                 </div>

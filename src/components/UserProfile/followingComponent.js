@@ -16,6 +16,7 @@ class FollowingComponent extends React.Component {
       authorName: this.props.username,
       profile: null,
       loading: true,
+      hasMore: true,
       localize: LocalizedStrings.getInstance(),
       items: []
     };
@@ -54,7 +55,7 @@ class FollowingComponent extends React.Component {
         this.state.items.pop();
         let newItems = this.state.items.concat(response.results);
 
-        if (response.count < 20 || !response.offset) {
+        if (!response.offset) {
             _this.setState({
             items: newItems, 
             offset: response.offset, 
@@ -95,11 +96,11 @@ class FollowingComponent extends React.Component {
       renderComponent = <div className="empty-query-message">It's very strange, but we do not have anything yet for this query. Try to look for something else ...</div>;
     }
     
-    if (this.state.hasMore && !this.state.loading) {
+    if (this.state.hasMore && !this.state.loading && this.state.items.length !== 0) {
       updateButton = <div className="load-more" onClick={this.fetchData.bind(this, this.state.authorName, this.state.offset)}>
           <button type="button" className="btn btn-index">Upload more following</button>
         </div>;
-    } else if (this.state.hasMore && this.state.loading && this.state.items.length) {
+    } else if (this.state.hasMore && this.state.loading && this.state.items.length == 0) {
       updateButton = <div className='loading-block'>
           <LoadingSpinner />
         </div>;
