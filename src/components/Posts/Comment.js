@@ -69,16 +69,3 @@ const mapStateToProps = (state) => {
 };
 
 export default connect(mapStateToProps)(Comment);
-
-
-{/* <div className="comment">
-            <div>
-                <img width="40px" height="40px" className="user-avatar" src={avatar} alt="Image" onError={this.setDefaultAvatar.bind(this)}/>
-            </div>
-            <div className="">
-                <Link to={authorLink}><strong>{this.props.item.author}</strong></Link>
-                <div className="comment-text">
-                    {this.props.item.body}
-                </div>
-            </div>
-        </div> */}

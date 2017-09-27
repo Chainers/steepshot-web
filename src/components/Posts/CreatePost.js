@@ -21,12 +21,23 @@ class CreatePost extends React.Component {
         this.initKeypress();
     }
 
+    _clearAll() {
+        this.setState({
+            file: '',
+            imagePreviewUrl: '',
+            title: '',
+            tag: '',
+            tagList: []
+        });
+    }
+
     initKeypress() {
         const _this = this;
 
         document.onkeydown = function(e) {
             switch (e.keyCode) {
                 case 13:
+                    e.preventDefault();
                     _this.addTag();
                     break;
             }
@@ -201,8 +212,8 @@ class CreatePost extends React.Component {
                     </div>
                     <div className="form-group">
                         <div className="buttons-container col-xs-12">
-                            <button type="reset" className="btn btn-index">Cancel</button>
-                            <button onClick={(e)=>this._handleSubmit(e)} type="submit" className="btn btn-default">Create new post</button>
+                            <button onClick={this._clearAll.bind(this)} type="reset" className="btn btn-index">Cancel</button>
+                            <button onClick={this._handleSubmit.bind(this)} type="submit" className="btn btn-default">Create new post</button>
                         </div>
                     </div>
                 </form>

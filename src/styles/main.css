@@ -9,6 +9,10 @@
   z-index: 2;
 }
 
+.text-white {
+  color: white;
+}
+
 .popout-container {
   position: absolute;
   top: 50px;
@@ -23,12 +27,48 @@
   padding: 5px;
 }
 
+.loading-block {
+  display: flex;
+  width: 100%;
+  height: 50px;
+  align-items: center;
+  justify-content: center;
+}
+
+.loader {
+  border: 5px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 5px solid #37b0e9;
+  width: 40px;
+  height: 40px;
+  -webkit-animation: spin 2s linear infinite;
+  animation: spin 2s linear infinite;
+}
+
+@-webkit-keyframes spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
 /* New Styles */
 @font-face {
   font-family: OpenSans-Regular;
   font-style: normal;
   font-weight: 400;
-  src: local("OpenSans Regular"), local("OpenSans-Regular"), url(../src/fonts/OpenSans-Regular.woff) format("woff"), url(../src/fonts/OpenSans-Regular.woff2) format("woff2");
+  src: local("OpenSans Regular"), local("OpenSans-Regular"), url(../static/fonts/OpenSans-Regular.woff) format("woff"), url(../static/fonts/OpenSans-Regular.woff2) format("woff2");
 }
 
 .open-r {
@@ -39,7 +79,7 @@
   font-family: OpenSans-Bold;
   font-style: normal;
   font-weight: 400;
-  src: local("OpenSans Bold"), local("OpenSans-Bold"), url(../src/fonts/OpenSans-Bold.woff) format("woff"), url(../src/fonts/OpenSans-Bold.woff2) format("woff2");
+  src: local("OpenSans Bold"), local("OpenSans-Bold"), url(../static/fonts/OpenSans-Bold.woff) format("woff"), url(../static/fonts/OpenSans-Bold.woff2) format("woff2");
 }
 
 .open-b {
@@ -50,7 +90,7 @@
   font-family: OpenSans-Italic;
   font-style: normal;
   font-weight: 400;
-  src: local("OpenSans Italic"), local("OpenSans-Italic"), url(../src/fonts/OpenSans-Italic.woff) format("woff"), url(../src/fonts/OpenSans-Italic.woff2) format("woff2");
+  src: local("OpenSans Italic"), local("OpenSans-Italic"), url(../static/fonts/OpenSans-Italic.woff) format("woff"), url(../static/fonts/OpenSans-Italic.woff2) format("woff2");
 }
 
 .open-i {
@@ -61,7 +101,7 @@
   font-family: OpenSans-Light;
   font-style: normal;
   font-weight: 400;
-  src: local("OpenSans Light"), local("OpenSans-Light"), url(../src/fonts/OpenSans-Light.woff) format("woff"), url(../src/fonts/OpenSans-Light.woff2) format("woff2");
+  src: local("OpenSans Light"), local("OpenSans-Light"), url(../static/fonts/OpenSans-Light.woff) format("woff"), url(../static/fonts/OpenSans-Light.woff2) format("woff2");
 }
 
 .open-l {
@@ -72,7 +112,7 @@
   font-family: OpenSans-SemiBold;
   font-style: normal;
   font-weight: 400;
-  src: local("OpenSans SemiBold"), local("OpenSans-SemiBold"), url(../src/fonts/OpenSans-SemiBold.woff) format("woff"), url(../src/fonts/OpenSans-SemiBold.woff2) format("woff2");
+  src: local("OpenSans SemiBold"), local("OpenSans-SemiBold"), url(../static/fonts/OpenSans-SemiBold.woff) format("woff"), url(../static/fonts/OpenSans-SemiBold.woff2) format("woff2");
 }
 
 .open-sb {
@@ -1647,7 +1687,7 @@ button.close {
 [class*=sp-]:before {
   content: '';
   display: inline-block;
-  background-image: url(../src/images/sprite.png);
+  background-image: url(../static/images/sprite.png);
 }
 
 .sp-breadcrumb:before {
@@ -1658,7 +1698,7 @@ button.close {
 
 @font-face {
   font-family: sprite;
-  src: url(../src/fonts/sprite.woff2) format("woff2"), url(../src/fonts/sprite.woff) format("woff");
+  src: url(../static/fonts/sprite.woff2) format("woff2"), url(../static/fonts/sprite.woff) format("woff");
 }
 
 .ic-arrow:before, .ic-facebook:before, .ic-google:before, .ic-instagram:before, .ic-loop:before, .ic-odnoklassniki:before, .ic-skype:before, .ic-twitter:before, .ic-vkontakte:before, .ic-youtube:before {
@@ -1720,13 +1760,13 @@ button.close {
   content: ' ';
   display: inline-block;
   font-size: 10px;
-  background-image: url(../src/images/sprite_svg.svg);
+  background-image: url(../static/images/sprite_svg.svg);
   background-repeat: no-repeat;
   background-size: 4.4em 45.2em;
 }
 
 .no-svg [class*=ic2-]:before {
-  background-image: url(../src/images/sprite_svg.png);
+  background-image: url(../static/images/sprite_svg.png);
 }
 
 .ic2-arrow-check:before {
@@ -3917,7 +3957,7 @@ input[type=checkbox] ~ .box:before {
   content: ' ';
   display: inline-block;
   font-size: 10px;
-  background-image: url(../src/images/sprite_svg.svg);
+  background-image: url(../static/images/sprite_svg.svg);
   background-repeat: no-repeat;
   background-size: 4.4em 45.2em;
   background-position: -.2em -.2em;
@@ -3932,7 +3972,7 @@ input[type=checkbox] ~ .box:before {
 }
 
 .no-svg input[type=checkbox] ~ .box:before {
-  background-image: url(../src/images/sprite_svg.png);
+  background-image: url(../static/images/sprite_svg.png);
 }
 
 fieldset[disabled] input[type=checkbox], fieldset[disabled] input[type=radio], input[type=checkbox].disabled, input[type=checkbox][disabled], input[type=radio].disabled, input[type=radio][disabled] {
@@ -4238,7 +4278,7 @@ fieldset[disabled] input[type=checkbox] ~ .box, fieldset[disabled] input[type=ch
   content: ' ';
   display: inline-block;
   font-size: 10px;
-  background-image: url(../src/images/sprite_svg.svg);
+  background-image: url(../static/images/sprite_svg.svg);
   background-repeat: no-repeat;
   background-size: 4.4em 45.2em;
   background-position: -.2em -24.2em;
@@ -4249,7 +4289,7 @@ fieldset[disabled] input[type=checkbox] ~ .box, fieldset[disabled] input[type=ch
 }
 
 .no-svg .upload .uf-icon:before {
-  background-image: url(../src/images/sprite_svg.png);
+  background-image: url(../static/images/sprite_svg.png);
 }
 
 .upload .uf-text {
@@ -4540,7 +4580,7 @@ input[type=button].btn-block, input[type=reset].btn-block, input[type=submit].bt
   content: ' ';
   display: inline-block;
   font-size: 10px;
-  background-image: url(../src/images/sprite_svg.svg);
+  background-image: url(../static/images/sprite_svg.svg);
   background-repeat: no-repeat;
   background-size: 4.4em 45.2em;
   background-position: -.2em -40.6em;
@@ -4550,7 +4590,7 @@ input[type=button].btn-block, input[type=reset].btn-block, input[type=submit].bt
 }
 
 .no-svg .tags-list .tag .btn-close:before {
-  background-image: url(../src/images/sprite_svg.png);
+  background-image: url(../static/images/sprite_svg.png);
 }
 
 .tags-list .tag .btn-close:hover:before {
@@ -5297,7 +5337,7 @@ input[type=button].btn-block, input[type=reset].btn-block, input[type=submit].bt
   content: ' ';
   display: inline-block;
   font-size: 10px;
-  background-image: url(../src/images/sprite_svg.svg);
+  background-image: url(../static/images/sprite_svg.svg);
   background-repeat: no-repeat;
   background-size: 4.4em 45.2em;
   background-position: -.2em -43em;
@@ -5310,7 +5350,7 @@ input[type=button].btn-block, input[type=reset].btn-block, input[type=submit].bt
 }
 
 .no-svg .post-single .btn-next:before, .no-svg .post-single .btn-prev:before {
-  background-image: url(../src/images/sprite_svg.png);
+  background-image: url(../static/images/sprite_svg.png);
 }
 
 .post-single .btn-prev {
@@ -5478,7 +5518,7 @@ input[type=button].btn-block, input[type=reset].btn-block, input[type=submit].bt
   content: ' ';
   display: inline-block;
   font-size: 10px;
-  background-image: url(../src/images/sprite_svg.svg);
+  background-image: url(../static/images/sprite_svg.svg);
   background-repeat: no-repeat;
   background-size: 4.4em 45.2em;
   background-position: -.2em -28.599999999999998em;
@@ -5488,7 +5528,7 @@ input[type=button].btn-block, input[type=reset].btn-block, input[type=submit].bt
 }
 
 .no-svg .user-panel .search .lnk-search:before {
-  background-image: url(../src/images/sprite_svg.png);
+  background-image: url(../static/images/sprite_svg.png);
 }
 
 .user-panel .search .lnk-search-mob {
@@ -5510,7 +5550,7 @@ input[type=button].btn-block, input[type=reset].btn-block, input[type=submit].bt
   content: ' ';
   display: inline-block;
   font-size: 10px;
-  background-image: url(../src/images/sprite_svg.svg);
+  background-image: url(../static/images/sprite_svg.svg);
   background-repeat: no-repeat;
   background-size: 4.4em 45.2em;
   background-position: -.2em -30em;
@@ -5519,7 +5559,7 @@ input[type=button].btn-block, input[type=reset].btn-block, input[type=submit].bt
 }
 
 .no-svg .user-panel .search .lnk-search-mob:before {
-  background-image: url(../src/images/sprite_svg.png);
+  background-image: url(../static/images/sprite_svg.png);
 }
 
 .user-panel .menu {
@@ -5623,7 +5663,7 @@ input[type=button].btn-block, input[type=reset].btn-block, input[type=submit].bt
   content: ' ';
   display: inline-block;
   font-size: 10px;
-  background-image: url(../src/images/sprite_svg.svg);
+  background-image: url(../static/images/sprite_svg.svg);
   background-repeat: no-repeat;
   background-size: 4.4em 45.2em;
   background-position: -.2em -7.6000000000000005em;
@@ -5638,7 +5678,7 @@ input[type=button].btn-block, input[type=reset].btn-block, input[type=submit].bt
 }
 
 .no-svg .user-panel .create .btn-create-mob:before {
-  background-image: url(../src/images/sprite_svg.png);
+  background-image: url(../static/images/sprite_svg.png);
 }
 
 .user-panel .controls {
@@ -5664,7 +5704,7 @@ input[type=button].btn-block, input[type=reset].btn-block, input[type=submit].bt
   content: ' ';
   display: inline-block;
   font-size: 10px;
-  background-image: url(../src/images/sprite_svg.svg);
+  background-image: url(../static/images/sprite_svg.svg);
   background-repeat: no-repeat;
   background-size: 4.4em 45.2em;
   display: block;
@@ -5676,7 +5716,7 @@ input[type=button].btn-block, input[type=reset].btn-block, input[type=submit].bt
 }
 
 .no-svg .user-panel .controls .btn-control:before {
-  background-image: url(../src/images/sprite_svg.png);
+  background-image: url(../static/images/sprite_svg.png);
 }
 
 .user-panel .controls .btn-control.settings:before {
@@ -5806,7 +5846,7 @@ input[type=button].btn-block, input[type=reset].btn-block, input[type=submit].bt
   content: ' ';
   display: inline-block;
   font-size: 10px;
-  background-image: url(../src/images/sprite_svg.svg);
+  background-image: url(../static/images/sprite_svg.svg);
   background-repeat: no-repeat;
   background-size: 4.4em 45.2em;
   background-position: -.2em -28.599999999999998em;
@@ -5821,7 +5861,7 @@ input[type=button].btn-block, input[type=reset].btn-block, input[type=submit].bt
 }
 
 .no-svg .search-panel .wrap-panel:before {
-  background-image: url(../src/images/sprite_svg.png);
+  background-image: url(../static/images/sprite_svg.png);
 }
 
 .search-panel .wrap-btn {
@@ -5850,7 +5890,7 @@ input[type=button].btn-block, input[type=reset].btn-block, input[type=submit].bt
   content: ' ';
   display: inline-block;
   font-size: 10px;
-  background-image: url(../src/images/sprite_svg.svg);
+  background-image: url(../static/images/sprite_svg.svg);
   background-repeat: no-repeat;
   background-size: 4.4em 45.2em;
   background-position: -.2em -3.6em;
@@ -5860,7 +5900,7 @@ input[type=button].btn-block, input[type=reset].btn-block, input[type=submit].bt
 }
 
 .no-svg .search-panel .wrap-btn .btn-close:before {
-  background-image: url(../src/images/sprite_svg.png);
+  background-image: url(../static/images/sprite_svg.png);
 }
 
 .search-panel .wrap-search {
@@ -6069,7 +6109,7 @@ input[type=button].btn-block, input[type=reset].btn-block, input[type=submit].bt
   content: ' ';
   display: inline-block;
   font-size: 10px;
-  background-image: url(../src/images/sprite_svg.svg);
+  background-image: url(../static/images/sprite_svg.svg);
   background-repeat: no-repeat;
   background-size: 4.4em 45.2em;
   background-position: -.2em -44em;
@@ -6084,7 +6124,7 @@ input[type=button].btn-block, input[type=reset].btn-block, input[type=submit].bt
 }
 
 .no-svg .modal .close:before {
-  background-image: url(../src/images/sprite_svg.png);
+  background-image: url(../static/images/sprite_svg.png);
 }
 
 .g-content {
@@ -6146,7 +6186,7 @@ input[type=button].btn-block, input[type=reset].btn-block, input[type=submit].bt
   content: ' ';
   display: inline-block;
   font-size: 10px;
-  background-image: url(../src/images/sprite_svg.svg);
+  background-image: url(../static/images/sprite_svg.svg);
   background-repeat: no-repeat;
   background-size: 4.4em 45.2em;
   display: block;
@@ -6156,7 +6196,7 @@ input[type=button].btn-block, input[type=reset].btn-block, input[type=submit].bt
 }
 
 .no-svg .btn-like:after, .no-svg .btn-like:before {
-  background-image: url(../src/images/sprite_svg.png);
+  background-image: url(../static/images/sprite_svg.png);
 }
 
 .btn-like:before {

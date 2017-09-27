@@ -61,16 +61,13 @@ const paths = {
   entry: 'src/main.js',
   trash: 'src/libraries/**/*',
   srcCss: ['src/**/*.scss', 'src/**/*.css'],
-  srcImg: 'src/images/**/*',
+  srcImg: 'static/images/**/*',
   srcLint: ['src/**/*.js', 'test/**/*.js'],
   srcFonts: ['src/fonts/**/*'],
   dist: 'dist',
-  images: ['images/**/*.png', 'images/**/*.svg', 'images/**/*.ico', 'images/**/*.jpg'],
   distJs: 'dist/js',
-  distImg: 'dist/src/images',
-  distStyles: 'dist/styles',
-  distFonts: 'dist/src/fonts/',
-  distDeploy: ['dist/**/*', '!dist/index.html']
+  distImg: 'dist/static/images',
+  distFonts: 'dist/static/fonts/'
 };
 
 const customOpts = {
@@ -147,8 +144,8 @@ gulp.task('styles', () => {
 gulp.task('htmlReplace', () => {
   gulp.src('index.html')
   .pipe(htmlReplace({
-    css: ['styles/normalize.css', 'styles/main.css', 'styles/posts.css'],
-    js: ['js/app.js',]
+    css: ['/static/styles/normalize.css', '/static/styles/main.css', '/static/styles/posts.css'],
+    js: ['/static/js/app.js',]
    }))
   .pipe(gulp.dest(paths.dist));
 });

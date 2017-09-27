@@ -7,6 +7,7 @@ import {
   connect
 } from 'react-redux';
 import PropTypes from 'prop-types';
+import LoadingSpinner from '../LoadingSpinner';
 
 class Comments extends React.Component {
   constructor(props) {
@@ -60,7 +61,7 @@ class Comments extends React.Component {
     let comments = <div>No comments</div>;
 
     if (this.state.loading) {
-      comments = <div>Loading...</div>;
+      comments = <div className='loading-block'><LoadingSpinner /></div>;
     } 
     
     if (this.state.comments && this.state.comments.length != 0) {
