@@ -258,7 +258,7 @@ class Home extends React.Component {
       <div className="g-main_i container">
         <div id="workspace" className="g-content col-xs-12 clearfix">
           <PostFilterBlock updatePostsCallback={this.updatePostsByFolter.bind(this)}/>
-          <div class="tab-content">
+          <div className="tab-content">
             <div className="posts-list clearfix" id="all-posts">
               {renderElements}
             </div>

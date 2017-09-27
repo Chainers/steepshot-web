@@ -14,11 +14,22 @@ class CreatePost extends React.Component {
             file: '',
             imagePreviewUrl: '',
             title: '',
-            tagFirst: '',
-            tagSecond: '',
-            tagThird: '',
-            tagFouth: '',
-            message: ''
+            tag: '',
+            tagList: []
+        };
+
+        this.initKeypress();
+    }
+
+    initKeypress() {
+        const _this = this;
+
+        document.onkeydown = function(e) {
+            switch (e.keyCode) {
+                case 13:
+                    _this.addTag();
+                    break;
+            }
         };
     }
 
@@ -56,14 +67,8 @@ class CreatePost extends React.Component {
 
     _getTags() {
         let tags = [];
-        const tagsNames = ['tagFirst', 'tagSecond', 'tagThird', 'tagFouth'];
 
-        tagsNames.forEach((tagName) => {
-            if (this.state[tagName]) {
-                tags.push(this.state[tagName]);
-            }
-        });
-
+        tags = this.state.tagList.splice(0 ,4);
         tags.push('steepshot');
 
         return tags;
@@ -97,18 +102,41 @@ class CreatePost extends React.Component {
         };
     }
 
+    addTag() {
+        let tagList = this.state.tagList;
+        tagList.push(this.state.tag);
+
+        this.setState({
+            tag: '',
+            tagList: tagList
+        });
+    }
+
+    removeTag(index) {
+        let tagList = this.state.tagList;
+        
+        tagList.splice(index, 1);
+
+        this.setState({ 
+            tagList: tagList
+        });
+    }
+
     render() {
+        const _this = this;
         let {imagePreviewUrl} = this.state;
         let $imagePreview = null;
+        let tagList = null;
         if (imagePreviewUrl) {
             $imagePreview = (<div className="preview-component">
                 <div className="post-info">
                     <div className="info-block">
                         <div className="img-preview">
-                            <img src={imagePreviewUrl} />
+                            <img className="col-xs-12" src={imagePreviewUrl} />
                         </div>
                     </div>
                 </div>
+                <input id="upload-file" className="file-input" onChange={(e)=>this._handleImageChange(e)} type="file" />
             </div>);
         } else {
             $imagePreview = (<div className="upload-field empty">
@@ -118,6 +146,14 @@ class CreatePost extends React.Component {
                 </div>
                 <input id="upload-file" className="file-input" onChange={(e)=>this._handleImageChange(e)} type="file" />
             </div>);
+        }
+
+        if (this.state.tagList.length !== 0) {
+            tagList = this.state.tagList.map((tag, index) => {
+                return <div key={index} className="tag">{tag}
+                    <button type="button" className="btn-close" onClick={this.removeTag.bind(_this, index)}></button>
+                </div>
+            });
         }
 
         return (
@@ -132,29 +168,35 @@ class CreatePost extends React.Component {
                     </div>
                     <div className="form-group">
                         <div className="input-container col-xs-12">
-                            <input id="formPOINTERS" type="text" name="formPOINTERS" value="" required="" autocomplete="off" className="form-control" />
-                            <label for="formPOINTERS" className="name">Pointers</label>
+                            <input id="formDESCRIPTION" 
+                                type="text"
+                                name="title"
+                                id="title"
+                                value={this.state.title}
+                                onChange={this.handleChange.bind(this)}
+                                required=""
+                                autoComplete="off"
+                                className="form-control"
+                            />
+                            <label htmlFor="title" className="name">Description</label>
                         </div>
                     </div>
                     <div className="form-group">
                         <div className="input-container col-xs-12">
-                            <input id="formDESCRIPTION" type="text" name="formDESCRIPTION" value="" required="" autocomplete="off" className="form-control" />
-                            <label for="formDESCRIPTION" className="name">Description</label>
-                        </div>
-                    </div>
-                    <div className="form-group">
-                        <div className="input-container col-xs-12">
-                            <input id="formHASHTAG" type="text" name="formHASHTAG" value="" required="" autocomplete="off" className="form-control" />
-                            <label for="formHASHTAG" className="name">Hashtag</label>
+                            <input type="text" 
+                                name="tag"
+                                id="tag"
+                                value={this.state.tag}
+                                onChange={this.handleChange.bind(this)}
+                                required=""
+                                autoComplete="off"
+                                className="form-control"
+                            />
+                            <label htmlFor="tag" className="name">Hashtag</label>
                             <div className="tags-list clearfix">
-                                <div className="tag">Photo
-                                    <button type="button" className="btn-close"></button>
-                                </div>
-                                <div className="tag">Photoshop
-                                    <button type="button" className="btn-close"></button>
-                                </div>
+                                {tagList}
                             </div>
-                            <div className="help-block">Enter a hashtag through a comma in order for each word to be a separate tag. But not more than 10 words</div>
+                            <div className="help-block">Enter a hashtag through a comma in order for each word to be a separate tag. But not more than 4 words</div>
                         </div>
                     </div>
                     <div className="form-group">
@@ -178,55 +220,3 @@ const mapStateToProps = (state) => {
 };
 
 export default connect(mapStateToProps)(CreatePost);
-
-{/* <div className="preview-component">
-            <div className="image-block">
-                <label>Image preview</label>
-                <div className="img-preview">
-                    {$imagePreview}
-                </div>
-            </div>
-            <div className="post-info">
-                <div className="info-block">
-                    <label>Title</label>
-                    <input placeholder="Input titile" type="text" name="title" id="title" value={this.state.title} onChange={this.handleChange.bind(this)}/>
-
-                    <label>Input tags</label>
-                    <input placeholder="Input first tag and main tag"
-                        type="text"
-                        name="tagFirst"
-                        id="tagFirst"
-                        value={this.state.tagFirst}
-                        onChange={this.handleChange.bind(this)}/>
-                    <input placeholder="Input second tag"
-                        type="text"
-                        name="tagSecond"
-                        id="tagSecond"
-                        value={this.state.tagSecond}
-                        onChange={this.handleChange.bind(this)}/>
-                    <input placeholder="Input third tag"
-                        type="text"
-                        name="tagThird"
-                        id="tagThird"
-                        value={this.state.tagThird}
-                        onChange={this.handleChange.bind(this)}/>
-                    <input placeholder="Input fouth tag"
-                        type="text"
-                        name="tagFouth"
-                        id="tagFouth"
-                        value={this.state.tagFouth}
-                        onChange={this.handleChange.bind(this)}/>
-
-                    <label>Choose you photo</label>
-                    <input className="file-input" 
-                        type="file"
-                        onChange={(e)=>this._handleImageChange(e)} />
-                </div>
-                <div className='error'>
-                    { this.state.message }
-                </div>
-                <button className="submit-button" 
-                        type="submit" 
-                        onClick={(e)=>this._handleSubmit(e)}>Create post</button>
-            </div>
-        </div> */}

@@ -59,14 +59,17 @@ var aws_headers = {'Cache-Control': 'max-age=315360000, no-transform, public'};
 const paths = {
   bundle: 'app.js',
   entry: 'src/main.js',
+  trash: 'src/libraries/**/*',
   srcCss: ['src/**/*.scss', 'src/**/*.css'],
   srcImg: 'src/images/**/*',
   srcLint: ['src/**/*.js', 'test/**/*.js'],
+  srcFonts: ['src/fonts/**/*'],
   dist: 'dist',
   images: ['images/**/*.png', 'images/**/*.svg', 'images/**/*.ico', 'images/**/*.jpg'],
   distJs: 'dist/js',
   distImg: 'dist/src/images',
   distStyles: 'dist/styles',
+  distFonts: 'dist/src/fonts/',
   distDeploy: ['dist/**/*', '!dist/index.html']
 };
 
@@ -93,6 +96,12 @@ gulp.task('browserSync', () => {
   });
 
   gulp.watch("index.html").on('change', browserSync.reload);
+});
+
+// Fonts
+gulp.task('fonts', function() {
+  return gulp.src(paths.srcFonts)
+    .pipe(gulp.dest(paths.distFonts));
 });
 
 gulp.task('watchify', () => {
@@ -168,12 +177,12 @@ gulp.task('watchTask', () => {
 });
 
 gulp.task('watch', cb => {
-  runSequence('clean', ['browserSync', 'watchTask', 'watchify', 'styles', 'lint', 'imagemin'], cb);
+  runSequence('clean', ['browserSync', 'watchTask', 'watchify', 'fonts', 'styles', 'lint', 'imagemin'], cb);
 });
 
 gulp.task('build', cb => {
   process.env.NODE_ENV = 'production';
-  runSequence('clean', ['browserify', 'styles', 'htmlReplace', 'imagemin'], cb);
+  runSequence('clean', ['browserify', 'fonts', 'styles', 'htmlReplace', 'imagemin'], cb);
 });
 
 gulp.task('deploy', () => {

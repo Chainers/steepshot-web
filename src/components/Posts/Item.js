@@ -215,7 +215,7 @@ class Item extends React.Component {
           isOpen={this.state.modalIsOpen}
           onAfterOpen={this.afterOpenModal.bind(_this)}
           onRequestClose={this.closeModal}
-          className='popout-container'
+          className='g-main_i container popout-container'
           contentLabel="Example Modal"
         >
           <ItemModal 
