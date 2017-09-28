@@ -63,7 +63,7 @@ const paths = {
   srcCss: ['src/**/*.scss', 'src/**/*.css'],
   srcImg: 'static/images/**/*',
   srcLint: ['src/**/*.js', 'test/**/*.js'],
-  srcFonts: ['src/fonts/**/*'],
+  srcFonts: ['static/fonts/**/*'],
   dist: 'dist',
   distJs: 'dist/js',
   distImg: 'dist/static/images',

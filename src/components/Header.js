@@ -122,9 +122,9 @@ class Header extends React.Component {
               {loginComponent}
               <div className="section create">
                 <div className="wrap-create">
-                  <button type="button" className="btn btn-primary btn-xs btn-create">
-                    <Link to="/post" className="text-white">Create post</Link>
-                  </button>
+                  <Link to="/post" type="button" className="btn btn-primary btn-xs btn-create">
+                    Create post
+                  </Link>
                   <button type="button" className="btn btn-primary btn-create-mob"></button>
                 </div>
               </div>
