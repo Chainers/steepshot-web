@@ -28,13 +28,19 @@ class UserProfile extends React.Component {
 
   getUserProfile(userName) {
     let _this = this;
+    let showFollow = true;
 
     userName = userName || this.props.username;
 
     getUserProfile(userName).then((result) => {
       const profile = result;
 
+      if (!this.props.username ||profile.username === this.props.username) {
+        showFollow = false;
+      }
+
       _this.setState({
+        showFollow: showFollow,
         profile: profile,
         avatar: profile.profile_image
       });
