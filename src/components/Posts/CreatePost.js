@@ -49,8 +49,6 @@ class CreatePost extends React.Component {
     }
 
     _validateTagsByQuantity(quantity, stringWithTags) {
-        var a = stringWithTags.replace(/^\s+|\s+$/gm, '');
-        a = a.split(/\s+/);
         return stringWithTags.replace(/^\s+|\s+$/gm, '').split(/\s+/).length <= quantity;
     }
 
