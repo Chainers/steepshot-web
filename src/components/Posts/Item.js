@@ -166,6 +166,9 @@ class Item extends React.Component {
     };
 
     const authorLink = `/userProfile/${this.state.item.author}`;
+    const cardPhotoStyles = {
+      backgroundImage : 'url(' + itemImage + ')'
+    }
 
     return (
       <div className="item-wrap">
@@ -180,8 +183,8 @@ class Item extends React.Component {
             </Link>
           </div>
           <div className="card-body" >
-            <div className="card-pic js-position" onClick={this.openModal}>
-                <img src={itemImage} alt="User" onError={this.setDefaultImage.bind(this)}/>
+            <div className="card-pic" onClick={this.openModal}>
+                <a style={ cardPhotoStyles } className="img" alt="User" onError={this.setDefaultImage.bind(this)}></a>
               </div>
             <div className="card-wrap">
               <div className="card-controls clearfix">
@@ -215,7 +218,7 @@ class Item extends React.Component {
           isOpen={this.state.modalIsOpen}
           onAfterOpen={this.afterOpenModal.bind(_this)}
           onRequestClose={this.closeModal}
-          className='g-main_i container popout-container'
+          className='g-main_i popout-container'
           contentLabel="Example Modal"
         >
           <ItemModal 
