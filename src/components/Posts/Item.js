@@ -180,7 +180,7 @@ class Item extends React.Component {
             </Link>
           </div>
           <div className="card-body" >
-            <div className="card-pic" onClick={this.openModal}>
+            <div className="card-pic js-position" onClick={this.openModal}>
                 <img src={itemImage} alt="User" onError={this.setDefaultImage.bind(this)}/>
               </div>
             <div className="card-wrap">
