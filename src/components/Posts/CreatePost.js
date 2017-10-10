@@ -48,8 +48,17 @@ class CreatePost extends React.Component {
         this.setState({ [event.target.name]: event.target.value });
     }
 
+    _validateTagsByQuantity(quantity, stringWithTags) {
+        var a = stringWithTags.replace(/^\s+|\s+$/gm, '');
+        a = a.split(/\s+/);
+        return stringWithTags.replace(/^\s+|\s+$/gm, '').split(/\s+/).length <= quantity;
+    }
+
     _handleSubmit(e) {
         e.preventDefault();
+
+        if (!this._validateTagsByQuantity(4, this.state.tag.toString())) return false;
+
         const callback = (result, message) => { 
             if (result) {
                 this._getPostShaddow(message);
