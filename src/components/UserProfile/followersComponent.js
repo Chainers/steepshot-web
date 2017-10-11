@@ -108,8 +108,10 @@ class FollowersComponent extends React.Component {
     }
 
     return (
-        <div className="posts-list clearfix type-2">
-          {renderComponent}
+        <div>
+          <div className="posts-list clearfix type-2">
+            {renderComponent}
+          </div>
           {updateButton}
         </div>
     );
