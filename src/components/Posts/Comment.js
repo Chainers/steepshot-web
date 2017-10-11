@@ -7,14 +7,25 @@ import {
 } from 'react-redux';
 import PropTypes from 'prop-types';
 import constants from '../../common/constants';
+import VouteComponent from './VouteComponent';
 
 class Comment extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
+      item: this.props.item,
       avatar: this.props.item.avatar
     };
+  }
+
+  updateVote(vote) {
+    let currentItem = this.state.item;
+    currentItem.vote = vote;
+    vote ? currentItem.net_votes++ : currentItem.net_votes--;
+    this.setState({ 
+      item: currentItem
+    });
   }
 
   getFormatedDate() {
@@ -47,7 +58,11 @@ class Comment extends React.Component {
         </div>
         <div className="comment-text">
           {this.props.item.body}
-          <button type="button" className="btn-like"></button>
+          <VouteComponent
+              key="vote"
+              item={this.props.item}
+              updateComponent={this.updateVote.bind(this)}
+            />
         </div>
         <div className="comment-controls clearfix">
           <a data-toggle="modal">{this.props.item.net_votes} Like's</a>
