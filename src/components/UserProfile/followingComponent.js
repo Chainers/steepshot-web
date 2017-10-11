@@ -107,10 +107,12 @@ class FollowingComponent extends React.Component {
     }
 
     return (
+      <div>
         <div className="posts-list clearfix type-2">
           {renderComponent}
-          {updateButton}
         </div>
+        {updateButton}
+      </div>
     );
   }
 }
