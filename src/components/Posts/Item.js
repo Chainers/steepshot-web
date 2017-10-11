@@ -169,6 +169,11 @@ class Item extends React.Component {
     const cardPhotoStyles = {
       backgroundImage : 'url(' + itemImage + ')'
     }
+    const modalStyle = {
+      overlay : {
+        backgroundColor : 'rgba(0,0,0,0.5)'        
+      }
+    }
 
     return (
       <div className="item-wrap">
@@ -220,6 +225,7 @@ class Item extends React.Component {
           onRequestClose={this.closeModal}
           className='g-main_i popout-container'
           contentLabel="Example Modal"
+          style={modalStyle}
         >
           <ItemModal 
             openModal={this.openModal} 

@@ -13,6 +13,7 @@
   }
   
   .popout-container {
+    outline: none;
     position: absolute;
     top: 50px;
     left: 50px;
@@ -20,10 +21,10 @@
     bottom: 50px;
     overflow-y: auto;
     overflow-x: hidden;
-    border: 1px solid #cccccc;
     background: white;
     border-radius: 4px;
     padding: 0;
+    height: 640px;
   }
   
   .loading-block {
