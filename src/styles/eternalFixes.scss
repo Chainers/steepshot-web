@@ -14,11 +14,11 @@
   
   .popout-container {
     outline: none;
-    position: absolute;
-    top: 50px;
-    left: 50px;
-    right: 50px;
-    bottom: 50px;
+    position: relative;
+    display: inline-block;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
     overflow-y: auto;
     overflow-x: hidden;
     background: white;
