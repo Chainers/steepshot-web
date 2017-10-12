@@ -13,6 +13,7 @@ import {
     getStore
 } from '../../store/configureStore';
 import LoadingSpinner from '../LoadingSpinner';
+import ItemsSliderComponent from '../Posts/ItemsSliderComponent';
 
 class Feed extends React.Component {
     constructor(props) {
@@ -22,10 +23,15 @@ class Feed extends React.Component {
             posts: [],
             hasMore: true,
             offset: null,
-            loading: true
+            loading: true,
+            needsInitSlider: true
         };
 
         this.store = getStore();
+
+        this.localConstants = {
+            THIS_POST_MODAL_REF : "thisPostModal" + this.props.index
+        }
     }
 
     componentDidMount() {
@@ -79,6 +85,27 @@ class Feed extends React.Component {
         });
     }
 
+    updateVoteInComponent(vote, index) {
+        let newItems = this.state.posts;
+        vote ? newItems[index].net_votes++ : newItems[index].net_votes--;
+        newItems[index].vote = vote;
+        this.setState({ 
+          posts: newItems
+        });
+    }
+
+    _renderSlider() {
+        if (this.state.posts) {
+            return <ItemsSliderComponent items={this.state.posts} updateVoteInComponent={this.updateVoteInComponent.bind(this)}/>
+        } else return null;
+    }
+
+    openModal(index) {
+        let $context = $(this.refs[this.localConstants.THIS_POST_MODAL_REF]);
+        if (this.state.needsInitSlider) jqApp.bigSlider.init($context, index);
+        jqApp.openPostModal($context);
+    }
+
     render() {
         let items = [];
         let _this = this;
@@ -87,12 +114,14 @@ class Feed extends React.Component {
         if (this.state.posts.length > 0) {
             this.state.posts.map((post, index) => {
                 items.push(<PostItem
-                    key={index}
+                    key={index + "_FeedPostItem"}
                     item={post}
                     items={_this.state.posts}
                     index={index}
                     history={this.props.history}
-                    loadMore={this.fetchPostsNext.bind(this)}/>
+                    loadMore={this.fetchPostsNext.bind(this)}
+                    openModal={this.openModal.bind(this)} 
+                    updateVoteInComponent={this.updateVoteInComponent.bind(this)} />
                 );
             });
 
@@ -118,6 +147,13 @@ class Feed extends React.Component {
                         <LoadingSpinner />
                     </div> : null 
                 }
+                <div tabIndex="-1" role="dialog" aria-hidden="true" className="modal modal-post fade mScroll" ref={this.localConstants.THIS_POST_MODAL_REF}>
+                    <div className="modal-dialog">
+                        <div className="modal-content">
+                            {this._renderSlider()}
+                        </div>
+                    </div>
+                </div>
             </div>
         );
     }

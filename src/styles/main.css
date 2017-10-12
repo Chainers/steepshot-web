@@ -6251,10 +6251,6 @@ input[type="button"].btn-block {
 	display: none;
 }
 
-.modal .big-slider .bs-wrap {
-	opacity: 0;
-}
-
 .modal .big-slider .bs-wrap.not-init {
 	opacity: 0;
 }

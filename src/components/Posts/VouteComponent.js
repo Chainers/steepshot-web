@@ -16,6 +16,7 @@ class VouteComponent extends React.Component {
     super(props);
 
     this.state = {
+      index: this.props.index,
       item: this.props.item,
       vote: this.props.item.vote
     }
@@ -28,7 +29,7 @@ class VouteComponent extends React.Component {
     const newVoteState = !this.state.vote;
     const urlObject = this.state.item.url.split('/');
 
-    this.props.updateComponent(newVoteState);
+    this.props.updateVoteInComponent(newVoteState, this.state.index);
     this.setState({ 
       vote: newVoteState
     });

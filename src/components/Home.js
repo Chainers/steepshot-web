@@ -21,6 +21,7 @@ import {
 } from '../store/configureStore';
 import Loading from 'react-loading-spinner';
 import LoadingSpinner from './LoadingSpinner';
+import ItemsSliderComponent from './Posts/ItemsSliderComponent';
 
 // constants
 import constants from '../common/constants';
@@ -34,12 +35,17 @@ class Home extends React.Component {
       hasMore: true,
       offset: null,
       loading: true,
-      activeMode: constants.POST_FILTERS.TRENDING
+      activeMode: constants.POST_FILTERS.TRENDING,
+      needsInitSlider: true      
     };
 
     this.store = getStore();
     this.outputUpdate();
     this.resetPosts();
+
+    this.localConstants = {
+      THIS_POST_MODAL_REF : "thisPostModal" + this.props.index
+    }
   }
 
   outputUpdate() {
@@ -226,6 +232,28 @@ class Home extends React.Component {
     this.setDefaultPosts(key, true, offset);
   }
 
+  openModal(index) {
+    let $context = $(this.refs[this.localConstants.THIS_POST_MODAL_REF]);
+  
+    if (this.state.needsInitSlider) jqApp.bigSlider.init($context, index);
+    jqApp.openPostModal($context);
+  }
+
+  _renderSlider() {
+    if (this.state.posts) {
+        return <ItemsSliderComponent items={this.state.posts} updateVoteInComponent={this.updateVoteInComponent.bind(this)}/>
+    } else return null;
+  }
+
+  updateVoteInComponent(vote, index) {
+    let newItems = items;
+    vote ? newItems[index].net_votes++ : newItems[index].net_votes--;
+    newItems[index].vote = vote;
+    this.setState({ 
+      items: newItems
+    });
+  }
+
   render() {
     let items = [];
     let _this = this;
@@ -244,6 +272,7 @@ class Home extends React.Component {
           index={index}
           history={this.props.history}
           loadMore={this.fetchData.bind(this)}
+          openModal={this.openModal.bind(this)}
         />);
       });
 
@@ -274,6 +303,13 @@ class Home extends React.Component {
                 <LoadingSpinner />
               </div> : null 
             }
+          </div>
+        </div>
+        <div tabIndex="-1" role="dialog" aria-hidden="true" className="modal modal-post fade mScroll" ref={this.localConstants.THIS_POST_MODAL_REF}>
+          <div className="modal-dialog">
+            <div className="modal-content">
+              {this._renderSlider()}
+            </div>
           </div>
         </div>
       </div>
