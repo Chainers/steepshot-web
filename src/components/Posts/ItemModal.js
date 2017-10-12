@@ -21,13 +21,27 @@ class ItemModal extends React.Component {
             currentIndex: this.props.index,
             image: this.props.item.body,
             comments: [],
+            disableNext: false,
+            disablePrev: false,
             redirectToReferrer: false
         };
+
+        this.initKeypress();
     }
 
-    shouldComponentUpdate(nextProps, nextState) {
-      if (nextProps == this.props && nextState == this.state) return false;
-      return true;
+    initKeypress() {
+        const _this = this;
+
+        document.onkeydown = function(e) {
+        switch (e.keyCode) {
+            case 37:
+                _this.previous();
+                break;
+            case 39:
+                _this.next();
+                break;
+        }
+        };
     }
 
     setDefaultAvatar() {
@@ -44,6 +58,38 @@ class ItemModal extends React.Component {
 
     redirectToUserProfile() {
       this.setState({ redirectToReferrer: true });
+    }
+
+    next() {
+      const curIndex = this.state.currentIndex;
+      if (curIndex + 2 == this.props.items.length) {
+          this.props.loadMore();
+      }
+
+      if (curIndex == this.props.items.length) {
+          this.setState({ disableNext: true });
+      } else {
+          const newItem = this.props.items[this.state.currentIndex + 1];
+          this.resetDefaultProperties(newItem);
+          this.setState({ currentIndex: this.state.currentIndex + 1 });
+      }
+    }
+
+    resetDefaultProperties(newItem) {
+      this.setState({ 
+          avatar: newItem.avatar,
+          image: newItem.body,
+          item: newItem
+      });
+    }
+
+    previous() {
+      if (this.state.currentIndex == 0) {
+          this.setState({ disablePrev: true });
+      } else {
+          this.resetDefaultProperties(this.props.items[this.state.currentIndex - 1]);
+          this.setState({ currentIndex: this.state.currentIndex - 1 });
+      }
     }
 
     getFormatedDate() {
@@ -101,7 +147,6 @@ class ItemModal extends React.Component {
                   <VouteComponent
                     key="vote"
                     item={this.state.item}
-                    index={this.state.currentIndex}
                     updateVoteInComponent={this.props.updateVoteInComponent}
                   />
                 </div>

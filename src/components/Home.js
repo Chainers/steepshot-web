@@ -35,8 +35,7 @@ class Home extends React.Component {
       hasMore: true,
       offset: null,
       loading: true,
-      activeMode: constants.POST_FILTERS.TRENDING,
-      needsInitSlider: true      
+      activeMode: constants.POST_FILTERS.TRENDING    
     };
 
     this.store = getStore();
@@ -234,15 +233,7 @@ class Home extends React.Component {
 
   openModal(index) {
     let $context = $(this.refs[this.localConstants.THIS_POST_MODAL_REF]);
-  
-    if (this.state.needsInitSlider) jqApp.bigSlider.init($context, index);
     jqApp.openPostModal($context);
-  }
-
-  _renderSlider() {
-    if (this.state.posts) {
-        return <ItemsSliderComponent items={this.state.posts} updateVoteInComponent={this.updateVoteInComponent.bind(this)}/>
-    } else return null;
   }
 
   updateVoteInComponent(vote, index) {
@@ -308,7 +299,6 @@ class Home extends React.Component {
         <div tabIndex="-1" role="dialog" aria-hidden="true" className="modal modal-post fade mScroll" ref={this.localConstants.THIS_POST_MODAL_REF}>
           <div className="modal-dialog">
             <div className="modal-content">
-              {this._renderSlider()}
             </div>
           </div>
         </div>

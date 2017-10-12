@@ -13,7 +13,7 @@ import {
     getStore
 } from '../../store/configureStore';
 import LoadingSpinner from '../LoadingSpinner';
-import ItemsSliderComponent from '../Posts/ItemsSliderComponent';
+import ItemModal from '../Posts/ItemModal';
 
 class Feed extends React.Component {
     constructor(props) {
@@ -23,8 +23,7 @@ class Feed extends React.Component {
             posts: [],
             hasMore: true,
             offset: null,
-            loading: true,
-            needsInitSlider: true
+            loading: true
         };
 
         this.store = getStore();
@@ -94,15 +93,17 @@ class Feed extends React.Component {
         });
     }
 
-    _renderSlider() {
-        if (this.state.posts) {
-            return <ItemsSliderComponent items={this.state.posts} updateVoteInComponent={this.updateVoteInComponent.bind(this)}/>
-        } else return null;
+    _renderModal() {
+        if (this.state.currentItem != undefined)
+        return <ItemModal item={this.state.posts[this.state.currentItem]} items={this.state.posts} index={this.state.currentItem}/>
+        return null;
     }
 
     openModal(index) {
         let $context = $(this.refs[this.localConstants.THIS_POST_MODAL_REF]);
-        if (this.state.needsInitSlider) jqApp.bigSlider.init($context, index);
+        this.setState({
+            currentItem : index
+        })
         jqApp.openPostModal($context);
     }
 
@@ -151,9 +152,10 @@ class Feed extends React.Component {
                     <div className="modal-dialog">
                         <div className="modal-content">
                             <div className="big-slider">
-                                <div className="bs-wrap not-init">
+                                <div className="bs-wrap"> {/*not-init class*/}
                                     <div className="bs-slider">
                                         <div className="bs-slide">
+                                            {this._renderModal()}
                                         </div>
                                     </div>
                                 </div>
