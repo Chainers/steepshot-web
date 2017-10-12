@@ -150,7 +150,14 @@ class Feed extends React.Component {
                 <div tabIndex="-1" role="dialog" aria-hidden="true" className="modal modal-post fade mScroll" ref={this.localConstants.THIS_POST_MODAL_REF}>
                     <div className="modal-dialog">
                         <div className="modal-content">
-                            {this._renderSlider()}
+                            <div className="big-slider">
+                                <div className="bs-wrap not-init">
+                                    <div className="bs-slider">
+                                        <div className="bs-slide">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
