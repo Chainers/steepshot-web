@@ -21,6 +21,7 @@ import {
 } from '../store/configureStore';
 import Loading from 'react-loading-spinner';
 import LoadingSpinner from './LoadingSpinner';
+import ModalComponent from './Common/ModalComponent';
 
 // constants
 import constants from '../common/constants';

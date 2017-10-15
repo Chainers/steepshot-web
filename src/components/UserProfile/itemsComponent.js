@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import LoadingSpinner from '../LoadingSpinner';
 import PostItem from '../Posts/Item';
 import contants from '../../common/constants';
+import ModalComponent from '../Common/ModalComponent';
 
 class ItemsComponent extends React.Component {
   constructor(props) {
