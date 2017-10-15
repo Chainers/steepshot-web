@@ -14,6 +14,7 @@ import {
 } from '../../store/configureStore';
 import LoadingSpinner from '../LoadingSpinner';
 import ItemModal from '../Posts/ItemModal';
+import ModalComponent from '../Common/ModalComponent';
 
 class Feed extends React.Component {
     constructor(props) {
@@ -27,10 +28,6 @@ class Feed extends React.Component {
         };
 
         this.store = getStore();
-
-        this.localConstants = {
-            THIS_POST_MODAL_REF : "thisPostModal" + this.props.index
-        }
     }
 
     componentDidMount() {
@@ -95,16 +92,21 @@ class Feed extends React.Component {
 
     _renderModal() {
         if (this.state.currentItem != undefined)
-        return <ItemModal item={this.state.posts[this.state.currentItem]} items={this.state.posts} index={this.state.currentItem}/>
+        return <ItemModal 
+                    item={this.state.posts[this.state.currentItem]} 
+                    items={this.state.posts} 
+                    index={this.state.currentItem}
+                    updateVoteInComponent={this.updateVoteInComponent.bind(this)} 
+                    loadMore={this.fetchPostsNext.bind(this)}
+                />
         return null;
     }
 
     openModal(index) {
-        let $context = $(this.refs[this.localConstants.THIS_POST_MODAL_REF]);
+        fetch(jqApp.openPostModal()).then(
         this.setState({
             currentItem : index
-        })
-        jqApp.openPostModal($context);
+        }));
     }
 
     render() {
@@ -148,21 +150,9 @@ class Feed extends React.Component {
                         <LoadingSpinner />
                     </div> : null 
                 }
-                <div tabIndex="-1" role="dialog" aria-hidden="true" className="modal modal-post fade mScroll" ref={this.localConstants.THIS_POST_MODAL_REF}>
-                    <div className="modal-dialog">
-                        <div className="modal-content">
-                            <div className="big-slider">
-                                <div className="bs-wrap"> {/*not-init class*/}
-                                    <div className="bs-slider">
-                                        <div className="bs-slide">
-                                            {this._renderModal()}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <ModalComponent>
+                    {this._renderModal()}
+                </ModalComponent>
             </div>
         );
     }

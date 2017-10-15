@@ -41,10 +41,6 @@ class Home extends React.Component {
     this.store = getStore();
     this.outputUpdate();
     this.resetPosts();
-
-    this.localConstants = {
-      THIS_POST_MODAL_REF : "thisPostModal" + this.props.index
-    }
   }
 
   outputUpdate() {
@@ -231,11 +227,6 @@ class Home extends React.Component {
     this.setDefaultPosts(key, true, offset);
   }
 
-  openModal(index) {
-    let $context = $(this.refs[this.localConstants.THIS_POST_MODAL_REF]);
-    jqApp.openPostModal($context);
-  }
-
   updateVoteInComponent(vote, index) {
     let newItems = items;
     vote ? newItems[index].net_votes++ : newItems[index].net_votes--;
@@ -244,6 +235,25 @@ class Home extends React.Component {
       items: newItems
     });
   }
+
+  _renderModal() {
+    if (this.state.currentItem != undefined)
+    return <ItemModal 
+                item={this.state.posts[this.state.currentItem]} 
+                items={this.state.posts} 
+                index={this.state.currentItem}
+                updateVoteInComponent={this.updateVoteInComponent.bind(this)} 
+                loadMore={this.fetchPostsNext.bind(this)}
+            />
+    return null;
+}
+
+openModal(index) {
+    fetch(jqApp.openPostModal()).then(
+    this.setState({
+      currentItem : index
+    }));
+}
 
   render() {
     let items = [];
@@ -296,11 +306,9 @@ class Home extends React.Component {
             }
           </div>
         </div>
-        <div tabIndex="-1" role="dialog" aria-hidden="true" className="modal modal-post fade mScroll" ref={this.localConstants.THIS_POST_MODAL_REF}>
-          <div className="modal-dialog">
-            <div className="modal-content">
-            </div>
-          </div>
+        <div id="postModal" tabIndex="-1" role="dialog" aria-hidden="true" className="modal modal-post-single fade mScroll">
+            <button type="button" data-dismiss="modal" aria-hidden="true" className="close"></button>
+            {this._renderModal()}
         </div>
       </div>
     );

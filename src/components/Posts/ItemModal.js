@@ -18,7 +18,7 @@ class ItemModal extends React.Component {
 
         this.state = {
             item: this.props.item,
-            currentIndex: this.props.index,
+            index: this.props.index,
             image: this.props.item.body,
             comments: [],
             disableNext: false,
@@ -27,6 +27,18 @@ class ItemModal extends React.Component {
         };
 
         this.initKeypress();
+    }
+
+    componentWillReceiveProps(nextProps){
+      this.setState({
+        item: nextProps.item,
+        index: nextProps.index,
+        image: nextProps.item.body,
+        comments: [],
+        disableNext: false,
+        disablePrev: false,
+        redirectToReferrer: false
+      });
     }
 
     initKeypress() {
@@ -61,7 +73,7 @@ class ItemModal extends React.Component {
     }
 
     next() {
-      const curIndex = this.state.currentIndex;
+      const curIndex = this.state.index;
       if (curIndex + 2 == this.props.items.length) {
           this.props.loadMore();
       }
@@ -69,9 +81,9 @@ class ItemModal extends React.Component {
       if (curIndex == this.props.items.length) {
           this.setState({ disableNext: true });
       } else {
-          const newItem = this.props.items[this.state.currentIndex + 1];
+          const newItem = this.props.items[this.state.index + 1];
           this.resetDefaultProperties(newItem);
-          this.setState({ currentIndex: this.state.currentIndex + 1 });
+          this.setState({ index: this.state.index + 1 });
       }
     }
 
@@ -84,11 +96,11 @@ class ItemModal extends React.Component {
     }
 
     previous() {
-      if (this.state.currentIndex == 0) {
+      if (this.state.index == 0) {
           this.setState({ disablePrev: true });
       } else {
-          this.resetDefaultProperties(this.props.items[this.state.currentIndex - 1]);
-          this.setState({ currentIndex: this.state.currentIndex - 1 });
+          this.resetDefaultProperties(this.props.items[this.state.index - 1]);
+          this.setState({ index: this.state.index - 1 });
       }
     }
 
@@ -147,6 +159,7 @@ class ItemModal extends React.Component {
                   <VouteComponent
                     key="vote"
                     item={this.state.item}
+                    index={this.state.index}
                     updateVoteInComponent={this.props.updateVoteInComponent}
                   />
                 </div>

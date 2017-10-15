@@ -22,6 +22,14 @@ class VouteComponent extends React.Component {
     }
   }
 
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      index: this.props.index,
+      item: this.props.item,
+      vote: this.props.item.vote
+    });
+  }
+
   ratingVotes() {
     if (!(this.props.username || this.props.postingKey)) {
       return;
