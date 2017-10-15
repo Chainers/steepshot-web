@@ -97,10 +97,11 @@ class ItemsComponent extends React.Component {
   }
 
   openModal(index) {
-      fetch(jqApp.openPostModal()).then(
-      this.setState({
-          currentItem : index
-      }));
+    this.setState({
+        currentItem : index
+    },
+        jqApp.openPostModal()
+    );
   }
 
   render() {
@@ -141,10 +142,9 @@ class ItemsComponent extends React.Component {
           {renderComponent}
         </div>
         {updateButton}
-        <div id="postModal" tabIndex="-1" role="dialog" aria-hidden="true" className="modal modal-post-single fade mScroll">
-            <button type="button" data-dismiss="modal" aria-hidden="true" className="close"></button>
+        <ModalComponent>
             {this._renderModal()}
-        </div>
+        </ModalComponent>
       </div>
     );
   }

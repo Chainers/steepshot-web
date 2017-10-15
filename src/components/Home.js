@@ -21,7 +21,6 @@ import {
 } from '../store/configureStore';
 import Loading from 'react-loading-spinner';
 import LoadingSpinner from './LoadingSpinner';
-import ItemsSliderComponent from './Posts/ItemsSliderComponent';
 
 // constants
 import constants from '../common/constants';
@@ -246,14 +245,15 @@ class Home extends React.Component {
                 loadMore={this.fetchPostsNext.bind(this)}
             />
     return null;
-}
+  }
 
-openModal(index) {
-    fetch(jqApp.openPostModal()).then(
+  openModal(index) {
     this.setState({
-      currentItem : index
-    }));
-}
+        currentItem : index
+    },
+        jqApp.openPostModal()
+    );
+  }
 
   render() {
     let items = [];
@@ -306,10 +306,9 @@ openModal(index) {
             }
           </div>
         </div>
-        <div id="postModal" tabIndex="-1" role="dialog" aria-hidden="true" className="modal modal-post-single fade mScroll">
-            <button type="button" data-dismiss="modal" aria-hidden="true" className="close"></button>
+        <ModalComponent>
             {this._renderModal()}
-        </div>
+        </ModalComponent>
       </div>
     );
   }

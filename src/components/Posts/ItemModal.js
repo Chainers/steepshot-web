@@ -112,6 +112,7 @@ class ItemModal extends React.Component {
     }
 
     render() {
+
       let _this = this;
       let itemImage = this.state.image || constants.NO_IMAGE;
       let authorImage = this.state.avatar || constants.NO_AVATAR;
@@ -193,8 +194,8 @@ class ItemModal extends React.Component {
 }
 
 ItemModal.propTypes = {
-  item: PropTypes.object,
-  index: PropTypes.number
+  item: PropTypes.object.isRequired,
+  index: PropTypes.number.isRequired
 };
 
 const mapStateToProps = (state) => {

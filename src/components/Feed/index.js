@@ -103,10 +103,11 @@ class Feed extends React.Component {
     }
 
     openModal(index) {
-        fetch(jqApp.openPostModal()).then(
         this.setState({
             currentItem : index
-        }));
+        },
+            jqApp.openPostModal()
+        );
     }
 
     render() {
