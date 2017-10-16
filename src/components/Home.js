@@ -21,6 +21,7 @@ import {
 } from '../store/configureStore';
 import Loading from 'react-loading-spinner';
 import LoadingSpinner from './LoadingSpinner';
+import ModalComponent from './Common/ModalComponent';
 
 // constants
 import constants from '../common/constants';
@@ -34,7 +35,7 @@ class Home extends React.Component {
       hasMore: true,
       offset: null,
       loading: true,
-      activeMode: constants.POST_FILTERS.TRENDING
+      activeMode: constants.POST_FILTERS.TRENDING    
     };
 
     this.store = getStore();
@@ -226,6 +227,35 @@ class Home extends React.Component {
     this.setDefaultPosts(key, true, offset);
   }
 
+  updateVoteInComponent(vote, index) {
+    let newItems = items;
+    vote ? newItems[index].net_votes++ : newItems[index].net_votes--;
+    newItems[index].vote = vote;
+    this.setState({ 
+      items: newItems
+    });
+  }
+
+  _renderModal() {
+    if (this.state.currentItem != undefined)
+    return <ItemModal 
+                item={this.state.posts[this.state.currentItem]} 
+                items={this.state.posts} 
+                index={this.state.currentItem}
+                updateVoteInComponent={this.updateVoteInComponent.bind(this)} 
+                loadMore={this.fetchPostsNext.bind(this)}
+            />
+    return null;
+  }
+
+  openModal(index) {
+    this.setState({
+        currentItem : index
+    },
+        jqApp.openPostModal()
+    );
+  }
+
   render() {
     let items = [];
     let _this = this;
@@ -244,6 +274,7 @@ class Home extends React.Component {
           index={index}
           history={this.props.history}
           loadMore={this.fetchData.bind(this)}
+          openModal={this.openModal.bind(this)}
         />);
       });
 
@@ -276,6 +307,9 @@ class Home extends React.Component {
             }
           </div>
         </div>
+        <ModalComponent>
+            {this._renderModal()}
+        </ModalComponent>
       </div>
     );
   }
