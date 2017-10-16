@@ -14,7 +14,8 @@ class CreatePost extends React.Component {
             file: '',
             imagePreviewUrl: '',
             title: '',
-            tag: '',
+            tag: "",
+            tagInputName: "tag",
             tagList: []
         };
 
@@ -26,7 +27,6 @@ class CreatePost extends React.Component {
             file: '',
             imagePreviewUrl: '',
             title: '',
-            tag: '',
             tagList: []
         });
     }
@@ -45,18 +45,32 @@ class CreatePost extends React.Component {
     }
 
     handleChange(event) {
-        this.setState({ [event.target.name]: event.target.value });
+        let name = event.target.name;
+        let value = event.target.value;
+        this.setState({ 
+            [name] : value.replace(/[^^a-zA-ZА-Яа-яЁё0-9\s]/g, "") 
+        }, () => {
+            if (name == this.state.tagInputName) {
+                this.setState({
+                    tagList : this.getTagsArray(this.state.tag),
+                    tagError : false
+                });   
+            }
+        });
     }
 
-    _validateTagsByQuantity(quantity, stringWithTags) {
-        return stringWithTags.replace(/^\s+|\s+$/gm, '').split(/\s+/).length <= quantity;
+    getTagsArray(stringWithTags) {
+        return stringWithTags.replace(/^\s+|\s+$/gm, '').split(/\s+/);
     }
 
     _handleSubmit(e) {
         e.preventDefault();
-
-        if (!this._validateTagsByQuantity(4, this.state.tag.toString())) return false;
-
+        if (this.state.tagList.length > 4) {
+            this.setState({
+                tagError: true
+            })
+            return false;
+        } 
         const callback = (result, message) => { 
             if (result) {
                 this._getPostShaddow(message);
@@ -84,9 +98,9 @@ class CreatePost extends React.Component {
     }
 
     _getTags() {
-        let tags = [];
+        let tags = this.state.tagList;
 
-        tags = this.state.tagList.splice(0 ,4);
+        //tags = this.state.tagList.splice(0 ,4);
         tags.push('steepshot');
 
         return tags;
@@ -131,17 +145,30 @@ class CreatePost extends React.Component {
     }
 
     removeTag(index) {
-        let tagList = this.state.tagList;
-        
-        tagList.splice(index, 1);
-
-        this.setState({ 
-            tagList: tagList
+        let newTagList = this.state.tagList;
+        newTagList.splice(index, 1);
+        this.setState({
+            tag: newTagList.join(' '),
+            tagList: newTagList,
+            tagError: false
         });
     }
 
+    _renderTags() {
+        let _this = this;
+        if (this.state.tagList.length !== 0) {
+            let items = this.state.tagList.map((tag, index) => {
+                return(
+                <div key={index} className="tag">{tag}
+                    <button type="button" className="btn-close" onClick={this.removeTag.bind(_this, index)}></button>
+                </div>
+                )
+            });
+            return items;
+        } else return null;
+    }
+
     render() {
-        const _this = this;
         let {imagePreviewUrl} = this.state;
         let $imagePreview = null;
         let tagList = null;
@@ -164,14 +191,6 @@ class CreatePost extends React.Component {
                 </div>
                 <input id="upload-file" className="file-input" onChange={(e)=>this._handleImageChange(e)} type="file" />
             </div>);
-        }
-
-        if (this.state.tagList.length !== 0) {
-            tagList = this.state.tagList.map((tag, index) => {
-                return <div key={index} className="tag">{tag}
-                    <button type="button" className="btn-close" onClick={this.removeTag.bind(_this, index)}></button>
-                </div>
-            });
         }
 
         return (
@@ -199,22 +218,24 @@ class CreatePost extends React.Component {
                             <label htmlFor="title" className="name">Description</label>
                         </div>
                     </div>
-                    <div className="form-group">
-                        <div className="input-container col-xs-12">
-                            <input type="text" 
-                                name="tag"
-                                id="tag"
-                                value={this.state.tag}
-                                onChange={this.handleChange.bind(this)}
-                                required=""
-                                autoComplete="off"
-                                className="form-control"
-                            />
-                            <label htmlFor="tag" className="name">Hashtag</label>
-                            <div className="tags-list clearfix">
-                                {tagList}
+                    <div className={this.state.tagError ? 'has-error' : ''} >
+                        <div className="form-group">
+                            <div className="input-container col-xs-12">
+                                <input type="text" 
+                                    name={this.state.tagInputName}
+                                    id="tag"
+                                    value={this.state.tag}
+                                    onChange={this.handleChange.bind(this)}
+                                    required=""
+                                    autoComplete="off"
+                                    className="form-control"
+                                />
+                                <label htmlFor="tag" className="name">Hashtag</label>
+                                <div className="tags-list clearfix">
+                                    {this._renderTags()}
+                                </div>
+                                <div className="help-block">Enter a hashtag(s). But not more than 4 words</div>
                             </div>
-                            <div className="help-block">Enter a hashtag through a comma in order for each word to be a separate tag. But not more than 4 words</div>
                         </div>
                     </div>
                     <div className="form-group">
