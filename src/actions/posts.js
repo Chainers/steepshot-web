@@ -1,4 +1,5 @@
 import RequestService from '../services/requestService';
+import Constants from '../common/constants';
 
 export function getPosts() {
   const url = RequestService.handleRequestPosts(`posts/new`);
@@ -116,9 +117,11 @@ export function getPostComments(author, authorUrl) {
 ///            Cookie: sessionid=q9umzz8q17bclh8yvkkipww3e96dtdn3
 /// </summary>
 
-export function getUserPosts(author, offset) {
+export function getUserPosts(author, offset, nsfw, lowRated) {
   const url = RequestService.handleBaseRequestPosts(`watcher/user/${author}/posts`, {
     offset: offset,
+    [Constants.SETTINGS.show_nsfw]: nsfw,
+    [Constants.SETTINGS.show_low_rated]: lowRated,
     limit: 3
   });
 

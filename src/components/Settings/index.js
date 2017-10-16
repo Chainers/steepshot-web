@@ -11,6 +11,7 @@ import {
     connect,
     store
 } from 'react-redux';
+import Constants from '../../common/constants';
 import PropTypes from 'prop-types';
 
 class Settings extends React.Component {
@@ -19,8 +20,8 @@ class Settings extends React.Component {
 
         this.state = {
             settings: {
-                nsfw: false,
-                lowRated: false
+                [Constants.SETTINGS.show_low_rated]: false,
+                [Constants.SETTINGS.show_nsfw]: false
             },
             saveSettings: getSettings(),
             showMessage: false,
@@ -53,8 +54,7 @@ class Settings extends React.Component {
     }
 
     upateSettings() {
-        if (this.state.saveSettings.nsfw != this.state.settings.nsfw ||
-            this.state.saveSettings.lowRated != this.state.settings.lowRated) {
+        if (this.state.saveSettings != this.state.settings) {
                 updateSettings(this.state.settings);
                 this.setState({ 
                     showMessage: true, 
@@ -73,16 +73,16 @@ class Settings extends React.Component {
                 <div className='checkbox-block'>
                     <input
                         type="checkbox"
-                        checked={this.state.settings.lowRated}
-                        onChange={this.handleInputChange.bind(this, "lowRated")} />
-                    <label onClick={this.handleInputChange.bind(this, "lowRated")}>Show low rate posts</label>
+                        checked={this.state.settings[Constants.SETTINGS.show_low_rated]}
+                        onChange={this.handleInputChange.bind(this, Constants.SETTINGS.show_low_rated)} />
+                    <label onClick={this.handleInputChange.bind(this, Constants.SETTINGS.show_low_rated)}>Show low rate posts</label>
                 </div>
                 <div className='checkbox-block'>
                     <input
                         type="checkbox"
-                        checked={this.state.settings.nsfw}
-                        onChange={this.handleInputChange.bind(this, "nsfw")} />
-                    <label onClick={this.handleInputChange.bind(this, "nsfw")}>Use NSFW setting</label>
+                        checked={this.state.settings[Constants.SETTINGS.show_nsfw]}
+                        onChange={this.handleInputChange.bind(this, Constants.SETTINGS.show_nsfw)} />
+                    <label onClick={this.handleInputChange.bind(this, Constants.SETTINGS.show_nsfw)}>Use NSFW setting</label>
                 </div>
                 <div className='checkbox-block' onClick={this.upateSettings.bind(this)}>
                     <div className="upload-button">
