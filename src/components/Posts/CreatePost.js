@@ -6,6 +6,7 @@ import {
 import {
     getPostShaddow
 } from '../../actions/posts';
+import LoadingSpinner from '../LoadingSpinner';
 
 class CreatePost extends React.Component {
     constructor(props) {
@@ -16,7 +17,9 @@ class CreatePost extends React.Component {
             title: '',
             tag: "",
             tagInputName: "tag",
-            tagList: []
+            tagList: [],
+            disabeleCreating: false,
+            renderLoader: false
         };
     }
 
@@ -29,7 +32,8 @@ class CreatePost extends React.Component {
             file: '',
             imagePreviewUrl: '',
             title: '',
-            tagList: []
+            tagList: [],
+            tag: ""
         });
     }
 
@@ -53,6 +57,7 @@ class CreatePost extends React.Component {
     }
 
     _handleSubmit(e) {
+        if (this.state.disabeleCreating) return false;
         e.preventDefault();
         if (this.state.tagList.length > 4) {
             this.setState({
@@ -62,16 +67,24 @@ class CreatePost extends React.Component {
         } 
         const callback = (result, message) => { 
             if (result) {
-                //this._getPostShaddow(message);
-                this.props.history.push('/profile'); 
+                this.setState({
+                    renderLoader : false
+                }, () => {
+                    this.props.history.push('/profile'); 
+                });
             } else {
                 this.setState({ 
+                    renderLoader : false,
                     message: 'You can only create posts after 5 minutes after previous.' 
                 });
             }
             
         };
-        Steem.createPost(this.props.postingKey, this._getTags(), this.props.username, this.state.title, this.state.file, callback);
+        this.setState({
+            renderLoader : true
+        }, 
+            Steem.createPost(this.props.postingKey, this._getTags(), this.props.username, this.state.title, this.state.file, callback)
+        );
     }
 
     _getPostShaddow(message) {
@@ -157,6 +170,14 @@ class CreatePost extends React.Component {
         } else return null;
     }
 
+    _renderLoader() {
+        if (this.state.renderLoader) {
+            return <LoadingSpinner />
+        } else {
+            return null;
+        }
+    }
+
     render() {
         let {imagePreviewUrl} = this.state;
         let $imagePreview = null;
@@ -223,16 +244,20 @@ class CreatePost extends React.Component {
                                 <div className="tags-list clearfix">
                                     {this._renderTags()}
                                 </div>
-                                <div className="help-block">Enter a hashtag(s). But not more than 4 words</div>
+                                <div className="help-block">
+                                    <div className="help-block__notice">Enter a hashtag(s). But not more than 4 words</div>
+                                    <div className="text--red help-block__notice">{this.state.message}</div>
+                                </div>
                             </div>
                         </div>
                     </div>
                     <div className="form-group">
                         <div className="buttons-container col-xs-12">
-                            <button onClick={this._clearAll.bind(this)} type="reset" className="btn btn-index">Cancel</button>
+                            <button onClick={this._clearAll.bind(this)} type="reset" className="btn btn-index">Clear</button>
                             <button onClick={this._handleSubmit.bind(this)} type="submit" className="btn btn-default">Create new post</button>
                         </div>
                     </div>
+                    {this._renderLoader()}
                 </form>
             </div>
         )

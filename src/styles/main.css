@@ -12,27 +12,34 @@
     color: white;
   }
   
-  .popout-container {
-    outline: none;
-    position: relative;
-    display: inline-block;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%,-50%);
-    overflow-y: auto;
-    overflow-x: hidden;
-    background: white;
-    border-radius: 4px;
-    padding: 0;
-    height: 640px;
+  .text--red {
+	color: #d0011b;
+  }
+
+  .help-block__notice {
+	  margin-bottom: 1rem;
   }
   
   .loading-block {
+	position: relative;
     display: flex;
     width: 100%;
     height: 50px;
     align-items: center;
     justify-content: center;
+  }
+
+  .loader-blocker{
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	display: flex;
+    align-items: center;
+	justify-content: center;
+	z-index: 9999;
+	background: rgba(250,250,250,0.5);
   }
   
   .loader {
