@@ -23,5 +23,14 @@ export default {
         PERCENT_STEMM_DOLLARS: 10000
     },
     NO_AVATAR: '/static/images/person.png',
-    NO_IMAGE: '/static/images/noimage.jpg'
+    NO_IMAGE: '/static/images/noimage.jpg',
+
+    SETTINGS: {
+        show_low_rated : "show_low_rated",
+        show_nsfw : "show_nsfw"
+    },
+
+    POSTS_SETTINGS: {
+        defaultLimit: 24
+    }
 }

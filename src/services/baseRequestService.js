@@ -7,20 +7,28 @@ const baseUrl = constants.URLS.baseUrl;
 class BaseRequestService {
     getDefaultOptions() {
         return {
-            limit: 10,
+            limit: constants.POSTS_SETTINGS.defaultLimit,
             offset: null
         };
+    }
+
+    convertIfBool(option) {
+        if (option == true) {
+            return "1";
+        } else 
+        if (option == false) {
+            return "0";
+        } else {
+            return option;
+        }
     }
 
     convertOptionsToRequestString(options) {
         let optionsRequetString = '';
         let optionsArray = [];
-        if (!options.offset) {
-            return optionsRequetString;
-        }
 
         for (let key in options) {
-            optionsArray.push(key + '=' + options[key]);
+            if (options[key] != undefined) optionsArray.push(key + '=' + this.convertIfBool(options[key]));
         }
 
         return '?' + optionsArray.join('&');
