@@ -28,5 +28,9 @@ export default {
     SETTINGS: {
         show_low_rated : "show_low_rated",
         show_nsfw : "show_nsfw"
+    },
+
+    POSTS_SETTINGS: {
+        defaultLimit: 24
     }
 }
