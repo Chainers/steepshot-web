@@ -18,8 +18,10 @@ class CreatePost extends React.Component {
             tagInputName: "tag",
             tagList: []
         };
+    }
 
-        this.initKeypress();
+    componentDidMount() {
+        setTimeout(() => { jqApp.forms.init() }, 0);
     }
 
     _clearAll() {
@@ -29,19 +31,6 @@ class CreatePost extends React.Component {
             title: '',
             tagList: []
         });
-    }
-
-    initKeypress() {
-        const _this = this;
-
-        document.onkeydown = function(e) {
-            switch (e.keyCode) {
-                case 13:
-                    e.preventDefault();
-                    _this.addTag();
-                    break;
-            }
-        };
     }
 
     handleChange(event) {
@@ -73,7 +62,7 @@ class CreatePost extends React.Component {
         } 
         const callback = (result, message) => { 
             if (result) {
-                this._getPostShaddow(message);
+                //this._getPostShaddow(message);
                 this.props.history.push('/profile'); 
             } else {
                 this.setState({ 
@@ -100,7 +89,7 @@ class CreatePost extends React.Component {
     _getTags() {
         let tags = this.state.tagList;
 
-        //tags = this.state.tagList.splice(0 ,4);
+        tags = this.state.tagList.splice(0 ,4);
         tags.push('steepshot');
 
         return tags;
