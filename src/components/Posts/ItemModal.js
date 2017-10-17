@@ -41,6 +41,13 @@ class ItemModal extends React.Component {
       });
     }
 
+    componentDidMount() {
+      setTimeout(() => { 
+        jqApp.forms.init();
+        jqApp.post.init()
+      }, 0);
+    }
+
     initKeypress() {
         const _this = this;
 
@@ -168,6 +175,19 @@ class ItemModal extends React.Component {
                   <div className="likes">{this.state.item.net_votes} like's</div>
                   <div className="amount">{this.state.item.total_payout_reward}</div>
                 </div>
+              </div>
+              <div className="post-comment">
+                <form className="comment-form form-horizontal">
+                  <div className="form-group clearfix">
+                    <div className="btn-wrap">
+                      <button type="submit" className="btn-submit">Send</button>
+                    </div>
+                    <div className="input-container">
+                      <textarea id="formCOMMENT" name="formCOMMENT" spellCheck="true" className="form-control"></textarea>
+                      <label htmlFor="formCOMMENT" className="name">Comment</label>
+                    </div>
+                  </div>
+                </form>
               </div>
               <div className="list-scroll">
                 <div className="post-description">
