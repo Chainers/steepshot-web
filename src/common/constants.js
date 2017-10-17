@@ -22,8 +22,8 @@ export default {
         MAX_ACCEPTED_PAYOUT: '1000000.000 SBD',
         PERCENT_STEMM_DOLLARS: 10000
     },
-    NO_AVATAR: '/static/images/person.png',
-    NO_IMAGE: '/static/images/noimage.jpg',
+    NO_AVATAR: 'static/images/person.png',
+    NO_IMAGE: 'static/images/noimage.jpg',
 
     SETTINGS: {
         show_low_rated : "show_low_rated",

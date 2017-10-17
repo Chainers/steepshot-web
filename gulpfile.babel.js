@@ -83,7 +83,8 @@ const paths = {
   distJs: 'static/react',
   distImg: 'dist/static/images',
   distFonts: 'dist/static/fonts/',
-  react: 'static/react'
+  react: 'static/react',
+  prepare : 'prepare'
 };
 
 const customOpts = {
@@ -160,8 +161,8 @@ gulp.task('styles', () => {
 gulp.task('htmlReplace', () => {
   gulp.src('index.html')
   .pipe(htmlReplace({
-      'css': `styles/styles.${guid}.min.css`,
-      'js': `js/bundle.${guid}.min.js`
+      'css': `styles.${guid}.min.css`,
+      'js': `bundle.${guid}.min.js`
   }))
   .pipe(gulp.dest(paths.dist));
 });
@@ -204,26 +205,35 @@ gulp.task('styleBundle', () => {
     .pipe(minifyCSS({
       keepBreaks: false
     }))
-    .pipe(gulp.dest(`${bases.dist}/styles`));
+    .pipe(gulp.dest(`${bases.dist}`));
+});
+
+gulp.task('prepareLibs', () => {
+  gulp.src(`${paths.libs}/**/*.js`)
+  .pipe(concat('a_libs.js'))
+  .pipe(uglify())
+  .pipe(gulp.dest(`${paths.prepare}`));
+});
+
+gulp.task('prepareReact', () => {
+  browserify(paths.entry, { debug: false })
+  .transform(babelify)
+  .bundle()
+  .pipe(source('b_react.js'))
+  .pipe(buffer())
+  .pipe(uglify())
+  .pipe(gulp.dest(`${paths.prepare}`));
+});
+
+gulp.task('concatPrepared', () => {
+  gulp.src(`${paths.prepare}/**/*.js`)
+  .pipe(concat(`bundle.${guid}.min.js`))
+  .pipe(gulp.dest(`${bases.dist}`));
 });
 
 gulp.task('scriptsBundle', () => {
-  let jsLibs = 
-                gulp.src(`${paths.libs}/**/*.js`)
-                .pipe(concat(`bundle.${guid}.min.js`))
-                .pipe(uglify())
-                .pipe(gulp.dest(`${bases.dist}/js`));
 
-  let jsReact = 
-                browserify(paths.entry, { debug: false })
-                .transform(babelify)
-                .bundle()
-                .pipe(source(`bundle.${guid}.min.js`))
-                .pipe(buffer())
-                .pipe(uglify())
-                .pipe(gulp.dest(`${bases.dist}/js`));
-
-  stream.concat(jsLibs, jsReact);
+  runSequence('prepareLibs', 'prepareReact', 'concatPrepared');
 });
 
 
