@@ -35,7 +35,7 @@ class UserProfile extends React.Component {
     getUserProfile(userName).then((result) => {
       const profile = result;
 
-      if (!this.props.username ||profile.username === this.props.username) {
+      if (!this.props.username || profile.current_username === this.props.username) {
         showFollow = false;
       }
 
