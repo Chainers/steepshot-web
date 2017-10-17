@@ -3,11 +3,12 @@ import constants from '../common/constants';
 import { getStore } from '../store/configureStore';
 
 const baseUrl = constants.URLS.baseUrl;
+const baseLimit = constants.POSTS_SETTINGS.defaultLimit;
 
 class BaseRequestService {
     getDefaultOptions() {
         return {
-            limit: constants.POSTS_SETTINGS.defaultLimit,
+            limit: baseLimit,
             offset: null
         };
     }

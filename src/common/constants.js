@@ -30,7 +30,7 @@ export default {
         show_nsfw : "show_nsfw"
     },
 
-    POSTS_SETTINGS: {
-        defaultLimit: 24
+    POSTS_SETTINGS : {
+        defaultLimit : 24
     }
 }
