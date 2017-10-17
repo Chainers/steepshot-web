@@ -108,7 +108,7 @@ class Header extends React.Component {
     }
 
     return (
-      <div className="g-header">
+      <header className="g-header">
         <div className="container">
           <div className="user-panel">
             <div className="wrap-panel clearfix">
@@ -153,7 +153,7 @@ class Header extends React.Component {
             </div>
           </div>
         </div>
-      </div>
+      </header>
     );
   }
 }

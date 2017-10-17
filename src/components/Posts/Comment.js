@@ -19,14 +19,14 @@ class Comment extends React.Component {
     };
   }
 
-  updateVote(vote) {
-    let currentItem = this.state.item;
-    currentItem.vote = vote;
-    vote ? currentItem.net_votes++ : currentItem.net_votes--;
+  updateVoteInComponent(vote) {
+    let newItem = this.state.item;
+    vote ? newItem.net_votes++ : newItem.net_votes--;
+    newItem.vote = vote;
     this.setState({ 
-      item: currentItem
+      item: newItem
     });
-  }
+}
 
   getFormatedDate() {
     const date = new Date(this.props.item.created);
@@ -61,7 +61,7 @@ class Comment extends React.Component {
           <VouteComponent
               key="vote"
               item={this.props.item}
-              updateComponent={this.updateVote.bind(this)}
+              updateVoteInComponent={this.updateVoteInComponent.bind(this)}
             />
         </div>
         <div className="comment-controls clearfix">

@@ -6,7 +6,7 @@ import RequestService from '../services/requestService';
 /// </summary>
 
 export function getUserProfile(userName) {
-  const url = RequestService.handleRequestPosts(`user/${userName}/info`);
+  const url = RequestService.handleRequestUserInfo(`user/${userName}/info`);
 
   return fetch(url, {
     method: 'GET'

@@ -1,4 +1,5 @@
 import RequestService from '../services/requestService';
+import Constants from '../common/constants';
 
 export function getPosts() {
   const url = RequestService.handleRequestPosts(`posts/new`);
@@ -22,8 +23,7 @@ export function getPosts() {
 //https://steepshot.org/api/v1/posts/top?limit=10&offset=/reiki-trail/@reiki-trail/reiki-boost-healing-invocation-9
 export function getNewPosts(offset) {
   const url = RequestService.handleRequestPosts(`posts/new`, {
-    offset: offset,
-    limit: 10
+    offset: offset
   });
 
   return fetch(url, {
@@ -45,8 +45,7 @@ export function getNewPosts(offset) {
 //https://steepshot.org/api/v1/posts/top?limit=10&offset=/reiki-trail/@reiki-trail/reiki-boost-healing-invocation-9
 export function getTopPosts(offset) {
   const url = RequestService.handleRequestPosts(`posts/top`, {
-    offset: offset,
-    limit: 10
+    offset: offset
   });
   
   return fetch(url, {
@@ -68,8 +67,7 @@ export function getTopPosts(offset) {
 //https://steepshot.org/api/v1/posts/hot?limit=10&offset=/reiki-trail/@reiki-trail/reiki-boost-healing-invocation-9
 export function getHotPosts(offset) {
   const url = RequestService.handleRequestPosts(`posts/hot`, {
-    offset: offset,
-    limit: 10
+    offset: offset
   });
 
   return fetch(url, {
@@ -117,9 +115,11 @@ export function getPostComments(author, authorUrl) {
 /// </summary>
 
 export function getUserPosts(author, offset) {
+  const settings = JSON.parse(localStorage.getItem("settings"));
   const url = RequestService.handleBaseRequestPosts(`watcher/user/${author}/posts`, {
     offset: offset,
-    limit: 3
+    [Constants.SETTINGS.show_nsfw]: settings[Constants.SETTINGS.show_nsfw],
+    [Constants.SETTINGS.show_low_rated]: settings[Constants.SETTINGS.show_nsfw]
   });
 
   return fetch(url, {
@@ -148,8 +148,7 @@ export function getUserPosts(author, offset) {
 
 export function getUserFeed(author, offset) {
   const url = RequestService.handleRequestPosts('recent/posts', {
-    offset: offset,
-    limit: 3
+    offset: offset
   });
   console.log(url);
   return fetch(url, {
@@ -180,8 +179,7 @@ export function getNewPostsByCategory(category, offset) {
   category = category.replace(/[^A-Za-zА-Яа-яЁё(\d)+]/g, "")
 
   const url = RequestService.handleBaseRequestPosts(`posts/${category}`, {
-    offset: offset,
-    limit: 5
+    offset: offset
   });
   return fetch(url, {
     method: 'GET'
@@ -210,8 +208,7 @@ export function getTopPostsByCategory(category, offset) {
   category = category.replace(/[^A-Za-zА-Яа-яЁё(\d)+]/g, "");
 
   const url = RequestService.handleBaseRequestPosts(`posts/${category}`, {
-    offset: offset,
-    limit: 5
+    offset: offset
   });
   return fetch(url, {
     method: 'GET'
@@ -240,8 +237,7 @@ export function getHotPostsByCategory(category, offset) {
   category = category.replace(/[^A-Za-zА-Яа-яЁё(\d)+]/g, "")
 
   const url = RequestService.handleBaseRequestPosts(`posts/${category}/hot`, {
-    offset: offset,
-    limit: 5
+    offset: offset
   });
 
   return fetch(url, {

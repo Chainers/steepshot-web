@@ -5,6 +5,7 @@ import fakeAuth from '../components/Routes/fakeAuth';
 import constants from '../common/constants';
 import steem from 'steem';
 import { getStore } from '../store/configureStore';
+import Constants from '../common/constants';
 
 const baseUrl = constants.URLS.baseUrl;
 
@@ -29,8 +30,8 @@ export function login(username, postingKey, history, dispatch) {
       localStorage.setItem('user', JSON.stringify(username));
       localStorage.setItem('postingKey', JSON.stringify(postingKey));
       localStorage.setItem('settings', JSON.stringify({ 
-        nsfw: false,
-        lowRated: false
+        [Constants.SETTINGS.show_low_rated]: false,
+        [Constants.SETTINGS.show_nsfw]: false
       }));
       dispatch({
         type: 'LOGIN_SUCCESS',

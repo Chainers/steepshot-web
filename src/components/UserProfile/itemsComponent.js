@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import LoadingSpinner from '../LoadingSpinner';
 import PostItem from '../Posts/Item';
 import contants from '../../common/constants';
+import ModalComponent from '../Common/ModalComponent';
 
 class ItemsComponent extends React.Component {
   constructor(props) {
@@ -75,6 +76,35 @@ class ItemsComponent extends React.Component {
     this.setState({ avatar: contants.NO_AVATAR });
   }
 
+  updateVoteInComponent(vote, index) {
+    let newItems = this.state.posts;
+    vote ? newItems[index].net_votes++ : newItems[index].net_votes--;
+    newItems[index].vote = vote;
+    this.setState({ 
+      posts: newItems
+    });
+  }
+
+  _renderModal() {
+      if (this.state.currentItem != undefined)
+      return <ItemModal 
+                  item={this.state.posts[this.state.currentItem]} 
+                  items={this.state.posts} 
+                  index={this.state.currentItem}
+                  updateVoteInComponent={this.updateVoteInComponent.bind(this)} 
+                  loadMore={this.fetchPostsNext.bind(this)}
+              />
+      return null;
+  }
+
+  openModal(index) {
+    this.setState({
+        currentItem : index
+    },
+        jqApp.openPostModal()
+    );
+  }
+
   render() {
     let _this = this;
     let items = [];
@@ -113,6 +143,9 @@ class ItemsComponent extends React.Component {
           {renderComponent}
         </div>
         {updateButton}
+        <ModalComponent>
+            {this._renderModal()}
+        </ModalComponent>
       </div>
     );
   }

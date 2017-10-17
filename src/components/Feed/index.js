@@ -13,6 +13,8 @@ import {
     getStore
 } from '../../store/configureStore';
 import LoadingSpinner from '../LoadingSpinner';
+import ItemModal from '../Posts/ItemModal';
+import ModalComponent from '../Common/ModalComponent';
 
 class Feed extends React.Component {
     constructor(props) {
@@ -79,6 +81,35 @@ class Feed extends React.Component {
         });
     }
 
+    updateVoteInComponent(vote, index) {
+        let newItems = this.state.posts;
+        vote ? newItems[index].net_votes++ : newItems[index].net_votes--;
+        newItems[index].vote = vote;
+        this.setState({ 
+          posts: newItems
+        });
+    }
+
+    _renderModal() {
+        if (this.state.currentItem != undefined)
+        return <ItemModal 
+                    item={this.state.posts[this.state.currentItem]} 
+                    items={this.state.posts} 
+                    index={this.state.currentItem}
+                    updateVoteInComponent={this.updateVoteInComponent.bind(this)} 
+                    loadMore={this.fetchPostsNext.bind(this)}
+                />
+        return null;
+    }
+
+    openModal(index) {
+        this.setState({
+            currentItem : index
+        },
+            jqApp.openPostModal()
+        );
+    }
+
     render() {
         let items = [];
         let _this = this;
@@ -87,12 +118,14 @@ class Feed extends React.Component {
         if (this.state.posts.length > 0) {
             this.state.posts.map((post, index) => {
                 items.push(<PostItem
-                    key={index}
+                    key={index + "_FeedPostItem"}
                     item={post}
                     items={_this.state.posts}
                     index={index}
                     history={this.props.history}
-                    loadMore={this.fetchPostsNext.bind(this)}/>
+                    loadMore={this.fetchPostsNext.bind(this)}
+                    openModal={this.openModal.bind(this)} 
+                    updateVoteInComponent={this.updateVoteInComponent.bind(this)} />
                 );
             });
 
@@ -118,6 +151,9 @@ class Feed extends React.Component {
                         <LoadingSpinner />
                     </div> : null 
                 }
+                <ModalComponent>
+                    {this._renderModal()}
+                </ModalComponent>
             </div>
         );
     }

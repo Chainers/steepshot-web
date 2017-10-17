@@ -15,7 +15,6 @@ import PropTypes from 'prop-types';
 import Comments from './Comments';
 import constants from '../../common/constants';
 import VouteComponent from './VouteComponent';
-import ItemModal from './ItemModal';
 
 class Item extends React.Component {
   constructor(props) {
@@ -23,17 +22,22 @@ class Item extends React.Component {
 
     this.state = {
       item: this.props.item,
-      modalIsOpen: false,
+      items: this.props.items,
+      openModal: this.props.openModal,
       currentIndex: this.props.index,
       comments: [],
-      disableNext: false,
-      disablePrev: false,
-      redirectToReferrer: false
+      redirectToReferrer: false,
+      needsRenderSlider: true
     };
+    
+    this.localConstants = {
+       THIS_POST_MODAL_REF : "thisPostModal" + this.props.index
+    }
+  }
 
-    this.openModal = this.openModal.bind(this);
-    this.afterOpenModal = this.afterOpenModal.bind(this);
-    this.closeModal = this.closeModal.bind(this);
+  shouldComponentUpdate(nextProps, nextState) {
+    if (nextProps == this.props && nextState == this.state) return false;
+    return true;
   }
 
   componentDidMount() {
@@ -54,39 +58,12 @@ class Item extends React.Component {
     });
   }
 
-  openModal() {
-    this.setState({
-      modalIsOpen: true
-    });
-  }
-
-  afterOpenModal() {
-    this._onResize();
-  }
-
-  closeModal() {
-    this.setState({
-      modalIsOpen: false
-    });
-  }
-
-  componentWillUnmount() {
-    this.closeModal();
-  }
-
   resetDefaultProperties(newItem) {
     this.setState({ 
       avatar: newItem.avatar,
       image: newItem.body,
       item: newItem
     });
-  }
-
-  _onResize() {
-    const popupHeight = window.innerHeight - 200;
-
-    $('#popup-image').height(popupHeight);
-    $('#popup-info').height(popupHeight);
   }
 
   _research(e, tagValue) {
@@ -123,15 +100,6 @@ class Item extends React.Component {
     e.preventDefault();
   }
 
-  updateComponent(vote) {
-    let currentItem = this.state.item;
-    currentItem.vote = vote;
-    vote ? currentItem.net_votes++ : currentItem.net_votes--;
-    this.setState({ 
-      item: currentItem
-    });
-  }
-
   _getPostImageStyles(itemImage) {
     return {
       backgroundImage: `url(${itemImage})`, 
@@ -151,28 +119,21 @@ class Item extends React.Component {
     return date.getDate() + ' ' + date.toLocaleString(locale, { month: "short" }) + ' ' + date.getFullYear();
   }
 
+  _openModal() {
+    if (this.state.openModal != undefined) {
+      this.state.openModal(this.state.currentIndex)
+    }
+  }
+
   render() {
     let _this = this;
     let itemImage = this.state.image || constants.NO_IMAGE;
     let authorImage = this.state.avatar || constants.NO_AVATAR;
     let comments = <Comments key="comments" item={this.state.item} />;
 
-    let settings = {
-      dots: false,
-      infinite: true,
-      speed: 500,
-      slidesToShow: 1,
-      slidesToScroll: 1
-    };
-
     const authorLink = `/userProfile/${this.state.item.author}`;
     const cardPhotoStyles = {
       backgroundImage : 'url(' + itemImage + ')'
-    }
-    const modalStyle = {
-      overlay : {
-        backgroundColor : 'rgba(0,0,0,0.5)'        
-      }
     }
 
     return (
@@ -188,15 +149,16 @@ class Item extends React.Component {
             </Link>
           </div>
           <div className="card-body" >
-            <div className="card-pic" onClick={this.openModal}>
+            <div className="card-pic" onClick={this._openModal.bind(this)}>
                 <a style={ cardPhotoStyles } className="img" alt="User" onError={this.setDefaultImage.bind(this)}></a>
               </div>
             <div className="card-wrap">
               <div className="card-controls clearfix">
                 <div className="wrap-btn" onClick={(e)=>{this.callPreventDefault(e)}}>
                   <VouteComponent key="vote" 
-                    item={this.state.item} 
-                    updateComponent={this.updateComponent.bind(this)}
+                    item={this.state.item}
+                    index={this.state.currentIndex}
+                    updateVoteInComponent={this.props.updateVoteInComponent}
                   />
                 </div>
                 <div className="wrap-counts clearfix">
@@ -219,7 +181,9 @@ class Item extends React.Component {
             </div>
           </div>
         </div>
-        <Modal
+      
+        
+        {/* <Modal
           isOpen={this.state.modalIsOpen}
           onAfterOpen={this.afterOpenModal.bind(_this)}
           onRequestClose={this.closeModal}
@@ -241,7 +205,7 @@ class Item extends React.Component {
             handleHeight 
             onResize={this._onResize.bind(this)}
           />
-        </Modal>
+        </Modal> */}
       </div>
     );
   }

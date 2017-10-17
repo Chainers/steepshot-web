@@ -22,6 +22,10 @@ class RequestService extends BaseRequestService{
     handleBaseRequestPost(url) {
         return this.getUrl() + '/' + url;
     }
+  
+    handleRequestUserInfo(url) {
+        return this.getUrl() + '/' + url;
+    }
 }
 
 export default new RequestService();
