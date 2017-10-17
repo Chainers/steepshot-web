@@ -19,6 +19,10 @@ class RequestService extends BaseRequestService{
         return this.getUrl() + '/' + url + this._getHandledOptions(options);
     }
 
+    handleBaseRequestPost(url) {
+        return this.getUrl() + '/' + url;
+    }
+  
     handleRequestUserInfo(url) {
         return this.getUrl() + '/' + url;
     }
