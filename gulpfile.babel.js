@@ -208,14 +208,21 @@ gulp.task('styleBundle', () => {
 });
 
 gulp.task('scriptsBundle', () => {
-  let jsLibs = gulp.src(`${paths.libs}/**/*.js`)
-            .pipe(concat(`bundle.${guid}.min.js`))
-            .pipe(uglify())
-            .pipe(gulp.dest(`${bases.dist}/js`));
-
-  let jsReact = gulp.src(`src/**/*.js`)
+  let jsLibs = 
+                gulp.src(`${paths.libs}/**/*.js`)
+                .pipe(concat(`bundle.${guid}.min.js`))
                 .pipe(uglify())
                 .pipe(gulp.dest(`${bases.dist}/js`));
+
+  let jsReact = 
+                browserify(paths.entry, { debug: false })
+                .transform(babelify)
+                .bundle()
+                .pipe(source(`bundle.${guid}.min.js`))
+                .pipe(buffer())
+                .pipe(uglify())
+                .pipe(gulp.dest(`${bases.dist}/js`));
+
   stream.concat(jsLibs, jsReact);
 });
 
