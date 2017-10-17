@@ -23,7 +23,8 @@ class ItemModal extends React.Component {
             comments: [],
             disableNext: false,
             disablePrev: false,
-            redirectToReferrer: false
+            redirectToReferrer: false,
+            commentValue: ''
         };
 
         this.initKeypress();
@@ -46,6 +47,11 @@ class ItemModal extends React.Component {
         jqApp.forms.init();
         jqApp.post.init()
       }, 0);
+    }
+
+    sendComment(e) {
+      if (this.state.commentValue == "") return false;
+      
     }
 
     initKeypress() {
@@ -77,6 +83,14 @@ class ItemModal extends React.Component {
 
     redirectToUserProfile() {
       this.setState({ redirectToReferrer: true });
+    }
+
+    handleChange(event) {
+      let name = event.target.name;
+      let value = event.target.value;
+      this.setState({ 
+          [name] : value
+      });
     }
 
     next() {
@@ -123,7 +137,7 @@ class ItemModal extends React.Component {
       let _this = this;
       let itemImage = this.state.image || constants.NO_IMAGE;
       let authorImage = this.state.avatar || constants.NO_AVATAR;
-      let comments = <Comments key="comments" item={this.state.item} />;
+      let comments = <Comments key="comments" item={this.state.item} comment={this.state.newComment}/>;
 
       let settings = {
         dots: false,
@@ -180,10 +194,16 @@ class ItemModal extends React.Component {
                 <form className="comment-form form-horizontal">
                   <div className="form-group clearfix">
                     <div className="btn-wrap">
-                      <button type="submit" className="btn-submit">Send</button>
+                      <button type="submit" className="btn-submit" onClick={this.sendComment.bind(this)}>Send</button>
                     </div>
                     <div className="input-container">
-                      <textarea id="formCOMMENT" name="formCOMMENT" spellCheck="true" className="form-control"></textarea>
+                      <textarea id="formCOMMENT" 
+                                name="commentValue"
+                                value={this.state.commentValue} 
+                                spellCheck="true" 
+                                className="form-control"
+                                onChange={this.handleChange.bind(this)}>
+                      </textarea>
                       <label htmlFor="formCOMMENT" className="name">Comment</label>
                     </div>
                   </div>
