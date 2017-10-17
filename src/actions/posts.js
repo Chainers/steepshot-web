@@ -256,7 +256,7 @@ export function getHotPostsByCategory(category, offset) {
 }
 
 export function getPostShaddow(urlPost) {
-  const url = RequestService.handleBaseRequestPosts(`post/${urlPost}/info`);
+  const url = RequestService.handleBaseRequestPost(`post/${urlPost}/info`);
   
   return fetch(url, {
     method: 'GET'
