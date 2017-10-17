@@ -39,6 +39,7 @@ class FollowComponent extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    if (nextProps.item !== undefined && nextProps.item !== null)
     this.setState({
         item: nextProps.item,
         profile: nextProps.item.has_followed != 0
