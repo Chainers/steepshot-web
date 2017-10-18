@@ -42,9 +42,13 @@
   "dependencies": {
     "bluebird": "^3.5.0",
     "create-react-class": "^15.6.0",
+    "event-stream": "^3.3.4",
     "form-data": "^2.2.0",
+    "fs": "0.0.1-security",
     "gulp": "^3.9.1",
+    "gulp-concat": "^2.6.1",
     "gulp-livereload": "^3.8.1",
+    "gulp-minify-css": "^1.2.4",
     "gulp-util": "^3.0.8",
     "history": "^4.6.3",
     "moment": "^2.18.1",
