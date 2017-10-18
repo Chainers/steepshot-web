@@ -132,7 +132,7 @@ class Header extends React.Component {
                 <div className="wrap-user">
                   <Link to={authorLink} className="user-link clearfix">
                     <div className="photo">
-                      <img src="/static/images/person.png" alt="user" />
+                      <img src="static/images/person.png" alt="user" />
                     </div>
                     <div className="name">{this.props.user}</div>
                   </Link>
@@ -140,7 +140,7 @@ class Header extends React.Component {
               </div>
               <div className="section logo">
                 <a href="/" className="wrap-logo">
-                  <img src="/static/images/logo.svg" alt="logo" />
+                  <img src="static/images/logo.svg" alt="logo" />
                 </a>
               </div>
               <div className="section search">
