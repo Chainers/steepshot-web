@@ -1,4 +1,5 @@
 import React from 'react';
+import Steem from '../../libs/steem';
 import {
   Link,
   Redirect
@@ -50,8 +51,17 @@ class ItemModal extends React.Component {
     }
 
     sendComment(e) {
+      e.preventDefault();
       if (this.state.commentValue == "") return false;
-      
+      Steem.comment(
+        this.props.postingKey,             
+        this.state.item.author, 
+        this.state.item.url, 
+        this.props.username, 
+        this.state.commentValue,
+        this.state.item.tags,
+        this.props.dispatch.bind(this)
+     );
     }
 
     initKeypress() {
@@ -240,7 +250,9 @@ ItemModal.propTypes = {
 
 const mapStateToProps = (state) => {
   return {
-    localization: state.localization
+    localization: state.localization,
+    username: state.auth.user,
+    postingKey: state.auth.postingKey
   };
 };
 
