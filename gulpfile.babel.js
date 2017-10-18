@@ -105,7 +105,7 @@ gulp.task('browserSync', () => {
     server: {
       baseDir: './',
       middleware: [ historyApiFallback() ],
-      index: 'index.html'
+      index: 'dist/index.html'
     }
   });
 
@@ -191,7 +191,7 @@ gulp.task('watchTask', () => {
 });
 
 gulp.task('watch', cb => {
-  runSequence('clean', ['browserSync', 'watchTask', 'watchify', 'fonts', 'styles', 'lint', 'imagemin'], cb);
+  runSequence('clean', ['scriptsBundle', 'styleBundle', 'htmlReplace', 'browserSync', 'watchTask', 'watchify', 'fonts', 'lint', 'imagemin'], cb);
 });
 
 gulp.task('generateGuid', (cb) => {
