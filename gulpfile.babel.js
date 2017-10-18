@@ -38,6 +38,7 @@ var bases = {
  dist: 'dist/',
 };
 
+var guid = '';
 
 var AWSConfig = {
   "key":    process.env.AWS_ACCESS_KEY_ID,
@@ -133,7 +134,7 @@ gulp.task('browserify', () => {
 
 gulp.task('styles', () => {
   gulp.src(paths.srcCss)
-  .pipe(rename({ extname: '.css' }))
+  .pipe(rename({ extname: `${guid}.css` }))
   .pipe(sourcemaps.init())
   .pipe(postcss([vars, extend, nested, autoprefixer, cssnano]))
   .pipe(sourcemaps.write('.'))
@@ -144,7 +145,7 @@ gulp.task('styles', () => {
 gulp.task('htmlReplace', () => {
   gulp.src('index.html')
   .pipe(htmlReplace({
-    css: ['/static/styles/normalize.css', '/static/styles/main.css', '/static/styles/posts.css'],
+    css: [`/static/styles/main${guid}.css`, `/static/styles/posts${guid}.css`],
     js: ['/static/js/app.js',]
    }))
   .pipe(gulp.dest(paths.dist));
@@ -178,6 +179,16 @@ gulp.task('watch', cb => {
 });
 
 gulp.task('build', cb => {
+  guid = (function() {
+    function s4() {
+      return Math.floor((1 + Math.random()) * 0x10000)
+        .toString(16)
+        .substring(1);
+    }
+    return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+      s4() + '-' + s4() + s4() + s4();
+  })().toString();
+
   process.env.NODE_ENV = 'production';
   runSequence('clean', ['browserify', 'fonts', 'styles', 'htmlReplace', 'imagemin'], cb);
 });

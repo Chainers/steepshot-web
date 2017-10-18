@@ -127,8 +127,7 @@
 
   .container-settings__content-wrapper{
     position:relative;
-    top: 40%;
-    transform: translateY(-50%);
+    padding-top: 80px;
   }
 
   .text--center {
