@@ -146,7 +146,7 @@ gulp.task('htmlReplace', () => {
   gulp.src('index.html')
   .pipe(htmlReplace({
     css: [`styles/main${guid}.css`, `styles/posts${guid}.css`],
-    js: ['js/app.js',]
+    js: ['dist/js/app.js',]
    }))
   .pipe(gulp.dest(paths.dist));
 });
