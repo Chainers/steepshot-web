@@ -26,10 +26,6 @@ import ghPages from 'gulp-gh-pages';
 import livereload from 'gulp-livereload';
 import webserver from 'gulp-webserver';
 import plumber from 'gulp-plumber';
-import fs from 'fs';
-import concat from 'gulp-concat';
-import minifyCSS from 'gulp-minify-css';
-import stream from 'event-stream';
 
 import awspublish from 'gulp-awspublish';
 import s3_index from 'gulp-s3-index';
@@ -59,33 +55,20 @@ var publisher = awspublish.create({
   }
 });
 
-const guid = (function() {
-  function s4() {
-    return Math.floor((1 + Math.random()) * 0x10000)
-      .toString(16)
-      .substring(1);
-  }
-  return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
-    s4() + '-' + s4() + s4() + s4();
-})();
-
 var aws_headers = {'Cache-Control': 'max-age=315360000, no-transform, public'};
 
 const paths = {
   bundle: 'app.js',
   entry: 'src/main.js',
   trash: 'src/libraries/**/*',
-  srcCss: ['src/**/*.css'],
+  srcCss: ['src/**/*.scss', 'src/**/*.css'],
   srcImg: 'static/images/**/*',
   srcLint: ['src/**/*.js', 'test/**/*.js'],
   srcFonts: ['static/fonts/**/*'],
   dist: 'dist',
-  libs: 'static/libs',
-  distJs: 'static/react',
+  distJs: 'dist/js',
   distImg: 'dist/static/images',
-  distFonts: 'dist/static/fonts/',
-  react: 'static/react',
-  prepare : 'prepare'
+  distFonts: 'dist/static/fonts/'
 };
 
 const customOpts = {
@@ -106,7 +89,7 @@ gulp.task('browserSync', () => {
     server: {
       baseDir: './',
       middleware: [ historyApiFallback() ],
-      index: 'dist/index.html'
+      index: 'index.html'
     }
   });
 
@@ -151,11 +134,7 @@ gulp.task('browserify', () => {
 
 gulp.task('styles', () => {
   gulp.src(paths.srcCss)
-<<<<<<< HEAD
   .pipe(rename({ extname: `${guid}.css` }))
-=======
-  .pipe(rename({ extname: `.css` }))
->>>>>>> 64ad413ac21b88ff4c903a96a4e4abc3779d0d01
   .pipe(sourcemaps.init())
   .pipe(postcss([vars, extend, nested, autoprefixer, cssnano]))
   .pipe(sourcemaps.write('.'))
@@ -166,15 +145,9 @@ gulp.task('styles', () => {
 gulp.task('htmlReplace', () => {
   gulp.src('index.html')
   .pipe(htmlReplace({
-<<<<<<< HEAD
-    css: [`/static/styles/main${guid}.css`, `/static/styles/posts${guid}.css`],
-    js: ['/static/js/app.js',]
+    css: [`styles/main${guid}.css`, `styles/posts${guid}.css`],
+    js: ['js/app.js',]
    }))
-=======
-      'css': `styles.${guid}.min.css`,
-      'js': `bundle.${guid}.min.js`
-  }))
->>>>>>> 64ad413ac21b88ff4c903a96a4e4abc3779d0d01
   .pipe(gulp.dest(paths.dist));
 });
 
@@ -202,51 +175,8 @@ gulp.task('watchTask', () => {
 });
 
 gulp.task('watch', cb => {
-  runSequence('clean', ['scriptsBundle', 'styleBundle', 'htmlReplace', 'browserSync', 'watchTask', 'watchify', 'fonts', 'lint', 'imagemin'], cb);
+  runSequence('clean', ['browserSync', 'watchTask', 'watchify', 'fonts', 'styles', 'lint', 'imagemin'], cb);
 });
-
-gulp.task('generateGuid', (cb) => {
-    fs.writeFile('build_guid.json', JSON.stringify({ buildGuid : guid }), cb);
-});
-
-gulp.task('styleBundle', () => {
-  gulp.src(paths.srcCss)
-    .pipe(rename({ extname: `.css` }))
-    .pipe(concat(`styles.${guid}.min.css`))
-    .pipe(minifyCSS({
-      keepBreaks: false
-    }))
-    .pipe(gulp.dest(`${bases.dist}`));
-});
-
-gulp.task('prepareLibs', () => {
-  gulp.src(`${paths.libs}/**/*.js`)
-  .pipe(concat('a_libs.js'))
-  .pipe(uglify())
-  .pipe(gulp.dest(`${paths.prepare}`));
-});
-
-gulp.task('prepareReact', () => {
-  browserify(paths.entry, { debug: false })
-  .transform(babelify)
-  .bundle()
-  .pipe(source('b_react.js'))
-  .pipe(buffer())
-  .pipe(uglify())
-  .pipe(gulp.dest(`${paths.prepare}`));
-});
-
-gulp.task('concatPrepared', () => {
-  gulp.src(`${paths.prepare}/**/*.js`)
-  .pipe(concat(`bundle.${guid}.min.js`))
-  .pipe(gulp.dest(`${bases.dist}`));
-});
-
-gulp.task('scriptsBundle', () => {
-
-  runSequence('prepareLibs', 'prepareReact', 'concatPrepared');
-});
-
 
 gulp.task('build', cb => {
   guid = (function() {
@@ -260,7 +190,7 @@ gulp.task('build', cb => {
   })().toString();
 
   process.env.NODE_ENV = 'production';
-  runSequence('clean', 'generateGuid', ['scriptsBundle', 'styleBundle', 'fonts', 'htmlReplace', 'imagemin'], cb);
+  runSequence('clean', ['browserify', 'fonts', 'styles', 'htmlReplace', 'imagemin'], cb);
 });
 
 gulp.task('deploy', () => {

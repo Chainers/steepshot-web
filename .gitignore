@@ -2,8 +2,6 @@ node_modules
 .tmp
 .idea
 dist
-prepare
 public
 npm-debug.log
-build_guid.json
-static/react
+
