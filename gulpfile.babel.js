@@ -26,6 +26,7 @@ import ghPages from 'gulp-gh-pages';
 import livereload from 'gulp-livereload';
 import webserver from 'gulp-webserver';
 import plumber from 'gulp-plumber';
+import copy from 'gulp-copy';
 
 import awspublish from 'gulp-awspublish';
 import s3_index from 'gulp-s3-index';
@@ -145,8 +146,8 @@ gulp.task('styles', () => {
 gulp.task('htmlReplace', () => {
   gulp.src('index.html')
   .pipe(htmlReplace({
-    css: [`styles/main${guid}.css`, `styles/posts${guid}.css`],
-    js: ['/dist/js/app.js',]
+    css: [`/styles/main${guid}.css`, `/styles/posts${guid}.css`],
+    js: ['/js/app.js',]
    }))
   .pipe(gulp.dest(paths.dist));
 });
@@ -166,6 +167,11 @@ gulp.task('lint', () => {
   gulp.src(paths.srcLint)
     .pipe(eslint())
     .pipe(eslint.format());
+});
+
+gulp.task('libs', () => {
+  gulp.src('static/libs/**/*.js')
+  .pipe(copy('dist'))
 });
 
 gulp.task('watchTask', () => {
@@ -190,7 +196,7 @@ gulp.task('build', cb => {
   })().toString();
 
   process.env.NODE_ENV = 'production';
-  runSequence('clean', ['browserify', 'fonts', 'styles', 'htmlReplace', 'imagemin'], cb);
+  runSequence('clean', ['browserify', 'fonts', 'styles', 'htmlReplace', 'imagemin', 'libs'], cb);
 });
 
 gulp.task('deploy', () => {
