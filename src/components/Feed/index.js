@@ -90,13 +90,22 @@ class Feed extends React.Component {
         });
     }
 
+    updateFlagInComponent(flag, index) {
+        let newItems = this.state.posts;
+        newItems[index].flag = flag;
+        this.setState({ 
+          posts: newItems
+        });
+    }
+
     _renderModal() {
         if (this.state.currentItem != undefined)
         return <ItemModal 
                     item={this.state.posts[this.state.currentItem]} 
                     items={this.state.posts} 
                     index={this.state.currentItem}
-                    updateVoteInComponent={this.updateVoteInComponent.bind(this)} 
+                    updateVoteInComponent={this.updateVoteInComponent.bind(this)}
+                    updateFlagInComponent={this.updateFlagInComponent.bind(this)} 
                     loadMore={this.fetchPostsNext.bind(this)}
                 />
         return null;
@@ -123,9 +132,9 @@ class Feed extends React.Component {
                     items={_this.state.posts}
                     index={index}
                     history={this.props.history}
-                    loadMore={this.fetchPostsNext.bind(this)}
                     openModal={this.openModal.bind(this)} 
-                    updateVoteInComponent={this.updateVoteInComponent.bind(this)} />
+                    updateVoteInComponent={this.updateVoteInComponent.bind(this)} 
+                    updateFlagInComponent={this.updateFlagInComponent.bind(this)}/>
                 );
             });
 

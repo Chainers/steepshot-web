@@ -139,6 +139,32 @@
     justify-content: space-between;
   }
 
+  .btn-flag {
+    position: relative;
+    width: 21px;
+    height: 21px;
+    border: none;
+    display: block;
+    padding: 0;
+    background: 0 0;
+  }
+
+  .btn-flag::before {
+    content: url(/static/images/flagFalse.svg);
+  }
+
+  .btn-flag.marked::before {
+    content: url(/static/images/flagTrue.svg);
+  }
+
+  .wrap-btn {
+    padding-left: 14px;
+  }
+
+  .buttons-row .wrap-btn {
+    margin-left: 14px;
+  }
+
 /* NEW */
 
 

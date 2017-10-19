@@ -236,6 +236,14 @@ class Home extends React.Component {
     });
   }
 
+  updateFlagInComponent(flag, index) {
+    let newItems = this.state.items;
+    newItems[index].flag = flag;
+    this.setState({ 
+      items: newItems
+    });
+}
+
   _renderModal() {
     if (this.state.currentItem != undefined)
     return <ItemModal 
@@ -244,6 +252,7 @@ class Home extends React.Component {
                 index={this.state.currentItem}
                 updateVoteInComponent={this.updateVoteInComponent.bind(this)} 
                 loadMore={this.fetchPostsNext.bind(this)}
+                updateFlagInComponent={this.updateFlagInComponent.bind(this)}
             />
     return null;
   }
@@ -273,8 +282,9 @@ class Home extends React.Component {
           items={_this.state.posts}
           index={index}
           history={this.props.history}
-          loadMore={this.fetchData.bind(this)}
           openModal={this.openModal.bind(this)}
+          updateVoteInComponent={this.updateVoteInComponent.bind(this)}
+          updateFlagInComponent={this.updateFlagInComponent.bind(this)}
         />);
       });
 
