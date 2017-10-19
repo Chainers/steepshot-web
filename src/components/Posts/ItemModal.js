@@ -11,6 +11,7 @@ import PropTypes from 'prop-types';
 import constants from '../../common/constants';
 import VouteComponent from './VouteComponent';
 import AddComment from './AddComment';
+import FlagComponent from './FlagComponent';
 
 class ItemModal extends React.Component {
     constructor(props) {
@@ -111,6 +112,11 @@ class ItemModal extends React.Component {
       return date.getDate() + ' ' + date.toLocaleString(locale, { month: "short" }) + ' ' + date.getFullYear();
     }
 
+    callPreventDefault(e) {
+      e.stopPropagation();
+      e.preventDefault();
+    }
+
     render() {
 
       let _this = this;
@@ -156,12 +162,18 @@ class ItemModal extends React.Component {
                 </div>
               </div>
               <div className="post-controls clearfix">
-                <div className="wrap-btn" onClick={this.props.callPreventDefault}>
-                  <VouteComponent
+                <div className="buttons-row" onClick={(e)=>{this.callPreventDefault(e)}}>
+                  <VouteComponent key="vote" 
                     key="vote"
                     item={this.state.item}
                     index={this.state.index}
                     updateVoteInComponent={this.props.updateVoteInComponent}
+                  />
+                  <FlagComponent 
+                    key="flag"
+                    item={this.state.item}
+                    index={this.state.index}
+                    updateFlagInComponent={this.props.updateFlagInComponent}
                   />
                 </div>
                 <div className="wrap-counts clearfix">
