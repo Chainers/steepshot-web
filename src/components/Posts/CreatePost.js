@@ -201,7 +201,7 @@ class CreatePost extends React.Component {
     addDescription(e) {
         e.preventDefault();
         this.setState({
-            isDescriptionNeeded : true
+            isDescriptionNeeded : !this.state.isDescriptionNeeded
         }, () =>
             setTimeout(() => { jqApp.forms.init() }, 0)
         );
@@ -232,7 +232,7 @@ class CreatePost extends React.Component {
     render() {
         let {imagePreviewUrl} = this.state;
         let $imagePreview = null;
-        
+        let addDescriptionBlock = null;
 
         let imageError =
         this.state.imageError
@@ -243,29 +243,27 @@ class CreatePost extends React.Component {
         :
         null;
 
-        const addDescriptionBlock =
-        this.state.isDescriptionNeeded 
-        ?
-        <div className="form-group">
-            <div className="input-container col-xs-12">
-                <textarea type="text" 
-                    name={this.state.descriprionInputName}
-                    id="description"
-                    value={this.state.description}
-                    onChange={this.handleChange.bind(this)}
-                    required=""
-                    autoComplete="off"
-                    className="form-control"
-                    maxLength={this.state.descriptionLength}
-                />
-                <label htmlFor="description" className="name">Description</label>
-                <div className="help-block">
-                    <div className="help-block__notice">Description can be maximum {this.state.descriptionLength} characters</div>
+        if (this.state.isDescriptionNeeded) {
+            addDescriptionBlock =
+            <div className="form-group">
+                <div className="input-container col-xs-12">
+                    <textarea type="text" 
+                        name={this.state.descriprionInputName}
+                        id="description"
+                        value={this.state.description}
+                        onChange={this.handleChange.bind(this)}
+                        required=""
+                        autoComplete="off"
+                        className="form-control"
+                        maxLength={this.state.descriptionLength}
+                    />
+                    <label htmlFor="description" className="name">Description</label>
+                    <div className="help-block">
+                        <div className="help-block__notice">Description can be maximum {this.state.descriptionLength} characters</div>
+                    </div>
                 </div>
             </div>
-        </div>
-        :
-        <button onClick={this.addDescription.bind(this)} className="btn btn-index">Add description</button>
+        }
 
         if (imagePreviewUrl) {
             $imagePreview = (<div className="preview-component">
@@ -349,7 +347,14 @@ class CreatePost extends React.Component {
                         <div className="text--red help-block__notice">{this.state.message}</div>
                     </div>
                     <div className="form-group">
-                        <div className="buttons-container col-xs-12">
+                        <div className="buttons-container">
+                
+                            <button onClick={this.addDescription.bind(this)} className="btn btn-index float--left">
+                                {
+                                    this.state.isDescriptionNeeded ? "Close description" : "Add description"
+                                }
+                            </button>
+        
                             <button onClick={this._clearAll.bind(this)} type="reset" className="btn btn-index">Clear</button>
                             <button onClick={this._handleSubmit.bind(this)} type="submit" className="btn btn-default">Create new post</button>
                         </div>

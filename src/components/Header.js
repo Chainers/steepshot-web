@@ -125,7 +125,8 @@ class Header extends React.Component {
                   <Link to="/post" type="button" className="btn btn-primary btn-xs btn-create">
                     Create post
                   </Link>
-                  <button type="button" className="btn btn-primary btn-create-mob"></button>
+                  <Link to="/post" type="button" className="btn btn-primary btn-create-mob">
+                  </Link>
                 </div>
               </div>
               <div className="section user">
