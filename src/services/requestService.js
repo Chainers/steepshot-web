@@ -24,8 +24,8 @@ class RequestService extends BaseRequestService{
         return this.getBaseUrl() + '/' + url;
     }
   
-    handleRequestUserInfo(url) {
-        return this.getBaseUrl() + '/' + url + this.optionsConverter(this.getDefaultSettingsOptions());
+    handleRequestUserInfo(url, options) {
+        return this.getBaseUrl() + '/' + url + this.optionsConverter(this.getDefaultSettingsOptions(), options);
     }
 }
 

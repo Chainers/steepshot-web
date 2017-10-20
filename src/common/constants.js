@@ -5,7 +5,7 @@ export default {
         NEW: 'New'
     },
     URLS: {
-        baseUrl: 'https://steepshot.org/api/v1'
+        baseUrl: 'https://steepshot.org/api/v1_1'
     },
     CATEGORIES: {
         user: 'user',

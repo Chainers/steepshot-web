@@ -89,7 +89,6 @@ export function getHotPosts(offset) {
 //https://steepshot.org/api/v1/post/joseph//steemfest/@joseph/win-a-free-trip-to-lisbon-portugal-to-attend-steemfest-ii/comments
 export function getPostComments(author, authorUrl) {
   const url = RequestService.handleBaseRequestPosts(`post/${author}/${authorUrl}/comments`);
-
   return fetch(url, {
     method: 'GET'
   }).then((response) => {
@@ -114,9 +113,10 @@ export function getPostComments(author, authorUrl) {
 ///            Cookie: sessionid=q9umzz8q17bclh8yvkkipww3e96dtdn3
 /// </summary>
 
-export function getUserPosts(author, offset) {
-  const url = RequestService.handleBaseRequestPosts(`watcher/user/${author}/posts`, {
-    offset: offset
+export function getUserPosts(author, currentUser, offset) {
+  const url = RequestService.handleBaseRequestPosts(`user/${author}/posts`, {
+    offset: offset,
+    username: currentUser
   });
 
   return fetch(url, {

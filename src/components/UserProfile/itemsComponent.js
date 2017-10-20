@@ -16,7 +16,7 @@ class ItemsComponent extends React.Component {
 
     this.state = {
       authorName: this.props.username,
-      profile: null,
+      currentUser: this.props.currentUser,
       loading: true,
       hasMore: true,
       localize: LocalizedStrings.getInstance(),
@@ -52,7 +52,7 @@ class ItemsComponent extends React.Component {
     userName = userName || this.state.authorName;
     offset = offset !== undefined ? offset : this.state.offset;
 
-    getUserPosts(userName, offset).then((response) => {
+    getUserPosts(userName, this.state.currentUser, offset).then((response) => {
       this.state.items.pop();
       let newPosts = this.state.items.concat(response.results);
 
