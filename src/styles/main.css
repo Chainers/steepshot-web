@@ -95,7 +95,7 @@
   }
 
   .g-main {
-    min-height: 100vh;
+    min-height: calc(100vh - 60px);
   }
 
   .card-field {
@@ -137,6 +137,10 @@
   .settings-switcher {
     display: flex;
     justify-content: space-between;
+  }
+
+  .margin-top--small {
+    margin-top: 2rem;
   }
 
 /* NEW */
