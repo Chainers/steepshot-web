@@ -6,7 +6,7 @@ class RequestService extends BaseRequestService{
         super(props);
     }
     _getHandledOptions(options) {
-        var newOptions = this.getDefaultOptions();
+        var newOptions = this.getDefaultOptions(options);
 
         return this.convertOptionsToRequestString(Object.assign(newOptions, options))
     }

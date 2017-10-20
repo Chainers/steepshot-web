@@ -183,7 +183,7 @@ gulp.task('watchTask', () => {
 });
 
 gulp.task('watch', cb => {
-  runSequence('clean', ['browserSync', 'watchTask', 'watchify', 'fonts', 'styles', 'lint', 'imagemin'], cb);
+  runSequence('clean', ['watchTask', 'watchify', 'fonts', 'styles', 'lint', 'imagemin'], 'browserSync', cb);
 });
 
 gulp.task('build', cb => {

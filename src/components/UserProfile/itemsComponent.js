@@ -8,6 +8,7 @@ import LoadingSpinner from '../LoadingSpinner';
 import PostItem from '../Posts/Item';
 import contants from '../../common/constants';
 import ModalComponent from '../Common/ModalComponent';
+import ItemModal from '../Posts/ItemModal';
 
 class ItemsComponent extends React.Component {
   constructor(props) {
@@ -77,22 +78,22 @@ class ItemsComponent extends React.Component {
   }
 
   updateVoteInComponent(vote, index) {
-    let newItems = this.state.posts;
+    let newItems = this.state.items;
     vote ? newItems[index].net_votes++ : newItems[index].net_votes--;
     newItems[index].vote = vote;
     this.setState({ 
-      posts: newItems
+      items: newItems
     });
   }
 
   _renderModal() {
       if (this.state.currentItem != undefined)
       return <ItemModal 
-                  item={this.state.posts[this.state.currentItem]} 
-                  items={this.state.posts} 
+                  item={this.state.items[this.state.currentItem]} 
+                  items={this.state.items} 
                   index={this.state.currentItem}
                   updateVoteInComponent={this.updateVoteInComponent.bind(this)} 
-                  loadMore={this.fetchPostsNext.bind(this)}
+                  loadMore={this.fetchData.bind(this)}
               />
       return null;
   }
@@ -116,7 +117,10 @@ class ItemsComponent extends React.Component {
             items={_this.state.items}
             index={index}
             history={this.props.history}
-            loadMore={this.fetchData.bind(this)} />
+            loadMore={this.fetchData.bind(this)}
+            openModal={this.openModal.bind(this)}
+            updateVoteInComponent={this.updateVoteInComponent.bind(this)}
+          />
         );
     });
 

@@ -22,6 +22,7 @@ import {
 import Loading from 'react-loading-spinner';
 import LoadingSpinner from './LoadingSpinner';
 import ModalComponent from './Common/ModalComponent';
+import ItemModal from './Posts/ItemModal';
 
 // constants
 import constants from '../common/constants';

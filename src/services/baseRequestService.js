@@ -6,9 +6,12 @@ const baseUrl = constants.URLS.baseUrl;
 const baseLimit = constants.POSTS_SETTINGS.defaultLimit;
 
 class BaseRequestService {
-    getDefaultOptions() {
+    getDefaultOptions(options) {
+        let calcLimit = baseLimit;
+        if (options != undefined)
+        if (options.offset != undefined && options.offset != '') calcLimit++;
         return {
-            limit: baseLimit,
+            limit: calcLimit,
             offset: null
         };
     }
