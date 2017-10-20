@@ -6,7 +6,7 @@ class RequestService extends BaseRequestService{
         super(props);
     }
 
-    optionsConverter(options) {
+    optionsConverter() {
         let newOptions = {};
         Array.prototype.map.call(arguments, (optionsPart) => { Object.assign(newOptions, optionsPart) });
         return this.convertOptionsToRequestString(newOptions);
