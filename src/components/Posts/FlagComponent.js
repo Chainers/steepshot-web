@@ -39,7 +39,7 @@ class FlagComponent extends React.Component {
       flag: newFlagState
     });
 
-    Steem.vote(this.props.postingKey, this.props.username, this.state.item.author, urlObject[urlObject.length-1], newFlagState);
+    Steem.flag(this.props.postingKey, this.props.username, this.state.item.author, urlObject[urlObject.length-1], newFlagState);
   }
 
   render() {

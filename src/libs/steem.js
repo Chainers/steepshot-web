@@ -75,6 +75,10 @@ class Steem {
           });
     }
 
+    flag(wif, username, author, url, isUpVote) {
+        
+    }
+
     upVote() {
         //@TODO: Implement steem logic
     }

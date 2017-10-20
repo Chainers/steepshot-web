@@ -9,14 +9,14 @@ export function voute(isVouteUp, identifierUrl) {
         method: 'POST'
     }).then((response) => {
         if (response.ok) {
-        return response.json().then((json) => {
-            console.log(json);
-            return json;
-        });
+            return response.json().then((json) => {
+                console.log(json);
+                return json;
+            });
         } else {
-        return response.json().then(() => {
-            return [];
-        });
+            return response.json().then(() => {
+                return [];
+            });
         }
     });
 }
