@@ -18,7 +18,8 @@ class FollowingComponent extends React.Component {
       loading: true,
       hasMore: true,
       localize: LocalizedStrings.getInstance(),
-      items: []
+      items: [],
+      currentUser: this.props.currentUser
     };
   }
 
@@ -51,7 +52,7 @@ class FollowingComponent extends React.Component {
     userName = userName || this.state.authorName;
     offset = offset !== undefined ? offset : this.state.offset;
 
-    getFollowing(userName, offset).then((response) => {
+    getFollowing(userName, this.state.currentUser, offset).then((response) => {
         this.state.items.pop();
         let newItems = this.state.items.concat(response.results);
 

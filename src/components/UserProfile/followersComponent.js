@@ -19,7 +19,8 @@ class FollowersComponent extends React.Component {
       hasMore: true,
       localize: LocalizedStrings.getInstance(),
       showFollow: this.props.showFollow != undefined ? this.props.showFollow  : true,
-      items: []
+      items: [],
+      currentUser: this.props.currentUser
     };
   }
 
@@ -52,7 +53,7 @@ class FollowersComponent extends React.Component {
     userName = userName || this.state.authorName;
     offset = offset !== undefined ? offset : this.state.offset;
 
-    getFollowers(userName, this.state.offset).then((response) => {
+    getFollowers(userName, this.state.currentUser, this.state.offset).then((response) => {
         this.state.items.pop();
         let newItems = this.state.items.concat(response.results);
 

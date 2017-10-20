@@ -11,25 +11,19 @@ export function getUserProfile(userName, currentUser) {
   }
   const url = RequestService.handleRequestUserInfo(`user/${userName}/info`, options);
 
-  try {
-    return fetch(url, {
-      method: 'GET'
-    }).then((response) => {
-      if (response.ok) {
-        return response.json().then((json) => {
-          return json;
-        });
-      } else {
-        return response.json().then(() => {
-          return [];
-        });
-      }
-    });
-  } 
-  catch {
-    console.log('Something went wrong in getUserProfile methos');
-    return null;
-  }
+  return fetch(url, {
+    method: 'GET'
+  }).then((response) => {
+    if (response.ok) {
+      return response.json().then((json) => {
+        return json;
+      });
+    } else {
+      return response.json().then(() => {
+        return [];
+      });
+    }
+  });
 }
 
 export function getFollowers(userName, currentUser, offset) {
@@ -37,27 +31,22 @@ export function getFollowers(userName, currentUser, offset) {
     offset: offset,
     username: currentUser
   }
-  const url = RequestService.handleRequestPosts(`user/${userName}/followers`, options);
+  const url = RequestService.handleBaseRequestPosts(`user/${userName}/followers`, options);
 
-  try {
-    return fetch(url, {
-      method: 'GET'
-    }).then((response) => {
-      if (response.ok) {
-        return response.json().then((json) => {
-          return json;
-        });
-      } else {
-        return response.json().then(() => {
-          return [];
-        });
-      }
-    });
-  }
-  catch {
-    console.warn('Something went wrong in getFollowers methos');
-    return null;
-  }
+  return fetch(url, {
+    method: 'GET'
+  }).then((response) => {
+    if (response.ok) {
+      return response.json().then((json) => {
+        return json;
+      });
+    } else {
+      return response.json().then(() => {
+        return [];
+      });
+    }
+  });
+  
 }
 
 export function getFollowing(userName, currentUser, offset) {
@@ -65,7 +54,7 @@ export function getFollowing(userName, currentUser, offset) {
     offset: offset,
     username: currentUser
   }
-  const url = RequestService.handleRequestPosts(`user/${userName}/following`, options);
+  const url = RequestService.handleBaseRequestPosts(`user/${userName}/following`, options);
 
   return fetch(url, {
     method: 'GET'
