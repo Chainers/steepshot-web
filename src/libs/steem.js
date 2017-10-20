@@ -163,7 +163,7 @@ class Steem {
             permlink: permlink + '-post',
             title: title,
             description: description,
-            body: file || "test",
+            body: file,
             json_metadata: JSON.stringify(jsonMetadata)
         }];
 

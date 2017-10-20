@@ -7,6 +7,7 @@ const baseUrl = constants.URLS.baseUrl;
 export function preparePost(message, transaction) {
   let form = new FormData();
   form.append('title', message[1].title);
+  form.append('description', message[1].description);
   form.append('username', message[1].author);
   form.append('photo', message[1].body);
   form.append('trx', JSON.stringify(transaction));
