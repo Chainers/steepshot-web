@@ -28,7 +28,7 @@ export function getFollowers(userName, offset) {
     offset: offset,
     limit: 20
   }
-  const url = RequestService.handleRequestPosts(`user/${userName}/followers`, options);
+  const url = RequestService.handleBaseRequestPosts(`user/${userName}/followers`, options);
 
   return fetch(url, {
     method: 'GET'
@@ -50,7 +50,7 @@ export function getFollowing(userName, offset) {
     offset: offset,
     limit: 20
   }
-  const url = RequestService.handleRequestPosts(`user/${userName}/following`, options);
+  const url = RequestService.handleBaseRequestPosts(`user/${userName}/following`, options);
 
   return fetch(url, {
     method: 'GET'
