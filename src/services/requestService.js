@@ -5,26 +5,27 @@ class RequestService extends BaseRequestService{
     constructor(props) {
         super(props);
     }
-    _getHandledOptions(options) {
-        var newOptions = this.getDefaultOptions(options);
 
-        return this.convertOptionsToRequestString(Object.assign(newOptions, options))
+    optionsConverter(options) {
+        let newOptions = {};
+        Array.prototype.map.call(arguments, (optionsPart) => { Object.assign(newOptions, optionsPart) });
+        return this.convertOptionsToRequestString(newOptions);
     }
 
     handleBaseRequestPosts(url, options) {
-        return this.getBaseUrl() + '/' + url + this._getHandledOptions(options);
+        return this.getBaseUrl() + '/' + url + this.optionsConverter(this.getDefaultPostsOptions(options), this.getDefaultSettingsOptions(), options);
     }
     
     handleRequestPosts(url, options) {
-        return this.getUrl() + '/' + url + this._getHandledOptions(options);
+        return this.getUrl() + '/' + url + this.optionsConverter(this.getDefaultPostsOptions(options), this.getDefaultSettingsOptions(), options);
     }
 
     handleBaseRequestPost(url) {
-        return this.getUrl() + '/' + url;
+        return this.getBaseUrl() + '/' + url;
     }
   
     handleRequestUserInfo(url) {
-        return this.getUrl() + '/' + url;
+        return this.getBaseUrl() + '/' + url + this.optionsConverter(this.getDefaultSettingsOptions());
     }
 }
 
