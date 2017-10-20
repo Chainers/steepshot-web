@@ -115,11 +115,8 @@ export function getPostComments(author, authorUrl) {
 /// </summary>
 
 export function getUserPosts(author, offset) {
-  const settings = JSON.parse(localStorage.getItem("settings"));
   const url = RequestService.handleBaseRequestPosts(`watcher/user/${author}/posts`, {
-    offset: offset,
-    [Constants.SETTINGS.show_nsfw]: settings[Constants.SETTINGS.show_nsfw],
-    [Constants.SETTINGS.show_low_rated]: settings[Constants.SETTINGS.show_nsfw]
+    offset: offset
   });
 
   return fetch(url, {

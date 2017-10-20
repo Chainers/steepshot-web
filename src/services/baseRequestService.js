@@ -4,15 +4,23 @@ import { getStore } from '../store/configureStore';
 
 const baseUrl = constants.URLS.baseUrl;
 const baseLimit = constants.POSTS_SETTINGS.defaultLimit;
+const settings = JSON.parse(localStorage.getItem("settings"));
 
 class BaseRequestService {
-    getDefaultOptions(options) {
+    getDefaultPostsOptions(options) {
         let calcLimit = baseLimit;
         if (options != undefined)
         if (options.offset != undefined && options.offset != '') calcLimit++;
         return {
             limit: calcLimit,
             offset: null
+        };
+    }
+
+    getDefaultSettingsOptions(options) {
+        return {
+            [constants.SETTINGS.show_nsfw]: settings[constants.SETTINGS.show_nsfw],
+            [constants.SETTINGS.show_low_rated]: settings[constants.SETTINGS.show_nsfw]
         };
     }
 
@@ -32,7 +40,7 @@ class BaseRequestService {
         let optionsArray = [];
 
         for (let key in options) {
-            if (options[key] != undefined) optionsArray.push(key + '=' + this.convertIfBool(options[key]));
+            if (options[key] != undefined && options[key] != null) optionsArray.push(key + '=' + this.convertIfBool(options[key]));
         }
 
         return '?' + optionsArray.join('&');
