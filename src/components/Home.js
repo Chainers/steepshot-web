@@ -180,23 +180,17 @@ class Home extends React.Component {
   }
 
   continueHandleDefaultPostsResponce(response) {
-    this.state.posts.pop();
-    let newPosts = this.state.posts.concat(response.results);
+    _this.state.posts.pop();
+    let newPosts = _this.state.posts.concat(response.results);
 
-    if (!response.offset) {
-      this.setState({
-        posts: newPosts,
-        offset: response.offset, 
-        hasMore: false,
-        loading: false
-      });
-    } else {
-      this.setState({
-        posts: newPosts, 
+    let hasMore = !(_this.state.offset == response.offset);
+    
+    _this.setState({ 
+        items: newPosts, 
         offset: response.offset,
+        hasMore: hasMore,
         loading: false
-      });
-    }
+    });
   }
   
   // Fetch data
