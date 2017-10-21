@@ -68,7 +68,7 @@ class Feed extends React.Component {
             let hasMore = !(_this.state.offset == response.offset);
             
             _this.setState({ 
-                items: newPosts, 
+                posts: newPosts, 
                 offset: response.offset,
                 hasMore: hasMore,
                 loading: false

@@ -180,13 +180,13 @@ class Home extends React.Component {
   }
 
   continueHandleDefaultPostsResponce(response) {
-    _this.state.posts.pop();
-    let newPosts = _this.state.posts.concat(response.results);
+    this.state.posts.pop();
+    let newPosts = this.state.posts.concat(response.results);
 
-    let hasMore = !(_this.state.offset == response.offset);
+    let hasMore = !(this.state.offset == response.offset);
     
-    _this.setState({ 
-        items: newPosts, 
+    this.setState({ 
+        posts: newPosts, 
         offset: response.offset,
         hasMore: hasMore,
         loading: false
