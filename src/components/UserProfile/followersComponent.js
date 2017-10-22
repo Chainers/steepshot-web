@@ -53,24 +53,18 @@ class FollowersComponent extends React.Component {
     userName = userName || this.state.authorName;
     offset = offset !== undefined ? offset : this.state.offset;
 
-    getFollowers(userName, this.state.currentUser, this.state.offset).then((response) => {
-        this.state.items.pop();
-        let newItems = this.state.items.concat(response.results);
+    getFollowers(userName, this.state.offset).then((response) => {
+        _this.state.items.pop();
+        let newItems = _this.state.items.concat(response.results);
 
-        if (!response.offset) {
-            _this.setState({
+        let hasMore = !(_this.state.offset == response.offset);
+        
+        _this.setState({ 
             items: newItems, 
-            offset: response.offset, 
-            hasMore: false,
+            offset: response.offset,
+            hasMore: hasMore,
             loading: false
-            });
-        } else {
-            _this.setState({ 
-                items: newItems, 
-                offset: response.offset,
-                loading: false
-            });
-        }
+        });
     });
   }
 

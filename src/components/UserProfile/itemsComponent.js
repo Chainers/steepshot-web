@@ -52,24 +52,18 @@ class ItemsComponent extends React.Component {
     userName = userName || this.state.authorName;
     offset = offset !== undefined ? offset : this.state.offset;
 
-    getUserPosts(userName, this.state.currentUser, offset).then((response) => {
-      this.state.items.pop();
-      let newPosts = this.state.items.concat(response.results);
+    getUserPosts(userName, offset).then((response) => {
+      _this.state.items.pop();
+      let newPosts = _this.state.items.concat(response.results);
 
-      if (!response.offset) {
-        _this.setState({
-            items: newPosts, 
-            offset: response.offset, 
-            hasMore: false,
-            loading: false
-        });
-      } else {
-        _this.setState({ 
-            items: newPosts, 
-            offset: response.offset,
-            loading: false
-        });
-      }
+      let hasMore = !(_this.state.offset == response.offset);
+      
+      _this.setState({ 
+          items: newPosts, 
+          offset: response.offset,
+          hasMore: hasMore,
+          loading: false
+      });
     });
   }
 

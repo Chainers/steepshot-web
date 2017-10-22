@@ -4,7 +4,6 @@ import { getStore } from '../store/configureStore';
 
 const baseUrl = constants.URLS.baseUrl;
 const baseLimit = constants.POSTS_SETTINGS.defaultLimit;
-const settings = JSON.parse(localStorage.getItem("settings"));
 
 class BaseRequestService {
     getDefaultPostsOptions(options) {
@@ -17,10 +16,24 @@ class BaseRequestService {
         };
     }
 
-    getDefaultSettingsOptions(options) {
+    getDefaultSettingsOptions() {
+        const settings = JSON.parse(localStorage.getItem("settings"));
+
+        if (settings == undefined) return {}
+
+        let nsfw = false;
+        let low_rated = false;        
+
+        if (typeof settings[constants.SETTINGS.show_nsfw] == 'boolean') {
+            nsfw = settings[constants.SETTINGS.show_nsfw];
+        }
+
+        if (typeof settings[constants.SETTINGS.show_low_rated] == 'boolean') {
+            low_rated = settings[constants.SETTINGS.show_low_rated];
+        }
         return {
-            [constants.SETTINGS.show_nsfw]: settings[constants.SETTINGS.show_nsfw],
-            [constants.SETTINGS.show_low_rated]: settings[constants.SETTINGS.show_nsfw]
+            [constants.SETTINGS.show_nsfw]: nsfw,
+            [constants.SETTINGS.show_low_rated]: low_rated
         };
     }
 
