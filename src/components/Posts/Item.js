@@ -15,6 +15,7 @@ import PropTypes from 'prop-types';
 import Comments from './Comments';
 import constants from '../../common/constants';
 import VouteComponent from './VouteComponent';
+import FlagComponent from './FlagComponent';
 
 class Item extends React.Component {
   constructor(props) {
@@ -154,11 +155,17 @@ class Item extends React.Component {
               </div>
             <div className="card-wrap">
               <div className="card-controls clearfix">
-                <div className="wrap-btn" onClick={(e)=>{this.callPreventDefault(e)}}>
+                <div className="buttons-row" onClick={(e)=>{this.callPreventDefault(e)}}>
                   <VouteComponent key="vote" 
                     item={this.state.item}
                     index={this.state.currentIndex}
                     updateVoteInComponent={this.props.updateVoteInComponent}
+                  />
+                  <FlagComponent 
+                    key="flag"
+                    item={this.state.item}
+                    index={this.state.currentIndex}
+                    updateFlagInComponent={this.props.updateFlagInComponent}
                   />
                 </div>
                 <div className="wrap-counts clearfix">

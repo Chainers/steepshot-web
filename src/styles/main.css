@@ -139,6 +139,69 @@
     justify-content: space-between;
   }
 
+  .btn-flag {
+    position: relative;
+    width: 21px;
+    height: 21px;
+    border: none;
+    display: block;
+    padding: 0;
+    background: 0 0;
+  }
+
+  .btn-flag::before {
+    content: url(/static/images/flagFalse.svg);
+  }
+
+  .btn-flag.marked::before {
+    content: url(/static/images/flagTrue.svg);
+  }
+
+  @-webkit-keyframes flagLoading
+  {
+    0%{
+      -webkit-transform:scale(1);
+      transform:scale(1)
+    }
+    50%{
+      -webkit-transform:scale(.7);
+      transform:scale(.7)
+    }
+    100%{
+      -webkit-transform:scale(1);
+      transform:scale(1)
+    }
+  }
+  @keyframes flagLoading
+  {
+    0%{
+      -webkit-transform:scale(1);
+      transform:scale(1)
+    }
+    50%{
+      -webkit-transform:scale(.7);
+      transform:scale(.7)
+    }
+    100%{
+      -webkit-transform:scale(1);
+      transform:scale(1)
+    }
+  }
+
+  .btn-flag.loading::before{
+    display:block;
+    -webkit-animation:flagLoading 2s infinite linear;
+    animation:flagLoading 2s infinite linear;
+  }
+
+  .wrap-btn {
+    padding-left: 14px;
+  }
+
+  .buttons-row .wrap-btn {
+    margin-left: 14px;
+  }
+  
   .margin-top--small {
     margin-top: 2rem;
   }

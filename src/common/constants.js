@@ -17,7 +17,8 @@ export default {
         VOTE: 'vote',
         POST: 'post',
         FOLLOW: 'follow',
-        COMMENT_OPTIONS: 'comment_options'
+        COMMENT_OPTIONS: 'comment_options',
+        FLAG: 'flag'
     },
     STEEM_PATLOAD: {
         MAX_ACCEPTED_PAYOUT: '1000000.000 SBD',
