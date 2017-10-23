@@ -73,8 +73,23 @@ class ItemsComponent extends React.Component {
 
   updateVoteInComponent(vote, index) {
     let newItems = this.state.items;
+    if (vote && newItems[index].flag) {
+      newItems[index].flag = false;
+    }
     vote ? newItems[index].net_votes++ : newItems[index].net_votes--;
     newItems[index].vote = vote;
+    this.setState({ 
+      items: newItems
+    });
+  }
+
+  updateFlagInComponent(flag, index) {
+    let newItems = this.state.items;
+    if (flag && newItems[index].vote) {
+      newItems[index].net_votes--;
+      newItems[index].vote = false;
+    }
+    newItems[index].flag = flag;
     this.setState({ 
       items: newItems
     });
@@ -86,7 +101,8 @@ class ItemsComponent extends React.Component {
                   item={this.state.items[this.state.currentItem]} 
                   items={this.state.items} 
                   index={this.state.currentItem}
-                  updateVoteInComponent={this.updateVoteInComponent.bind(this)} 
+                  updateVoteInComponent={this.updateVoteInComponent.bind(this)}
+                  updateFlagInComponent={this.updateFlagInComponent.bind(this)}
                   loadMore={this.fetchData.bind(this)}
               />
       return null;
@@ -114,6 +130,7 @@ class ItemsComponent extends React.Component {
             loadMore={this.fetchData.bind(this)}
             openModal={this.openModal.bind(this)}
             updateVoteInComponent={this.updateVoteInComponent.bind(this)}
+            updateFlagInComponent={this.updateFlagInComponent.bind(this)}
           />
         );
     });

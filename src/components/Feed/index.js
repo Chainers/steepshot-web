@@ -79,23 +79,27 @@ class Feed extends React.Component {
 
     updateVoteInComponent(vote, index) {
         let newItems = this.state.posts;
+        if (vote && newItems[index].flag) {
+          newItems[index].flag = false;
+        }
         vote ? newItems[index].net_votes++ : newItems[index].net_votes--;
         newItems[index].vote = vote;
         this.setState({ 
           posts: newItems
         });
-    }
-
-    updateFlagInComponent(flag, index) {
-        if (flag && this.state.posts[index].vote) {
-            this.updateVoteInComponent(false, index);
-        }
+      }
+    
+      updateFlagInComponent(flag, index) {
         let newItems = this.state.posts;
+        if (flag && newItems[index].vote) {
+          newItems[index].net_votes--;
+          newItems[index].vote = false;
+        }
         newItems[index].flag = flag;
         this.setState({ 
           posts: newItems
         });
-    }
+      }
 
     _renderModal() {
         if (this.state.currentItem != undefined)
