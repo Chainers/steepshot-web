@@ -24,7 +24,8 @@ class Feed extends React.Component {
             posts: [],
             hasMore: true,
             offset: null,
-            loading: true
+            loading: true,
+            currentUser: this.props.user || null
         };
 
         this.store = getStore();
@@ -62,22 +63,17 @@ class Feed extends React.Component {
         });
 
         getUserFeed(this.props.user, this.state.offset).then((response) => {
-            this.state.posts.pop();
-            let newPosts = this.state.posts.concat(response.results);
-            if (!response.offset) {
-                _this.setState({
-                    posts: newPosts, 
-                    offset: response.offset, 
-                    hasMore: false,
-                    loading: false
-                });
-            } else {
-                _this.setState({
-                    posts: newPosts, 
-                    offset: response.offset,
-                    loading: false
-                });
-            }
+            _this.state.posts.pop();
+            let newPosts = _this.state.posts.concat(response.results);
+            
+            let hasMore = !(_this.state.offset == response.offset);
+            
+            _this.setState({ 
+                posts: newPosts, 
+                offset: response.offset,
+                hasMore: hasMore,
+                loading: false
+            });
         });
     }
 

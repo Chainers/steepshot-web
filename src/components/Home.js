@@ -22,6 +22,7 @@ import {
 import Loading from 'react-loading-spinner';
 import LoadingSpinner from './LoadingSpinner';
 import ModalComponent from './Common/ModalComponent';
+import ItemModal from './Posts/ItemModal';
 
 // constants
 import constants from '../common/constants';
@@ -182,20 +183,14 @@ class Home extends React.Component {
     this.state.posts.pop();
     let newPosts = this.state.posts.concat(response.results);
 
-    if (!response.offset) {
-      this.setState({
-        posts: newPosts,
-        offset: response.offset, 
-        hasMore: false,
-        loading: false
-      });
-    } else {
-      this.setState({
+    let hasMore = !(this.state.offset == response.offset);
+    
+    this.setState({ 
         posts: newPosts, 
         offset: response.offset,
+        hasMore: hasMore,
         loading: false
-      });
-    }
+    });
   }
   
   // Fetch data

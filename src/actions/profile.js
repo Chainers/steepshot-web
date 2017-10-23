@@ -6,7 +6,7 @@ import RequestService from '../services/requestService';
 /// </summary>
 
 export function getUserProfile(userName) {
-  const url = RequestService.handleRequestUserInfo(`user/${userName}/info`);
+  const url = RequestService.handlev1_1RequestUserInfo(`user/${userName}/info`);
 
   return fetch(url, {
     method: 'GET'
@@ -25,10 +25,9 @@ export function getUserProfile(userName) {
 
 export function getFollowers(userName, offset) {
   const options = {
-    offset: offset,
-    limit: 20
+    offset: offset
   }
-  const url = RequestService.handleRequestPosts(`user/${userName}/followers`, options);
+  const url = RequestService.handlev1_1BaseRequestPosts(`user/${userName}/followers`, options);
 
   return fetch(url, {
     method: 'GET'
@@ -43,14 +42,14 @@ export function getFollowers(userName, offset) {
       });
     }
   });
+  
 }
 
 export function getFollowing(userName, offset) {
   const options = {
-    offset: offset,
-    limit: 20
+    offset: offset
   }
-  const url = RequestService.handleRequestPosts(`user/${userName}/following`, options);
+  const url = RequestService.handlev1_1BaseRequestPosts(`user/${userName}/following`, options);
 
   return fetch(url, {
     method: 'GET'

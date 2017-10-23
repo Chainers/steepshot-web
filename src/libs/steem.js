@@ -155,7 +155,7 @@ class Steem {
     }
 
     /** Broadcast a post */
-    createPost(wif, tags, author, title, file, callback) {
+    createPost(wif, tags, author, title, description, file, callback) {
         const jsonMetadata = this._createJsonMetadata(tags);
         const permlink = this._getPermLink();
         const category = jsonMetadata.tags[0];
@@ -166,7 +166,8 @@ class Steem {
             author: author,
             permlink: permlink + '-post',
             title: title,
-            body: file || "test",
+            description: description,
+            body: file,
             json_metadata: JSON.stringify(jsonMetadata)
         }];
 

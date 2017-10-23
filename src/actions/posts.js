@@ -2,7 +2,7 @@ import RequestService from '../services/requestService';
 import Constants from '../common/constants';
 
 export function getPosts() {
-  const url = RequestService.handleRequestPosts(`posts/new`);
+  const url = RequestService.handlev1_1BaseRequestPosts(`posts/new`);
 
   return fetch(url, {
     method: 'GET'
@@ -22,7 +22,7 @@ export function getPosts() {
 // New posts
 //https://steepshot.org/api/v1/posts/top?limit=10&offset=/reiki-trail/@reiki-trail/reiki-boost-healing-invocation-9
 export function getNewPosts(offset) {
-  const url = RequestService.handleRequestPosts(`posts/new`, {
+  const url = RequestService.handlev1_1BaseRequestPosts(`posts/new`, {
     offset: offset
   });
 
@@ -44,7 +44,7 @@ export function getNewPosts(offset) {
 // Traiding posts
 //https://steepshot.org/api/v1/posts/top?limit=10&offset=/reiki-trail/@reiki-trail/reiki-boost-healing-invocation-9
 export function getTopPosts(offset) {
-  const url = RequestService.handleRequestPosts(`posts/top`, {
+  const url = RequestService.handlev1_1BaseRequestPosts(`posts/top`, {
     offset: offset
   });
   
@@ -66,7 +66,7 @@ export function getTopPosts(offset) {
 // Hot posts
 //https://steepshot.org/api/v1/posts/hot?limit=10&offset=/reiki-trail/@reiki-trail/reiki-boost-healing-invocation-9
 export function getHotPosts(offset) {
-  const url = RequestService.handleRequestPosts(`posts/hot`, {
+  const url = RequestService.handlev1_1BaseRequestPosts(`posts/hot`, {
     offset: offset
   });
 
@@ -88,8 +88,7 @@ export function getHotPosts(offset) {
 
 //https://steepshot.org/api/v1/post/joseph//steemfest/@joseph/win-a-free-trip-to-lisbon-portugal-to-attend-steemfest-ii/comments
 export function getPostComments(author, authorUrl) {
-  const url = RequestService.handleBaseRequestPosts(`post/${author}/${authorUrl}/comments`);
-
+  const url = RequestService.handlev1_1BaseRequestPosts(`post/${author}/${authorUrl}/comments`);
   return fetch(url, {
     method: 'GET'
   }).then((response) => {
@@ -115,11 +114,8 @@ export function getPostComments(author, authorUrl) {
 /// </summary>
 
 export function getUserPosts(author, offset) {
-  const settings = JSON.parse(localStorage.getItem("settings"));
-  const url = RequestService.handleBaseRequestPosts(`watcher/user/${author}/posts`, {
-    offset: offset,
-    [Constants.SETTINGS.show_nsfw]: settings[Constants.SETTINGS.show_nsfw],
-    [Constants.SETTINGS.show_low_rated]: settings[Constants.SETTINGS.show_nsfw]
+  const url = RequestService.handlev1_1BaseRequestPosts(`user/${author}/posts`, {
+    offset: offset
   });
 
   return fetch(url, {
@@ -147,7 +143,7 @@ export function getUserPosts(author, offset) {
 /// </summary>
 
 export function getUserFeed(author, offset) {
-  const url = RequestService.handleRequestPosts('recent/posts', {
+  const url = RequestService.handlev1_1BaseRequestPosts('recent/posts', {
     offset: offset
   });
   console.log(url);
@@ -178,7 +174,7 @@ export function getUserFeed(author, offset) {
 export function getNewPostsByCategory(category, offset) {
   category = category.replace(/[^A-Za-zА-Яа-яЁё(\d)+]/g, "")
 
-  const url = RequestService.handleBaseRequestPosts(`posts/${category}`, {
+  const url = RequestService.handlev1_1BaseRequestPosts(`posts/${category}`, {
     offset: offset
   });
   return fetch(url, {
@@ -207,7 +203,7 @@ export function getNewPostsByCategory(category, offset) {
 export function getTopPostsByCategory(category, offset) {
   category = category.replace(/[^A-Za-zА-Яа-яЁё(\d)+]/g, "");
 
-  const url = RequestService.handleBaseRequestPosts(`posts/${category}`, {
+  const url = RequestService.handlev1_1BaseRequestPosts(`posts/${category}`, {
     offset: offset
   });
   return fetch(url, {
@@ -236,7 +232,7 @@ export function getTopPostsByCategory(category, offset) {
 export function getHotPostsByCategory(category, offset) {
   category = category.replace(/[^A-Za-zА-Яа-яЁё(\d)+]/g, "")
 
-  const url = RequestService.handleBaseRequestPosts(`posts/${category}/hot`, {
+  const url = RequestService.handlev1_1BaseRequestPosts(`posts/${category}/hot`, {
     offset: offset
   });
 
@@ -256,7 +252,7 @@ export function getHotPostsByCategory(category, offset) {
 }
 
 export function getPostShaddow(urlPost) {
-  const url = RequestService.handleBaseRequestPost(`post/${urlPost}/info`);
+  const url = RequestService.handlev1_1BaseRequestPost(`post/${urlPost}/info`);
   
   return fetch(url, {
     method: 'GET'

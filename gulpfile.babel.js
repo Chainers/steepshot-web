@@ -1,3 +1,4 @@
+'use strict';
 import gulp from 'gulp';
 import debug from 'gulp-debug';
 import autoprefixer from 'autoprefixer';
@@ -13,7 +14,6 @@ import notify from 'gulp-notify';
 import browserSync, { reload } from 'browser-sync';
 import sourcemaps from 'gulp-sourcemaps';
 import postcss from 'gulp-postcss';
-import rename from 'gulp-rename';
 import nested from 'postcss-nested';
 import vars from 'postcss-simple-vars';
 import extend from 'postcss-simple-extend';
@@ -26,6 +26,8 @@ import ghPages from 'gulp-gh-pages';
 import livereload from 'gulp-livereload';
 import webserver from 'gulp-webserver';
 import plumber from 'gulp-plumber';
+import copy from 'gulp-copy';
+import rename from 'gulp-rename';
 
 import awspublish from 'gulp-awspublish';
 import s3_index from 'gulp-s3-index';
@@ -58,7 +60,6 @@ var publisher = awspublish.create({
 var aws_headers = {'Cache-Control': 'max-age=315360000, no-transform, public'};
 
 const paths = {
-  bundle: 'app.js',
   entry: 'src/main.js',
   trash: 'src/libraries/**/*',
   srcCss: ['src/**/*.scss', 'src/**/*.css'],
@@ -108,7 +109,7 @@ gulp.task('watchify', () => {
   function rebundle() {
     return bundler.bundle()
       .on('error', notify.onError())
-      .pipe(source(paths.bundle))
+      .pipe(source('app.js'))
       .pipe(buffer())
       .pipe(sourcemaps.init({ loadMaps: true }))
       .pipe(sourcemaps.write('.'))
@@ -125,7 +126,7 @@ gulp.task('browserify', () => {
   browserify(paths.entry, { debug: true })
   .transform(babelify)
   .bundle()
-  .pipe(source(paths.bundle))
+  .pipe(source(`app${guid}.js`))
   .pipe(buffer())
   .pipe(sourcemaps.init({ loadMaps: true }))
   .pipe(sourcemaps.write('.'))
@@ -145,8 +146,8 @@ gulp.task('styles', () => {
 gulp.task('htmlReplace', () => {
   gulp.src('index.html')
   .pipe(htmlReplace({
-    css: [`styles/main${guid}.css`, `styles/posts${guid}.css`],
-    js: ['dist/js/app.js',]
+    css: [`/styles/main${guid}.css`, `/styles/posts${guid}.css`],
+    js: [`/static/libs/app${guid}.min.js`, `/js/app${guid}.js`]
    }))
   .pipe(gulp.dest(paths.dist));
 });
@@ -168,6 +169,14 @@ gulp.task('lint', () => {
     .pipe(eslint.format());
 });
 
+gulp.task('libs', (cb) => {
+  gulp.src('static/libs/libs/**/*.js')
+  .pipe(copy('dist'));
+  gulp.src('static/libs/app.min.js')
+  .pipe(rename(`app${guid}.min.js`))
+  .pipe(gulp.dest(`dist/static/libs/`))
+});
+
 gulp.task('watchTask', () => {
   gulp.watch(paths.srcCss, ['styles']);
   gulp.watch(paths.srcLint, ['lint']);
@@ -175,7 +184,7 @@ gulp.task('watchTask', () => {
 });
 
 gulp.task('watch', cb => {
-  runSequence('clean', ['browserSync', 'watchTask', 'watchify', 'fonts', 'styles', 'lint', 'imagemin'], cb);
+  runSequence('clean', ['watchTask', 'watchify', 'fonts', 'styles', 'lint', 'imagemin'], 'browserSync', cb);
 });
 
 gulp.task('build', cb => {
@@ -190,7 +199,7 @@ gulp.task('build', cb => {
   })().toString();
 
   process.env.NODE_ENV = 'production';
-  runSequence('clean', ['browserify', 'fonts', 'styles', 'htmlReplace', 'imagemin'], cb);
+  runSequence('clean', ['browserify', 'fonts', 'styles', 'htmlReplace', 'imagemin', 'libs'], cb);
 });
 
 gulp.task('deploy', () => {

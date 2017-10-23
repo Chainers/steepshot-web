@@ -2,15 +2,15 @@ import constants from '../common/constants';
 import { getStore } from '../store/configureStore';
 import FormData from 'form-data';
 
-const baseUrl = constants.URLS.baseUrl;
+const baseUrl = constants.URLS.baseUrl_v1;
 
 export function preparePost(message, transaction) {
   let form = new FormData();
   form.append('title', message[1].title);
+  form.append('description', message[1].description);
   form.append('username', message[1].author);
   form.append('photo', message[1].body);
   form.append('trx', JSON.stringify(transaction));
-
   return fetch(`${baseUrl}/post/prepare`, {
     method: 'POST',
     body: form
