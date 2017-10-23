@@ -32,6 +32,10 @@ class FlagComponent extends React.Component {
 
   updateFlag() {
 
+    if (!(this.props.username || this.props.postingKey)) {
+      return false;
+    }
+
     if (!getStore().getState().votes.voteCanBePushed)  {
       return false;
     }

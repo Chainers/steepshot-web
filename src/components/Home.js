@@ -223,24 +223,28 @@ class Home extends React.Component {
   }
 
   updateVoteInComponent(vote, index) {
-    let newItems = items;
+    let newItems = this.state.posts;
+    if (vote && newItems[index].flag) {
+      newItems[index].flag = false;
+    }
     vote ? newItems[index].net_votes++ : newItems[index].net_votes--;
     newItems[index].vote = vote;
     this.setState({ 
-      items: newItems
+      posts: newItems
     });
   }
 
   updateFlagInComponent(flag, index) {
-    if (flag && this.state.posts[index].vote) {
-      this.updateVoteInComponent(false, index);
+    let newItems = this.state.posts;
+    if (flag && newItems[index].vote) {
+      newItems[index].net_votes--;
+      newItems[index].vote = false;
     }
-    let newItems = this.state.items;
     newItems[index].flag = flag;
     this.setState({ 
-      items: newItems
+      posts: newItems
     });
-}
+  }
 
   _renderModal() {
     if (this.state.currentItem != undefined)

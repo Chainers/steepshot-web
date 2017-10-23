@@ -4,6 +4,8 @@ import Promise from 'bluebird';
 import { getStore } from '../store/configureStore';
 import { preparePost } from '../actions/steemPayout';
 import { setFlag } from '../actions/setFlag';
+import { voute } from '../actions/raitingVoute';
+
 import _ from 'underscore';
 
 const getUserName = () => {
@@ -69,11 +71,28 @@ class Steem {
         return [constants.OPERATIONS.COMMENT_OPTIONS, beneficiariesObject];
     }
 
-    vote(wif, username, author, url, isUpVote) {
-        steem.api.getContentAsync(author, url)
-          .then((result) => {
-            steem.broadcast.vote(wif, username, result.author, result.permlink, isUpVote ? 10000 : 0, () => { return; });
-          });
+    vote(wif, username, author, url, voteStatus, callback) {
+
+        const data = JSON.stringify({
+            username : username,
+            error : ''
+        });
+        
+        const callbackBc = (err, success) => {
+            if(err) {
+                callback(err, null);
+                console.log(err);
+            } else 
+            if (success) {
+                voute(voteStatus, url, data).then((response) => { console.log(response) });
+                callback(null, success);
+                console.log(success)
+            }
+        };
+
+        steem.api.getContentAsync(author, url).then((response) => {
+            steem.broadcast.vote(wif, username, response.author, response.permlink, voteStatus ? 10000 : 0, callbackBc);
+        });
     }
 
     flag(wif, username, author, url, flagStatus, callback) {

@@ -11,6 +11,8 @@ import {
 import PropTypes from 'prop-types';
 import Steem from '../../libs/steem';
 
+import { getStore } from '../../store/configureStore';
+
 class VouteComponent extends React.Component {
   constructor(props) {
     super(props);
@@ -31,26 +33,72 @@ class VouteComponent extends React.Component {
   }
 
   ratingVotes() {
+
+    if (!(this.props.username || this.props.postingKey)) {
+      return false;
+    }
+
+    if (!getStore().getState().votes.voteCanBePushed)  {
+      return false;
+    }
+
+    this.props.dispatch({ type : 'SWITCH_MODE_FOR_QUEUE', voteCanBePushed : false });
+
     if (!(this.props.username || this.props.postingKey)) {
       return;
     }
     const newVoteState = !this.state.vote;
     const urlObject = this.state.item.url.split('/');
 
-    this.props.updateVoteInComponent(newVoteState, this.state.index);
     this.setState({ 
-      vote: newVoteState
-    });
+      vote : newVoteState,
+      isVoteLoading : true
+    }, () => {
 
-    Steem.vote(this.props.postingKey, this.props.username, this.state.item.author, urlObject[urlObject.length-1], newVoteState);
+      const callback = (err, success) => {
+        this.setState({
+          isVoteLoading : false
+        })
+        this.props.dispatch({ type : 'SWITCH_MODE_FOR_QUEUE', voteCanBePushed : true });
+        if (err) {
+          this.setState({ 
+            vote: !newVoteState
+          }, () => {
+              let text = 'Something went wrong when you voted, please, try again later';
+              if (err.payload.error.data.code == 10) {
+                text = 'Sorry, you had used the maximum number of vote changes on this post';
+              }
+              jqApp.pushMessage.open(text);
+            }
+          ); 
+        } else 
+        if (success) {
+            let text = 'Post was successfully liked';
+            if (!newVoteState) text = 'Post was successfully disliked';
+            jqApp.pushMessage.open(text);
+            this.props.updateVoteInComponent(newVoteState, this.state.index)
+        }
+      }
+
+      Steem.vote(this.props.postingKey, 
+                this.props.username, 
+                this.state.item.author, 
+                urlObject[urlObject.length-1], 
+                newVoteState,
+                callback
+                );
+    });
   }
 
   render() {
-    let component = <button type="button" className="btn-like"></button>;
-
+    let buttonClasses = "btn-like";
     if (this.state.vote) {
-      component = <button type="button" className="btn-like liked"></button>;
+      buttonClasses = buttonClasses + " liked";
     }
+    if (this.state.isVoteLoading) {
+      buttonClasses = buttonClasses + " loading";
+    }
+    let component = <button type="button" className={buttonClasses}></button>;
     
     return (
         <div className="wrap-btn" onClick={(event) => this.ratingVotes.call(this, event)}>
