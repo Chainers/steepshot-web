@@ -3,9 +3,6 @@ import {
   Link
 } from 'react-router-dom';
 import {
-  voute
-} from '../../actions/raitingVoute';
-import {
   connect
 } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -13,14 +10,15 @@ import Steem from '../../libs/steem';
 
 import { getStore } from '../../store/configureStore';
 
-class VouteComponent extends React.Component {
+class FlagComponent extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
       index: this.props.index,
       item: this.props.item,
-      vote: this.props.item.vote
+      flag: this.props.item.flag,
+      isFlagLoading: false
     }
   }
 
@@ -28,11 +26,11 @@ class VouteComponent extends React.Component {
     this.setState({
       index: this.props.index,
       item: this.props.item,
-      vote: this.props.item.vote
+      flag: this.props.item.flag
     });
   }
 
-  ratingVotes() {
+  updateFlag() {
 
     if (!(this.props.username || this.props.postingKey)) {
       return false;
@@ -47,24 +45,24 @@ class VouteComponent extends React.Component {
     if (!(this.props.username || this.props.postingKey)) {
       return;
     }
-    const newVoteState = !this.state.vote;
+    const newFlagState = !this.state.flag;
     const urlObject = this.state.item.url.split('/');
 
     this.setState({ 
-      vote : newVoteState,
-      isVoteLoading : true
+      flag : newFlagState,
+      isFlagLoading : true
     }, () => {
 
       const callback = (err, success) => {
         this.setState({
-          isVoteLoading : false
+          isFlagLoading : false
         })
         this.props.dispatch({ type : 'SWITCH_MODE_FOR_QUEUE', voteCanBePushed : true });
         if (err) {
           this.setState({ 
-            vote: !newVoteState
+            flag: !newFlagState
           }, () => {
-              let text = 'Something went wrong when you voted, please, try again later';
+              let text = 'Something went wrong when you clicked the flag, please, try again later';
               if (err.payload.error.data.code == 10) {
                 text = 'Sorry, you had used the maximum number of vote changes on this post';
               }
@@ -73,42 +71,42 @@ class VouteComponent extends React.Component {
           ); 
         } else 
         if (success) {
-            let text = 'Post was successfully liked';
-            if (!newVoteState) text = 'Post was successfully disliked';
+            let text = 'Post was successfully flagged';
+            if (!newFlagState) text = 'Flag was successfully removed';
             jqApp.pushMessage.open(text);
-            this.props.updateVoteInComponent(newVoteState, this.state.index)
+            this.props.updateFlagInComponent(newFlagState, this.state.index)
         }
       }
 
-      Steem.vote(this.props.postingKey, 
+      Steem.flag(this.props.postingKey, 
                 this.props.username, 
                 this.state.item.author, 
                 urlObject[urlObject.length-1], 
-                newVoteState,
+                newFlagState,
                 callback
                 );
     });
   }
 
   render() {
-    let buttonClasses = "btn-like";
-    if (this.state.vote) {
-      buttonClasses = buttonClasses + " liked";
+    let buttonClasses = "btn-flag";
+    if (this.state.flag) {
+      buttonClasses = buttonClasses + " marked";
     }
-    if (this.state.isVoteLoading) {
+    if (this.state.isFlagLoading) {
       buttonClasses = buttonClasses + " loading";
     }
     let component = <button type="button" className={buttonClasses}></button>;
     
     return (
-        <div className="wrap-btn" onClick={(event) => this.ratingVotes.call(this, event)}>
+        <div className="wrap-btn" onClick={(event) => this.updateFlag.call(this, event)}>
           {component}
         </div>
     );
   }
 }
 
-VouteComponent.propTypes = {
+FlagComponent.propTypes = {
   item: PropTypes.object
 };
 
@@ -120,4 +118,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps)(VouteComponent);
+export default connect(mapStateToProps)(FlagComponent);

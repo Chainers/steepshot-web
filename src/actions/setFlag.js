@@ -1,9 +1,8 @@
 import constants from '../common/constants';
 const baseUrl = constants.URLS.baseUrl_v1;
 
-export function voute(isVouteUp, identifierUrl, data) {
-    let vType = (isVouteUp) ? 'upvote' : 'downvote';
-    const url = `${baseUrl}/log/post/${identifierUrl}/${vType}`;
+export function setFlag(postUrl, data) {
+    const url = `${baseUrl}/log/post/${postUrl}/flag`;
 
     return fetch(url, {
         method: 'POST',
@@ -11,7 +10,7 @@ export function voute(isVouteUp, identifierUrl, data) {
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
-        }
+        },
     }).then((response) => {
         if (response.ok) {
             return response.json().then((json) => {

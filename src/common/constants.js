@@ -1,11 +1,12 @@
 export default {
     POST_FILTERS: {
-        TRENDING: 'Trending',
+        TRENDING: 'Top',
         HOT: 'Hot',
         NEW: 'New'
     },
     URLS: {
-        baseUrl: 'https://steepshot.org/api/v1'
+        baseUrl_v1_1: 'https://steepshot.org/api/v1_1',
+        baseUrl_v1: 'https://steepshot.org/api/v1'
     },
     CATEGORIES: {
         user: 'user',
@@ -16,7 +17,8 @@ export default {
         VOTE: 'vote',
         POST: 'post',
         FOLLOW: 'follow',
-        COMMENT_OPTIONS: 'comment_options'
+        COMMENT_OPTIONS: 'comment_options',
+        FLAG: 'flag'
     },
     STEEM_PATLOAD: {
         MAX_ACCEPTED_PAYOUT: '1000000.000 SBD',
@@ -30,7 +32,13 @@ export default {
         show_nsfw : "show_nsfw"
     },
 
-    POSTS_SETTINGS : {
-        defaultLimit : 24
+    SETTINGS_LABELS: {
+        save: "Save",
+        upToDate: "Already up to date",
+        succesSave: "Successfully saved"
+    },
+
+    POSTS_SETTINGS: {
+        defaultLimit: 16
     }
 }

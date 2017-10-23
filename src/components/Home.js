@@ -22,6 +22,7 @@ import {
 import Loading from 'react-loading-spinner';
 import LoadingSpinner from './LoadingSpinner';
 import ModalComponent from './Common/ModalComponent';
+import ItemModal from './Posts/ItemModal';
 
 // constants
 import constants from '../common/constants';
@@ -182,20 +183,14 @@ class Home extends React.Component {
     this.state.posts.pop();
     let newPosts = this.state.posts.concat(response.results);
 
-    if (!response.offset) {
-      this.setState({
-        posts: newPosts,
-        offset: response.offset, 
-        hasMore: false,
-        loading: false
-      });
-    } else {
-      this.setState({
+    let hasMore = !(this.state.offset == response.offset);
+    
+    this.setState({ 
         posts: newPosts, 
         offset: response.offset,
+        hasMore: hasMore,
         loading: false
-      });
-    }
+    });
   }
   
   // Fetch data
@@ -228,11 +223,26 @@ class Home extends React.Component {
   }
 
   updateVoteInComponent(vote, index) {
-    let newItems = items;
+    let newItems = this.state.posts;
+    if (vote && newItems[index].flag) {
+      newItems[index].flag = false;
+    }
     vote ? newItems[index].net_votes++ : newItems[index].net_votes--;
     newItems[index].vote = vote;
     this.setState({ 
-      items: newItems
+      posts: newItems
+    });
+  }
+
+  updateFlagInComponent(flag, index) {
+    let newItems = this.state.posts;
+    if (flag && newItems[index].vote) {
+      newItems[index].net_votes--;
+      newItems[index].vote = false;
+    }
+    newItems[index].flag = flag;
+    this.setState({ 
+      posts: newItems
     });
   }
 
@@ -244,6 +254,7 @@ class Home extends React.Component {
                 index={this.state.currentItem}
                 updateVoteInComponent={this.updateVoteInComponent.bind(this)} 
                 loadMore={this.fetchPostsNext.bind(this)}
+                updateFlagInComponent={this.updateFlagInComponent.bind(this)}
             />
     return null;
   }
@@ -273,8 +284,9 @@ class Home extends React.Component {
           items={_this.state.posts}
           index={index}
           history={this.props.history}
-          loadMore={this.fetchData.bind(this)}
           openModal={this.openModal.bind(this)}
+          updateVoteInComponent={this.updateVoteInComponent.bind(this)}
+          updateFlagInComponent={this.updateFlagInComponent.bind(this)}
         />);
       });
 

@@ -6,6 +6,7 @@ import {
 import {
     getPostShaddow
 } from '../../actions/posts';
+import LoadingSpinner from '../LoadingSpinner';
 
 class CreatePost extends React.Component {
     constructor(props) {
@@ -14,12 +15,23 @@ class CreatePost extends React.Component {
             file: '',
             imagePreviewUrl: '',
             title: '',
-            tag: "",
-            tagInputName: "tag",
-            tagList: []
+            tag: '',
+            description: '',
+            tagInputName: 'tag',
+            titleInputName: 'title',
+            descriprionInputName: 'description',
+            tagList: [],
+            descriptionLength: 2048,
+            disabeleCreating: false,
+            renderLoader: false,
+            tagError: false,
+            titleError: false,
+            isDescriptionNeeded: false
         };
+    }
 
-        this.initKeypress();
+    componentDidMount() {
+        setTimeout(() => { jqApp.forms.init() }, 0);
     }
 
     _clearAll() {
@@ -27,62 +39,93 @@ class CreatePost extends React.Component {
             file: '',
             imagePreviewUrl: '',
             title: '',
-            tagList: []
+            tagList: [],
+            tag: ""
         });
-    }
-
-    initKeypress() {
-        const _this = this;
-
-        document.onkeydown = function(e) {
-            switch (e.keyCode) {
-                case 13:
-                    e.preventDefault();
-                    _this.addTag();
-                    break;
-            }
-        };
     }
 
     handleChange(event) {
         let name = event.target.name;
         let value = event.target.value;
-        this.setState({ 
-            [name] : value.replace(/[^^a-zA-ZА-Яа-яЁё0-9\s]/g, "") 
-        }, () => {
-            if (name == this.state.tagInputName) {
+
+        if (name == this.state.tagInputName) {
+            this.setState({ 
+                [name] : value.replace(/[^^a-zA-ZА-Яа-яЁё0-9\s]/g, "") 
+            }, () =>
                 this.setState({
                     tagList : this.getTagsArray(this.state.tag),
                     tagError : false
-                });   
-            }
-        });
+                })      
+            );
+        } else
+        
+        if (name == this.state.titleInputName) {
+            this.setState({ 
+                [name] : value,
+                titleError : false
+            });
+        } else 
+
+        if (name == this.state.descriprionInputName) {
+            this.setState({ 
+                [name] : value
+            });
+        }
     }
 
     getTagsArray(stringWithTags) {
         return stringWithTags.replace(/^\s+|\s+$/gm, '').split(/\s+/);
     }
 
-    _handleSubmit(e) {
-        e.preventDefault();
+    validateFields() {
+        let isValid = true;
         if (this.state.tagList.length > 4) {
             this.setState({
                 tagError: true
             })
-            return false;
+            isValid = false;
         } 
+        if (this.state.title == '') {
+            this.setState({
+               titleError: true 
+            });
+            isValid = false;
+        }
+        if (this.state.file == '') {
+            this.setState({
+                imageError: true
+            })
+            isValid = false
+        }
+        return isValid;
+    }
+
+    _handleSubmit(e) {
+        e.preventDefault();
+
+        if (this.state.disabeleCreating) return false;
+        if (!this.validateFields()) return false;
+
         const callback = (result, message) => { 
             if (result) {
-                this._getPostShaddow(message);
-                this.props.history.push('/profile'); 
+                this.setState({
+                    renderLoader : false
+                }, () =>
+                    this.props.history.push('/profile')
+                );
             } else {
                 this.setState({ 
+                    renderLoader : false,
                     message: 'You can only create posts after 5 minutes after previous.' 
                 });
             }
             
         };
-        Steem.createPost(this.props.postingKey, this._getTags(), this.props.username, this.state.title, this.state.file, callback);
+        this.setState({
+            renderLoader : true
+        }, () =>
+            Steem.createPost(this.props.postingKey, this._getTags(), this.props.username, this.state.title, this.state.description, this.state.file, callback)
+        );
     }
 
     _getPostShaddow(message) {
@@ -100,7 +143,7 @@ class CreatePost extends React.Component {
     _getTags() {
         let tags = this.state.tagList;
 
-        //tags = this.state.tagList.splice(0 ,4);
+        tags = this.state.tagList.splice(0 ,4);
         tags.push('steepshot');
 
         return tags;
@@ -115,7 +158,8 @@ class CreatePost extends React.Component {
         reader.onloadend = () => {
             this.setState({
                 file: file,
-                imagePreviewUrl: reader.result
+                imagePreviewUrl: reader.result,
+                imageError: false
             });
         }
 
@@ -154,24 +198,73 @@ class CreatePost extends React.Component {
         });
     }
 
+    addDescription(e) {
+        e.preventDefault();
+        this.setState({
+            isDescriptionNeeded : !this.state.isDescriptionNeeded
+        }, () =>
+            setTimeout(() => { jqApp.forms.init() }, 0)
+        );
+    }
+
     _renderTags() {
+        if (this.state.tagList.length == 0) return null;
+        if (this.state.tagList[0] == '') return null;
         let _this = this;
-        if (this.state.tagList.length !== 0) {
-            let items = this.state.tagList.map((tag, index) => {
-                return(
-                <div key={index} className="tag">{tag}
-                    <button type="button" className="btn-close" onClick={this.removeTag.bind(_this, index)}></button>
-                </div>
-                )
-            });
-            return items;
-        } else return null;
+        let items = this.state.tagList.map((tag, index) => {
+            return(
+            <div key={index} className="tag">{tag}
+                <button type="button" className="btn-close" onClick={this.removeTag.bind(_this, index)}></button>
+            </div>
+            )
+        });
+        return items;
+    }
+
+    _renderLoader() {
+        if (this.state.renderLoader) {
+            return <LoadingSpinner />
+        } else {
+            return null;
+        }
     }
 
     render() {
         let {imagePreviewUrl} = this.state;
         let $imagePreview = null;
-        let tagList = null;
+        let addDescriptionBlock = null;
+
+        let imageError =
+        this.state.imageError
+        ?
+        <div className="help-block margin-top--small">
+            <div className="text--red help-block__notice">Image is required</div>
+        </div>
+        :
+        null;
+
+        if (this.state.isDescriptionNeeded) {
+            addDescriptionBlock =
+            <div className="form-group">
+                <div className="input-container col-xs-12">
+                    <textarea type="text" 
+                        name={this.state.descriprionInputName}
+                        id="description"
+                        value={this.state.description}
+                        onChange={this.handleChange.bind(this)}
+                        required=""
+                        autoComplete="off"
+                        className="form-control"
+                        maxLength={this.state.descriptionLength}
+                    />
+                    <label htmlFor="description" className="name">Description</label>
+                    <div className="help-block">
+                        <div className="help-block__notice">Description can be maximum {this.state.descriptionLength} characters</div>
+                    </div>
+                </div>
+            </div>
+        }
+
         if (imagePreviewUrl) {
             $imagePreview = (<div className="preview-component">
                 <div className="post-info">
@@ -187,7 +280,7 @@ class CreatePost extends React.Component {
             $imagePreview = (<div className="upload-field empty">
                 <div className="uf-preview">
                     <div className="uf-icon"></div>
-                    <div className="uf-text">Click to download a picture</div>
+                    <div className="uf-text">Click to upload a picture</div>
                 </div>
                 <input id="upload-file" className="file-input" onChange={(e)=>this._handleImageChange(e)} type="file" />
             </div>);
@@ -201,21 +294,30 @@ class CreatePost extends React.Component {
                             <div className="upload">
                                 {$imagePreview}
                             </div>
+                            {imageError}
                         </div>
                     </div>
-                    <div className="form-group">
-                        <div className="input-container col-xs-12">
-                            <input id="formDESCRIPTION" 
-                                type="text"
-                                name="title"
-                                id="title"
-                                value={this.state.title}
-                                onChange={this.handleChange.bind(this)}
-                                required=""
-                                autoComplete="off"
-                                className="form-control"
-                            />
-                            <label htmlFor="title" className="name">Description</label>
+                    <div className={this.state.titleError ? 'has-error' : ''} >
+                        <div className="form-group">
+                            <div className="input-container col-xs-12">
+                                <input id="formDESCRIPTION" 
+                                    type="text"
+                                    name={this.state.titleInputName}
+                                    id="title"
+                                    value={this.state.title}
+                                    onChange={this.handleChange.bind(this)}
+                                    required=""
+                                    autoComplete="off"
+                                    className="form-control"
+                                />
+                                <label htmlFor="title" className="name">Title</label>
+                                <div className="help-block">
+                                    {
+                                        this.state.titleError ? <div className="help-block__notice">Title is required</div>
+                                                              : null
+                                    }
+                                </div>  
+                            </div>
                         </div>
                     </div>
                     <div className={this.state.tagError ? 'has-error' : ''} >
@@ -234,16 +336,30 @@ class CreatePost extends React.Component {
                                 <div className="tags-list clearfix">
                                     {this._renderTags()}
                                 </div>
-                                <div className="help-block">Enter a hashtag(s). But not more than 4 words</div>
+                                <div className="help-block">
+                                    <div className="help-block__notice">Enter a hashtag(s). But not more than 4 words</div>
+                                </div>
                             </div>
                         </div>
                     </div>
+                    {addDescriptionBlock}
+                    <div className="help-block">
+                        <div className="text--red help-block__notice">{this.state.message}</div>
+                    </div>
                     <div className="form-group">
-                        <div className="buttons-container col-xs-12">
-                            <button onClick={this._clearAll.bind(this)} type="reset" className="btn btn-index">Cancel</button>
+                        <div className="buttons-container">
+                
+                            <button onClick={this.addDescription.bind(this)} className="btn btn-index float--left">
+                                {
+                                    this.state.isDescriptionNeeded ? "Close description" : "Add description"
+                                }
+                            </button>
+        
+                            <button onClick={this._clearAll.bind(this)} type="reset" className="btn btn-index">Clear</button>
                             <button onClick={this._handleSubmit.bind(this)} type="submit" className="btn btn-default">Create new post</button>
                         </div>
                     </div>
+                    {this._renderLoader()}
                 </form>
             </div>
         )

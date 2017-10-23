@@ -15,6 +15,7 @@ const App = ({ children }) => (
       </div>
     </div>
     <MobileNavigationComponent />
+    <div className="pm"></div>
   </div>
 );
 

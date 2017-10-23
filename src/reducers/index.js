@@ -6,6 +6,7 @@ import admin from './admin';
 import localization from './localization';
 import search from './search';
 import comment from './comment';
+import votes from './votes';
 
 export default combineReducers({
     messages,
@@ -14,5 +15,6 @@ export default combineReducers({
     localization,
     post,
     search,
-    comment
+    comment,
+    votes
 });

@@ -24,7 +24,8 @@ class Feed extends React.Component {
             posts: [],
             hasMore: true,
             offset: null,
-            loading: true
+            loading: true,
+            currentUser: this.props.user || null
         };
 
         this.store = getStore();
@@ -62,33 +63,43 @@ class Feed extends React.Component {
         });
 
         getUserFeed(this.props.user, this.state.offset).then((response) => {
-            this.state.posts.pop();
-            let newPosts = this.state.posts.concat(response.results);
-            if (!response.offset) {
-                _this.setState({
-                    posts: newPosts, 
-                    offset: response.offset, 
-                    hasMore: false,
-                    loading: false
-                });
-            } else {
-                _this.setState({
-                    posts: newPosts, 
-                    offset: response.offset,
-                    loading: false
-                });
-            }
+            _this.state.posts.pop();
+            let newPosts = _this.state.posts.concat(response.results);
+            
+            let hasMore = !(_this.state.offset == response.offset);
+            
+            _this.setState({ 
+                posts: newPosts, 
+                offset: response.offset,
+                hasMore: hasMore,
+                loading: false
+            });
         });
     }
 
     updateVoteInComponent(vote, index) {
         let newItems = this.state.posts;
+        if (vote && newItems[index].flag) {
+          newItems[index].flag = false;
+        }
         vote ? newItems[index].net_votes++ : newItems[index].net_votes--;
         newItems[index].vote = vote;
         this.setState({ 
           posts: newItems
         });
-    }
+      }
+    
+      updateFlagInComponent(flag, index) {
+        let newItems = this.state.posts;
+        if (flag && newItems[index].vote) {
+          newItems[index].net_votes--;
+          newItems[index].vote = false;
+        }
+        newItems[index].flag = flag;
+        this.setState({ 
+          posts: newItems
+        });
+      }
 
     _renderModal() {
         if (this.state.currentItem != undefined)
@@ -96,7 +107,8 @@ class Feed extends React.Component {
                     item={this.state.posts[this.state.currentItem]} 
                     items={this.state.posts} 
                     index={this.state.currentItem}
-                    updateVoteInComponent={this.updateVoteInComponent.bind(this)} 
+                    updateVoteInComponent={this.updateVoteInComponent.bind(this)}
+                    updateFlagInComponent={this.updateFlagInComponent.bind(this)} 
                     loadMore={this.fetchPostsNext.bind(this)}
                 />
         return null;
@@ -123,9 +135,9 @@ class Feed extends React.Component {
                     items={_this.state.posts}
                     index={index}
                     history={this.props.history}
-                    loadMore={this.fetchPostsNext.bind(this)}
                     openModal={this.openModal.bind(this)} 
-                    updateVoteInComponent={this.updateVoteInComponent.bind(this)} />
+                    updateVoteInComponent={this.updateVoteInComponent.bind(this)} 
+                    updateFlagInComponent={this.updateFlagInComponent.bind(this)}/>
                 );
             });
 
