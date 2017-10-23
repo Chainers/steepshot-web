@@ -232,6 +232,9 @@ class Home extends React.Component {
   }
 
   updateFlagInComponent(flag, index) {
+    if (flag && this.state.posts[index].vote) {
+      this.updateVoteInComponent(false, index);
+    }
     let newItems = this.state.items;
     newItems[index].flag = flag;
     this.setState({ 

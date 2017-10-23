@@ -157,6 +157,43 @@
     content: url(/static/images/flagTrue.svg);
   }
 
+  @-webkit-keyframes flagLoading
+  {
+    0%{
+      -webkit-transform:scale(1);
+      transform:scale(1)
+    }
+    50%{
+      -webkit-transform:scale(.7);
+      transform:scale(.7)
+    }
+    100%{
+      -webkit-transform:scale(1);
+      transform:scale(1)
+    }
+  }
+  @keyframes flagLoading
+  {
+    0%{
+      -webkit-transform:scale(1);
+      transform:scale(1)
+    }
+    50%{
+      -webkit-transform:scale(.7);
+      transform:scale(.7)
+    }
+    100%{
+      -webkit-transform:scale(1);
+      transform:scale(1)
+    }
+  }
+
+  .btn-flag.loading::before{
+    display:block;
+    -webkit-animation:flagLoading 2s infinite linear;
+    animation:flagLoading 2s infinite linear;
+  }
+
   .wrap-btn {
     padding-left: 14px;
   }

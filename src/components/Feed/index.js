@@ -87,6 +87,9 @@ class Feed extends React.Component {
     }
 
     updateFlagInComponent(flag, index) {
+        if (flag && this.state.posts[index].vote) {
+            this.updateVoteInComponent(false, index);
+        }
         let newItems = this.state.posts;
         newItems[index].flag = flag;
         this.setState({ 

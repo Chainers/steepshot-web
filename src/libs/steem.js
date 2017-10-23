@@ -3,6 +3,7 @@ import constants from '../common/constants';
 import Promise from 'bluebird';
 import { getStore } from '../store/configureStore';
 import { preparePost } from '../actions/steemPayout';
+import { setFlag } from '../actions/setFlag';
 import _ from 'underscore';
 
 const getUserName = () => {
@@ -71,12 +72,31 @@ class Steem {
     vote(wif, username, author, url, isUpVote) {
         steem.api.getContentAsync(author, url)
           .then((result) => {
-            steem.broadcast.vote(wif, username, result.author, result.permlink, isUpVote ? 10000 : -1000, () => { return; });
+            steem.broadcast.vote(wif, username, result.author, result.permlink, isUpVote ? 10000 : 0, () => { return; });
           });
     }
 
-    flag(wif, username, author, url, isUpVote) {
+    flag(wif, username, author, url, flagStatus, callback) {
+        const data = JSON.stringify({
+            username : username,
+            error : ''
+        });
         
+        const callbackBc = (err, success) => {
+            if(err) {
+                callback(err, null);
+                console.log(err);
+            } else 
+            if (success) {
+                setFlag(url, data).then((response) => { console.log(response) });
+                callback(null, success);
+                console.log(success)
+            }
+        };
+
+        steem.api.getContentAsync(author, url).then((response) => {
+            steem.broadcast.vote(wif, username, response.author, response.permlink, flagStatus ? -10000 : 0, callbackBc);
+        });
     }
 
     upVote() {

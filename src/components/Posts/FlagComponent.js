@@ -8,6 +8,8 @@ import {
 import PropTypes from 'prop-types';
 import Steem from '../../libs/steem';
 
+import { getStore } from '../../store/configureStore';
+
 class FlagComponent extends React.Component {
   constructor(props) {
     super(props);
@@ -15,7 +17,8 @@ class FlagComponent extends React.Component {
     this.state = {
       index: this.props.index,
       item: this.props.item,
-      flag: this.props.item.flag
+      flag: this.props.item.flag,
+      isFlagLoading: false
     }
   }
 
@@ -23,31 +26,73 @@ class FlagComponent extends React.Component {
     this.setState({
       index: this.props.index,
       item: this.props.item,
-      vote: this.props.item.vote
+      flag: this.props.item.flag
     });
   }
 
   updateFlag() {
+
+    if (!getStore().getState().votes.voteCanBePushed)  {
+      return false;
+    }
+
+    this.props.dispatch({ type : 'SWITCH_MODE_FOR_QUEUE', voteCanBePushed : false });
+
     if (!(this.props.username || this.props.postingKey)) {
       return;
     }
     const newFlagState = !this.state.flag;
     const urlObject = this.state.item.url.split('/');
 
-    this.props.updateFlagInComponent(newFlagState, this.state.index);
     this.setState({ 
-      flag: newFlagState
-    });
+      flag : newFlagState,
+      isFlagLoading : true
+    }, () => {
 
-    Steem.flag(this.props.postingKey, this.props.username, this.state.item.author, urlObject[urlObject.length-1], newFlagState);
+      const callback = (err, success) => {
+        this.setState({
+          isFlagLoading : false
+        })
+        this.props.dispatch({ type : 'SWITCH_MODE_FOR_QUEUE', voteCanBePushed : true });
+        if (err) {
+          this.setState({ 
+            flag: !newFlagState
+          }, () => {
+              let text = 'Something went wrong when you clicked the flag, please, try again later';
+              if (err.payload.error.data.code == 10) {
+                text = 'Sorry, you had used the maximum number of vote changes on this post';
+              }
+              jqApp.pushMessage.open(text);
+            }
+          ); 
+        } else 
+        if (success) {
+            let text = 'Post was successfully flagged';
+            if (!newFlagState) text = 'Flag was successfully removed';
+            jqApp.pushMessage.open(text);
+            this.props.updateFlagInComponent(newFlagState, this.state.index)
+        }
+      }
+
+      Steem.flag(this.props.postingKey, 
+                this.props.username, 
+                this.state.item.author, 
+                urlObject[urlObject.length-1], 
+                newFlagState,
+                callback
+                );
+    });
   }
 
   render() {
-    let component = <button type="button" className="btn-flag"></button>;
-
+    let buttonClasses = "btn-flag";
     if (this.state.flag) {
-      component = <button type="button" className="btn-flag marked"></button>;
+      buttonClasses = buttonClasses + " marked";
     }
+    if (this.state.isFlagLoading) {
+      buttonClasses = buttonClasses + " loading";
+    }
+    let component = <button type="button" className={buttonClasses}></button>;
     
     return (
         <div className="wrap-btn" onClick={(event) => this.updateFlag.call(this, event)}>
