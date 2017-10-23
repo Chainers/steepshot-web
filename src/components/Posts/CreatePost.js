@@ -280,7 +280,7 @@ class CreatePost extends React.Component {
             $imagePreview = (<div className="upload-field empty">
                 <div className="uf-preview">
                     <div className="uf-icon"></div>
-                    <div className="uf-text">Click to download a picture</div>
+                    <div className="uf-text">Click to upload a picture</div>
                 </div>
                 <input id="upload-file" className="file-input" onChange={(e)=>this._handleImageChange(e)} type="file" />
             </div>);

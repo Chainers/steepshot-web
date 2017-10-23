@@ -5,11 +5,8 @@ import RequestService from '../services/requestService';
 ///     1) GET https://steepshot.org/api/v1/user/joseph.kalu/info HTTP/1.1
 /// </summary>
 
-export function getUserProfile(userName, currentUser) {
-  const options = {
-    username: currentUser
-  }
-  const url = RequestService.handleRequestUserInfo(`user/${userName}/info`, options);
+export function getUserProfile(userName) {
+  const url = RequestService.handlev1_1RequestUserInfo(`user/${userName}/info`);
 
   return fetch(url, {
     method: 'GET'
@@ -26,12 +23,11 @@ export function getUserProfile(userName, currentUser) {
   });
 }
 
-export function getFollowers(userName, currentUser, offset) {
+export function getFollowers(userName, offset) {
   const options = {
-    offset: offset,
-    username: currentUser
+    offset: offset
   }
-  const url = RequestService.handleBaseRequestPosts(`user/${userName}/followers`, options);
+  const url = RequestService.handlev1_1BaseRequestPosts(`user/${userName}/followers`, options);
 
   return fetch(url, {
     method: 'GET'
@@ -49,12 +45,11 @@ export function getFollowers(userName, currentUser, offset) {
   
 }
 
-export function getFollowing(userName, currentUser, offset) {
+export function getFollowing(userName, offset) {
   const options = {
-    offset: offset,
-    username: currentUser
+    offset: offset
   }
-  const url = RequestService.handleBaseRequestPosts(`user/${userName}/following`, options);
+  const url = RequestService.handlev1_1BaseRequestPosts(`user/${userName}/following`, options);
 
   return fetch(url, {
     method: 'GET'

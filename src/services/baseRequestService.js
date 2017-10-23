@@ -2,7 +2,8 @@
 import constants from '../common/constants';
 import { getStore } from '../store/configureStore';
 
-const baseUrl = constants.URLS.baseUrl;
+const basev1_1Url = constants.URLS.baseUrl_v1_1;
+const basev1Url = constants.URLS.baseUrl_v1;
 const baseLimit = constants.POSTS_SETTINGS.defaultLimit;
 
 class BaseRequestService {
@@ -37,6 +38,15 @@ class BaseRequestService {
         };
     }
 
+    getAuthUser() {
+        const user = JSON.parse(localStorage.getItem("user"));
+        if (user == undefined) return {};
+
+        return {
+            username: user
+        }
+    }
+
     convertIfBool(option) {
         if (option == true) {
             return "1";
@@ -59,16 +69,20 @@ class BaseRequestService {
         return '?' + optionsArray.join('&');
     }
 
-    getUrl() {
+    getv1Url() {
         if (getStore().getState().auth.user){
-            return baseUrl + '/' + getStore().getState().auth.user
+            return basev1Url + '/' + getStore().getState().auth.user
         }
         
         return baseUrl;
     }
 
-    getBaseUrl() {
-        return baseUrl;
+    getBasev1Url() {
+        return basev1Url;
+    }
+
+    getBasev1_1Url() {
+        return basev1_1Url;
     }
 
     handleBaseUrl(request) {

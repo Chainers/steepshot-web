@@ -18,8 +18,7 @@ class UserProfile extends React.Component {
       authorName: this.props.username,
       profile: null,
       localize: LocalizedStrings.getInstance(),
-      showFollow: this.props.showFollow != undefined ? this.props.showFollow  : true,
-      user: this.props.user || null
+      showFollow: this.props.showFollow != undefined ? this.props.showFollow  : true
     };
   }
 
@@ -33,7 +32,7 @@ class UserProfile extends React.Component {
 
     userName = userName || this.props.username;
 
-    getUserProfile(userName, this.state.user).then((result) => {
+    getUserProfile(userName).then((result) => {
       const profile = result;
 
       if (!this.props.username || profile.current_username === this.props.username) {
@@ -134,13 +133,13 @@ class UserProfile extends React.Component {
                 </ul>
                 <div className="tab-content">
                   <div id="tab-profile-1" role="tabpanel" className="tab-pane fade in active">
-                    <ItemsComponent username={this.state.authorName} currentUser={this.state.user}/>
+                    <ItemsComponent username={this.state.authorName}/>
                   </div>
                   <div id="tab-profile-2" role="tabpanel" className="tab-pane fade">
-                    <FollowingComponent username={this.state.authorName} currentUser={this.state.user}/>
+                    <FollowingComponent username={this.state.authorName}/>
                   </div>
                   <div id="tab-profile-3" role="tabpanel" className="tab-pane fade">
-                    <FollowersComponent username={this.state.authorName} currentUser={this.state.user}/>
+                    <FollowersComponent username={this.state.authorName}/>
                   </div>
                 </div>
               </div>
@@ -154,8 +153,7 @@ class UserProfile extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    localization: state.localization,
-    user: state.auth.user
+    localization: state.localization
   };
 };
 

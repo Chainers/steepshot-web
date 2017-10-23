@@ -12,20 +12,25 @@ class RequestService extends BaseRequestService{
         return this.convertOptionsToRequestString(newOptions);
     }
 
-    handleBaseRequestPosts(url, options) {
-        return this.getBaseUrl() + '/' + url + this.optionsConverter(this.getDefaultPostsOptions(options), this.getDefaultSettingsOptions(), options);
+    //region Deprecated
+    handlev1BaseRequestPosts(url, options) {
+        return this.getBasev1Url() + '/' + url + 
+        this.optionsConverter(this.getDefaultPostsOptions(options), this.getDefaultSettingsOptions(), options);
     }
-    
-    handleRequestPosts(url, options) {
-        return this.getUrl() + '/' + url + this.optionsConverter(this.getDefaultPostsOptions(options), this.getDefaultSettingsOptions(), options);
+    //endregion
+
+    handlev1_1BaseRequestPosts(url, options) {
+        return this.getBasev1_1Url() + '/' + url + 
+        this.optionsConverter(this.getDefaultPostsOptions(options), this.getDefaultSettingsOptions(), this.getAuthUser(), options);
     }
 
-    handleBaseRequestPost(url) {
-        return this.getBaseUrl() + '/' + url;
+    handlev1_1BaseRequestPost(url) {
+        return this.getBasev1_1Url() + '/' + url;
     }
   
-    handleRequestUserInfo(url, options) {
-        return this.getBaseUrl() + '/' + url + this.optionsConverter(this.getDefaultSettingsOptions(), options);
+    handlev1_1RequestUserInfo(url, options) {
+        return this.getBasev1_1Url() + '/' + url + 
+        this.optionsConverter(this.getDefaultSettingsOptions(), this.getAuthUser(), options);
     }
 }
 

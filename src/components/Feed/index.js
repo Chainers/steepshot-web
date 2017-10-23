@@ -24,7 +24,8 @@ class Feed extends React.Component {
             posts: [],
             hasMore: true,
             offset: null,
-            loading: true
+            loading: true,
+            currentUser: this.props.user || null
         };
 
         this.store = getStore();
