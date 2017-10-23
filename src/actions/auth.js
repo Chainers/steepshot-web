@@ -7,7 +7,7 @@ import steem from 'steem';
 import { getStore } from '../store/configureStore';
 import Constants from '../common/constants';
 
-const baseUrl = constants.URLS.baseUrl;
+const baseUrl = constants.URLS.baseUrl_v1;
 
 function getUrl() {
   if (getStore().getState().auth.user){

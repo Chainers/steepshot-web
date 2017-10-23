@@ -16,7 +16,7 @@ class ItemsComponent extends React.Component {
 
     this.state = {
       authorName: this.props.username,
-      profile: null,
+      currentUser: this.props.currentUser,
       loading: true,
       hasMore: true,
       localize: LocalizedStrings.getInstance(),

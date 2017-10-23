@@ -19,7 +19,8 @@ class FollowersComponent extends React.Component {
       hasMore: true,
       localize: LocalizedStrings.getInstance(),
       showFollow: this.props.showFollow != undefined ? this.props.showFollow  : true,
-      items: []
+      items: [],
+      currentUser: this.props.currentUser
     };
   }
 

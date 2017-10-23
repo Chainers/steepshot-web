@@ -1,3 +1,4 @@
+'use strict';
 import gulp from 'gulp';
 import debug from 'gulp-debug';
 import autoprefixer from 'autoprefixer';

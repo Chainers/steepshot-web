@@ -18,7 +18,8 @@ class FollowingComponent extends React.Component {
       loading: true,
       hasMore: true,
       localize: LocalizedStrings.getInstance(),
-      items: []
+      items: [],
+      currentUser: this.props.currentUser
     };
   }
 
