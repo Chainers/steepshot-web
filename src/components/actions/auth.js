@@ -74,7 +74,6 @@ export function logout() {
   localStorage.removeItem('user');
   localStorage.removeItem('avatar');
   localStorage.removeItem('settings');
-  localStorage.removeItem('avatar');
   browserHistory.push('/');
   return {
     type: 'LOGOUT_SUCCESS'
