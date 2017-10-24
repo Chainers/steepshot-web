@@ -131,12 +131,24 @@ class Header extends React.Component {
               </div>
               <div className="section user">
                 <div className="wrap-user">
-                  <Link to={authorLink} className="user-link clearfix">
-                    <div className="photo">
-                      <img src="/static/images/person.png" alt="user" />
-                    </div>
-                    <div className="name">{this.props.user}</div>
-                  </Link>
+                  {
+                    this.props.user 
+                    ?
+                      <Link to={authorLink} className="user-link clearfix">
+                        <div className="photo">
+                          {
+                            this.props.avatar
+                            ?
+                              <img src={this.props.avatar} alt="user" />
+                            :
+                              <img src="/static/images/person.png" alt="user" />
+                          }
+                        </div>
+                        <div className="name">{this.props.user}</div>
+                      </Link>
+                    :
+                      null
+                  }
                 </div>
               </div>
               <div className="section logo">
@@ -167,6 +179,7 @@ const mapStateToProps = (state) => {
   return {
     postingKey: state.auth.postingKey,
     user: state.auth.user,
+    avatar: state.auth.avatar,
     localization: state.localization,
     search: state.search
   };
