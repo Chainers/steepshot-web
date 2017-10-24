@@ -17,12 +17,27 @@ class MobileNavigationComponent extends React.Component {
     }
 
     componentDidMount() {
-        setTimeout(() => { jqApp.mobileMenu.init() }, 0);
+        setTimeout(() => { 
+            jqApp.mobileMenu.init();
+            if (this.refs[this.props.location.pathname]) $(this.refs[this.props.location.pathname]).addClass('active')
+        }, 0);
+    }
+
+    shouldComponentUpdate(nextProps, nextState) {
+        if (this.props.location.pathname == nextProps.location.pathname) return false;    
+        if (this.refs[this.props.location.pathname]) $(this.refs[this.props.location.pathname]).removeClass('active');
+        if (this.refs[nextProps.location.pathname]) $(this.refs[nextProps.location.pathname]).addClass('active');
+        return true;
     }
 
     handleLogout(event) {
         event.preventDefault();
+        jqApp.mobileMenu._menuHide();
         logout(this.props.history, this.props.dispatch);
+    }
+
+    handleClick(event) {
+        jqApp.mobileMenu._menuHide();
     }
 
     render() {
@@ -37,23 +52,35 @@ class MobileNavigationComponent extends React.Component {
                             { isUserAuth 
                             ?
                                 <ul className="list_level_1 list-reset js--nav-list">
-                                    <li className="item_1" ref={"refer_" + this.props.urls.userProfileBase + this.props.user} >
-                                        <Link to={this.props.urls.userProfileBase + this.props.user}>
+                                    <li className="item_1" ref={this.props.urls.userProfileBase + this.props.user} >
+                                        <Link 
+                                            to={this.props.urls.userProfileBase + this.props.user}
+                                            onClick={this.handleClick.bind(this)}
+                                        >
                                             {this.props.labels.profileLabel}
                                         </Link>
                                     </li>
-                                    <li className="item_1" ref={"refer_" + this.props.urls.feed} > 
-                                        <Link to={this.props.urls.feed}>
+                                    <li className="item_1" ref={this.props.urls.feed} > 
+                                        <Link 
+                                            to={this.props.urls.feed}
+                                            onClick={this.handleClick.bind(this)}
+                                        >
                                             {this.props.labels.feedLabel}
                                         </Link>
                                     </li>
-                                    <li className="item_1" ref={"refer_" + this.props.urls.browse} >
-                                        <Link to={this.props.urls.browse}>
+                                    <li className="item_1" ref={this.props.urls.browse} >
+                                        <Link 
+                                            to={this.props.urls.browse}
+                                            onClick={this.handleClick.bind(this)}
+                                        >
                                             {this.props.labels.browseLabel}
                                         </Link>
                                     </li>
-                                    <li className="item_1" ref={"refer_" + this.props.urls.feed}>
-                                        <Link to={this.props.urls.settings}>
+                                    <li className="item_1" ref={this.props.urls.settings}>
+                                        <Link 
+                                            to={this.props.urls.settings}
+                                            onClick={this.handleClick.bind(this)}
+                                        >
                                             {this.props.labels.settingsLabel}
                                         </Link>
                                     </li>

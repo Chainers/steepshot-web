@@ -29,8 +29,17 @@ class Header extends React.Component {
     };
   }
 
-  componendDidMount() {
+  componentDidMount() {
     this.setState({isSearchOpen: !!this.props.search.value});
+    if (this.refs[this.props.location.pathname]) $(this.refs[this.props.location.pathname]).addClass('active')
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    if (this.props.location.pathname == nextProps.location.pathname) return false;    
+    if (this.refs[this.props.location.pathname]) $(this.refs[this.props.location.pathname]).removeClass('active');
+    if (this.refs[nextProps.location.pathname]) $(this.refs[nextProps.location.pathname]).addClass('active');
+  
+    return true;
   }
 
   handleLogout(event) {
@@ -95,13 +104,13 @@ class Header extends React.Component {
         <div className="wrap-menu">
         {
           (isUserAuth) ? (
-          <div className="item active">
-            <Link to="/feed">Feed</Link>
+          <div className="item" ref="/feed">
+            <Link to="/feed" >Feed</Link>
           </div>
           ) : null 
         }
-          <div className="item">
-            <Link to="/browse">Browse</Link>
+          <div className="item" ref="/browse">
+            <Link to="/browse" >Browse</Link>
           </div>
         </div>
       </div>
