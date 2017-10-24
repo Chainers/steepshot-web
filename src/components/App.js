@@ -1,6 +1,7 @@
 import React from 'react';
 import Header from './Header';
 import MobileNavigationComponent from './MobileNavigationComponent';
+import FooterComponent from './FooterComponent';
 
 const App = ({ children }) => (
   <div className="g-wrap">
@@ -16,6 +17,7 @@ const App = ({ children }) => (
     </div>
     <MobileNavigationComponent />
     <div className="pm"></div>
+    <FooterComponent />
   </div>
 );
 
