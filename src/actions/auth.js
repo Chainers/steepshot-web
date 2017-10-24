@@ -33,10 +33,16 @@ export function login(username, postingKey, history, dispatch) {
         [Constants.SETTINGS.show_low_rated]: false,
         [Constants.SETTINGS.show_nsfw]: false
       }));
+      let avatar = "/static/images/person.png";
+      if (result[0]) {
+         avatar = JSON.parse(result[0].json_metadata).profile.profile_image;
+      }
+      localStorage.setItem('avatar', JSON.stringify(avatar));
       dispatch({
         type: 'LOGIN_SUCCESS',
         postingKey: postingKey,
-        user: username
+        user: username,
+        avatar: avatar
       });
       fakeAuth.authenticate(() => history.push('/feed'));
     }
