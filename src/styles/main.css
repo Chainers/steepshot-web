@@ -34,6 +34,16 @@
     -webkit-box-shadow: 0 0 0px 1000px #fafafa inset;
   }
 
+  .blur-blocker {
+    transform: 1s;
+    -webkit-filter: blur(1.05px) grayscale(50%);
+    filter: blur(1.05px) grayscale(50%);
+  }
+
+  .position--relative {
+    position: relative;
+  }
+
   .loader-blocker{
     position: absolute;
     top: 0;

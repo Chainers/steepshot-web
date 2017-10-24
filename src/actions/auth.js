@@ -17,39 +17,68 @@ function getUrl() {
   return baseUrl;
 }
 
-export function login(username, postingKey, history, dispatch) {
+export function login(username, postingKey, history, dispatch, callback) {
   const account = null;
-  steem.api.getAccounts([username], function(err, result) {
-    console.log(result);
-    if (err || !steem.auth.isWif(postingKey)) {
+  steem.api.getAccounts([username], function(err, result) {  
+    if (err) {
+      callback('Something went wrong, please, try again later');
+      return false;
+    }
+    if (result.length == 0) {
+      callback("Such a user doesn't exist");
+      return false;
+    }
+    let pubWif = result[0].posting.key_auths[0][0];
+    let isValid = false;
+    try { 
+      isValid = steem.auth.wifIsValid(postingKey, pubWif); 
+    }
+    catch(e) { 
+      console.log('login failure: ', e);
+    }
+    if (!isValid){ 
+      callback('Invalid user name or posting key');
       return {
         type: 'LOGIN_FAILURE',
         messages: "Not valid user name or posting key"
       };
-    } else if (result && steem.auth.isWif(postingKey)){
+    } else {
+      let welcomeName = username;
+      let metadata;
       localStorage.setItem('user', JSON.stringify(username));
       localStorage.setItem('postingKey', JSON.stringify(postingKey));
       localStorage.setItem('settings', JSON.stringify({ 
         [Constants.SETTINGS.show_low_rated]: false,
         [Constants.SETTINGS.show_nsfw]: false
       }));
-      let avatar = "/static/images/person.png";
+      let avatar = null;
       if (result[0]) 
       if (result[0].json_metadata != "" && typeof result[0].json_metadata != undefined) {
-         let metadata = JSON.parse(result[0].json_metadata);
+         metadata = JSON.parse(result[0].json_metadata);
          if (metadata.profile)
          if (metadata.profile.profile_image != "" && typeof metadata.profile.profile_image != undefined) {
            avatar = metadata.profile.profile_image;
          }
       }
       localStorage.setItem('avatar', JSON.stringify(avatar));
+
+      if (metadata)
+      if (metadata.profile)
+      if (metadata.profile.name) {
+        welcomeName = metadata.profile.name;
+      }
+
+      callback('Welcome to Steepshot, ' +  welcomeName + ' !');
+
       dispatch({
         type: 'LOGIN_SUCCESS',
         postingKey: postingKey,
         user: username,
         avatar: avatar
       });
-      fakeAuth.authenticate(() => history.push('/feed'));
+      setTimeout(function() {
+        fakeAuth.authenticate(() => history.push('/feed'));
+      }, 1);
     }
   });
 }
@@ -58,6 +87,7 @@ export function logout(history, dispatch) {
   localStorage.removeItem('user');
   localStorage.removeItem('postingKey');
   localStorage.removeItem('settings');
+  localStorage.removeItem('avatar');
   dispatch({
     type: 'LOGOUT_SUCCESS'
   });
