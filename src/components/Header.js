@@ -141,7 +141,7 @@ class Header extends React.Component {
               </div>
               <div className="section logo">
                 <a href="/" className="wrap-logo">
-                  <img src="/static/images/logo.svg" alt="logo" />
+                  <img src="/static/images/steepshotLogo@2x.svg" alt="logo" />
                 </a>
               </div>
               <div className="section search">
