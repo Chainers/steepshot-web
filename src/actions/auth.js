@@ -33,7 +33,7 @@ export function login(username, postingKey, history, dispatch) {
         [Constants.SETTINGS.show_low_rated]: false,
         [Constants.SETTINGS.show_nsfw]: false
       }));
-      let avatar = "/static/images/person.png";
+      let avatar = null;
       if (result[0]) 
       if (result[0].json_metadata != "" && typeof result[0].json_metadata != undefined) {
          let metadata = JSON.parse(result[0].json_metadata);
@@ -58,6 +58,7 @@ export function logout(history, dispatch) {
   localStorage.removeItem('user');
   localStorage.removeItem('postingKey');
   localStorage.removeItem('settings');
+  localStorage.removeItem('avatar');
   dispatch({
     type: 'LOGOUT_SUCCESS'
   });
