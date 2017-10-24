@@ -28,6 +28,10 @@ class Login extends React.Component {
     };
   }
 
+  componentDidMount() {
+    setTimeout(() => { jqApp.forms.init() }, 0);
+  }
+
   handleChange(event) {
     this.setState({ 
       [event.target.name]: event.target.value 
@@ -72,27 +76,27 @@ class Login extends React.Component {
             <div className="input-container col-xs-12">
               <input type="text"
                 name="userName"
-                id="userName"
-                placeholder="userName"
-                className="form-control"
+                id="formNAME"
+                className="form-control autofil--gray"
                 value={this.state.userName}
                 onChange={this.handleChange.bind(this)}
+                autoComplete={false}
               />
-              <label for="formNAME" className="name">Name</label>
+              <label htmlFor="formNAME" className="name">Name</label>
             </div>
           </div>
-          <div className="form-group">
+          <div className="form-group form-horizontal">
             <div className="input-container col-xs-12">
-              <input type="password"
+              <input 
+                type="password"
                 name="postingKey"
-                id="postingKey"
-                placeholder="Posting key"
-                autoFocus
-                className="form-control"
+                id="formPOSTKEY"
+                className="form-control autofil--gray"
                 value={this.state.postingKey}
                 onChange={this.handleChange.bind(this)}
+                autoComplete={false}
               />
-              <label for="formPOSTKEY" className="name">Posting Key</label>
+              <label htmlFor="formPOSTKEY" className="name">Posting Key</label>
             </div>
           </div>
           <div className="form-group">

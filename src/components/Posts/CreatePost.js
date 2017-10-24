@@ -309,7 +309,7 @@ class CreatePost extends React.Component {
                                     onChange={this.handleChange.bind(this)}
                                     required=""
                                     autoComplete="off"
-                                    className="form-control"
+                                    className="form-control autofil--gray"
                                 />
                                 <label htmlFor="title" className="name">Title</label>
                                 <div className="help-block">
@@ -331,7 +331,7 @@ class CreatePost extends React.Component {
                                     onChange={this.handleChange.bind(this)}
                                     required=""
                                     autoComplete="off"
-                                    className="form-control"
+                                    className="form-control autofil--gray"
                                 />
                                 <label htmlFor="tag" className="name">Hashtag</label>
                                 <div className="tags-list clearfix">

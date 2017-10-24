@@ -28,6 +28,11 @@
     align-items: center;
     justify-content: center;
   }
+  input.autofil--gray:-webkit-autofill:hover,
+  input.autofil--gray:-webkit-autofill:focus,
+  input.autofil--gray:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0px 1000px #fafafa inset;
+  }
 
   .loader-blocker{
     position: absolute;
