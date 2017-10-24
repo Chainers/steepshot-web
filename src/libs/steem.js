@@ -166,7 +166,7 @@ class Steem {
                     console.log(err);
                 } else 
                 if (result) {
-                    console.log(resut);
+                    console.log(result);
                 }
             }
         );
@@ -193,7 +193,7 @@ class Steem {
                     console.log(err);
                 } else 
                 if (result) {
-                    console.log(resut);
+                    console.log(result);
                 }
             }
         );
