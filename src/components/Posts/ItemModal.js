@@ -13,6 +13,7 @@ import constants from '../../common/constants';
 import VouteComponent from './VouteComponent';
 import AddComment from './AddComment';
 import FlagComponent from './FlagComponent';
+import LoadingSpinner from '../LoadingSpinner';
 
 class ItemModal extends React.Component {
     constructor(props) {
@@ -26,7 +27,8 @@ class ItemModal extends React.Component {
             disableNext: false,
             disablePrev: false,
             redirectToReferrer: false,
-            commentValue: ''
+            commentValue: '',
+            needsCommentFormLoader : false
         };
 
         this.initKeypress();
@@ -53,16 +55,48 @@ class ItemModal extends React.Component {
 
     sendComment(e) {
       e.preventDefault();
+
       if (this.state.commentValue == "") return false;
-      Steem.comment(
-        this.props.postingKey,             
-        this.state.item.author, 
-        this.state.item.url, 
-        this.props.username, 
-        this.state.commentValue,
-        this.state.item.tags,
-        this.props.dispatch.bind(this)
-     );
+
+      const urlObject = this.state.item.url.split('/');
+
+      const callback = (err, success) => {
+        this.setState({
+          needsCommentFormLoader : false
+        });
+        if (err) {
+          // this.setState({ 
+          //   vote: !newVoteState
+          // }, () => {
+          //     let text = 'Something went wrong when you voted, please, try again later';
+          //     if (err.payload.error.data.code == 10) {
+          //       text = 'Sorry, you had used the maximum number of vote changes on this post';
+          //     }
+          //     jqApp.pushMessage.open(text);
+          //   }
+          // ); 
+        } else 
+        if (success) {
+            // let text = 'Post was successfully liked';
+            // if (!newVoteState) text = 'Post was successfully disliked';
+            // jqApp.pushMessage.open(text);
+            // this.props.updateVoteInComponent(newVoteState, this.state.index)
+        }
+      }
+
+      this.setState({
+        needsCommentFormLoader : true
+      }, () => {
+        Steem.comment(
+          this.props.postingKey,             
+          this.state.item.author, 
+          urlObject[urlObject.length - 1], 
+          this.props.username, 
+          this.state.commentValue,
+          this.state.item.tags,
+          callback
+        );
+      });
     }
 
     initKeypress() {
@@ -230,6 +264,13 @@ class ItemModal extends React.Component {
                     </div>
                   </div>
                 </form>
+                {
+                  this.state.needsCommentFormLoader
+                  ?
+                    <LoadingSpinner />
+                  :
+                    null
+                }
               </div>
               <div className="list-scroll">
                 <div className="post-description">

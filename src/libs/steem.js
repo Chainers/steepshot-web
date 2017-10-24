@@ -4,6 +4,7 @@ import Promise from 'bluebird';
 import { getStore } from '../store/configureStore';
 import { preparePost } from '../actions/steemPayout';
 import { setFlag } from '../actions/setFlag';
+import { setComment } from '../actions/setComment';
 import { voute } from '../actions/raitingVoute';
 
 import _ from 'underscore';
@@ -32,17 +33,17 @@ class Steem {
             { posting: wif }
         );
 
-        const callback = (err, result) => {
+        const callbackBc = (err, success) => {
             if(err) {
+                callback(err, null);
                 console.log(err);
-                return resolve(null);
-            } else {
-                return resolve({
-                    type: 'ADD_COMMENT_SUCCESS',
-                    comment: commentObject
-                });
+            } else 
+            if (success) {
+                setComment(parentPermlink, data).then((response) => { console.log(response) });
+                callback(null, success);
+                console.log(success)
             }
-        }
+        };
 
         callback(null);
     }
