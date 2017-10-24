@@ -40,7 +40,8 @@ class CreatePost extends React.Component {
             imagePreviewUrl: '',
             title: '',
             tagList: [],
-            tag: ""
+            tag: "",
+            description: ''
         });
     }
 
