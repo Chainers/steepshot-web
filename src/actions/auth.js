@@ -34,8 +34,13 @@ export function login(username, postingKey, history, dispatch) {
         [Constants.SETTINGS.show_nsfw]: false
       }));
       let avatar = "/static/images/person.png";
-      if (result[0]) {
-         avatar = JSON.parse(result[0].json_metadata).profile.profile_image;
+      if (result[0]) 
+      if (result[0].json_metadata != "" && typeof result[0].json_metadata != undefined) {
+         let metadata = JSON.parse(result[0].json_metadata);
+         if (metadata.profile)
+         if (metadata.profile.profile_image != "" && typeof metadata.profile.profile_image != undefined) {
+           avatar = metadata.profile.profile_image;
+         }
       }
       localStorage.setItem('avatar', JSON.stringify(avatar));
       dispatch({
