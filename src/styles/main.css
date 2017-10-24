@@ -1,5 +1,31 @@
-.main-container-chuldren {
+  .main-container-chuldren {
     background-color: #F8F8F8;
+  }
+
+  html {
+    width: 100vw;
+    overflow-x: hidden;
+    margin-right: 0;
+  }
+
+  .item.nav-item a:hover {
+    border-bottom: none!important;
+  }
+
+  .user-information .count {
+    font-size: 22px!important;
+  }
+
+  .btn:not(.btn-index):hover{
+    border-color: transparent!important;
+  }
+
+  .btn:not(.btn-index):active{
+    border-color: transparent!important;
+  }
+
+  .btn:not(.btn-index):focus{
+    border-color: transparent!important;
   }
   
   #upload-file {
