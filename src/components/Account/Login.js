@@ -32,7 +32,7 @@ class Login extends React.Component {
     };
   }
 
-  componentDidMount() {
+  componentDidUpdate() {
     setTimeout(() => { jqApp.forms.init() }, 0);
   }
 
@@ -132,12 +132,12 @@ class Login extends React.Component {
                     <div className="input-container col-xs-12">
                       <input type="text"
                         name="userName"
-                        id="userName"
-                        className="form-control"
+                        id="formNAME"
+                        className="form-control autofil--gray"
                         value={this.state.userName}
                         onChange={this.handleChange.bind(this)}
                       />
-                      <label for="formNAME" className="name">Name</label>
+                      <label htmlFor="formNAME" className="name">Name</label>
                       <div className="help-block">
                         {
                           this.state.userNameError
@@ -153,15 +153,16 @@ class Login extends React.Component {
                 <div className={this.state.postingKeyError ? "has-error" : null}>
                   <div className="form-group">
                     <div className="input-container col-xs-12">
-                      <input type="password"
+                      <input 
+                        type="password"
                         name="postingKey"
-                        id="postingKey"
-                        autoFocus
-                        className="form-control"
+                        id="formPOSTKEY"
+                        className="form-control autofil--gray"
                         value={this.state.postingKey}
                         onChange={this.handleChange.bind(this)}
+                        autoComplete="new-password"
                       />
-                      <label for="formPOSTKEY" className="name">Posting Key</label>
+                      <label htmlFor="formPOSTKEY" className="name">Posting Key</label>
                       <div className="help-block">
                         {
                           this.state.postingKeyError
