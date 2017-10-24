@@ -164,6 +164,9 @@ class Steem {
             (err, result) => {
                 if (err) {
                     console.log(err);
+                } else 
+                if (result) {
+                    console.log(resut);
                 }
             }
         );
@@ -180,7 +183,7 @@ class Steem {
         );
 
         steem.broadcast.customJson(
-            postingWif,
+            wif,
             [], // Required_auths
             [follower], // Required Posting Auths
             'follow', // Id
@@ -188,6 +191,9 @@ class Steem {
             (err, result) => {
                 if (err) {
                     console.log(err);
+                } else 
+                if (result) {
+                    console.log(resut);
                 }
             }
         );

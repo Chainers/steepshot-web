@@ -35,7 +35,7 @@ class FollowComponent extends React.Component {
   }
 
   unfollowToUser() {
-    Steem.followUser(this.props.postingKey, this.props.username, this.state.item.username);
+    Steem.unfollowUser(this.props.postingKey, this.props.username, this.state.item.username);
   }
 
   componentWillReceiveProps(nextProps) {
