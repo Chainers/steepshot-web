@@ -15,6 +15,7 @@ class UserProfile extends React.Component {
     super(props);
 
     this.state = {
+      watcher: this.props.user,
       authorName: this.props.username,
       profile: null,
       localize: LocalizedStrings.getInstance(),
@@ -30,12 +31,12 @@ class UserProfile extends React.Component {
     let _this = this;
     let showFollow = true;
 
-    userName = userName || this.props.username;
+    userName = userName || this.state.authorName;
 
     getUserProfile(userName).then((result) => {
       const profile = result;
 
-      if (!this.props.username || profile.current_username === this.props.username) {
+      if (this.state.watcher == userName || this.state.watcher == undefined) {
         showFollow = false;
       }
 
@@ -153,7 +154,8 @@ class UserProfile extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    localization: state.localization
+    localization: state.localization,
+    user: state.auth.user
   };
 };
 

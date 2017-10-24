@@ -53,10 +53,10 @@ export function login(username, postingKey, history, dispatch, callback) {
       }));
       let avatar = null;
       if (result[0]) 
-      if (result[0].json_metadata != "" && typeof result[0].json_metadata != undefined) {
+      if (result[0].json_metadata != "" && result[0].json_metadata != undefined) {
          metadata = JSON.parse(result[0].json_metadata);
          if (metadata.profile)
-         if (metadata.profile.profile_image != "" && typeof metadata.profile.profile_image != undefined) {
+         if (metadata.profile.profile_image != "" && metadata.profile.profile_image != undefined) {
            avatar = metadata.profile.profile_image;
          }
       }
