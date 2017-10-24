@@ -209,6 +209,16 @@
     float: left;
   }
 
+  .nav-tabs {
+    border-bottom-color: #f4f4f6;
+  }
+
+  .nav-tabs:not(.tabs-reset)>li a.tab-head {
+    border-bottom-width: 1px;
+    margin-bottom: 1px;
+    padding: 13px 20px 13px;
+  }
+
 /* NEW */
 
 
