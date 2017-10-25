@@ -22,3 +22,24 @@ export function preparePost(message, transaction) {
     }
   });
 }
+
+export function prepareComment(message, transaction) {
+  let data = JSON.stringify({
+    'body' : message[1].body,
+    'username' : message[1].author
+  });
+  return fetch(`${baseUrl}/post/@${message[1].parent_author}/${message[1].parent_permlink}/comment/prepare`, {
+    method: 'POST',
+    body: data,
+    headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+    },
+  }).then(response => {
+    if (response.ok) {
+      return response.json().then((json) => {
+        return json;
+      });
+    }
+  });
+}

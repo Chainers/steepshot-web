@@ -56,6 +56,12 @@ class ItemModal extends React.Component {
     sendComment(e) {
       e.preventDefault();
 
+      if (!(this.props.username && this.props.postingKey)) {
+        let text = 'Only registered users can post a new comment.';
+        jqApp.pushMessage.open(text);
+        return false;
+      }
+
       if (this.state.commentValue == "") return false;
 
       const urlObject = this.state.item.url.split('/');
@@ -65,22 +71,30 @@ class ItemModal extends React.Component {
           needsCommentFormLoader : false
         });
         if (err) {
-          // this.setState({ 
-          //   vote: !newVoteState
-          // }, () => {
-          //     let text = 'Something went wrong when you voted, please, try again later';
-          //     if (err.payload.error.data.code == 10) {
-          //       text = 'Sorry, you had used the maximum number of vote changes on this post';
-          //     }
-          //     jqApp.pushMessage.open(text);
-          //   }
-          // ); 
+          let text = 'Something went wrong, please, try again later';
+          if (err.payload.error.data.code == 10) {
+            text = 'Sorry, you had used the maximum number of comments on this post';
+          }
+          jqApp.pushMessage.open(text);
         } else 
         if (success) {
-            // let text = 'Post was successfully liked';
-            // if (!newVoteState) text = 'Post was successfully disliked';
-            // jqApp.pushMessage.open(text);
-            // this.props.updateVoteInComponent(newVoteState, this.state.index)
+            this.setState({
+              newComment : {
+                net_votes : 0,
+                vote : false,
+                avatar : this.props.avatar,
+                author : this.props.username,
+                total_payout_value : 0,
+                body : this.state.commentValue,
+                created : Date.now()
+              },
+              commentValue : ''
+            }, () => {
+              let $target = $('.js--list-scroll');
+              $target.mCustomScrollbar('scrollTo', 'bottom');
+              let text = 'Comment was successfully added';
+              jqApp.pushMessage.open(text);
+            });
         }
       }
 
@@ -187,7 +201,6 @@ class ItemModal extends React.Component {
       let _this = this;
       let itemImage = this.state.image || constants.NO_IMAGE;
       let authorImage = this.state.avatar || constants.NO_AVATAR;
-      let comments = <Comments key="comments" item={this.state.item} comment={this.state.newComment}/>;
 
       let settings = {
         dots: false,
@@ -272,7 +285,7 @@ class ItemModal extends React.Component {
                     null
                 }
               </div>
-              <div className="list-scroll">
+              <div className="list-scroll js--list-scroll">
                 <div className="post-description">
                   <p>{this.state.item.title}</p>
                   <div className="post-tags clearfix">
@@ -287,7 +300,7 @@ class ItemModal extends React.Component {
                     }
                   </div>
                 </div>
-                {comments}
+                <Comments key="comments" item={this.state.item} newComment={this.state.newComment}/>
               </div>
             </div>
           </div>
@@ -305,7 +318,8 @@ const mapStateToProps = (state) => {
   return {
     localization: state.localization,
     username: state.auth.user,
-    postingKey: state.auth.postingKey
+    postingKey: state.auth.postingKey,
+    avatar: state.auth.avatar
   };
 };
 

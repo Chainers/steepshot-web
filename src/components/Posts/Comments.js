@@ -14,7 +14,6 @@ class Comments extends React.Component {
     super(props);
 
     this.state = {
-      comment: this.props.comment,
       comments: [],
       avatar: this.props.item.avatar,
       loading: true
@@ -26,12 +25,11 @@ class Comments extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (this.state.comment.comment != nextProps.comment.comment) {
-      this.state.comments.push(nextProps.comment.comment);
+    if (nextProps.newComment) {
+      this.state.comments.push(nextProps.newComment);
 
       this.setState({ 
         comments: this.state.comments,
-        comment: nextProps.comment
       });
     } else {
       this.setState({ 

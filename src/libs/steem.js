@@ -3,6 +3,7 @@ import constants from '../common/constants';
 import Promise from 'bluebird';
 import { getStore } from '../store/configureStore';
 import { preparePost } from '../actions/steemPayout';
+import { prepareComment } from '../actions/steemPayout';
 import { setFlag } from '../actions/setFlag';
 import { setComment } from '../actions/setComment';
 import { voute } from '../actions/raitingVoute';
@@ -14,7 +15,8 @@ const getUserName = () => {
 }
 
 class Steem {
-    comment(wif, parentAuthor, parentPermlink, author, body, tags, resolve) {
+
+    comment(wif, parentAuthor, parentPermlink, author, body, tags, callback) {
         const permlink = this._getPermLink();
         const commentObject = {
             parent_author: parentAuthor,
@@ -26,12 +28,6 @@ class Steem {
             json_metadata: JSON.stringify(this._createJsonMetadata(tags))
         };
         const commentOperation = [constants.OPERATIONS.COMMENT, commentObject];
-        const operations = [commentOperation, this._getCommentBenificiaries(commentObject.permlink)];
-
-        steem.broadcast.sendAsync(
-            { operations, extensions: [] },
-            { posting: wif }
-        );
 
         const callbackBc = (err, success) => {
             if(err) {
@@ -39,13 +35,46 @@ class Steem {
                 console.log(err);
             } else 
             if (success) {
-                setComment(parentPermlink, data).then((response) => { console.log(response) });
+                //setComment(parentPermlink, success).then((response) => { console.log('log comment',response) });
                 callback(null, success);
                 console.log(success)
             }
         };
+        this.handleBroadcastMessagesComment(commentOperation, [], wif, callbackBc);
+    }
 
-        callback(null);
+    handleBroadcastMessagesComment(message, extetion, postingKey, callback) {
+        let self = this;
+        this._preCompileTransactionComment(message, postingKey)
+        .then((result) => {
+            if(result) { 
+                let beneficiaries = self._getCommentBenificiaries(message[1].permlink);
+
+                const operations = [message, beneficiaries];
+                console.log(operations);
+
+                steem.broadcast.sendAsync(
+                    { operations, extensions: [] },
+                    { posting: postingKey }, callback
+                );
+            }
+        });
+    }
+
+    _preCompileTransactionComment(message, postingKey) {
+        return steem.broadcast._prepareTransaction({
+            extensions: [],
+            operations: [message],
+        })
+        .then((transaction) => {
+            return Promise.join(
+                transaction,
+                steem.auth.signTransaction(transaction, [postingKey])
+            )
+        })
+        .spread((transaction, signedTransaction) => {
+            return prepareComment(message, signedTransaction);
+        });
     }
 
     _getCommentBenificiaries(permlink) {
@@ -215,10 +244,11 @@ class Steem {
     }
 
     handleBroadcastMessages(message, extetion, postingKey, callback) {
+        let self = this;
         this._preCompileTransaction(message, postingKey)
         .then((result) => {
             if(result) { 
-                let beneficiaries = this._getBeneficiaries(message[1].permlink, result.meta);
+                let beneficiaries = self._getBeneficiaries(message[1].permlink, result.meta);
                 message[1].body = result.payload.body;
 
                 const operations = [message, beneficiaries];

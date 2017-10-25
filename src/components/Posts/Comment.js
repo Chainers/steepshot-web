@@ -26,7 +26,7 @@ class Comment extends React.Component {
     this.setState({ 
       item: newItem
     });
-}
+  }
 
   getFormatedDate() {
     const date = new Date(this.props.item.created);
