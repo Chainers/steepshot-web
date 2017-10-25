@@ -168,6 +168,7 @@ class ItemModal extends React.Component {
                     item={this.state.item}
                     index={this.state.index}
                     updateVoteInComponent={this.props.updateVoteInComponent}
+                    parent='post'
                   />
                   <FlagComponent 
                     key="flag"

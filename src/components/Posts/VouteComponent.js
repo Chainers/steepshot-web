@@ -10,6 +10,7 @@ import {
 } from 'react-redux';
 import PropTypes from 'prop-types';
 import Steem from '../../libs/steem';
+import utils from '../../utils/utils';
 
 class VouteComponent extends React.Component {
   constructor(props) {
@@ -18,7 +19,8 @@ class VouteComponent extends React.Component {
     this.state = {
       index: this.props.index,
       item: this.props.item,
-      vote: this.props.item.vote
+      vote: this.props.item.vote,
+      parent: this.props.parent || 'post'
     }
   }
 
@@ -67,15 +69,15 @@ class VouteComponent extends React.Component {
           }, () => {
               let text = 'Something went wrong when you voted, please, try again later';
               if (err.payload.error.data.code == 10) {
-                text = 'Sorry, you had used the maximum number of vote changes on this post';
+                text = `Sorry, you had used the maximum number of vote changes on this ${this.state.parent}`;
               }
               jqApp.pushMessage.open(text);
             }
           ); 
         } else 
         if (success) {
-            let text = 'Post was successfully liked';
-            if (!newVoteState) text = 'Post was successfully disliked';
+            let text = `${utils.capitalize(this.state.parent)} was successfully liked`;
+            if (!newVoteState) text = `${utils.capitalize(this.state.parent)} was successfully disliked`;
             jqApp.pushMessage.open(text);
             this.props.updateVoteInComponent(newVoteState, this.state.index)
         }

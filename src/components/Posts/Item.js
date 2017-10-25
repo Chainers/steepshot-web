@@ -160,6 +160,7 @@ class Item extends React.Component {
                     item={this.state.item}
                     index={this.state.currentIndex}
                     updateVoteInComponent={this.props.updateVoteInComponent}
+                    parent='post'
                   />
                   <FlagComponent 
                     key="flag"

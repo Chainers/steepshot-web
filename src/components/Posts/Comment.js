@@ -62,6 +62,7 @@ class Comment extends React.Component {
               key="vote"
               item={this.props.item}
               updateVoteInComponent={this.updateVoteInComponent.bind(this)}
+              parent='comment'
             />
         </div>
         <div className="comment-controls clearfix">
