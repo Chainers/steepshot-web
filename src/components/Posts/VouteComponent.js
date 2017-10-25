@@ -11,8 +11,6 @@ import {
 import PropTypes from 'prop-types';
 import Steem from '../../libs/steem';
 
-import { getStore } from '../../store/configureStore';
-
 class VouteComponent extends React.Component {
   constructor(props) {
     super(props);
@@ -32,17 +30,20 @@ class VouteComponent extends React.Component {
     });
   }
 
-  ratingVotes() {
+  ratingVotes(e) {
+
+    e.preventDefault();
 
     if (!(this.props.username || this.props.postingKey)) {
       return false;
     }
 
-    if (!getStore().getState().votes.voteCanBePushed)  {
+    let queue = sessionStorage.getItem('voteQueue');
+    if (queue == "true")  {
       return false;
     }
 
-    this.props.dispatch({ type : 'SWITCH_MODE_FOR_QUEUE', voteCanBePushed : false });
+    sessionStorage.setItem('voteQueue', "true");
 
     if (!(this.props.username || this.props.postingKey)) {
       return;
@@ -59,7 +60,7 @@ class VouteComponent extends React.Component {
         this.setState({
           isVoteLoading : false
         })
-        this.props.dispatch({ type : 'SWITCH_MODE_FOR_QUEUE', voteCanBePushed : true });
+        sessionStorage.setItem('voteQueue', "false");
         if (err) {
           this.setState({ 
             vote: !newVoteState
@@ -101,7 +102,7 @@ class VouteComponent extends React.Component {
     let component = <button type="button" className={buttonClasses}></button>;
     
     return (
-        <div className="wrap-btn" onClick={(event) => this.ratingVotes.call(this, event)}>
+        <div className="wrap-btn" onClick={this.ratingVotes.bind(this)}>
           {component}
         </div>
     );

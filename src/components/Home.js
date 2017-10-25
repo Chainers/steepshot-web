@@ -38,7 +38,9 @@ class Home extends React.Component {
       loading: true,
       activeMode: constants.POST_FILTERS.TRENDING    
     };
+  }
 
+  componentWillMount() {
     this.store = getStore();
     this.outputUpdate();
     this.resetPosts();
