@@ -146,14 +146,29 @@ class Steem {
     }
 
     /** Follow an user */
-    followUser(wif, follower, following) {
+    followUnfollowUser(wif, follower, following, status, callback) {
+
+        let blog = ['blog'];
+        if (status) blog = [];
+
         const json = JSON.stringify(
             [constants.OPERATIONS.FOLLOW, {
             follower: follower,
             following: following,
-            what: ['blog']
+            what: blog
             }]
         );
+
+        const callbackBc = (err, result) => {
+            if (err) {
+                callback(err);
+                console.log(err);
+            } else 
+            if (result) {
+                callback(null, result);
+                console.log(result);
+            }
+        }
 
         steem.broadcast.customJson(
             wif,
@@ -161,41 +176,7 @@ class Steem {
             [follower], // Required Posting Auths
             'follow', // Id
             json,
-            (err, result) => {
-                if (err) {
-                    console.log(err);
-                } else 
-                if (result) {
-                    console.log(result);
-                }
-            }
-        );
-    }
-
-    /** Unfollow an user */
-    unfollowUser(wif, follower, following) {
-        const json = JSON.stringify(
-            [constants.OPERATIONS.FOLLOW, {
-                follower: follower,
-                following: following,
-                what: []
-            }]
-        );
-
-        steem.broadcast.customJson(
-            wif,
-            [], // Required_auths
-            [follower], // Required Posting Auths
-            'follow', // Id
-            json, //
-            (err, result) => {
-                if (err) {
-                    console.log(err);
-                } else 
-                if (result) {
-                    console.log(result);
-                }
-            }
+            callbackBc
         );
     }
 

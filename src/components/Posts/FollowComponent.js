@@ -17,25 +17,36 @@ class FollowComponent extends React.Component {
 
     this.state = {
       item: this.props.item,
-      follow: this.props.item ? this.props.item.has_followed != 0 : false
+      follow: this.props.item ? this.props.item.has_followed != 0 : false,
+      pendingStatus: false
     }
   }
 
   handleFollow() {
-    if (this.state.follow) {
-        this.unfollowToUser();
-    } else {
-        this.followToUser();
+    this.followUnfollowToUser(this.state.follow);
+  }
+
+  followUnfollowToUser(status) {
+    this.setState({
+      pendingStatus : true
+    })
+    let callback = (err, result) => {
+      this.setState({
+        pendingStatus : false
+      });
+      if (err) {
+        jqApp.pushMessage.open('Something went wrong, please, try again later');
+      } else 
+      if (result) {
+        let statusText = 'unfollowed';
+        if (!status) statusText = 'followed';
+        jqApp.pushMessage.open(`User was successfully ${statusText}`);
+        this.setState({
+          follow: !this.state.follow
+        })
+      }
     }
-    this.setState({ follow: !this.state.follow });
-  }
-
-  followToUser() {
-    Steem.followUser(this.props.postingKey, this.props.username, this.state.item.username);
-  }
-
-  unfollowToUser() {
-    Steem.unfollowUser(this.props.postingKey, this.props.username, this.state.item.username);
+    Steem.followUnfollowUser(this.props.postingKey, this.props.username, this.state.item.username, status, callback);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -47,18 +58,25 @@ class FollowComponent extends React.Component {
   }
 
   render() {
-    let componentClassNames = 'btn btn-default';
-    let componentName = 'Follow';
-
-    if (this.state.follow) {
-        componentClassNames = 'btn btn-primary';
-        componentName = 'Unfollow';
+    let componentClassNames;
+    let componentName;
+    if (this.state.pendingStatus) {
+      componentClassNames = 'btn btn-index';
+      componentName = <span className="saving">Pending<span> .</span><span> .</span><span> .</span></span>;
+    } else {
+      if (this.state.follow) {
+          componentClassNames = 'btn btn-primary';
+          componentName = 'Unfollow';
+      } else {
+          componentClassNames = 'btn btn-default';
+          componentName = 'Follow';
+      }
     }
 
     let renderItem = null;
 
     if (this.state.item) {
-      renderItem = <div className={componentClassNames}>{componentName}</div>
+      renderItem = <div className={componentClassNames} disabled={this.state.pendingStatus}>{componentName}</div>
     }
 
     return (
