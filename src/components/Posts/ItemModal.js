@@ -1,4 +1,5 @@
 import React from 'react';
+import Steem from '../../libs/steem';
 import {
   Link,
   Redirect
@@ -12,6 +13,7 @@ import constants from '../../common/constants';
 import VouteComponent from './VouteComponent';
 import AddComment from './AddComment';
 import FlagComponent from './FlagComponent';
+import LoadingSpinner from '../LoadingSpinner';
 
 class ItemModal extends React.Component {
     constructor(props) {
@@ -24,7 +26,9 @@ class ItemModal extends React.Component {
             comments: [],
             disableNext: false,
             disablePrev: false,
-            redirectToReferrer: false
+            redirectToReferrer: false,
+            commentValue: '',
+            needsCommentFormLoader : false
         };
 
         this.initKeypress();
@@ -39,6 +43,73 @@ class ItemModal extends React.Component {
         disableNext: false,
         disablePrev: false,
         redirectToReferrer: false
+      });
+    }
+
+    componentDidMount() {
+      setTimeout(() => { 
+        jqApp.forms.init();
+        jqApp.post.init()
+      }, 0);
+    }
+
+    sendComment(e) {
+      e.preventDefault();
+
+      if (!(this.props.username && this.props.postingKey)) {
+        let text = 'Only registered users can post a new comment.';
+        jqApp.pushMessage.open(text);
+        return false;
+      }
+
+      if (this.state.commentValue == "") return false;
+
+      const urlObject = this.state.item.url.split('/');
+
+      const callback = (err, success) => {
+        this.setState({
+          needsCommentFormLoader : false
+        });
+        if (err) {
+          let text = 'Something went wrong, please, try again later';
+          if (err.payload.error.data.code == 10) {
+            text = 'Sorry, you had used the maximum number of comments on this post';
+          }
+          jqApp.pushMessage.open(text);
+        } else 
+        if (success) {
+            this.setState({
+              newComment : {
+                net_votes : 0,
+                vote : false,
+                avatar : this.props.avatar,
+                author : this.props.username,
+                total_payout_value : 0,
+                body : this.state.commentValue,
+                created : Date.now()
+              },
+              commentValue : ''
+            }, () => {
+              let $target = $('.js--list-scroll');
+              $target.mCustomScrollbar('scrollTo', 'bottom');
+              let text = 'Comment was successfully added';
+              jqApp.pushMessage.open(text);
+            });
+        }
+      }
+
+      this.setState({
+        needsCommentFormLoader : true
+      }, () => {
+        Steem.comment(
+          this.props.postingKey,             
+          this.state.item.author, 
+          urlObject[urlObject.length - 1], 
+          this.props.username, 
+          this.state.commentValue,
+          this.state.item.tags,
+          callback
+        );
       });
     }
 
@@ -71,6 +142,14 @@ class ItemModal extends React.Component {
 
     redirectToUserProfile() {
       this.setState({ redirectToReferrer: true });
+    }
+
+    handleChange(event) {
+      let name = event.target.name;
+      let value = event.target.value;
+      this.setState({ 
+          [name] : value
+      });
     }
 
     next() {
@@ -122,7 +201,6 @@ class ItemModal extends React.Component {
       let _this = this;
       let itemImage = this.state.image || constants.NO_IMAGE;
       let authorImage = this.state.avatar || constants.NO_AVATAR;
-      let comments = <Comments key="comments" item={this.state.item} />;
 
       let settings = {
         dots: false,
@@ -182,7 +260,33 @@ class ItemModal extends React.Component {
                   <div className="amount">{this.state.item.total_payout_reward}</div>
                 </div>
               </div>
-              <div className="list-scroll">
+              <div className="post-comment">
+                <form className="comment-form form-horizontal">
+                  <div className="form-group clearfix">
+                    <div className="btn-wrap">
+                      <button type="submit" className="btn-submit" onClick={this.sendComment.bind(this)}>Send</button>
+                    </div>
+                    <div className="input-container">
+                      <textarea id="formCOMMENT" 
+                                name="commentValue"
+                                value={this.state.commentValue} 
+                                spellCheck="true" 
+                                className="form-control"
+                                onChange={this.handleChange.bind(this)}>
+                      </textarea>
+                      <label htmlFor="formCOMMENT" className="name">Comment</label>
+                    </div>
+                  </div>
+                </form>
+                {
+                  this.state.needsCommentFormLoader
+                  ?
+                    <LoadingSpinner />
+                  :
+                    null
+                }
+              </div>
+              <div className="list-scroll js--list-scroll">
                 <div className="post-description">
                   <p>{this.state.item.title}</p>
                   <div className="post-tags clearfix">
@@ -197,7 +301,7 @@ class ItemModal extends React.Component {
                     }
                   </div>
                 </div>
-                {comments}
+                <Comments key="comments" item={this.state.item} newComment={this.state.newComment}/>
               </div>
             </div>
           </div>
@@ -213,7 +317,10 @@ ItemModal.propTypes = {
 
 const mapStateToProps = (state) => {
   return {
-    localization: state.localization
+    localization: state.localization,
+    username: state.auth.user,
+    postingKey: state.auth.postingKey,
+    avatar: state.auth.avatar
   };
 };
 

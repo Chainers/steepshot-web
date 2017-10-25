@@ -47,7 +47,7 @@
   }
   
   .loading-block {
-	position: relative;
+	  position: relative;
     display: flex;
     width: 100%;
     height: 50px;
