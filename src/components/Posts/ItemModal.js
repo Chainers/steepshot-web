@@ -213,95 +213,95 @@ class ItemModal extends React.Component {
       const authorLink = `/userProfile/${this.state.item.author}`;
 
       return(
-        <div className="post-single">
-          <div className="post-wrap clearfix">
-            <div className="wrap-slider not-init">
-              <div className="slider clearfix">
-                <div className="slide">
-                  <img src={itemImage} 
-                    onError={this.setDefaultImage.bind(this)} 
-                    alt="image" 
-                  />
-                </div>
+        <div>
+          <div className="post-single">
+            <div className="post-wrap post">
+              <div className="post__image-container">
+                <img src={itemImage} 
+                  onError={this.setDefaultImage.bind(this)} 
+                  alt="image" 
+                />
               </div>
-            </div>
-            <div className="wrap-description">
-              <div className="post-header">
-                <div className="user-wrap clearfix">
-                  <div className="date">{this.getFormatedDate()}</div>
-                  <Link to={authorLink} className="user">
-                    <div className="photo">
-                      <img src={authorImage} 
-                        alt="Image" 
-                        onError={this.setDefaultAvatar.bind(this)} />
-                    </div>
-                    <div className="name">{this.state.item.author}</div>
-                  </Link>
-                </div>
-              </div>
-              <div className="post-controls clearfix">
-                <div className="buttons-row" onClick={(e)=>{this.callPreventDefault(e)}}>
-                  <VouteComponent key="vote" 
-                    key="vote"
-                    item={this.state.item}
-                    index={this.state.index}
-                    updateVoteInComponent={this.props.updateVoteInComponent}
-                    parent='post'
-                  />
-                  <FlagComponent 
-                    key="flag"
-                    item={this.state.item}
-                    index={this.state.index}
-                    updateFlagInComponent={this.props.updateFlagInComponent}
-                  />
-                </div>
-                <div className="wrap-counts clearfix">
-                  <div className="likes">{this.state.item.net_votes} like's</div>
-                  <div className="amount">{this.state.item.total_payout_reward}</div>
-                </div>
-              </div>
-              <div className="post-comment">
-                <form className="comment-form form-horizontal">
-                  <div className="form-group clearfix">
-                    <div className="btn-wrap">
-                      <button type="submit" className="btn-submit" onClick={this.sendComment.bind(this)}>Send</button>
-                    </div>
-                    <div className="input-container">
-                      <textarea id="formCOMMENT" 
-                                name="commentValue"
-                                value={this.state.commentValue} 
-                                spellCheck="true" 
-                                className="form-control"
-                                onChange={this.handleChange.bind(this)}>
-                      </textarea>
-                      <label htmlFor="formCOMMENT" className="name">Comment</label>
+              <div className="post__description-container">
+                <div className="wrap-description">
+                  <div className="post-header">
+                    <div className="user-wrap clearfix">
+                      <div className="date">{this.getFormatedDate()}</div>
+                      <Link to={authorLink} className="user">
+                        <div className="photo">
+                          <img src={authorImage} 
+                            alt="Image" 
+                            onError={this.setDefaultAvatar.bind(this)} />
+                        </div>
+                        <div className="name">{this.state.item.author}</div>
+                      </Link>
                     </div>
                   </div>
-                </form>
-                {
-                  this.state.needsCommentFormLoader
-                  ?
-                    <LoadingSpinner />
-                  :
-                    null
-                }
-              </div>
-              <div className="list-scroll js--list-scroll">
-                <div className="post-description">
-                  <p>{this.state.item.title}</p>
-                  <div className="post-tags clearfix">
+                  <div className="post-controls clearfix">
+                    <div className="buttons-row" onClick={(e)=>{this.callPreventDefault(e)}}>
+                      <VouteComponent key="vote" 
+                        key="vote"
+                        item={this.state.item}
+                        index={this.state.index}
+                        updateVoteInComponent={this.props.updateVoteInComponent}
+                        parent='post'
+                      />
+                      <FlagComponent 
+                        key="flag"
+                        item={this.state.item}
+                        index={this.state.index}
+                        updateFlagInComponent={this.props.updateFlagInComponent}
+                      />
+                    </div>
+                    <div className="wrap-counts clearfix">
+                      <div className="likes">{this.state.item.net_votes} like's</div>
+                      <div className="amount">{this.state.item.total_payout_reward}</div>
+                    </div>
+                  </div>
+                  <div className="post-comment">
+                    <form className="comment-form form-horizontal">
+                      <div className="form-group clearfix">
+                        <div className="btn-wrap">
+                          <button type="submit" className="btn-submit" onClick={this.sendComment.bind(this)}>Send</button>
+                        </div>
+                        <div className="input-container">
+                          <textarea id="formCOMMENT" 
+                                    name="commentValue"
+                                    value={this.state.commentValue} 
+                                    spellCheck="true" 
+                                    className="form-control"
+                                    onChange={this.handleChange.bind(this)}>
+                          </textarea>
+                          <label htmlFor="formCOMMENT" className="name">Comment</label>
+                        </div>
+                      </div>
+                    </form>
                     {
-                      this.state.item.tags.map((tag, index) => {
-                        return <a key={index}
-                          onClick={(event) => this.props._research.bind(this, event, tag)} 
-                          >
-                            {tag}
-                          </a>
-                      })
+                      this.state.needsCommentFormLoader
+                      ?
+                        <LoadingSpinner />
+                      :
+                        null
                     }
                   </div>
+                  <div className="list-scroll js--list-scroll">
+                    <div className="post-description">
+                      <p>{this.state.item.title}</p>
+                      <div className="post-tags clearfix">
+                        {
+                          this.state.item.tags.map((tag, index) => {
+                            return <a key={index}
+                              onClick={(event) => this.props._research.bind(this, event, tag)} 
+                              >
+                                {tag}
+                              </a>
+                          })
+                        }
+                      </div>
+                    </div>
+                    <Comments key="comments" item={this.state.item} newComment={this.state.newComment}/>
+                  </div>
                 </div>
-                <Comments key="comments" item={this.state.item} newComment={this.state.newComment}/>
               </div>
             </div>
           </div>
