@@ -377,6 +377,8 @@
 
  .post-single {
    height: inherit;
+   border-radius: 4px;
+   overflow: hidden;
  }
 
  .modal-post-single .modal-dialog {
