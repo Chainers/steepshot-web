@@ -389,3 +389,11 @@
   justify-content: center;
   background: rgb(0,0,0);
 }
+
+.padding--none {
+  padding: 0;
+}
+
+.footer__google-play {
+  width: 18px;
+}
