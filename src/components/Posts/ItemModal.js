@@ -140,10 +140,6 @@ class ItemModal extends React.Component {
       });
     }
 
-    redirectToUserProfile() {
-      this.setState({ redirectToReferrer: true });
-    }
-
     handleChange(event) {
       let name = event.target.name;
       let value = event.target.value;
@@ -165,6 +161,10 @@ class ItemModal extends React.Component {
           this.resetDefaultProperties(newItem);
           this.setState({ index: this.state.index + 1 });
       }
+    }
+
+    redirectToLoginPage() {
+      this.props.history.push('/signin');
     }
 
     resetDefaultProperties(newItem) {
@@ -209,6 +209,8 @@ class ItemModal extends React.Component {
         slidesToShow: 1,
         slidesToScroll: 1
       };
+
+      let isUserAuth = (this.props.username && this.props.postingKey);
 
       const authorLink = `/userProfile/${this.state.item.author}`;
 
@@ -258,32 +260,38 @@ class ItemModal extends React.Component {
                       <div className="amount">{this.state.item.total_payout_reward}</div>
                     </div>
                   </div>
-                  <div className="post-comment">
-                    <form className="comment-form form-horizontal">
-                      <div className="form-group clearfix">
-                        <div className="btn-wrap">
-                          <button type="submit" className="btn-submit" onClick={this.sendComment.bind(this)}>Send</button>
-                        </div>
-                        <div className="input-container">
-                          <textarea id="formCOMMENT" 
-                                    name="commentValue"
-                                    value={this.state.commentValue} 
-                                    spellCheck="true" 
-                                    className="form-control"
-                                    onChange={this.handleChange.bind(this)}>
-                          </textarea>
-                          <label htmlFor="formCOMMENT" className="name">Comment</label>
-                        </div>
+                  {
+                    isUserAuth
+                    ?
+                      <div className="post-comment">
+                        <form className="comment-form form-horizontal">
+                          <div className="form-group clearfix">
+                            <div className="btn-wrap">
+                              <button type="submit" className="btn-submit" onClick={this.sendComment.bind(this)}>Send</button>
+                            </div>
+                            <div className="input-container">
+                              <textarea id="formCOMMENT" 
+                                        name="commentValue"
+                                        value={this.state.commentValue} 
+                                        spellCheck="true" 
+                                        className="form-control"
+                                        onChange={this.handleChange.bind(this)}>
+                              </textarea>
+                              <label htmlFor="formCOMMENT" className="name">Comment</label>
+                            </div>
+                          </div>
+                        </form>
+                        {
+                          this.state.needsCommentFormLoader
+                          ?
+                            <LoadingSpinner />
+                          :
+                            null
+                        }
                       </div>
-                    </form>
-                    {
-                      this.state.needsCommentFormLoader
-                      ?
-                        <LoadingSpinner />
-                      :
-                        null
-                    }
-                  </div>
+                    :
+                      null
+                  }
                   <div className="list-scroll js--list-scroll">
                     <div className="post-description">
                       <p>{this.state.item.title}</p>
