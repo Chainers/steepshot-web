@@ -341,7 +341,7 @@
 }
 
 .post__image-container img {
-  max-width: 90vw;
+  max-width: 680px;
 }
 
  @media (min-width: 769px) {
@@ -350,9 +350,12 @@
   }
 
   .post__image-container img {
-    width: 100%;
     max-height: 90vh;
   }
+ }
+
+ .wrap-description {
+  max-width: 680px;
  }
 
  @media (min-width: 1024px) {
