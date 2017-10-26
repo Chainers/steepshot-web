@@ -8,7 +8,7 @@ import source from 'vinyl-source-stream';
 import buffer from 'vinyl-buffer';
 import eslint from 'gulp-eslint';
 import babelify from 'babelify';
-import uglify from 'gulp-uglify';
+import uglify from 'gulp-uglifyjs';
 import rimraf from 'rimraf';
 import notify from 'gulp-notify';
 import browserSync, { reload } from 'browser-sync';
@@ -28,6 +28,9 @@ import webserver from 'gulp-webserver';
 import plumber from 'gulp-plumber';
 import copy from 'gulp-copy';
 import rename from 'gulp-rename';
+import concat from 'gulp-concat';
+import pump from 'pump';
+import babel from 'gulp-babel';
 
 import awspublish from 'gulp-awspublish';
 import s3_index from 'gulp-s3-index';
@@ -69,7 +72,8 @@ const paths = {
   dist: 'dist',
   distJs: 'dist/js',
   distImg: 'dist/static/images',
-  distFonts: 'dist/static/fonts/'
+  distFonts: 'dist/static/fonts/',
+  prepare: 'dist/prepare'
 };
 
 const customOpts = {
@@ -81,7 +85,7 @@ const customOpts = {
 
 const opts = Object.assign({}, watchify.args, customOpts);
 
-gulp.task('clean', cb => {
+gulp.task('clean', (cb) => {
   rimraf('dist', cb);
 });
 
@@ -95,6 +99,16 @@ gulp.task('browserSync', () => {
   });
 
   gulp.watch("index.html").on('change', browserSync.reload);
+});
+
+gulp.task('check', () => {
+  browserSync({
+    server: {
+      baseDir: './dist/',
+      middleware: [ historyApiFallback() ],
+      index: 'index.html'
+    }
+  });
 });
 
 // Fonts
@@ -147,9 +161,18 @@ gulp.task('htmlReplace', () => {
   gulp.src('index.html')
   .pipe(htmlReplace({
     css: [`/styles/main${guid}.css`, `/styles/posts${guid}.css`],
-    js: [`/static/libs/app${guid}.min.js`, `/js/app${guid}.js`]
+    js: [`/js/app${guid}.js`]
    }))
   .pipe(gulp.dest(paths.dist));
+});
+
+gulp.task('react', (cb) => {
+  return browserify(paths.entry, { debug: false })
+  .transform(babelify)
+  .bundle()
+  .pipe(source(`react.js`))
+  .pipe(buffer())
+  .pipe(gulp.dest(paths.prepare));
 });
 
 gulp.task('imagemin', () => {
@@ -160,7 +183,6 @@ gulp.task('imagemin', () => {
       use: [pngquant()]
     }))
     .pipe(gulp.dest(paths.distImg))
-    .pipe(browserSync.stream());
 });
 
 gulp.task('lint', () => {
@@ -170,11 +192,37 @@ gulp.task('lint', () => {
 });
 
 gulp.task('libs', (cb) => {
-  gulp.src('static/libs/libs/**/*.js')
-  .pipe(copy('dist'));
-  gulp.src('static/libs/app.min.js')
-  .pipe(rename(`app${guid}.min.js`))
-  .pipe(gulp.dest(`dist/static/libs/`))
+  return gulp.src([
+    'static/libs/libs/jquery-3.2.1.min.js',
+    'static/libs/libs/jquery-ui.min.js',
+    'static/libs/libs/jquery-ui.touchPunch.min.js',
+    'static/libs/libs/jquery.carouFredSel.min.js',
+    'static/libs/libs/jquery.magnific-popup.min.js',
+    'static/libs/libs/jquery.mCustomScrollbar.min.js',
+    'static/libs/libs/jquery.touchSwipe.min.js',
+    'static/libs/libs/modernizr-custom.min.js',
+    'static/libs/app.min.js'
+  ])
+  .pipe(concat('libs.js'))
+  .pipe(babel({
+    presets: ['es2015']
+  }))
+  .pipe(uglify())
+  .pipe(gulp.dest(paths.prepare));
+});
+
+gulp.task('scripts', (cb) => {
+  runSequence('react', 'libs', 'bundle', cb);
+});
+
+gulp.task('bundle', (cb) => {
+  pump([
+    gulp.src([`${paths.prepare}/libs.js`, `${paths.prepare}/react.js`]),
+    debug({title: 'bundle : '}),
+    concat(`app${guid}.js`),
+    uglify(),
+    gulp.dest('./dist/js')
+  ], cb);
 });
 
 gulp.task('watchTask', () => {
@@ -199,7 +247,7 @@ gulp.task('build', cb => {
   })().toString();
 
   process.env.NODE_ENV = 'production';
-  runSequence('clean', ['browserify', 'fonts', 'styles', 'htmlReplace', 'imagemin', 'libs'], cb);
+  runSequence('clean', 'scripts', ['fonts', 'styles', 'htmlReplace', 'imagemin'], cb);
 });
 
 gulp.task('deploy', () => {

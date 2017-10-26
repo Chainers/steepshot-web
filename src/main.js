@@ -1,6 +1,7 @@
 import 'whatwg-fetch';
 import React from 'react';
 import ReactDOM from 'react-dom';
+import className from 'react-classnames';
 import { Provider } from 'react-redux';
 import configureStore from './store/configureStore';
 import getRoutes from './routes';
