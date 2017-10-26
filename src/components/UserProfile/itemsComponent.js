@@ -147,9 +147,7 @@ class ItemsComponent extends React.Component {
           <button type="button" className="btn btn-index">Upload more posts</button>
         </div>;
     } else if (this.state.hasMore && this.state.loading && this.state.items.length === 0) {
-      updateButton = <div className='loading-block'>
-          <LoadingSpinner />
-        </div>;
+      updateButton = <LoadingSpinner />;
     }
 
     return (

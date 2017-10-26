@@ -143,7 +143,7 @@ class Feed extends React.Component {
 
             renderElements = items;
         } else if(this.props.search.value == '') {
-            renderElements = <div className='loading-block'><LoadingSpinner /></div>;
+            renderElements = <LoadingSpinner />;
         }
 
         return(

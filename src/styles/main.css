@@ -399,3 +399,24 @@
 .footer__google-play {
   width: 18px;
 }
+
+.posts-list {
+  padding-top: 30px;
+}
+
+.nav {
+  margin : 0;
+  z-index: 6;
+}
+
+.g-header {
+  position: fixed;
+  width: 100%;
+  padding-right: 0px;
+  z-index: 10000;
+  box-shadow: 0 0 20px 0 rgba(0,0,0,0.3);
+}
+
+.g-main {
+  padding-top: 60px;
+}

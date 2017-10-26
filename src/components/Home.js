@@ -271,6 +271,7 @@ class Home extends React.Component {
 
   render() {
     let items = [];
+    let needsLoader = false;
     let _this = this;
     let renderElements = <div className='loading-block'><LoadingSpinner /></div>;
 
@@ -293,34 +294,40 @@ class Home extends React.Component {
       });
 
       renderElements = items;
-    } else if (this.props.search.value == '') {
-      renderElements = <div className='loading-block'>
-        <LoadingSpinner />
-      </div>;
+    } else {
+      renderElements = null;
+      needsLoader = true;
     }
 
     return (
       <div className="g-main_i container">
         <div id="workspace" className="g-content col-xs-12 clearfix">
           <PostFilterBlock updatePostsCallback={this.updatePostsByFolter.bind(this)}/>
-          <div className="tab-content">
-            <div className="posts-list clearfix" id="all-posts">
-              {renderElements}
-            </div>
-            { 
-              this.state.hasMore && !this.state.loading ? 
-                <div className="load-more" onClick={this.fetchData.bind(this)}>
-                  <button type="button" className="btn btn-index">Upload more posts</button>
+            <div className="tab-content">
+              <div className="posts-list clearfix" id="all-posts">
+                {renderElements}
+              </div>
+              { 
+                this.state.hasMore && !this.state.loading ? 
+                  <div className="load-more" onClick={this.fetchData.bind(this)}>
+                    <button type="button" className="btn btn-index">Upload more posts</button>
+                  </div> : null 
+              }
+              {
+                this.state.hasMore && this.state.loading && this.state.posts.length !== 0 ? 
+                <div className='loading-block'>
+                  <LoadingSpinner />
                 </div> : null 
-            }
-            {
-              this.state.hasMore && this.state.loading && this.state.posts.length !== 0 ? 
-              <div className='loading-block'>
-                <LoadingSpinner />
-              </div> : null 
-            }
-          </div>
+              }
+            </div>
         </div>
+        {
+          needsLoader
+          ?
+            <LoadingSpinner />
+          :
+            null
+        }
         <ModalComponent>
             {this._renderModal()}
         </ModalComponent>
