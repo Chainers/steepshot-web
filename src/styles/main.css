@@ -465,8 +465,8 @@
   position: fixed;
   width: 100vw;
   padding-right: 0px;
-  z-index: 10000;
-  box-shadow: 0 0 20px 0 rgba(0,0,0,0.3);
+  z-index: 1001;
+  box-shadow: 0 0 10px 0 rgba(0,0,0,.1);
 }
 
 .g-main {
