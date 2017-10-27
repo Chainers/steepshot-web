@@ -189,31 +189,6 @@ class Item extends React.Component {
             </div>
           </div>
         </div>
-      
-        
-        {/* <Modal
-          isOpen={this.state.modalIsOpen}
-          onAfterOpen={this.afterOpenModal.bind(_this)}
-          onRequestClose={this.closeModal}
-          className='g-main_i popout-container'
-          contentLabel="Example Modal"
-          style={modalStyle}
-        >
-          <ItemModal 
-            openModal={this.openModal} 
-            closeModal={this.closeModal} 
-            item={this.props.item} 
-            items={this.props.items} 
-            index={this.props.index}
-            updateComponent={this.updateComponent.bind(this)}
-            _research={this._research.bind(this)}
-          />
-          <ReactResizeDetector 
-            handleWidth 
-            handleHeight 
-            onResize={this._onResize.bind(this)}
-          />
-        </Modal> */}
       </div>
     );
   }

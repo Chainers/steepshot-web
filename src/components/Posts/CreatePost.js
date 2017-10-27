@@ -3,9 +3,6 @@ import Steem from '../../libs/steem';
 import {
     connect
 } from 'react-redux';
-import {
-    getPostShaddow
-} from '../../actions/posts';
 import LoadingSpinner from '../LoadingSpinner';
 
 class CreatePost extends React.Component {
@@ -127,18 +124,6 @@ class CreatePost extends React.Component {
         }, () =>
             Steem.createPost(this.props.postingKey, this._getTags(), this.props.username, this.state.title, this.state.description, this.state.file, callback)
         );
-    }
-
-    _getPostShaddow(message) {
-        const _this = this;
-        const url = '@' + message[1].author + '/' + message[1].permlink;
-
-        getPostShaddow(url).then((result) => {
-            if (result && result.length === 0) {
-                return _this._getPostShaddow(message);
-            }
-            _this.props.history.push('/profile'); 
-        });
     }
 
     _getTags() {
