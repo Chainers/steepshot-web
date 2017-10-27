@@ -1,26 +1,12 @@
-<svg width="21" height="22" viewBox="0 0 21 22" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-<title>flagFalse</title>
-<desc>Created using Figma</desc>
-<g id="Canvas" transform="translate(161 524)">
-<clipPath id="clip-0" clip-rule="evenodd">
-<path d="M -161 -524L -140 -524L -140 -502L -161 -502L -161 -524Z" fill="#FFFFFF"/>
-</clipPath>
-<g id="flagFalse" clip-path="url(#clip-0)">
-<g id="flag">
-<g id="Group">
-<path d="M -166 -499L -135 -499L -135 -527L -166 -527L -166 -499Z" fill="#E5E5E5"/>
-<g id="Vector">
-<use xlink:href="#path0_fill" transform="matrix(0.1 0 0 -0.1 -166 -499)" fill="#FFFFFF"/>
-</g>
-<g id="Vector">
-<use xlink:href="#path1_fill" transform="matrix(0.1 0 0 -0.1 -158.56 -510.088)" fill="#FFFFFF"/>
-</g>
-</g>
-</g>
-</g>
-</g>
-<defs>
-<path id="path0_fill" d="M 0 140L 0 0L 155 0L 310 0L 310 140L 310 280L 155 280L 0 280L 0 140ZM 159.547 236.693C 182.28 228.853 194.68 226.987 220.307 226.987L 252.133 227.733L 252.133 162.4L 252.133 97.0667L 219.893 97.0667C 201.707 97.0667 170.293 100.427 149.627 104.16C 128.547 108.267 108.293 110.88 104.573 110.133C 100.44 109.387 92.1733 107.893 85.9733 106.4L 74.4 104.533L 74.4 69.0667C 74.4 36.2133 73.9867 33.6 66.1333 33.6C 57.8667 33.6 57.8667 36.2133 57.8667 135.893L 57.8667 238.187L 69.44 241.92C 91.3467 249.387 129.373 247.147 159.547 236.693Z"/>
-<path id="path1_fill" d="M 11.5733 114.24L 0 112.747L 0 64.2133L 0 15.68L 23.9733 17.92C 41.7467 19.7867 53.7333 18.6667 73.16 12.6933C 87.6267 8.58667 113.253 4.10667 130.2 2.61333L 161.2 0L 161.2 49.28L 161.2 98.56L 141.773 95.9467C 126.067 94.4533 113.667 96.32 82.2533 105.28C 43.8133 116.48 35.5467 117.6 11.5733 114.24Z"/>
-</defs>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="15" height="17" viewBox="0 0 15 17">
+    <defs>
+        <path id="a" d="M9.24 1.196L9.16.804A1 1 0 0 0 8.18 0H1a1 1 0 0 0-1 1v15a1 1 0 0 0 2 0v-5a1 1 0 0 1 1-1h3.78a1 1 0 0 1 .98.804l.08.392a1 1 0 0 0 .98.804H14a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1h-3.78a1 1 0 0 1-.98-.804z"/>
+    </defs>
+    <g fill="none" fill-rule="evenodd">
+        <mask id="b" fill="#fff">
+            <use xlink:href="#a"/>
+        </mask>
+        <use fill="#D1D5D8" xlink:href="#a"/>
+        <path fill="#000" d="M8-1h2v14H8z" mask="url(#b)" opacity=".1"/>
+    </g>
 </svg>
