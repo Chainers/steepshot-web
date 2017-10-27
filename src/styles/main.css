@@ -434,7 +434,7 @@
  }
 
  .modal-post-single .modal-dialog {
-  padding: calc(5vh + 60px) 0 5vh 0;
+  padding: 5vh 0 5vh 0;
 }
 
 .post__image-container {
@@ -466,7 +466,7 @@
   width: 100vw;
   padding-right: 0px;
   z-index: 1001;
-  box-shadow: 0 0 10px 0 rgba(0,0,0,.1);
+  box-shadow: 0 0 3px 0 rgba(0,0,0,.1);
 }
 
 .g-main {
@@ -475,4 +475,8 @@
 
 .modal {
   right: calc(100% - 100vw);
+}
+
+.modal-backdrop.in {
+  opacity: .7;
 }
