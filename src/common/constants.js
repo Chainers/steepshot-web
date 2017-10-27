@@ -39,6 +39,6 @@ export default {
     },
 
     POSTS_SETTINGS: {
-        defaultLimit: 16
+        defaultLimit: 36
     }
 }
