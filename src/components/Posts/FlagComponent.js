@@ -22,9 +22,10 @@ class FlagComponent extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     this.setState({
-      index: this.props.index,
-      item: this.props.item,
-      flag: this.props.item.flag
+      index: nextProps.index,
+      item: nextProps.item,
+      flag: nextProps.item.flag,
+      isFlagLoading: false
     });
   }
 

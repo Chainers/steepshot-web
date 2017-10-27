@@ -26,9 +26,9 @@ class VouteComponent extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     this.setState({
-      index: this.props.index,
-      item: this.props.item,
-      vote: this.props.item.vote
+      index: nextProps.index,
+      item: nextProps.item,
+      vote: nextProps.item.vote
     });
   }
 

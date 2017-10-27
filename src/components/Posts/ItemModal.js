@@ -28,10 +28,23 @@ class ItemModal extends React.Component {
             disablePrev: false,
             redirectToReferrer: false,
             commentValue: '',
-            needsCommentFormLoader : false
+            needsCommentFormLoader : false,
+            isLoading: false
         };
 
         this.initKeypress();
+    }
+
+    needMore(props) {
+      if (this.state.isLoading) return false;
+      const curIndex = this.state.index;
+      if (curIndex + 7 >= props.items.length) {
+          this.setState({
+            isLoading : true
+          }, () => {
+            props.loadMore();
+          });
+      }
     }
 
     componentWillReceiveProps(nextProps){
@@ -42,11 +55,15 @@ class ItemModal extends React.Component {
         comments: [],
         disableNext: false,
         disablePrev: false,
-        redirectToReferrer: false
+        redirectToReferrer: false,
+        isLoading: this.props.items == nextProps.items
+      }, () => {
+        this.needMore(this.props);
       });
     }
 
     componentDidMount() {
+      this.needMore(this.props);
       setTimeout(() => { 
         jqApp.forms.init();
         jqApp.post.init()
@@ -149,17 +166,11 @@ class ItemModal extends React.Component {
     }
 
     next() {
-      const curIndex = this.state.index;
-      if (curIndex + 2 == this.props.items.length) {
-          this.props.loadMore();
-      }
-
-      if (curIndex == this.props.items.length) {
+      this.needMore(this.props);
+      if (this.state.index == this.props.items.length - 1) {
           this.setState({ disableNext: true });
       } else {
-          const newItem = this.props.items[this.state.index + 1];
-          this.resetDefaultProperties(newItem);
-          this.setState({ index: this.state.index + 1 });
+          this.resetDefaultProperties(this.props.items[this.state.index + 1], 1);
       }
     }
 
@@ -167,11 +178,12 @@ class ItemModal extends React.Component {
       this.props.history.push('/signin');
     }
 
-    resetDefaultProperties(newItem) {
+    resetDefaultProperties(newItem, indexUpdater) {
       this.setState({ 
           avatar: newItem.avatar,
           image: newItem.body,
-          item: newItem
+          item: newItem,
+          index: this.state.index + indexUpdater
       });
     }
 
@@ -179,8 +191,7 @@ class ItemModal extends React.Component {
       if (this.state.index == 0) {
           this.setState({ disablePrev: true });
       } else {
-          this.resetDefaultProperties(this.props.items[this.state.index - 1]);
-          this.setState({ index: this.state.index - 1 });
+          this.resetDefaultProperties(this.props.items[this.state.index - 1], -1);
       }
     }
 
