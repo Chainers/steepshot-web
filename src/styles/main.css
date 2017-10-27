@@ -2,10 +2,14 @@
     background-color: #F8F8F8;
   }
 
-  html {
+  body {
     width: 100vw;
     overflow-x: hidden;
     margin-right: 0;
+  }
+
+  .overflow--hidden {
+    overflow: hidden;
   }
 
   .item.nav-item a:hover {
@@ -459,7 +463,7 @@
 
 .g-header {
   position: fixed;
-  width: 100%;
+  width: 100vw;
   padding-right: 0px;
   z-index: 10000;
   box-shadow: 0 0 20px 0 rgba(0,0,0,0.3);
@@ -467,4 +471,8 @@
 
 .g-main {
   padding-top: 60px;
+}
+
+.modal {
+  right: calc(100% - 100vw);
 }
