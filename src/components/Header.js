@@ -135,10 +135,10 @@ class Header extends React.Component {
                     isUserAuth 
                     ?
                       <div>
-                        <Link to="/post" type="button" className="btn btn-primary btn-xs btn-create">
+                        <Link to="/createPost" type="button" className="btn btn-primary btn-xs btn-create">
                           Create post
                         </Link>
-                        <Link to="/post" type="button" className="btn btn-primary btn-create-mob">
+                        <Link to="/createPost" type="button" className="btn btn-primary btn-create-mob">
                         </Link> 
                       </div>
                     :

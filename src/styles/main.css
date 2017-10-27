@@ -480,3 +480,10 @@
 .modal-backdrop.in {
   opacity: .7;
 }
+
+.block--center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+}
