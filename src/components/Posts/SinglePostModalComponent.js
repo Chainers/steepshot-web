@@ -13,7 +13,6 @@ import constants from '../../common/constants';
 import VouteComponent from './VouteComponent';
 import AddComment from './AddComment';
 import FlagComponent from './FlagComponent';
-import LoadingSpinner from '../LoadingSpinner';
 import {
     getPostShaddow
 } from '../../actions/posts';
@@ -22,30 +21,43 @@ class SinglePostModalComponent extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            notify : this.props.notify,
             isPostLoading : true,
             ...this.props
         }
     }
 
     componentDidMount() {
+         
         getPostShaddow(this.getPostIdentifier(this.state.match.params.authorName, this.state.match.params.postPermlink))
         .then((result) => {
-            this.setState({
-                item : result,
-                isPostLoading : false
-            }, () => {
-                const callbackClose = () => {
+            if (result) {
+                this.setState({
+                    item : result,
+                    isPostLoading : false
+                }, () => {
+                    const callbackClose = () => {
+                        if (!(this.props.username && this.props.postingKey)) {
+                            this.props.history.push('/browse');
+                        } else {
+                            this.props.history.push('/feed');
+                        }
+                    }
+                    jqApp.data = {} || jqApp.data;
+                    jqApp.data.callback = {} || jqApp.data.callback;
+                    jqApp.data.callback = callbackClose.bind(this);
+                    jqApp.openPostModal();
+                })
+            } else {
+                jqApp.pushMessage('Something went wrong, please, check the URL or try again later');
+                setTimeout(() => {
                     if (!(this.props.username && this.props.postingKey)) {
                         this.props.history.push('/browse');
                     } else {
                         this.props.history.push('/feed');
                     }
-                }
-                jqApp.data = {} || jqApp.data;
-                jqApp.data.callback = {} || jqApp.data.callback;
-                jqApp.data.callback = callbackClose.bind(this);
-                jqApp.openPostModal();
-            })
+                }, 3);
+            }
         });
     }
 
@@ -181,16 +193,7 @@ class SinglePostModalComponent extends React.Component {
 
     render() {
 
-        if (this.state.isPostLoading) {
-            return (
-                <div className="block--center">
-                    <h1> Loading </h1>
-                    <div>
-                        <LoadingSpinner />
-                    </div>
-                </div>
-            ); 
-        } else {
+        if (!this.state.isPostLoading && !this.state.error) {
     
             let _this = this;
             let itemImage = this.state.item.body || constants.NO_IMAGE;
@@ -303,7 +306,7 @@ class SinglePostModalComponent extends React.Component {
                     </div>
                 </div>
             );
-        }
+        } else return null;
     }
 }
 

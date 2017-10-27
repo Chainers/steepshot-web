@@ -4,13 +4,22 @@ import {
 } from 'react-redux';
 import SinglePostModalComponent from '../Posts/SinglePostModalComponent';
 import ModalComponent from '../Common/ModalComponent';
+import LoadingSpinner from '../LoadingSpinner';
 
 class SinglePostModalWrapper extends React.Component {
     render() {
         return(
-            <ModalComponent>
-                <SinglePostModalComponent {...this.props} />
-            </ModalComponent>
+            <div>
+                <div className="block--center">
+                    <h1> Loading </h1>
+                    <div className="position--relative">
+                        <LoadingSpinner />
+                    </div>
+                </div>
+                <ModalComponent>
+                    <SinglePostModalComponent {...this.props} />
+                </ModalComponent>
+            </div>
         );
     }
 }

@@ -263,7 +263,7 @@ export function getPostShaddow(urlPost) {
       });
     } else {
       return response.json().then(() => {
-        return [];
+        return null;
       });
     }
   });
