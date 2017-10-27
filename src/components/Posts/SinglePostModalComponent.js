@@ -13,6 +13,8 @@ import constants from '../../common/constants';
 import VouteComponent from './VouteComponent';
 import AddComment from './AddComment';
 import FlagComponent from './FlagComponent';
+import ShareComponent from './ShareComponent';
+
 import {
     getPostShaddow
 } from '../../actions/posts';
@@ -28,8 +30,11 @@ class SinglePostModalComponent extends React.Component {
     }
 
     componentDidMount() {
-         
-        getPostShaddow(this.getPostIdentifier(this.state.match.params.authorName, this.state.match.params.postPermlink))
+        const urlObject = this.props.location.pathname.split('/');
+        if (urlObject.length < 3) {
+            this.error();
+        } else 
+        getPostShaddow(this.getPostIdentifier(urlObject[urlObject.length - 2], urlObject[urlObject.length - 1]))
         .then((result) => {
             if (result) {
                 this.setState({
@@ -49,16 +54,20 @@ class SinglePostModalComponent extends React.Component {
                     jqApp.openPostModal();
                 })
             } else {
-                jqApp.pushMessage('Something went wrong, please, check the URL or try again later');
-                setTimeout(() => {
-                    if (!(this.props.username && this.props.postingKey)) {
-                        this.props.history.push('/browse');
-                    } else {
-                        this.props.history.push('/feed');
-                    }
-                }, 3);
+                this.error();
             }
         });
+    }
+
+    error() {
+        jqApp.pushMessage.open('Something went wrong, please, check the URL or try again later');
+        setTimeout(() => {
+            if (!(this.props.username && this.props.postingKey)) {
+                this.props.history.push('/browse');
+            } else {
+                this.props.history.push('/feed');
+            }
+        }, 3000);
     }
 
     initLayout() {
@@ -209,10 +218,15 @@ class SinglePostModalComponent extends React.Component {
                 <div>
                     <div className="post-single">
                         <div className="post-wrap post">
-                            <div className="post__image-container">
+                            <div className="post__image-container position--relative">
+                                <ShareComponent 
+                                    url={this.state.item.url}
+                                    title="Share post"
+                                    containerModifier="block--right-top box--small post__share-button"
+                                />
                                 <img src={itemImage} 
-                                onError={this.setDefaultImage.bind(this)} 
-                                alt="image" 
+                                    onError={this.setDefaultImage.bind(this)} 
+                                    alt="image" 
                                 />
                             </div>
                             <div className="post__description-container">

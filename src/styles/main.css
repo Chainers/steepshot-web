@@ -487,3 +487,45 @@
   left: 50%;
   transform: translate(-50%,-50%);
 }
+
+.block--right-top {
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+.box--small {
+  padding: 2rem;
+}
+
+@keyframes fadeShare {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes showShare {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.post__image-container .post__share-button {
+  display: none;
+  animation-name: fadeShare;
+  animation-duration: 0.6s;
+  animation-fill-mode: both;
+}
+
+.post__image-container:hover .post__share-button {
+  display: block;
+  animation-name: showShare;
+  animation-duration: 0.3s;
+  animation-fill-mode: both;
+}

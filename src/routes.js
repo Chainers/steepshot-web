@@ -40,7 +40,7 @@ export default function getRoutes(store) {
         <Route path="/browse" component={Home} onLeave={clearMessages} />
         <Route path="/userProfile/:username" component={UserProfile} onLeave={clearMessages} />
         <Route path="/signin" component={Signin} onLeave={clearMessages} />
-        <Route path="/post/:authorName/:postPermlink" component={SinglePostModalWrapper} onLeave={clearMessages} />
+        <Route path="/post" component={SinglePostModalWrapper} onLeave={clearMessages} />
         <PrivateRoute path="/feed" component={Feed} onLeave={clearMessages} />
         <PrivateRoute path="/createPost" component={CreatePost} onLeave={clearMessages} />
         <PrivateRoute path="/profile" component={Profile} onLeave={clearMessages} />

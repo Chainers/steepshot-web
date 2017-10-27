@@ -6,7 +6,8 @@ export default {
     },
     URLS: {
         baseUrl_v1_1: 'https://steepshot.org/api/v1_1',
-        baseUrl_v1: 'https://steepshot.org/api/v1'
+        baseUrl_v1: 'https://steepshot.org/api/v1',
+        baseUrlPost: 'https://steepshot.org/post'
     },
     CATEGORIES: {
         user: 'user',

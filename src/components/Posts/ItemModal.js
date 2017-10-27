@@ -13,6 +13,7 @@ import constants from '../../common/constants';
 import VouteComponent from './VouteComponent';
 import AddComment from './AddComment';
 import FlagComponent from './FlagComponent';
+import ShareComponent from './ShareComponent';
 import LoadingSpinner from '../LoadingSpinner';
 
 class ItemModal extends React.Component {
@@ -229,7 +230,12 @@ class ItemModal extends React.Component {
         <div>
           <div className="post-single">
             <div className="post-wrap post">
-              <div className="post__image-container">
+              <div className="post__image-container position--relative">
+                <ShareComponent 
+                    url={this.state.item.url}
+                    title="Share post"
+                    containerModifier="block--right-top box--small post__share-button"
+                />
                 <img src={itemImage} 
                   onError={this.setDefaultImage.bind(this)} 
                   alt="image" 
