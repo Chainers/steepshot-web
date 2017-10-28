@@ -177,8 +177,8 @@ class Login extends React.Component {
                 </div>
                 <div className="form-group">
                   <div className="buttons-container col-xs-12">
-                    <a onClick={this.openRegisterSite} className="btn btn-index">Registration</a>
-                    <button onClick={this.handleLogin.bind(this)} type="submit" className="btn btn-default">Sign In</button>
+                    <a onClick={this.openRegisterSite} className="btn btn-index">Create new Steem account</a>
+                    <button onClick={this.handleLogin.bind(this)} type="submit" className="btn btn-default">Log In with Steem</button>
                   </div>
                 </div>
               </form>
