@@ -254,10 +254,10 @@ class Home extends React.Component {
                 item={this.state.posts[this.state.currentItem]} 
                 items={this.state.posts} 
                 index={this.state.currentItem}
-                location={this.props.location}
                 updateVoteInComponent={this.updateVoteInComponent.bind(this)} 
                 loadMore={this.fetchPostsNext.bind(this)}
                 updateFlagInComponent={this.updateFlagInComponent.bind(this)}
+                hasMore={this.state.hasMore}
             />
     return null;
   }

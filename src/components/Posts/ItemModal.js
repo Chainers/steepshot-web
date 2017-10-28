@@ -30,14 +30,15 @@ class ItemModal extends React.Component {
             redirectToReferrer: false,
             commentValue: '',
             needsCommentFormLoader : false,
-            isLoading: false
+            isLoading: false,
+            hasMore: this.props.hasMore
         };
 
         this.initKeypress();
     }
 
     needMore(props) {
-      if (this.state.isLoading) return false;
+      if (this.state.isLoading || !this.state.hasMore) return false;
       const curIndex = this.state.index;
       if (curIndex + 7 >= props.items.length) {
           this.setState({
@@ -51,13 +52,12 @@ class ItemModal extends React.Component {
     componentWillReceiveProps(nextProps){
       this.setState({
         item: nextProps.item,
-        index: nextProps.index,
+        index: this.props.items == nextProps.items ? nextProps.index : this.state.index,
         image: nextProps.item.body,
         comments: [],
         disableNext: false,
         disablePrev: false,
-        redirectToReferrer: false,
-        isLoading: this.props.items == nextProps.items
+        redirectToReferrer: false
       }, () => {
         this.needMore(this.props);
       });

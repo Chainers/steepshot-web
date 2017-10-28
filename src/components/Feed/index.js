@@ -110,6 +110,7 @@ class Feed extends React.Component {
                     updateVoteInComponent={this.updateVoteInComponent.bind(this)}
                     updateFlagInComponent={this.updateFlagInComponent.bind(this)} 
                     loadMore={this.fetchPostsNext.bind(this)}
+                    hasMore={this.state.hasMore}
                 />
         return null;
     }
