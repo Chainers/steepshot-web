@@ -173,12 +173,12 @@ class Header extends React.Component {
                   <img src="/static/images/steepshotLogo@2x.svg" alt="logo" />
                 </a>
               </div>
-              <div className="section search">
+              {/* {<div className="section search">
                 <div className="wrap-search">
                   <a href="#" className="lnk-search">Search</a>
                   <a href="#" className="lnk-search-mob"></a>
                 </div>
-              </div>
+              </div>} */}
               {browse}
             </div>
           </div>
