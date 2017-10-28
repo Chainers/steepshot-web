@@ -114,10 +114,9 @@ class CreatePost extends React.Component {
             } else {
                 this.setState({ 
                     renderLoader : false,
-                    message: 'You can only create posts after 5 minutes after previous.' 
+                    message: 'You can only create posts 5 minutes after the previous one.'
                 });
             }
-            
         };
         this.setState({
             renderLoader : true
