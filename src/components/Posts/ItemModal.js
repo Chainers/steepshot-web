@@ -1,11 +1,20 @@
 import React from 'react';
-import { Link, Redirect } from 'react-router-dom';
-import { connect } from 'react-redux';
+import Steem from '../../libs/steem';
+import {
+  Link,
+  Redirect
+} from 'react-router-dom';
+import {
+  connect
+} from 'react-redux';
 import Comments from './Comments';
 import PropTypes from 'prop-types';
 import constants from '../../common/constants';
 import VouteComponent from './VouteComponent';
 import AddComment from './AddComment';
+import FlagComponent from './FlagComponent';
+import ShareComponent from './ShareComponent';
+import LoadingSpinner from '../LoadingSpinner';
 
 class ItemModal extends React.Component {
     constructor(props) {
@@ -13,15 +22,113 @@ class ItemModal extends React.Component {
 
         this.state = {
             item: this.props.item,
-            currentIndex: this.props.index,
+            index: this.props.index,
             image: this.props.item.body,
             comments: [],
             disableNext: false,
             disablePrev: false,
-            redirectToReferrer: false
+            redirectToReferrer: false,
+            commentValue: '',
+            needsCommentFormLoader : false,
+            isLoading: false,
+            hasMore: this.props.hasMore
         };
 
         this.initKeypress();
+    }
+
+    needMore(props) {
+      if (this.state.isLoading || !this.state.hasMore) return false;
+      const curIndex = this.state.index;
+      if (curIndex + 7 >= props.items.length) {
+          this.setState({
+            isLoading : true
+          }, () => {
+            props.loadMore();
+          });
+      }
+    }
+
+    componentWillReceiveProps(nextProps){
+      this.setState({
+        item: nextProps.item,
+        index: this.props.items == nextProps.items ? nextProps.index : this.state.index,
+        image: nextProps.item.body,
+        comments: [],
+        disableNext: false,
+        disablePrev: false,
+        redirectToReferrer: false
+      }, () => {
+        this.needMore(this.props);
+      });
+    }
+
+    componentDidMount() {
+      this.needMore(this.props);
+      setTimeout(() => { 
+        jqApp.forms.init();
+        jqApp.post.init()
+      }, 0);
+    }
+
+    sendComment(e) {
+      e.preventDefault();
+
+      if (!(this.props.username && this.props.postingKey)) {
+        let text = 'Only registered users can post a new comment.';
+        jqApp.pushMessage.open(text);
+        return false;
+      }
+
+      if (this.state.commentValue == "") return false;
+
+      const urlObject = this.state.item.url.split('/');
+
+      const callback = (err, success) => {
+        this.setState({
+          needsCommentFormLoader : false
+        });
+        if (err) {
+          let text = 'Something went wrong, please, try again later';
+          if (err.payload.error.data.code == 10) {
+            text = 'Sorry, you had used the maximum number of comments on this post';
+          }
+          jqApp.pushMessage.open(text);
+        } else 
+        if (success) {
+            this.setState({
+              newComment : {
+                net_votes : 0,
+                vote : false,
+                avatar : this.props.avatar,
+                author : this.props.username,
+                total_payout_value : 0,
+                body : this.state.commentValue,
+                created : Date.now()
+              },
+              commentValue : ''
+            }, () => {
+              let $target = $('.js--list-scroll');
+              $target.mCustomScrollbar('scrollTo', 'bottom');
+              let text = 'Comment was successfully added';
+              jqApp.pushMessage.open(text);
+            });
+        }
+      }
+
+      this.setState({
+        needsCommentFormLoader : true
+      }, () => {
+        Steem.comment(
+          this.props.postingKey,             
+          this.state.item.author, 
+          urlObject[urlObject.length - 1], 
+          this.props.username, 
+          this.state.commentValue,
+          this.state.item.tags,
+          callback
+        );
+      });
     }
 
     initKeypress() {
@@ -40,134 +147,205 @@ class ItemModal extends React.Component {
     }
 
     setDefaultAvatar() {
-        this.setState({ avatar: '/src/images/person.png' });
+      this.setState({ 
+        avatar: constants.NO_AVATAR 
+      });
     }
 
     setDefaultImage() {
-        this.setState({ image: '/src/images/noimage.jpg' });
+      this.setState({
+        image: constants.NO_IMAGE
+      });
     }
 
-    redirectToUserProfile() {
-        this.setState({ redirectToReferrer: true });
+    handleChange(event) {
+      let name = event.target.name;
+      let value = event.target.value;
+      this.setState({ 
+          [name] : value
+      });
     }
 
     next() {
-        const curIndex = this.state.currentIndex;
-        if (curIndex + 2 == this.props.items.length) {
-            this.props.loadMore();
-        }
-
-        if (curIndex == this.props.items.length) {
-            this.setState({ disableNext: true });
-        } else {
-            const newItem = this.props.items[this.state.currentIndex + 1];
-            this.resetDefaultProperties(newItem);
-            this.setState({ currentIndex: this.state.currentIndex + 1 });
-        }
+      this.needMore(this.props);
+      if (this.state.index == this.props.items.length - 1) {
+          this.setState({ disableNext: true });
+      } else {
+          this.resetDefaultProperties(this.props.items[this.state.index + 1], 1);
+      }
     }
 
-    resetDefaultProperties(newItem) {
-        this.setState({ 
-            avatar: newItem.avatar,
-            image: newItem.body,
-            item: newItem
-        });
+    redirectToLoginPage() {
+      this.props.history.push('/signin');
+    }
+
+    resetDefaultProperties(newItem, indexUpdater) {
+      this.setState({ 
+          avatar: newItem.avatar,
+          image: newItem.body,
+          item: newItem,
+          index: this.state.index + indexUpdater
+      });
     }
 
     previous() {
-        if (this.state.currentIndex == 0) {
-            this.setState({ disablePrev: true });
-        } else {
-            this.resetDefaultProperties(this.props.items[this.state.currentIndex - 1]);
-            this.setState({ currentIndex: this.state.currentIndex - 1 });
-        }
+      if (this.state.index == 0) {
+          this.setState({ disablePrev: true });
+      } else {
+          this.resetDefaultProperties(this.props.items[this.state.index - 1], -1);
+      }
+    }
+
+    getFormatedDate() {
+      const date = new Date(this.state.item.created);
+      const locale = "en-us";
+  
+      return date.getDate() + ' ' + date.toLocaleString(locale, { month: "short" }) + ' ' + date.getFullYear();
+    }
+
+    callPreventDefault(e) {
+      e.stopPropagation();
+      e.preventDefault();
     }
 
     render() {
-        let _this = this;
-        let itemImage = this.state.image || '/src/images/noimage.jpg';
-        let authorImage = this.state.avatar || '/src/images/person.png';
-        let comments = <Comments key="comments" item={this.state.item} />;
 
-        let settings = {
+      let _this = this;
+      let itemImage = this.state.image || constants.NO_IMAGE;
+      let authorImage = this.state.avatar || constants.NO_AVATAR;
+
+      let settings = {
         dots: false,
         infinite: true,
         speed: 500,
         slidesToShow: 1,
         slidesToScroll: 1
-        };
+      };
 
-        const authorLink = `/userProfile/${this.state.item.author}`;
+      let isUserAuth = (this.props.username && this.props.postingKey);
 
+      const authorLink = `/userProfile/${this.state.item.author}`;
 
-        return(
-            <div id="popup" className="custom-popup">
-            <div className="my-modal">
-              <div className="">
-                <div className="popup-header">
-                  <div className="popup-title">
-                    {this.state.item.title}
-                  </div>
-                  <button type="button" className="close col-lg-1 col-md-1 col-sm-1 col-xs-1"
-                          onClick={this.props.closeModal}>&times;</button>
-                </div>
-                <div className="popup-body">
-                  <div className="popup-image-block" id="popup-image">
-                    <img className="popup-image" src={itemImage} onError={this.setDefaultImage.bind(this)} alt="Image"/>
-                  </div>
-                  <div className="post-popup-info" id="popup-info">
-                    <div className="author-info">
-                      <div className="">
-                        <img className="user-avatar" src={authorImage} alt="Image" onError={this.setDefaultAvatar.bind(this)} />
-                      </div>
-                      <div className="author-name">
-                        <Link to={authorLink} onClick={this.props.closeModal}><strong>{this.state.item.author}</strong></Link>
-                        <span>{this.state.item.about}</span>
-                      </div>
-                    </div>
-                    <br/>
-                    <div className="post-info">
-                      <VouteComponent key="vote" item={this.state.item} updateComponent={this.props.updateComponent}/>
-                      <div className="">
-                        <span className="payout-reward">{this.state.item.total_payout_reward} </span>
-                      </div>
-                    </div>
-                    <div className="hash-tags">
-                      {
-                        this.state.item.tags.map((tag, index) => {
-                          return <a key={index} onClick={(event) => _this.props._research(event, tag)} className="tags-urls">{tag}</a>
-                        })
-                      }
-                    </div>
-                    <div className="popup-comments">
-                      {comments}
-                    </div>
-                    <AddComment key="comment" item={this.props.item} />
-                  </div>
-                </div>
+      return(
+        <div>
+          <div className="post-single">
+            <div className="post-wrap post">
+              <div className="post__image-container position--relative">
+                <ShareComponent 
+                    url={this.state.item.url}
+                    title="Share post"
+                    containerModifier="block--right-top box--small post__share-button"
+                />
+                <img src={itemImage} 
+                  onError={this.setDefaultImage.bind(this)} 
+                  alt="image" 
+                />
               </div>
-            </div>
-            <div className='slick-buttons'>
-              <div className='left-button' onClick={this.previous.bind(_this)}>
-                <img className='arrow' src="/src/images/arrow_left.png" alt="Previous post"/>
-              </div>
-              <div className='right-button' onClick={this.next.bind(_this)}>
-                <img className='arrow' src="/src/images/arrow_right.png" alt="Next post"/>
+              <div className="post__description-container">
+                <div className="wrap-description">
+                  <div className="post-header">
+                    <div className="user-wrap clearfix">
+                      <div className="date">{this.getFormatedDate()}</div>
+                      <Link to={authorLink} className="user">
+                        <div className="photo">
+                          <img src={authorImage} 
+                            alt="Image" 
+                            onError={this.setDefaultAvatar.bind(this)} />
+                        </div>
+                        <div className="name">{this.state.item.author}</div>
+                      </Link>
+                    </div>
+                  </div>
+                  <div className="post-controls clearfix">
+                    <div className="buttons-row" onClick={(e)=>{this.callPreventDefault(e)}}>
+                      <VouteComponent key="vote" 
+                        key="vote"
+                        item={this.state.item}
+                        index={this.state.index}
+                        updateVoteInComponent={this.props.updateVoteInComponent}
+                        parent='post'
+                      />
+                      <FlagComponent 
+                        key="flag"
+                        item={this.state.item}
+                        index={this.state.index}
+                        updateFlagInComponent={this.props.updateFlagInComponent}
+                      />
+                    </div>
+                    <div className="wrap-counts clearfix">
+                      <div className="likes">{this.state.item.net_votes} like's</div>
+                      <div className="amount">{this.state.item.total_payout_reward}</div>
+                    </div>
+                  </div>
+                  {
+                    isUserAuth
+                    ?
+                      <div className="post-comment">
+                        <form className="comment-form form-horizontal">
+                          <div className="form-group clearfix">
+                            <div className="btn-wrap">
+                              <button type="submit" className="btn-submit" onClick={this.sendComment.bind(this)}>Send</button>
+                            </div>
+                            <div className="input-container">
+                              <textarea id="formCOMMENT" 
+                                        name="commentValue"
+                                        value={this.state.commentValue} 
+                                        spellCheck="true" 
+                                        className="form-control"
+                                        onChange={this.handleChange.bind(this)}>
+                              </textarea>
+                              <label htmlFor="formCOMMENT" className="name">Comment</label>
+                            </div>
+                          </div>
+                        </form>
+                        {
+                          this.state.needsCommentFormLoader
+                          ?
+                            <LoadingSpinner />
+                          :
+                            null
+                        }
+                      </div>
+                    :
+                      null
+                  }
+                  <div className="list-scroll js--list-scroll">
+                    <div className="post-description">
+                      <p>{this.state.item.title}</p>
+                      <div className="post-tags clearfix">
+                        {
+                          this.state.item.tags.map((tag, index) => {
+                            return <a key={index}
+                              onClick={(event) => this.props._research.bind(this, event, tag)} 
+                              >
+                                {tag}
+                              </a>
+                          })
+                        }
+                      </div>
+                    </div>
+                    <Comments key="comments" item={this.state.item} newComment={this.state.newComment}/>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
-        );
+        </div>
+      );
     }
 }
 
 ItemModal.propTypes = {
-  item: PropTypes.object,
-  index: PropTypes.number
+  item: PropTypes.object.isRequired,
+  index: PropTypes.number.isRequired
 };
 
 const mapStateToProps = (state) => {
   return {
-    localization: state.localization
+    localization: state.localization,
+    username: state.auth.user,
+    postingKey: state.auth.postingKey,
+    avatar: state.auth.avatar
   };
 };
 

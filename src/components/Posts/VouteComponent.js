@@ -1,41 +1,110 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { voute } from '../../actions/raitingVoute';
-import { connect } from 'react-redux';
+import {
+  Link
+} from 'react-router-dom';
+import {
+  voute
+} from '../../actions/raitingVoute';
+import {
+  connect
+} from 'react-redux';
 import PropTypes from 'prop-types';
 import Steem from '../../libs/steem';
+import utils from '../../utils/utils';
 
 class VouteComponent extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
+      index: this.props.index,
       item: this.props.item,
-      vote: this.props.item.vote
+      vote: this.props.item.vote,
+      parent: this.props.parent || 'post'
     }
   }
 
-  ratingVotes() {
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      index: nextProps.index,
+      item: nextProps.item,
+      vote: nextProps.item.vote
+    });
+  }
+
+  ratingVotes(e) {
+
+    e.preventDefault();
+
+    if (!(this.props.username || this.props.postingKey)) {
+      return false;
+    }
+
+    let queue = sessionStorage.getItem('voteQueue');
+    if (queue == "true")  {
+      return false;
+    }
+
+    sessionStorage.setItem('voteQueue', "true");
+
+    if (!(this.props.username || this.props.postingKey)) {
+      return;
+    }
     const newVoteState = !this.state.vote;
     const urlObject = this.state.item.url.split('/');
 
-    this.props.updateComponent(newVoteState);
     this.setState({ 
-      vote: newVoteState
-    });
+      vote : newVoteState,
+      isVoteLoading : true
+    }, () => {
 
-    Steem.vote(this.props.postingKey, this.props.username, this.state.item.author, urlObject[urlObject.length-1], newVoteState);
+      const callback = (err, success) => {
+        this.setState({
+          isVoteLoading : false
+        })
+        sessionStorage.setItem('voteQueue', "false");
+        if (err) {
+          this.setState({ 
+            vote: !newVoteState
+          }, () => {
+              let text = 'Something went wrong when you voted, please, try again later';
+              if (err.payload.error.data.code == 10) {
+                text = `Sorry, you had used the maximum number of vote changes on this ${this.state.parent}`;
+              }
+              jqApp.pushMessage.open(text);
+            }
+          ); 
+        } else 
+        if (success) {
+            let text = `${utils.capitalize(this.state.parent)} was successfully liked`;
+            if (!newVoteState) text = `${utils.capitalize(this.state.parent)} was successfully disliked`;
+            jqApp.pushMessage.open(text);
+            this.props.updateVoteInComponent(newVoteState, this.state.index)
+        }
+      }
+
+      Steem.vote(this.props.postingKey, 
+                this.props.username, 
+                this.state.item.author, 
+                urlObject[urlObject.length-1], 
+                newVoteState,
+                callback
+                );
+    });
   }
 
   render() {
-    let component = <span className='star rating-text'>&#9825; {this.state.item.net_votes}</span>
-
+    let buttonClasses = "btn-like";
     if (this.state.vote) {
-      component = <span className='star rating-text filled'>&hearts; {this.state.item.net_votes}</span>
+      buttonClasses = buttonClasses + " liked";
     }
+    if (this.state.isVoteLoading) {
+      buttonClasses = buttonClasses + " loading";
+    }
+    let component = <button type="button" className={buttonClasses}></button>;
     
     return (
-        <div className="rating-block pull-right span-with-no-border" onClick={(event) => this.ratingVotes.call(this, event)}>
+        <div className="wrap-btn" onClick={this.ratingVotes.bind(this)}>
           {component}
         </div>
     );

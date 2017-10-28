@@ -1,14 +1,21 @@
 import React from 'react';
 import Modal from 'react-modal';
-import { Link, Redirect } from 'react-router-dom';
-import { getPostComments } from '../../actions/posts';
+import {
+  Link,
+  Redirect
+} from 'react-router-dom';
+import {
+  getPostComments
+} from '../../actions/posts';
 import ReactResizeDetector from 'react-resize-detector';
-import { connect } from 'react-redux';
+import {
+  connect
+} from 'react-redux';
 import PropTypes from 'prop-types';
 import Comments from './Comments';
 import constants from '../../common/constants';
 import VouteComponent from './VouteComponent';
-import ItemModal from './ItemModal';
+import FlagComponent from './FlagComponent';
 
 class Item extends React.Component {
   constructor(props) {
@@ -16,23 +23,30 @@ class Item extends React.Component {
 
     this.state = {
       item: this.props.item,
-      modalIsOpen: false,
+      items: this.props.items,
+      openModal: this.props.openModal,
       currentIndex: this.props.index,
       comments: [],
-      disableNext: false,
-      disablePrev: false,
-      redirectToReferrer: false
+      redirectToReferrer: false,
+      needsRenderSlider: true
     };
+    
+    this.localConstants = {
+       THIS_POST_MODAL_REF : "thisPostModal" + this.props.index
+    }
+  }
 
-    this.openModal = this.openModal.bind(this);
-    this.afterOpenModal = this.afterOpenModal.bind(this);
-    this.closeModal = this.closeModal.bind(this);
+  shouldComponentUpdate(nextProps, nextState) {
+    if (nextProps == this.props && nextState == this.state) return false;
+    return true;
   }
 
   componentDidMount() {
     let propsItem = this.state.item;
 
     propsItem.total_payout_reward = '$' + parseFloat(propsItem.total_payout_reward).toFixed(2);
+
+    propsItem.tags = (propsItem.tags instanceof Array) ? propsItem.tags : propsItem.tags.split(',');
 
     for (let i = 0; i < propsItem.tags.length; i++) {
       propsItem.tags[i] = '#' + propsItem.tags[i];
@@ -45,39 +59,12 @@ class Item extends React.Component {
     });
   }
 
-  openModal() {
-    this.setState({
-      modalIsOpen: true
-    });
-  }
-
-  afterOpenModal() {
-    this._onResize();
-  }
-
-  closeModal() {
-    this.setState({
-      modalIsOpen: false
-    });
-  }
-
-  componentWillUnmount() {
-    this.closeModal();
-  }
-
   resetDefaultProperties(newItem) {
     this.setState({ 
       avatar: newItem.avatar,
       image: newItem.body,
       item: newItem
     });
-  }
-
-  _onResize() {
-    const popupHeight = window.innerHeight - 200;
-
-    $('#popup-image').height(popupHeight);
-    $('#popup-info').height(popupHeight);
   }
 
   _research(e, tagValue) {
@@ -93,6 +80,8 @@ class Item extends React.Component {
       text: tagValue.slice(1, tagValue.lenght),
       category: constants.CATEGORIES.tag
     });
+
+    this.props.history.push('/browse');
   }
 
   redirectToUserProfile() {
@@ -100,21 +89,16 @@ class Item extends React.Component {
   }
 
   setDefaultAvatar() {
-    this.setState({ avatar: '/src/images/person.png' });
+    this.setState({ avatar: constants.NO_AVATAR });
+  }
+
+  setDefaultImage() {
+    this.setState({ image: constants.NO_IMAGE });
   }
 
   callPreventDefault(e) {
     e.stopPropagation();
     e.preventDefault();
-  }
-
-  updateComponent(vote) {
-    let currentItem = this.state.item;
-    currentItem.vote = vote;
-    vote ? currentItem.net_votes++ : currentItem.net_votes--;
-    this.setState({ 
-      item: currentItem
-    });
   }
 
   _getPostImageStyles(itemImage) {
@@ -129,74 +113,82 @@ class Item extends React.Component {
     };
   }
 
+  getFormatedDate() {
+    const date = new Date(this.state.item.created);
+    const locale = "en-us";
+
+    return date.getDate() + ' ' + date.toLocaleString(locale, { month: "short" }) + ' ' + date.getFullYear();
+  }
+
+  _openModal() {
+    if (this.state.openModal != undefined) {
+      this.state.openModal(this.state.currentIndex)
+    }
+  }
+
   render() {
     let _this = this;
-    let itemImage = this.state.image || '/src/images/noimage.jpg';
-    let authorImage = this.state.avatar || '/src/images/person.png';
+    let itemImage = this.state.image || constants.NO_IMAGE;
+    let authorImage = this.state.avatar || constants.NO_AVATAR;
     let comments = <Comments key="comments" item={this.state.item} />;
 
-    let settings = {
-      dots: false,
-      infinite: true,
-      speed: 500,
-      slidesToShow: 1,
-      slidesToScroll: 1
-    };
-
     const authorLink = `/userProfile/${this.state.item.author}`;
+    const cardPhotoStyles = {
+      backgroundImage : 'url(' + itemImage + ')'
+    }
 
     return (
-      <div className="post-container">
-        <div className="post-container-item" onClick={this.openModal}>
-          <div className="row body-row">
-            <div className="post-img col-md-12 col-sm-12 col-xs-12" style={this._getPostImageStyles(itemImage)}></div>
+      <div className="item-wrap">
+        <div className="post-card" >
+          <div className="card-head clearfix">
+            <div className="date">{this.getFormatedDate()}</div>
+            <Link to={authorLink} className="user">
+              <div className="photo">
+                <img src={authorImage} alt="User" onError={this.setDefaultAvatar.bind(this)}/>
+              </div>
+              <div className="name">{this.state.item.author}</div>
+            </Link>
           </div>
-          <div className="row post-footer">
-            <div className="main-info">
-              <div className="">
-                <img className="user-avatar" src={authorImage} alt="Image" onError={this.setDefaultAvatar.bind(this)}/>
+          <div className="card-body" >
+            <div className="card-pic" onClick={this._openModal.bind(this)}>
+                <a style={ cardPhotoStyles } className="img" alt="User" onError={this.setDefaultImage.bind(this)}></a>
               </div>
-              <div className="">
-                <Link to={authorLink}><strong>{this.state.item.author}</strong></Link>
+            <div className="card-wrap">
+              <div className="card-controls clearfix">
+                <div className="buttons-row" onClick={(e)=>{this.callPreventDefault(e)}}>
+                  <VouteComponent key="vote" 
+                    item={this.state.item}
+                    index={this.state.currentIndex}
+                    updateVoteInComponent={this.props.updateVoteInComponent}
+                    parent='post'
+                  />
+                  <FlagComponent 
+                    key="flag"
+                    item={this.state.item}
+                    index={this.state.currentIndex}
+                    updateFlagInComponent={this.props.updateFlagInComponent}
+                  />
+                </div>
+                <div className="wrap-counts clearfix">
+                  <div className="likes">{this.state.item.net_votes} likes</div>
+                  <div className="amount">{this.state.item.total_payout_reward}</div>
+                </div>
               </div>
-              <div onClick={(e)=>{this.callPreventDefault(e)}}>
-                <VouteComponent key="vote" item={this.state.item} updateComponent={this.updateComponent.bind(this)}/>
-              </div>
-            </div>
-            <div className="author-info">
-              <div className="author-info-block">
-                <em className="tags-info">
-                  {
-                    this.state.item.tags.map((tag, index) => {
-                      return <a key={index} onClick={(event) => _this._research(event, tag)} className="tags-urls">{tag}</a>
-                    })
-                  }
-                </em>
-              </div>
-              <div className="payout-reward ">
-                {this.state.item.total_payout_reward}
+              <div className="card-preview">{this.state.item.title}</div>
+              <div className="card-tags clearfix">
+                {
+                  this.state.item.tags.map((tag, index) => {
+                    return <a key={index}
+                      onClick={(event) => this._research.bind(this, event, tag)} 
+                      >
+                        {tag}
+                      </a>
+                  })
+                }
               </div>
             </div>
           </div>
         </div>
-        <Modal
-          isOpen={this.state.modalIsOpen}
-          onAfterOpen={this.afterOpenModal.bind(_this)}
-          onRequestClose={this.closeModal}
-          className='popout-container'
-          contentLabel="Example Modal"
-        >
-          <ItemModal 
-            openModal={this.openModal} 
-            closeModal={this.closeModal} 
-            item={this.props.item} 
-            items={this.props.items} 
-            index={this.props.index}
-            updateComponent={this.updateComponent.bind(this)}
-            _research={this._research.bind(this)}
-          />
-          <ReactResizeDetector handleWidth handleHeight onResize={this._onResize.bind(this)}/>
-        </Modal>
       </div>
     );
   }

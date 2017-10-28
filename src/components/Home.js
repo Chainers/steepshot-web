@@ -9,13 +9,20 @@ import {
   getTopPostsByCategory
 } from '../actions/posts';
 import PostItem from './Posts/Item';
-import { connect, store } from 'react-redux';
+import { 
+  connect, 
+  store 
+} from 'react-redux';
 import InfiniteScroll from './Scroller/infinityScroll';
 import PropTypes from 'prop-types';
 import PostFilterBlock from './Filters/PostFilterBlock';
-import { getStore } from '../store/configureStore';
+import { 
+  getStore 
+} from '../store/configureStore';
 import Loading from 'react-loading-spinner';
 import LoadingSpinner from './LoadingSpinner';
+import ModalComponent from './Common/ModalComponent';
+import ItemModal from './Posts/ItemModal';
 
 // constants
 import constants from '../common/constants';
@@ -29,9 +36,11 @@ class Home extends React.Component {
       hasMore: true,
       offset: null,
       loading: true,
-      activeMode: constants.POST_FILTERS.TRENDING
+      activeMode: constants.POST_FILTERS.TRENDING    
     };
+  }
 
+  componentWillMount() {
     this.store = getStore();
     this.outputUpdate();
     this.resetPosts();
@@ -176,24 +185,21 @@ class Home extends React.Component {
     this.state.posts.pop();
     let newPosts = this.state.posts.concat(response.results);
 
-    if (response.count < 20) {
-      this.setState({
-        posts: newPosts,
-        offset: response.offset, 
-        hasMore: false,
-        loading: false
-      });
-    } else {
-      this.setState({
+    let hasMore = !(this.state.offset == response.offset);
+    
+    this.setState({ 
         posts: newPosts, 
         offset: response.offset,
+        hasMore: hasMore,
         loading: false
-      });
-    }
+    });
   }
   
   // Fetch data
   fetchData() {
+    this.setState({
+      loading: true
+    })
     if (this.props.search.value) {
       this.fetchPostsByCategory();
     } else {
@@ -218,8 +224,55 @@ class Home extends React.Component {
     this.setDefaultPosts(key, true, offset);
   }
 
+  updateVoteInComponent(vote, index) {
+    let newItems = this.state.posts;
+    if (vote && newItems[index].flag) {
+      newItems[index].flag = false;
+    }
+    vote ? newItems[index].net_votes++ : newItems[index].net_votes--;
+    newItems[index].vote = vote;
+    this.setState({ 
+      posts: newItems
+    });
+  }
+
+  updateFlagInComponent(flag, index) {
+    let newItems = this.state.posts;
+    if (flag && newItems[index].vote) {
+      newItems[index].net_votes--;
+      newItems[index].vote = false;
+    }
+    newItems[index].flag = flag;
+    this.setState({ 
+      posts: newItems
+    });
+  }
+
+  _renderModal() {
+    if (this.state.currentItem != undefined)
+    return <ItemModal 
+                item={this.state.posts[this.state.currentItem]} 
+                items={this.state.posts} 
+                index={this.state.currentItem}
+                updateVoteInComponent={this.updateVoteInComponent.bind(this)} 
+                loadMore={this.fetchPostsNext.bind(this)}
+                updateFlagInComponent={this.updateFlagInComponent.bind(this)}
+                hasMore={this.state.hasMore}
+            />
+    return null;
+  }
+
+  openModal(index) {
+    this.setState({
+        currentItem : index
+    },
+        jqApp.openPostModal()
+    );
+  }
+
   render() {
     let items = [];
+    let needsLoader = false;
     let _this = this;
     let renderElements = <div className='loading-block'><LoadingSpinner /></div>;
 
@@ -229,33 +282,56 @@ class Home extends React.Component {
 
     if (this.state.posts.length > 0) {
       this.state.posts.map((post, index) => {
-        items.push(<PostItem key={index} item={post} items={_this.state.posts} index={index} loadMore={this.fetchData.bind(this)}/>);
+        items.push(<PostItem
+          key={index}
+          item={post}
+          items={_this.state.posts}
+          index={index}
+          history={this.props.history}
+          openModal={this.openModal.bind(this)}
+          updateVoteInComponent={this.updateVoteInComponent.bind(this)}
+          updateFlagInComponent={this.updateFlagInComponent.bind(this)}
+        />);
       });
 
-      renderElements = <InfiniteScroll
-          next={this.fetchData.bind(this)}
-          hasMore={this.state.hasMore}
-          loader={<div className='loading-block'>
-            <LoadingSpinner />
-            </div>
-          }
-          endMessage={
-            <p className='loading-block'>
-              <b>Yay! You have seen it all</b>
-            </p>
-          }>
-          {items}
-        </InfiniteScroll>;
-    } else if(this.props.search.value == '') {
-      renderElements = <div className='loading-block'>
-        <LoadingSpinner />
-      </div>;
+      renderElements = items;
+    } else {
+      renderElements = null;
+      needsLoader = true;
     }
 
     return (
-      <div className="container-block" id="all-posts">
-        <PostFilterBlock updatePostsCallback={this.updatePostsByFolter.bind(this)}/>
-        {renderElements}
+      <div className="g-main_i container">
+        <div id="workspace" className="g-content col-xs-12 clearfix">
+          <PostFilterBlock updatePostsCallback={this.updatePostsByFolter.bind(this)}/>
+            <div className="tab-content">
+              <div className="posts-list clearfix" id="all-posts">
+                {renderElements}
+              </div>
+              { 
+                this.state.hasMore && !this.state.loading ? 
+                  <div className="load-more" onClick={this.fetchData.bind(this)}>
+                    <button type="button" className="btn btn-index">Upload more posts</button>
+                  </div> : null 
+              }
+              {
+                this.state.hasMore && this.state.loading && this.state.posts.length !== 0 ? 
+                <div className='loading-block'>
+                  <LoadingSpinner />
+                </div> : null 
+              }
+            </div>
+        </div>
+        {
+          needsLoader
+          ?
+            <LoadingSpinner />
+          :
+            null
+        }
+        <ModalComponent>
+            {this._renderModal()}
+        </ModalComponent>
       </div>
     );
   }

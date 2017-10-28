@@ -1,4 +1,7 @@
-import { getStore } from '../../store/configureStore';
+import {
+  getStore
+} from '../../store/configureStore';
+
 let store = getStore();
 
 const fakeAuth = {

@@ -1,7 +1,13 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { voute } from '../../actions/raitingVoute';
-import { connect } from 'react-redux';
+import {
+  Link
+} from 'react-router-dom';
+import {
+  voute
+} from '../../actions/raitingVoute';
+import {
+  connect
+} from 'react-redux';
 import PropTypes from 'prop-types';
 import Steem from '../../libs/steem';
 
@@ -11,39 +17,71 @@ class FollowComponent extends React.Component {
 
     this.state = {
       item: this.props.item,
-      follow: this.props.item.has_followed != 0
+      follow: this.props.item ? this.props.item.has_followed != 0 : false,
+      pendingStatus: false
     }
   }
 
   handleFollow() {
-    if (this.state.follow) {
-        this.unfollowToUser();
-    } else {
-        this.followToUser();
+    this.followUnfollowToUser(this.state.follow);
+  }
+
+  followUnfollowToUser(status) {
+    this.setState({
+      pendingStatus : true
+    })
+    let callback = (err, result) => {
+      this.setState({
+        pendingStatus : false
+      });
+      if (err) {
+        jqApp.pushMessage.open('Something went wrong, please, try again later');
+      } else 
+      if (result) {
+        let statusText = 'unfollowed';
+        if (!status) statusText = 'followed';
+        jqApp.pushMessage.open(`User was successfully ${statusText}`);
+        this.setState({
+          follow: !this.state.follow
+        })
+      }
     }
-    this.setState({ follow: !this.state.follow });
+    Steem.followUnfollowUser(this.props.postingKey, this.props.username, this.state.item.username, status, callback);
   }
 
-  followToUser() {
-    Steem.followUser(this.props.postingKey, this.props.username, this.state.item.username);
-  }
-
-  unfollowToUser() {
-    Steem.followUser(this.props.postingKey, this.props.username, this.state.item.username);
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.item !== undefined && nextProps.item !== null)
+    this.setState({
+        item: nextProps.item,
+        follow: nextProps.item ? nextProps.item.has_followed != 0 : false
+    });
   }
 
   render() {
-    let componentClassNames = 'follow';
-    let componentName = 'Follow';
+    let componentClassNames;
+    let componentName;
+    if (this.state.pendingStatus) {
+      componentClassNames = 'btn btn-index';
+      componentName = <span className="saving">Pending<span> .</span><span> .</span><span> .</span></span>;
+    } else {
+      if (this.state.follow) {
+          componentClassNames = 'btn btn-primary';
+          componentName = 'Unfollow';
+      } else {
+          componentClassNames = 'btn btn-default';
+          componentName = 'Follow';
+      }
+    }
 
-    if (this.state.follow) {
-        componentClassNames = 'unfollow';
-        componentName = 'Unfollow';
+    let renderItem = null;
+
+    if (this.state.item) {
+      renderItem = <div className={componentClassNames} disabled={this.state.pendingStatus}>{componentName}</div>
     }
 
     return (
-        <div className="follow-block" onClick={this.handleFollow.bind(this)}>
-          <div className={componentClassNames}>{componentName}</div>
+        <div className="btn-wrap" onClick={this.handleFollow.bind(this)}>
+          {renderItem}
         </div>
     );
   }

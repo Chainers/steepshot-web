@@ -51,21 +51,21 @@ class PostFilterBlock extends React.Component {
 
     render() {
         return (
-            <div className="filter-container">
-                <div className="filter-block">
-                    {
-                        this.state.filterContainer.map((item, index) => {
-                            let styles = 'filter-item';
+            <ul role="tablist" className="nav nav-tabs list-reset">
+                {
+                    this.state.filterContainer.map((item, index) => {
+                        let styles = '';
 
-                            if (item.isActive) {
-                                styles = 'filter-item active';
-                            }
+                        if (item.isActive) {
+                            styles = 'active';
+                        }
 
-                            return <div className={styles} onClick={this.switchFilter.bind(this, index)}>{item.label}</div>
-                        })
-                    }
-                </div>
-            </div>
+                        return <li role="presentation" className={styles}>
+                            <a onClick={this.switchFilter.bind(this, index)} aria-controls="tab-1" role="tab" data-toggle="tab" className="tab-head">{item.label}</a>
+                        </li>
+                    })
+                }
+            </ul>
         );
     }
 }

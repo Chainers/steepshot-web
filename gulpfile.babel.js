@@ -1,4 +1,6 @@
+'use strict';
 import gulp from 'gulp';
+import debug from 'gulp-debug';
 import autoprefixer from 'autoprefixer';
 import browserify from 'browserify';
 import watchify from 'watchify';
@@ -6,13 +8,12 @@ import source from 'vinyl-source-stream';
 import buffer from 'vinyl-buffer';
 import eslint from 'gulp-eslint';
 import babelify from 'babelify';
-import uglify from 'gulp-uglify';
+import uglify from 'gulp-uglifyjs';
 import rimraf from 'rimraf';
 import notify from 'gulp-notify';
 import browserSync, { reload } from 'browser-sync';
 import sourcemaps from 'gulp-sourcemaps';
 import postcss from 'gulp-postcss';
-import rename from 'gulp-rename';
 import nested from 'postcss-nested';
 import vars from 'postcss-simple-vars';
 import extend from 'postcss-simple-extend';
@@ -25,23 +26,54 @@ import ghPages from 'gulp-gh-pages';
 import livereload from 'gulp-livereload';
 import webserver from 'gulp-webserver';
 import plumber from 'gulp-plumber';
+import copy from 'gulp-copy';
+import rename from 'gulp-rename';
+import concat from 'gulp-concat';
+import pump from 'pump';
+import babel from 'gulp-babel';
+
+import awspublish from 'gulp-awspublish';
+import s3_index from 'gulp-s3-index';
+import revall from 'gulp-rev-all';
+
+import historyApiFallback from 'connect-history-api-fallback';
 
 var bases = {
  app: 'src/',
  dist: 'dist/',
 };
 
+var guid = '';
+
+var AWSConfig = {
+  "key":    process.env.AWS_ACCESS_KEY_ID,
+  "secret": process.env.AWS_SECRET_ACCESS_KEY,
+  "bucket": "steepshot-pics-1",
+  "region": "us-west-2"
+}
+var publisher = awspublish.create({
+  region: AWSConfig.region,
+  params: {
+    Bucket: AWSConfig.bucket,
+    Key: AWSConfig.key,
+    Secret: AWSConfig.secret,
+  }
+});
+
+var aws_headers = {'Cache-Control': 'max-age=315360000, no-transform, public'};
+
 const paths = {
-  bundle: 'app.js',
   entry: 'src/main.js',
+  trash: 'src/libraries/**/*',
   srcCss: ['src/**/*.scss', 'src/**/*.css'],
-  srcImg: 'src/images/**/*',
+  srcImg: 'static/images/**/*',
   srcLint: ['src/**/*.js', 'test/**/*.js'],
+  srcFonts: ['static/fonts/**/*'],
   dist: 'dist',
-  images: ['images/**/*.png', 'images/**/*.svg', 'images/**/*.ico', 'images/**/*.jpg'],
   distJs: 'dist/js',
-  distImg: 'dist/images',
-  distDeploy: './dist/**/*'
+  distImg: 'dist/static/images',
+  distFonts: 'dist/static/fonts/',
+  prepare: 'dist/prepare'
 };
 
 const customOpts = {
@@ -53,18 +85,36 @@ const customOpts = {
 
 const opts = Object.assign({}, watchify.args, customOpts);
 
-gulp.task('clean', cb => {
+gulp.task('clean', (cb) => {
   rimraf('dist', cb);
 });
 
 gulp.task('browserSync', () => {
   browserSync({
     server: {
-      baseDir: './'
+      baseDir: './',
+      middleware: [ historyApiFallback() ],
+      index: 'index.html'
     }
   });
 
   gulp.watch("index.html").on('change', browserSync.reload);
+});
+
+gulp.task('check', () => {
+  browserSync({
+    server: {
+      baseDir: './dist/',
+      middleware: [ historyApiFallback() ],
+      index: 'index.html'
+    }
+  });
+});
+
+// Fonts
+gulp.task('fonts', function() {
+  return gulp.src(paths.srcFonts)
+    .pipe(gulp.dest(paths.distFonts));
 });
 
 gulp.task('watchify', () => {
@@ -73,7 +123,7 @@ gulp.task('watchify', () => {
   function rebundle() {
     return bundler.bundle()
       .on('error', notify.onError())
-      .pipe(source(paths.bundle))
+      .pipe(source('app.js'))
       .pipe(buffer())
       .pipe(sourcemaps.init({ loadMaps: true }))
       .pipe(sourcemaps.write('.'))
@@ -90,7 +140,7 @@ gulp.task('browserify', () => {
   browserify(paths.entry, { debug: true })
   .transform(babelify)
   .bundle()
-  .pipe(source(paths.bundle))
+  .pipe(source(`app${guid}.js`))
   .pipe(buffer())
   .pipe(sourcemaps.init({ loadMaps: true }))
   .pipe(sourcemaps.write('.'))
@@ -99,7 +149,7 @@ gulp.task('browserify', () => {
 
 gulp.task('styles', () => {
   gulp.src(paths.srcCss)
-  .pipe(rename({ extname: '.css' }))
+  .pipe(rename({ extname: `${guid}.css` }))
   .pipe(sourcemaps.init())
   .pipe(postcss([vars, extend, nested, autoprefixer, cssnano]))
   .pipe(sourcemaps.write('.'))
@@ -109,8 +159,20 @@ gulp.task('styles', () => {
 
 gulp.task('htmlReplace', () => {
   gulp.src('index.html')
-  .pipe(htmlReplace({ css: 'styles/main.css', js: 'js/app.js' }))
+  .pipe(htmlReplace({
+    css: [`/styles/main${guid}.css`, `/styles/posts${guid}.css`],
+    js: [`/js/app${guid}.js`]
+   }))
   .pipe(gulp.dest(paths.dist));
+});
+
+gulp.task('react', (cb) => {
+  return browserify(paths.entry, { debug: false })
+  .transform(babelify)
+  .bundle()
+  .pipe(source(`react.js`))
+  .pipe(buffer())
+  .pipe(gulp.dest(paths.prepare));
 });
 
 gulp.task('imagemin', () => {
@@ -121,7 +183,6 @@ gulp.task('imagemin', () => {
       use: [pngquant()]
     }))
     .pipe(gulp.dest(paths.distImg))
-    .pipe(browserSync.stream());
 });
 
 gulp.task('lint', () => {
@@ -130,22 +191,71 @@ gulp.task('lint', () => {
     .pipe(eslint.format());
 });
 
+gulp.task('libs', (cb) => {
+  return gulp.src([
+    'static/libs/libs/jquery-3.2.1.min.js',
+    'static/libs/libs/jquery-ui.min.js',
+    'static/libs/libs/jquery-ui.touchPunch.min.js',
+    'static/libs/libs/jquery.carouFredSel.min.js',
+    'static/libs/libs/jquery.magnific-popup.min.js',
+    'static/libs/libs/jquery.mCustomScrollbar.min.js',
+    'static/libs/libs/jquery.touchSwipe.min.js',
+    'static/libs/libs/modernizr-custom.min.js',
+    'static/libs/app.min.js'
+  ])
+  .pipe(concat('libs.js'))
+  .pipe(babel({
+    presets: ['es2015']
+  }))
+  .pipe(uglify())
+  .pipe(gulp.dest(paths.prepare));
+});
+
+gulp.task('scripts', (cb) => {
+  runSequence('react', 'libs', 'bundle', cb);
+});
+
+gulp.task('bundle', (cb) => {
+  pump([
+    gulp.src([`${paths.prepare}/libs.js`, `${paths.prepare}/react.js`]),
+    debug({title: 'bundle : '}),
+    concat(`app${guid}.js`),
+    uglify(),
+    gulp.dest('./dist/js')
+  ], cb);
+});
+
 gulp.task('watchTask', () => {
   gulp.watch(paths.srcCss, ['styles']);
   gulp.watch(paths.srcLint, ['lint']);
   gulp.watch(paths.srcImg, ['imagemin']);
 });
 
-gulp.task('deploy', () => {
-  gulp.src(paths.distDeploy)
-    .pipe(ghPages());
-});
-
 gulp.task('watch', cb => {
-  runSequence('clean', ['browserSync', 'watchTask', 'watchify', 'styles', 'lint', 'imagemin'], cb);
+  runSequence('clean', ['watchTask', 'watchify', 'fonts', 'styles', 'lint', 'imagemin'], 'browserSync', cb);
 });
 
 gulp.task('build', cb => {
+  guid = (function() {
+    function s4() {
+      return Math.floor((1 + Math.random()) * 0x10000)
+        .toString(16)
+        .substring(1);
+    }
+    return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+      s4() + '-' + s4() + s4() + s4();
+  })().toString();
+
   process.env.NODE_ENV = 'production';
-  runSequence('clean', ['browserify', 'styles', 'htmlReplace', 'imagemin'], cb);
+  runSequence('clean', 'scripts', ['fonts', 'styles', 'htmlReplace', 'imagemin'], cb);
+});
+
+gulp.task('deploy', () => {
+  gulp.src('dist/**/**')
+    // .pipe(revall.revision())
+    .pipe(awspublish.gzip())
+    .pipe(publisher.publish(aws_headers))
+    .pipe(publisher.cache())
+    .pipe(awspublish.reporter())
+    .pipe(s3_index(AWSConfig))
 });

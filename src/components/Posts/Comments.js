@@ -1,15 +1,19 @@
 import React from 'react';
-import { getPostComments } from '../../actions/posts';
+import {
+  getPostComments
+} from '../../actions/posts';
 import Comment from './Comment';
-import { connect } from 'react-redux';
+import {
+  connect
+} from 'react-redux';
 import PropTypes from 'prop-types';
+import LoadingSpinner from '../LoadingSpinner';
 
 class Comments extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      comment: this.props.comment,
       comments: [],
       avatar: this.props.item.avatar,
       loading: true
@@ -21,12 +25,11 @@ class Comments extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (this.state.comment.comment != nextProps.comment.comment) {
-      this.state.comments.push(nextProps.comment.comment);
+    if (nextProps.newComment) {
+      this.state.comments.push(nextProps.newComment);
 
       this.setState({ 
         comments: this.state.comments,
-        comment: nextProps.comment
       });
     } else {
       this.setState({ 
@@ -56,7 +59,7 @@ class Comments extends React.Component {
     let comments = <div>No comments</div>;
 
     if (this.state.loading) {
-      comments = <div>Loading...</div>;
+      comments = <div className='loading-block'><LoadingSpinner /></div>;
     } 
     
     if (this.state.comments && this.state.comments.length != 0) {
@@ -66,7 +69,7 @@ class Comments extends React.Component {
     }
 
     return (
-      <div className="comments-container">
+      <div className="list-comments">
           {comments}
       </div>
     );

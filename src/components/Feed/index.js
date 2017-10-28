@@ -1,11 +1,20 @@
 import React from 'react';
-import { getUserFeed } from '../../actions/posts';
+import { 
+    getUserFeed 
+} from '../../actions/posts';
 import PostItem from '../Posts/Item';
-import { connect, store } from 'react-redux';
+import {
+    connect,
+    store
+} from 'react-redux';
 import InfiniteScroll from '../Scroller/infinityScroll';
 import PropTypes from 'prop-types';
-import { getStore } from '../../store/configureStore';
+import {
+    getStore
+} from '../../store/configureStore';
 import LoadingSpinner from '../LoadingSpinner';
+import ItemModal from '../Posts/ItemModal';
+import ModalComponent from '../Common/ModalComponent';
 
 class Feed extends React.Component {
     constructor(props) {
@@ -14,7 +23,9 @@ class Feed extends React.Component {
         this.state = {
             posts: [],
             hasMore: true,
-            offset: null
+            offset: null,
+            loading: true,
+            currentUser: this.props.user || null
         };
 
         this.store = getStore();
@@ -26,7 +37,9 @@ class Feed extends React.Component {
 
     loadUserPosts() {
         this.setState({
-            posts: [], offset: null
+            posts: [], 
+            offset: null,
+            loading: true
         });
         this.setUserPosts();
     }
@@ -37,29 +50,77 @@ class Feed extends React.Component {
         getUserFeed(this.props.user).then((response) => {
             _this.setState({
                 posts: response.results, 
-                offset: response.offset
+                offset: response.offset,
+                loading: false
             });
         });
     }
 
     fetchPostsNext() {
         let _this = this;
+        this.setState({
+            loading: true
+        });
 
         getUserFeed(this.props.user, this.state.offset).then((response) => {
-            this.state.posts.pop();
-            let newPosts = this.state.posts.concat(response.results);
-            if (response.count < 20) {
-                _this.setState({
-                    posts: newPosts, 
-                    offset: response.offset, 
-                    hasMore: false});
-            } else {
-                _this.setState({
-                    posts: newPosts, 
-                    offset: response.offset
-                });
-            }
+            _this.state.posts.pop();
+            let newPosts = _this.state.posts.concat(response.results);
+            
+            let hasMore = !(_this.state.offset == response.offset);
+            
+            _this.setState({ 
+                posts: newPosts, 
+                offset: response.offset,
+                hasMore: hasMore,
+                loading: false
+            });
         });
+    }
+
+    updateVoteInComponent(vote, index) {
+        let newItems = this.state.posts;
+        if (vote && newItems[index].flag) {
+          newItems[index].flag = false;
+        }
+        vote ? newItems[index].net_votes++ : newItems[index].net_votes--;
+        newItems[index].vote = vote;
+        this.setState({ 
+          posts: newItems
+        });
+      }
+    
+      updateFlagInComponent(flag, index) {
+        let newItems = this.state.posts;
+        if (flag && newItems[index].vote) {
+          newItems[index].net_votes--;
+          newItems[index].vote = false;
+        }
+        newItems[index].flag = flag;
+        this.setState({ 
+          posts: newItems
+        });
+      }
+
+    _renderModal() {
+        if (this.state.currentItem != undefined)
+        return <ItemModal 
+                    item={this.state.posts[this.state.currentItem]} 
+                    items={this.state.posts} 
+                    index={this.state.currentItem}
+                    updateVoteInComponent={this.updateVoteInComponent.bind(this)}
+                    updateFlagInComponent={this.updateFlagInComponent.bind(this)} 
+                    loadMore={this.fetchPostsNext.bind(this)}
+                    hasMore={this.state.hasMore}
+                />
+        return null;
+    }
+
+    openModal(index) {
+        this.setState({
+            currentItem : index
+        },
+            jqApp.openPostModal()
+        );
     }
 
     render() {
@@ -69,27 +130,43 @@ class Feed extends React.Component {
 
         if (this.state.posts.length > 0) {
             this.state.posts.map((post, index) => {
-                items.push(<PostItem key={index} item={post} items={_this.state.posts} index={index} loadMore={this.fetchPostsNext.bind(this)}/>);
+                items.push(<PostItem
+                    key={index + "_FeedPostItem"}
+                    item={post}
+                    items={_this.state.posts}
+                    index={index}
+                    history={this.props.history}
+                    openModal={this.openModal.bind(this)} 
+                    updateVoteInComponent={this.updateVoteInComponent.bind(this)} 
+                    updateFlagInComponent={this.updateFlagInComponent.bind(this)}/>
+                );
             });
 
-            renderElements = <InfiniteScroll
-                next={this.fetchPostsNext.bind(this)}
-                hasMore={this.state.hasMore}
-                loader={<div className='loading-block'><LoadingSpinner /></div>}
-                endMessage={
-                    <p className='loading-block'>
-                        <b>Yay! You have seen it all</b>
-                    </p>
-                }>
-                {items}
-            </InfiniteScroll>;
+            renderElements = items;
         } else if(this.props.search.value == '') {
-            renderElements = <div className='loading-block'><LoadingSpinner /></div>;
+            renderElements = <LoadingSpinner />;
         }
 
         return(
-            <div className="container-block" id="all-posts">
-                {renderElements}
+            <div className="g-main_i container">
+                <div className="posts-list clearfix" id="all-posts">
+                    {renderElements}
+                </div>
+                { 
+                    this.state.hasMore && !this.state.loading ? 
+                        <div className="load-more" onClick={this.fetchPostsNext.bind(this)}>
+                        <button type="button" className="btn btn-index">Upload more posts</button>
+                        </div> : null 
+                }
+                {
+                    this.state.hasMore && this.state.loading && this.state.posts.length !== 0 ? 
+                    <div className='loading-block'>
+                        <LoadingSpinner />
+                    </div> : null 
+                }
+                <ModalComponent>
+                    {this._renderModal()}
+                </ModalComponent>
             </div>
         );
     }

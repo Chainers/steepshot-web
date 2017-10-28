@@ -3,6 +3,11 @@ import constants from '../common/constants';
 import Promise from 'bluebird';
 import { getStore } from '../store/configureStore';
 import { preparePost } from '../actions/steemPayout';
+import { prepareComment } from '../actions/steemPayout';
+import { setFlag } from '../actions/setFlag';
+import { setComment } from '../actions/setComment';
+import { voute } from '../actions/raitingVoute';
+
 import _ from 'underscore';
 
 const getUserName = () => {
@@ -10,7 +15,8 @@ const getUserName = () => {
 }
 
 class Steem {
-    comment(wif, parentAuthor, parentPermlink, author, body, tags, resolve) {
+
+    comment(wif, parentAuthor, parentPermlink, author, body, tags, callback) {
         const permlink = this._getPermLink();
         const commentObject = {
             parent_author: parentAuthor,
@@ -22,26 +28,53 @@ class Steem {
             json_metadata: JSON.stringify(this._createJsonMetadata(tags))
         };
         const commentOperation = [constants.OPERATIONS.COMMENT, commentObject];
-        const operations = [commentOperation, this._getCommentBenificiaries(commentObject.permlink)];
 
-        steem.broadcast.sendAsync(
-            { operations, extensions: [] },
-            { posting: wif }
-        );
-
-        const callback = (err, result) => {
+        const callbackBc = (err, success) => {
             if(err) {
+                callback(err, null);
                 console.log(err);
-                return resolve(null);
-            } else {
-                return resolve({
-                    type: 'ADD_COMMENT_SUCCESS',
-                    comment: commentObject
-                });
+            } else 
+            if (success) {
+                //setComment(parentPermlink, success).then((response) => { console.log('log comment',response) });
+                callback(null, success);
+                console.log(success)
             }
-        }
+        };
+        this.handleBroadcastMessagesComment(commentOperation, [], wif, callbackBc);
+    }
 
-        callback(null);
+    handleBroadcastMessagesComment(message, extetion, postingKey, callback) {
+        let self = this;
+        this._preCompileTransactionComment(message, postingKey)
+        .then((result) => {
+            if(result) { 
+                let beneficiaries = self._getCommentBenificiaries(message[1].permlink);
+
+                const operations = [message, beneficiaries];
+                console.log(operations);
+
+                steem.broadcast.sendAsync(
+                    { operations, extensions: [] },
+                    { posting: postingKey }, callback
+                );
+            }
+        });
+    }
+
+    _preCompileTransactionComment(message, postingKey) {
+        return steem.broadcast._prepareTransaction({
+            extensions: [],
+            operations: [message],
+        })
+        .then((transaction) => {
+            return Promise.join(
+                transaction,
+                steem.auth.signTransaction(transaction, [postingKey])
+            )
+        })
+        .spread((transaction, signedTransaction) => {
+            return prepareComment(message, signedTransaction);
+        });
     }
 
     _getCommentBenificiaries(permlink) {
@@ -68,11 +101,51 @@ class Steem {
         return [constants.OPERATIONS.COMMENT_OPTIONS, beneficiariesObject];
     }
 
-    vote(wif, username, author, url, isUpVote) {
-        steem.api.getContentAsync(author, url)
-          .then((result) => {
-            steem.broadcast.vote(wif, username, result.author, result.permlink, isUpVote ? 10000 : -1000, () => { return; });
-          });
+    vote(wif, username, author, url, voteStatus, callback) {
+
+        const data = JSON.stringify({
+            username : username,
+            error : ''
+        });
+        
+        const callbackBc = (err, success) => {
+            if(err) {
+                callback(err, null);
+                console.log(err);
+            } else 
+            if (success) {
+                voute(voteStatus, url, data).then((response) => { console.log(response) });
+                callback(null, success);
+                console.log(success)
+            }
+        };
+
+        steem.api.getContentAsync(author, url).then((response) => {
+            steem.broadcast.vote(wif, username, response.author, response.permlink, voteStatus ? 10000 : 0, callbackBc);
+        });
+    }
+
+    flag(wif, username, author, url, flagStatus, callback) {
+        const data = JSON.stringify({
+            username : username,
+            error : ''
+        });
+        
+        const callbackBc = (err, success) => {
+            if(err) {
+                callback(err, null);
+                console.log(err);
+            } else 
+            if (success) {
+                setFlag(url, data).then((response) => { console.log(response) });
+                callback(null, success);
+                console.log(success)
+            }
+        };
+
+        steem.api.getContentAsync(author, url).then((response) => {
+            steem.broadcast.vote(wif, username, response.author, response.permlink, flagStatus ? -10000 : 0, callbackBc);
+        });
     }
 
     upVote() {
@@ -103,14 +176,29 @@ class Steem {
     }
 
     /** Follow an user */
-    followUser(wif, follower, following) {
+    followUnfollowUser(wif, follower, following, status, callback) {
+
+        let blog = ['blog'];
+        if (status) blog = [];
+
         const json = JSON.stringify(
             [constants.OPERATIONS.FOLLOW, {
             follower: follower,
             following: following,
-            what: ['blog']
+            what: blog
             }]
         );
+
+        const callbackBc = (err, result) => {
+            if (err) {
+                callback(err);
+                console.log(err);
+            } else 
+            if (result) {
+                callback(null, result);
+                console.log(result);
+            }
+        }
 
         steem.broadcast.customJson(
             wif,
@@ -118,40 +206,12 @@ class Steem {
             [follower], // Required Posting Auths
             'follow', // Id
             json,
-            (err, result) => {
-                if (err) {
-                    console.log(err);
-                }
-            }
-        );
-    }
-
-    /** Unfollow an user */
-    unfollowUser(wif, follower, following) {
-        const json = JSON.stringify(
-            [constants.OPERATIONS.FOLLOW, {
-                follower: follower,
-                following: following,
-                what: []
-            }]
-        );
-
-        steem.broadcast.customJson(
-            postingWif,
-            [], // Required_auths
-            [follower], // Required Posting Auths
-            'follow', // Id
-            json, //
-            (err, result) => {
-                if (err) {
-                    console.log(err);
-                }
-            }
+            callbackBc
         );
     }
 
     /** Broadcast a post */
-    createPost(wif, tags, author, title, file, callback) {
+    createPost(wif, tags, author, title, description, file, callback) {
         const jsonMetadata = this._createJsonMetadata(tags);
         const permlink = this._getPermLink();
         const category = jsonMetadata.tags[0];
@@ -162,7 +222,8 @@ class Steem {
             author: author,
             permlink: permlink + '-post',
             title: title,
-            body: file || "test",
+            description: description,
+            body: file,
             json_metadata: JSON.stringify(jsonMetadata)
         }];
 
@@ -170,10 +231,11 @@ class Steem {
     }
 
     handleBroadcastMessages(message, extetion, postingKey, callback) {
+        let self = this;
         this._preCompileTransaction(message, postingKey)
         .then((result) => {
             if(result) { 
-                let beneficiaries = this._getBeneficiaries(message[1].permlink, result.meta);
+                let beneficiaries = self._getBeneficiaries(message[1].permlink, result.meta);
                 message[1].body = result.payload.body;
 
                 const operations = [message, beneficiaries];

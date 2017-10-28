@@ -1,8 +1,11 @@
+import React from 'react';
 import Profile from './profile';
 
 const UserProfile = (props) => {
   return (
-    <Profile username={props.match.params.username} />
+    <Profile 
+      username={props.match.params.username} 
+      history={props.history}/>
   );
 }
 
