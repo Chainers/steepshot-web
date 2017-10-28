@@ -25,7 +25,8 @@ class RequestService extends BaseRequestService{
     }
 
     handlev1_1BaseRequestPost(url) {
-        return this.getBasev1_1Url() + '/' + url;
+        return this.getBasev1_1Url() + '/' + url
+        + this.optionsConverter(this.getCustomSettingsOptions(true, true));
     }
   
     handlev1_1RequestUserInfo(url, options) {

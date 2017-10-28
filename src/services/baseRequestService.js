@@ -38,6 +38,13 @@ class BaseRequestService {
         };
     }
 
+    getCustomSettingsOptions(nsfw, low_rated) {
+        return {
+            [constants.SETTINGS.show_nsfw]: nsfw,
+            [constants.SETTINGS.show_low_rated]: low_rated
+        };
+    }
+
     getAuthUser() {
         const user = JSON.parse(localStorage.getItem("user"));
         if (user == undefined) return {};

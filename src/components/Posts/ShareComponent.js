@@ -17,14 +17,14 @@ class ShareComponent extends React.Component {
     }
   }
 
-  componentWillReciveProps(nextProps) {
+  componentWillReceiveProps(nextProps) {
     this.setState({
         ...nextProps
     });
   }
 
   getUrl() {
-      return Constants.URLS.baseUrlPost + this.state.url;
+      return document.location.origin + '/post' + this.state.url;
   }
 
   onSuccess() {
@@ -33,7 +33,7 @@ class ShareComponent extends React.Component {
 
   render() {
     return (
-        <div className={this.props.containerModifier}>
+        <div className={this.state.containerModifier}>
             <CopyToClipboard text={this.getUrl()}
                 onCopy={() => this.onSuccess()}>
                 <button className="btn btn-default btn-xs">{this.state.title}</button>
