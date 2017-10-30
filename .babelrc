@@ -5,9 +5,5 @@
     "react",
     "stage-2"
   ],
-  "env": {
-    "development": {
-      "plugins": ["rewire", "transform-object-assign", "transform-object-rest-spread"]
-    }
-  }
+  "plugins": ["rewire", "transform-object-assign", "transform-object-rest-spread"]
 }
