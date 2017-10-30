@@ -49,6 +49,12 @@ class ItemModal extends React.Component {
       }
     }
 
+    clearNewComment(callback) {
+      this.setState({ 
+        newComment : null 
+      }, () => callback ? callback() : false);
+    }
+
     componentWillReceiveProps(nextProps){
       this.setState({
         item: nextProps.item,
@@ -57,7 +63,8 @@ class ItemModal extends React.Component {
         comments: [],
         disableNext: false,
         disablePrev: false,
-        redirectToReferrer: false
+        redirectToReferrer: false,
+        newComment: null
       }, () => {
         this.needMore(this.props);
       });
@@ -167,7 +174,7 @@ class ItemModal extends React.Component {
       if (this.state.index == this.props.items.length - 1) {
           this.setState({ disableNext: true });
       } else {
-          this.resetDefaultProperties(this.props.items[this.state.index + 1], 1);
+          this.clearNewComment(this.resetDefaultProperties(this.props.items[this.state.index + 1], 1));
       }
     }
 
@@ -188,7 +195,7 @@ class ItemModal extends React.Component {
       if (this.state.index == 0) {
           this.setState({ disablePrev: true });
       } else {
-          this.resetDefaultProperties(this.props.items[this.state.index - 1], -1);
+          this.clearNewComment(this.resetDefaultProperties(this.props.items[this.state.index - 1], -1));
       }
     }
 

@@ -25,7 +25,8 @@ class Comments extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.newComment) {
+ 
+    if (nextProps.newComment != undefined) {
       this.state.comments.push(nextProps.newComment);
 
       this.setState({ 

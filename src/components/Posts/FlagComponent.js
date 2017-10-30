@@ -73,8 +73,8 @@ class FlagComponent extends React.Component {
           ); 
         } else 
         if (success) {
-            let text = 'Post was successfully flagged';
-            if (!newFlagState) text = 'Flag was successfully removed';
+            let text = `The post has been successfully flaged. If you don't see your flag, please give it a few minutes to sync from the blockchain`;
+            if (!newFlagState) text = `The post has been successfully unflaged. If you don't see your flag, please give it a few minutes to sync from the blockchain`;
             jqApp.pushMessage.open(text);
             this.props.updateFlagInComponent(newFlagState, this.state.index)
         }

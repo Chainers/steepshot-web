@@ -73,8 +73,8 @@ class VouteComponent extends React.Component {
           ); 
         } else 
         if (success) {
-            let text = `${utils.capitalize(this.state.parent)} was successfully liked`;
-            if (!newVoteState) text = `${utils.capitalize(this.state.parent)} was successfully disliked`;
+            let text = `${utils.capitalize(this.state.parent)} has been successfully liked. If you don't see your like, please give it a few minutes to sync from the blockchain`;
+            if (!newVoteState) text = `${utils.capitalize(this.state.parent)} has been successfully disliked. If you don't see your dislike, please give it a few minutes to sync from the blockchain`;
             jqApp.pushMessage.open(text);
             this.props.updateVoteInComponent(newVoteState, this.state.index)
         }

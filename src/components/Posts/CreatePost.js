@@ -108,13 +108,16 @@ class CreatePost extends React.Component {
             if (success) {
                 this.setState({
                     renderLoader : false
-                }, () =>
-                    this.props.history.push('/profile')
-                );
+                }, () => {
+                    jqApp.pushMessage.open('Post has been successfully created. If you don\'t see the post in your profile, please give it a few minutes to sync from the blockchain');
+                    setTimeout(() => {
+                        this.props.history.push('/profile')
+                    }, 1000);
+                });
             } else {
+                jqApp.pushMessage.open(err);
                 this.setState({ 
                     renderLoader : false,
-                    message: err
                 });
             }
         };
@@ -328,9 +331,6 @@ class CreatePost extends React.Component {
                         </div>
                     </div>
                     {addDescriptionBlock}
-                    <div className="help-block">
-                        <div className="text--red help-block__notice">{this.state.message}</div>
-                    </div>
                     <div className="form-group">
                         <div className="buttons-container">
                 

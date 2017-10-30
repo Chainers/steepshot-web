@@ -71,7 +71,7 @@ export function logFlag(author, permlink, data) {
     logCORS(url, options, 'flag');
 }
 
-export function logVoute(isVouteUp, author, premlink, data) {
+export function logVoute(isVouteUp, author, permlink, data) {
 
     let vType = (isVouteUp) ? 'upvote' : 'downvote';
 
