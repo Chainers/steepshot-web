@@ -3,7 +3,7 @@
     "es2015",
     "es2017", 
     "react",
-    "stage-2"
+    "stage-0"
   ],
-  "plugins": ["rewire", "transform-object-assign", "transform-object-rest-spread"]
+  "plugins": ["rewire", "transform-runtime", "transform-object-assign", "transform-object-rest-spread"]
 }

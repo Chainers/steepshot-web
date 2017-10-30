@@ -1,23 +1,9 @@
 {
   "name": "Steepshot-web",
-  "version": "2.4.1",
-  "description": "React JS application skeleton using Browserify and other awesome tools",
-  "main": "app.js",
+  "version": "1.0.0",
   "repository": {
     "type": "git"
   },
-  "keywords": [
-    "gulp",
-    "react",
-    "browserify",
-    "seed",
-    "boilerplate",
-    "kickstarter",
-    "ES6",
-    "ES2017",
-    "babel",
-    "ava"
-  ],
   "ava": {
     "require": [
       "babel-register"
@@ -34,13 +20,9 @@
     "lint": "./node_modules/.bin/eslint src/**/*.js",
     "server": "webpack-dev-server --content-base ./public --inline --hot"
   },
-  "author": "Maurizio Mangione",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/Raisky34/Sport365/issues"
-  },
-  "homepage": "https://github.com/Raisky34/Sport365",
   "dependencies": {
+    "babel-polyfill": "^6.26.0",
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-es2017": "^6.24.1",
     "bluebird": "^3.5.0",
@@ -85,19 +67,22 @@
     "steemconnect": "0.0.35",
     "underscore": "^1.8.3",
     "url": "^0.11.0",
-    "webpack": "^3.1.0"
+    "webpack": "^3.1.0",
+    "babel-plugin-rewire": "^1.1.0",
+    "babel-plugin-transform-object-assign": "^6.22.0",
+    "babel-plugin-transform-object-rest-spread": "^6.23.0"
   },
   "devDependencies": {
     "autoprefixer": "^6.3.6",
     "ava": "^0.15.2",
     "babel": "^6.5.2",
-    "babel-core": "^6.7.7",
+    "babel-core": "^6.26.0",
     "babel-eslint": "^6.0.4",
-    "babel-loader": "^7.1.1",
-    "babel-plugin-rewire": "^1.1.0",
-    "babel-plugin-transform-object-assign": "^6.22.0",
-    "babel-plugin-transform-object-rest-spread": "^6.23.0",
+    "babel-loader": "^7.1.2",
+    "babel-polyfill": "^6.26.0",
+    "babel-preset-es2015": "^6.24.1",
     "babel-preset-react": "^6.5.0",
+    "babel-preset-stage-0": "^6.24.1",
     "babel-preset-stage-2": "^6.24.1",
     "babel-register": "^6.7.2",
     "babelify": "^7.3.0",

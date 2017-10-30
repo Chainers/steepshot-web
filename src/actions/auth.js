@@ -6,6 +6,7 @@ import constants from '../common/constants';
 import steem from 'steem';
 import { getStore } from '../store/configureStore';
 import Constants from '../common/constants';
+import { logLogin } from './logging';
 
 const baseUrl = constants.URLS.baseUrl_v1;
 
@@ -43,6 +44,9 @@ export function login(username, postingKey, history, dispatch, callback) {
         messages: "Not valid user name or posting key"
       };
     } else {
+
+      logLogin(JSON.stringify({ username : username }));
+
       let welcomeName = username;
       let metadata;
       localStorage.setItem('user', JSON.stringify(username));
