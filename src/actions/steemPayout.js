@@ -14,12 +14,6 @@ export function preparePost(message, transaction) {
   return fetch(`${baseUrl}/post/prepare`, {
     method: 'POST',
     body: form
-  }).then(response => {
-    if (response.ok) {
-      return response.json().then((json) => {
-        return json;
-      });
-    }
   });
 }
 
@@ -35,11 +29,5 @@ export function prepareComment(message, transaction) {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
     },
-  }).then(response => {
-    if (response.ok) {
-      return response.json().then((json) => {
-        return json;
-      });
-    }
   });
 }

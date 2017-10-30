@@ -104,8 +104,8 @@ class CreatePost extends React.Component {
         if (this.state.disabeleCreating) return false;
         if (!this.validateFields()) return false;
 
-        const callback = (result, message) => { 
-            if (result) {
+        const callback = (err, success) => { 
+            if (success) {
                 this.setState({
                     renderLoader : false
                 }, () =>
@@ -114,7 +114,7 @@ class CreatePost extends React.Component {
             } else {
                 this.setState({ 
                     renderLoader : false,
-                    message: 'You can only create posts 5 minutes after the previous one.'
+                    message: err
                 });
             }
         };

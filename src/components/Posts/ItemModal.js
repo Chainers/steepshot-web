@@ -89,11 +89,7 @@ class ItemModal extends React.Component {
           needsCommentFormLoader : false
         });
         if (err) {
-          let text = 'Something went wrong, please, try again later';
-          if (err.payload.error.data.code == 10) {
-            text = 'Sorry, you had used the maximum number of comments on this post';
-          }
-          jqApp.pushMessage.open(text);
+          jqApp.pushMessage.open(err);
         } else 
         if (success) {
             this.setState({

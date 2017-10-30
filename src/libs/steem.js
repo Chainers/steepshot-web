@@ -4,9 +4,7 @@ import Promise from 'bluebird';
 import { getStore } from '../store/configureStore';
 import { preparePost } from '../actions/steemPayout';
 import { prepareComment } from '../actions/steemPayout';
-import { setFlag } from '../actions/setFlag';
-import { setComment } from '../actions/setComment';
-import { voute } from '../actions/raitingVoute';
+import { logComment, logVoute, logFlag, logPost, logFollow } from '../actions/logging';
 
 import _ from 'underscore';
 
@@ -17,6 +15,7 @@ const getUserName = () => {
 class Steem {
 
     comment(wif, parentAuthor, parentPermlink, author, body, tags, callback) {
+        
         const permlink = this._getPermLink();
         const commentObject = {
             parent_author: parentAuthor,
@@ -35,7 +34,10 @@ class Steem {
                 console.log(err);
             } else 
             if (success) {
-                //setComment(parentPermlink, success).then((response) => { console.log('log comment',response) });
+                const data = JSON.stringify({
+                    username : author
+                });
+                logComment(parentAuthor, parentPermlink, data);
                 callback(null, success);
                 console.log(success)
             }
@@ -46,8 +48,8 @@ class Steem {
     handleBroadcastMessagesComment(message, extetion, postingKey, callback) {
         let self = this;
         this._preCompileTransactionComment(message, postingKey)
-        .then((result) => {
-            if(result) { 
+        .then((response) => {
+            if(response.ok) { 
                 let beneficiaries = self._getCommentBenificiaries(message[1].permlink);
 
                 const operations = [message, beneficiaries];
@@ -57,7 +59,11 @@ class Steem {
                     { operations, extensions: [] },
                     { posting: postingKey }, callback
                 );
-            }
+            } else {
+                response.json().then((result) => {
+                    callback(result.username[0]);
+                });
+            };
         });
     }
 
@@ -104,8 +110,7 @@ class Steem {
     vote(wif, username, author, url, voteStatus, callback) {
 
         const data = JSON.stringify({
-            username : username,
-            error : ''
+            username : username
         });
         
         const callbackBc = (err, success) => {
@@ -114,7 +119,7 @@ class Steem {
                 console.log(err);
             } else 
             if (success) {
-                voute(voteStatus, url, data).then((response) => { console.log(response) });
+                logVoute(voteStatus, author, url, data);
                 callback(null, success);
                 console.log(success)
             }
@@ -126,18 +131,17 @@ class Steem {
     }
 
     flag(wif, username, author, url, flagStatus, callback) {
-        const data = JSON.stringify({
-            username : username,
-            error : ''
-        });
         
         const callbackBc = (err, success) => {
-            if(err) {
+            if (err) {
                 callback(err, null);
                 console.log(err);
             } else 
             if (success) {
-                setFlag(url, data).then((response) => { console.log(response) });
+                const data = JSON.stringify({
+                    username : username
+                });
+                logFlag(author, url, data);
                 callback(null, success);
                 console.log(success)
             }
@@ -195,6 +199,10 @@ class Steem {
                 console.log(err);
             } else 
             if (result) {
+                const data = JSON.stringify({
+                    username : follower
+                });
+                logFollow(status, following, data)
                 callback(null, result);
                 console.log(result);
             }
@@ -227,29 +235,46 @@ class Steem {
             json_metadata: JSON.stringify(jsonMetadata)
         }];
 
-        this.handleBroadcastMessages(operation, [], wif, callback);
+        const callbackBc = (err, success) => {
+            if(err) {
+                callback(err, null);
+                console.log(err);
+            } else 
+            if (success) {
+                const data = JSON.stringify({
+                    username : author
+                });
+                logPost(data);
+                callback(null, success);
+                console.log(success)
+            }
+        };
+
+        this.handleBroadcastMessages(operation, [], wif, callbackBc);
     }
 
     handleBroadcastMessages(message, extetion, postingKey, callback) {
         let self = this;
         this._preCompileTransaction(message, postingKey)
-        .then((result) => {
-            if(result) { 
-                let beneficiaries = self._getBeneficiaries(message[1].permlink, result.meta);
-                message[1].body = result.payload.body;
-
-                const operations = [message, beneficiaries];
-                console.log(operations);
-
-                steem.broadcast.sendAsync(
-                    { operations, extensions: [] },
-                    { posting: postingKey }
-                );
-            }
-
-            if(callback && typeof callback == 'function') {
-                callback(result, message);
-            }
+        .then((response) => {
+            if (response.ok) {
+                response.json().then((result) => {
+                    let beneficiaries = self._getBeneficiaries(message[1].permlink, result.meta);
+                    message[1].body = result.payload.body;
+    
+                    const operations = [message, beneficiaries];
+                    console.log(operations);
+    
+                    steem.broadcast.sendAsync(
+                        { operations, extensions: [] },
+                        { posting: postingKey }, callback
+                    );
+                });
+            } else {
+                response.json().then((result) => {
+                    callback(result.username[0]);
+                });
+            };
         });
     }
 
