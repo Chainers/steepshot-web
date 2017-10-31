@@ -1,12 +1,6 @@
 import React from 'react';
 import {
-  getPosts, 
-  getNewPosts,
-  getHotPosts,
-  getTopPosts,
-  getNewPostsByCategory,
-  getHotPostsByCategory,
-  getTopPostsByCategory
+  getPosts
 } from '../actions/posts';
 import PostItem from './Posts/Item';
 import { 
@@ -135,8 +129,7 @@ class Home extends React.Component {
   }
 
   getPosts(options, callback) {
-    getPosts(options)
-    .then(response => callback(response));
+    getPosts(options, true).then(response => callback(response));
   }  
 
   handleDefaultPostsResponce(response) {

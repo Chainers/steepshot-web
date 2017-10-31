@@ -45,7 +45,7 @@ class Comments extends React.Component {
   updatePostComments(nextProps) {
     nextProps = nextProps || this.props;
 
-    getComments(nextProps.item.author, nextProps.item.url).then((response) => {
+    getComments(nextProps.item.author, nextProps.item.url, true).then((response) => {
       this.setState({
         comments: response.results,
         loading: false,

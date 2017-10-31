@@ -40,7 +40,8 @@ export default {
     POSTS_POINTS : {
         POSTS_NEW : 'posts/new',
         POSTS_TOP : 'posts/top',
-        POSTS_HOT : `posts/hot`
+        POSTS_HOT : 'posts/hot',
+        POSTS_USER_FEED : 'recent/posts'
     },
 
     PROMISES : {

@@ -1,7 +1,7 @@
 import React from 'react';
 import LocalizedStrings from '../Localization/index.js';
 import { 
-    getUserPosts
+    getPosts
 } from '../../actions/posts';
 import { connect } from 'react-redux';
 import LoadingSpinner from '../LoadingSpinner';
@@ -52,7 +52,14 @@ class ItemsComponent extends React.Component {
     userName = userName || this.state.authorName;
     offset = offset !== undefined ? offset : this.state.offset;
 
-    getUserPosts(userName, offset).then((response) => {
+    const options = {
+      point : `user/${userName}/posts`,
+      params : {
+        offset : offset
+      }
+    }
+
+    getPosts(options, true).then((response) => {
       _this.state.items.pop();
       let newPosts = _this.state.items.concat(response.results);
 
