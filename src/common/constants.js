@@ -33,6 +33,12 @@ export default {
         show_nsfw : "show_nsfw"
     },
 
+    SETTINGS_LABELS : {
+        save : 'Save',
+        succesSave : 'Saved',
+        upToDate : 'Already up to date'
+    },
+
     POSTS_SETTINGS: {
         defaultLimit: 16
     },
