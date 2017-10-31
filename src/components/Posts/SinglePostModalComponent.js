@@ -19,6 +19,8 @@ import {
     getPostShaddow
 } from '../../actions/posts';
 
+import utils from '../../utils/utils';
+
 class SinglePostModalComponent extends React.Component {
     constructor(props) {
         super(props);
@@ -262,7 +264,9 @@ class SinglePostModalComponent extends React.Component {
                                             </div>
                                             <div className="wrap-counts clearfix">
                                             <div className="likes">{this.state.item.net_votes} like's</div>
-                                            <div className="amount">{this.state.item.total_payout_reward}</div>
+                                            <div className="amount">
+                                                {utils.currencyChecker(this.state.item.total_payout_reward)}
+                                            </div>
                                         </div>
                                     </div>
                                     {

@@ -28,7 +28,7 @@ class ShareComponent extends React.Component {
   }
 
   onSuccess() {
-      jqApp.pushMessage.open("URL was copied in clipboard");
+      jqApp.pushMessage.open("URL has been copied in your clipboard");
   }
 
   render() {

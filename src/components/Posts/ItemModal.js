@@ -16,6 +16,8 @@ import FlagComponent from './FlagComponent';
 import ShareComponent from './ShareComponent';
 import LoadingSpinner from '../LoadingSpinner';
 
+import utils from '../../utils/utils';
+
 class ItemModal extends React.Component {
     constructor(props) {
         super(props);
@@ -277,7 +279,9 @@ class ItemModal extends React.Component {
                     </div>
                     <div className="wrap-counts clearfix">
                       <div className="likes">{this.state.item.net_votes} like's</div>
-                      <div className="amount">{this.state.item.total_payout_reward}</div>
+                      <div className="amount">
+                        {utils.currencyChecker(this.state.item.total_payout_reward)}
+                      </div>
                     </div>
                   </div>
                   {
