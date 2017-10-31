@@ -2,7 +2,7 @@ import React from 'react';
 import LocalizedStrings from '../Localization/index.js';
 import {
   getFollowing
-} from '../../actions/profile';
+} from '../../actions/posts';
 import { connect } from 'react-redux';
 import LoadingSpinner from '../LoadingSpinner';
 import UserItem from './userItem';
@@ -52,7 +52,14 @@ class FollowingComponent extends React.Component {
     userName = userName || this.state.authorName;
     offset = offset !== undefined ? offset : this.state.offset;
 
-    getFollowing(userName, offset).then((response) => {
+    const options = {
+      point : `user/${userName}/following`,
+      params : {
+        offset : offset
+      }
+    }
+
+    getFollowing(options, true).then((response) => {
         _this.state.items.pop();
         let newItems = _this.state.items.concat(response.results);     
 

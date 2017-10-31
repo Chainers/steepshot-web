@@ -22,7 +22,9 @@ const makeCancellableRequest = url =>
 
 let requestPromises = {
   [Constants.PROMISES.GET_COMMENTS] : Promise.resolve(),
-  [Constants.PROMISES.GET_POSTS] : Promise.resolve()
+  [Constants.PROMISES.GET_POSTS] : Promise.resolve(),
+  [Constants.PROMISES.GET_FOLLOWERS] : Promise.resolve(),
+  [Constants.PROMISES.GET_FOLLOWING] : Promise.resolve()
 }
 
 async function getItems(url, promiseName, needsDestroyPrevious, where) {
@@ -44,36 +46,20 @@ export function getPosts(options, needsDestroyPrevious) {
   return getItems(url, Constants.PROMISES.GET_POSTS, needsDestroyPrevious, 'getPosts');
 }
 
-export function getComments(author, authorUrl, needsDestroyPrevious) {
-  const url = RequestService.handlev1_1BaseRequestPosts(`post/${author}/${authorUrl}/comments`);
+export function getComments(options, needsDestroyPrevious) {
+  const url = RequestService.handlev1_1BaseRequestPosts(options.point, options.params);
   return getItems(url, Constants.PROMISES.GET_COMMENTS, needsDestroyPrevious, 'getComments');
 }
 
-export function getUserFeed(author, offset) {
-  const url = RequestService.handlev1_1BaseRequestPosts('recent/posts', {
-    offset: offset
-  });
-  console.log(url);
-  return fetch(url, {
-    method: 'GET'
-  }).then((response) => {
-    if (response.ok) {
-      return response.json().then((json) => {
-        return json;
-      });
-    } else {
-      return response.json().then(() => {
-        return [];
-      });
-    }
-  });
+export function getFollowers(options, needsDestroyPrevious) {
+  const url = RequestService.handlev1_1BaseRequestPosts(options.point, options.params);
+  return getItems(url, Constants.PROMISES.GET_FOLLOWERS, needsDestroyPrevious, 'getFollowers');
 }
 
-
-
-// export function getNewPostsByCategory(category, offset) {
-//   category = category.replace(/[^A-Za-zА-Яа-яЁё(\d)+]/g, "")
-
+export function getFollowing(options, needsDestroyPrevious) {
+  const url = RequestService.handlev1_1BaseRequestPosts(options.point, options.params);
+  return getItems(url, Constants.PROMISES.GET_FOLLOWING, needsDestroyPrevious, 'getFollowing');
+}
 
 export function getPostShaddow(urlPost) {
   const url = RequestService.handlev1_1BaseRequestPost(`post/${urlPost}/info`);
