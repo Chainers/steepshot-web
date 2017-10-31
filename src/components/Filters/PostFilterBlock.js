@@ -60,9 +60,19 @@ class PostFilterBlock extends React.Component {
                             styles = 'active';
                         }
 
-                        return <li role="presentation" className={styles}>
-                            <a onClick={this.switchFilter.bind(this, index)} aria-controls="tab-1" role="tab" data-toggle="tab" className="tab-head">{item.label}</a>
-                        </li>
+                        return (
+                            <li role="presentation" key={index} className={styles}>
+                                <a 
+                                    onClick={this.switchFilter.bind(this, index)} 
+                                    aria-controls="tab-1" 
+                                    role="tab" 
+                                    data-toggle="tab" 
+                                    className="tab-head"
+                                >
+                                    {item.label}
+                                </a>
+                            </li>
+                        )
                     })
                 }
             </ul>

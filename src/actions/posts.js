@@ -1,108 +1,55 @@
 import RequestService from '../services/requestService';
 import Constants from '../common/constants';
+import Promise from 'bluebird';
 
-export function getPosts() {
-  const url = RequestService.handlev1_1BaseRequestPosts(`posts/new`);
+Promise.config({
+  warnings: true,
+  cancellation: true,
+  monitoring: true
+});
 
-  return fetch(url, {
-    method: 'GET'
-  }).then((response) => {
-    if (response.ok) {
-      return response.json().then((json) => {
-        return json;
+const makeCancellableRequest = url => 
+  new Promise((resolve, reject, onCancel) => {
+      let xhr = new XMLHttpRequest();
+      xhr.onload = resolve;
+      xhr.onerror = reject;
+      xhr.open("GET", url, true);
+      xhr.send(null);
+      onCancel(function() {
+          xhr.abort();
       });
-    } else {
-      return response.json().then(() => {
-        return [];
-      });
-    }
   });
+
+let requestPromises = {
+  [Constants.PROMISES.GET_COMMENTS] : Promise.resolve(),
+  [Constants.PROMISES.GET_POSTS] : Promise.resolve()
 }
 
-// New posts
-//https://steepshot.org/api/v1/posts/top?limit=10&offset=/reiki-trail/@reiki-trail/reiki-boost-healing-invocation-9
-export function getNewPosts(offset) {
-  const url = RequestService.handlev1_1BaseRequestPosts(`posts/new`, {
-    offset: offset
-  });
-
-  return fetch(url, {
-    method: 'GET'
-  }).then((response) => {
-    if (response.ok) {
-      return response.json().then((json) => {
-        return json;
-      });
-    } else {
-      return response.json().then(() => {
-        return [];
-      });
-    }
-  });
+async function getItems(url, promiseName, where) {
+  let a = requestPromises[promiseName];
+  debugger;
+  if (requestPromises[promiseName].isPending()) requestPromises[promiseName].cancel();
+  try {
+    requestPromises[promiseName] = await makeCancellableRequest(url).then(response => JSON.parse(response.target.response));
+    return requestPromises[promiseName];
+  }
+  catch(e) {
+    console.warn(where);
+    console.log(e);
+    return [];
+  }
 }
 
-// Traiding posts
-//https://steepshot.org/api/v1/posts/top?limit=10&offset=/reiki-trail/@reiki-trail/reiki-boost-healing-invocation-9
-export function getTopPosts(offset) {
-  const url = RequestService.handlev1_1BaseRequestPosts(`posts/top`, {
-    offset: offset
-  });
-  
-  return fetch(url, {
-    method: 'GET'
-  }).then((response) => {
-    if (response.ok) {
-      return response.json().then((json) => {
-        return json;
-      });
-    } else {
-      return response.json().then(() => {
-        return [];
-      });
-    }
-  });
+export function getPosts(options) {
+  const url = RequestService.handlev1_1BaseRequestPosts(options.point, options.params);
+  return getItems(url, Constants.PROMISES.GET_POSTS, 'getPosts');
 }
 
-// Hot posts
-//https://steepshot.org/api/v1/posts/hot?limit=10&offset=/reiki-trail/@reiki-trail/reiki-boost-healing-invocation-9
-export function getHotPosts(offset) {
-  const url = RequestService.handlev1_1BaseRequestPosts(`posts/hot`, {
-    offset: offset
-  });
-
-  return fetch(url, {
-    method: 'GET'
-  }).then((response) => {
-    if (response.ok) {
-      return response.json().then((json) => {
-        return json;
-      });
-    } else {
-      return response.json().then(() => {
-        return [];
-      });
-    }
-  });
-}
-
-
-//https://steepshot.org/api/v1/post/joseph//steemfest/@joseph/win-a-free-trip-to-lisbon-portugal-to-attend-steemfest-ii/comments
 export function getPostComments(author, authorUrl) {
   const url = RequestService.handlev1_1BaseRequestPosts(`post/${author}/${authorUrl}/comments`);
-  return fetch(url, {
-    method: 'GET'
-  }).then((response) => {
-    if (response.ok) {
-      return response.json().then((json) => {
-        return json;
-      });
-    } else {
-      return response.json().then(() => {
-        return [];
-      });
-    }
-  });
+  return getItems(url, Constants.PROMISES.GET_COMMENTS, 'getComments');
 }
+//END COMMENTS
 
 /// <summary>
 ///     Examples:
@@ -163,93 +110,10 @@ export function getUserFeed(author, offset) {
 }
 
 
-// New posts by category
-/// <summary>
-///     Examples:
-///     1) GET https://steepshot.org/api/v1/posts/food/new HTTP/1.1
-///     2) GET https://steepshot.org/api/v1/posts/food/new?
-///            offset=%2Ftravel%2F%40sweetsssj%2Ftravel-with-me-39-my-appointment-with-gulangyu
-///            &limit=5 HTTP/1.1
-/// </summary>
-export function getNewPostsByCategory(category, offset) {
-  category = category.replace(/[^A-Za-zА-Яа-яЁё(\d)+]/g, "")
 
-  const url = RequestService.handlev1_1BaseRequestPosts(`posts/${category}`, {
-    offset: offset
-  });
-  return fetch(url, {
-    method: 'GET'
-  }).then((response) => {
-    if (response.ok) {
-      return response.json().then((json) => {
-        return json;
-      });
-    } else {
-      return response.json().then(() => {
-        return [];
-      });
-    }
-  });
-}
+// export function getNewPostsByCategory(category, offset) {
+//   category = category.replace(/[^A-Za-zА-Яа-яЁё(\d)+]/g, "")
 
-// Top posts by category
-/// <summary>
-///     Examples:
-///     1) GET https://steepshot.org/api/v1/posts/food/top HTTP/1.1
-///     2) GET https://steepshot.org/api/v1/posts/food/top?
-///            offset=%2Ftravel%2F%40sweetsssj%2Ftravel-with-me-39-my-appointment-with-gulangyu
-///            &limit=5 HTTP/1.1
-/// </summary>
-export function getTopPostsByCategory(category, offset) {
-  category = category.replace(/[^A-Za-zА-Яа-яЁё(\d)+]/g, "");
-
-  const url = RequestService.handlev1_1BaseRequestPosts(`posts/${category}`, {
-    offset: offset
-  });
-  return fetch(url, {
-    method: 'GET'
-  }).then((response) => {
-    if (response.ok) {
-      return response.json().then((json) => {
-        return json;
-      });
-    } else {
-      return response.json().then(() => {
-        return [];
-      });
-    }
-  });
-}
-
-// Hot posts by category
-/// <summary>
-///     Examples:
-///     1) GET https://steepshot.org/api/v1/posts/food/hot HTTP/1.1
-///     2) GET https://steepshot.org/api/v1/posts/food/hot?
-///            offset=%2Ftravel%2F%40sweetsssj%2Ftravel-with-me-39-my-appointment-with-gulangyu
-///            &limit=5 HTTP/1.1
-/// </summary>
-export function getHotPostsByCategory(category, offset) {
-  category = category.replace(/[^A-Za-zА-Яа-яЁё(\d)+]/g, "")
-
-  const url = RequestService.handlev1_1BaseRequestPosts(`posts/${category}/hot`, {
-    offset: offset
-  });
-
-  return fetch(url, {
-    method: 'GET'
-  }).then((response) => {
-    if (response.ok) {
-      return response.json().then((json) => {
-        return json;
-      });
-    } else {
-      return response.json().then(() => {
-        return [];
-      });
-    }
-  });
-}
 
 export function getPostShaddow(urlPost) {
   const url = RequestService.handlev1_1BaseRequestPost(`post/${urlPost}/info`);
