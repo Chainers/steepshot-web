@@ -114,7 +114,7 @@ class Settings extends React.Component {
                             </div>
                             <div className="card-field__body">
                                 <div className='form-group settings-switcher'>
-                                    <label for="lowRated" className="name">Show low rated posts</label>
+                                    <label htmlFor="lowRated" className="name">Show low rated posts</label>
                                     <div className="input-container">
                                         <div className="checkbox">
                                             <label>
@@ -129,7 +129,7 @@ class Settings extends React.Component {
                                     </div>
                                 </div>
                                 <div className='form-group settings-switcher'>
-                                    <label for="nsfw" className="name">Show NSFW posts</label>
+                                    <label htmlFor="nsfw" className="name">Show NSFW posts</label>
                                     <div className="input-container">
                                         <div className="checkbox">
                                             <label>
@@ -154,10 +154,6 @@ class Settings extends React.Component {
         );
     }
 }
-
-Settings.propTypes = {
-  search: PropTypes.object.isRequired
-};
 
 const mapStateToProps = (state, props) => {
   return {
