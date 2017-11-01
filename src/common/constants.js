@@ -43,5 +43,9 @@ export default {
         defaultLimit: 36
     },
 
+    DISPLAY : {
+        DESK_BREAKPOINT : 1024
+    },
+
     CURRENCY: '$'
 }
