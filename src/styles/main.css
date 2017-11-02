@@ -529,3 +529,11 @@
   animation-duration: 0.3s;
   animation-fill-mode: both;
 }
+
+.user-panel {
+  z-index: 2;
+}
+
+.position--unset {
+  position: unset;
+}

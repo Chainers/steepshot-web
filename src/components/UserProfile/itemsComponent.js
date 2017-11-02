@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import LocalizedStrings from '../Localization/index.js';
 import { 
     getPosts
@@ -6,7 +7,7 @@ import {
 import { connect } from 'react-redux';
 import LoadingSpinner from '../LoadingSpinner';
 import PostItem from '../Posts/Item';
-import contants from '../../common/constants';
+import Constants from '../../common/constants';
 import ModalComponent from '../Common/ModalComponent';
 import ItemModal from '../Posts/ItemModal';
 
@@ -15,12 +16,13 @@ class ItemsComponent extends React.Component {
     super(props);
 
     this.state = {
-      authorName: this.props.username,
-      currentUser: this.props.currentUser,
-      loading: true,
-      hasMore: true,
-      localize: LocalizedStrings.getInstance(),
-      items: []
+      authorName : this.props.username,
+      loading : true,
+      loadingMore : false,
+      localize : LocalizedStrings.getInstance(),
+      items : [],
+      point : this.props.point,
+      wrapperModifier : this.props.wrapperModifier
     };
   }
 
@@ -29,53 +31,42 @@ class ItemsComponent extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.username === this.state.authorName) {
-        return;
-    }
-
     this.setState({
-        authorName: nextProps.username,
-        items: [],
-        hasMore: true,
-        offset: null,
-        loading: true
+        items : [],
+        hasMore : true,
+        offset : null,
+        loading : true,
+        loadingMore : false,
+        point : nextProps.point 
+    }, () => {
+      this.fetchData();
     });
-
-    this.fetchData(nextProps.username, null);
   }
 
-  fetchData(userName, offset) {
-    this.setState({
-        loading: true
-    });
-    let _this = this;
-    userName = userName || this.state.authorName;
-    offset = offset !== undefined ? offset : this.state.offset;
+  fetchData() {
 
+    if (this.state.items.length > 0)
+    this.setState({
+        loadingMore : true
+    });
     const options = {
-      point : `user/${userName}/posts`,
+      point : this.state.point,
       params : {
-        offset : offset
+        offset : this.state.offset
       }
     }
-
     getPosts(options, true).then((response) => {
-      _this.state.items.pop();
-      let newPosts = _this.state.items.concat(response.results);
-
-      let hasMore = !(_this.state.offset == response.offset);
-      
-      _this.setState({ 
+      this.state.items.pop();
+      let newPosts = this.state.items.concat(response.results);
+      let hasMore = !(this.state.offset == response.offset);
+      this.setState({ 
           items: newPosts, 
           offset: response.offset,
           hasMore: hasMore,
-          loading: false
+          loading : false,
+          loadingMore: false
       });
     });
-  }
-
-  setDefaultAvatar() {
-    this.setState({ avatar: contants.NO_AVATAR });
   }
 
   updateVoteInComponent(vote, index) {
@@ -104,15 +95,17 @@ class ItemsComponent extends React.Component {
 
   _renderModal() {
       if (this.state.currentItem != undefined)
-      return <ItemModal 
-                  item={this.state.items[this.state.currentItem]} 
-                  items={this.state.items} 
-                  index={this.state.currentItem}
-                  updateVoteInComponent={this.updateVoteInComponent.bind(this)}
-                  updateFlagInComponent={this.updateFlagInComponent.bind(this)}
-                  loadMore={this.fetchData.bind(this)}
-                  hasMore={this.state.hasMore}
-              />
+      return (
+        <ItemModal 
+          item={this.state.items[this.state.currentItem]} 
+          items={this.state.items} 
+          index={this.state.currentItem}
+          updateVoteInComponent={this.updateVoteInComponent.bind(this)}
+          updateFlagInComponent={this.updateFlagInComponent.bind(this)}
+          loadMore={this.fetchData.bind(this)}
+          hasMore={this.state.hasMore}
+        />
+      );
       return null;
   }
 
@@ -124,46 +117,62 @@ class ItemsComponent extends React.Component {
     );
   }
 
-  render() {
-    let _this = this;
-    let items = [];
-
-    this.state.items.map((post, index) => {
-        items.push(<PostItem
+  renderItems() {
+    if (this.state.loading) return null;
+    if (this.state.items.length == 0) {
+      return (
+        <div className="empty-query-message">
+          {Constants.EMPTY_QUERY}
+        </div>
+      )
+    } else {
+      let items = [];
+      this.state.items.map((post, index) => {
+        items.push(
+          <PostItem
             key={index}
             item={post}
-            items={_this.state.items}
             index={index}
-            history={this.props.history}
-            loadMore={this.fetchData.bind(this)}
             openModal={this.openModal.bind(this)}
             updateVoteInComponent={this.updateVoteInComponent.bind(this)}
             updateFlagInComponent={this.updateFlagInComponent.bind(this)}
           />
         );
-    });
-
-    let renderComponent = items;
-    let updateButton = null;
-
-    if (this.state.items.length === 0 && !this.state.loading) {
-      renderComponent = <div className="empty-query-message">It's very strange, but we do not have anything yet for this query. Try to look for something else ...</div>;
+      })
+      return items;
     }
-    
-    if (this.state.hasMore && !this.state.loading && this.state.items.length !== 0) {
-      updateButton = <div className="load-more" onClick={this.fetchData.bind(this, this.state.authorName, this.state.offset)}>
+  }
+
+  renderMainLoader() {
+    if (this.state.loading) return <LoadingSpinner />;
+    return null;
+  }
+
+  renderUploadMore() {
+    if (this.state.loading || this.state.items.length == 0) return null;
+    if (this.state.loadingMore) {
+      return (
+        <div className="position--relative">
+          <LoadingSpinner />
+        </div>
+      )
+    } else {
+      return (
+        <div className="load-more" onClick={this.fetchData.bind(this)}>
           <button type="button" className="btn btn-index">Upload more posts</button>
-        </div>;
-    } else if (this.state.hasMore && this.state.loading && this.state.items.length === 0) {
-      updateButton = <LoadingSpinner />;
+        </div>
+      )
     }
+  }
 
+  render() {
     return (
       <div>
-        <div className="posts-list clearfix type-2">
-          {renderComponent}
+        <div className={this.state.wrapperModifier}>
+          {this.renderItems()}
         </div>
-        {updateButton}
+        {this.renderUploadMore()}
+        {this.renderMainLoader()}
         <ModalComponent>
             {this._renderModal()}
         </ModalComponent>

@@ -3,23 +3,29 @@ import LocalizedStrings from '../Localization/index.js';
 import { 
   getUserProfile
 } from '../../actions/profile';
+import {
+  getFollowers,
+  getFollowing
+} from '../../actions/posts';
 import { connect } from 'react-redux';
-import FollowersComponent from './followersComponent';
-import FollowingComponent from './followingComponent';
+import UsersComponent from './UsersComponent';
 import FollowComponent from '../Posts/FollowComponent';
 import ItemsComponent from './itemsComponent';
-import constants from '../../common/constants';
+import Constants from '../../common/constants';
 
 class UserProfile extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      watcher: this.props.user,
-      authorName: this.props.username,
-      profile: null,
-      localize: LocalizedStrings.getInstance(),
-      showFollow: this.props.showFollow != undefined ? this.props.showFollow  : true
+      watcher : this.props.user,
+      authorName : this.props.username,
+      profile : null,
+      localize : LocalizedStrings.getInstance(),
+      showFollow : this.props.showFollow != undefined ? this.props.showFollow  : true,
+      itemsPoint : this.insertUsername(Constants.POSTS_FILTERS.POSTS_USER.point, this.props.username),
+      followingPoint : this.insertUsername(Constants.USERS_FILTERS.FOLLOWING.point, this.props.username),
+      followersPoint : this.insertUsername(Constants.USERS_FILTERS.FOLLOWERS.point, this.props.username)
     };
   }
 
@@ -28,22 +34,16 @@ class UserProfile extends React.Component {
   }
 
   getUserProfile(userName) {
-    let _this = this;
     let showFollow = true;
-
     userName = userName || this.state.authorName;
-
     getUserProfile(userName).then((result) => {
-      const profile = result;
-
       if (this.state.watcher == userName || this.state.watcher == undefined) {
         showFollow = false;
       }
-
-      _this.setState({
+      this.setState({
         showFollow: showFollow,
-        profile: profile,
-        avatar: profile.profile_image
+        profile: result,
+        avatar: result.profile_image
       });
     });
   }
@@ -52,21 +52,25 @@ class UserProfile extends React.Component {
     if (nextProps.username === this.state.authorName) {
         return;
     }
-
     this.setState({
+        avatar : Constants.NO_AVATAR,
         authorName: nextProps.username,
-        profile: null
+        itemsPoint : this.insertUsername(Constants.POSTS_FILTERS.POSTS_USER.point, nextProps.username),
+        followingPoint : this.insertUsername(Constants.USERS_FILTERS.FOLLOWING.point, nextProps.username),
+        followersPoint : this.insertUsername(Constants.USERS_FILTERS.FOLLOWERS.point, nextProps.username)
     });
 
     this.getUserProfile(nextProps.username);
   }
 
-  setDefaultAvatar() {
-    this.setState({ avatar: constants.NO_AVATAR });
+  insertUsername(point, userName) {
+      if (userName == undefined) return point;
+      let path = point.split('/');
+      return `${path[0]}/${userName}/${path[1]}`;
   }
 
   render() {
-    let profileImageSrc = this.state.avatar || constants.NO_AVATAR;
+    let profileImageSrc = this.state.avatar || Constants.NO_AVATAR;
     let name = '';
     let website = '';
     let about = '';
@@ -95,9 +99,7 @@ class UserProfile extends React.Component {
               <div className="user-information">
                 <div className="pic-wrap clearfix">
                   <div className="pic">
-                    <img src={profileImageSrc} 
-                      alt="" 
-                      onError={this.setDefaultAvatar.bind(this)}/>
+                    <img src={profileImageSrc} />
                   </div>
                   { this.state.showFollow ? <FollowComponent item={this.state.profile} /> : null }
                 </div>
@@ -113,7 +115,7 @@ class UserProfile extends React.Component {
                 </div>
               </div>
             </div>
-            <div className="col-xs-12 col-md-8 col-lg-9">
+            <div className="col-xs-12 col-md-8 col-lg-9 position--unset">
               <div className="user-tabs">
                 <ul role="tablist" className="nav nav-tabs list-reset">
                   <li role="presentation" className="active">
@@ -134,13 +136,26 @@ class UserProfile extends React.Component {
                 </ul>
                 <div className="tab-content">
                   <div id="tab-profile-1" role="tabpanel" className="tab-pane fade in active">
-                    <ItemsComponent username={this.state.authorName}/>
+                    <ItemsComponent 
+                      point={this.state.itemsPoint} 
+                      wrapperModifier="posts-list clearfix type-2"
+                    />
                   </div>
                   <div id="tab-profile-2" role="tabpanel" className="tab-pane fade">
-                    <FollowingComponent username={this.state.authorName}/>
+                    <UsersComponent 
+                      point={this.state.followingPoint} 
+                      usersLabel={Constants.USERS_FILTERS.FOLLOWING.label} 
+                      wrapperModifier="posts-list clearfix type-2"
+                      getUsers={getFollowing}
+                    />
                   </div>
                   <div id="tab-profile-3" role="tabpanel" className="tab-pane fade">
-                    <FollowersComponent username={this.state.authorName}/>
+                    <UsersComponent 
+                      point={this.state.followersPoint}
+                      usersLabel={Constants.USERS_FILTERS.FOLLOWERS.label}  
+                      wrapperModifier="posts-list clearfix type-2"
+                      getUsers={getFollowers}
+                    />
                   </div>
                 </div>
               </div>

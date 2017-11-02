@@ -4,7 +4,6 @@ import {
   withRouter
 } from 'react-router-dom';
 import LocalizedStrings from './Localization/index.js';
-import Search from './Search/index.js';
 import {
   getLanguage,
   getAllLanguages
@@ -30,8 +29,13 @@ class Header extends React.Component {
   }
 
   componentDidMount() {
-    this.setState({isSearchOpen: !!this.props.search.value});
-    if (this.refs[this.props.location.pathname]) $(this.refs[this.props.location.pathname]).addClass('active')
+    this.setState({
+      isSearchOpen: !!this.props.search.value
+    });
+    if (this.refs[this.props.location.pathname]) $(this.refs[this.props.location.pathname]).addClass('active');
+    setTimeout(() => {
+      jqApp.search.init();  
+    }, 0);
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -67,8 +71,22 @@ class Header extends React.Component {
     });
   }
 
-  searchClick() {
-    this.setState({isSearchOpen: !this.state.isSearchOpen})
+  searchClicked() {
+    this.setState({
+      isSearchOpen: !this.state.isSearchOpen
+    });
+  }
+
+  searchKeyPress(e) {
+    if (ev.key === 'Enter') {
+      this.props.history.push(`/search/${this.state.searchValue}`);
+    }
+  }
+
+  searchHandleChange(e) {
+    this.setState({
+      searchValue : e.target.value
+    });
   }
 
   render() {
@@ -173,13 +191,34 @@ class Header extends React.Component {
                   <img src="/static/images/steepshotLogo@2x.svg" alt="logo" />
                 </a>
               </div>
-              {/* {<div className="section search">
+              <div className="section search">
                 <div className="wrap-search">
                   <a href="#" className="lnk-search">Search</a>
                   <a href="#" className="lnk-search-mob"></a>
                 </div>
-              </div>} */}
+              </div>
               {browse}
+            </div>
+          </div>
+          <div className="search-panel closed">
+            <div className="wrap-panel container clearfix">
+              <div className="wrap-btn">
+                <button type="button" className="btn-close"></button>
+              </div>
+              <div className="wrap-search">
+                <form className="form-search">
+                  <input 
+                    type="text" 
+                    name="search"
+                    value={this.state.searchValue}
+                    onChange={this.searchHandleChange.bind(this)}
+                    required={true}
+                    placeholder="Enter your search query" 
+                    className="input-search" 
+                    onKeyPress={this.searchKeyPress.bind(this)}
+                  />
+                </form>
+              </div>
             </div>
           </div>
         </div>

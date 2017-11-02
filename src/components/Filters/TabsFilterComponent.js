@@ -2,58 +2,54 @@ import React from 'react';
 import constants from '../../common/constants';
 import PropTypes from 'prop-types';
 
-class PostFilterBlock extends React.Component {
+class TabsFilterComponent extends React.Component {
     constructor(props) { 
         super(props);
-
         this.state = {
-            filterContainer: [
-                {
-                    label: constants.POST_FILTERS.TRENDING,
-                    isActive: true
-                },
-                {
-                    label: constants.POST_FILTERS.HOT,
-                    isActive: false
-                },
-                {
-                    label: constants.POST_FILTERS.NEW,
-                    isActive: false
-                }
-            ],
-            isActiveItemIndex: 0
+            ...this.props
         }
+        this.state.keys[this.state.activeItemIndex].isActive = true;
+    }
 
-        this.resetActiveFilter(0);
+    // insertUsername(point, userName) {
+    //     if (category == undefined) return point;
+    //     let path = point.split('/');
+    //     return `${path[0]}/${category}/${path[1]}`;
+    // }
+
+    makeFilterParams(key) {
+        return {
+            key : key.label,
+            point : key.point
+        }
     }
 
     resetActiveFilter(index) {
-        if (index != this.state.isActiveItemIndex) {
-            let filterContainer = this.state.filterContainer;
 
-            filterContainer[index].isActive = true;
+        let keys = this.state.keys;
+        keys[index].isActive = true;
 
-            if (this.state.isActiveItemIndex >= 0) {
-                filterContainer[this.state.isActiveItemIndex].isActive = false;
-            }
-
-            this.setState({ 
-                filterContainer: filterContainer,
-                isActiveItemIndex: index
-            });
+        if (this.state.activeItemIndex) {
+            keys[this.state.activeItemIndex].isActive = false;
         }
+
+        this.setState({ 
+            keys : keys,
+            activeItemIndex: index
+        });
     }
 
     switchFilter(index) {
+        if (index == this.state.activeItemIndex) return false;
         this.resetActiveFilter(index);
-        this.props.updatePostsCallback(this.state.filterContainer[index].label);
+        this.state.updateCallback(this.makeFilterParams(this.state.keys[index]));
     }
 
     render() {
         return (
             <ul role="tablist" className="nav nav-tabs list-reset">
                 {
-                    this.state.filterContainer.map((item, index) => {
+                    this.state.keys.map((item, index) => {
                         let styles = '';
 
                         if (item.isActive) {
@@ -80,8 +76,10 @@ class PostFilterBlock extends React.Component {
     }
 }
 
-PostFilterBlock.propTypes = {
-  updatePostsCallback: PropTypes.func.isRequired
+TabsFilterComponent.propTypes = {
+  updateCallback : PropTypes.func.isRequired,
+  activeItemIndex : PropTypes.number.isRequired,
+  keys : PropTypes.array.isRequired
 };
 
-export default PostFilterBlock;
+export default TabsFilterComponent;
