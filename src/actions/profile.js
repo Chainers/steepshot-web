@@ -1,10 +1,5 @@
 import RequestService from '../services/requestService';
 
-/// <summary>
-///     Examples:
-///     1) GET https://steepshot.org/api/v1/user/joseph.kalu/info HTTP/1.1
-/// </summary>
-
 export function getUserProfile(userName) {
   const url = RequestService.handlev1_1RequestUserInfo(`user/${userName}/info`);
 

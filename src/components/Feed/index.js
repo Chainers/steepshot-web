@@ -1,6 +1,6 @@
 import React from 'react';
 import { 
-    getUserFeed 
+    getPosts
 } from '../../actions/posts';
 import PostItem from '../Posts/Item';
 import {
@@ -15,6 +15,8 @@ import {
 import LoadingSpinner from '../LoadingSpinner';
 import ItemModal from '../Posts/ItemModal';
 import ModalComponent from '../Common/ModalComponent';
+
+import Constants from '../../common/constants';
 
 class Feed extends React.Component {
     constructor(props) {
@@ -47,7 +49,12 @@ class Feed extends React.Component {
     setUserPosts() {
         let _this = this;
 
-        getUserFeed(this.props.user).then((response) => {
+        const options = {
+            point : Constants.POSTS_POINTS.POSTS_USER_FEED,
+            params : {}
+        }
+
+        getPosts(options, true).then((response) => {
             _this.setState({
                 posts: response.results, 
                 offset: response.offset,
@@ -62,7 +69,14 @@ class Feed extends React.Component {
             loading: true
         });
 
-        getUserFeed(this.props.user, this.state.offset).then((response) => {
+        const options = {
+            point : Constants.POSTS_POINTS.POSTS_USER_FEED,
+            params : {
+                offset : this.state.offset
+            }
+        }
+
+        getPosts(options, true).then((response) => {
             _this.state.posts.pop();
             let newPosts = _this.state.posts.concat(response.results);
             
