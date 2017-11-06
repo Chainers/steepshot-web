@@ -42,15 +42,15 @@ export default {
     POSTS_FILTERS: {
         POSTS_TOP : {
             label : 'Top',
-            point : 'posts/top'
+            point : 'posts/top' //Can be updated by category
         },
         POSTS_HOT : {
             label : 'Hot',
-            point : 'posts/hot'
+            point : 'posts/hot' //Can be updated by category
         },
         POSTS_NEW : {
             label : 'New',
-            point : 'posts/new'
+            point : 'posts/new' //Can be updated by category
         },
         POSTS_USER_FEED : {
             label : 'Feed',
@@ -58,18 +58,29 @@ export default {
         },
         POSTS_USER : {
             label : 'User',
-            point : 'user/posts' //Should be updated by username
+            point : 'user/posts' //Should been updated by username
         }
     },
 
     USERS_FILTERS : {
         FOLLOWERS : {
             label : 'Followers',
-            point : 'user/followers' //Should be updated by username
+            point : 'user/followers' //Should been updated by username
         },
         FOLLOWING : {
             label : 'Following',
-            point : 'user/following' //Should be updated by username
+            point : 'user/following' //Should been updated by username
+        }
+    },
+
+    SEARCH : {
+        USERS : {
+            label : 'Users',
+            point : 'user/search'
+        },
+        CATEGORIES : {
+            label : 'Category',
+            point : 'categories/search'
         }
     },
 
@@ -77,7 +88,8 @@ export default {
         GET_COMMENTS : 'GET_COMMENTS_PROMISE',
         GET_POSTS : 'GET_POSTS_PROMISE',
         GET_FOLLOWERS : 'GET_FOLLOWERS_PROMISE',
-        GET_FOLLOWING : 'GET_FOLLOWING_PROMISE'
+        GET_FOLLOWING : 'GET_FOLLOWING_PROMISE',
+        GET_USERS_SEARCH : 'GET_USERS_SEARCH'
     },
 
     CURRENCY: '$'

@@ -2,9 +2,14 @@ import React from 'react';
 import { 
   connect
 } from 'react-redux';
+import {
+  getUsersSearch,
+  getPostsBySearch
+} from '../../actions/posts';
 import PropTypes from 'prop-types';
 import TabsFilterComponent from '../Filters/TabsFilterComponent';
 import ItemsComponent from '../UserProfile/itemsComponent';
+import UsersComponent from '../UserProfile/UsersComponent';
 import Constants from '../../common/constants';
 
 class SearchResultsComponent extends React.Component {
@@ -13,22 +18,39 @@ class SearchResultsComponent extends React.Component {
 
     this.state = {
       keys : [
-        Constants.POSTS_FILTERS.POSTS_TOP,
-        Constants.POSTS_FILTERS.POSTS_HOT,
-        Constants.POSTS_FILTERS.POSTS_NEW
+        { label : Constants.SEARCH.USERS.label },
+        { label : Constants.SEARCH.CATEGORIES.label }
       ],
       activeItemIndex : 0,
+      hotSectionOptions : {
+        limit : 4
+      },
+      categorySectionOptions : {
+        query : this.props.searchValue
+      },
+      usersSearchOptions : {
+        query : this.props.searchValue
+      },
       searchValue : this.props.searchValue
     };
-    this.state.filterParams = {
-      point : this.state.keys[this.state.activeItemIndex].point
-    }
   }
 
-  updatePostsByFilter(filterParams) {
-    this.setState({ 
-      filterParams : filterParams
-    });
+  insertCategory(point, category) {
+    if (category == undefined) return point;
+    let path = point.split('/');
+    return `${path[0]}/${category}/${path[1]}`;
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      categorySectionOptions : {
+        query : nextProps.searchValue
+      },
+      usersSearchOptions : {
+        query : nextProps.searchValue
+      },
+      searchValue : nextProps.searchValue
+    })
   }
 
   render() {
@@ -36,11 +58,32 @@ class SearchResultsComponent extends React.Component {
       <div className="g-main_i container">
         <div id="workspace" className="g-content clearfix">
           <TabsFilterComponent 
-            updateCallback={this.updatePostsByFilter.bind(this)}
             keys={this.state.keys}
             activeItemIndex={this.state.activeItemIndex}
-          />
-          <ItemsComponent point={this.state.filterParams.point} wrapperModifier="posts-list clearfix"/>
+          >
+            <UsersComponent
+              point={Constants.SEARCH.USERS.point}
+              getUsers={getUsersSearch}
+              options={this.state.usersSearchOptions}
+              wrapperModifier="posts-list clearfix type-2"
+            />
+            <div>
+              <ItemsComponent
+                point={this.insertCategory(Constants.POSTS_FILTERS.POSTS_HOT.point, this.state.searchValue)}
+                cancelPrevious={false}
+                wrapperModifier="posts-list clearfix"
+                options={this.state.hotSectionOptions}
+              />
+              <hr />
+              <ItemsComponent 
+                point={Constants.SEARCH.CATEGORIES.point} 
+                cancelPrevious={false} 
+                wrapperModifier="posts-list clearfix"
+                getPosts={getPostsBySearch}
+                options={this.state.categorySectionOptions}
+              />
+            </div>
+          </TabsFilterComponent>
         </div>
       </div>
     );

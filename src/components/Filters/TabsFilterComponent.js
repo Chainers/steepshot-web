@@ -1,6 +1,7 @@
 import React from 'react';
 import constants from '../../common/constants';
 import PropTypes from 'prop-types';
+import TabsWrapper from '../Wrappers/TabsWrapper';
 
 class TabsFilterComponent extends React.Component {
     constructor(props) { 
@@ -11,17 +12,12 @@ class TabsFilterComponent extends React.Component {
         this.state.keys[this.state.activeItemIndex].isActive = true;
     }
 
-    // insertUsername(point, userName) {
-    //     if (category == undefined) return point;
-    //     let path = point.split('/');
-    //     return `${path[0]}/${category}/${path[1]}`;
-    // }
-
-    makeFilterParams(key) {
-        return {
-            key : key.label,
-            point : key.point
-        }
+    componentWillReceiveProps(nextProps) {
+        let newProps = nextProps;
+        newProps.keys[newProps.activeItemIndex].isActive = true;
+        this.setState(
+            { ...newProps } 
+        );
     }
 
     resetActiveFilter(index) {
@@ -42,42 +38,52 @@ class TabsFilterComponent extends React.Component {
     switchFilter(index) {
         if (index == this.state.activeItemIndex) return false;
         this.resetActiveFilter(index);
-        this.state.updateCallback(this.makeFilterParams(this.state.keys[index]));
+    }
+
+    renderNavigation() {
+        let navItems = [];
+        this.state.keys.map((item, index) => {
+            let styles = '';
+
+            if (item.isActive) {
+                styles = 'active';
+            }
+
+            navItems.push(
+                <li role="presentation" key={index} className={styles}>
+                    <a 
+                        onClick={this.switchFilter.bind(this, index)} 
+                        aria-controls={"tab-" + index}
+                        href={"#tab-" + index}
+                        role="tab" 
+                        data-toggle="tab" 
+                        className="tab-head"
+                    >
+                        {item.label}
+                    </a>
+                </li>
+            );
+        });
+        return navItems;
     }
 
     render() {
         return (
-            <ul role="tablist" className="nav nav-tabs list-reset">
-                {
-                    this.state.keys.map((item, index) => {
-                        let styles = '';
-
-                        if (item.isActive) {
-                            styles = 'active';
-                        }
-
-                        return (
-                            <li role="presentation" key={index} className={styles}>
-                                <a 
-                                    onClick={this.switchFilter.bind(this, index)} 
-                                    aria-controls="tab-1" 
-                                    role="tab" 
-                                    data-toggle="tab" 
-                                    className="tab-head"
-                                >
-                                    {item.label}
-                                </a>
-                            </li>
-                        )
-                    })
-                }
-            </ul>
+            <div>
+                <ul role="tablist" className="nav nav-tabs list-reset">
+                    {this.renderNavigation()}
+                </ul>
+                <TabsWrapper 
+                    activeTab={this.state.activeItemIndex}
+                >
+                    {this.state.children}
+                </TabsWrapper>
+            </div>
         );
     }
 }
 
 TabsFilterComponent.propTypes = {
-  updateCallback : PropTypes.func.isRequired,
   activeItemIndex : PropTypes.number.isRequired,
   keys : PropTypes.array.isRequired
 };

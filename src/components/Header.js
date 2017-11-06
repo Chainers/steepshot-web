@@ -29,9 +29,6 @@ class Header extends React.Component {
   }
 
   componentDidMount() {
-    this.setState({
-      isSearchOpen: !!this.props.search.value
-    });
     if (this.refs[this.props.location.pathname]) $(this.refs[this.props.location.pathname]).addClass('active');
     setTimeout(() => {
       jqApp.search.init();  
@@ -65,20 +62,9 @@ class Header extends React.Component {
     this.forceUpdate();
   }
 
-  _dispatch() {
-    this.props.dispatch({
-      type: 'CHANGE'
-    });
-  }
-
-  searchClicked() {
-    this.setState({
-      isSearchOpen: !this.state.isSearchOpen
-    });
-  }
-
   searchKeyPress(e) {
-    if (ev.key === 'Enter') {
+    if (e.key === 'Enter') {
+      e.preventDefault();
       this.props.history.push(`/search/${this.state.searchValue}`);
     }
   }

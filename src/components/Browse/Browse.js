@@ -13,21 +13,12 @@ class Browse extends React.Component {
 
     this.state = {
       keys : [
-        Constants.POSTS_FILTERS.POSTS_TOP,
-        Constants.POSTS_FILTERS.POSTS_HOT,
-        Constants.POSTS_FILTERS.POSTS_NEW
+        { label : Constants.POSTS_FILTERS.POSTS_TOP.label },
+        { label : Constants.POSTS_FILTERS.POSTS_HOT.label },
+        { label : Constants.POSTS_FILTERS.POSTS_NEW.label }
       ],
       activeItemIndex : 0
     };
-    this.state.filterParams = {
-      point : this.state.keys[this.state.activeItemIndex].point
-    }
-  }
-
-  updatePostsByFilter(filterParams) {
-    this.setState({ 
-      filterParams : filterParams
-    });
   }
 
   render() {
@@ -35,11 +26,25 @@ class Browse extends React.Component {
       <div className="g-main_i container">
         <div id="workspace" className="g-content clearfix">
           <TabsFilterComponent 
-            updateCallback={this.updatePostsByFilter.bind(this)}
             keys={this.state.keys}
             activeItemIndex={this.state.activeItemIndex}
-          />
-          <ItemsComponent point={this.state.filterParams.point} wrapperModifier="posts-list clearfix"/>
+          >
+            <ItemsComponent 
+              point={Constants.POSTS_FILTERS.POSTS_TOP.point} 
+              cancelPrevious={false} 
+              wrapperModifier="posts-list clearfix"
+            />
+            <ItemsComponent 
+              point={Constants.POSTS_FILTERS.POSTS_HOT.point} 
+              cancelPrevious={false} 
+              wrapperModifier="posts-list clearfix"
+            />
+            <ItemsComponent 
+              point={Constants.POSTS_FILTERS.POSTS_NEW.point} 
+              cancelPrevious={false}
+              wrapperModifier="posts-list clearfix"
+            />
+          </TabsFilterComponent>
         </div>
       </div>
     );

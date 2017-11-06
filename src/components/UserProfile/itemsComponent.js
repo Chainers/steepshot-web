@@ -22,7 +22,10 @@ class ItemsComponent extends React.Component {
       localize : LocalizedStrings.getInstance(),
       items : [],
       point : this.props.point,
-      wrapperModifier : this.props.wrapperModifier
+      wrapperModifier : this.props.wrapperModifier,
+      cancelPrevious : this.props.cancelPrevious == undefined ? true : this.props.cancelPrevious,
+      options : this.props.options,
+      getPosts : this.props.getPosts == undefined ? getPosts : this.props.getPosts
     };
   }
 
@@ -37,7 +40,7 @@ class ItemsComponent extends React.Component {
         offset : null,
         loading : true,
         loadingMore : false,
-        point : nextProps.point 
+        point : nextProps.point,
     }, () => {
       this.fetchData();
     });
@@ -49,13 +52,16 @@ class ItemsComponent extends React.Component {
     this.setState({
         loadingMore : true
     });
+
     const options = {
       point : this.state.point,
-      params : {
+      params : Object.assign({}, {
         offset : this.state.offset
-      }
-    }
-    getPosts(options, true).then((response) => {
+      },
+      this.state.options)
+    };
+
+    this.state.getPosts(options, this.state.cancelPrevious).then((response) => {
       this.state.items.pop();
       let newPosts = this.state.items.concat(response.results);
       let hasMore = !(this.state.offset == response.offset);

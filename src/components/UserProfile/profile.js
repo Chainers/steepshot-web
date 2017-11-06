@@ -12,6 +12,7 @@ import UsersComponent from './UsersComponent';
 import FollowComponent from '../Posts/FollowComponent';
 import ItemsComponent from './itemsComponent';
 import Constants from '../../common/constants';
+import TabsFilterComponent from '../Filters/TabsFilterComponent';
 
 class UserProfile extends React.Component {
   constructor(props) {
@@ -25,7 +26,13 @@ class UserProfile extends React.Component {
       showFollow : this.props.showFollow != undefined ? this.props.showFollow  : true,
       itemsPoint : this.insertUsername(Constants.POSTS_FILTERS.POSTS_USER.point, this.props.username),
       followingPoint : this.insertUsername(Constants.USERS_FILTERS.FOLLOWING.point, this.props.username),
-      followersPoint : this.insertUsername(Constants.USERS_FILTERS.FOLLOWERS.point, this.props.username)
+      followersPoint : this.insertUsername(Constants.USERS_FILTERS.FOLLOWERS.point, this.props.username),
+      keys : [
+        { label : Constants.POSTS_FILTERS.POSTS_USER.label },
+        { label : Constants.USERS_FILTERS.FOLLOWERS.label },
+        { label : Constants.USERS_FILTERS.FOLLOWING.label }
+      ],
+      activeItemIndex : 0
     };
   }
 
@@ -43,7 +50,12 @@ class UserProfile extends React.Component {
       this.setState({
         showFollow: showFollow,
         profile: result,
-        avatar: result.profile_image
+        avatar: result.profile_image,
+        keys : [
+          { label : `${result.post_count} ${this.state.keys[0].label}` },
+          { label : `${result.followers_count} ${this.state.keys[1].label}`},
+          { label : `${result.following_count} ${this.state.keys[2].label}`}
+        ]
       });
     });
   }
@@ -76,9 +88,6 @@ class UserProfile extends React.Component {
     let about = '';
     let location = '';
     let balance = 0;
-    let postsCount = 0;
-    let followersCount = 0;
-    let followingCount = 0;
 
     if (this.state.profile) {
       name = this.state.profile.name;
@@ -86,9 +95,6 @@ class UserProfile extends React.Component {
       about = this.state.profile.about;
       location = this.state.profile.location;
       balance = this.state.profile.estimated_balance;
-      postsCount = this.state.profile.post_count;
-      followersCount = this.state.profile.followers_count;
-      followingCount = this.state.profile.following_count;
     }
 
     return (
@@ -117,47 +123,27 @@ class UserProfile extends React.Component {
             </div>
             <div className="col-xs-12 col-md-8 col-lg-9 position--unset">
               <div className="user-tabs">
-                <ul role="tablist" className="nav nav-tabs list-reset">
-                  <li role="presentation" className="active">
-                    <a href="#tab-profile-1" aria-controls="tab-profile-1" role="tab" data-toggle="tab" className="tab-head">
-                      {postsCount} Posts
-                    </a>
-                  </li>
-                  <li role="presentation">
-                    <a href="#tab-profile-2" aria-controls="tab-profile-2" role="tab" data-toggle="tab" className="tab-head">
-                      {followingCount} Following
-                    </a>
-                  </li>
-                  <li role="presentation">
-                    <a href="#tab-profile-3" aria-controls="tab-profile-3" role="tab" data-toggle="tab" className="tab-head">
-                      {followersCount} Followers
-                    </a>
-                  </li>
-                </ul>
-                <div className="tab-content">
-                  <div id="tab-profile-1" role="tabpanel" className="tab-pane fade in active">
-                    <ItemsComponent 
-                      point={this.state.itemsPoint} 
-                      wrapperModifier="posts-list clearfix type-2"
-                    />
-                  </div>
-                  <div id="tab-profile-2" role="tabpanel" className="tab-pane fade">
-                    <UsersComponent 
-                      point={this.state.followingPoint} 
-                      usersLabel={Constants.USERS_FILTERS.FOLLOWING.label} 
-                      wrapperModifier="posts-list clearfix type-2"
-                      getUsers={getFollowing}
-                    />
-                  </div>
-                  <div id="tab-profile-3" role="tabpanel" className="tab-pane fade">
-                    <UsersComponent 
-                      point={this.state.followersPoint}
-                      usersLabel={Constants.USERS_FILTERS.FOLLOWERS.label}  
-                      wrapperModifier="posts-list clearfix type-2"
-                      getUsers={getFollowers}
-                    />
-                  </div>
-                </div>
+                <TabsFilterComponent
+                  keys={this.state.keys}
+                  activeItemIndex={this.state.activeItemIndex}
+                >
+                  <ItemsComponent 
+                    point={this.state.itemsPoint} 
+                    wrapperModifier="posts-list clearfix type-2"
+                  />
+                  <UsersComponent 
+                    point={this.state.followersPoint} 
+                    usersLabel={Constants.USERS_FILTERS.FOLLOWERS.label} 
+                    wrapperModifier="posts-list clearfix type-2"
+                    getUsers={getFollowers}
+                  />
+                  <UsersComponent 
+                    point={this.state.followingPoint}
+                    usersLabel={Constants.USERS_FILTERS.FOLLOWING.label}  
+                    wrapperModifier="posts-list clearfix type-2"
+                    getUsers={getFollowing}
+                  />
+                </TabsFilterComponent>
               </div>
             </div>
           </div>

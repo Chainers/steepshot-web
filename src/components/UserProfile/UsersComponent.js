@@ -17,7 +17,8 @@ class UsersComponent extends React.Component {
       point : this.props.point,
       getUsers : this.props.getUsers,
       usersLabel : this.props.usersLabel,
-      wrapperModifier : this.props.wrapperModifier
+      wrapperModifier : this.props.wrapperModifier,
+      options : this.props.options
     };
   }
 
@@ -44,12 +45,14 @@ class UsersComponent extends React.Component {
     this.setState({
         loadingMore: true
     });
+
     const options = {
       point : this.state.point,
-      params : {
+      params : Object.assign({}, {
         offset : this.state.offset
-      }
-    }
+      },
+      this.state.options)
+    };
 
     this.state.getUsers(options, true).then((response) => {
         this.state.items.pop();

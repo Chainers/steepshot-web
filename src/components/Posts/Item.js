@@ -126,6 +126,18 @@ class Item extends React.Component {
     }
   }
 
+  renderTags() {
+    if (this.state.item.tags) {
+      return this.state.item.tags.map((tag, index) => {
+        return <a key={index}
+          onClick={(event) => this._research.bind(this, event, tag)} 
+          >
+            {tag}
+          </a>
+      })
+    } else return null;
+  }
+
   render() {
     let _this = this;
     let itemImage = this.state.image || constants.NO_IMAGE;
@@ -176,15 +188,7 @@ class Item extends React.Component {
               </div>
               <div className="card-preview">{this.state.item.title}</div>
               <div className="card-tags clearfix">
-                {
-                  this.state.item.tags.map((tag, index) => {
-                    return <a key={index}
-                      onClick={(event) => this._research.bind(this, event, tag)} 
-                      >
-                        {tag}
-                      </a>
-                  })
-                }
+                {this.renderTags()}
               </div>
             </div>
           </div>
