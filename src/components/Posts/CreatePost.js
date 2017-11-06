@@ -48,7 +48,7 @@ class CreatePost extends React.Component {
 
         if (name == this.state.tagInputName) {
             this.setState({ 
-                [name] : value.replace(/[^^a-zA-ZА-Яа-яЁё0-9\s]/g, "") 
+                [name] : value.replace(/[^^a-zA-ZА-Яа-яЁё0-9\s]/g, "").toLowerCase()
             }, () =>
                 this.setState({
                     tagList : this.getTagsArray(this.state.tag),
