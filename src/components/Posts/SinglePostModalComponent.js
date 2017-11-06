@@ -45,6 +45,7 @@ class SinglePostModalComponent extends React.Component {
                     isPostLoading : false
                 }, () => {
                     const callbackClose = () => {
+                        jqApp.data.callback = undefined;
                         if (!(this.props.username && this.props.postingKey)) {
                             this.props.history.push('/browse');
                         } else {

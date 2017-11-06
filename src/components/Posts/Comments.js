@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  getPostComments
+  getComments
 } from '../../actions/posts';
 import Comment from './Comment';
 import {
@@ -44,10 +44,14 @@ class Comments extends React.Component {
 
   updatePostComments(nextProps) {
     nextProps = nextProps || this.props;
-    let _this = this;
 
-    getPostComments(nextProps.item.author, nextProps.item.url).then((response) => {
-      _this.setState({
+    const options = {
+      point : `post/${nextProps.item.author}/${nextProps.item.url}/comments`,
+      params : {}
+    }
+
+    getComments(options, true).then((response) => {
+      this.setState({
         comments: response.results,
         loading: false,
         avatar: nextProps.item.avatar

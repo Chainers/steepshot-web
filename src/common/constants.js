@@ -40,7 +40,21 @@ export default {
     },
 
     POSTS_SETTINGS: {
-        defaultLimit: 36
+        defaultLimit: 16
+    },
+
+    POSTS_POINTS : {
+        POSTS_NEW : 'posts/new',
+        POSTS_TOP : 'posts/top',
+        POSTS_HOT : 'posts/hot',
+        POSTS_USER_FEED : 'recent/posts'
+    },
+
+    PROMISES : {
+        GET_COMMENTS : 'GET_COMMENTS_PROMISE',
+        GET_POSTS : 'GET_POSTS_PROMISE',
+        GET_FOLLOWERS : 'GET_FOLLOWERS_PROMISE',
+        GET_FOLLOWING : 'GET_FOLLOWING_PROMISE'
     },
 
     DISPLAY : {

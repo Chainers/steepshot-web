@@ -1,12 +1,6 @@
 import React from 'react';
 import {
-  getPosts, 
-  getNewPosts,
-  getHotPosts,
-  getTopPosts,
-  getNewPostsByCategory,
-  getHotPostsByCategory,
-  getTopPostsByCategory
+  getPosts
 } from '../actions/posts';
 import PostItem from './Posts/Item';
 import { 
@@ -33,7 +27,7 @@ class Home extends React.Component {
 
     this.state = {
       posts: [],
-      hasMore: true,
+      hasMore: false,
       offset: null,
       loading: true,
       activeMode: constants.POST_FILTERS.TRENDING    
@@ -44,6 +38,12 @@ class Home extends React.Component {
     this.store = getStore();
     this.outputUpdate();
     this.resetPosts();
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      currentItem : null
+    })
   }
 
   outputUpdate() {
@@ -71,9 +71,9 @@ class Home extends React.Component {
     }
 
     if (searchValue) {
-      this.setPostsByCategory(key, searchValue);
+      this.setPosts(key, false, null, searchValue);
     } else {
-      this.setDefaultPosts(key);
+      this.setPosts(key, false);
     }
   }
 
@@ -91,92 +91,55 @@ class Home extends React.Component {
     });
   }
 
-  // Posts by category
-  setPostsByCategory(key, searchValue, isContinue, offset) {
-    const callback = this.getCallback(isContinue); 
-
-    if(key == constants.POST_FILTERS.TRENDING) {
-      this.setTopPostsByCategory(searchValue, offset, callback);
-    } else if(key == constants.POST_FILTERS.HOT) {
-      this.setHotPostsByCategory(searchValue, offset, callback);
-    } else if(key == constants.POST_FILTERS.NEW) {
-      this.setNewPostsByCategory(searchValue, offset, callback);
-    } else {
-      this.setDefaultData();
-    }
-  }
-
-  setNewPostsByCategory(searchValue, offset, callback) {
-    getNewPostsByCategory(searchValue, offset)
-      .then((response) => {
-        callback(response);
-      });
-  }
-
-  setHotPostsByCategory(searchValue, offset, callback) {
-    getHotPostsByCategory(searchValue, offset)
-      .then((response) => {
-        callback(response);
-      });
-  }
-
-  setTopPostsByCategory(searchValue, offset, callback) {
-    getTopPostsByCategory(searchValue, offset)
-      .then((response) => {
-        callback(response);
-      });
-  }
-
   getCallback(isContinue) {
     return isContinue ?
       this.continueHandleDefaultPostsResponce.bind(this) :
       this.handleDefaultPostsResponce.bind(this);
   }
 
-  // Default posts
-  setDefaultPosts(key, isContinue, offset) {
-    const callback = this.getCallback(isContinue); 
+  insertCategory(point, category) {
+    if (category == undefined) return point;
+    let path = point.split('/');
+    return `${path[0]}/${category}/${point[1]}`;
+  }
 
-    if(key == constants.POST_FILTERS.TRENDING) {
-      this.setTopPosts(offset, callback);
-    } else if(key == constants.POST_FILTERS.HOT) {
-      this.setHotPosts(offset, callback);
-    } else if(key == constants.POST_FILTERS.NEW) {
-      this.setNewPosts(offset, callback);
-    } else {
-      this.setDefaultData();
+  setPosts(key, isContinue, offset, searchValue) {
+    const callback = this.getCallback(isContinue); 
+    let options = {
+      params : {
+        offset : offset
+      }
+    }
+    switch (key) { 
+      case constants.POST_FILTERS.TRENDING :
+        options.point = this.insertCategory(constants.POSTS_POINTS.POSTS_TOP, searchValue);
+        this.getPosts(options, callback);
+        break;
+      case constants.POST_FILTERS.HOT :
+        options.point = this.insertCategory(constants.POSTS_POINTS.POSTS_HOT, searchValue);
+        this.getPosts(options, callback);
+        break;
+      case constants.POST_FILTERS.NEW :
+        options.point = this.insertCategory(constants.POSTS_POINTS.POSTS_NEW, searchValue);
+        this.getPosts(options, callback);
+        break;
+      default :
+        this.setDefaultData();
     }
   }
 
-  setPostsNext() {
-    let _this = this;
-    getPostsNext().then((response) => {
-      _this.handleDefaultPostsResponce(response);
-    });
-  }
-
-  setNewPosts(offset, callback) {
-    getNewPosts(offset).then((response) => {
-      callback(response);
-    });
+  getPosts(options, callback) {
+    getPosts(options, true).then(response => callback(response));
   }  
 
-  setHotPosts(offset, callback) {
-    getHotPosts(offset).then((response) => {
-      callback(response);
-    });
-  }
-
-  setTopPosts(offset, callback) {
-    getTopPosts(offset).then((response) => {
-      callback(response);
-    });
-  }
-
   handleDefaultPostsResponce(response) {
+
+    let hasMore = !(this.state.offset == response.offset);
+
     this.setState({
       posts: response.results, 
       offset: response.offset,
+      hasMore: hasMore,
       loading: false
     });
   }
@@ -208,20 +171,11 @@ class Home extends React.Component {
   }
 
   fetchPostsByCategory() {
-    let _this = this;
-    const search = this.props.search.value;
-    const key = this.state.activeMode;
-    const offset = this.state.offset;
-
-    this.setPostsByCategory(key, search, true, offset);
+    this.setPosts(this.state.activeMode, false, this.state.offset, this.props.search.value);
   }
 
   fetchPostsNext() {
-    let _this = this;
-    const key = this.state.activeMode;
-    const offset = this.state.offset;
-
-    this.setDefaultPosts(key, true, offset);
+    this.setPosts(this.state.activeMode, true, this.state.offset);
   }
 
   updateVoteInComponent(vote, index) {
