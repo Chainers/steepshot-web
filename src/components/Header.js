@@ -121,13 +121,19 @@ class Header extends React.Component {
         <div className="container">
           <div className="user-panel">
             <div className="wrap-panel clearfix">
-              <div className="section hamburger">
-                <div className="wrap-hamburger">
-                  <button type="button" className="mm-opener">
-                    <span className="ico"></span>
-                  </button>
-                </div>
-              </div>
+              {
+                isUserAuth
+                ?
+                  <div className="section hamburger">
+                    <div className="wrap-hamburger">
+                      <button type="button" className="mm-opener">
+                        <span className="ico"></span>
+                      </button>
+                    </div>
+                  </div>
+                :
+                  null
+              }
               {loginComponent}
               <div className="section create">
                 <div className="wrap-create">
