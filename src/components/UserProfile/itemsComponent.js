@@ -25,7 +25,10 @@ class ItemsComponent extends React.Component {
       wrapperModifier : this.props.wrapperModifier,
       cancelPrevious : this.props.cancelPrevious == undefined ? true : this.props.cancelPrevious,
       options : this.props.options,
-      getPosts : this.props.getPosts == undefined ? getPosts : this.props.getPosts
+      getPosts : this.props.getPosts == undefined ? getPosts : this.props.getPosts,
+      header : this.props.header,
+      renderNotEmptyOnly : this.props.renderNotEmptyOnly == undefined ? false : this.props.renderNotEmptyOnly,
+      showHasMore : this.props.showHasMore == undefined ? true : this.props.showHasMore
     };
   }
 
@@ -149,13 +152,18 @@ class ItemsComponent extends React.Component {
     }
   }
 
+  renderHeader() {
+    if (this.state.header) return this.state.header;
+    return null;
+  }
+
   renderMainLoader() {
     if (this.state.loading) return <LoadingSpinner />;
     return null;
   }
 
   renderUploadMore() {
-    if (this.state.loading || this.state.items.length == 0) return null;
+    if (this.state.loading || this.state.items.length == 0 || !this.state.showHasMore) return null;
     if (this.state.loadingMore) {
       return (
         <div className="position--relative">
@@ -172,8 +180,12 @@ class ItemsComponent extends React.Component {
   }
 
   render() {
+    
+    if (this.state.renderNotEmptyOnly && this.state.items.length == 0) return null;
+
     return (
-      <div>
+      <div> 
+        {this.renderHeader()} 
         <div className={this.state.wrapperModifier}>
           {this.renderItems()}
         </div>

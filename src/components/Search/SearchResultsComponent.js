@@ -11,6 +11,7 @@ import TabsFilterComponent from '../Filters/TabsFilterComponent';
 import ItemsComponent from '../UserProfile/itemsComponent';
 import UsersComponent from '../UserProfile/UsersComponent';
 import Constants from '../../common/constants';
+import HeadingLeadComponent from '../Atoms/HeadingLeadComponent';
 
 class SearchResultsComponent extends React.Component {
   constructor(props) {
@@ -24,9 +25,6 @@ class SearchResultsComponent extends React.Component {
       activeItemIndex : 0,
       hotSectionOptions : {
         limit : 4
-      },
-      categorySectionOptions : {
-        query : this.props.searchValue
       },
       usersSearchOptions : {
         query : this.props.searchValue
@@ -73,14 +71,15 @@ class SearchResultsComponent extends React.Component {
                 cancelPrevious={false}
                 wrapperModifier="posts-list clearfix"
                 options={this.state.hotSectionOptions}
+                showHasMore={false}
+                renderNotEmptyOnly={true}
+                header={<HeadingLeadComponent text={'Hottest posts by category ' + this.state.searchValue}/>}
               />
-              <hr />
               <ItemsComponent 
-                point={Constants.SEARCH.CATEGORIES.point} 
+                point={this.insertCategory(Constants.POSTS_FILTERS.POSTS_NEW.point, this.state.searchValue)} 
                 cancelPrevious={false} 
                 wrapperModifier="posts-list clearfix"
-                getPosts={getPostsBySearch}
-                options={this.state.categorySectionOptions}
+                header={<HeadingLeadComponent text={'New posts by category ' + this.state.searchValue}/>}
               />
             </div>
           </TabsFilterComponent>

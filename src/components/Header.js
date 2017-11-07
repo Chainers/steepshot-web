@@ -24,7 +24,7 @@ class Header extends React.Component {
 
     this.state = {
       localize: LocalizedStrings.getInstance(),
-      isSearchOpen: false
+      searchValue : ''
     };
   }
 
@@ -36,7 +36,6 @@ class Header extends React.Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    if (this.props.location.pathname == nextProps.location.pathname) return false;    
     if (this.refs[this.props.location.pathname]) $(this.refs[this.props.location.pathname]).removeClass('active');
     if (this.refs[nextProps.location.pathname]) $(this.refs[nextProps.location.pathname]).addClass('active');
   
@@ -66,19 +65,21 @@ class Header extends React.Component {
     if (e.key === 'Enter') {
       e.preventDefault();
       this.props.history.push(`/search/${this.state.searchValue}`);
+      setTimeout(() => {
+        jqApp.search.closeSearch();
+      }, 5000);
     }
   }
 
   searchHandleChange(e) {
+    let value = e.target.value;
     this.setState({
-      searchValue : e.target.value
+      searchValue : value
     });
   }
 
   render() {
-    const active = { borderBottomColor: '#3f51b5' };
     const isUserAuth = this.props.user && this.props.postingKey;
-    let searchBlock = <div></div>;
     let browse;
     let authorLink = '';
 
@@ -101,9 +102,7 @@ class Header extends React.Component {
       </div>
     }
 
-    if (this.state.isSearchOpen || !!this.props.search.value) {
-      searchBlock = <Search />;
-    } else {
+ 
       browse = <div className="section menu">
         <div className="wrap-menu">
         {
@@ -118,7 +117,7 @@ class Header extends React.Component {
           </div>
         </div>
       </div>
-    }
+    
 
     return (
       <header className="g-header">
@@ -222,8 +221,7 @@ const mapStateToProps = (state) => {
     postingKey: state.auth.postingKey,
     user: state.auth.user,
     avatar: state.auth.avatar,
-    localization: state.localization,
-    search: state.search
+    localization: state.localization
   };
 };
 

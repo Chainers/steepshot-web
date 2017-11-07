@@ -3,7 +3,7 @@ import LocalizedStrings from '../Localization/index.js';
 import { connect } from 'react-redux';
 import LoadingSpinner from '../LoadingSpinner';
 import UserItem from './userItem';
-import Contants from '../../common/constants';
+import Constants from '../../common/constants';
 
 class UsersComponent extends React.Component {
   constructor(props) {

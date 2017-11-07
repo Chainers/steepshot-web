@@ -57,7 +57,7 @@ export default {
             point : 'recent/posts'
         },
         POSTS_USER : {
-            label : 'User',
+            label : 'Posts',
             point : 'user/posts' //Should been updated by username
         }
     },
