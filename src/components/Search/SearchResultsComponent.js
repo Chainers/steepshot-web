@@ -19,8 +19,8 @@ class SearchResultsComponent extends React.Component {
 
     this.state = {
       keys : [
-        { label : Constants.SEARCH.USERS.label },
-        { label : Constants.SEARCH.CATEGORIES.label }
+        { label : Constants.SEARCH_FILTERS.USERS.label },
+        { label : Constants.SEARCH_FILTERS.CATEGORIES.label }
       ],
       activeItemIndex : 0,
       hotSectionOptions : {
@@ -60,10 +60,15 @@ class SearchResultsComponent extends React.Component {
             activeItemIndex={this.state.activeItemIndex}
           >
             <UsersComponent
-              point={Constants.SEARCH.USERS.point}
+              point={Constants.SEARCH_FILTERS.USERS.point}
               getUsers={getUsersSearch}
               options={this.state.usersSearchOptions}
               wrapperModifier="posts-list clearfix type-2"
+              header={
+                <HeadingLeadComponent 
+                  text={<span>{Constants.SEARCH_HEADING_LABELS.USERS_RESULT}<u>{this.state.searchValue}</u></span>}
+                />
+              }
             />
             <div>
               <ItemsComponent
@@ -73,13 +78,21 @@ class SearchResultsComponent extends React.Component {
                 options={this.state.hotSectionOptions}
                 showHasMore={false}
                 renderNotEmptyOnly={true}
-                header={<HeadingLeadComponent text={'Hottest posts by category ' + this.state.searchValue}/>}
+                header={
+                  <HeadingLeadComponent 
+                    text={<span>{Constants.SEARCH_HEADING_LABELS.HOT_POSTS_RESULT}<u>{this.state.searchValue}</u></span>}
+                  />
+                }
               />
               <ItemsComponent 
                 point={this.insertCategory(Constants.POSTS_FILTERS.POSTS_NEW.point, this.state.searchValue)} 
                 cancelPrevious={false} 
                 wrapperModifier="posts-list clearfix"
-                header={<HeadingLeadComponent text={'New posts by category ' + this.state.searchValue}/>}
+                header={
+                  <HeadingLeadComponent 
+                    text={<span>{Constants.SEARCH_HEADING_LABELS.NEW_POSTS_RESULT}<u>{this.state.searchValue}</u></span>}
+                  />
+                }
               />
             </div>
           </TabsFilterComponent>

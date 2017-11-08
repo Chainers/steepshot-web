@@ -15,6 +15,7 @@ import PropTypes from 'prop-types';
 import {
   logout
 } from '../actions/auth';
+import Constants from '../common/constants';
 
 let localizedStrings = LocalizedStrings.getInstance();
 
@@ -198,7 +199,7 @@ class Header extends React.Component {
                     value={this.state.searchValue}
                     onChange={this.searchHandleChange.bind(this)}
                     required={true}
-                    placeholder="Enter your search query" 
+                    placeholder={Constants.SEARCH_PLACEHOLDER} 
                     className="input-search" 
                     onKeyPress={this.searchKeyPress.bind(this)}
                   />

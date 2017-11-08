@@ -18,7 +18,8 @@ class UsersComponent extends React.Component {
       getUsers : this.props.getUsers,
       usersLabel : this.props.usersLabel,
       wrapperModifier : this.props.wrapperModifier,
-      options : this.props.options
+      options : this.props.options,
+      header : this.props.header
     };
   }
 
@@ -113,9 +114,15 @@ class UsersComponent extends React.Component {
     }
   }
 
+  renderHeader() {
+    if (this.state.header) return this.state.header;
+    return null;
+  }
+
   render() {
     return (
         <div>
+          {this.renderHeader()} 
           <div className={this.state.wrapperModifier}>
             {this.renderItems()}
           </div>

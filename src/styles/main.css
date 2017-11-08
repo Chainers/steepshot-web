@@ -537,3 +537,7 @@
 .position--unset {
   position: unset;
 }
+
+.heading-lead {
+  margin-top: 3rem;
+}

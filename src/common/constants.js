@@ -39,6 +39,8 @@ export default {
 
     EMPTY_QUERY : "It's very strange, but we do not have anything yet for this query. Try to look for something else ...",
 
+    SEARCH_PLACEHOLDER : "Type your search query and press Enter",
+
     POSTS_FILTERS: {
         POSTS_TOP : {
             label : 'Top',
@@ -73,15 +75,21 @@ export default {
         }
     },
 
-    SEARCH : {
+    SEARCH_FILTERS : {
         USERS : {
             label : 'Users',
             point : 'user/search'
         },
         CATEGORIES : {
-            label : 'Category',
+            label : 'Tag',
             point : 'categories/search'
         }
+    },
+
+    SEARCH_HEADING_LABELS : {
+        USERS_RESULT : 'User search results for ',
+        NEW_POSTS_RESULT : 'New posts by tag ',
+        HOT_POSTS_RESULT : 'Hottest posts by tag '
     },
 
     PROMISES : {

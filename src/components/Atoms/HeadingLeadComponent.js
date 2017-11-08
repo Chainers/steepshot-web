@@ -23,8 +23,8 @@ class HeadingLeadComponent extends React.Component {
             text
         } = { ...this.state };
         return (
-            <div className={wrapperModifier}>
-                <h5>{text}</h5>
+            <div className={"heading-lead " + wrapperModifier}>
+                <p>{text}</p>
                 <hr />
             </div>
         )
