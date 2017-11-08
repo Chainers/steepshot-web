@@ -10,6 +10,7 @@ import PostItem from '../Posts/Item';
 import Constants from '../../common/constants';
 import ModalComponent from '../Common/ModalComponent';
 import ItemModal from '../Posts/ItemModal';
+import InfiniteScroll from 'react-infinite-scroller';
 
 class ItemsComponent extends React.Component {
   constructor(props) {
@@ -187,9 +188,20 @@ class ItemsComponent extends React.Component {
       <div> 
         {this.renderHeader()} 
         <div className={this.state.wrapperModifier}>
-          {this.renderItems()}
+          <InfiniteScroll
+            pageStart={0}
+            initialLoad={false}
+            loadMore={this.fetchData.bind(this)}
+            hasMore={this.state.hasMore}
+            loader={
+              <div className="position--relative">
+                <LoadingSpinner/>
+              </div>
+            }
+          >
+            {this.renderItems()}
+          </InfiniteScroll>
         </div>
-        {this.renderUploadMore()}
         {this.renderMainLoader()}
         <ModalComponent>
             {this._renderModal()}
