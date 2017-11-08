@@ -4,6 +4,8 @@ import { connect } from 'react-redux';
 import LoadingSpinner from '../LoadingSpinner';
 import UserItem from './userItem';
 import Constants from '../../common/constants';
+import InfiniteScroll from 'react-infinite-scroller';
+import { debounce } from 'lodash';
 
 class UsersComponent extends React.Component {
   constructor(props) {
@@ -19,7 +21,9 @@ class UsersComponent extends React.Component {
       usersLabel : this.props.usersLabel,
       wrapperModifier : this.props.wrapperModifier,
       options : this.props.options,
-      header : this.props.header
+      header : this.props.header,
+      previousRequestOffset : 'none',
+      isComponentVisible : this.props.isComponentVisible == undefined ? true : this.props.isComponentVisible
     };
   }
 
@@ -29,24 +33,13 @@ class UsersComponent extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     this.setState({
-        items : [],
-        hasMore : true,
-        offset : null,
-        loading : true,
-        loadingMore : false,
-        point : nextProps.point,
-        getUsers : nextProps.getUsers,
-        usersLabel : nextProps.usersLabel
+        isComponentVisible : nextProps.isComponentVisible
     });
-    this.fetchData();
   }
 
   fetchData() {
-    if (this.state.items.length > 0)
-    this.setState({
-        loadingMore: true
-    });
-
+    if (this.state.offset == this.state.previousRequestOffset) return false;
+    if (!this.state.isComponentVisible && this.state.offset != undefined) return false;
     const options = {
       point : this.state.point,
       params : Object.assign({}, {
@@ -54,15 +47,15 @@ class UsersComponent extends React.Component {
       },
       this.state.options)
     };
-
     this.state.getUsers(options, true).then((response) => {
         this.state.items.pop();
         let newItems = this.state.items.concat(response.results);
         let hasMore = !(this.state.offset == response.offset);    
         this.setState({ 
             items: newItems, 
+            previousRequestOffset : this.state.offset,
             offset: response.offset,
-            hasMore: hasMore,
+            hasMore: !(this.state.offset == response.offset),
             loadingMore: false,
             loading : false
         });
@@ -92,28 +85,6 @@ class UsersComponent extends React.Component {
     }
   }
 
-  renderMainLoader() {
-    if (this.state.loading) return <LoadingSpinner />;
-    return null;
-  }
-
-  renderUploadMore() {
-    if (this.state.loading || this.state.items.length == 0) return null;
-    if (this.state.loadingMore) {
-      return (
-        <div className="position--relative">
-          <LoadingSpinner />
-        </div>
-      )
-    } else {
-      return (
-        <div className="load-more" onClick={this.fetchData.bind(this)}>
-          <button type="button" className="btn btn-index">Upload more {this.state.usersLabel}</button>
-        </div>
-      )
-    }
-  }
-
   renderHeader() {
     if (this.state.header) return this.state.header;
     return null;
@@ -123,11 +94,22 @@ class UsersComponent extends React.Component {
     return (
         <div>
           {this.renderHeader()} 
-          <div className={this.state.wrapperModifier}>
-            {this.renderItems()}
-          </div>
-          {this.renderUploadMore()}
-          {this.renderMainLoader()}
+          <InfiniteScroll
+            pageStart={0}
+            initialLoad={false}
+            loadMore={debounce(this.fetchData.bind(this), Constants.ENDLESS_SCROLL.DEBOUNCE_TIMEOUT)}
+            hasMore={this.state.hasMore}
+            loader={
+              <div className="position--relative">
+                <LoadingSpinner/>
+              </div>
+            }
+            threshold={Constants.ENDLESS_SCROLL.OFFSET}
+          >
+            <div className={this.state.wrapperModifier}>
+              {this.renderItems()}
+            </div>
+          </InfiniteScroll>
         </div>
     );
   }

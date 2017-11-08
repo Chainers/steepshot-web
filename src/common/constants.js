@@ -100,5 +100,10 @@ export default {
         GET_USERS_SEARCH : 'GET_USERS_SEARCH'
     },
 
-    CURRENCY: '$'
+    CURRENCY: '$',
+
+    ENDLESS_SCROLL : {
+        DEBOUNCE : 500,
+        OFFSET : 1500
+    }
 }

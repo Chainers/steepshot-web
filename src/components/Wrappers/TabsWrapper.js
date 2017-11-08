@@ -1,32 +1,34 @@
 import React from 'react';
 
 class TabsWrapper extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            activeTab : this.props.activeTab
+        }
+    }
 
-    shouldComponentUpdate(nextProps, nextState) {
-        if (nextProps.children == this.props.children) return false;
+    componentWillReceiveProps(nextProps) {
         this.setState({
-            ...nextProps
-        });
-        return true;
+            activeTab : nextProps.activeTab
+        })
     }
 
     renderTabs() {
-        let tabs = [];
-        let activeTab = this.props.activeTab;
-        this.props.children.map((child, index) => {
+        let activeTab = this.state.activeTab;
+        return this.props.children.map((child, index) => {
             let styles = 'tab-pane fade';
             
             if (index == activeTab) {
                 styles = 'tab-pane fade in active';
             }
 
-            tabs.push(                
+            return (           
                 <div id={"tab-" + index} role="tabpanel" className={styles} key={index}>
-                    {child}
+                    {React.cloneElement(child, { ...child.props, isComponentVisible : index == activeTab})}
                 </div>
             );
         });
-        return tabs;
     }
 
     render() {

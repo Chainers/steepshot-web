@@ -11,6 +11,7 @@ import Constants from '../../common/constants';
 import ModalComponent from '../Common/ModalComponent';
 import ItemModal from '../Posts/ItemModal';
 import InfiniteScroll from 'react-infinite-scroller';
+import { debounce } from 'lodash';
 
 class ItemsComponent extends React.Component {
   constructor(props) {
@@ -24,12 +25,15 @@ class ItemsComponent extends React.Component {
       items : [],
       point : this.props.point,
       wrapperModifier : this.props.wrapperModifier,
-      cancelPrevious : this.props.cancelPrevious == undefined ? true : this.props.cancelPrevious,
+      cancelPrevious : this.props.cancelPrevious == undefined ? false : this.props.cancelPrevious,
       options : this.props.options,
       getPosts : this.props.getPosts == undefined ? getPosts : this.props.getPosts,
       header : this.props.header,
       renderNotEmptyOnly : this.props.renderNotEmptyOnly == undefined ? false : this.props.renderNotEmptyOnly,
-      showHasMore : this.props.showHasMore == undefined ? true : this.props.showHasMore
+      previousRequestOffset : 'none',
+      isComponentVisible : this.props.isComponentVisible == undefined ? true : this.props.isComponentVisible,
+      hasMore : true,
+      maxPosts : this.props.maxPosts || 9999
     };
   }
 
@@ -39,24 +43,17 @@ class ItemsComponent extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     this.setState({
-        items : [],
-        hasMore : true,
-        offset : null,
-        loading : true,
-        loadingMore : false,
-        point : nextProps.point,
-    }, () => {
-      this.fetchData();
+        isComponentVisible : nextProps.isComponentVisible
     });
   }
 
   fetchData() {
-
-    if (this.state.items.length > 0)
-    this.setState({
-        loadingMore : true
-    });
-
+    if (this.state.offset == this.state.previousRequestOffset || !this.state.hasMore) return false;
+    if (!this.state.isComponentVisible && this.state.offset != undefined) return false;
+    if (this.state.items.length > this.state.maxPosts - 1) {
+      this.setState({ hasMore : false });
+      return false;
+    } 
     const options = {
       point : this.state.point,
       params : Object.assign({}, {
@@ -64,18 +61,18 @@ class ItemsComponent extends React.Component {
       },
       this.state.options)
     };
-
     this.state.getPosts(options, this.state.cancelPrevious).then((response) => {
-      this.state.items.pop();
-      let newPosts = this.state.items.concat(response.results);
-      let hasMore = !(this.state.offset == response.offset);
-      this.setState({ 
-          items: newPosts, 
-          offset: response.offset,
-          hasMore: hasMore,
-          loading : false,
-          loadingMore: false
-      });
+        this.state.items.pop();
+        let newPosts = this.state.items.concat(response.results);
+        let hasMore = !(this.state.offset == response.offset) ;
+        if (this.state.items.length + response.results.length == 0) hasMore = false;
+        this.setState({ 
+            items: newPosts,
+            previousRequestOffset : this.state.offset,
+            offset: response.offset,
+            hasMore: hasMore,
+            loading : false
+        });
     });
   }
 
@@ -158,28 +155,6 @@ class ItemsComponent extends React.Component {
     return null;
   }
 
-  renderMainLoader() {
-    if (this.state.loading) return <LoadingSpinner />;
-    return null;
-  }
-
-  renderUploadMore() {
-    if (this.state.loading || this.state.items.length == 0 || !this.state.showHasMore) return null;
-    if (this.state.loadingMore) {
-      return (
-        <div className="position--relative">
-          <LoadingSpinner />
-        </div>
-      )
-    } else {
-      return (
-        <div className="load-more" onClick={this.fetchData.bind(this)}>
-          <button type="button" className="btn btn-index">Upload more posts</button>
-        </div>
-      )
-    }
-  }
-
   render() {
     
     if (this.state.renderNotEmptyOnly && this.state.items.length == 0) return null;
@@ -187,22 +162,22 @@ class ItemsComponent extends React.Component {
     return (
       <div> 
         {this.renderHeader()} 
-        <div className={this.state.wrapperModifier}>
-          <InfiniteScroll
-            pageStart={0}
-            initialLoad={false}
-            loadMore={this.fetchData.bind(this)}
-            hasMore={this.state.hasMore}
-            loader={
-              <div className="position--relative">
-                <LoadingSpinner/>
-              </div>
-            }
-          >
+        <InfiniteScroll
+          pageStart={0}
+          initialLoad={false}
+          loadMore={debounce(this.fetchData.bind(this), Constants.ENDLESS_SCROLL.DEBOUNCE_TIMEOUT)}
+          hasMore={this.state.hasMore}
+          loader={
+            <div className="position--relative">
+              <LoadingSpinner/>
+            </div>
+          }
+          threshold={Constants.ENDLESS_SCROLL.OFFSET}
+        >
+          <div className={this.state.wrapperModifier}>
             {this.renderItems()}
-          </InfiniteScroll>
-        </div>
-        {this.renderMainLoader()}
+          </div>
+        </InfiniteScroll>
         <ModalComponent>
             {this._renderModal()}
         </ModalComponent>

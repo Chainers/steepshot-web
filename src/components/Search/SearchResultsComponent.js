@@ -12,6 +12,8 @@ import ItemsComponent from '../UserProfile/itemsComponent';
 import UsersComponent from '../UserProfile/UsersComponent';
 import Constants from '../../common/constants';
 import HeadingLeadComponent from '../Atoms/HeadingLeadComponent';
+import TabsWrapper from '../Wrappers/TabsWrapper';
+import TabWrapper from '../Wrappers/TabWrapper';
 
 class SearchResultsComponent extends React.Component {
   constructor(props) {
@@ -51,6 +53,12 @@ class SearchResultsComponent extends React.Component {
     })
   }
 
+  updateActiveTab(index) {
+    this.setState({
+      activeItemIndex : index
+    })
+  }
+
   render() {
     return (
       <div className="g-main_i container">
@@ -58,6 +66,10 @@ class SearchResultsComponent extends React.Component {
           <TabsFilterComponent 
             keys={this.state.keys}
             activeItemIndex={this.state.activeItemIndex}
+            updateCallback={this.updateActiveTab.bind(this)}
+          />
+          <TabsWrapper 
+            activeTab={this.state.activeItemIndex}
           >
             <UsersComponent
               point={Constants.SEARCH_FILTERS.USERS.point}
@@ -70,14 +82,14 @@ class SearchResultsComponent extends React.Component {
                 />
               }
             />
-            <div>
+            <TabWrapper>
               <ItemsComponent
                 point={this.insertCategory(Constants.POSTS_FILTERS.POSTS_HOT.point, this.state.searchValue)}
                 cancelPrevious={false}
                 wrapperModifier="posts-list clearfix"
                 options={this.state.hotSectionOptions}
-                showHasMore={false}
                 renderNotEmptyOnly={true}
+                maxPosts={4}
                 header={
                   <HeadingLeadComponent 
                     text={<span>{Constants.SEARCH_HEADING_LABELS.HOT_POSTS_RESULT}<u>{this.state.searchValue}</u></span>}
@@ -94,8 +106,8 @@ class SearchResultsComponent extends React.Component {
                   />
                 }
               />
-            </div>
-          </TabsFilterComponent>
+            </TabWrapper>
+          </TabsWrapper>
         </div>
       </div>
     );

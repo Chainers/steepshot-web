@@ -1,52 +1,40 @@
 import React from 'react';
 import constants from '../../common/constants';
 import PropTypes from 'prop-types';
-import TabsWrapper from '../Wrappers/TabsWrapper';
 
 class TabsFilterComponent extends React.Component {
     constructor(props) { 
         super(props);
         this.state = {
-            ...this.props
+            ...this.props,
+            mounted : false
         }
-        this.state.keys[this.state.activeItemIndex].isActive = true;
     }
 
     componentWillReceiveProps(nextProps) {
-        let newProps = nextProps;
-        newProps.keys[newProps.activeItemIndex].isActive = true;
-        this.setState(
-            { ...newProps } 
-        );
-    }
-
-    resetActiveFilter(index) {
-
-        let keys = this.state.keys;
-        keys[index].isActive = true;
-
-        if (this.state.activeItemIndex) {
-            keys[this.state.activeItemIndex].isActive = false;
-        }
-
         this.setState({ 
-            keys : keys,
-            activeItemIndex: index
+            keys : nextProps.keys,
         });
     }
 
     switchFilter(index) {
-        if (index == this.state.activeItemIndex) return false;
-        this.resetActiveFilter(index);
+        if (this.state.activeItemIndex == index) return false;
+        this.props.updateCallback(index);
+        this.setState({
+            activeItemIndex : index,
+            mounted : true
+        })
     }
 
     renderNavigation() {
         let navItems = [];
         this.state.keys.map((item, index) => {
-            let styles = '';
 
-            if (item.isActive) {
-                styles = 'active';
+            let styles = '';
+            if (!this.state.mounted) {
+                if (this.state.activeItemIndex == index) {
+                    styles = 'active';
+                }
             }
 
             navItems.push(
@@ -73,11 +61,6 @@ class TabsFilterComponent extends React.Component {
                 <ul role="tablist" className="nav nav-tabs list-reset">
                     {this.renderNavigation()}
                 </ul>
-                <TabsWrapper 
-                    activeTab={this.state.activeItemIndex}
-                >
-                    {this.state.children}
-                </TabsWrapper>
             </div>
         );
     }
@@ -85,7 +68,8 @@ class TabsFilterComponent extends React.Component {
 
 TabsFilterComponent.propTypes = {
   activeItemIndex : PropTypes.number.isRequired,
-  keys : PropTypes.array.isRequired
+  keys : PropTypes.array.isRequired,
+  updateCallback : PropTypes.func.isRequired
 };
 
 export default TabsFilterComponent;

@@ -23,30 +23,33 @@ class ItemModal extends React.Component {
         super(props);
 
         this.state = {
-            item: this.props.item,
-            index: this.props.index,
-            image: this.props.item.body,
-            comments: [],
-            disableNext: false,
-            disablePrev: false,
-            redirectToReferrer: false,
-            commentValue: '',
+            item : this.props.item,
+            index : this.props.index,
+            initialIndex : this.props.index,
+            image : this.props.item.body,
+            items : this.props.items,
+            comments : [],
+            disableNext : false,
+            disablePrev : false,
+            redirectToReferrer : false,
+            commentValue : '',
             needsCommentFormLoader : false,
-            isLoading: false,
-            hasMore: this.props.hasMore
+            isLoading : false,
+            hasMore : this.props.hasMore,
+            loadMore : this.props.loadMore
         };
 
         this.initKeypress();
     }
 
-    needMore(props) {
+    needMore() {
       if (this.state.isLoading || !this.state.hasMore) return false;
       const curIndex = this.state.index;
-      if (curIndex + 7 >= props.items.length) {
+      if (curIndex + 7 >= this.state.items.length) {
           this.setState({
             isLoading : true
           }, () => {
-            props.loadMore();
+            this.state.loadMore();
           });
       }
     }
@@ -58,17 +61,24 @@ class ItemModal extends React.Component {
     }
 
     componentWillReceiveProps(nextProps){
+      let isLoading = true;
+      if (this.state.isLoading) 
+      if (this.state.items != nextProps.items) {
+        isLoading = false;
+      }
       this.setState({
-        item: nextProps.item,
-        index: this.props.items == nextProps.items ? nextProps.index : this.state.index,
-        image: nextProps.item.body,
-        comments: [],
-        disableNext: false,
-        disablePrev: false,
-        redirectToReferrer: false,
-        newComment: null
+        item : nextProps.index == this.state.initialIndex ? this.state.item : nextProps.item,
+        items : nextProps.items,
+        index: nextProps.index == this.state.initialIndex ? this.state.index : nextProps.index,
+        initialIndex : nextProps.index,
+        comments : [],
+        disableNext : false,
+        disablePrev : false,
+        redirectToReferrer : false,
+        newComment : null,
+        isLoading : isLoading
       }, () => {
-        this.needMore(this.props);
+        this.needMore();
       });
     }
 
@@ -82,13 +92,6 @@ class ItemModal extends React.Component {
 
     sendComment(e) {
       e.preventDefault();
-
-      if (!(this.props.username && this.props.postingKey)) {
-        let text = 'Only registered users can post a new comment.';
-        jqApp.pushMessage.open(text);
-        return false;
-      }
-
       if (this.state.commentValue == "") return false;
 
       const urlObject = this.state.item.url.split('/');
@@ -157,12 +160,6 @@ class ItemModal extends React.Component {
       });
     }
 
-    setDefaultImage() {
-      this.setState({
-        image: constants.NO_IMAGE
-      });
-    }
-
     handleChange(event) {
       let name = event.target.name;
       let value = event.target.value;
@@ -172,11 +169,9 @@ class ItemModal extends React.Component {
     }
 
     next() {
-      this.needMore(this.props);
-      if (this.state.index == this.props.items.length - 1) {
-          this.setState({ disableNext: true });
-      } else {
-          this.clearNewComment(this.resetDefaultProperties(this.props.items[this.state.index + 1], 1));
+      this.needMore();
+      if (this.state.index < this.state.items.length - 1) {
+          this.clearNewComment(this.resetDefaultProperties(this.state.items[this.state.index + 1], 1));
       }
     }
 
@@ -187,17 +182,14 @@ class ItemModal extends React.Component {
     resetDefaultProperties(newItem, indexUpdater) {
       this.setState({ 
           avatar: newItem.avatar,
-          image: newItem.body,
           item: newItem,
           index: this.state.index + indexUpdater
       });
     }
 
     previous() {
-      if (this.state.index == 0) {
-          this.setState({ disablePrev: true });
-      } else {
-          this.clearNewComment(this.resetDefaultProperties(this.props.items[this.state.index - 1], -1));
+      if (this.state.index > 0) {
+          this.clearNewComment(this.resetDefaultProperties(this.state.items[this.state.index - 1], -1));
       }
     }
 
@@ -216,7 +208,7 @@ class ItemModal extends React.Component {
     render() {
 
       let _this = this;
-      let itemImage = this.state.image || constants.NO_IMAGE;
+      let itemImage = this.state.item.body || constants.NO_IMAGE;
       let authorImage = this.state.avatar || constants.NO_AVATAR;
 
       let settings = {
@@ -242,8 +234,7 @@ class ItemModal extends React.Component {
                     containerModifier="block--right-top box--small post__share-button"
                 />
                 <img src={itemImage} 
-                  onError={this.setDefaultImage.bind(this)} 
-                  alt="image" 
+                  alt="Post picture." 
                 />
               </div>
               <div className="post__description-container">
@@ -254,7 +245,7 @@ class ItemModal extends React.Component {
                       <Link to={authorLink} className="user">
                         <div className="photo">
                           <img src={authorImage} 
-                            alt="Image" 
+                            alt="Avatar." 
                             onError={this.setDefaultAvatar.bind(this)} />
                         </div>
                         <div className="name">{this.state.item.author}</div>

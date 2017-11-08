@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import TabsFilterComponent from '../Filters/TabsFilterComponent';
 import ItemsComponent from '../UserProfile/itemsComponent';
 import Constants from '../../common/constants';
+import TabsWrapper from '../Wrappers/TabsWrapper';
 
 class Browse extends React.Component {
   constructor(props) {
@@ -21,6 +22,14 @@ class Browse extends React.Component {
     };
   }
 
+  updateActiveTab(index) {
+    this.setState({
+      activeItemIndex : index
+    })
+  }
+
+  renderTabs
+
   render() {
     return (
       <div className="g-main_i container">
@@ -28,6 +37,10 @@ class Browse extends React.Component {
           <TabsFilterComponent 
             keys={this.state.keys}
             activeItemIndex={this.state.activeItemIndex}
+            updateCallback={this.updateActiveTab.bind(this)}
+          />
+          <TabsWrapper 
+            activeTab={this.state.activeItemIndex}
           >
             <ItemsComponent 
               point={Constants.POSTS_FILTERS.POSTS_TOP.point} 
@@ -44,7 +57,7 @@ class Browse extends React.Component {
               cancelPrevious={false}
               wrapperModifier="posts-list clearfix"
             />
-          </TabsFilterComponent>
+          </TabsWrapper>
         </div>
       </div>
     );
