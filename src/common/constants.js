@@ -1,13 +1,7 @@
 export default {
-    POST_FILTERS: {
-        TRENDING: 'Top',
-        HOT: 'Hot',
-        NEW: 'New'
-    },
     URLS: {
         baseUrl_v1_1: 'https://steepshot.org/api/v1_1',
         baseUrl_v1: 'https://steepshot.org/api/v1',
-        baseUrlPost: 'https://steepshot.org/post'
     },
     CATEGORIES: {
         user: 'user',
@@ -43,18 +37,67 @@ export default {
         defaultLimit: 16
     },
 
-    POSTS_POINTS : {
-        POSTS_NEW : 'posts/new',
-        POSTS_TOP : 'posts/top',
-        POSTS_HOT : 'posts/hot',
-        POSTS_USER_FEED : 'recent/posts'
+    EMPTY_QUERY : "It's very strange, but we do not have anything yet for this query. Try to look for something else ...",
+
+    SEARCH_PLACEHOLDER : "Type your search query and press Enter",
+
+    POSTS_FILTERS: {
+        POSTS_TOP : {
+            label : 'Top',
+            point : 'posts/top' //Can be updated by category
+        },
+        POSTS_HOT : {
+            label : 'Hot',
+            point : 'posts/hot' //Can be updated by category
+        },
+        POSTS_NEW : {
+            label : 'New',
+            point : 'posts/new' //Can be updated by category
+        },
+        POSTS_USER_FEED : {
+            label : 'Feed',
+            point : 'recent/posts'
+        },
+        POSTS_USER : {
+            label : 'Posts',
+            point : 'user/posts' //Should been updated by username
+        }
+    },
+
+    USERS_FILTERS : {
+        FOLLOWERS : {
+            label : 'Followers',
+            point : 'user/followers' //Should been updated by username
+        },
+        FOLLOWING : {
+            label : 'Following',
+            point : 'user/following' //Should been updated by username
+        }
+    },
+
+    SEARCH_FILTERS : {
+        USERS : {
+            label : 'Users',
+            point : 'user/search'
+        },
+        CATEGORIES : {
+            label : 'Tag',
+            point : 'categories/search'
+        }
+    },
+
+    SEARCH_HEADING_LABELS : {
+        USERS_RESULT : 'User search results for ',
+        NEW_POSTS_RESULT : 'New posts by tag ',
+        HOT_POSTS_RESULT : 'Hottest posts by tag '
     },
 
     PROMISES : {
         GET_COMMENTS : 'GET_COMMENTS_PROMISE',
         GET_POSTS : 'GET_POSTS_PROMISE',
         GET_FOLLOWERS : 'GET_FOLLOWERS_PROMISE',
-        GET_FOLLOWING : 'GET_FOLLOWING_PROMISE'
+        GET_FOLLOWING : 'GET_FOLLOWING_PROMISE',
+        GET_USERS_SEARCH : 'GET_USERS_SEARCH'
     },
 
     DISPLAY : {

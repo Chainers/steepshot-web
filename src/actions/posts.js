@@ -24,7 +24,8 @@ let requestPromises = {
   [Constants.PROMISES.GET_COMMENTS] : Promise.resolve(),
   [Constants.PROMISES.GET_POSTS] : Promise.resolve(),
   [Constants.PROMISES.GET_FOLLOWERS] : Promise.resolve(),
-  [Constants.PROMISES.GET_FOLLOWING] : Promise.resolve()
+  [Constants.PROMISES.GET_FOLLOWING] : Promise.resolve(),
+  [Constants.PROMISES.GET_USERS_SEARCH] : Promise.resolve()
 }
 
 async function getItems(url, promiseName, needsDestroyPrevious, where) {
@@ -46,6 +47,11 @@ export function getPosts(options, needsDestroyPrevious) {
   return getItems(url, Constants.PROMISES.GET_POSTS, needsDestroyPrevious, 'getPosts');
 }
 
+export function getPostsBySearch(options, needsDestroyPrevious) {
+  const url = RequestService.handlev1BaseRequestPosts(options.point, options.params);
+  return getItems(url, Constants.PROMISES.GET_POSTS, needsDestroyPrevious, 'getPostsBySearch');
+}
+
 export function getComments(options, needsDestroyPrevious) {
   const url = RequestService.handlev1_1BaseRequestPosts(options.point, options.params);
   return getItems(url, Constants.PROMISES.GET_COMMENTS, needsDestroyPrevious, 'getComments');
@@ -59,6 +65,11 @@ export function getFollowers(options, needsDestroyPrevious) {
 export function getFollowing(options, needsDestroyPrevious) {
   const url = RequestService.handlev1_1BaseRequestPosts(options.point, options.params);
   return getItems(url, Constants.PROMISES.GET_FOLLOWING, needsDestroyPrevious, 'getFollowing');
+}
+
+export function getUsersSearch(options, needsDestroyPrevious) {
+  const url = RequestService.handlev1_1BaseRequestPosts(options.point, options.params);
+  return getItems(url, Constants.PROMISES.GET_USERS_SEARCH, needsDestroyPrevious, 'getUsersSearch');
 }
 
 export function getPostShaddow(urlPost) {

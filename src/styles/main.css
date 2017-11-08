@@ -583,3 +583,15 @@
 .display--none {
   display: none;
 }
+
+.user-panel {
+  z-index: 2;
+}
+
+.position--unset {
+  position: unset;
+}
+
+.heading-lead {
+  margin-top: 3rem;
+}
