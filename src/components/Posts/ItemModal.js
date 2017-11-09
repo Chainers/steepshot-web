@@ -25,6 +25,7 @@ class ItemModal extends React.Component {
         super(props);
 
         this.state = {
+            avatar : this.props.item.avatar,
             item : this.props.item,
             index : this.props.index,
             initialIndex : this.props.index,
