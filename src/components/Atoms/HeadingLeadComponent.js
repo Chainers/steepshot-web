@@ -11,7 +11,7 @@ class HeadingLeadComponent extends React.Component {
         };
     }
 
-    componentWillreceiveProps(nextProps) {
+    componentWillReceiveProps(nextProps) {
         this.setState({
             ...nextProps
         })

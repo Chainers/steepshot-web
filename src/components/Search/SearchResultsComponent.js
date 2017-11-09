@@ -11,7 +11,6 @@ import TabsFilterComponent from '../Filters/TabsFilterComponent';
 import ItemsComponent from '../UserProfile/itemsComponent';
 import UsersComponent from '../UserProfile/UsersComponent';
 import Constants from '../../common/constants';
-import HeadingLeadComponent from '../Atoms/HeadingLeadComponent';
 import TabsWrapper from '../Wrappers/TabsWrapper';
 import TabWrapper from '../Wrappers/TabWrapper';
 
@@ -49,7 +48,12 @@ class SearchResultsComponent extends React.Component {
       usersSearchOptions : {
         query : nextProps.searchValue
       },
-      searchValue : nextProps.searchValue
+      searchValue : nextProps.searchValue,
+      needsForceRefresh : this.state.searchValue != nextProps.searchValue
+    }, () => {
+      this.setState({
+        needsForceRefresh : false
+      });
     })
   }
 
@@ -73,14 +77,11 @@ class SearchResultsComponent extends React.Component {
           >
             <UsersComponent
               point={Constants.SEARCH_FILTERS.USERS.point}
+              forceRefresh={this.state.needsForceRefresh}
               getUsers={getUsersSearch}
               options={this.state.usersSearchOptions}
               wrapperModifier="posts-list clearfix type-2"
-              header={
-                <HeadingLeadComponent 
-                  text={<span>{Constants.SEARCH_HEADING_LABELS.USERS_RESULT}<u>{this.state.searchValue}</u></span>}
-                />
-              }
+              headerText={<span>{Constants.SEARCH_HEADING_LABELS.USERS_RESULT}<u>{this.state.searchValue}</u></span>}
             />
             <TabWrapper>
               <ItemsComponent
@@ -90,21 +91,15 @@ class SearchResultsComponent extends React.Component {
                 options={this.state.hotSectionOptions}
                 renderNotEmptyOnly={true}
                 maxPosts={4}
-                header={
-                  <HeadingLeadComponent 
-                    text={<span>{Constants.SEARCH_HEADING_LABELS.HOT_POSTS_RESULT}<u>{this.state.searchValue}</u></span>}
-                  />
-                }
+                forceRefresh={this.state.needsForceRefresh}
+                headerText={<span>{Constants.SEARCH_HEADING_LABELS.HOT_POSTS_RESULT}<u>{this.state.searchValue}</u></span>}
               />
               <ItemsComponent 
                 point={this.insertCategory(Constants.POSTS_FILTERS.POSTS_NEW.point, this.state.searchValue)} 
                 cancelPrevious={false} 
                 wrapperModifier="posts-list clearfix"
-                header={
-                  <HeadingLeadComponent 
-                    text={<span>{Constants.SEARCH_HEADING_LABELS.NEW_POSTS_RESULT}<u>{this.state.searchValue}</u></span>}
-                  />
-                }
+                forceRefresh={this.state.needsForceRefresh}
+                headerText={<span>{Constants.SEARCH_HEADING_LABELS.NEW_POSTS_RESULT}<u>{this.state.searchValue}</u></span>}
               />
             </TabWrapper>
           </TabsWrapper>

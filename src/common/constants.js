@@ -89,7 +89,7 @@ export default {
     SEARCH_HEADING_LABELS : {
         USERS_RESULT : 'User search results for ',
         NEW_POSTS_RESULT : 'New posts by tag ',
-        HOT_POSTS_RESULT : 'Hottest posts by tag '
+        HOT_POSTS_RESULT : 'Hot posts by tag '
     },
 
     PROMISES : {

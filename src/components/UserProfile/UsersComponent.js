@@ -5,6 +5,7 @@ import LoadingSpinner from '../LoadingSpinner';
 import UserItem from './userItem';
 import Constants from '../../common/constants';
 import InfiniteScroll from 'react-infinite-scroller';
+import HeadingLeadComponent from '../Atoms/HeadingLeadComponent';
 import { debounce } from 'lodash';
 
 class UsersComponent extends React.Component {
@@ -42,7 +43,7 @@ class UsersComponent extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-      if (nextProps.point != this.state.point) {
+      if (nextProps.forceRefresh) {
         this.fullRefresh(nextProps)
       } else
       this.setState({
@@ -99,7 +100,9 @@ class UsersComponent extends React.Component {
   }
 
   renderHeader() {
-    if (this.state.header) return this.state.header;
+    if (this.state.headerText) return (
+      <HeadingLeadComponent text={this.state.headerText} />
+    );
     return null;
   }
 

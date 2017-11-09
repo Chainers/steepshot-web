@@ -63,7 +63,12 @@ class UserProfile extends React.Component {
           { label : `${result.post_count} ${Constants.POSTS_FILTERS.POSTS_USER.label}` },
           { label : `${result.followers_count} ${Constants.USERS_FILTERS.FOLLOWERS.label}`},
           { label : `${result.following_count} ${Constants.USERS_FILTERS.FOLLOWING.label}`}
-        ]
+        ],
+        needsForceRefresh : true
+      }, () => {
+        this.setState({
+          needsForceRefresh : false
+        })
       });
     });
   }
@@ -143,18 +148,21 @@ class UserProfile extends React.Component {
                   <ItemsComponent 
                     point={this.state.itemsPoint} 
                     wrapperModifier="posts-list clearfix type-2"
+                    forceRefresh={this.state.needsForceRefresh}
                   />
                   <UsersComponent 
                     point={this.state.followersPoint} 
                     usersLabel={Constants.USERS_FILTERS.FOLLOWERS.label} 
                     wrapperModifier="posts-list clearfix type-2"
                     getUsers={getFollowers}
+                    forceRefresh={this.state.needsForceRefresh}
                   />
                   <UsersComponent 
                     point={this.state.followingPoint}
                     usersLabel={Constants.USERS_FILTERS.FOLLOWING.label}  
                     wrapperModifier="posts-list clearfix type-2"
                     getUsers={getFollowing}
+                    forceRefresh={this.state.needsForceRefresh}
                   />
                 </TabsWrapper>
               </div>

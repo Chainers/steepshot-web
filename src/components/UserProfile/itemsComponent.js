@@ -11,6 +11,7 @@ import Constants from '../../common/constants';
 import ModalComponent from '../Common/ModalComponent';
 import ItemModal from '../Posts/ItemModal';
 import InfiniteScroll from 'react-infinite-scroller';
+import HeadingLeadComponent from '../Atoms/HeadingLeadComponent';
 import { debounce } from 'lodash';
 
 class ItemsComponent extends React.Component {
@@ -57,7 +58,7 @@ class ItemsComponent extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.point != this.state.point) {
+    if (nextProps.forceRefresh) {
       this.fullRefresh(nextProps)
     } else
     this.setState({
@@ -169,7 +170,9 @@ class ItemsComponent extends React.Component {
   }
 
   renderHeader() {
-    if (this.state.header) return this.state.header;
+    if (this.state.headerText) return (
+      <HeadingLeadComponent text={this.state.headerText} />
+    );
     return null;
   }
 
