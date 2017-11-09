@@ -4,20 +4,20 @@ class TabsWrapper extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            activeTab : this.props.activeTab
+            ...this.props
         }
     }
 
     componentWillReceiveProps(nextProps) {
         this.setState({
-            activeTab : nextProps.activeTab
+            ...nextProps
         })
     }
 
     renderTabs() {
-        if (this.props.children == undefined) return null;
-        let activeTab = this.props.activeTab;
-        return this.props.children.map((child, index) => {
+        if (this.state.children == undefined) return null;
+        let activeTab = this.state.activeTab;
+        return this.state.children.map((child, index) => {
             let styles = 'tab-pane fade';
             
             if (index == activeTab) {

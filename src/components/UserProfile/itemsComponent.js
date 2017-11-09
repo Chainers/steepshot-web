@@ -19,10 +19,6 @@ class ItemsComponent extends React.Component {
 
     this.state = {
       authorName : this.props.username,
-      loading : true,
-      loadingMore : false,
-      localize : LocalizedStrings.getInstance(),
-      items : [],
       point : this.props.point,
       wrapperModifier : this.props.wrapperModifier,
       cancelPrevious : this.props.cancelPrevious == undefined ? false : this.props.cancelPrevious,
@@ -30,20 +26,42 @@ class ItemsComponent extends React.Component {
       getPosts : this.props.getPosts == undefined ? getPosts : this.props.getPosts,
       header : this.props.header,
       renderNotEmptyOnly : this.props.renderNotEmptyOnly == undefined ? false : this.props.renderNotEmptyOnly,
-      previousRequestOffset : 'none',
       isComponentVisible : this.props.isComponentVisible == undefined ? true : this.props.isComponentVisible,
-      hasMore : true,
-      maxPosts : this.props.maxPosts || 9999
+      maxPosts : this.props.maxPosts || 9999,
+      ...this.getInitialData()
     };
+  }
+
+  fullRefresh(customProps) {
+    this.setState({
+      ...this.getInitialData(),
+      ...customProps
+    }, () => {
+      this.fetchData();
+    })
   }
 
   componentDidMount() {
     this.fetchData();
   }
 
+  getInitialData() {
+    return {
+      loading : true,
+      loadingMore : false,
+      offset : null,
+      items : [],
+      hasMore : true,
+      previousRequestOffset : 'none'
+    }
+  }
+
   componentWillReceiveProps(nextProps) {
+    if (nextProps.point != this.state.point) {
+      this.fullRefresh(nextProps)
+    } else
     this.setState({
-        isComponentVisible : nextProps.isComponentVisible
+        ...nextProps
     });
   }
 

@@ -11,30 +11,43 @@ class UsersComponent extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      loading : true,
-      loadingMore : false,
-      hasMore : true,
-      items : [],
-      offset : null,
-      point : this.props.point,
-      getUsers : this.props.getUsers,
-      usersLabel : this.props.usersLabel,
-      wrapperModifier : this.props.wrapperModifier,
-      options : this.props.options,
-      header : this.props.header,
-      previousRequestOffset : 'none',
-      isComponentVisible : this.props.isComponentVisible == undefined ? true : this.props.isComponentVisible
+      isComponentVisible : this.props.isComponentVisible == undefined ? true : this.props.isComponentVisible,
+      ...this.getInitialData(),
+      ...this.props
     };
+  }
+
+  fullRefresh(customProps) {
+    this.setState({
+      ...this.getInitialData(),
+      ...customProps
+    }, () => {
+      this.fetchData();
+    })
   }
 
   componentDidMount() {
     this.fetchData();
   }
 
+  getInitialData() {
+    return {
+      loading : true,
+      loadingMore : false,
+      hasMore : true,
+      items : [],
+      offset : null,
+      previousRequestOffset : 'none'
+    }
+  }
+
   componentWillReceiveProps(nextProps) {
-    this.setState({
-        isComponentVisible : nextProps.isComponentVisible
-    });
+      if (nextProps.point != this.state.point) {
+        this.fullRefresh(nextProps)
+      } else
+      this.setState({
+          ...nextProps
+      });
   }
 
   fetchData() {
