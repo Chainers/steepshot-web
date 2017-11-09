@@ -120,7 +120,7 @@ class ItemsComponent extends React.Component {
     this.setState({
         currentItem : index
     },
-        jqApp.openPostModal()
+        jqApp.openPostModal($(ReactDOM.findDOMNode(this)))
     );
   }
 
