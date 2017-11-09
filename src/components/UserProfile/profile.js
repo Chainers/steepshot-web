@@ -59,9 +59,9 @@ class UserProfile extends React.Component {
         profile: result,
         avatar: result.profile_image,
         keys : [
-          { label : `${result.post_count} ${this.state.keys[0].label}` },
-          { label : `${result.followers_count} ${this.state.keys[1].label}`},
-          { label : `${result.following_count} ${this.state.keys[2].label}`}
+          { label : `${result.post_count} ${Constants.POSTS_FILTERS.POSTS_USER.label}` },
+          { label : `${result.followers_count} ${Constants.USERS_FILTERS.FOLLOWERS.label}`},
+          { label : `${result.following_count} ${Constants.USERS_FILTERS.FOLLOWING.label}`}
         ]
       });
     });
