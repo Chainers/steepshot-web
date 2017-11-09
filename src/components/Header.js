@@ -94,7 +94,7 @@ class Header extends React.Component {
     </div>
 
     if (isUserAuth) {
-      authorLink = `/userProfile/${this.props.user}`;
+      authorLink = `/@${this.props.user}`;
       loginComponent = <div className="section controls">
         <div className="wrap-controls">
           <Link to="/settings" className="btn-control settings"></Link>

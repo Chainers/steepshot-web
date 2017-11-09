@@ -112,7 +112,7 @@ MobileNavigationComponent.defaultProps = {
     },
     urls : {
         feed : "/feed",
-        userProfileBase : "/userProfile/",
+        userProfileBase : "/@",
         settings : "/settings",
         login : "/signin",
         browse : "/browse"

@@ -144,7 +144,7 @@ class Item extends React.Component {
     let authorImage = this.state.avatar || constants.NO_AVATAR;
     let comments = <Comments key="comments" item={this.state.item} />;
 
-    const authorLink = `/userProfile/${this.state.item.author}`;
+    const authorLink = `/@${this.state.item.author}`;
     const cardPhotoStyles = {
       backgroundImage : 'url(' + itemImage + ')'
     }

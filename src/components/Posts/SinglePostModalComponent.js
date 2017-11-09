@@ -232,7 +232,7 @@ class SinglePostModalComponent extends React.Component {
 
             let isUserAuth = (this.props.username && this.props.postingKey);
 
-            const authorLink = `/userProfile/${this.state.item.author}`;
+            const authorLink = `/@${this.state.item.author}`;
 
             this.initLayout();
 

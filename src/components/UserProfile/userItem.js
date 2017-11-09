@@ -29,7 +29,7 @@ class UserItem extends React.Component {
     let profileImageSrc = this.state.avatar || constants.NO_AVATAR;
     const name = this.state.item.author || this.state.item.name || 'Unknown';
     const location = this.state.item.location || '';
-    const authorLink = `/userProfile/${this.state.item.author}`;
+    const authorLink = `/@${this.state.item.author}`;
 
     return (
         <div className="item-wrap">
