@@ -11,6 +11,7 @@ class TabsWrapper extends React.Component {
     }
 
     renderTabs() {
+        if (this.props.children == undefined) return null;
         let tabs = [];
         let activeTab = this.props.activeTab;
         this.props.children.map((child, index) => {

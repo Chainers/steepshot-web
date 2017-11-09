@@ -13,6 +13,7 @@ import FollowComponent from '../Posts/FollowComponent';
 import ItemsComponent from './itemsComponent';
 import Constants from '../../common/constants';
 import TabsFilterComponent from '../Filters/TabsFilterComponent';
+import TabsWrapper from '../Wrappers/TabsWrapper';
 
 class UserProfile extends React.Component {
   constructor(props) {
@@ -38,6 +39,12 @@ class UserProfile extends React.Component {
 
   componentDidMount() {
     this.getUserProfile();
+  }
+
+  updateActiveTab(index) {
+    this.setState({
+      activeItemIndex : index
+    })
   }
 
   getUserProfile(userName) {
@@ -91,6 +98,7 @@ class UserProfile extends React.Component {
 
     if (this.state.profile) {
       name = this.state.profile.name;
+      if (name == undefined || name == '') name = `@${this.state.profile.username}`;
       website = this.state.profile.website;
       about = this.state.profile.about;
       location = this.state.profile.location;
@@ -126,6 +134,10 @@ class UserProfile extends React.Component {
                 <TabsFilterComponent
                   keys={this.state.keys}
                   activeItemIndex={this.state.activeItemIndex}
+                  updateCallback={this.updateActiveTab.bind(this)}
+                />
+                <TabsWrapper 
+                  activeTab={this.state.activeItemIndex}
                 >
                   <ItemsComponent 
                     point={this.state.itemsPoint} 
@@ -143,7 +155,7 @@ class UserProfile extends React.Component {
                     wrapperModifier="posts-list clearfix type-2"
                     getUsers={getFollowing}
                   />
-                </TabsFilterComponent>
+                </TabsWrapper>
               </div>
             </div>
           </div>
