@@ -49,26 +49,37 @@ class UserProfile extends React.Component {
   }
 
   getUserProfile(userName) {
-    let showFollow = true;
-    userName = userName || this.state.authorName;
-    getUserProfile(userName).then((result) => {
-      if (this.state.watcher == userName || this.state.watcher == undefined) {
-        showFollow = false;
-      }
-      this.setState({
-        showFollow: showFollow,
-        profile: result,
-        avatar: result.profile_image,
-        keys : [
-          { label : `${result.post_count} ${Constants.POSTS_FILTERS.POSTS_USER.label}` },
-          { label : `${result.followers_count} ${Constants.USERS_FILTERS.FOLLOWERS.label}`},
-          { label : `${result.following_count} ${Constants.USERS_FILTERS.FOLLOWING.label}`}
-        ],
-        needsForceRefresh : true
-      }, () => {
+    this.setState({
+      wrongProfile : false,
+      profile : undefined
+    }, () => {
+      let showFollow = true;
+      userName = userName || this.state.authorName;
+      getUserProfile(userName).then((result) => {
+        if (result.length == 0) {
+          this.setState({
+            wrongProfile : true
+          });
+          return false;
+        }
+        if (this.state.watcher == userName || this.state.watcher == undefined) {
+          showFollow = false;
+        }
         this.setState({
-          needsForceRefresh : false
-        })
+          showFollow: showFollow,
+          profile: result,
+          avatar: result.profile_image,
+          keys : [
+            { label : `${result.post_count} ${Constants.POSTS_FILTERS.POSTS_USER.label}` },
+            { label : `${result.followers_count} ${Constants.USERS_FILTERS.FOLLOWERS.label}`},
+            { label : `${result.following_count} ${Constants.USERS_FILTERS.FOLLOWING.label}`}
+          ],
+          needsForceRefresh : true
+        }, () => {
+          this.setState({
+            needsForceRefresh : false
+          })
+        });
       });
     });
   }
@@ -95,6 +106,14 @@ class UserProfile extends React.Component {
   }
 
   render() {
+
+    if (this.state.wrongProfile) {
+      return (
+        <div className="empty-query-message">
+          {Constants.EMPTY_QUERY}
+        </div>
+      )
+    }
     let profileImageSrc = this.state.avatar || Constants.NO_AVATAR;
     let name = '';
     let website = '';
