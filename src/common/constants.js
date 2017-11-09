@@ -104,5 +104,10 @@ export default {
         DESK_BREAKPOINT : 1024
     },
 
-    CURRENCY: '$'
+    CURRENCY: '$',
+
+    ENDLESS_SCROLL : {
+        DEBOUNCE : 500,
+        OFFSET : 1500
+    }
 }

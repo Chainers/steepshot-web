@@ -54,6 +54,8 @@
     "react-custom-scrollbars": "^4.2.1",
     "react-dom": "^15.6.1",
     "react-dropdown": "^1.2.5",
+    "react-infinite-scroll-es2015": "^1.0.1",
+    "react-infinite-scroller": "^1.1.0",
     "react-loading-spinner": "^1.0.12",
     "react-localization": "0.0.13",
     "react-modal": "^2.0.6",
