@@ -16,6 +16,7 @@ import Comments from './Comments';
 import constants from '../../common/constants';
 import VouteComponent from './VouteComponent';
 import FlagComponent from './FlagComponent';
+import TagComponent from './TagComponent';
 
 class Item extends React.Component {
   constructor(props) {
@@ -67,23 +68,6 @@ class Item extends React.Component {
     });
   }
 
-  _research(e, tagValue) {
-    e.stopPropagation();
-
-    if (this.state.modalIsOpen) {
-      this.setState({modalIsOpen: false});
-    }
-
-    this.props.dispatch({
-      type: 'SET_SEARCH_VALUE',
-      value: tagValue,
-      text: tagValue.slice(1, tagValue.lenght),
-      category: constants.CATEGORIES.tag
-    });
-
-    this.props.history.push('/browse');
-  }
-
   redirectToUserProfile() {
     this.setState({ redirectToReferrer: true });
   }
@@ -128,13 +112,7 @@ class Item extends React.Component {
 
   renderTags() {
     if (this.state.item.tags) {
-      return this.state.item.tags.map((tag, index) => {
-        return <a key={index}
-          onClick={(event) => this._research.bind(this, event, tag)} 
-          >
-            {tag}
-          </a>
-      })
+      return this.state.item.tags.map((tag, index) => <TagComponent tag={tag} key={index}/>);
     } else return null;
   }
 

@@ -17,6 +17,7 @@ import FlagComponent from './FlagComponent';
 import ShareComponent from './ShareComponent';
 import LoadingSpinner from '../LoadingSpinner';
 import ScrollViewComponent from '../Common/ScrollViewComponent';
+import TagComponent from './TagComponent';
 
 import utils from '../../utils/utils';
 
@@ -217,13 +218,7 @@ class ItemModal extends React.Component {
           <p>{this.state.item.title}</p>
           <div className="post-tags clearfix">
             {
-              this.state.item.tags.map((tag, index) => {
-                return <a key={index}
-                  onClick={(event) => this.props._research.bind(this, event, tag)} 
-                  >
-                    {tag}
-                  </a>
-              })
+              this.state.item.tags.map((tag, index) => <TagComponent tag={tag} key={index}/>)
             }
           </div>
         </div>
