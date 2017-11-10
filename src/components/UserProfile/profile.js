@@ -5,6 +5,9 @@ import {
   getUserProfile
 } from '../../actions/profile';
 import {
+  withRouter
+} from 'react-router-dom';
+import {
   getFollowers,
   getFollowing
 } from '../../actions/posts';
@@ -58,9 +61,7 @@ class UserProfile extends React.Component {
       userName = userName || this.state.authorName;
       getUserProfile(userName).then((result) => {
         if (result.length == 0) {
-          this.setState({
-            wrongProfile : true
-          });
+          this.props.history.push('*');
           return false;
         }
         if (this.state.watcher == userName || this.state.watcher == undefined) {
@@ -107,14 +108,6 @@ class UserProfile extends React.Component {
   }
 
   render() {
-
-    if (this.state.wrongProfile) {
-      return (
-        <div className="empty-query-message">
-          {Constants.EMPTY_QUERY}
-        </div>
-      )
-    }
     let profileImageSrc = this.state.avatar || Constants.NO_AVATAR;
     let name = '';
     let website = '';
@@ -194,9 +187,9 @@ class UserProfile extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    localization: state.localization,
-    user: state.auth.user
+    localization : state.localization,
+    user : state.auth.user
   };
 };
 
-export default connect(mapStateToProps)(UserProfile);
+export default withRouter(connect(mapStateToProps)(UserProfile));

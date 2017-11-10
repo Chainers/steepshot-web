@@ -7,7 +7,7 @@ import UserProfile from '../UserProfile/profile';
 class Profile extends React.Component {
     render() {
         return(
-            <UserProfile username={this.props.user} showFollow={false} />
+            <UserProfile username={this.props.user} showFollow={false} history={this.props.history}/>
         );
     }
 }
@@ -15,7 +15,6 @@ class Profile extends React.Component {
 const mapStateToProps = (state, props) => {
   return {
     localization: state.localization,
-    search: state.search,
     user: state.auth.user
   };
 };
