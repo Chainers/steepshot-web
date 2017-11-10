@@ -20,8 +20,8 @@ class SearchResultsComponent extends React.Component {
 
     this.state = {
       keys : [
-        { label : Constants.SEARCH_FILTERS.USERS.label },
-        { label : Constants.SEARCH_FILTERS.CATEGORIES.label }
+        { label : Constants.SEARCH_FILTERS.CATEGORIES.label },
+        { label : Constants.SEARCH_FILTERS.USERS.label }
       ],
       activeItemIndex : 0,
       hotSectionOptions : {
@@ -75,14 +75,6 @@ class SearchResultsComponent extends React.Component {
           <TabsWrapper 
             activeTab={this.state.activeItemIndex}
           >
-            <UsersComponent
-              point={Constants.SEARCH_FILTERS.USERS.point}
-              forceRefresh={this.state.needsForceRefresh}
-              getUsers={getUsersSearch}
-              options={this.state.usersSearchOptions}
-              wrapperModifier="posts-list clearfix type-2"
-              headerText={<span>{Constants.SEARCH_HEADING_LABELS.USERS_RESULT}<u>{this.state.searchValue}</u></span>}
-            />
             <TabWrapper>
               <ItemsComponent
                 point={this.insertCategory(Constants.POSTS_FILTERS.POSTS_HOT.point, this.state.searchValue)}
@@ -102,6 +94,14 @@ class SearchResultsComponent extends React.Component {
                 headerText={<span>{Constants.SEARCH_HEADING_LABELS.NEW_POSTS_RESULT}<u>{this.state.searchValue}</u></span>}
               />
             </TabWrapper>
+            <UsersComponent
+              point={Constants.SEARCH_FILTERS.USERS.point}
+              forceRefresh={this.state.needsForceRefresh}
+              getUsers={getUsersSearch}
+              options={this.state.usersSearchOptions}
+              wrapperModifier="posts-list clearfix type-2"
+              headerText={<span>{Constants.SEARCH_HEADING_LABELS.USERS_RESULT}<u>{this.state.searchValue}</u></span>}
+            />
           </TabsWrapper>
         </div>
       </div>
