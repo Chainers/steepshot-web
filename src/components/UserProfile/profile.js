@@ -15,6 +15,7 @@ import ItemsComponent from './itemsComponent';
 import Constants from '../../common/constants';
 import TabsFilterComponent from '../Filters/TabsFilterComponent';
 import TabsWrapper from '../Wrappers/TabsWrapper';
+import AvatarComponent from '../Atoms/AvatarComponent';
 
 class UserProfile extends React.Component {
   constructor(props) {
@@ -137,9 +138,7 @@ class UserProfile extends React.Component {
             <div className="col-xs-12 col-md-4 col-lg-3">
               <div className="user-information">
                 <div className="pic-wrap clearfix">
-                  <div className="pic">
-                    <img src={profileImageSrc} />
-                  </div>
+                  <AvatarComponent src={profileImageSrc} />
                   { this.state.showFollow ? <FollowComponent item={this.state.profile} /> : null }
                 </div>
                 <div className="name">{name}</div>

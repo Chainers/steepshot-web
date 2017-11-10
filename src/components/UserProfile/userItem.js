@@ -5,6 +5,7 @@ import {
   Link
 } from 'react-router-dom';
 import constants from '../../common/constants';
+import AvatarComponent from '../Atoms/AvatarComponent';
 
 class UserItem extends React.Component {
   constructor(props) {
@@ -20,10 +21,6 @@ class UserItem extends React.Component {
     };
   }
 
-  setDefaultAvatar() {
-    this.setState({ avatar: constants.NO_AVATAR });
-  }
-
   render() {
     let _this = this;
     let profileImageSrc = this.state.avatar || constants.NO_AVATAR;
@@ -35,11 +32,9 @@ class UserItem extends React.Component {
         <div className="item-wrap">
             <div className="user-card">
                 <div className="card-wrap clearfix">
-                    <div className="pic">
-                        <Link to={authorLink}>
-                            <img src={profileImageSrc} alt="user" onError={this.setDefaultAvatar.bind(this)}/>
-                        </Link>
-                    </div>
+                    <Link to={authorLink}>
+                      <AvatarComponent src={profileImageSrc} />
+                    </Link>
                     <div className="text">
                       <Link to={authorLink} className="name">
                         {name}
