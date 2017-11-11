@@ -109,5 +109,11 @@ export default {
     ENDLESS_SCROLL : {
         DEBOUNCE : 500,
         OFFSET : 1500
+    },
+
+    TUTORIAL : {
+        PRE_TEXT : 'Also you can check ',
+        TEXT : 'How to sign in Steepshot for the web',
+        LINK : "https://www.youtube.com/embed/XAVapBwbS1U?autoplay=1"
     }
 }

@@ -604,3 +604,10 @@
 .post-comment {
   padding : 20px;
 }
+
+.youtube-embed {
+  margin: 3rem 0 5rem 0;
+  border-radius: 25px;
+  display: inline-flex;
+  overflow: hidden;
+}

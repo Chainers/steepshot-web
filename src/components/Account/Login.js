@@ -19,6 +19,7 @@ import {
 import Messages from '../Messages';
 import LoadingSpinner from '../LoadingSpinner';
 import steemconnect from 'steemconnect';
+import Constants from '../../common/constants';
 
 class Login extends React.Component {
   constructor(props) {
@@ -28,7 +29,8 @@ class Login extends React.Component {
       postingKey: '',
       userNameError: false,
       postingKeyError: false,
-      needsLoader: false
+      needsLoader: false,
+      withTutorVideo : false
     };
   }
 
@@ -102,6 +104,29 @@ class Login extends React.Component {
 
   openRegisterSite() {
     window.open('https://steemit.com/pick_account');
+  }
+
+  renderTutorVideo() {
+    return (
+      <div className="youtube-embed">
+        <iframe 
+          width="550" 
+          height="315" 
+          src={Constants.TUTORIAL.LINK} 
+          frameBorder="0" 
+          allowFullScreen
+        >
+        </iframe>
+      </div>
+    )
+  }
+
+  renderTutorial(e) {
+    this.setState({
+      withTutorVideo : true
+    }, () => {
+      $("html, body").delay(400).animate({ scrollTop: $('.js--page-bottom').offset().top }, 2000);
+    })
   }
 
   render() {
@@ -182,6 +207,24 @@ class Login extends React.Component {
                   </div>
                 </div>
               </form>
+              <div className="container-fluid">
+                <div className="row">
+                  <div className="col-xs-12 text--center">
+                    {
+                      this.state.withTutorVideo
+                      ?
+                        this.renderTutorVideo()
+                      :
+                        <p>
+                          {Constants.TUTORIAL.PRE_TEXT}
+                          <a onClick={this.renderTutorial.bind(this)}>
+                            {Constants.TUTORIAL.TEXT}
+                          </a>
+                        </p>
+                    }
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
