@@ -9,7 +9,7 @@ const NotFound = (props) => {
             <h1 id="title" className="hidden">404</h1>
             <div className="empty-query-message">
               <div className="eqm-ttl">404 error</div>
-              Ooops… Page hot found. Try to refresh this page or check your internet conection.
+              Ooops… Page not found. Try to refresh this page or check your internet connection.
             </div>
           </div>
         </div>
