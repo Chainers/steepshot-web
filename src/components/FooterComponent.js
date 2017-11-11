@@ -1,4 +1,8 @@
 import React from 'react';
+import {
+    Link,
+    withRouter
+} from 'react-router-dom';
 
 class FooterComponent extends React.Component {
 
@@ -16,6 +20,11 @@ class FooterComponent extends React.Component {
                                         <ul className="list_level_1 list-reset">
                                             {/* <li className="item_1"><a href="https://www.facebook.com/steepshot/" target="_blank">Facebook</a></li>
                                             <li className="item_1"><a href="https://twitter.com/steepshot" target="_blank">Twitter</a></li> */}
+                                            <li className="item_1">                                                
+                                                <Link to="/guide">
+                                                    Guidelines
+                                                </Link>
+                                            </li>
                                             <li className="item_1">
                                                 <a href="https://play.google.com/store/apps/details?id=com.droid.steepshot&rdid=com.droid.steepshot" target="_blank">
                                                     <span>Get it on GooglePlay  </span>

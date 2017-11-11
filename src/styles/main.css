@@ -611,3 +611,16 @@
   display: inline-flex;
   overflow: hidden;
 }
+
+.about {
+  margin: 60px auto;
+  max-width: 550px;
+}
+
+.about__heading {
+  padding: 1rem 2rem;
+}
+
+.about__list {
+  padding: 0 3rem 2rem 3rem;
+}

@@ -14,6 +14,7 @@ import Settings from './components/Settings';
 import CreatePost from './components/Posts/CreatePost';
 import SinglePostModalWrapper from './components/Wrappers/SinglePostModalWrapper';
 import SearchWrapper from './components/Wrappers/SearchWrapper';
+import AboutComponent from './components/About/AboutComponent';
 
 export default function getRoutes(store) {
   const clearMessages = () => {
@@ -43,6 +44,7 @@ export default function getRoutes(store) {
         <Route path="/signin" component={Signin} onLeave={clearMessages} />
         <Route path="/post" component={SinglePostModalWrapper} onLeave={clearMessages} />
         <Route path="/search/:searchValue" component={SearchWrapper} onLeave={clearMessages} />
+        <Route path="/guide" component={AboutComponent} onLeave={clearMessages} />
         <PrivateRoute path="/feed" component={Feed} onLeave={clearMessages} />
         <PrivateRoute path="/createPost" component={CreatePost} onLeave={clearMessages} />
         <PrivateRoute path="/profile" component={Profile} onLeave={clearMessages} />
