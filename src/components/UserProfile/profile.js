@@ -153,29 +153,35 @@ class UserProfile extends React.Component {
                   activeItemIndex={this.state.activeItemIndex}
                   updateCallback={this.updateActiveTab.bind(this)}
                 />
-                <TabsWrapper 
-                  activeTab={this.state.activeItemIndex}
-                >
-                  <ItemsComponent 
-                    point={this.state.itemsPoint} 
-                    wrapperModifier="posts-list clearfix type-2"
-                    forceRefresh={this.state.needsForceRefresh}
-                  />
-                  <UsersComponent 
-                    point={this.state.followersPoint} 
-                    usersLabel={Constants.USERS_FILTERS.FOLLOWERS.label} 
-                    wrapperModifier="posts-list clearfix type-2"
-                    getUsers={getFollowers}
-                    forceRefresh={this.state.needsForceRefresh}
-                  />
-                  <UsersComponent 
-                    point={this.state.followingPoint}
-                    usersLabel={Constants.USERS_FILTERS.FOLLOWING.label}  
-                    wrapperModifier="posts-list clearfix type-2"
-                    getUsers={getFollowing}
-                    forceRefresh={this.state.needsForceRefresh}
-                  />
-                </TabsWrapper>
+                {
+                  this.state.profile == undefined
+                  ?
+                    null
+                  :
+                    <TabsWrapper 
+                      activeTab={this.state.activeItemIndex}
+                    >
+                      <ItemsComponent 
+                        point={this.state.itemsPoint} 
+                        wrapperModifier="posts-list clearfix type-2"
+                        forceRefresh={this.state.needsForceRefresh}
+                      />
+                      <UsersComponent 
+                        point={this.state.followersPoint} 
+                        usersLabel={Constants.USERS_FILTERS.FOLLOWERS.label} 
+                        wrapperModifier="posts-list clearfix type-2"
+                        getUsers={getFollowers}
+                        forceRefresh={this.state.needsForceRefresh}
+                      />
+                      <UsersComponent 
+                        point={this.state.followingPoint}
+                        usersLabel={Constants.USERS_FILTERS.FOLLOWING.label}  
+                        wrapperModifier="posts-list clearfix type-2"
+                        getUsers={getFollowing}
+                        forceRefresh={this.state.needsForceRefresh}
+                      />
+                    </TabsWrapper>
+                }
               </div>
             </div>
           </div>

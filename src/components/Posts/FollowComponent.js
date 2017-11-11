@@ -37,7 +37,7 @@ class FollowComponent extends React.Component {
       if (result) {
         let statusText = 'unfollowed';
         if (!status) statusText = 'followed';
-        jqApp.pushMessage.open(`User was successfully ${statusText}`);
+        jqApp.pushMessage.open(`User has been successfully ${statusText}`);
         this.setState({
           follow: !this.state.follow
         })

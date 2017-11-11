@@ -25,7 +25,7 @@ class ItemsComponent extends React.Component {
       cancelPrevious : this.props.cancelPrevious == undefined ? false : this.props.cancelPrevious,
       options : this.props.options,
       getPosts : this.props.getPosts == undefined ? getPosts : this.props.getPosts,
-      header : this.props.header,
+      headerText : this.props.headerText,
       renderNotEmptyOnly : this.props.renderNotEmptyOnly == undefined ? false : this.props.renderNotEmptyOnly,
       isComponentVisible : this.props.isComponentVisible == undefined ? true : this.props.isComponentVisible,
       maxPosts : this.props.maxPosts || 9999,
