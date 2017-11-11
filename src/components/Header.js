@@ -66,9 +66,6 @@ class Header extends React.Component {
     if (e.key === 'Enter') {
       e.preventDefault();
       this.props.history.push(`/search/${this.state.searchValue}`);
-      setTimeout(() => {
-        jqApp.search.closeSearch();
-      }, 5000);
     }
   }
 
