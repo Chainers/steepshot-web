@@ -16,6 +16,7 @@ import FlagComponent from './FlagComponent';
 import ShareComponent from './ShareComponent';
 import ScrollViewComponent from '../Common/ScrollViewComponent';
 import TagComponent from './TagComponent';
+import LoadingSpinner from '../LoadingSpinner';
 
 import {
     getPostShaddow
@@ -78,7 +79,6 @@ class SinglePostModalComponent extends React.Component {
     initLayout() {
         setTimeout(() => { 
             jqApp.forms.init();
-            jqApp.post.init()
         }, 0);
     }
 
