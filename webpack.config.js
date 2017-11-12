@@ -1,58 +1,20 @@
-const path = require('path');
-const webpack = require('webpack');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
+'use strict';
+const webpack  = require('webpack');
+const NODE_ENV = process.env.NODE_ENV ? process.env.NODE_ENV.trim() : 'development';
 
 module.exports = {
-  entry: path.join(__dirname, 'src', 'main.js'),
-  output: {
-    path: path.resolve(__dirname, "public"),
-    filename: 'bundle.js',
-  },
-  module: {
-    rules: [
-        { 
-          test: /\.js$/, 
-          exclude: /node_modules/,
-          use: [
-              "react-hot-loader", 
-              "babel-loader"
-            ] 
-        },
-        {
-            test: /\.scss$/,
-            loader: ExtractTextPlugin.extract({
-                use: [ 
-                    { loader: 'css-loader' },
-                    { loader: 'style-loader' },
-                    { loader: 'resolve-url' },
-                    { loader: 'sass-loader' }
-                ]
-            })
-        },
-        {
-            test: /\.css$/,
-            loader: ExtractTextPlugin.extract({
-                use: [ 
-                    { loader: 'css-loader' },
-                    { loader: 'style-loader' } 
-                ]
-            })
-        },
-        {
-          test: /\.(png|svg|jpg|gif)$/,
-          use: [
-            'file-loader'
-          ]
-        }
-    ],
-  },
-  plugins: [
-        new webpack.HotModuleReplacementPlugin(),
-        new webpack.NoErrorsPlugin(),
-        new CopyWebpackPlugin([
-            { from: './static/images/**/*', to: '/public/images' },
-            { from: './static/styles/**/*', to: '/public/styles' }
-        ])
-  ]
+  resolve: {
+    modulesDirectories: ['node_modules'],
+    extensions: ['', '.js']
+   }
 };
+
+module.exports.plugins.push(
+    new webpack.optimize.UglifyJsPlugin({ 
+        compress: {
+            warnings: false,
+            drop_console: true,
+            unsafe: false
+        }
+    })
+);

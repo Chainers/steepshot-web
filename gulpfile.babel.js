@@ -31,6 +31,10 @@ import rename from 'gulp-rename';
 import concat from 'gulp-concat';
 import pump from 'pump';
 import babel from 'gulp-babel';
+import webpack from 'gulp-webpack';
+import gutil from 'gulp-util';
+import notifier from 'node-notifier';
+import named from 'vinyl-named';
 
 import awspublish from 'gulp-awspublish';
 import s3_index from 'gulp-s3-index';
@@ -191,37 +195,31 @@ gulp.task('lint', () => {
     .pipe(eslint.format());
 });
 
-gulp.task('libs', (cb) => {
-  return gulp.src([
-    'static/libs/libs/jquery-3.2.1.min.js',
-    'static/libs/libs/jquery-ui.min.js',
-    'static/libs/libs/jquery-ui.touchPunch.min.js',
-    'static/libs/libs/jquery.carouFredSel.min.js',
-    'static/libs/libs/jquery.magnific-popup.min.js',
-    'static/libs/libs/jquery.mCustomScrollbar.min.js',
-    'static/libs/libs/jquery.touchSwipe.min.js',
-    'static/libs/libs/modernizr-custom.min.js',
-    'static/libs/app.min.js'
-  ])
-  .pipe(concat('libs.js'))
-  .pipe(babel({
-    presets: ['es2015']
-  }))
-  .pipe(uglify())
-  .pipe(gulp.dest(paths.prepare));
-});
-
 gulp.task('scripts', (cb) => {
-  runSequence('react', 'libs', 'bundle', cb);
+  runSequence('react', 'bundle', cb);
 });
 
 gulp.task('bundle', (cb) => {
   pump([
-    gulp.src([`${paths.prepare}/libs.js`, `${paths.prepare}/react.js`]),
+    gulp.src([
+      `${paths.prepare}/react.js`,
+      'static/libs/libs/jquery-ui.min.js',
+      'static/libs/libs/jquery-ui.touchPunch.min.js',
+      'static/libs/libs/jquery.carouFredSel.min.js',
+      'static/libs/libs/jquery.magnific-popup.min.js',
+      'static/libs/libs/jquery.touchSwipe.min.js',
+      'static/libs/libs/modernizr-custom.min.js',
+      'static/libs/app.min.js'
+    ]),
     debug({title: 'bundle : '}),
-    concat(`app${guid}.js`),
-    uglify(),
-    gulp.dest('./dist/js')
+    named(),
+    webpack({
+
+      output : {
+        filename : `app${guid}.js`
+      }
+    }),
+    gulp.dest(`dist/js`)
   ], cb);
 });
 

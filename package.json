@@ -43,9 +43,11 @@
     "gulp-rename": "^1.2.2",
     "gulp-uglifyjs": "^0.6.2",
     "gulp-util": "^3.0.8",
+    "gulp-webpack": "^1.5.0",
     "history": "^4.6.3",
     "jquery": "^3.2.1",
     "moment": "^2.18.1",
+    "node-notifier": "^5.1.2",
     "react": "^15.6.2",
     "react-classnames": "^0.1.2",
     "react-clipboard.js": "^1.1.2",
@@ -73,7 +75,8 @@
     "steemconnect": "0.0.35",
     "underscore": "^1.8.3",
     "url": "^0.11.0",
-    "webpack": "^3.1.0"
+    "vinyl-named": "^1.1.0",
+    "webpack": "^3.8.1"
   },
   "devDependencies": {
     "autoprefixer": "^6.3.6",
@@ -130,6 +133,7 @@
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0",
     "watchify": "^3.7.0",
+    "webpack": "^2.1.0-beta.21",
     "webpack-dev-server": "^2.5.1"
   }
 }

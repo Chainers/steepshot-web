@@ -11,6 +11,10 @@ import LocalizedStrings from './components/Localization/index.js';
 // import { Router } from 'react-router'
 import { BrowserRouter, Router } from 'react-router-dom';
 import createBrowserHistory from 'history/createBrowserHistory';
+import jQuery from 'jquery';
+import { jqApp } from '../static/libs/app.min.js';
+
+window.$ = window.jQuery = jQuery;
 
 const history = createBrowserHistory();
 
