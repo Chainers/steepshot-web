@@ -113,7 +113,7 @@ export default {
 
     TUTORIAL : {
         PRE_TEXT : 'Also you can check ',
-        TEXT : 'How to sign in Steepshot for the web',
+        TEXT : 'how to sign in to Steepshot',
         LINK : "https://www.youtube.com/embed/XAVapBwbS1U?autoplay=1"
     }
 }
