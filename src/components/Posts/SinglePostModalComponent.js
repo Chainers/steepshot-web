@@ -18,6 +18,8 @@ import ScrollViewComponent from '../Common/ScrollViewComponent';
 import TagComponent from './TagComponent';
 import LoadingSpinner from '../LoadingSpinner';
 
+import Constants from '../../common/constants';
+
 import {
     getPostShaddow
 } from '../../actions/posts';
@@ -98,11 +100,7 @@ class SinglePostModalComponent extends React.Component {
           needsCommentFormLoader : false
         });
         if (err) {
-          let text = 'Something went wrong, please, try again later';
-          if (err.payload.error.data.code == 10) {
-            text = 'Sorry, you had used the maximum number of comments on this post';
-          }
-          jqApp.pushMessage.open(text);
+          jqApp.pushMessage.open(err);
         } else 
         if (success) {
             this.setState({
@@ -118,8 +116,7 @@ class SinglePostModalComponent extends React.Component {
               commentValue : ''
             }, () => {
                 this.scrollView.scrollBar.scrollToBottom();
-                let text = 'Comment was successfully added';
-                jqApp.pushMessage.open(text);
+                jqApp.pushMessage.open(Constants.COMMENT_SUCCESS_MESSAGE);
             });
         }
       }

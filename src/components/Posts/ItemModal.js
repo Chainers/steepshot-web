@@ -19,6 +19,8 @@ import LoadingSpinner from '../LoadingSpinner';
 import ScrollViewComponent from '../Common/ScrollViewComponent';
 import TagComponent from './TagComponent';
 
+import Constants from '../../common/constants';
+
 import utils from '../../utils/utils';
 
 class ItemModal extends React.Component {
@@ -120,8 +122,7 @@ class ItemModal extends React.Component {
               commentValue : ''
             }, () => {
               this.scrollView.scrollBar.scrollToBottom();
-              let text = 'Comment was successfully added';
-              jqApp.pushMessage.open(text);
+              jqApp.pushMessage.open(Constants.COMMENT_SUCCESS_MESSAGE);
             });
         }
       }
