@@ -624,3 +624,13 @@
 .about__list {
   padding: 0 3rem 2rem 3rem;
 }
+
+.user-wrap .pic {
+  position: relative;
+  width: 20px;
+  height: 20px;
+  overflow: hidden;
+  border-radius: 50%;
+  margin-right: 10px;
+  float: left;
+}

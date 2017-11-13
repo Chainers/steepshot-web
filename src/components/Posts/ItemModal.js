@@ -18,6 +18,7 @@ import ShareComponent from './ShareComponent';
 import LoadingSpinner from '../LoadingSpinner';
 import ScrollViewComponent from '../Common/ScrollViewComponent';
 import TagComponent from './TagComponent';
+import AvatarComponent from '../Atoms/AvatarComponent';
 
 import Constants from '../../common/constants';
 
@@ -158,12 +159,6 @@ class ItemModal extends React.Component {
       };
     }
 
-    setDefaultAvatar() {
-      this.setState({ 
-        avatar: constants.NO_AVATAR 
-      });
-    }
-
     setDefaultImage() {
       this.setState({
         image: constants.NO_IMAGE
@@ -189,7 +184,6 @@ class ItemModal extends React.Component {
 
     resetDefaultProperties(newItem, indexUpdater) {
       this.setState({ 
-          avatar: newItem.avatar,
           item: newItem,
           index: this.state.index + indexUpdater
       });
@@ -229,8 +223,6 @@ class ItemModal extends React.Component {
 
       let _this = this;
       let itemImage = this.state.item.body || constants.NO_IMAGE;
-      let authorImage = this.state.avatar || constants.NO_AVATAR;
-
       let isUserAuth = (this.props.username && this.props.postingKey);
 
       const authorLink = `/@${this.state.item.author}`;
@@ -254,11 +246,7 @@ class ItemModal extends React.Component {
                   <div className="user-wrap clearfix">
                     <div className="date">{this.getFormatedDate()}</div>
                     <Link to={authorLink} className="user">
-                      <div className="photo">
-                        <img src={authorImage} 
-                          alt="Image" 
-                          onError={this.setDefaultAvatar.bind(this)} />
-                      </div>
+                    <AvatarComponent src={this.state.item.avatar} />
                       <div className="name">{this.state.item.author}</div>
                     </Link>
                   </div>
