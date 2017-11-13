@@ -15,6 +15,9 @@ import CreatePost from './components/Posts/CreatePost';
 import SinglePostModalWrapper from './components/Wrappers/SinglePostModalWrapper';
 import SearchWrapper from './components/Wrappers/SearchWrapper';
 import AboutComponent from './components/About/AboutComponent';
+import BrowseWrapper from './components/Wrappers/BrowseWrapper';
+
+import Constants from './common/constants';
 
 export default function getRoutes(store) {
   const clearMessages = () => {
@@ -28,6 +31,7 @@ export default function getRoutes(store) {
   }
 
   let isUserLogin = !!store.getState().auth.user && !!store.getState().auth.postingKey;
+  const baseBrowseFilter = Constants.BROWSE_ROUTES[0].NAME;
 
   return (
     <App>
@@ -36,10 +40,11 @@ export default function getRoutes(store) {
           isUserLogin ? (
             <Redirect to="/feed"/>
           ) : (
-            <Redirect to="/browse"/>
+            <Redirect to={`/browse/${baseBrowseFilter}`} />
           )
         )}/>
-        <Route path="/browse" component={Browse} onLeave={clearMessages} />
+        <Route path="/browse/:filter" component={BrowseWrapper} onLeave={clearMessages} />
+        <Redirect from="/browse" to={`/browse/${baseBrowseFilter}`} />
         <Route path="/@:username" component={UserProfile} onLeave={clearMessages} />
         <Route path="/signin" component={Signin} onLeave={clearMessages} />
         <Route path="/post" component={SinglePostModalWrapper} onLeave={clearMessages} />

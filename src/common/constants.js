@@ -115,5 +115,20 @@ export default {
         PRE_TEXT : 'Also you can check ',
         TEXT : 'how to sign in to Steepshot',
         LINK : "https://www.youtube.com/embed/XAVapBwbS1U?autoplay=1"
-    }
+    },
+
+    BROWSE_ROUTES : [
+        {
+            NAME : 'top',
+            INDEX : 0
+        },
+        {
+            NAME : 'hot',
+            INDEX : 1
+        },
+        {
+            NAME : 'new',
+            INDEX : 2
+        }
+    ]
 }

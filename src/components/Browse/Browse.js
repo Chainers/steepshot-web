@@ -2,6 +2,9 @@ import React from 'react';
 import { 
   connect
 } from 'react-redux';
+import {
+  withRouter
+} from 'react-router-dom';
 import PropTypes from 'prop-types';
 import TabsFilterComponent from '../Filters/TabsFilterComponent';
 import ItemsComponent from '../UserProfile/itemsComponent';
@@ -18,17 +21,32 @@ class Browse extends React.Component {
         { label : Constants.POSTS_FILTERS.POSTS_HOT.label },
         { label : Constants.POSTS_FILTERS.POSTS_NEW.label }
       ],
-      activeItemIndex : 0
+      activeItemIndex : this.props.activeItemIndex
     };
+  }
+
+  componentDidMount() {
+    if (this.state.activeItemIndex == -1) this.props.history.replace('/*');
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.activeItemIndex == -1) this.props.history.replace('/*');
   }
 
   updateActiveTab(index) {
     this.setState({
       activeItemIndex : index
-    })
+    }, () => {
+      this.props.history.push(Constants.BROWSE_ROUTES[this.state.activeItemIndex].NAME);
+    });
   }
 
-  renderTabs
+  shouldComponentUpdate(nextProps, nextState) {
+    if (nextState == this.state) {
+      return false;
+    }
+    return true;
+  }
 
   render() {
     return (
@@ -70,4 +88,4 @@ const mapStateToProps = (state, props) => {
   };
 };
 
-export default connect(mapStateToProps)(Browse);
+export default withRouter(connect(mapStateToProps)(Browse));
