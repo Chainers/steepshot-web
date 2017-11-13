@@ -8,6 +8,9 @@ import {
 import PropTypes from 'prop-types';
 import Steem from '../../libs/steem';
 
+import Constants from '../../common/constants';
+import { debounce } from 'lodash';
+
 class FlagComponent extends React.Component {
   constructor(props) {
     super(props);
@@ -34,6 +37,7 @@ class FlagComponent extends React.Component {
     e.preventDefault();
 
     if (!(this.props.username || this.props.postingKey)) {
+      debounce(jqApp.pushMessage.open(Constants.VOTE_ACTION_WHEN_NOT_AUTH), Constants.VOTE_ACTION_WHEN_NOT_AUTH_DEBOUNCE);
       return false;
     }
 

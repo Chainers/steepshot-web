@@ -9,6 +9,9 @@ import PropTypes from 'prop-types';
 import Steem from '../../libs/steem';
 import utils from '../../utils/utils';
 
+import Constants from '../../common/constants';
+import { debounce } from 'lodash';
+
 class VouteComponent extends React.Component {
   constructor(props) {
     super(props);
@@ -34,6 +37,7 @@ class VouteComponent extends React.Component {
     e.preventDefault();
 
     if (!(this.props.username || this.props.postingKey)) {
+      debounce(jqApp.pushMessage.open(Constants.VOTE_ACTION_WHEN_NOT_AUTH), Constants.VOTE_ACTION_WHEN_NOT_AUTH_DEBOUNCE);
       return false;
     }
 
