@@ -262,7 +262,7 @@ class SinglePostModalComponent extends React.Component {
                                         />
                                     </div>
                                     <div className="wrap-counts clearfix">
-                                        <div className="likes">{this.state.item.net_votes} like's</div>
+                                        <LikesComponent likes={this.state.item.net_votes} url={this.state.item.url}/>
                                         <div className="amount">
                                             {utils.currencyChecker(this.state.item.total_payout_reward)}
                                         </div>

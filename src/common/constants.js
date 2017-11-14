@@ -38,6 +38,7 @@ export default {
     },
 
     EMPTY_QUERY : "It's very strange, but we do not have anything yet for this query. Try to look for something else ...",
+    EMPTY_QUERY_VOTERS : "Still no one has rated this post ...",
 
     SEARCH_PLACEHOLDER : "Type your search query and press Enter",
 

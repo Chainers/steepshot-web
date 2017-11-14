@@ -1,14 +1,20 @@
 import constants from '../common/constants';
 
 const initialState = {
-    voteCanBePushed : true
+    voters : [],
+    url : ''
 };
 
 export default function votes(state = initialState, action) {
     switch (action.type) {
-        case 'SWITCH_MODE_FOR_QUEUE':
+        case 'NEW_LIKES_INFO' :
             return Object.assign({}, state, {
-                voteCanBePushed: action.voteCanBePushed
+                voters: action.voters
+            });
+        case 'CLEAR_LIKES_INFO' : 
+            return Object.assign({}, state, {
+                voters : [],
+                url : action.url
             });
         default:
             return state;
