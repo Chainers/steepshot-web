@@ -208,9 +208,15 @@ class ItemModal extends React.Component {
     }
 
     renderDescription() {
+      setTimeout(() => {
+        jqApp.cutter.init($(ReactDOM.findDOMNode(this)));
+      }, 0);
       return (
         <div className="post-description">
           <p>{this.state.item.title}</p>
+          <p data-length={Constants.POST_DESRIPTION_MAXLENGTH} data-more="Read More" data-less="To Less" className="js-cutter">
+            {this.state.item.description}
+          </p>
           <div className="post-tags clearfix">
             {
               this.state.item.tags.map((tag, index) => <TagComponent tag={tag} key={index}/>)
