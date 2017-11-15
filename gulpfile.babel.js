@@ -31,10 +31,11 @@ import rename from 'gulp-rename';
 import concat from 'gulp-concat';
 import pump from 'pump';
 import babel from 'gulp-babel';
-import webpack from 'gulp-webpack';
+import gulpWebpack from 'gulp-webpack';
 import gutil from 'gulp-util';
 import notifier from 'node-notifier';
 import named from 'vinyl-named';
+import webpack from 'webpack';
 
 import awspublish from 'gulp-awspublish';
 import s3_index from 'gulp-s3-index';
@@ -203,24 +204,24 @@ gulp.task('bundle', (cb) => {
   pump([
     gulp.src([
       `${paths.prepare}/react.js`,
-      'static/libs/libs/jquery-ui.min.js',
-      'static/libs/libs/jquery-ui.touchPunch.min.js',
-      'static/libs/libs/jquery.carouFredSel.min.js',
-      'static/libs/libs/jquery.magnific-popup.min.js',
-      'static/libs/libs/jquery.touchSwipe.min.js',
       'static/libs/libs/modernizr-custom.min.js',
       'static/libs/app.min.js'
     ]),
     debug({title: 'bundle : '}),
     named(),
-    webpack({
-
+    gulpWebpack({
       output : {
         filename : `app${guid}.js`
       }
     }),
     gulp.dest(`dist/js`)
   ], cb);
+});
+
+gulp.task('uglify' , () => {
+  return gulp.src(`./dist/js/app${guid}.js`)
+  .pipe(uglify())
+  .pipe(gulp.dest('./dist/js'))
 });
 
 gulp.task('watchTask', () => {
@@ -245,7 +246,7 @@ gulp.task('build', cb => {
   })().toString();
 
   process.env.NODE_ENV = 'production';
-  runSequence('clean', 'scripts', ['fonts', 'styles', 'htmlReplace', 'imagemin'], cb);
+  runSequence('clean', 'scripts', 'uglify', ['fonts', 'styles', 'htmlReplace', 'imagemin'], cb);
 });
 
 gulp.task('deploy', () => {
