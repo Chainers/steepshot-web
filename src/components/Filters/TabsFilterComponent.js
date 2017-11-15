@@ -7,13 +7,12 @@ class TabsFilterComponent extends React.Component {
         super(props);
         this.state = {
             ...this.props,
-            mounted : false
         }
     }
 
     componentWillReceiveProps(nextProps) {
         this.setState({ 
-            keys : nextProps.keys,
+            keys : nextProps.keys
         });
     }
 
@@ -22,7 +21,6 @@ class TabsFilterComponent extends React.Component {
         this.props.updateCallback(index);
         this.setState({
             activeItemIndex : index,
-            mounted : true
         })
     }
 
@@ -31,11 +29,10 @@ class TabsFilterComponent extends React.Component {
         this.state.keys.map((item, index) => {
 
             let styles = '';
-            if (!this.state.mounted) {
-                if (this.state.activeItemIndex == index) {
-                    styles = 'active';
-                }
+            if (this.state.activeItemIndex == index) {
+                styles = 'active';
             }
+            
 
             navItems.push(
                 <li role="presentation" key={index} className={styles}>

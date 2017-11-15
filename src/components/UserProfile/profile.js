@@ -78,6 +78,7 @@ class UserProfile extends React.Component {
           ],
           needsForceRefresh : true
         }, () => {
+          this.filterNav.switchFilter(0);
           this.setState({
             needsForceRefresh : false
           })
@@ -149,6 +150,7 @@ class UserProfile extends React.Component {
             <div className="col-xs-12 col-md-8 col-lg-9 position--unset">
               <div className="user-tabs">
                 <TabsFilterComponent
+                  ref={ref => this.filterNav = ref}
                   keys={this.state.keys}
                   activeItemIndex={this.state.activeItemIndex}
                   updateCallback={this.updateActiveTab.bind(this)}
