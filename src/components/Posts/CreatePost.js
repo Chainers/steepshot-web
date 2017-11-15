@@ -22,8 +22,7 @@ class CreatePost extends React.Component {
             disabeleCreating: false,
             renderLoader: false,
             tagError: false,
-            titleError: false,
-            isDescriptionNeeded: false
+            titleError: false
         };
     }
 
@@ -186,15 +185,6 @@ class CreatePost extends React.Component {
         });
     }
 
-    addDescription(e) {
-        e.preventDefault();
-        this.setState({
-            isDescriptionNeeded : !this.state.isDescriptionNeeded
-        }, () =>
-            setTimeout(() => { jqApp.forms.init() }, 0)
-        );
-    }
-
     _renderTags() {
         if (this.state.tagList.length == 0) return null;
         if (this.state.tagList[0] == '') return null;
@@ -231,27 +221,25 @@ class CreatePost extends React.Component {
         :
         null;
 
-        if (this.state.isDescriptionNeeded) {
-            addDescriptionBlock =
-            <div className="form-group">
-                <div className="input-container col-xs-12">
-                    <textarea type="text" 
-                        name={this.state.descriprionInputName}
-                        id="description"
-                        value={this.state.description}
-                        onChange={this.handleChange.bind(this)}
-                        required=""
-                        autoComplete="off"
-                        className="form-control"
-                        maxLength={this.state.descriptionLength}
-                    />
-                    <label htmlFor="description" className="name">Description</label>
-                    <div className="help-block">
-                        <div className="help-block__notice">Description can be maximum {this.state.descriptionLength} characters</div>
-                    </div>
+        addDescriptionBlock =
+        <div className="form-group">
+            <div className="input-container col-xs-12">
+                <textarea type="text" 
+                    name={this.state.descriprionInputName}
+                    id="description"
+                    value={this.state.description}
+                    onChange={this.handleChange.bind(this)}
+                    required=""
+                    autoComplete="off"
+                    className="form-control"
+                    maxLength={this.state.descriptionLength}
+                />
+                <label htmlFor="description" className="name">Description</label>
+                <div className="help-block">
+                    <div className="help-block__notice">Description can be maximum {this.state.descriptionLength} characters</div>
                 </div>
             </div>
-        }
+        </div>
 
         if (imagePreviewUrl) {
             $imagePreview = (<div className="preview-component">
@@ -298,7 +286,7 @@ class CreatePost extends React.Component {
                                     autoComplete="off"
                                     className="form-control autofil--gray"
                                 />
-                                <label htmlFor="title" className="name">Title</label>
+                                <label htmlFor="title" className="name">Title<span className="text--red font--small required-star"> *</span></label>
                                 <div className="help-block">
                                     {
                                         this.state.titleError ? <div className="help-block__notice">Title is required</div>
@@ -320,7 +308,7 @@ class CreatePost extends React.Component {
                                     autoComplete="off"
                                     className="form-control autofil--gray"
                                 />
-                                <label htmlFor="tag" className="name">Hashtag</label>
+                                <label htmlFor="tag" className="name">Hashtag<span className="text--red font--small required-star"> *</span></label>
                                 <div className="tags-list clearfix">
                                     {this._renderTags()}
                                 </div>
@@ -333,13 +321,6 @@ class CreatePost extends React.Component {
                     {addDescriptionBlock}
                     <div className="form-group">
                         <div className="buttons-container">
-                
-                            <button onClick={this.addDescription.bind(this)} className="btn btn-index float--left">
-                                {
-                                    this.state.isDescriptionNeeded ? "Close description" : "Add description"
-                                }
-                            </button>
-        
                             <button onClick={this._clearAll.bind(this)} type="reset" className="btn btn-index">Clear</button>
                             <button onClick={this._handleSubmit.bind(this)} type="submit" className="btn btn-default">Create new post</button>
                         </div>

@@ -643,3 +643,12 @@
   transform: translateX(-100px);
   background: linear-gradient(270deg,#fff 2%,transparent);
 }
+
+.font--small {
+  font-size: 1rem;
+}
+
+.required-star {
+  position: absolute;
+  transform: translate(3px,0px);
+}
