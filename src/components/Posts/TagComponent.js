@@ -7,6 +7,7 @@ import {
 } from 'react-redux';
 import PropTypes from 'prop-types';
 import constants from '../../common/constants';
+import utils from '../../utils/utils';
 
 class TagComponent extends React.Component {
      constructor(props) {
@@ -34,7 +35,7 @@ class TagComponent extends React.Component {
                 key={this.state.key}
                 to={`/search/${this.checkFirst(this.state.tag)}`}
             >
-              {this.state.tag}
+              {utils.tagPrettify(this.state.tag)}
             </Link>
         )
     }

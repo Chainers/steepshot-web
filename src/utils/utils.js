@@ -11,6 +11,8 @@ class utils {
     /*end guid*/
 
     currencyChecker = str => str.charAt(0) == Constants.CURRENCY ? str : Constants.CURRENCY + str;
+
+    tagPrettify = str => str.charAt(0) != '#' ? '#' + str : str;
 }
 
 export default new utils();
