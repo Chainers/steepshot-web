@@ -19,6 +19,7 @@ import TagComponent from './TagComponent';
 import LoadingSpinner from '../LoadingSpinner';
 import AvatarComponent from '../Atoms/AvatarComponent';
 import LikesComponent from '../Posts/LikesComponent';
+import TimeAgo from 'timeago-react';
 
 import Constants from '../../common/constants';
 
@@ -184,13 +185,6 @@ class SinglePostModalComponent extends React.Component {
       });
     }
 
-    getFormatedDate() {
-      const date = new Date(this.state.item.created);
-      const locale = "en-us";
-  
-      return date.getDate() + ' ' + date.toLocaleString(locale, { month: "short" }) + ' ' + date.getFullYear();
-    }
-
     callPreventDefault(e) {
       e.stopPropagation();
       e.preventDefault();
@@ -242,11 +236,16 @@ class SinglePostModalComponent extends React.Component {
                             <div className="post__description-container">
                                 <div className="post-header">
                                     <div className="user-wrap clearfix">
-                                        <div className="date">{this.getFormatedDate()}</div>
-                                            <Link to={authorLink} className="user">
-                                                <AvatarComponent src={this.state.item.avatar} />
-                                                <div className="name">{this.state.item.author}</div>
-                                            </Link>
+                                        <div className="date">
+                                            <TimeAgo
+                                                datetime={this.state.item.created}
+                                                locale='en_US'
+                                            />   
+                                        </div>
+                                        <Link to={authorLink} className="user">
+                                            <AvatarComponent src={this.state.item.avatar} />
+                                            <div className="name">{this.state.item.author}</div>
+                                        </Link>
                                     </div>
                                 </div>
                                 <div className="post-controls clearfix">

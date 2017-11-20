@@ -8,6 +8,7 @@ import {
 import PropTypes from 'prop-types';
 import constants from '../../common/constants';
 import VouteComponent from './VouteComponent';
+import TimeAgo from 'timeago-react';
 
 class Comment extends React.Component {
   constructor(props) {
@@ -28,13 +29,6 @@ class Comment extends React.Component {
     });
   }
 
-  getFormatedDate() {
-    const date = new Date(this.props.item.created);
-    const locale = "en-us";
-
-    return date.getDate() + ' ' + date.toLocaleString(locale, { month: "short" }) + ' ' + date.getFullYear();
-  }
-
   setDefaultAvatar() {
     this.setState({ avatar: constants.NO_AVATAR });
   }
@@ -47,7 +41,12 @@ class Comment extends React.Component {
       <div className="comment">
         <div className="comment-head">
           <div className="user-wrap clearfix">
-            <div className="date">{this.getFormatedDate()}</div>
+            <div className="date">
+              <TimeAgo
+                  datetime={this.props.item.created}
+                  locale='en_US'
+              />   
+            </div>
               <Link to={authorLink} className="user">
                 <div className="photo">
                   <img src={avatar} alt="Image" onError={this.setDefaultAvatar.bind(this)} />

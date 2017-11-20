@@ -18,6 +18,7 @@ import VouteComponent from './VouteComponent';
 import FlagComponent from './FlagComponent';
 import TagComponent from './TagComponent';
 import LikesComponent from './LikesComponent';
+import TimeAgo from 'timeago-react';
 
 class Item extends React.Component {
   constructor(props) {
@@ -98,13 +99,6 @@ class Item extends React.Component {
     };
   }
 
-  getFormatedDate() {
-    const date = new Date(this.state.item.created);
-    const locale = "en-us";
-
-    return date.getDate() + ' ' + date.toLocaleString(locale, { month: "short" }) + ' ' + date.getFullYear();
-  }
-
   _openModal() {
     if (this.state.openModal != undefined) {
       this.state.openModal(this.state.currentIndex)
@@ -132,7 +126,12 @@ class Item extends React.Component {
       <div className="item-wrap">
         <div className="post-card" >
           <div className="card-head clearfix">
-            <div className="date">{this.getFormatedDate()}</div>
+            <div className="date">
+              <TimeAgo
+                datetime={this.state.item.created}
+                locale='en_US'
+              />
+            </div>
             <Link to={authorLink} className="user">
               <div className="photo">
                 <img src={authorImage} alt="User" onError={this.setDefaultAvatar.bind(this)}/>
