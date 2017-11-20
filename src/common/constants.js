@@ -38,6 +38,7 @@ export default {
     },
 
     EMPTY_QUERY : "It's very strange, but we do not have anything yet for this query. Try to look for something else ...",
+    EMPTY_QUERY_VOTERS : "Still no one has rated this post ...",
 
     SEARCH_PLACEHOLDER : "Type your search query and press Enter",
 
@@ -138,5 +139,6 @@ export default {
     VOTE_ACTION_WHEN_NOT_AUTH : 'Еhis action is only available to logged-in users',
     VOTE_ACTION_WHEN_NOT_AUTH_DEBOUNCE : 500,
 
-    POST_DESRIPTION_MAXLENGTH : 120
+    POST_DESRIPTION_MAXLENGTH : 120,
+    POST_LIKED_BY : "This post has been rated by these users"
 }

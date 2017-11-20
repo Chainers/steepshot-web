@@ -18,6 +18,7 @@ import ScrollViewComponent from '../Common/ScrollViewComponent';
 import TagComponent from './TagComponent';
 import LoadingSpinner from '../LoadingSpinner';
 import AvatarComponent from '../Atoms/AvatarComponent';
+import LikesComponent from '../Posts/LikesComponent';
 
 import Constants from '../../common/constants';
 
@@ -265,7 +266,7 @@ class SinglePostModalComponent extends React.Component {
                                         />
                                     </div>
                                     <div className="wrap-counts clearfix">
-                                        <div className="likes">{this.state.item.net_votes} like's</div>
+                                        <LikesComponent likes={this.state.item.net_votes} url={this.state.item.url}/>
                                         <div className="amount">
                                             {utils.currencyChecker(this.state.item.total_payout_reward)}
                                         </div>

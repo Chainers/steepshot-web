@@ -17,6 +17,7 @@ import constants from '../../common/constants';
 import VouteComponent from './VouteComponent';
 import FlagComponent from './FlagComponent';
 import TagComponent from './TagComponent';
+import LikesComponent from './LikesComponent';
 
 class Item extends React.Component {
   constructor(props) {
@@ -160,7 +161,7 @@ class Item extends React.Component {
                   />
                 </div>
                 <div className="wrap-counts clearfix">
-                  <div className="likes">{this.state.item.net_votes} likes</div>
+                  <LikesComponent likes={this.state.item.net_votes} url={this.state.item.url}/>
                   <div className="amount">{this.state.item.total_payout_reward}</div>
                 </div>
               </div>

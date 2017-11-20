@@ -19,6 +19,7 @@ import LoadingSpinner from '../LoadingSpinner';
 import ScrollViewComponent from '../Common/ScrollViewComponent';
 import TagComponent from './TagComponent';
 import AvatarComponent from '../Atoms/AvatarComponent';
+import LikesComponent from './LikesComponent';
 
 import Constants from '../../common/constants';
 
@@ -274,7 +275,7 @@ class ItemModal extends React.Component {
                     />
                   </div>
                   <div className="wrap-counts clearfix">
-                    <div className="likes">{this.state.item.net_votes} like's</div>
+                    <LikesComponent likes={this.state.item.net_votes} url={this.state.item.url}/>
                     <div className="amount">
                       {utils.currencyChecker(this.state.item.total_payout_reward)}
                     </div>
