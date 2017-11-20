@@ -137,5 +137,7 @@ export default {
     COMMENT_SUCCESS_MESSAGE : 'Comment has been successfully added',
 
     VOTE_ACTION_WHEN_NOT_AUTH : 'Еhis action is only available to logged-in users',
-    VOTE_ACTION_WHEN_NOT_AUTH_DEBOUNCE : 500
+    VOTE_ACTION_WHEN_NOT_AUTH_DEBOUNCE : 500,
+
+    POST_LIKED_BY : "This post has been rated by these users"
 }

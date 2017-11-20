@@ -1,7 +1,7 @@
 import RequestService from '../services/requestService';
 
 export function getVoters(options, dispatch) {
-    const url = RequestService.handlev1BaseRequestPosts(options.point, options.params);
+    const url = RequestService.handlev1_1BaseRequestPosts(options.point, options.params);
     fetch(url, {
       method: 'GET'
     }).then((response) => {
@@ -11,7 +11,7 @@ export function getVoters(options, dispatch) {
         });
       } else {
         return response.json().then(() => {
-          return dispatch({ type : 'NEW_LIKES_INFO', voters : {} });;
+          return dispatch({ type : 'NEW_LIKES_INFO', voters : {} });
         });
       }
     });

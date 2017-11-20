@@ -651,10 +651,15 @@
   box-shadow: 0 3px 9px rgba(0,0,0,.5);
   background-clip: padding-box;
   outline: 0;
-  max-height: 90vh;
+  max-height: 98vh;
 }
 
 .user-list {
   margin: 1rem;
   overflow: scroll;
+}
+
+.modal-like__body {
+  position: relative;
+  min-height: 150px;
 }
