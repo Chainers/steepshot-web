@@ -4,7 +4,7 @@ import {
 } from 'react-redux';
 import {
   getUsersSearch,
-  getPostsBySearch
+  getPosts
 } from '../../actions/posts';
 import PropTypes from 'prop-types';
 import TabsFilterComponent from '../Filters/TabsFilterComponent';
@@ -13,6 +13,7 @@ import UsersComponent from '../UserProfile/UsersComponent';
 import Constants from '../../common/constants';
 import TabsWrapper from '../Wrappers/TabsWrapper';
 import TabWrapper from '../Wrappers/TabWrapper';
+import _ from 'lodash';
 
 class SearchResultsComponent extends React.Component {
   constructor(props) {
@@ -30,7 +31,8 @@ class SearchResultsComponent extends React.Component {
       usersSearchOptions : {
         query : this.props.searchValue
       },
-      searchValue : this.props.searchValue
+      searchValue : this.props.searchValue,
+      showResults: false
     };
   }
 
@@ -63,6 +65,21 @@ class SearchResultsComponent extends React.Component {
     })
   }
 
+  componentDidMount() {
+    const options = {
+      point : this.insertCategory(Constants.POSTS_FILTERS.POSTS_HOT.point, this.state.searchValue),
+      params :  Object.assign({}, {
+        offset : null
+      }, this.state.hotSectionOptions)
+    };
+    getPosts(options, false).then(result => {
+      this.setState({
+        ignored : _.map(result.results, 'url'),
+        showResults : true
+      })
+    });
+  }
+
   render() {
     return (
       <div className="g-main_i container">
@@ -86,13 +103,20 @@ class SearchResultsComponent extends React.Component {
                 forceRefresh={this.state.needsForceRefresh}
                 headerText={<span>{Constants.SEARCH_HEADING_LABELS.HOT_POSTS_RESULT}<u>{this.state.searchValue}</u></span>}
               />
-              <ItemsComponent 
-                point={this.insertCategory(Constants.POSTS_FILTERS.POSTS_NEW.point, this.state.searchValue)} 
-                cancelPrevious={false} 
-                wrapperModifier="posts-list clearfix"
-                forceRefresh={this.state.needsForceRefresh}
-                headerText={<span>{Constants.SEARCH_HEADING_LABELS.NEW_POSTS_RESULT}<u>{this.state.searchValue}</u></span>}
-              />
+              {
+                this.state.showResults
+                ?
+                  <ItemsComponent 
+                    point={this.insertCategory(Constants.POSTS_FILTERS.POSTS_NEW.point, this.state.searchValue)} 
+                    cancelPrevious={false} 
+                    ignored={this.state.ignored}
+                    wrapperModifier="posts-list clearfix"
+                    forceRefresh={this.state.needsForceRefresh}
+                    headerText={<span>{Constants.SEARCH_HEADING_LABELS.NEW_POSTS_RESULT}<u>{this.state.searchValue}</u></span>}
+                  />
+                :
+                  null
+              }
             </TabWrapper>
             <UsersComponent
               point={Constants.SEARCH_FILTERS.USERS.point}

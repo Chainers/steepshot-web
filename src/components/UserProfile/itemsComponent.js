@@ -29,6 +29,7 @@ class ItemsComponent extends React.Component {
       renderNotEmptyOnly : this.props.renderNotEmptyOnly == undefined ? false : this.props.renderNotEmptyOnly,
       isComponentVisible : this.props.isComponentVisible == undefined ? true : this.props.isComponentVisible,
       maxPosts : this.props.maxPosts || 9999,
+      ignored : this.props.ignored == undefined ? [] : this.props.ignored,
       ...this.getInitialData()
     };
   }
@@ -80,18 +81,22 @@ class ItemsComponent extends React.Component {
       },
       this.state.options)
     };
-    this.state.getPosts(options, this.state.cancelPrevious).then((response) => {
-        this.state.items.pop();
-        let newPosts = this.state.items.concat(response.results);
-        let hasMore = !(this.state.offset == response.offset) ;
-        if (this.state.items.length + response.results.length == 0) hasMore = false;
-        this.setState({ 
-            items: newPosts,
-            previousRequestOffset : this.state.offset,
-            offset: response.offset,
-            hasMore: hasMore,
-            loading : false
-        });
+    this.setState({
+      previousRequestOffset : this.state.offset
+    }, () => {
+      this.state.getPosts(options, this.state.cancelPrevious).then((response) => {
+          this.state.items.pop();
+          let newPosts = this.state.items.concat(response.results);
+          let hasMore = !(this.state.offset == response.offset) ;
+
+          if (this.state.items.length + response.results.length == 0) hasMore = false;
+          this.setState({ 
+              items: newPosts,
+              offset: response.offset,
+              hasMore: hasMore,
+              loading : false
+          });
+      });
     });
   }
 
@@ -154,6 +159,7 @@ class ItemsComponent extends React.Component {
     } else {
       let items = [];
       this.state.items.map((post, index) => {
+        if (this.state.ignored.indexOf(post.url) == -1)
         items.push(
           <PostItem
             key={index}
