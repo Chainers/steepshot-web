@@ -21,7 +21,7 @@ import TagComponent from './TagComponent';
 import AvatarComponent from '../Atoms/AvatarComponent';
 import LikesComponent from './LikesComponent';
 import TimeAgo from 'timeago-react';
-
+import ShowMore from 'react-show-more';
 import Constants from '../../common/constants';
 
 import utils from '../../utils/utils';
@@ -203,15 +203,20 @@ class ItemModal extends React.Component {
     }
 
     renderDescription() {
-      setTimeout(() => {
-        jqApp.cutter.init($(ReactDOM.findDOMNode(this)));
-      }, 0);
       return (
         <div className="post-description">
-          <p>{this.state.item.title}</p>
-          <p data-length={Constants.POST_DESRIPTION_MAXLENGTH} data-more="Read More" data-less="To Less" className="js-cutter">
+          <p>{this.state.item.title}</p>  
+          <ShowMore
+            ref={ref => this.description = ref}
+            lines={2}
+            more={
+              <a className="lnk-more">Read more</a>
+            }
+            less={null}
+          >
             {this.state.item.description}
-          </p>
+          </ShowMore>
+          <p></p>
           <div className="post-tags clearfix">
             {
               this.state.item.tags.map((tag, index) => <TagComponent tag={tag} key={index}/>)
@@ -219,6 +224,10 @@ class ItemModal extends React.Component {
           </div>
         </div>
       )
+    }
+
+    componentWillUpdate() {
+      if (this.description.state.expanded) this.description.toggleLines(new Event('q'));
     }
     render() {
 

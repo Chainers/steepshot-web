@@ -19,6 +19,7 @@ import TagComponent from './TagComponent';
 import LoadingSpinner from '../LoadingSpinner';
 import AvatarComponent from '../Atoms/AvatarComponent';
 import LikesComponent from '../Posts/LikesComponent';
+import ShowMore from 'react-show-more';
 import TimeAgo from 'timeago-react';
 
 import Constants from '../../common/constants';
@@ -194,9 +195,17 @@ class SinglePostModalComponent extends React.Component {
         return (
           <div className="post-description">
             <p>{this.state.item.title}</p>
-            <p data-length={Constants.POST_DESRIPTION_MAXLENGTH} data-more="Read More" data-less="To Less" className="js-cutter">
+            <ShowMore
+                ref={ref => this.description = ref}
+                lines={2}
+                more={
+                <a className="lnk-more">Read more</a>
+                }
+                less={null}
+            >
                 {this.state.item.description}
-            </p>
+            </ShowMore>
+            <p></p>
             <div className="post-tags clearfix">
               {
                 this.state.item.tags.map((tag, index) => <TagComponent tag={tag} key={index}/>)
@@ -204,6 +213,11 @@ class SinglePostModalComponent extends React.Component {
             </div>
           </div>
         )
+    }
+
+    componentWillUpdate() {
+        if (this.description)
+        if (this.description.state.expanded) this.description.toggleLines(new Event('q'));
     }
 
     render() {
