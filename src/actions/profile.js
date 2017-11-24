@@ -11,9 +11,7 @@ export function getUserProfile(userName) {
         return json;
       });
     } else {
-      return response.json().then(() => {
-        return [];
-      });
+      return [];
     }
   });
 }
