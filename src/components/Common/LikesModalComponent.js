@@ -67,7 +67,7 @@ class LikesModalComponent extends React.Component {
         let store = getStore();
         let state = store.getState();
         let votersInfo = this.selectVotesInfo(getStore().getState());
-        if (this.state.url != votersInfo.url) {
+        if (this.state.url != votersInfo.url || votersInfo.voters.results.length == 0) {
             this.setState({
                 ...this.getInitialData,
                 url : votersInfo.url
