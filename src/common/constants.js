@@ -136,7 +136,7 @@ export default {
     COMMENT_ERROR_MESSAGE : 'You can only create comments once per 20 seconds',
     COMMENT_SUCCESS_MESSAGE : 'Comment has been successfully added',
 
-    VOTE_ACTION_WHEN_NOT_AUTH : 'Еhis action is only available to logged-in users',
+    VOTE_ACTION_WHEN_NOT_AUTH : 'This action is only available to logged-in users',
     VOTE_ACTION_WHEN_NOT_AUTH_DEBOUNCE : 500,
 
     POST_DESRIPTION_MAXLENGTH : 120,
