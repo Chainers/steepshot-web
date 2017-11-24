@@ -222,6 +222,7 @@ class Steem {
     createPost(wif, tags, author, title, description, file, callback) {
         const jsonMetadata = this._createJsonMetadata(tags);
         const permlink = this._getPermLink();
+        if (tags.length == 0) tags.push('steepshot');
         const category = jsonMetadata.tags[0];
 
         const operation = [constants.OPERATIONS.COMMENT, {

@@ -27,6 +27,7 @@ class Browse extends React.Component {
 
   componentDidMount() {
     if (this.state.activeItemIndex == -1) this.props.history.replace('/*');
+    if (localStorage.getItem('browse') != undefined) this.props.history.replace('/browse/' + localStorage.getItem('browse'));
   }
 
   componentWillReceiveProps(nextProps) {
@@ -37,6 +38,7 @@ class Browse extends React.Component {
     this.setState({
       activeItemIndex : index
     }, () => {
+      localStorage.setItem('browse', Constants.BROWSE_ROUTES[this.state.activeItemIndex].NAME);
       this.props.history.push(Constants.BROWSE_ROUTES[this.state.activeItemIndex].NAME);
     });
   }

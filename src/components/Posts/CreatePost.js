@@ -129,10 +129,7 @@ class CreatePost extends React.Component {
 
     _getTags() {
         let tags = this.state.tagList;
-
         tags = this.state.tagList.splice(0 ,4);
-        tags.push('steepshot');
-
         return tags;
     }
 

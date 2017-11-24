@@ -29,6 +29,12 @@ class Header extends React.Component {
     };
   }
 
+  baseBrowseFilter() {
+    const baseBrowseFilter = localStorage.getItem('browse') == undefined ? 
+    Constants.BROWSE_ROUTES[0].NAME : localStorage.getItem('browse');
+    return baseBrowseFilter;
+  }
+
   componentDidMount() {
     if (this.refs[this.props.location.pathname]) $(this.refs[this.props.location.pathname]).addClass('active');
     setTimeout(() => {
@@ -111,7 +117,7 @@ class Header extends React.Component {
           ) : null 
         }
           <div className="item nav-item" ref="/browse">
-            <Link to="/browse" >Browse</Link>
+            <Link to={`browse/${this.baseBrowseFilter()}`} >Browse</Link>
           </div>
         </div>
       </div>
