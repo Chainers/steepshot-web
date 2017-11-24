@@ -440,7 +440,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgb(0,0,0);
+  background: #e7e7e7;
 }
 
 .padding--none {
