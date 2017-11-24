@@ -120,15 +120,15 @@ export default {
 
     BROWSE_ROUTES : [
         {
-            NAME : 'top',
+            NAME : 'hot',
             INDEX : 0
         },
         {
-            NAME : 'hot',
+            NAME : 'new',
             INDEX : 1
         },
         {
-            NAME : 'new',
+            NAME : 'top',
             INDEX : 2
         }
     ],

@@ -17,9 +17,9 @@ class Browse extends React.Component {
 
     this.state = {
       keys : [
-        { label : Constants.POSTS_FILTERS.POSTS_TOP.label },
         { label : Constants.POSTS_FILTERS.POSTS_HOT.label },
-        { label : Constants.POSTS_FILTERS.POSTS_NEW.label }
+        { label : Constants.POSTS_FILTERS.POSTS_NEW.label },
+        { label : Constants.POSTS_FILTERS.POSTS_TOP.label }
       ],
       activeItemIndex : this.props.activeItemIndex
     };
@@ -61,17 +61,17 @@ class Browse extends React.Component {
             activeTab={this.state.activeItemIndex}
           >
             <ItemsComponent 
-              point={Constants.POSTS_FILTERS.POSTS_TOP.point} 
-              cancelPrevious={false} 
-              wrapperModifier="posts-list clearfix"
-            />
-            <ItemsComponent 
               point={Constants.POSTS_FILTERS.POSTS_HOT.point} 
               cancelPrevious={false} 
               wrapperModifier="posts-list clearfix"
             />
             <ItemsComponent 
               point={Constants.POSTS_FILTERS.POSTS_NEW.point} 
+              cancelPrevious={false} 
+              wrapperModifier="posts-list clearfix"
+            />
+            <ItemsComponent 
+              point={Constants.POSTS_FILTERS.POSTS_TOP.point} 
               cancelPrevious={false}
               wrapperModifier="posts-list clearfix"
             />
