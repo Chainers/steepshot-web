@@ -219,7 +219,10 @@ class ItemModal extends React.Component {
           <p></p>
           <div className="post-tags clearfix">
             {
-              this.state.item.tags.map((tag, index) => <TagComponent tag={tag} key={index}/>)
+              this.state.item.tags.map((tag, index) => {
+                if (!(this.state.item.tags.length - 1 == index && (tag == 'steepshot' || tag == '#steepshot')))
+                return <TagComponent tag={tag} key={index}/>
+              })
             }
           </div>
         </div>

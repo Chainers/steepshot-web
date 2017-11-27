@@ -11,7 +11,7 @@ const App = ({ children }) => (
         <div className="g-wrapper_i">
           <Header />
           <div className="g-main">
-            {children || 'Welcome to React Starterify'}
+            {children || 'Loading'}
           </div>
         </div>
       </div>

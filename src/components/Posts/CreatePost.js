@@ -76,7 +76,7 @@ class CreatePost extends React.Component {
 
     validateFields() {
         let isValid = true;
-        if (this.state.tagList.length > 4) {
+        if (this.state.tagList.length > 20) {
             this.setState({
                 tagError: true
             })
@@ -129,7 +129,7 @@ class CreatePost extends React.Component {
 
     _getTags() {
         let tags = this.state.tagList;
-        tags = this.state.tagList.splice(0 ,4);
+        tags = this.state.tagList.splice(0 , 20);
         return tags;
     }
 
