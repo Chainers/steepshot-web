@@ -218,9 +218,10 @@ class SinglePostModalComponent extends React.Component {
         )
     }
 
-    componentWillUpdate() {
-        if (this.description)
+    shouldComponentUpdate(nextProps,nextState) {
+        if (this.state.index != nextState.index)
         if (this.description.state.expanded) this.description.toggleLines(new Event('q'));
+        return true;
     }
 
     render() {
