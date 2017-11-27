@@ -109,7 +109,7 @@ class Item extends React.Component {
     if (this.state.item.tags) {
       return this.state.item.tags.map((tag, index) => {
         if (!(this.state.item.tags.length - 1 == index && (tag == 'steepshot' || tag == '#steepshot')))
-        return <TagComponent tag={tag} key={index}/>
+        return <span><TagComponent tag={tag} key={index}/> </span>
       });
     } else return null;
   }
@@ -167,8 +167,8 @@ class Item extends React.Component {
                   <div className="amount">{this.state.item.total_payout_reward}</div>
                 </div>
               </div>
-              <div className="card-preview">{this.state.item.title}</div>
-              <div className="card-tags clearfix">
+              <div className="card-preview">
+                {this.state.item.title + ' '}
                 {this.renderTags()}
               </div>
             </div>
