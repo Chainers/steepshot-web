@@ -21,7 +21,7 @@ import TagComponent from './TagComponent';
 import AvatarComponent from '../Atoms/AvatarComponent';
 import LikesComponent from './LikesComponent';
 import TimeAgo from 'timeago-react';
-import ShowMore from 'react-show-more';
+import {Collapse} from 'react-collapse';
 import Constants from '../../common/constants';
 
 import utils from '../../utils/utils';
@@ -45,7 +45,8 @@ class ItemModal extends React.Component {
             needsCommentFormLoader : false,
             isLoading : false,
             hasMore : this.props.hasMore,
-            loadMore : this.props.loadMore
+            loadMore : this.props.loadMore,
+            isDescriptionOpened : false
         };
 
         this.initKeypress();
@@ -202,38 +203,41 @@ class ItemModal extends React.Component {
       e.preventDefault();
     }
 
-    renderDescription() {
-      return (
-        <div className="post-description">
-          <p>{this.state.item.title}</p>  
-          <ShowMore
-            ref={ref => this.description = ref}
-            lines={2}
-            more={
-              <a className="lnk-more">Read more</a>
-            }
-            less={null}
-          >
-            {this.state.item.description}
-          </ShowMore>
-          <p></p>
-          <div className="post-tags clearfix">
-            {
-              this.state.item.tags.map((tag, index) => {
-                if (!(this.state.item.tags.length - 1 == index && (tag == 'steepshot' || tag == '#steepshot')))
-                return <TagComponent tag={tag} key={index}/>
-              })
-            }
-          </div>
-        </div>
-      )
+    openDescription() {
+      this.setState({isDescriptionOpened : true});
     }
 
     shouldComponentUpdate(nextProps,nextState) {
       if (this.state.index != nextState.index)
-      if (this.description.state.expanded) this.description.toggleLines(new Event('q'));
+      if (this.state.isDescriptionOpened) this.setState({ isDescriptionOpened : false });
       return true;
     }
+
+    renderDescription() {
+      let text = this.state.item.description;
+      let forceOpen = false;
+      this.state.item.tags.map(tag => text = text + ' #' + tag);
+      if (text.length < 140) forceOpen = true;
+      return (
+        <div className="post-description">
+          <p>{this.state.item.title}</p>  
+          <div
+            className={(this.state.isDescriptionOpened || forceOpen) ? "collapse-opened" : "collapse-closed"}
+          >
+              {this.state.item.description + ' '}
+              {
+                this.state.item.tags.map((tag, index) => {
+                  if (!(this.state.item.tags.length - 1 == index && (tag == 'steepshot' || tag == '#steepshot')))
+                  return <span><TagComponent tag={tag} key={index}/> </span>
+                })
+              }
+              <a className="lnk-more" onClick={this.openDescription.bind(this)}>Show more</a>
+          </div>
+          <p></p>
+        </div>
+      )
+    }
+
     render() {
 
       let _this = this;

@@ -36,6 +36,7 @@ class SinglePostModalComponent extends React.Component {
         this.state = {
             notify : this.props.notify,
             isPostLoading : true,
+            isDescriptionOpened : false,
             ...this.props
         }
     }
@@ -192,35 +193,37 @@ class SinglePostModalComponent extends React.Component {
     }
 
     renderDescription() {
+        let text = this.state.item.description;
+        let forceOpen = false;
+        this.state.item.tags.map(tag => text = text + ' #' + tag);
+        if (text.length < 140) forceOpen = true;
         return (
           <div className="post-description">
-            <p>{this.state.item.title}</p>
-            <ShowMore
-                ref={ref => this.description = ref}
-                lines={2}
-                more={
-                <a className="lnk-more">Read more</a>
-                }
-                less={null}
+            <p>{this.state.item.title}</p>  
+            <div
+              className={(this.state.isDescriptionOpened || forceOpen) ? "collapse-opened" : "collapse-closed"}
             >
-                {this.state.item.description}
-            </ShowMore>
-            <p></p>
-            <div className="post-tags clearfix">
-              {
-                this.state.item.tags.map((tag, index) => {
+                {this.state.item.description + ' '}
+                {
+                  this.state.item.tags.map((tag, index) => {
                     if (!(this.state.item.tags.length - 1 == index && (tag == 'steepshot' || tag == '#steepshot')))
-                    return <TagComponent tag={tag} key={index}/>
+                    return <span><TagComponent tag={tag} key={index}/> </span>
                   })
-              }
+                }
+                <a className="lnk-more" onClick={this.openDescription.bind(this)}>Show more</a>
             </div>
+            <p></p>
           </div>
         )
     }
 
+    openDescription() {
+        this.setState({isDescriptionOpened : true});
+    }
+
     shouldComponentUpdate(nextProps,nextState) {
         if (this.state.index != nextState.index)
-        if (this.description.state.expanded) this.description.toggleLines(new Event('q'));
+        if (this.state.isDescriptionOpened) this.setState({ isDescriptionOpened : false });
         return true;
     }
 

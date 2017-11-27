@@ -644,6 +644,14 @@
   background: linear-gradient(270deg,#fff 2%,transparent);
 }
 
+.lnk-more:after {
+  content: " ";
+  position: absolute;
+  width: 100px;
+  height: 20px;
+  background: white;
+}
+
 .font--small {
   font-size: 1rem;
 }
@@ -680,4 +688,25 @@
 .modal-like__body {
   position: relative;
   min-height: 150px;
+}
+
+.collapse-opened {
+  height: 100%;
+}
+
+.collapse-closed {
+  position: relative;
+  overflow: hidden;
+  max-height : 55px;
+}
+
+.collapse-closed  .lnk-more {
+  background: white;
+  position: absolute;
+  top: 38px;
+  right: 75px;
+}
+
+.collapse-opened  .lnk-more{
+  display: none;
 }
