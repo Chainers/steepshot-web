@@ -117,7 +117,7 @@ class Header extends React.Component {
           ) : null 
         }
           <div className="item nav-item" ref="/browse">
-            <Link to={`browse/${this.baseBrowseFilter()}`} >Browse</Link>
+            <Link to={`/browse/${this.baseBrowseFilter()}`} >Browse</Link>
           </div>
         </div>
       </div>
