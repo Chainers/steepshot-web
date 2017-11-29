@@ -203,6 +203,10 @@ class ItemModal extends React.Component {
       e.preventDefault();
     }
 
+    openDescription() {
+      this.setState({isDescriptionOpened : true});
+    }
+
     shouldComponentUpdate(nextProps,nextState) {
       if (this.state.index != nextState.index)
       if (this.state.isDescriptionOpened) this.setState({ isDescriptionOpened : false });
