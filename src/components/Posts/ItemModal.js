@@ -227,8 +227,7 @@ class ItemModal extends React.Component {
               {this.state.item.description + ' '}
               {
                 this.state.item.tags.map((tag, index) => {
-                  if (!(this.state.item.tags.length - 1 == index && (tag == 'steepshot' || tag == '#steepshot')))
-                  return <span><TagComponent tag={tag} key={index}/> </span>
+                  return <span key={index}><TagComponent tag={tag}/> </span>
                 })
               }
               <a className="lnk-more" onClick={this.openDescription.bind(this)}>Show more</a>

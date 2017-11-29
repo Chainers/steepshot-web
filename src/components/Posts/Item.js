@@ -109,8 +109,7 @@ class Item extends React.Component {
   renderTags() {
     if (this.state.item.tags) {
       return this.state.item.tags.map((tag, index) => {
-        if (!(this.state.item.tags.length - 1 == index && (tag == 'steepshot' || tag == '#steepshot')))
-        return <span><TagComponent tag={tag} key={index}/> </span>
+        return <span key={index}><TagComponent tag={tag}/> </span>
       });
     } else return null;
   }
