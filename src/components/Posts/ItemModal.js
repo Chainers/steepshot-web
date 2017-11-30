@@ -232,7 +232,6 @@ class ItemModal extends React.Component {
               }
               <a className="lnk-more" onClick={this.openDescription.bind(this)}>Show more</a>
           </div>
-          <p></p>
         </div>
       )
     }

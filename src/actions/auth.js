@@ -14,13 +14,12 @@ function getUrl() {
   if (getStore().getState().auth.user){
     return baseUrl + '/' + getStore().getState().auth.user
   }
-
-  return baseUrl;
+    return baseUrl;
 }
 
 export function login(username, postingKey, history, dispatch, callback) {
   const account = null;
-  steem.api.getAccounts([username], function(err, result) {  
+  steem.api.getAccounts([username], function(err, result) {
     if (err) {
       callback('Something went wrong, please, try again later');
       return false;
@@ -31,13 +30,13 @@ export function login(username, postingKey, history, dispatch, callback) {
     }
     let pubWif = result[0].posting.key_auths[0][0];
     let isValid = false;
-    try { 
-      isValid = steem.auth.wifIsValid(postingKey, pubWif); 
+    try {
+      isValid = steem.auth.wifIsValid(postingKey, pubWif);
     }
-    catch(e) { 
+    catch(e) {
       console.log('login failure: ', e);
     }
-    if (!isValid){ 
+    if (!isValid){
       callback('Invalid user name or posting key');
       return {
         type: 'LOGIN_FAILURE',
@@ -51,12 +50,12 @@ export function login(username, postingKey, history, dispatch, callback) {
       let metadata;
       localStorage.setItem('user', JSON.stringify(username));
       localStorage.setItem('postingKey', JSON.stringify(postingKey));
-      localStorage.setItem('settings', JSON.stringify({ 
+      localStorage.setItem('settings', JSON.stringify({
         [Constants.SETTINGS.show_low_rated]: false,
         [Constants.SETTINGS.show_nsfw]: false
       }));
       let avatar = null;
-      if (result[0]) 
+      if (result[0])
       if (result[0].json_metadata != "" && result[0].json_metadata != undefined) {
          metadata = JSON.parse(result[0].json_metadata);
          if (metadata.profile)

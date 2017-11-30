@@ -216,7 +216,7 @@
     box-shadow: 0 5px 15px 0px rgba(18,148,226,.3);
   }
 
-  .btn-index, .btn-default {
+  .btn-index, .btn-default, .name, .btn-primary {
     transition: .2s all ease;
   }
   .btn-index:hover {

@@ -149,7 +149,6 @@ class Item extends React.Component {
               :
               null
           }
-
           <div className="card-body">
             <div className="card-pic" onClick={this._openModal.bind(this)}>
                 <a style={ cardPhotoStyles } className="img" alt="User" onError={this.setDefaultImage.bind(this)}></a>
