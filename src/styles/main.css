@@ -96,6 +96,13 @@
     animation: spin 2s linear infinite;
   }
 
+  .loaderInComments {
+    position: absolute;
+    right: 14px;
+    top: 17.7px;
+    width: 40px;
+    height: 40px;
+  }
   input {
 	  outline: none;
   }
@@ -140,6 +147,13 @@
 
   .g-main {
     min-height: calc(100vh - 60px);
+  }
+
+  @media screen and (max-width: 767px) {
+    .wrap-panel {
+      margin: 0 auto;
+      width: 350px;
+    }
   }
 
   .card-field {
@@ -202,7 +216,15 @@
     box-shadow: 0 5px 15px 0px rgba(18,148,226,.3);
   }
 
- 
+  .btn-index, .btn-default {
+    transition: .2s all ease;
+  }
+  .btn-index:hover {
+    color: #e74800 !important;
+  }
+  .btn-default:hover {
+    box-shadow: 0 5px 12px 0 rgba(231,72,0,.3) !important;
+  }
   .btn-flag::before {
     content: url(/static/images/flagFalse.svg);
   }
