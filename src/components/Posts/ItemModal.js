@@ -101,7 +101,7 @@ class ItemModal extends React.Component {
     sendComment(e) {
       e.preventDefault();
 
-      if (this.state.commentValue == "") return false;
+      if (this.state.commentValue == '') return false;
 
       const urlObject = this.state.item.url.split('/');
 
@@ -111,8 +111,7 @@ class ItemModal extends React.Component {
         });
         if (err) {
           jqApp.pushMessage.open(err);
-        } else
-        if (success) {
+        } else if (success) {
             this.setState({
               newComment : {
                 net_votes : 0,
@@ -123,12 +122,13 @@ class ItemModal extends React.Component {
                 body : this.state.commentValue,
                 created : Date.now()
               },
-              commentValue : ''
+              commentValue: ''
             }, () => {
               this.scrollView.scrollBar.scrollToBottom();
               jqApp.pushMessage.open(Constants.COMMENT_SUCCESS_MESSAGE);
             });
         }
+        this.formGr.classList.remove('not-empty');
       }
 
       this.setState({
@@ -148,7 +148,7 @@ class ItemModal extends React.Component {
 
     initKeypress() {
       document.onkeydown = (e) => {
-        if (document.activeElement !== ReactDOM.findDOMNode(this.refs.commentInput))
+        if (document.activeElement !== ReactDOM.findDOMNode(this.commentInput))
         switch (e.keyCode) {
             case 37:
                 this.previous();
@@ -207,7 +207,7 @@ class ItemModal extends React.Component {
       this.setState({isDescriptionOpened : true});
     }
 
-    shouldComponentUpdate(nextProps,nextState) {
+    shouldComponentUpdate(nextProps, nextState) {
       if (this.state.index != nextState.index)
       if (this.state.isDescriptionOpened) this.setState({ isDescriptionOpened : false });
       return true;
@@ -297,7 +297,7 @@ class ItemModal extends React.Component {
                   </div>
                 </div>
                 <ScrollViewComponent
-                  ref={(ref) => this.scrollView = ref}
+                  ref={ (ref) => this.scrollView = ref }
                   wrapperModifier="list-scroll"
                   scrollViewModifier="list-scroll__view"
                   autoHeight={window.innerWidth < constants.DISPLAY.DESK_BREAKPOINT}
@@ -313,7 +313,7 @@ class ItemModal extends React.Component {
                   ?
                     <div className="post-comment">
                       <div className="comment-form form-horizontal">
-                        <div className="form-group clearfix">
+                        <div className="form-group clearfix" ref={ (ref) => {this.formGr = ref} }>
                           {
                             this.state.needsCommentFormLoader
                             ?
@@ -327,7 +327,7 @@ class ItemModal extends React.Component {
                           }
                           <div className="input-container">
                             <textarea
-                              ref="commentInput"
+                              ref={ (ref) => {this.commentInput = ref} }
                               id="formCOMMENT"
                               name="commentValue"
                               value={this.state.commentValue}
