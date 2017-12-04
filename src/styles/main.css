@@ -149,10 +149,52 @@
     min-height: calc(100vh - 60px);
   }
 
+  @media handheld and (min-width: 768px) and (max-width: 1023px) {
+    header .container {
+      margin: 0;
+      width: 100%;
+      padding: 0 35px;
+    }
+    .search-panel {
+      padding: 0 40px;
+    }
+    .nav-tabs {
+      margin-top: -15px !important;
+    }
+    .tab-head {
+      padding: 10px 30px 16px 30px !important;
+    }
+    .for-justification {
+      padding: 0 35px !important;
+    }
+    .buttons-container {
+      display: flex;
+      justify-content: center;
+    }
+  }
+
   @media screen and (max-width: 767px) {
-    .wrap-panel {
-      margin: 0 auto;
-      width: 350px;
+    header .container {
+      margin: 0;
+      width: 100%;
+      padding: 0 25px;
+    }
+    .search-panel {
+      padding: 0 30px;
+    }
+    .nav-tabs {
+      margin-top: -12.5px !important;
+    }
+    .tab-head {
+      font-size: 14px !important;
+      padding: 10px 25px 16px 25px !important;
+    }
+    .for-justification {
+      padding: 0 25px !important;
+    }
+    .post-card {
+      margin: 0 !important;
+      max-width: 100% !important;
     }
   }
 
@@ -216,7 +258,7 @@
     box-shadow: 0 5px 15px 0px rgba(18,148,226,.3);
   }
 
-  .btn-index, .btn-default {
+  .btn-index, .btn-default, .name, .btn-primary {
     transition: .2s all ease;
   }
   .btn-index:hover {
@@ -227,6 +269,9 @@
   }
   .btn-flag::before {
     content: url(/static/images/flagFalse.svg);
+  }
+  .btn-default:active {
+    box-shadow: none !important;
   }
 
   .btn-flag.marked::before {

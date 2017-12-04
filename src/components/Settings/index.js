@@ -88,9 +88,16 @@ class Settings extends React.Component {
                     success: true,
                     saveSettings: getSettings()
                 }, () => this.needsNotice());
+                setTimeout( () => {
+                  jqApp.pushMessage.open(Constants.SETTINGS_CHANGED_MESSAGE);
+                  this.props.history.goBack();
+                }, 1700);
         } else {
             this.setState({ uptodate : true }, () => this.needsNotice());
-            
+            setTimeout( () => {
+              jqApp.pushMessage.open(Constants.SETTINGS_NOTCHANGED_MESSAGE);
+              this.props.history.goBack();
+            }, 1700);
         }
     }
 

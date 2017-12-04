@@ -38,7 +38,7 @@ class UserItem extends React.Component {
                     <div className="text">
                       <Link to={authorLink} className="name">
                         {name}
-                        </Link>
+                      </Link>
                       <div className="location">{location}</div>
                     </div>
                 </div>

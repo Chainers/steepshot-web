@@ -30,7 +30,7 @@ class Header extends React.Component {
   }
 
   baseBrowseFilter() {
-    const baseBrowseFilter = localStorage.getItem('browse') == undefined ? 
+    const baseBrowseFilter = localStorage.getItem('browse') == undefined ?
     Constants.BROWSE_ROUTES[0].NAME : localStorage.getItem('browse');
     return baseBrowseFilter;
   }
@@ -105,7 +105,6 @@ class Header extends React.Component {
       </div>
     }
 
-
       browse = <div className="section menu">
         <div className="wrap-menu">
         {
@@ -120,7 +119,6 @@ class Header extends React.Component {
           </div>
         </div>
       </div>
-
 
     return (
       <header className="g-header">

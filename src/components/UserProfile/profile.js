@@ -33,6 +33,7 @@ class UserProfile extends React.Component {
       itemsPoint : this.insertUsername(Constants.POSTS_FILTERS.POSTS_USER.point, this.props.username),
       followingPoint : this.insertUsername(Constants.USERS_FILTERS.FOLLOWING.point, this.props.username),
       followersPoint : this.insertUsername(Constants.USERS_FILTERS.FOLLOWERS.point, this.props.username),
+      yourOrNot: false,
       keys : [
         { label : Constants.POSTS_FILTERS.POSTS_USER.label },
         { label : Constants.USERS_FILTERS.FOLLOWERS.label },
@@ -85,6 +86,7 @@ class UserProfile extends React.Component {
         });
       });
     });
+    this.correctText();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -93,7 +95,7 @@ class UserProfile extends React.Component {
     }
     this.setState({
         avatar : Constants.NO_AVATAR,
-        authorName: nextProps.username,
+        authorName : nextProps.username,
         itemsPoint : this.insertUsername(Constants.POSTS_FILTERS.POSTS_USER.point, nextProps.username),
         followingPoint : this.insertUsername(Constants.USERS_FILTERS.FOLLOWING.point, nextProps.username),
         followersPoint : this.insertUsername(Constants.USERS_FILTERS.FOLLOWERS.point, nextProps.username)
@@ -108,6 +110,18 @@ class UserProfile extends React.Component {
       return `${path[0]}/${userName}/${path[1]}`;
   }
 
+  correctText() {
+    if (window.localStorage.user == undefined || this.props.history.location.pathname == undefined) {
+      this.setState({yourOrNot : false});
+    } else {
+      if(window.localStorage.user.replace(/"/g, '') == this.props.history.location.pathname.replace('/@', '')) {
+        this.setState({yourOrNot : true});
+      } else {
+        this.setState({yourOrNot : false});
+      }
+    }
+  }
+
   render() {
     let profileImageSrc = this.state.avatar || Constants.NO_AVATAR;
     let name = '';
@@ -118,7 +132,7 @@ class UserProfile extends React.Component {
 
     if (this.state.profile) {
       name = this.state.profile.name;
-      if (name == undefined || name == '') name = `@${this.state.profile.username}`;
+      if (name == undefined || name == '') name = `@${this.state.profile.username}`;[]
       website = this.state.profile.website;
       about = this.state.profile.about;
       location = this.state.profile.location;
@@ -143,7 +157,15 @@ class UserProfile extends React.Component {
                 </p>
                 <div className="amount">
                   <div className="count">$ {balance}</div>
-                  <div className="description">This is the current amount of funds in your account in the application.</div>
+                  {
+                    this.state.yourOrNot
+                    ?
+                    <div className="description">This is the current amount of funds in your account in the
+                      application.</div>
+                    :
+                    <div className="description">This is the current amount of funds in user's account in the
+                      application.</div>
+                  }
                 </div>
               </div>
             </div>

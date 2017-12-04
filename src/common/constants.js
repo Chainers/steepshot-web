@@ -40,7 +40,7 @@ export default {
     EMPTY_QUERY : "It's very strange, but we do not have anything yet for this query. Try to look for something else ...",
     EMPTY_QUERY_VOTERS : "Still no one has rated this post ...",
 
-    SEARCH_PLACEHOLDER : "Type your search query and press Enter",
+    SEARCH_PLACEHOLDER : "Type your search query and press \"Enter\"",
 
     POSTS_FILTERS: {
         POSTS_TOP : {
@@ -135,6 +135,9 @@ export default {
 
     COMMENT_ERROR_MESSAGE : 'You can only create comments once per 20 seconds',
     COMMENT_SUCCESS_MESSAGE : 'Comment has been successfully added',
+
+    SETTINGS_CHANGED_MESSAGE : 'Setting has been successfully changed',
+    SETTINGS_NOTCHANGED_MESSAGE : 'Setting hasn\'t been changed',
 
     VOTE_ACTION_WHEN_NOT_AUTH : 'This action is only available to logged-in users',
     VOTE_ACTION_WHEN_NOT_AUTH_DEBOUNCE : 500,

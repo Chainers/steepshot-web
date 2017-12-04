@@ -55,7 +55,7 @@ class ItemsComponent extends React.Component {
       items : [],
       hasMore : true,
       previousRequestOffset : 'none',
-      clearPostHeader: this.props.clearPostHeader
+      clearPostHeader : this.props.clearPostHeader
     }
   }
 
