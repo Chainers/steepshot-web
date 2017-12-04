@@ -69,7 +69,6 @@ class Login extends React.Component {
     this.setState({
       needsLoader : true
     }, () => {
-
       const callback = (message) => {
         this.setState({
           needsLoader : false
@@ -77,7 +76,6 @@ class Login extends React.Component {
           jqApp.pushMessage.open(message);
         });
       }
-
       login(this.state.userName, this.state.postingKey, this.props.history, this.props.dispatch, callback);
     });
   }

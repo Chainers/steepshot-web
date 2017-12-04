@@ -259,7 +259,7 @@ class CreatePost extends React.Component {
                     </div>
                 </div>
                 <input id="upload-file" className="file-input" onChange={(e)=>this._handleImageChange(e)} type="file" />
-            </div>);
+                </div>);
         } else {
             $imagePreview = (<div className="upload-field empty">
                 <div className="uf-preview">
@@ -267,11 +267,11 @@ class CreatePost extends React.Component {
                     <div className="uf-text">Click to upload a picture</div>
                 </div>
                 <input id="upload-file" className="file-input" onChange={(e)=>this._handleImageChange(e)} type="file" />
-            </div>);
+                </div>);
         }
 
         return (
-            <div className="col-xs-12 col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3">
+            <div className="col-xs-12 col-md-6 col-md-offset-3 col-lg-6 col-lg-offset-3 for-justification">
                 <form className="form-create form-horizontal">
                     <div className="form-group">
                         <div className="input-container col-xs-12">
@@ -297,8 +297,11 @@ class CreatePost extends React.Component {
                                 <label htmlFor="title" className="name">Title<span className="text--red font--small required-star"> *</span></label>
                                 <div className="help-block">
                                     {
-                                        this.state.titleError ? <div className="help-block__notice">Title is required</div>
-                                                              : null
+                                      this.state.titleError
+                                        ?
+                                        <div className="help-block__notice">Title is required</div>
+                                        :
+                                        null
                                     }
                                 </div>
                             </div>
