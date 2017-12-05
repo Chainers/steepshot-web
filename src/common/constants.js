@@ -41,6 +41,7 @@ export default {
     EMPTY_QUERY_VOTERS : "Still no one has rated this post ...",
 
     SEARCH_PLACEHOLDER : "Type your search query and press \"Enter\"",
+    SEARCH_PLACEHOLDER_MIN : "To search, press \"Enter\"",
 
     POSTS_FILTERS: {
         POSTS_TOP : {

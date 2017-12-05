@@ -7,6 +7,7 @@ import Constants from '../../common/constants';
 import InfiniteScroll from 'react-infinite-scroller';
 import HeadingLeadComponent from '../Atoms/HeadingLeadComponent';
 import { debounce } from 'lodash';
+import { documentTitle } from "../DocumentTitle";
 
 class UsersComponent extends React.Component {
   constructor(props) {
@@ -29,6 +30,10 @@ class UsersComponent extends React.Component {
 
   componentDidMount() {
     this.fetchData();
+  }
+  componentWillMount() {
+    document.body.classList.remove('modal-open');
+    documentTitle();
   }
 
   getInitialData() {
@@ -64,9 +69,9 @@ class UsersComponent extends React.Component {
     this.state.getUsers(options, true).then((response) => {
         this.state.items.pop();
         let newItems = this.state.items.concat(response.results);
-        let hasMore = !(this.state.offset == response.offset);    
-        this.setState({ 
-            items: newItems, 
+        let hasMore = !(this.state.offset == response.offset);
+        this.setState({
+            items: newItems,
             previousRequestOffset : this.state.offset,
             offset: response.offset,
             hasMore: !(this.state.offset == response.offset),
@@ -91,7 +96,7 @@ class UsersComponent extends React.Component {
           <UserItem
             key={index}
             item={user}
-            history={this.props.history} 
+            history={this.props.history}
           />
         );
       })
@@ -109,7 +114,7 @@ class UsersComponent extends React.Component {
   render() {
     return (
         <div>
-          {this.renderHeader()} 
+          {this.renderHeader()}
           <InfiniteScroll
             pageStart={0}
             initialLoad={true}

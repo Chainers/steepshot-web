@@ -25,15 +25,15 @@ class Comments extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
- 
+
     if (nextProps.newComment != undefined) {
       this.state.comments.push(nextProps.newComment);
 
-      this.setState({ 
+      this.setState({
         comments: this.state.comments,
       });
     } else {
-      this.setState({ 
+      this.setState({
         comments: [],
         loading: true
       });
@@ -65,8 +65,8 @@ class Comments extends React.Component {
 
     if (this.state.loading) {
       comments = <div className='loading-block'><LoadingSpinner /></div>;
-    } 
-    
+    }
+
     if (this.state.comments && this.state.comments.length != 0) {
       comments = this.state.comments.map((item, index) => {
         return <Comment key={index} item={item} />

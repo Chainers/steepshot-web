@@ -20,6 +20,7 @@ import Messages from '../Messages';
 import LoadingSpinner from '../LoadingSpinner';
 import steemconnect from 'steemconnect';
 import Constants from '../../common/constants';
+import { documentTitle } from "../DocumentTitle";
 
 class Login extends React.Component {
   constructor(props) {
@@ -36,6 +37,10 @@ class Login extends React.Component {
 
   componentDidUpdate() {
     setTimeout(() => { jqApp.forms.init() }, 0);
+  }
+
+  componentWillMount() {
+    documentTitle();
   }
 
   handleChange(event) {

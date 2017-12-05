@@ -24,7 +24,7 @@ class Comment extends React.Component {
     let newItem = this.state.item;
     vote ? newItem.net_votes++ : newItem.net_votes--;
     newItem.vote = vote;
-    this.setState({ 
+    this.setState({
       item: newItem
     });
   }
@@ -45,7 +45,7 @@ class Comment extends React.Component {
               <TimeAgo
                   datetime={this.props.item.created}
                   locale='en_US'
-              />   
+              />
             </div>
               <Link to={authorLink} className="user">
                 <div className="photo">

@@ -13,6 +13,7 @@ import {
 } from 'react-redux';
 import Constants from '../../common/constants';
 import PropTypes from 'prop-types';
+import { documentTitle } from "../DocumentTitle";
 
 class Settings extends React.Component {
     constructor(props) {
@@ -37,6 +38,10 @@ class Settings extends React.Component {
         this.setState({
             settings: userSettings
         });
+    }
+
+    componentWillMount() {
+      documentTitle();
     }
 
     _setDefaultMessageOptions() {

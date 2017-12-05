@@ -25,7 +25,8 @@ class Header extends React.Component {
 
     this.state = {
       localize: LocalizedStrings.getInstance(),
-      searchValue : ''
+      searchValue : '',
+      sizeParam: false
     };
   }
 
@@ -40,6 +41,10 @@ class Header extends React.Component {
     setTimeout(() => {
       jqApp.search.init();
     }, 0);
+  }
+
+  componentWillMount() {
+    this.forResize();
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -82,6 +87,12 @@ class Header extends React.Component {
     });
   }
 
+  forResize() {
+    if(document.body.clientWidth < 420) {
+      this.setState({sizeParam: true});
+    }
+  }
+
   render() {
     const isUserAuth = this.props.user && this.props.postingKey;
     let browse;
@@ -115,7 +126,7 @@ class Header extends React.Component {
           ) : null
         }
           <div className="item nav-item" ref="/browse">
-            <Link to={`/browse/${this.baseBrowseFilter()}`} >Browse</Link>
+            <Link to={`/browse/${this.baseBrowseFilter()}`}>Browse</Link>
           </div>
         </div>
       </div>
@@ -205,7 +216,13 @@ class Header extends React.Component {
                     value={this.state.searchValue}
                     onChange={this.searchHandleChange.bind(this)}
                     required={true}
-                    placeholder={Constants.SEARCH_PLACEHOLDER}
+                    placeholder={
+                      this.state.sizeParam
+                      ?
+                        Constants.SEARCH_PLACEHOLDER_MIN
+                      :
+                        Constants.SEARCH_PLACEHOLDER
+                    }
                     className="input-search"
                     onKeyPress={this.searchKeyPress.bind(this)}
                   />

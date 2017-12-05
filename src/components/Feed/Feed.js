@@ -1,10 +1,11 @@
 import React from 'react';
-import { 
+import {
   connect
 } from 'react-redux';
 import PropTypes from 'prop-types';
 import ItemsComponent from '../UserProfile/itemsComponent';
 import Constants from '../../common/constants';
+import { documentTitle } from "../DocumentTitle";
 
 class Feed extends React.Component {
   constructor(props) {
@@ -15,12 +16,16 @@ class Feed extends React.Component {
     };
   }
 
+  componentWillMount() {
+    documentTitle();
+  }
+
   render() {
     return (
       <div className="g-main_i container">
         <div id="workspace" className="g-content clearfix">
-          <ItemsComponent 
-            point={this.state.point} 
+          <ItemsComponent
+            point={this.state.point}
             wrapperModifier="posts-list clearfix"
           />
         </div>

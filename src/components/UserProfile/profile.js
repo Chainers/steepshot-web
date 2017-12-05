@@ -197,6 +197,8 @@ class UserProfile extends React.Component {
                         wrapperModifier="posts-list clearfix type-2"
                         getUsers={getFollowers}
                         forceRefresh={this.state.needsForceRefresh}
+                        ownerOfPage={this.state.profile.username}
+                        pathName={this.props.history.location.pathname}
                       />
                       <UsersComponent
                         point={this.state.followingPoint}
@@ -204,6 +206,8 @@ class UserProfile extends React.Component {
                         wrapperModifier="posts-list clearfix type-2"
                         getUsers={getFollowing}
                         forceRefresh={this.state.needsForceRefresh}
+                        ownerOfPage={this.state.profile.username}
+                        pathName={this.props.history.location.pathname}
                       />
                     </TabsWrapper>
                 }

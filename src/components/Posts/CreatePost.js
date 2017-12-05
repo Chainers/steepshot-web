@@ -4,6 +4,7 @@ import {
     connect
 } from 'react-redux';
 import LoadingSpinner from '../LoadingSpinner';
+import { documentTitle } from "../DocumentTitle";
 
 class CreatePost extends React.Component {
     constructor(props) {
@@ -30,6 +31,10 @@ class CreatePost extends React.Component {
         setTimeout(() => { jqApp.forms.init() }, 0);
     }
 
+    componentWillMount() {
+      documentTitle();
+    }
+
     _clearAll() {
         this.setState({
             file: '',
@@ -42,18 +47,23 @@ class CreatePost extends React.Component {
     }
 
     handleChange(event) {
-
         // id="formDESCRIPTION" <-- second comment in input field
 
         let name = event.target.name;
         let value = event.target.value;
 
+        if (name == this.state.titleInputName) {
+          if (value.length >= 64) {
+            return false
+          }
+        }
+
         if (name == this.state.tagInputName) {
             let valueArr = value.replace(/[^^a-zA-ZА-Яа-яЁё0-9\s]/g, "").toLowerCase().split(' ');
-            if(valueArr.length > 4) {
+            if(valueArr.length >= 20) {
               return false
             }
-            if(valueArr[valueArr.length - 1].length > 15) {
+            if(valueArr[valueArr.length - 1].length > 32) {
               return false
             }
               this.setState({
@@ -64,17 +74,12 @@ class CreatePost extends React.Component {
                       tagError : false
                   })
               );
-
-        } else
-
-        if (name == this.state.titleInputName) {
+        } else if (name == this.state.titleInputName) {
             this.setState({
                 [name] : value,
                 titleError : false
             });
-        } else
-
-        if (name == this.state.descriprionInputName) {
+        } else if (name == this.state.descriprionInputName) {
           this.setState({
             [name]: value
           });
@@ -298,9 +303,9 @@ class CreatePost extends React.Component {
                                 <div className="help-block">
                                     {
                                       this.state.titleError
-                                        ?
+                                      ?
                                         <div className="help-block__notice">Title is required</div>
-                                        :
+                                      :
                                         null
                                     }
                                 </div>
@@ -324,7 +329,7 @@ class CreatePost extends React.Component {
                                     {this._renderTags()}
                                 </div>
                                 <div className="help-block">
-                                    <div className="help-block__notice">Enter a hashtag(s). But not more than 4 words</div>
+                                    <div className="help-block__notice">Enter a hashtag(s). But not more than 20 words</div>
                                 </div>
                             </div>
                         </div>

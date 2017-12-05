@@ -1,5 +1,5 @@
 import React from 'react';
-import { 
+import {
   connect
 } from 'react-redux';
 import {
@@ -10,6 +10,7 @@ import TabsFilterComponent from '../Filters/TabsFilterComponent';
 import ItemsComponent from '../UserProfile/itemsComponent';
 import Constants from '../../common/constants';
 import TabsWrapper from '../Wrappers/TabsWrapper';
+import { documentTitle } from "../DocumentTitle";
 
 class Browse extends React.Component {
   constructor(props) {
@@ -30,6 +31,10 @@ class Browse extends React.Component {
     if (localStorage.getItem('browse') != undefined) this.props.history.replace('/browse/' + localStorage.getItem('browse'));
   }
 
+  componentWillMount() {
+    documentTitle();
+  }
+
   componentWillReceiveProps(nextProps) {
     if (nextProps.activeItemIndex == -1) this.props.history.replace('/*');
   }
@@ -40,6 +45,7 @@ class Browse extends React.Component {
     }, () => {
       localStorage.setItem('browse', Constants.BROWSE_ROUTES[this.state.activeItemIndex].NAME);
       this.props.history.push(Constants.BROWSE_ROUTES[this.state.activeItemIndex].NAME);
+      documentTitle();
     });
   }
 
@@ -54,26 +60,26 @@ class Browse extends React.Component {
     return (
       <div className="g-main_i container">
         <div id="workspace" className="g-content clearfix">
-          <TabsFilterComponent 
+          <TabsFilterComponent
             keys={this.state.keys}
             activeItemIndex={this.state.activeItemIndex}
             updateCallback={this.updateActiveTab.bind(this)}
           />
-          <TabsWrapper 
+          <TabsWrapper
             activeTab={this.state.activeItemIndex}
           >
-            <ItemsComponent 
-              point={Constants.POSTS_FILTERS.POSTS_HOT.point} 
-              cancelPrevious={false} 
+            <ItemsComponent
+              point={Constants.POSTS_FILTERS.POSTS_HOT.point}
+              cancelPrevious={false}
               wrapperModifier="posts-list clearfix"
             />
-            <ItemsComponent 
-              point={Constants.POSTS_FILTERS.POSTS_NEW.point} 
-              cancelPrevious={false} 
+            <ItemsComponent
+              point={Constants.POSTS_FILTERS.POSTS_NEW.point}
+              cancelPrevious={false}
               wrapperModifier="posts-list clearfix"
             />
-            <ItemsComponent 
-              point={Constants.POSTS_FILTERS.POSTS_TOP.point} 
+            <ItemsComponent
+              point={Constants.POSTS_FILTERS.POSTS_TOP.point}
               cancelPrevious={false}
               wrapperModifier="posts-list clearfix"
             />
