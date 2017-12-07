@@ -53,7 +53,7 @@ class CreatePost extends React.Component {
         let value = event.target.value;
 
         if (name == this.state.titleInputName) {
-          if (value.length >= 64) {
+          if (value.length >= 256) {
             return false
           }
         }
@@ -204,7 +204,7 @@ class CreatePost extends React.Component {
         let _this = this;
         let items = this.state.tagList.map((tag, index) => {
             return(
-            <div key={index} className="tag">{`#${tag}`}
+            <div key={index} className="tag">{tag}
                 <button type="button" className="btn-close" onClick={this.removeTag.bind(_this, index)}></button>
             </div>
             )
@@ -249,7 +249,7 @@ class CreatePost extends React.Component {
                 />
                 <label htmlFor="description" className="name">Description</label>
                 <div className="help-block">
-                    <div className="help-block__notice">Description can be maximum {this.state.descriptionLength} characters</div>
+                    <div className="help-block__notice">Description is limited to {this.state.descriptionLength} characters</div>
                 </div>
             </div>
         </div>
@@ -324,12 +324,12 @@ class CreatePost extends React.Component {
                                     autoComplete="off"
                                     className="form-control autofil--gray"
                                 />
-                                <label htmlFor="tag" className="name">Hashtag<span className="text--red font--small required-star"> *</span></label>
+                                <label htmlFor="tag" className="name">Tags<span className="text--red font--small required-star"> *</span></label>
                                 <div className="tags-list clearfix">
                                     {this._renderTags()}
                                 </div>
                                 <div className="help-block">
-                                    <div className="help-block__notice">Enter a hashtag(s). But not more than 20 words</div>
+                                    <div className="help-block__notice">Enter tags with spaces, but not more than 20</div>
                                 </div>
                             </div>
                         </div>

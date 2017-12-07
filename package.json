@@ -49,6 +49,7 @@
     "moment": "^2.18.1",
     "node-notifier": "^5.1.2",
     "react": "^15.6.2",
+    "react-addons-css-transition-group": "^15.6.2",
     "react-classnames": "^0.1.2",
     "react-clipboard.js": "^1.1.2",
     "react-cookie": "^2.0.7",

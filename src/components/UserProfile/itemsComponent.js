@@ -30,7 +30,10 @@ class ItemsComponent extends React.Component {
       renderNotEmptyOnly : this.props.renderNotEmptyOnly == undefined ? false : this.props.renderNotEmptyOnly,
       isComponentVisible : this.props.isComponentVisible == undefined ? true : this.props.isComponentVisible,
       ignored : this.props.ignored == undefined ? [] : this.props.ignored,
-      maxPosts : this.props.maxPosts || 9999
+      maxPosts : this.props.maxPosts || 9999,
+      forOffset : {
+        top : '0'
+      }
     };
   }
 
@@ -45,6 +48,22 @@ class ItemsComponent extends React.Component {
 
   componentDidMount() {
     this.fetchData();
+  }
+
+  componentWillMount() {
+    // this.startOffset();
+  }
+
+  startOffset() {
+    let obj = {...this.state.forOffset};
+    obj.top = (document.documentElement.clientHeight / 2) - 170;
+    this.setState({forOffset: obj});
+  }
+
+  spinnerPosition() {
+    let obj = {...this.state.forOffset};
+    obj.top = '0';
+    this.setState({forOffset: obj});
   }
 
   getInitialData() {
@@ -98,6 +117,7 @@ class ItemsComponent extends React.Component {
           hasMore: hasMore,
           loading: false
         });
+        // this.spinnerPosition();
       });
     });
   }
@@ -124,6 +144,10 @@ class ItemsComponent extends React.Component {
     this.setState({
       items: newItems
     });
+  }
+
+  HelloWorldComponent() {
+    return <div>Hello World!</div>;
   }
 
   _renderModal() {
@@ -198,7 +222,7 @@ class ItemsComponent extends React.Component {
           loadMore={debounce(this.fetchData.bind(this), Constants.ENDLESS_SCROLL.DEBOUNCE_TIMEOUT)}
           hasMore={this.state.hasMore}
           loader={
-            <div className="position--relative">
+            <div className="position--relative" style={this.state.forOffset}>
               <LoadingSpinner/>
             </div>
           }

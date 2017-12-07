@@ -2,7 +2,6 @@ import RequestService from '../services/requestService';
 
 export function getUserProfile(userName) {
   const url = RequestService.handlev1_1RequestUserInfo(`user/${userName}/info`);
-
   return fetch(url, {
     method: 'GET'
   }).then((response) => {
@@ -35,7 +34,7 @@ export function getFollowers(userName, offset) {
       });
     }
   });
-  
+
 }
 
 export function getFollowing(userName, offset) {

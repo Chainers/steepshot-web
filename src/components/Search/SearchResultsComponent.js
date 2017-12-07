@@ -1,5 +1,5 @@
 import React from 'react';
-import { 
+import {
   connect
 } from 'react-redux';
 import {
@@ -84,12 +84,12 @@ class SearchResultsComponent extends React.Component {
     return (
       <div className="g-main_i container">
         <div id="workspace" className="g-content clearfix">
-          <TabsFilterComponent 
+          <TabsFilterComponent
             keys={this.state.keys}
             activeItemIndex={this.state.activeItemIndex}
             updateCallback={this.updateActiveTab.bind(this)}
           />
-          <TabsWrapper 
+          <TabsWrapper
             activeTab={this.state.activeItemIndex}
           >
             <TabWrapper>
@@ -106,9 +106,9 @@ class SearchResultsComponent extends React.Component {
               {
                 this.state.showResults
                 ?
-                  <ItemsComponent 
-                    point={this.insertCategory(Constants.POSTS_FILTERS.POSTS_NEW.point, this.state.searchValue)} 
-                    cancelPrevious={false} 
+                  <ItemsComponent
+                    point={this.insertCategory(Constants.POSTS_FILTERS.POSTS_NEW.point, this.state.searchValue)}
+                    cancelPrevious={false}
                     ignored={this.state.ignored}
                     wrapperModifier="posts-list clearfix"
                     forceRefresh={this.state.needsForceRefresh}

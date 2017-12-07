@@ -13,23 +13,45 @@
   }
 
   .item.nav-item a:hover {
-    border-bottom: none!important;
+    border-bottom: none !important;
   }
 
   .user-information .count {
-    font-size: 22px!important;
+    font-size: 22px !important;
   }
 
   .btn:not(.btn-index):hover{
-    border-color: transparent!important;
+    border-color: transparent !important;
   }
 
   .btn:not(.btn-index):active{
-    border-color: transparent!important;
+    border-color: transparent !important;
   }
 
   .btn:not(.btn-index):focus{
-    border-color: transparent!important;
+    border-color: transparent !important;
+  }
+
+  .forAdult {
+    position: absolute;
+    background: black;
+    width: 100%;
+    height: 100%;
+    opacity: .9;
+  }
+  .forAdult button {
+    position: absolute;
+    padding: 8px 14px !important;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  .adultMask-leave {
+    opacity: .9;
+  }
+  .adultMask-leave.adultMask-leave-active {
+    opacity: 0;
+    transition: 0.25s opacity ease;
   }
 
   #upload-file {
@@ -171,6 +193,20 @@
       display: flex;
       justify-content: center;
     }
+
+    .g-main_i {
+      width: 750px !important;
+    }
+    .post-card {
+      max-width: 355px !important;
+      width: 355px !important;
+    }
+    .card-body {
+      width: 355px !important;
+    }
+    .post__description-container {
+      max-width: none !important;
+    }
   }
 
   @media screen and (max-width: 767px) {
@@ -285,6 +321,10 @@
 
   .btn-like:hover::before {
     -webkit-transform: scale(1.15);
+  }
+
+  .pm-wrap {
+    background: rgba(0, 0, 0, .9) !important;
   }
 
   @-webkit-keyframes flagLoading

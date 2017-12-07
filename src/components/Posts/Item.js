@@ -19,6 +19,7 @@ import FlagComponent from './FlagComponent';
 import TagComponent from './TagComponent';
 import LikesComponent from './LikesComponent';
 import TimeAgo from 'timeago-react';
+import ReactCSSTransitionGroup from 'react-transition-group/CSSTransitionGroup';
 
 class Item extends React.Component {
   constructor(props) {
@@ -32,7 +33,9 @@ class Item extends React.Component {
       comments: [],
       redirectToReferrer: false,
       needsRenderSlider: true,
-      clearPropsHeader: this.props.clearPostHeader
+      clearPropsHeader: this.props.clearPostHeader,
+      adultFilter: false,
+      moneyParam: true
     };
 
     this.localConstants = {
@@ -47,13 +50,19 @@ class Item extends React.Component {
 
   componentDidMount() {
     let propsItem = this.state.item;
-
-    propsItem.total_payout_reward = '$' + parseFloat(propsItem.total_payout_reward).toFixed(2);
+    let money = parseFloat(propsItem.total_payout_reward).toFixed(2);
+    if (money == 0.00) {
+      this.setState({moneyParam: false});
+    }
+    propsItem.total_payout_reward = '$' + money;
 
     propsItem.tags = (propsItem.tags instanceof Array) ? propsItem.tags : propsItem.tags.split(',');
 
     for (let i = 0; i < propsItem.tags.length; i++) {
-      propsItem.tags[i] = '#' + propsItem.tags[i];
+      propsItem.tags[i] = propsItem.tags[i];
+      if (propsItem.tags[i] == 'nsfw') {
+        this.setState({adultFilter: true});
+      }
     }
 
     this.setState({
@@ -101,6 +110,9 @@ class Item extends React.Component {
   }
 
   _openModal() {
+    if(this.state.adultFilter) {
+      return false
+    } else
     if (this.state.openModal != undefined) {
       this.state.openModal(this.state.currentIndex)
     }
@@ -114,6 +126,9 @@ class Item extends React.Component {
     } else return null;
   }
 
+  hideAdultFilter() {
+    this.setState({adultFilter: false});
+  }
 
   render() {
     let _this = this;
@@ -151,8 +166,19 @@ class Item extends React.Component {
           }
           <div className="card-body">
             <div className="card-pic" onClick={this._openModal.bind(this)}>
-                <a style={ cardPhotoStyles } className="img" alt="User" onError={this.setDefaultImage.bind(this)}></a>
-              </div>
+            <ReactCSSTransitionGroup transitionName="adultMask" transitionEnterTimeout={250} transitionLeaveTimeout={250}>
+              {
+                this.state.adultFilter
+                ?
+                  <div className="forAdult">
+                    <button className=" btn btn-index" onClick={this.hideAdultFilter.bind(this)}>Show NSFW</button>
+                  </div>
+                :
+                  null
+              }
+            </ReactCSSTransitionGroup>
+            <a style={ cardPhotoStyles } className="img" alt="User" onError={this.setDefaultImage.bind(this)}></a>
+            </div>
             <div className="card-wrap">
               <div className="card-controls clearfix">
                 <div className="buttons-row" onClick={(e)=>{this.callPreventDefault(e)}}>
@@ -171,7 +197,13 @@ class Item extends React.Component {
                 </div>
                 <div className="wrap-counts clearfix">
                   <LikesComponent likes={this.state.item.net_votes} url={this.state.item.url}/>
-                  <div className="amount">{this.state.item.total_payout_reward}</div>
+                  {
+                    this.state.moneyParam
+                    ?
+                      <div className="amount">{this.state.item.total_payout_reward}</div>
+                    :
+                      null
+                  }
                 </div>
               </div>
               <div className="card-preview">

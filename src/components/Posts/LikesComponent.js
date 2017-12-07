@@ -6,9 +6,28 @@ import {
 class LikesComponent extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { 
-      ...this.props
+    this.state = {
+      ...this.props,
+      likeParam: 2
     };
+  }
+
+  componentDidMount() {
+    this.test();
+  }
+
+  test() {
+    switch (this.state.likes) {
+      case 0 :
+        this.setState({likeParam: 0});
+        break;
+      case 1 :
+        this.setState({likeParam: 1});
+        break;
+      case -1 :
+        this.setState({likeParam: 1});
+        break;
+    }
   }
 
   openLikesModal() {
@@ -17,12 +36,21 @@ class LikesComponent extends React.Component {
   }
 
   render() {
-    const {
-        likes,
-        persons
-    } = this.state;
+    const {likes, persons} = this.state;
     return (
-        <div className="likes" onClick={this.openLikesModal.bind(this)}>{likes} like's</div>
+      <div>
+        {
+          this.state.likeParam == 0
+          ?
+            null
+          :
+            this.state.likeParam == 1
+          ?
+            <div className="likes" onClick={this.openLikesModal.bind(this)}>{likes} like</div>
+          :
+            <div className="likes" onClick={this.openLikesModal.bind(this)}>{likes} like's</div>
+        }
+      </div>
     );
   }
 }

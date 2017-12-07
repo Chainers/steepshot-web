@@ -8,7 +8,7 @@ Promise.config({
   monitoring: true
 });
 
-const makeCancellableRequest = url => 
+const makeCancellableRequest = url =>
   new Promise((resolve, reject, onCancel) => {
       let xhr = new XMLHttpRequest();
       xhr.onload = resolve;
@@ -29,11 +29,11 @@ let requestPromises = {
 }
 
 async function getItems(url, promiseName, needsDestroyPrevious, where) {
-  
+
   if (requestPromises[promiseName].isPending() && needsDestroyPrevious) requestPromises[promiseName].cancel();
 
   try {
-    return requestPromises[promiseName] = makeCancellableRequest(url).then(result =>  JSON.parse(result.target.response));
+    return requestPromises[promiseName] = makeCancellableRequest(url).then(result => JSON.parse(result.target.response));
   }
   catch(e) {
     console.warn(where);
@@ -74,7 +74,7 @@ export function getUsersSearch(options, needsDestroyPrevious) {
 
 export function getPostShaddow(urlPost) {
   const url = RequestService.handlev1_1BaseRequestPost(`post/${urlPost}/info`);
-  
+
   return fetch(url, {
     method: 'GET'
   }).then((response) => {

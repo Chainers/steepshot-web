@@ -163,7 +163,7 @@ class UserProfile extends React.Component {
                     <div className="description">This is the current amount of funds in your account in the
                       application.</div>
                     :
-                    <div className="description">This is the current amount of funds in user's account in the
+                    <div className="description">This is the current amount of funds in user account in the
                       application.</div>
                   }
                 </div>

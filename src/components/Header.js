@@ -76,15 +76,14 @@ class Header extends React.Component {
   searchKeyPress(e) {
     if (e.key === 'Enter') {
       e.preventDefault();
-      this.props.history.push(`/search/${this.state.searchValue}`);
+      let a = this.state.searchValue;
+      this.props.history.push(`/search/${a}`);
     }
   }
 
   searchHandleChange(e) {
-    let value = e.target.value;
-    this.setState({
-      searchValue : value
-    });
+    let value = e.target.value.toLowerCase();
+    this.setState({searchValue : value});
   }
 
   forResize() {
@@ -190,9 +189,9 @@ class Header extends React.Component {
                 </div>
               </div>
               <div className="section logo">
-                <a href="/" className="wrap-logo">
-                  <img src="/static/images/steepshotLogo@2x.svg" alt="logo" />
-                </a>
+                  <a href="/" className="wrap-logo">
+                    <img src="/static/images/steepshotLogo@2x.svg" alt="logo" />
+                  </a>
               </div>
               <div className="section search">
                 <div className="wrap-search">

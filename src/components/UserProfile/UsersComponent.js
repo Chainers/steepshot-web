@@ -7,7 +7,7 @@ import Constants from '../../common/constants';
 import InfiniteScroll from 'react-infinite-scroller';
 import HeadingLeadComponent from '../Atoms/HeadingLeadComponent';
 import { debounce } from 'lodash';
-import { documentTitle } from "../DocumentTitle";
+import { documentTitle } from '../DocumentTitle';
 
 class UsersComponent extends React.Component {
   constructor(props) {
@@ -34,6 +34,19 @@ class UsersComponent extends React.Component {
   componentWillMount() {
     document.body.classList.remove('modal-open');
     documentTitle();
+    // this.startOffset();
+  }
+
+  startOffset() {
+    let obj = {...this.state.forOffset};
+    obj.top = (document.documentElement.clientHeight / 2) - 170;
+    this.setState({forOffset: obj});
+  }
+
+  spinnerPosition() {
+    let obj = {...this.state.forOffset};
+    obj.top = '0';
+    this.setState({forOffset: obj});
   }
 
   getInitialData() {
@@ -43,7 +56,10 @@ class UsersComponent extends React.Component {
       hasMore : true,
       items : [],
       offset : null,
-      previousRequestOffset : 'none'
+      previousRequestOffset : 'none',
+      forOffset : {
+        top : '0'
+      }
     }
   }
 
@@ -78,6 +94,7 @@ class UsersComponent extends React.Component {
             loadingMore: false,
             loading : false
         });
+        // this.spinnerPosition();
     });
   }
 
@@ -121,7 +138,7 @@ class UsersComponent extends React.Component {
             loadMore={debounce(this.fetchData.bind(this), Constants.ENDLESS_SCROLL.DEBOUNCE_TIMEOUT)}
             hasMore={this.state.hasMore}
             loader={
-              <div className="position--relative">
+              <div className="position--relative" style={this.state.forOffset}>
                 <LoadingSpinner/>
               </div>
             }
