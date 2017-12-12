@@ -882,3 +882,8 @@
   overflow: hidden;
   margin-bottom: 15px;
 }
+
+.rotate-button {
+  margin-top: 50px;
+  cursor: pointer;
+}

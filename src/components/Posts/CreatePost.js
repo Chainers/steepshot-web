@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import Steem from '../../libs/steem';
 import {
     connect
@@ -158,11 +159,53 @@ class CreatePost extends React.Component {
             this.setState({
                 file: file,
                 imagePreviewUrl: reader.result,
-                imageError: false
+                imageError: false,
+                rotate : false
+            }, () => {
+                let canvas = this.preview;
+                let ctx = canvas.getContext("2d");
+            
+                let image = new Image();
+                image.src = this.state.imagePreviewUrl;
+                image.onload = () => {
+                    canvas.width = this.previewContainer.clientWidth;
+                    canvas.height = image.height * (this.previewContainer.clientWidth / image.width);
+                    ctx.drawImage(image, 0, 0, canvas.width, canvas.height); 
+                };
             });
         }
-
         reader.readAsDataURL(file)
+    }
+
+    rotateImage(e) {
+        e.preventDefault();
+        let canvas = this.preview;
+        let ctx = canvas.getContext("2d");
+    
+        let image = new Image();
+        image.src = this.state.imagePreviewUrl;
+        image.onload = () => {
+            if (this.state.rotate) {
+                canvas.width = this.previewContainer.clientWidth;
+                canvas.height = image.width * (this.previewContainer.clientWidth / image.height);
+            } else {
+                canvas.height = this.previewContainer.clientWidth;
+                canvas.width = image.height * (this.previewContainer.clientWidth / image.width);
+            }
+            ctx.rotate(90 * Math.PI / 180);
+            ctx.translate(0, -canvas.width);
+            ctx.drawImage(image, 0, 0, canvas.height, canvas.width); 
+            fetch(canvas.toDataURL())
+            .then(res => res.blob())
+            .then(blob => {
+              this.setState({
+                  file : blob,
+                  imagePreviewUrl: canvas.toDataURL(),
+                  imageError : false,
+                  rotate : !this.state.rotate
+              });
+            });
+        };
     }
 
     _getPostImageStyles(itemImage) {
@@ -222,6 +265,7 @@ class CreatePost extends React.Component {
     render() {
         let {imagePreviewUrl} = this.state;
         let $imagePreview = null;
+        let rotateButton = null;
         let addDescriptionBlock = null;
 
         let imageError =
@@ -254,24 +298,33 @@ class CreatePost extends React.Component {
         </div>
 
         if (imagePreviewUrl) {
-            $imagePreview = (<div className="preview-component">
-                <div className="post-info">
-                    <div className="info-block">
-                        <div className="img-preview">
-                            <img className="col-xs-12" src={imagePreviewUrl} />
+            $imagePreview = (
+                <div>
+                    <div className="preview-component position--relative">
+                        <div className="post-info">
+                            <div className="info-block">
+                                <div className="img-preview" ref={ref => this.previewContainer = ref}>
+                                    <canvas id="preview" ref={ref => this.preview = ref}/>
+                                </div>
+                            </div>
                         </div>
+                        <input id="upload-file" className="file-input" onChange={(e)=>this._handleImageChange(e)} type="file" />
                     </div>
                 </div>
-                <input id="upload-file" className="file-input" onChange={(e)=>this._handleImageChange(e)} type="file" />
-                </div>);
+            );
+
+            rotateButton = <div className="rotate-button" onClick={this.rotateImage.bind(this)}>rotate</div>;
+            
         } else {
-            $imagePreview = (<div className="upload-field empty">
-                <div className="uf-preview">
-                    <div className="uf-icon"></div>
-                    <div className="uf-text">Click to upload a picture</div>
+            $imagePreview = (
+                <div className="upload-field empty">
+                    <div className="uf-preview">
+                        <div className="uf-icon"></div>
+                        <div className="uf-text">Click to upload a picture</div>
+                    </div>
+                    <input id="upload-file" className="file-input" onChange={(e)=>this._handleImageChange(e)} type="file" />
                 </div>
-                <input id="upload-file" className="file-input" onChange={(e)=>this._handleImageChange(e)} type="file" />
-                </div>);
+            );
         }
 
         return (
@@ -284,6 +337,7 @@ class CreatePost extends React.Component {
                             </div>
                             {imageError}
                         </div>
+                        {rotateButton}
                     </div>
                     <div className={this.state.titleError ? 'has-error' : ''} >
                         <div className="form-group">
