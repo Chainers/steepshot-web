@@ -47,7 +47,6 @@ class CreatePost extends React.Component {
     }
 
     handleChange(event) {
-        // id="formDESCRIPTION" <-- second comment in input field
 
         let name = event.target.name;
         let value = event.target.value;
@@ -324,7 +323,7 @@ class CreatePost extends React.Component {
                                     autoComplete="off"
                                     className="form-control autofil--gray"
                                 />
-                                <label htmlFor="tag" className="name">Tags<span className="text--red font--small required-star"> *</span></label>
+                                <label htmlFor="tag" className="name">Tags</label>
                                 <div className="tags-list clearfix">
                                     {this._renderTags()}
                                 </div>

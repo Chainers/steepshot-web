@@ -72,7 +72,7 @@ class Settings extends React.Component {
                     uptodate : false,
                     success : false
                 })
-            }, 1500);
+            }, 1700);
         });
     }
 
@@ -96,12 +96,12 @@ class Settings extends React.Component {
                 setTimeout( () => {
                   jqApp.pushMessage.open(Constants.SETTINGS_CHANGED_MESSAGE);
                   this.props.history.goBack();
-                }, 1500);
+                }, 1700);
         } else {
             this.setState({ uptodate : true }, () => this.needsNotice());
             setTimeout( () => {
               this.props.history.goBack();
-            }, 1500);
+            }, 1700);
         }
     }
 

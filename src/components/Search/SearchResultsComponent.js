@@ -102,6 +102,7 @@ class SearchResultsComponent extends React.Component {
                 maxPosts={4}
                 forceRefresh={this.state.needsForceRefresh}
                 headerText={<span>{Constants.SEARCH_HEADING_LABELS.HOT_POSTS_RESULT}<u>{this.state.searchValue}</u></span>}
+                key={1}
               />
               {
                 this.state.showResults
@@ -113,6 +114,7 @@ class SearchResultsComponent extends React.Component {
                     wrapperModifier="posts-list clearfix"
                     forceRefresh={this.state.needsForceRefresh}
                     headerText={<span>{Constants.SEARCH_HEADING_LABELS.NEW_POSTS_RESULT}<u>{this.state.searchValue}</u></span>}
+                    key={2}
                   />
                 :
                   null

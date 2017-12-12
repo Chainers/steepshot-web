@@ -13,10 +13,10 @@ class LikesComponent extends React.Component {
   }
 
   componentDidMount() {
-    this.test();
+    this.likeControl();
   }
 
-  test() {
+  likeControl() {
     switch (this.state.likes) {
       case 0 :
         this.setState({likeParam: 0});
@@ -48,7 +48,7 @@ class LikesComponent extends React.Component {
           ?
             <div className="likes" onClick={this.openLikesModal.bind(this)}>{likes} like</div>
           :
-            <div className="likes" onClick={this.openLikesModal.bind(this)}>{likes} like's</div>
+            <div className="likes" onClick={this.openLikesModal.bind(this)}>{likes} likes</div>
         }
       </div>
     );

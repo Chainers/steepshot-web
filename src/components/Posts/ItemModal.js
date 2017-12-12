@@ -45,22 +45,58 @@ class ItemModal extends React.Component {
             needsCommentFormLoader : false,
             isLoading : false,
             hasMore : this.props.hasMore,
-            loadMore : this.props.loadMore
+            loadMore : this.props.loadMore,
+            adultParam : false
         };
-
         this.initKeypress();
     }
 
     needMore() {
+      this.controlRestrictions();
       if (this.state.isLoading || !this.state.hasMore) return false;
       const curIndex = this.state.index;
       if (curIndex + 7 >= this.state.items.length) {
-          this.setState({
-            isLoading : true
-          }, () => {
-            this.state.loadMore();
-          });
+        this.setState({
+          isLoading : true
+        }, () => {
+          this.state.loadMore();
+        });
       }
+    }
+
+    controlRestrictions() {
+      let bool = this.state.item.tags.some( (item, index) => {
+        return item == 'nsfw'
+      });
+      if (bool == true) {
+        this.setState({adultParam : true});
+      } else {
+        this.setState({adultParam : false});
+      }
+    }
+
+    likeCheck() {
+      let like = this.state.item.net_votes;
+      if (like == 0) {
+        return false
+      } else if (like == 1 || like == -1) {
+        like = `${like} like`
+      } else {
+        like = `${like} likes`
+      }
+      return (
+        <div>{like}</div>
+      )
+    }
+
+    moneyCheck() {
+      let money = this.state.item.total_payout_reward;
+      if (money == 0) {
+        return false
+      }
+      return (
+        <div>{utils.currencyChecker(money)}</div>
+      )
     }
 
     clearNewComment(callback) {
@@ -69,7 +105,7 @@ class ItemModal extends React.Component {
       }, () => callback ? callback() : false);
     }
 
-    componentWillReceiveProps(nextProps){
+    componentWillReceiveProps(nextProps) {
       let isLoading = this.state.isLoading;
       if (isLoading)
       if (this.state.items != nextProps.items) {
@@ -96,6 +132,10 @@ class ItemModal extends React.Component {
       setTimeout(() => {
         jqApp.forms.init();
       }, 0);
+    }
+
+    hideFunc() {
+      this.setState({adultParam : false});
     }
 
     sendComment(e) {
@@ -148,18 +188,19 @@ class ItemModal extends React.Component {
 
     initKeypress() {
       document.onkeydown = (e) => {
-        if (document.activeElement !== ReactDOM.findDOMNode(this.commentInput))
-        switch (e.keyCode) {
+        if (document.activeElement !== ReactDOM.findDOMNode(this.commentInput)) {
+          switch (e.keyCode) {
             case 37:
-                this.previous();
-                break;
+              this.previous();
+              break;
             case 39:
-                this.next();
-                break;
+              this.next();
+              break;
             default :
-                break;
+              break;
+          }
         }
-      };
+      }
     }
 
     setDefaultImage() {
@@ -175,27 +216,27 @@ class ItemModal extends React.Component {
     }
 
     next() {
-      this.needMore();
       if (this.state.index < this.state.items.length - 1) {
-          this.clearNewComment(this.resetDefaultProperties(this.state.items[this.state.index + 1], 1));
+        this.clearNewComment(this.resetDefaultProperties(this.state.items[this.state.index + 1], 1));
       }
-    }
-
-    redirectToLoginPage() {
-      this.props.history.push('/signin');
-    }
-
-    resetDefaultProperties(newItem, indexUpdater) {
-      this.setState({
-          item: newItem,
-          index: this.state.index + indexUpdater
-      });
     }
 
     previous() {
       if (this.state.index > 0) {
-          this.clearNewComment(this.resetDefaultProperties(this.state.items[this.state.index - 1], -1));
+        this.clearNewComment(this.resetDefaultProperties(this.state.items[this.state.index - 1], -1));
       }
+    }
+
+    resetDefaultProperties(newItem, indexUpdater) {
+      this.setState({
+        item: newItem,
+        index: this.state.index + indexUpdater
+      });
+      this.needMore();
+    }
+
+    redirectToLoginPage() {
+      this.props.history.push('/signin');
     }
 
     callPreventDefault(e) {
@@ -216,7 +257,7 @@ class ItemModal extends React.Component {
     renderDescription() {
       let text = this.state.item.description;
       let forceOpen = false;
-      this.state.item.tags.map(tag => text = text + ' #' + tag);
+      this.state.item.tags.map(tag => text = `${text} #${tag}`);
       if (text.length < 140) forceOpen = true;
       return (
         <div className="post-description">
@@ -238,7 +279,6 @@ class ItemModal extends React.Component {
 
     render() {
 
-      let _this = this;
       let itemImage = this.state.item.body || constants.NO_IMAGE;
       let isUserAuth = (this.props.username && this.props.postingKey);
 
@@ -249,14 +289,33 @@ class ItemModal extends React.Component {
           <div className="post-single">
             <div className="post-wrap post">
               <div className="post__image-container position--relative">
-                <ShareComponent
-                    url={this.state.item.url}
-                    title="Share post"
-                    containerModifier="block--right-top box--small post__share-button"
-                />
-                <img src={itemImage}
-                  alt="Post picture."
-                />
+                {
+                  this.state.adultParam
+                  ?
+                    <div>
+                      <div className="forAdult2">
+                        <div className="forAdultInner">
+                          <p className="par1">NSFW content</p>
+                          <p className="par2">This content is for adults only. Not recommended for children or sensitive individuals.</p>
+                          <button className="btn btn-default btn-default-popup" onClick={this.hideFunc.bind(this)}>Show me</button>
+                        </div>
+                      </div>
+                      <img src={itemImage}
+                      alt="Post picture."
+                      />
+                    </div>
+                  :
+                    <div>
+                      <ShareComponent
+                      url={this.state.item.url}
+                      title="Share post"
+                      containerModifier="block--right-top box--small post__share-button"
+                      />
+                      <img src={itemImage}
+                      alt="Post picture."
+                      />
+                    </div>
+                }
               </div>
               <div className="post__description-container">
                 <div className="post-header">
@@ -290,9 +349,9 @@ class ItemModal extends React.Component {
                     />
                   </div>
                   <div className="wrap-counts clearfix">
-                    <LikesComponent likes={this.state.item.net_votes} url={this.state.item.url}/>
-                    <div className="amount">
-                      {utils.currencyChecker(this.state.item.total_payout_reward)}
+                    <div className="likeMoneyPopup">
+                      {this.likeCheck()}
+                      {this.moneyCheck()}
                     </div>
                   </div>
                 </div>

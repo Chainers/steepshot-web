@@ -32,7 +32,7 @@ class ItemsComponent extends React.Component {
       ignored : this.props.ignored == undefined ? [] : this.props.ignored,
       maxPosts : this.props.maxPosts || 9999,
       forOffset : {
-        top : '0'
+        top: '0'
       }
     };
   }
@@ -51,13 +51,18 @@ class ItemsComponent extends React.Component {
   }
 
   componentWillMount() {
-    // this.startOffset();
+    //this.startOffset();
   }
 
   startOffset() {
     let obj = {...this.state.forOffset};
-    obj.top = (document.documentElement.clientHeight / 2) - 170;
-    this.setState({forOffset: obj});
+    if (location.pathname.match(/\/search\/\w+/g)) {
+      obj.top = (document.documentElement.clientHeight / 2) - 230;
+      this.setState({forOffset: obj});
+    } else {
+      obj.top = (document.documentElement.clientHeight / 2) - 170;
+      this.setState({forOffset: obj});
+    }
   }
 
   spinnerPosition() {
@@ -117,7 +122,7 @@ class ItemsComponent extends React.Component {
           hasMore: hasMore,
           loading: false
         });
-        // this.spinnerPosition();
+        //this.spinnerPosition();
       });
     });
   }
@@ -146,23 +151,20 @@ class ItemsComponent extends React.Component {
     });
   }
 
-  HelloWorldComponent() {
-    return <div>Hello World!</div>;
-  }
-
   _renderModal() {
-      if (this.state.currentItem != undefined)
-      return (
-        <ItemModal
-          item={this.state.items[this.state.currentItem]}
-          items={this.state.items}
-          index={this.state.currentItem}
-          updateVoteInComponent={this.updateVoteInComponent.bind(this)}
-          updateFlagInComponent={this.updateFlagInComponent.bind(this)}
-          loadMore={this.fetchData.bind(this)}
-          hasMore={this.state.hasMore}
-        />
-      );
+      if (this.state.currentItem != undefined) {
+        return (
+          <ItemModal
+            item={this.state.items[this.state.currentItem]}
+            items={this.state.items}
+            index={this.state.currentItem}
+            updateVoteInComponent={this.updateVoteInComponent.bind(this)}
+            updateFlagInComponent={this.updateFlagInComponent.bind(this)}
+            loadMore={this.fetchData.bind(this)}
+            hasMore={this.state.hasMore}
+          />
+        );
+      }
       return null;
   }
 

@@ -1,11 +1,21 @@
-import React from 'react';
+import React, {Component} from 'react';
 
-const LoadingSpinner = () => {
+class LoadingSpinner extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+
+    }
+  }
+
+  render() {
     return (
-        <div className="loader-blocker">
-            <div className="loader"></div>
-        </div>
+      <div className="loader-blocker">
+        <div className="loader"></div>
+      </div>
     )
-};
+  }
+
+}
 
 export default LoadingSpinner;

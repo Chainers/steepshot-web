@@ -19,7 +19,6 @@ import FlagComponent from './FlagComponent';
 import TagComponent from './TagComponent';
 import LikesComponent from './LikesComponent';
 import TimeAgo from 'timeago-react';
-import ReactCSSTransitionGroup from 'react-transition-group/CSSTransitionGroup';
 
 class Item extends React.Component {
   constructor(props) {
@@ -53,8 +52,9 @@ class Item extends React.Component {
     let money = parseFloat(propsItem.total_payout_reward).toFixed(2);
     if (money == 0.00) {
       this.setState({moneyParam: false});
+    } else {
+      propsItem.total_payout_reward = '$' + money;
     }
-    propsItem.total_payout_reward = '$' + money;
 
     propsItem.tags = (propsItem.tags instanceof Array) ? propsItem.tags : propsItem.tags.split(',');
 
@@ -110,9 +110,6 @@ class Item extends React.Component {
   }
 
   _openModal() {
-    if(this.state.adultFilter) {
-      return false
-    } else
     if (this.state.openModal != undefined) {
       this.state.openModal(this.state.currentIndex)
     }
@@ -124,10 +121,6 @@ class Item extends React.Component {
         return <span key={index}><TagComponent tag={tag}/> </span>
       });
     } else return null;
-  }
-
-  hideAdultFilter() {
-    this.setState({adultFilter: false});
   }
 
   render() {
@@ -166,17 +159,15 @@ class Item extends React.Component {
           }
           <div className="card-body">
             <div className="card-pic" onClick={this._openModal.bind(this)}>
-            <ReactCSSTransitionGroup transitionName="adultMask" transitionEnterTimeout={250} transitionLeaveTimeout={250}>
-              {
-                this.state.adultFilter
-                ?
-                  <div className="forAdult">
-                    <button className=" btn btn-index" onClick={this.hideAdultFilter.bind(this)}>Show NSFW</button>
-                  </div>
-                :
-                  null
-              }
-            </ReactCSSTransitionGroup>
+            {
+              this.state.adultFilter
+              ?
+                <div className="forAdult">
+                  <p>NSFW content</p>
+                </div>
+              :
+                null
+            }
             <a style={ cardPhotoStyles } className="img" alt="User" onError={this.setDefaultImage.bind(this)}></a>
             </div>
             <div className="card-wrap">
