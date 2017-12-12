@@ -169,9 +169,10 @@ class Steem {
             author: getUserName(),
             permlink: permlink,
             max_accepted_payout: constants.STEEM_PATLOAD.MAX_ACCEPTED_PAYOUT,
+            percent_steem_dollars: constants.STEEM_PATLOAD.PERCENT_STEMM_DOLLARS,
             allow_votes: true,
             allow_curation_rewards: true,
-            extensions: beneficiaries.extensions
+            extensions: [[0, { beneficiaries : beneficiaries }]]
         })
 
 
@@ -260,8 +261,7 @@ class Steem {
             if (response.ok) {
                 response.json().then((result) => {
                     console.log(JSON.stringify(result));
-                    let beneficiaries = self._getBeneficiaries(message[1].permlink, result.meta);
-                    beneficiaries[1].percent_steem_dollars = result.beneficiaries[0].weight;
+                    let beneficiaries = self._getBeneficiaries(message[1].permlink, result.beneficiaries);
                     message[1].body = result.payload.body;
                     message[1].json_metadata = JSON.stringify({...result.meta});
     
