@@ -70,6 +70,7 @@
     "react-router-dom": "^4.1.1",
     "react-select": "^1.0.0-rc.5",
     "react-slick": "^0.14.11",
+    "react-transition-group": "^1.2.1",
     "redux": "^3.6.0",
     "redux-logger": "^3.0.1",
     "redux-promise": "^0.5.3",

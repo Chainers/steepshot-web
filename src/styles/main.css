@@ -70,7 +70,20 @@
   .forAdult2 .par2 {
     margin-bottom: 30px;
     color: #696969;
-    font: 14px OpenSans;
+    font: 14px OpenSans-Regular;
+  }
+
+  .sub-rotate-button {
+    position: absolute;
+    z-index: 5;
+    top: 22%;
+    right: 5%;
+    transform: translate(-50%, -50%);
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: url("../../static/images/rotate_button.png") no-repeat center;
+    transition: .2s all ease;
   }
 
   .likeMoneyPopup {
@@ -232,6 +245,10 @@
     .post__description-container {
       max-width: none !important;
     }
+    .sub-rotate-button {
+      top: 25%;
+      right: 6%;
+    }
   }
 
   @media screen and (max-width: 767px) {
@@ -353,7 +370,7 @@
   .btn-default-popup {
     border: none !important;
     padding: 9px 47px !important;
-    font: 14px OpenSans !important;
+    font: 14px OpenSans-Regular !important;
   }
 
   .btn-flag.marked::before {
@@ -884,6 +901,8 @@
 }
 
 .rotate-button {
+  position: relative;
+  height: 150px;
   margin-top: 50px;
   cursor: pointer;
 }

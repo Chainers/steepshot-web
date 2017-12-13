@@ -164,13 +164,13 @@ class CreatePost extends React.Component {
             }, () => {
                 let canvas = this.preview;
                 let ctx = canvas.getContext("2d");
-            
+
                 let image = new Image();
                 image.src = this.state.imagePreviewUrl;
                 image.onload = () => {
                     canvas.width = this.previewContainer.clientWidth;
                     canvas.height = image.height * (this.previewContainer.clientWidth / image.width);
-                    ctx.drawImage(image, 0, 0, canvas.width, canvas.height); 
+                    ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
                 };
             });
         }
@@ -181,7 +181,7 @@ class CreatePost extends React.Component {
         e.preventDefault();
         let canvas = this.preview;
         let ctx = canvas.getContext("2d");
-    
+
         let image = new Image();
         image.src = this.state.imagePreviewUrl;
         image.onload = () => {
@@ -194,7 +194,7 @@ class CreatePost extends React.Component {
             }
             ctx.rotate(90 * Math.PI / 180);
             ctx.translate(0, -canvas.width);
-            ctx.drawImage(image, 0, 0, canvas.height, canvas.width); 
+            ctx.drawImage(image, 0, 0, canvas.height, canvas.width);
             fetch(canvas.toDataURL())
             .then(res => res.blob())
             .then(blob => {
@@ -313,8 +313,11 @@ class CreatePost extends React.Component {
                 </div>
             );
 
-            rotateButton = <div className="rotate-button" onClick={this.rotateImage.bind(this)}>rotate</div>;
-            
+            rotateButton = <div className="rotate-button">
+                             <div className="sub-rotate-button" title="rotate" onClick={this.rotateImage.bind(this)}>
+                             </div>
+                           </div>;
+
         } else {
             $imagePreview = (
                 <div className="upload-field empty">
@@ -337,7 +340,7 @@ class CreatePost extends React.Component {
                             </div>
                             {imageError}
                         </div>
-                        {rotateButton}
+                      {rotateButton}
                     </div>
                     <div className={this.state.titleError ? 'has-error' : ''} >
                         <div className="form-group">

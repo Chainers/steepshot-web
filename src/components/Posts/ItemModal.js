@@ -25,6 +25,7 @@ import {Collapse} from 'react-collapse';
 import Constants from '../../common/constants';
 
 import utils from '../../utils/utils';
+import ReactCSSTransitionGroup from 'react-transition-group/CSSTransitionGroup';
 
 class ItemModal extends React.Component {
     constructor(props) {
