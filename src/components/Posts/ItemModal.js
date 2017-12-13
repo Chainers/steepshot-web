@@ -76,6 +76,11 @@ class ItemModal extends React.Component {
       }
     }
 
+    openLikesModal() {
+      this.props.dispatch({ type : 'CLEAR_LIKES_INFO', url : this.state.item.url })
+      jqApp.openLikesModal($(document));
+    }
+
     likeCheck() {
       let like = this.state.item.net_votes;
       if (like == 0) {
@@ -86,7 +91,7 @@ class ItemModal extends React.Component {
         like = `${like} likes`
       }
       return (
-        <div>{like}</div>
+        <div className="likes" onClick={this.openLikesModal.bind(this)}>{like}</div>
       )
     }
 
