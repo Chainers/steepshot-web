@@ -32,6 +32,18 @@ class VouteComponent extends React.Component {
     });
   }
 
+  updateVoteInComponent(vote, index) {
+    let newItem = this.state.item;
+    if (vote && newItem.flag) {
+      newItem.flag = false;
+    }
+    vote ? newItem.net_votes++ : newItem.net_votes--;
+    newItem.vote = vote;
+    this.setState({
+      item: newItem
+    });
+  }
+
   ratingVotes(e) {
 
     e.preventDefault();
@@ -53,19 +65,19 @@ class VouteComponent extends React.Component {
     }
     const newVoteState = !this.state.vote;
     const urlObject = this.state.item.url.split('/');
-
-    this.setState({ 
+    this.setState({
       vote : newVoteState,
       isVoteLoading : true
     }, () => {
 
       const callback = (err, success) => {
+
         this.setState({
           isVoteLoading : false
         })
         sessionStorage.setItem('voteQueue', "false");
         if (err) {
-          this.setState({ 
+          this.setState({
             vote: !newVoteState
           }, () => {
               let text = 'Something went wrong when you voted, please, try again later';
@@ -74,20 +86,20 @@ class VouteComponent extends React.Component {
               }
               jqApp.pushMessage.open(text);
             }
-          ); 
-        } else 
+          );
+        } else
         if (success) {
             let text = `${utils.capitalize(this.state.parent)} has been successfully liked. If you don't see your like, please give it a few minutes to sync from the blockchain`;
             if (!newVoteState) text = `${utils.capitalize(this.state.parent)} has been successfully disliked. If you don't see your dislike, please give it a few minutes to sync from the blockchain`;
             jqApp.pushMessage.open(text);
-            this.props.updateVoteInComponent(newVoteState, this.state.index)
+            this.updateVoteInComponent(newVoteState, this.state.index)
         }
       }
 
-      Steem.vote(this.props.postingKey, 
-                this.props.username, 
-                this.state.item.author, 
-                urlObject[urlObject.length-1], 
+      Steem.vote(this.props.postingKey,
+                this.props.username,
+                this.state.item.author,
+                urlObject[urlObject.length-1],
                 newVoteState,
                 callback
                 );
@@ -103,7 +115,7 @@ class VouteComponent extends React.Component {
       buttonClasses = buttonClasses + " loading";
     }
     let component = <button type="button" className={buttonClasses}></button>;
-    
+
     return (
         <div className="wrap-btn" onClick={this.ratingVotes.bind(this)}>
           {component}

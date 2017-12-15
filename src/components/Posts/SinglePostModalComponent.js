@@ -41,11 +41,17 @@ class SinglePostModalComponent extends React.Component {
         }
     }
 
+    sharedComponentTitle() {
+      let title = this.state.item.title.split('');
+      title[0] = title[0].toUpperCase();
+      document.title = `Steepshot - ${title.join('')}`;
+    }
+
     componentDidMount() {
         const urlObject = this.props.location.pathname.split('/');
         if (urlObject.length < 3) {
             this.error();
-        } else 
+        } else
         getPostShaddow(this.getPostIdentifier(urlObject[urlObject.length - 2], urlObject[urlObject.length - 1]))
         .then((result) => {
             if (result) {
@@ -65,7 +71,8 @@ class SinglePostModalComponent extends React.Component {
                     jqApp.data.callback = {} || jqApp.data.callback;
                     jqApp.data.callback = callbackClose.bind(this);
                     jqApp.openPostModal();
-                })
+                });
+                this.sharedComponentTitle();
             } else {
                 this.error();
             }
@@ -84,7 +91,7 @@ class SinglePostModalComponent extends React.Component {
     }
 
     initLayout() {
-        setTimeout(() => { 
+        setTimeout(() => {
             jqApp.forms.init();
         }, 0);
     }
@@ -106,7 +113,7 @@ class SinglePostModalComponent extends React.Component {
         });
         if (err) {
           jqApp.pushMessage.open(err);
-        } else 
+        } else
         if (success) {
             this.setState({
               newComment : {
@@ -130,10 +137,10 @@ class SinglePostModalComponent extends React.Component {
         needsCommentFormLoader : true
       }, () => {
         Steem.comment(
-          this.props.postingKey,             
-          this.state.item.author, 
-          urlObject[urlObject.length - 1], 
-          this.props.username, 
+          this.props.postingKey,
+          this.state.item.author,
+          urlObject[urlObject.length - 1],
+          this.props.username,
           this.state.commentValue,
           this.state.item.tags,
           callback
@@ -150,23 +157,23 @@ class SinglePostModalComponent extends React.Component {
     handleChange(event) {
       let name = event.target.name;
       let value = event.target.value;
-      this.setState({ 
+      this.setState({
           [name] : value
       });
     }
 
-    updateVoteInComponent(vote, index) {
-        let newItem = this.state.item;
-        if (vote && newItem.flag) {
-            newItem.flag = false;
-        }
-        vote ? newItem.net_votes++ : newItem.net_votes--;
-        newItem.vote = vote;
-        this.setState({ 
-            item: newItem
-        });
-    }
-    
+    // updateVoteInComponent(vote, index) {
+    //     let newItem = this.state.item;
+    //     if (vote && newItem.flag) {
+    //         newItem.flag = false;
+    //     }
+    //     vote ? newItem.net_votes++ : newItem.net_votes--;
+    //     newItem.vote = vote;
+    //     this.setState({
+    //         item: newItem
+    //     });
+    // }
+
     updateFlagInComponent(flag, index) {
         let newItem = this.state.item;
         if (flag && newItem.vote) {
@@ -174,13 +181,13 @@ class SinglePostModalComponent extends React.Component {
             newItem.vote = false;
         }
         newItem.flag = flag;
-        this.setState({ 
+        this.setState({
             item: newItem
         });
     }
 
     resetDefaultProperties(newItem, indexUpdater) {
-      this.setState({ 
+      this.setState({
           image: newItem.body,
           item: newItem,
           index: this.state.index + indexUpdater
@@ -199,7 +206,7 @@ class SinglePostModalComponent extends React.Component {
         if (text.length < 140) forceOpen = true;
         return (
           <div className="post-description">
-            <p>{this.state.item.title}</p>  
+            <p>{this.state.item.title}</p>
             <div
               className={(this.state.isDescriptionOpened || forceOpen) ? "collapse-opened" : "collapse-closed"}
             >
@@ -220,20 +227,16 @@ class SinglePostModalComponent extends React.Component {
         this.setState({isDescriptionOpened : true});
     }
 
-    shouldComponentUpdate(nextProps,nextState) {
+    shouldComponentUpdate(nextProps, nextState) {
         if (this.state.index != nextState.index)
         if (this.state.isDescriptionOpened) this.setState({ isDescriptionOpened : false });
         return true;
     }
 
     render() {
-
         if (!this.state.isPostLoading && !this.state.error) {
-    
-            let _this = this;
             let itemImage = this.state.item.body || constants.NO_IMAGE;
-            let isUserAuth = (this.props.username && this.props.postingKey);
-
+            let isUserAuth = (this.props.username && this.props.postingKey)
             const authorLink = `/@${this.state.item.author}`;
 
             this.initLayout();
@@ -243,14 +246,14 @@ class SinglePostModalComponent extends React.Component {
                     <div className="post-single">
                         <div className="post-wrap post">
                             <div className="post__image-container position--relative">
-                                <ShareComponent 
+                                <ShareComponent
                                     url={this.state.item.url}
                                     title="Share post"
                                     containerModifier="block--right-top box--small post__share-button"
                                 />
-                                <img src={itemImage} 
-                                    onError={this.setDefaultImage.bind(this)} 
-                                    alt="image" 
+                                <img src={itemImage}
+                                    onError={this.setDefaultImage.bind(this)}
+                                    alt="image"
                                 />
                             </div>
                             <div className="post__description-container">
@@ -260,7 +263,7 @@ class SinglePostModalComponent extends React.Component {
                                             <TimeAgo
                                                 datetime={this.state.item.created}
                                                 locale='en_US'
-                                            />   
+                                            />
                                         </div>
                                         <Link to={authorLink} className="user">
                                             <AvatarComponent src={this.state.item.avatar} />
@@ -270,14 +273,14 @@ class SinglePostModalComponent extends React.Component {
                                 </div>
                                 <div className="post-controls clearfix">
                                     <div className="buttons-row" onClick={(e)=>{this.callPreventDefault(e)}}>
-                                        <VouteComponent key="vote" 
+                                        <VouteComponent
                                             key="vote"
                                             item={this.state.item}
                                             index={this.state.index}
-                                            updateVoteInComponent={this.props.updateVoteInComponent}
                                             parent='post'
+                                            updateVoteInComponent={this.updateVoteInComponent}
                                         />
-                                        <FlagComponent 
+                                        <FlagComponent
                                             key="flag"
                                             item={this.state.item}
                                             index={this.state.index}
@@ -286,12 +289,18 @@ class SinglePostModalComponent extends React.Component {
                                     </div>
                                     <div className="wrap-counts clearfix">
                                         <LikesComponent likes={this.state.item.net_votes} url={this.state.item.url}/>
-                                        <div className="amount">
-                                            {utils.currencyChecker(this.state.item.total_payout_reward)}
-                                        </div>
+                                        {
+                                          this.state.moneyParam
+                                          ?
+                                            <div className="amount">
+                                              {utils.currencyChecker(this.state.item.total_payout_reward)}
+                                            </div>
+                                          :
+                                            null
+                                        }
                                     </div>
                                 </div>
-                                <ScrollViewComponent 
+                                <ScrollViewComponent
                                     ref={(ref) => this.scrollView = ref}
                                     wrapperModifier="list-scroll"
                                     scrollViewModifier="list-scroll__view"
@@ -313,9 +322,9 @@ class SinglePostModalComponent extends React.Component {
                                                         <button type="submit" className="btn-submit" onClick={this.sendComment.bind(this)}>Send</button>
                                                     </div>
                                                 <div className="input-container">
-                                                    <textarea 
+                                                    <textarea
                                                         ref="commentInput"
-                                                        id="formCOMMENT" 
+                                                        id="formCOMMENT"
                                                         name="commentValue"
                                                         value={this.state.commentValue}
                                                         maxLength={2048}

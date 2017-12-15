@@ -42,7 +42,6 @@ export function getFollowing(userName, offset) {
     offset: offset
   }
   const url = RequestService.handlev1_1BaseRequestPosts(`user/${userName}/following`, options);
-
   return fetch(url, {
     method: 'GET'
   }).then((response) => {

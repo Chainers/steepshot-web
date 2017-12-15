@@ -23,7 +23,7 @@ class BaseRequestService {
         if (settings == undefined) return {}
 
         let nsfw = false;
-        let low_rated = false;        
+        let low_rated = false;
 
         if (typeof settings[constants.SETTINGS.show_nsfw] == 'boolean') {
             nsfw = settings[constants.SETTINGS.show_nsfw];
@@ -57,7 +57,7 @@ class BaseRequestService {
     convertIfBool(option) {
         if (option == true) {
             return "1";
-        } else 
+        } else
         if (option == false) {
             return "0";
         } else {
@@ -80,7 +80,7 @@ class BaseRequestService {
         if (getStore().getState().auth.user){
             return basev1Url + '/' + getStore().getState().auth.user
         }
-        
+
         return baseUrl;
     }
 

@@ -117,6 +117,7 @@ class Item extends React.Component {
 
   renderTags() {
     if (this.state.item.tags) {
+      console.log(this.state.item.tags);
       return this.state.item.tags.map((tag, index) => {
         return <span key={index}><TagComponent tag={tag}/> </span>
       });
@@ -124,7 +125,6 @@ class Item extends React.Component {
   }
 
   render() {
-    let _this = this;
     let itemImage = this.state.image || constants.NO_IMAGE;
     let authorImage = this.state.avatar || constants.NO_AVATAR;
     let comments = <Comments key="comments" item={this.state.item} />;

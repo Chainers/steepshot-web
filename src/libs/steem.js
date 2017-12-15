@@ -15,7 +15,7 @@ const getUserName = () => {
 class Steem {
 
     comment(wif, parentAuthor, parentPermlink, author, body, tags, callback) {
-        
+
         const permlink = this._getPermLink();
         const commentObject = {
             parent_author: parentAuthor,
@@ -32,14 +32,14 @@ class Steem {
             if(err) {
                 callback(err, null);
                 console.log(err);
-            } else 
+            } else
             if (success) {
                 const data = JSON.stringify({
                     username : author
                 });
                 logComment(parentAuthor, parentPermlink, data);
                 callback(null, success);
-                console.log(success)
+                console.log(success);
             }
         };
         this.handleBroadcastMessagesComment(commentOperation, [], wif, callbackBc);
@@ -49,7 +49,7 @@ class Steem {
         let self = this;
         this._preCompileTransactionComment(message, postingKey)
         .then((response) => {
-            if(response.ok) { 
+            if(response.ok) {
                 let beneficiaries = self._getCommentBenificiaries(message[1].permlink);
 
                 const operations = [message, beneficiaries];
@@ -94,9 +94,9 @@ class Steem {
             extensions: [
                 [0, {
                     beneficiaries: [
-                        { 
-                            account: 'steepshot', 
-                            weight: 1000 
+                        {
+                            account: 'steepshot',
+                            weight: 1000
                         }
                     ]
                 }]
@@ -112,16 +112,16 @@ class Steem {
         const data = JSON.stringify({
             username : username
         });
-        
+
         const callbackBc = (err, success) => {
             if(err) {
                 callback(err, null);
                 console.log(err);
-            } else 
+            } else
             if (success) {
                 logVoute(voteStatus, author, url, data);
                 callback(null, success);
-                console.log(success)
+                console.log(success);
             }
         };
 
@@ -131,12 +131,12 @@ class Steem {
     }
 
     flag(wif, username, author, url, flagStatus, callback) {
-        
+
         const callbackBc = (err, success) => {
             if (err) {
                 callback(err, null);
                 console.log(err);
-            } else 
+            } else
             if (success) {
                 const data = JSON.stringify({
                     username : username
@@ -197,7 +197,7 @@ class Steem {
             if (err) {
                 callback(err);
                 console.log(err);
-            } else 
+            } else
             if (result) {
                 const data = JSON.stringify({
                     username : follower
@@ -240,7 +240,7 @@ class Steem {
             if(err) {
                 callback(err, null);
                 console.log(err);
-            } else 
+            } else
             if (success) {
                 const data = JSON.stringify({
                     username : author
@@ -250,7 +250,6 @@ class Steem {
                 console.log(success)
             }
         };
-
         this.handleBroadcastMessages(operation, [], wif, callbackBc);
     }
 
@@ -264,10 +263,10 @@ class Steem {
                     let beneficiaries = self._getBeneficiaries(message[1].permlink, result.beneficiaries);
                     message[1].body = result.payload.body;
                     message[1].json_metadata = JSON.stringify({...result.meta});
-    
+
                     const operations = [message, beneficiaries];
                     console.log(operations);
-    
+
                     steem.broadcast.sendAsync(
                         { operations, extensions: [] },
                         { posting: postingKey }, callback

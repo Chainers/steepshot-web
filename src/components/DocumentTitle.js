@@ -2,7 +2,11 @@ import React from 'react';
 
 export function documentTitle() {
    let title = location.pathname.replace('/', '');
+   if (title == 'signin') {
+     title = 'sign in';
+   }
    let titleArr = title.split('');
+
    let capitalLetter = title.search(/[A-Z]/g);
    if (capitalLetter != -1) {
      titleArr[capitalLetter] = titleArr[capitalLetter].toLowerCase();

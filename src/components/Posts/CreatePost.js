@@ -5,7 +5,7 @@ import {
     connect
 } from 'react-redux';
 import LoadingSpinner from '../LoadingSpinner';
-import { documentTitle } from "../DocumentTitle";
+import { documentTitle } from '../DocumentTitle';
 
 class CreatePost extends React.Component {
     constructor(props) {
@@ -48,7 +48,6 @@ class CreatePost extends React.Component {
     }
 
     handleChange(event) {
-
         let name = event.target.name;
         let value = event.target.value;
 
@@ -127,7 +126,7 @@ class CreatePost extends React.Component {
                     jqApp.pushMessage.open('Post has been successfully created. If you don\'t see the post in your profile, please give it a few minutes to sync from the blockchain');
                     setTimeout(() => {
                         this.props.history.push('/profile')
-                    }, 1000);
+                    }, 1700);
                 });
             } else {
                 jqApp.pushMessage.open(err);
@@ -144,8 +143,7 @@ class CreatePost extends React.Component {
     }
 
     _getTags() {
-        let tags = this.state.tagList;
-        tags = this.state.tagList.splice(0 , 20);
+        let tags = this.state.tagList.splice(0, 20);
         return tags;
     }
 

@@ -47,7 +47,8 @@ class ItemModal extends React.Component {
             isLoading : false,
             hasMore : this.props.hasMore,
             loadMore : this.props.loadMore,
-            adultParam : false
+            adultParam : false,
+            moneyParam: true
         };
         this.initKeypress();
     }
@@ -66,6 +67,7 @@ class ItemModal extends React.Component {
     }
 
     controlRestrictions() {
+      console.log(this.state.index);
       let bool = this.state.item.tags.some( (item, index) => {
         return item == 'nsfw'
       });
@@ -73,6 +75,9 @@ class ItemModal extends React.Component {
         this.setState({adultParam : true});
       } else {
         this.setState({adultParam : false});
+      }
+      if (this.state.item.total_payout_reward == 0) {
+        this.setState({moneyParam : false});
       }
     }
 
@@ -306,20 +311,17 @@ class ItemModal extends React.Component {
                           <button className="btn btn-default btn-default-popup" onClick={this.hideFunc.bind(this)}>Show me</button>
                         </div>
                       </div>
-                      <img src={itemImage}
-                      alt="Post picture."
-                      />
+                      <img src={itemImage} alt="Post picture."/>
                     </div>
                   :
                     <div>
                       <ShareComponent
-                      url={this.state.item.url}
-                      title="Share post"
-                      containerModifier="block--right-top box--small post__share-button"
+                        moneyParam={this.state.moneyParam}
+                        url={this.state.item.url}
+                        title="Share post"
+                        containerModifier="block--right-top box--small post__share-button"
                       />
-                      <img src={itemImage}
-                      alt="Post picture."
-                      />
+                      <img src={itemImage} alt="Post picture."/>
                     </div>
                 }
               </div>

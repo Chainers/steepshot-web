@@ -32,9 +32,9 @@ class TagComponent extends React.Component {
     render() {
         if (this.state.tag == 'steepshot' || this.state.tag == '#steepshot') {
             return null;
-        } else 
+        } else
         return (
-            <Link  
+            <Link
                 key={this.state.key}
                 to={`/search/${this.checkFirst(this.state.tag)}`}
             >

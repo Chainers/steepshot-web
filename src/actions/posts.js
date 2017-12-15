@@ -74,7 +74,6 @@ export function getUsersSearch(options, needsDestroyPrevious) {
 
 export function getPostShaddow(urlPost) {
   const url = RequestService.handlev1_1BaseRequestPost(`post/${urlPost}/info`);
-
   return fetch(url, {
     method: 'GET'
   }).then((response) => {

@@ -12,9 +12,9 @@ let baseCORSOptions = {
 }
 
 function notify(message, response, warn) {
-    response.json().then((json) => { 
-        warn ? console.warn(messgae) : console.log(message);
-        console.log(json); 
+    response.json().then((json) => {
+        warn ? console.warn(message) : console.log(message);
+        console.log(json);
     });
 }
 
@@ -85,7 +85,7 @@ export function logVoute(isVouteUp, author, permlink, data) {
 
 export function logPost(data) {
     const url = `${baseUrl}/log/post`;
-    
+
     let options = baseCORSOptions;
     options.body = data;
 
@@ -93,7 +93,7 @@ export function logPost(data) {
 }
 
 export function logFollow(isFollowed, user, data) {
-    
+
     let fType = (isFollowed) ? 'unfollow' : 'follow';
 
     const url = `${baseUrl}/log/user/${user}/${fType}`;
