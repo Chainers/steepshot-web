@@ -45,7 +45,6 @@ class VouteComponent extends React.Component {
   }
 
   ratingVotes(e) {
-
     e.preventDefault();
 
     if (!(this.props.username || this.props.postingKey)) {
@@ -71,7 +70,6 @@ class VouteComponent extends React.Component {
     }, () => {
 
       const callback = (err, success) => {
-
         this.setState({
           isVoteLoading : false
         })
@@ -92,7 +90,7 @@ class VouteComponent extends React.Component {
             let text = `${utils.capitalize(this.state.parent)} has been successfully liked. If you don't see your like, please give it a few minutes to sync from the blockchain`;
             if (!newVoteState) text = `${utils.capitalize(this.state.parent)} has been successfully disliked. If you don't see your dislike, please give it a few minutes to sync from the blockchain`;
             jqApp.pushMessage.open(text);
-            this.updateVoteInComponent(newVoteState, this.state.index)
+            this.updateVoteInComponent(newVoteState, this.state.index);
         }
       }
 
@@ -114,11 +112,10 @@ class VouteComponent extends React.Component {
     if (this.state.isVoteLoading) {
       buttonClasses = buttonClasses + " loading";
     }
-    let component = <button type="button" className={buttonClasses}></button>;
-
+    let button = <button type="button" className={buttonClasses}></button>
     return (
         <div className="wrap-btn" onClick={this.ratingVotes.bind(this)}>
-          {component}
+          {button}
         </div>
     );
   }

@@ -6,7 +6,9 @@ import { Scrollbars } from 'react-custom-scrollbars';
 class ScrollViewComponent extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {...this.props}
+        this.state = {
+          ...this.props
+        }
     }
 
     componentWillReceiveProps(nextProps) {
@@ -21,7 +23,7 @@ class ScrollViewComponent extends React.Component {
     }
 
     renderScrollbarContainer({ style, ...props }) {
-        return  <div className={this.state.scrollViewModifier || null} style={{...style}} {...props} /> 
+        return  <div className={this.state.scrollViewModifier || null} style={{...style}} {...props} />
     }
 
     render() {

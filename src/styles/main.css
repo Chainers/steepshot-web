@@ -133,6 +133,20 @@
   .position--relative {
     position: relative;
   }
+  .position--absolute {
+    position: absolute !important;
+  }
+
+  .card-wrap span {
+    transition: .2s all ease;
+  }
+  .card-wrap span:hover {
+    opacity: .85;
+  }
+
+  .modal-header .modal-title {
+    text-align: center;
+  }
 
   .loader-blocker{
     position: absolute;
@@ -209,6 +223,11 @@
     min-height: calc(100vh - 60px);
   }
 
+  .user-card {
+    min-width: 297px !important;
+    padding: 20px !important;
+  }
+
   @media screen and (min-width: 768px) and (max-width: 1023px) {
     header .container {
       margin: 0;
@@ -270,14 +289,36 @@
     .for-justification {
       padding: 0 25px !important;
     }
+    .user-card {
+      padding: 20px 10px !important;
+      margin: 0 15px !important;
+    }
   }
 
   @media screen and (min-width: 320px) and (max-width: 420px) {
+    .modal-title {
+      padding: 20px 0 !important;
+      font-size: 12px !important;
+    }
+    .user-card {
+      min-width: 230px !important;
+      padding: 20px 10px !important;
+      margin: 0 15px !important;
+    }
     .section.hamburger {
       margin-left: 18px !important;
     }
     .wrap-hamburger {
       padding-left: 12px !important;
+    }
+    .forAdult2 {
+      width: 200%;
+    }
+    .forAdult2 .par2 {
+      padding: 0 50px;
+    }
+    .tabs-width {
+      padding: 10px 11px 16px 11px !important;
     }
   }
 
@@ -385,10 +426,6 @@
     background: rgba(0, 0, 0, .9) !important;
   }
 
-  .user-card {
-    min-width: 297px !important;
-    padding: 20px !important;
-  }
   .card-wrap {
     min-width: 257px !important;
   }

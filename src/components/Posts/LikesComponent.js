@@ -31,7 +31,6 @@ class LikesComponent extends React.Component {
   }
 
   openLikesModal() {
-    console.log(this.state);
       this.props.dispatch({ type : 'CLEAR_LIKES_INFO', url : this.state.url })
       jqApp.openLikesModal($(document));
   }

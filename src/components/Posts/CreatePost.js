@@ -122,10 +122,11 @@ class CreatePost extends React.Component {
             if (success) {
                 this.setState({
                     renderLoader : false
+
                 }, () => {
                     jqApp.pushMessage.open('Post has been successfully created. If you don\'t see the post in your profile, please give it a few minutes to sync from the blockchain');
-                    setTimeout(() => {
-                        this.props.history.push('/profile')
+                    setTimeout( () => {
+                        this.props.history.push(`/@${this.props.username}`);
                     }, 1700);
                 });
             } else {

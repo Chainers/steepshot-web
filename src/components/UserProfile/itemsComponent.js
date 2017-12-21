@@ -71,6 +71,18 @@ class ItemsComponent extends React.Component {
     this.setState({forOffset: obj});
   }
 
+  spinnerControlFunc() {
+    if(this.state.items.length <= 2) {
+      this.setState({hasMore: false});
+    }
+    let location = document.location.pathname.match(/\/@\w+/);
+    if (location == null) {
+      if(this.state.items.length <= 3) {
+        this.setState({hasMore: false});
+      }
+    }
+  }
+
   getInitialData() {
     return {
       loading : true,
@@ -111,10 +123,8 @@ class ItemsComponent extends React.Component {
       previousRequestOffset : this.state.offset
     }, () => {
       this.state.getPosts(options, this.state.cancelPrevious).then((response) => {
-        this.state.items.pop();
         let newPosts = this.state.items.concat(response.results);
         let hasMore = !(this.state.offset == response.offset);
-
         if (this.state.items.length + response.results.length == 0) hasMore = false;
         this.setState({
           items: newPosts,
@@ -122,6 +132,7 @@ class ItemsComponent extends React.Component {
           hasMore: hasMore,
           loading: false
         });
+        this.spinnerControlFunc();
         //this.spinnerPosition();
       });
     });
@@ -224,7 +235,7 @@ class ItemsComponent extends React.Component {
           loadMore={debounce(this.fetchData.bind(this), Constants.ENDLESS_SCROLL.DEBOUNCE_TIMEOUT)}
           hasMore={this.state.hasMore}
           loader={
-            <div className="position--relative" style={this.state.forOffset}>
+            <div className="position--relative">
               <LoadingSpinner/>
             </div>
           }

@@ -48,7 +48,7 @@ class ItemModal extends React.Component {
             hasMore : this.props.hasMore,
             loadMore : this.props.loadMore,
             adultParam : false,
-            moneyParam: true
+            moneyParam : true
         };
         this.initKeypress();
     }
@@ -343,7 +343,7 @@ class ItemModal extends React.Component {
                 <div className="post-controls clearfix">
                   <div className="buttons-row" onClick={(e)=>{this.callPreventDefault(e)}}>
                     <VouteComponent
-                      key="vote"
+                      key='vote'
                       item={this.state.item}
                       index={this.state.index}
                       updateVoteInComponent={this.props.updateVoteInComponent}

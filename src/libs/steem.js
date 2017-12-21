@@ -2,8 +2,7 @@ import steem from 'steem';
 import constants from '../common/constants';
 import Promise from 'bluebird';
 import { getStore } from '../store/configureStore';
-import { preparePost } from '../actions/steemPayout';
-import { prepareComment } from '../actions/steemPayout';
+import { preparePost, prepareComment } from '../actions/steemPayout';
 import { logComment, logVoute, logFlag, logPost, logFollow } from '../actions/logging';
 
 import _ from 'underscore';
@@ -13,9 +12,7 @@ const getUserName = () => {
 }
 
 class Steem {
-
     comment(wif, parentAuthor, parentPermlink, author, body, tags, callback) {
-
         const permlink = this._getPermLink();
         const commentObject = {
             parent_author: parentAuthor,
@@ -108,7 +105,6 @@ class Steem {
     }
 
     vote(wif, username, author, url, voteStatus, callback) {
-
         const data = JSON.stringify({
             username : username
         });
@@ -220,22 +216,17 @@ class Steem {
 
     /** Broadcast a post */
     createPost(wif, tags, author, title, description, file, callback) {
-        const jsonMetadata = this._createJsonMetadata(tags);
         const permlink = this._getPermLink();
-        if (tags.length == 0) tags.push('steepshot');
-        const category = jsonMetadata.tags[0];
-
         const operation = [constants.OPERATIONS.COMMENT, {
             parent_author: "",
-            parent_permlink: category,
+            parent_permlink: tags[0],
             author: author,
             permlink: permlink + '-post',
             title: title,
             description: description,
             body: file,
-            json_metadata: JSON.stringify(jsonMetadata)
+            json_metadata: JSON.stringify(this._createJsonMetadata(tags))
         }];
-
         const callbackBc = (err, success) => {
             if(err) {
                 callback(err, null);
@@ -247,7 +238,7 @@ class Steem {
                 });
                 logPost(data);
                 callback(null, success);
-                console.log(success)
+                console.log(success);
             }
         };
         this.handleBroadcastMessages(operation, [], wif, callbackBc);
@@ -259,14 +250,11 @@ class Steem {
         .then((response) => {
             if (response.ok) {
                 response.json().then((result) => {
-                    console.log(JSON.stringify(result));
                     let beneficiaries = self._getBeneficiaries(message[1].permlink, result.beneficiaries);
                     message[1].body = result.payload.body;
+                    result.meta.tags = [...JSON.parse(message[1].json_metadata).tags, ...result.meta.tags];
                     message[1].json_metadata = JSON.stringify({...result.meta});
-
                     const operations = [message, beneficiaries];
-                    console.log(operations);
-
                     steem.broadcast.sendAsync(
                         { operations, extensions: [] },
                         { posting: postingKey }, callback
@@ -297,6 +285,7 @@ class Steem {
     }
 
     _createJsonMetadata(tags) {
+      if (tags.length == 0) tags.push('steepshot');
         return {
             tags: tags,
             app: 'steepshot/0.0.6' //@TODO get metadata from Backend

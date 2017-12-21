@@ -55,11 +55,8 @@ class Item extends React.Component {
     } else {
       propsItem.total_payout_reward = '$' + money;
     }
-
     propsItem.tags = (propsItem.tags instanceof Array) ? propsItem.tags : propsItem.tags.split(',');
-
     for (let i = 0; i < propsItem.tags.length; i++) {
-      propsItem.tags[i] = propsItem.tags[i];
       if (propsItem.tags[i] == 'nsfw') {
         this.setState({adultFilter: true});
       }
@@ -117,7 +114,6 @@ class Item extends React.Component {
 
   renderTags() {
     if (this.state.item.tags) {
-      console.log(this.state.item.tags);
       return this.state.item.tags.map((tag, index) => {
         return <span key={index}><TagComponent tag={tag}/> </span>
       });

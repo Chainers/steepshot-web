@@ -84,6 +84,7 @@ export function logVoute(isVouteUp, author, permlink, data) {
 }
 
 export function logPost(data) {
+
     const url = `${baseUrl}/log/post`;
 
     let options = baseCORSOptions;

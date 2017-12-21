@@ -18,7 +18,8 @@ class LikesModalComponent extends React.Component {
     constructor(props) {
         super();
         this.state = {
-            ...this.getInitialData
+          ...this.getInitialData,
+          forWindowSize: false
         }
     }
 
@@ -47,8 +48,17 @@ class LikesModalComponent extends React.Component {
         return state.votes;
     }
 
+    windowSizeFunc() {
+      if (document.documentElement.clientWidth <= 420) {
+        this.setState({forWindowSize : true});
+        }
+    }
+    componentWillMount() {
+      this.windowSizeFunc();
+    }
+
     componentDidMount() {
-        let unsubscribe = getStore().subscribe(this.usersChanged.bind(this));
+       let unsubscribe = getStore().subscribe(this.usersChanged.bind(this));
     }
 
     fetchData() {
@@ -87,9 +97,8 @@ class LikesModalComponent extends React.Component {
     }
 
     get votersData() {
-        let items =
-        this.state.voters.map((voter, index) => 
-            <UserItem 
+        let items = this.state.voters.map((voter, index) =>
+            <UserItem
                 item={{
                     author : voter.author,
                     name : voter.name,
@@ -111,7 +120,7 @@ class LikesModalComponent extends React.Component {
             return <div className="empty-query-message">{Constants.EMPTY_QUERY_VOTERS}</div>
         }
         return (
-            <ScrollViewComponent 
+            <ScrollViewComponent
                 ref={(ref) => this.scrollView = ref}
                 wrapperModifier="user-list"
                 scrollViewModifier="list-scroll__view"
@@ -120,15 +129,14 @@ class LikesModalComponent extends React.Component {
                 autoHide={true}
             >
                 <InfiniteScroll
-                    ref={(ref) => this.infiniteScroll = ref}
                     pageStart={0}
                     initialLoad={false}
                     loadMore={debounce(this.fetchData.bind(this), Constants.ENDLESS_SCROLL.DEBOUNCE_TIMEOUT)}
                     hasMore={this.state.hasMore}
                     loader={
-                        <div className="position--relative">
-                            <LoadingSpinner/>
-                        </div>
+                      <div className="position--relative">
+                          <LoadingSpinner/>
+                      </div>
                     }
                     threshold={Constants.ENDLESS_SCROLL.OFFSET}
                     useWindow={false}
@@ -145,18 +153,25 @@ class LikesModalComponent extends React.Component {
     render() {
         return (
             <div id="likesModal" tabIndex="-1" role="dialog" aria-hidden="true" className="modal modal-like fade">
-                <div className="modal-dialog">
-                    <div className="modal-content likes-modal__content js--dont-close-likes-modal">
-                        <div className="modal-header">
-                            <div className="modal-title clearfix">
-                                {Constants.POST_LIKED_BY}
-                            </div>
-                        </div>
-                        <div className="modal-like__body">
-                            { this.voters }
-                        </div>
+              <div className="modal-dialog">
+                <div className="modal-content likes-modal__content js--dont-close-likes-modal">
+                  <div className="modal-header">
+                    <div className="modal-title clearfix">
+                      {Constants.POST_LIKED_BY}
+                      {
+                        this.state.forWindowSize
+                        ?
+                          <button className="close" data-dismiss="modal"></button>
+                        :
+                          null
+                      }
                     </div>
+                  </div>
+                  <div className="modal-like__body">
+                    {this.voters}
+                  </div>
                 </div>
+              </div>
             </div>
         )
     }

@@ -3,15 +3,21 @@ import constants from '../../common/constants';
 import PropTypes from 'prop-types';
 
 class TabsFilterComponent extends React.Component {
-    constructor(props) { 
+    constructor(props) {
         super(props);
         this.state = {
-            ...this.props,
+          ...this.props,
+          param : false
         }
     }
-
+    componentDidMount() {
+      let location = document.location.pathname.match(/\/@\w+/);
+      if (location != null) {
+        this.setState({param : true});
+      }
+    }
     componentWillReceiveProps(nextProps) {
-        this.setState({ 
+        this.setState({
             keys : nextProps.keys
         });
     }
@@ -32,17 +38,22 @@ class TabsFilterComponent extends React.Component {
             if (this.state.activeItemIndex == index) {
                 styles = 'active';
             }
-            
 
             navItems.push(
                 <li role="presentation" key={index} className={styles}>
-                    <a 
-                        onClick={this.switchFilter.bind(this, index)} 
+                    <a
+                        onClick={this.switchFilter.bind(this, index)}
                         aria-controls={"tab-" + index}
                         href={"#tab-" + index}
-                        role="tab" 
-                        data-toggle="tab" 
-                        className="tab-head"
+                        role="tab"
+                        data-toggle="tab"
+                        className={
+                          this.state.param
+                          ?
+                            "tab-head tabs-width"
+                          :
+                            "tab-head"
+                        }
                     >
                         {item.label}
                     </a>
