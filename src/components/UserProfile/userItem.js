@@ -31,9 +31,11 @@ class UserItem extends React.Component {
         <div className="item-wrap">
             <div className="user-card">
                 <div className="card-wrap clearfix">
+                  <div data-dismiss="modal">
                     <Link to={authorLink}>
                       <AvatarComponent src={profileImageSrc} />
                     </Link>
+                  </div>
                     <div className="text">
                       <Link to={authorLink} className="name">
                         {name}

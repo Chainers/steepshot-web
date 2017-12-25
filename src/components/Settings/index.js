@@ -13,7 +13,7 @@ import {
 } from 'react-redux';
 import Constants from '../../common/constants';
 import PropTypes from 'prop-types';
-import { documentTitle } from "../DocumentTitle";
+import { documentTitle } from '../DocumentTitle';
 
 class Settings extends React.Component {
     constructor(props) {

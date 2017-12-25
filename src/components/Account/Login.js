@@ -20,7 +20,7 @@ import Messages from '../Messages';
 import LoadingSpinner from '../LoadingSpinner';
 import steemconnect from 'steemconnect';
 import Constants from '../../common/constants';
-import { documentTitle } from "../DocumentTitle";
+import { documentTitle } from '../DocumentTitle';
 
 class Login extends React.Component {
   constructor(props) {

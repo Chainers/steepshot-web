@@ -266,15 +266,19 @@ class CreatePost extends React.Component {
         let $imagePreview = null;
         let rotateButton = null;
         let addDescriptionBlock = null;
+        let mainContainerClassName = 'col-xs-12 col-md-6 col-md-offset-3 col-lg-6 col-lg-offset-3 for-justification';
 
-        let imageError =
-        this.state.imageError
-        ?
-        <div className="help-block margin-top--small">
-            <div className="text--red help-block__notice">Image is required</div>
-        </div>
-        :
-        null;
+        if (this.state.renderLoader == true) {
+          mainContainerClassName = mainContainerClassName + ' blur-blocker';
+        }
+
+        let imageError = this.state.imageError
+                         ?
+                           <div className="help-block margin-top--small">
+                               <div className="text--red help-block__notice">Image is required</div>
+                           </div>
+                         :
+                           null;
 
         addDescriptionBlock =
         <div className="form-group">
@@ -330,7 +334,8 @@ class CreatePost extends React.Component {
         }
 
         return (
-            <div className="col-xs-12 col-md-6 col-md-offset-3 col-lg-6 col-lg-offset-3 for-justification">
+          <div>
+            <div className={mainContainerClassName}>
                 <form className="form-create form-horizontal">
                     <div className="form-group">
                         <div className="input-container col-xs-12">
@@ -396,9 +401,10 @@ class CreatePost extends React.Component {
                             <button onClick={this._handleSubmit.bind(this)} type="submit" className="btn btn-default">Create new post</button>
                         </div>
                     </div>
-                    {this._renderLoader()}
                 </form>
             </div>
+            {this._renderLoader()}
+          </div>
         )
     }
 }

@@ -65,7 +65,7 @@ class Comment extends React.Component {
             />
         </div>
         <div className="comment-controls clearfix">
-          <a data-toggle="modal">{this.props.item.net_votes} Like's</a>
+          <a data-toggle="modal">{this.props.item.net_votes} likes</a>
           <span>+ $ {this.props.item.total_payout_value}</span>
         </div>
       </div>

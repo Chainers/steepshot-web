@@ -236,7 +236,7 @@ class ItemsComponent extends React.Component {
           hasMore={this.state.hasMore}
           loader={
             <div className="position--relative">
-              <LoadingSpinner/>
+              <LoadingSpinner />
             </div>
           }
           threshold={Constants.ENDLESS_SCROLL.OFFSET}

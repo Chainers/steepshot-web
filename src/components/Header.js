@@ -119,7 +119,7 @@ class Header extends React.Component {
         <div className="wrap-menu">
         {
           (isUserAuth) ? (
-          <div className="item nav-item" ref="/feed">
+          <div className="item nav-item">
             <Link to="/feed" >Feed</Link>
           </div>
           ) : null

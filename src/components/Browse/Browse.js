@@ -10,7 +10,7 @@ import TabsFilterComponent from '../Filters/TabsFilterComponent';
 import ItemsComponent from '../UserProfile/itemsComponent';
 import Constants from '../../common/constants';
 import TabsWrapper from '../Wrappers/TabsWrapper';
-import { documentTitle } from "../DocumentTitle";
+import { documentTitle } from '../DocumentTitle';
 
 class Browse extends React.Component {
   constructor(props) {

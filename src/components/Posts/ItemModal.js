@@ -48,8 +48,13 @@ class ItemModal extends React.Component {
             hasMore : this.props.hasMore,
             loadMore : this.props.loadMore,
             adultParam : false,
-            moneyParam : true
+            moneyParam : true,
+            lowParam : false
         };
+        this.mobileCoverParams ={
+          width: '100%',
+          height: '100%'
+        }
         this.initKeypress();
     }
 
@@ -67,17 +72,18 @@ class ItemModal extends React.Component {
     }
 
     controlRestrictions() {
-      console.log(this.state.index);
-      let bool = this.state.item.tags.some( (item, index) => {
-        return item == 'nsfw'
-      });
-      if (bool == true) {
+      if (this.state.item.is_nsfw) {
         this.setState({adultParam : true});
       } else {
         this.setState({adultParam : false});
       }
       if (this.state.item.total_payout_reward == 0) {
         this.setState({moneyParam : false});
+      }
+      if (this.state.item.is_low_rated) {
+        this.setState({lowParam : true});
+      } else {
+        this.setState({lowParam : false});
       }
     }
 
@@ -146,7 +152,7 @@ class ItemModal extends React.Component {
     }
 
     hideFunc() {
-      this.setState({adultParam : false});
+      this.setState({adultParam : false, lowParam : false});
     }
 
     sendComment(e) {
@@ -265,18 +271,49 @@ class ItemModal extends React.Component {
       return true;
     }
 
+    userLinkFunc(a) {
+      let description = null;
+      if (a) {
+        description = this.state.item.title;
+      } else {
+        description = this.state.item.description;
+      }
+      if (description.match(/@\w+/g)) {
+        let arr = description.split(' ').map( (item, index) => {
+          if (/@\w+/.test(item)) {
+            return <span key={index}>
+                     <Link to={`/${item}`}>
+                       {item + ' '}
+                     </Link>
+                   </span>
+          } else {
+            return item + ' '
+          }
+        });
+        return (
+          <span>
+            {arr}
+          </span>
+        )
+      } else {
+        return (
+          <span>
+            {description + ' '}
+          </span>
+        )
+      }
+    }
+
     renderDescription() {
-      let text = this.state.item.description;
       let forceOpen = false;
-      this.state.item.tags.map(tag => text = `${text} #${tag}`);
-      if (text.length < 140) forceOpen = true;
+      if (this.state.item.description.length < 140) forceOpen = true;
       return (
         <div className="post-description">
-          <p>{this.state.item.title}</p>
+          <p>{this.userLinkFunc(true)}</p>
           <div
             className={(this.state.isDescriptionOpened || forceOpen) ? "collapse-opened" : "collapse-closed"}
           >
-              {this.state.item.description + ' '}
+              {this.userLinkFunc(false)}
               {
                 this.state.item.tags.map((tag, index) => {
                   return <span key={index}><TagComponent tag={tag}/> </span>
@@ -303,11 +340,24 @@ class ItemModal extends React.Component {
                 {
                   this.state.adultParam
                   ?
-                    <div>
+                    <div style={this.mobileCoverParams}>
                       <div className="forAdult2">
                         <div className="forAdultInner">
                           <p className="par1">NSFW content</p>
                           <p className="par2">This content is for adults only. Not recommended for children or sensitive individuals.</p>
+                          <button className="btn btn-default btn-default-popup" onClick={this.hideFunc.bind(this)}>Show me</button>
+                        </div>
+                      </div>
+                      <img src={itemImage} alt="Post picture."/>
+                    </div>
+                  :
+                    this.state.lowParam
+                  ?
+                    <div style={this.mobileCoverParams}>
+                      <div className="forAdult2">
+                        <div className="forAdultInner">
+                          <p className="par1">Low rated content</p>
+                          <p className="par2">This content is hidden due to low ratings.</p>
                           <button className="btn btn-default btn-default-popup" onClick={this.hideFunc.bind(this)}>Show me</button>
                         </div>
                       </div>

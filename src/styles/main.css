@@ -125,6 +125,7 @@
   }
 
   .blur-blocker {
+    pointer-events: none;
     transform: 1s;
     -webkit-filter: blur(1.05px) grayscale(50%);
     filter: blur(1.05px) grayscale(50%);
@@ -137,11 +138,11 @@
     position: absolute !important;
   }
 
-  .card-wrap span {
+  .card-wrap span a, .post-description span a {
     transition: .2s all ease;
   }
-  .card-wrap span:hover {
-    opacity: .85;
+  .card-wrap span a:hover, .post-description span a:hover {
+    opacity: .65;
   }
 
   .modal-header .modal-title {
@@ -226,100 +227,6 @@
   .user-card {
     min-width: 297px !important;
     padding: 20px !important;
-  }
-
-  @media screen and (min-width: 768px) and (max-width: 1023px) {
-    header .container {
-      margin: 0;
-      width: 100%;
-      padding: 0 35px;
-    }
-    .search-panel {
-      padding: 0 40px;
-    }
-    .nav-tabs {
-      margin-top: -15px !important;
-    }
-    .tab-head {
-      padding: 10px 30px 16px 30px !important;
-    }
-    .for-justification {
-      padding: 0 35px !important;
-    }
-    .buttons-container {
-      display: flex;
-      justify-content: center;
-    }
-
-    .g-main_i {
-      width: 750px !important;
-    }
-    .post-card {
-      max-width: 355px !important;
-      width: 355px !important;
-    }
-    .card-body {
-      width: 355px !important;
-    }
-    .post__description-container {
-      max-width: none !important;
-    }
-    .sub-rotate-button {
-      top: 25%;
-      right: 6%;
-    }
-  }
-
-  @media screen and (max-width: 767px) {
-    header .container {
-      margin: 0;
-      width: 100%;
-      padding: 0 25px;
-    }
-    .search-panel {
-      padding: 0 30px;
-    }
-    .nav-tabs {
-      margin-top: -12.5px !important;
-    }
-    .tab-head {
-      font-size: 14px !important;
-      padding: 10px 25px 16px 25px !important;
-    }
-    .for-justification {
-      padding: 0 25px !important;
-    }
-    .user-card {
-      padding: 20px 10px !important;
-      margin: 0 15px !important;
-    }
-  }
-
-  @media screen and (min-width: 320px) and (max-width: 420px) {
-    .modal-title {
-      padding: 20px 0 !important;
-      font-size: 12px !important;
-    }
-    .user-card {
-      min-width: 230px !important;
-      padding: 20px 10px !important;
-      margin: 0 15px !important;
-    }
-    .section.hamburger {
-      margin-left: 18px !important;
-    }
-    .wrap-hamburger {
-      padding-left: 12px !important;
-    }
-    .forAdult2 {
-      width: 200%;
-    }
-    .forAdult2 .par2 {
-      padding: 0 50px;
-    }
-    .tabs-width {
-      padding: 10px 11px 16px 11px !important;
-    }
   }
 
   .card-field {
@@ -428,6 +335,105 @@
 
   .card-wrap {
     min-width: 257px !important;
+  }
+
+  @media screen and (min-width: 768px) and (max-width: 1023px) {
+    header .container {
+      margin: 0;
+      width: 100%;
+      padding: 0 35px;
+    }
+    .search-panel {
+      padding: 0 40px;
+    }
+    .nav-tabs {
+      margin-top: -15px !important;
+    }
+    .tab-head {
+      padding: 10px 30px 16px 30px !important;
+    }
+    .for-justification {
+      padding: 0 35px !important;
+    }
+    .buttons-container {
+      display: flex;
+      justify-content: center;
+    }
+
+    .g-main_i {
+      width: 750px !important;
+    }
+    .post-card {
+      max-width: 355px !important;
+      width: 355px !important;
+    }
+    .card-body {
+      width: 355px !important;
+    }
+    .post__description-container {
+      max-width: none !important;
+    }
+    .sub-rotate-button {
+      top: 25%;
+      right: 6%;
+    }
+  }
+
+  @media screen and (max-width: 767px) {
+    header .container {
+      margin: 0;
+      width: 100%;
+      padding: 0 25px;
+    }
+    .search-panel {
+      padding: 0 30px;
+    }
+    .nav-tabs {
+      margin-top: -12.5px !important;
+    }
+    .tab-head {
+      font-size: 14px !important;
+      padding: 10px 25px 16px 25px !important;
+    }
+    .for-justification {
+      padding: 0 25px !important;
+    }
+    .user-card {
+      padding: 20px 10px !important;
+      margin: 0 15px !important;
+    }
+    .container-settings {
+      position: relative;
+      top: 40px;
+    }
+    .container-settings__content-wrapper{
+      padding-top: 20px;
+    }
+  }
+
+  @media screen and (min-width: 320px) and (max-width: 420px) {
+    .modal-title {
+      padding: 20px 0 !important;
+      font-size: 12px !important;
+    }
+    .user-card {
+      min-width: 230px !important;
+      padding: 20px 10px !important;
+      margin: 0 15px !important;
+    }
+    .section.hamburger {
+      margin-left: 18px !important;
+    }
+    .wrap-hamburger {
+      padding-left: 12px !important;
+    }
+    .tabs-width {
+      padding: 10px 11px 16px 11px !important;
+    }
+    .container-settings {
+      position: relative;
+      top: 40px;
+    }
   }
 
   @-webkit-keyframes flagLoading
@@ -558,18 +564,18 @@
    justify-content: center;
  }
 
-.modal-post-single .modal-dialog, .modal-post .modal-dialog {
-  width : 90vw;
-}
+  .modal-post-single .modal-dialog, .modal-post .modal-dialog {
+    width : 90vw;
+  }
 
-.post__image-container {
-  min-width: 90vw;
-  z-index: 3;
-}
+  .post__image-container {
+    min-width: 90vw;
+    z-index: 3;
+  }
 
-.post__image-container img {
-  max-width: 680px;
-}
+  .post__image-container img {
+    max-width: 680px;
+  }
 
  @media (min-width: 769px) {
   .post__image-container {

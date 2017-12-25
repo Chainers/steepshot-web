@@ -10,12 +10,6 @@ class SinglePostModalWrapper extends React.Component {
     render() {
         return(
             <div>
-                <div className="block--center">
-                    <h1> Loading </h1>
-                    <div className="position--relative">
-                        <LoadingSpinner />
-                    </div>
-                </div>
                 <ModalComponent>
                     <SinglePostModalComponent {...this.props} />
                 </ModalComponent>

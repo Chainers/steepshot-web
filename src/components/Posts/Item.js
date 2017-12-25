@@ -25,16 +25,17 @@ class Item extends React.Component {
     super(props);
 
     this.state = {
-      item: this.props.item,
-      items: this.props.items,
-      openModal: this.props.openModal,
-      currentIndex: this.props.index,
-      comments: [],
-      redirectToReferrer: false,
-      needsRenderSlider: true,
-      clearPropsHeader: this.props.clearPostHeader,
-      adultFilter: false,
-      moneyParam: true
+      item : this.props.item,
+      items : this.props.items,
+      openModal : this.props.openModal,
+      currentIndex : this.props.index,
+      comments : [],
+      redirectToReferrer : false,
+      needsRenderSlider : true,
+      clearPropsHeader : this.props.clearPostHeader,
+      adultParam : false,
+      moneyParam : true,
+      lowParam : false
     };
 
     this.localConstants = {
@@ -56,17 +57,45 @@ class Item extends React.Component {
       propsItem.total_payout_reward = '$' + money;
     }
     propsItem.tags = (propsItem.tags instanceof Array) ? propsItem.tags : propsItem.tags.split(',');
-    for (let i = 0; i < propsItem.tags.length; i++) {
-      if (propsItem.tags[i] == 'nsfw') {
-        this.setState({adultFilter: true});
-      }
-    }
 
+    if (propsItem.is_nsfw) {
+      this.setState({adultParam : true});
+    }
+    if (propsItem.is_low_rated) {
+      this.setState({lowParam : true});
+    }
     this.setState({
       item: propsItem,
       avatar: propsItem.avatar,
       image: propsItem.body
     });
+  }
+
+  userLinkFunc() {
+    if (this.state.item.title.match(/@\w+/g)) {
+      let arr = this.state.item.title.split(' ').map( (item, index) => {
+        if (/@\w+/.test(item)) {
+          return <span key={index}>
+                   <Link to={`/${item}`}>
+                     {item + ' '}
+                   </Link>
+                 </span>
+        } else {
+          return item + ' '
+        }
+      });
+      return (
+        <span>
+          {arr}
+        </span>
+      )
+    } else {
+      return (
+        <span>
+          {this.state.item.title + ' '}
+        </span>
+      )
+    }
   }
 
   resetDefaultProperties(newItem) {
@@ -156,10 +185,16 @@ class Item extends React.Component {
           <div className="card-body">
             <div className="card-pic" onClick={this._openModal.bind(this)}>
             {
-              this.state.adultFilter
+              this.state.adultParam
               ?
                 <div className="forAdult">
                   <p>NSFW content</p>
+                </div>
+              :
+                this.state.lowParam
+              ?
+                <div className="forAdult">
+                  <p>Low rated content</p>
                 </div>
               :
                 null
@@ -194,7 +229,7 @@ class Item extends React.Component {
                 </div>
               </div>
               <div className="card-preview">
-                {this.state.item.title + ' '}
+                {this.userLinkFunc()}
                 {this.renderTags()}
               </div>
             </div>
