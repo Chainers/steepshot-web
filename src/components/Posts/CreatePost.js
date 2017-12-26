@@ -1,11 +1,8 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import Steem from '../../libs/steem';
-import {
-    connect
-} from 'react-redux';
+import {connect} from 'react-redux';
 import LoadingSpinner from '../LoadingSpinner';
-import { documentTitle } from '../DocumentTitle';
+import {documentTitle} from '../DocumentTitle';
 
 class CreatePost extends React.Component {
     constructor(props) {
@@ -107,8 +104,8 @@ class CreatePost extends React.Component {
         }
         if (this.state.file == '') {
             this.setState({
-                imageError: true
-            })
+                imageError: 'Photo is required'
+            });
             isValid = false
         }
         return isValid;
@@ -177,7 +174,7 @@ class CreatePost extends React.Component {
                 this.setState({
                     file: '',
                     imagePreviewUrl: '',
-                    imageError: true,
+                    imageError: 'Photo size should be more then ' + this.state.minPhotoWidth + 'x' + this.state.minPhotoHeight,
                     rotate: false
                 })
             }
@@ -209,7 +206,7 @@ class CreatePost extends React.Component {
               this.setState({
                   file : blob,
                   imagePreviewUrl: canvas.toDataURL(),
-                  imageError : false,
+                  imageError : "",
                   rotate : !this.state.rotate
               });
             });
@@ -284,7 +281,7 @@ class CreatePost extends React.Component {
         let imageError = this.state.imageError
                          ?
                            <div className="help-block margin-top--small">
-                               <div className="text--red help-block__notice">Image is required</div>
+                               <div className="text--red help-block__notice">{this.state.imageError}</div>
                            </div>
                          :
                            null;
