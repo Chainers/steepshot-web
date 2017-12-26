@@ -24,7 +24,9 @@ class CreatePost extends React.Component {
             disabeleCreating: false,
             renderLoader: false,
             tagError: false,
-            titleError: false
+            titleError: false,
+            minPhotoWidth: 640,
+            minPhotoHeight: 420
         };
     }
 
@@ -150,29 +152,36 @@ class CreatePost extends React.Component {
 
     _handleImageChange(e) {
         e.preventDefault();
-
         let reader = new FileReader();
         let file = e.target.files[0];
 
         reader.onloadend = () => {
-            this.setState({
-                file: file,
-                imagePreviewUrl: reader.result,
-                imageError: false,
-                rotate : false
-            }, () => {
-                let canvas = this.preview;
-                let ctx = canvas.getContext("2d");
-
-                let image = new Image();
-                image.src = this.state.imagePreviewUrl;
-                image.onload = () => {
-                    canvas.width = this.previewContainer.clientWidth;
-                    canvas.height = image.height * (this.previewContainer.clientWidth / image.width);
-                    ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
-                };
-            });
-        }
+            let image = new Image();
+            image.src = reader.result;
+            if (image.width >= this.state.minPhotoWidth && image.height >= this.state.minPhotoHeight) {
+                this.setState({
+                    file: file,
+                    imagePreviewUrl: reader.result,
+                    imageError: false,
+                    rotate: false
+                }, () => {
+                    let canvas = this.preview;
+                    let ctx = canvas.getContext("2d");
+                    image.onload = () => {
+                        canvas.width = this.previewContainer.clientWidth;
+                        canvas.height = image.height * (this.previewContainer.clientWidth / image.width);
+                        ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+                    };
+                });
+            } else {
+                this.setState({
+                    file: '',
+                    imagePreviewUrl: '',
+                    imageError: true,
+                    rotate: false
+                })
+            }
+        };
         reader.readAsDataURL(file)
     }
 
