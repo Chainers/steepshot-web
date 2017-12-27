@@ -44,7 +44,7 @@ class SinglePostModalComponent extends React.Component {
     sharedComponentTitle() {
       let title = this.state.item.title.split('');
       title[0] = title[0].toUpperCase();
-      document.title = `Steepshot - ${title.join('')}`;
+      document.title = `${title.join('')} | Steepshot`;
     }
 
     componentDidMount() {

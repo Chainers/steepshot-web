@@ -30,7 +30,7 @@ class AboutComponent extends React.Component {
                       Your content should not be perceived as repulsive and shocking.</li>
                     <li>
                       <strong>Hate Speech or Internet Trolling. </strong>
-                      Publications should not incite hatred and be directed against a social group. Also, one should not publish calls for violence or terrorism</li>
+                      Publications should not incite hatred and be directed against a social group. Also, one should not publish calls for violence or terrorism.</li>
                     <li>
                       <strong>Authorship. </strong>
                       It is undesirable to publish something that has no attributes of authorship. For example, a screenshot of the phone screen.</li>

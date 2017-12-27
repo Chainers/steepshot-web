@@ -76,7 +76,7 @@ class Item extends React.Component {
       let arr = this.state.item.title.split(' ').map( (item, index) => {
         if (/@\w+/.test(item)) {
           return <span key={index}>
-                   <Link to={`/${item}`}>
+                   <Link to={`/@${item.replace(/[^A-Za-z_.0-9]/g, '')}`}>
                      {item + ' '}
                    </Link>
                  </span>

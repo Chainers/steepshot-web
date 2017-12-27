@@ -80,7 +80,16 @@ class SearchResultsComponent extends React.Component {
     });
   }
 
+  controlTabs(number) {
+    if (number == 0) {
+      this.setState({activeItemIndex : 1});
+    } else {
+      this.setState({activeItemIndex : 0});
+    }
+  }
+
   render() {
+
     return (
       <div className="g-main_i container">
         <div id="workspace" className="g-content clearfix">
@@ -102,6 +111,7 @@ class SearchResultsComponent extends React.Component {
                 maxPosts={4}
                 forceRefresh={this.state.needsForceRefresh}
                 headerText={<span>{Constants.SEARCH_HEADING_LABELS.HOT_POSTS_RESULT}<u>{this.state.searchValue}</u></span>}
+                controlTabs={this.controlTabs.bind(this)}
                 key={1}
               />
               {
@@ -114,20 +124,21 @@ class SearchResultsComponent extends React.Component {
                     wrapperModifier="posts-list clearfix"
                     forceRefresh={this.state.needsForceRefresh}
                     headerText={<span>{Constants.SEARCH_HEADING_LABELS.NEW_POSTS_RESULT}<u>{this.state.searchValue}</u></span>}
+                    controlTabs={this.controlTabs.bind(this)}
                     key={2}
                   />
                 :
                   null
               }
             </TabWrapper>
-            <UsersComponent
-              point={Constants.SEARCH_FILTERS.USERS.point}
-              forceRefresh={this.state.needsForceRefresh}
-              getUsers={getUsersSearch}
-              options={this.state.usersSearchOptions}
-              wrapperModifier="posts-list clearfix type-2"
-              headerText={<span>{Constants.SEARCH_HEADING_LABELS.USERS_RESULT}<u>{this.state.searchValue}</u></span>}
-            />
+              <UsersComponent
+                point={Constants.SEARCH_FILTERS.USERS.point}
+                forceRefresh={this.state.needsForceRefresh}
+                getUsers={getUsersSearch}
+                options={this.state.usersSearchOptions}
+                wrapperModifier="posts-list clearfix type-2"
+                headerText={<span>{Constants.SEARCH_HEADING_LABELS.USERS_RESULT}<u>{this.state.searchValue}</u></span>}
+              />
           </TabsWrapper>
         </div>
       </div>

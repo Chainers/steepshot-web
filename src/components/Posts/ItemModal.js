@@ -19,7 +19,6 @@ import LoadingSpinner from '../LoadingSpinner';
 import ScrollViewComponent from '../Common/ScrollViewComponent';
 import TagComponent from './TagComponent';
 import AvatarComponent from '../Atoms/AvatarComponent';
-import LikesComponent from './LikesComponent';
 import TimeAgo from 'timeago-react';
 import {Collapse} from 'react-collapse';
 import Constants from '../../common/constants';
@@ -49,7 +48,8 @@ class ItemModal extends React.Component {
             loadMore : this.props.loadMore,
             adultParam : false,
             moneyParam : true,
-            lowParam : false
+            lowParam : false,
+            closeParam : false
         };
         this.mobileCoverParams ={
           width: '100%',
@@ -88,7 +88,7 @@ class ItemModal extends React.Component {
     }
 
     openLikesModal() {
-      this.props.dispatch({ type : 'CLEAR_LIKES_INFO', url : this.state.item.url })
+      this.props.dispatch({ type : 'CLEAR_LIKES_INFO', url : this.state.item.url });
       jqApp.openLikesModal($(document));
     }
 
@@ -145,6 +145,7 @@ class ItemModal extends React.Component {
     }
 
     componentDidMount() {
+      this.closeButtonFunc();
       this.needMore(this.props);
       setTimeout(() => {
         jqApp.forms.init();
@@ -282,7 +283,7 @@ class ItemModal extends React.Component {
         let arr = description.split(' ').map( (item, index) => {
           if (/@\w+/.test(item)) {
             return <span key={index}>
-                     <Link to={`/${item}`}>
+                     <Link to={`/@${item.replace(/[^A-Za-z_.0-9]/g, '')}`}>
                        {item + ' '}
                      </Link>
                    </span>
@@ -325,6 +326,14 @@ class ItemModal extends React.Component {
       )
     }
 
+    closeButtonFunc() {
+      if (document.documentElement.clientWidth <= 767) {
+        this.setState({closeParam : true});
+      } else {
+        this.setState({closeParam : false});
+      }
+    }
+
     render() {
 
       let itemImage = this.state.item.body || constants.NO_IMAGE;
@@ -335,6 +344,29 @@ class ItemModal extends React.Component {
       return(
         <div>
           <div className="post-single">
+            {
+              this.state.closeParam
+                ?
+                <div className="crossWrapper">
+                  <div className="user-wrap clearfix">
+                    <div className="date">
+                      <TimeAgo
+                        datetime={this.state.item.created}
+                        locale='en_US'
+                      />
+                    </div>
+                    <Link to={authorLink} className="user">
+                      <AvatarComponent src={this.state.item.avatar} />
+                      <div className="name">{this.state.item.author}</div>
+                    </Link>
+                  </div>
+                  <button type="button" data-dismiss="modal" aria-hidden="true" className="modalButton">
+                    <i className="fa fa-times" aria-hidden="true"></i>
+                  </button>
+                </div>
+                :
+                null
+            }
             <div className="post-wrap post">
               <div className="post__image-container position--relative">
                 {
@@ -345,7 +377,7 @@ class ItemModal extends React.Component {
                         <div className="forAdultInner">
                           <p className="par1">NSFW content</p>
                           <p className="par2">This content is for adults only. Not recommended for children or sensitive individuals.</p>
-                          <button className="btn btn-default btn-default-popup" onClick={this.hideFunc.bind(this)}>Show me</button>
+                          <button className="btn btn-index" onClick={this.hideFunc.bind(this)}>Show me</button>
                         </div>
                       </div>
                       <img src={itemImage} alt="Post picture."/>
@@ -358,7 +390,7 @@ class ItemModal extends React.Component {
                         <div className="forAdultInner">
                           <p className="par1">Low rated content</p>
                           <p className="par2">This content is hidden due to low ratings.</p>
-                          <button className="btn btn-default btn-default-popup" onClick={this.hideFunc.bind(this)}>Show me</button>
+                          <button className="btn btn-index" onClick={this.hideFunc.bind(this)}>Show me</button>
                         </div>
                       </div>
                       <img src={itemImage} alt="Post picture."/>
@@ -376,20 +408,6 @@ class ItemModal extends React.Component {
                 }
               </div>
               <div className="post__description-container">
-                <div className="post-header">
-                  <div className="user-wrap clearfix">
-                    <div className="date">
-                      <TimeAgo
-                        datetime={this.state.item.created}
-                        locale='en_US'
-                      />
-                    </div>
-                    <Link to={authorLink} className="user">
-                      <AvatarComponent src={this.state.item.avatar} />
-                      <div className="name">{this.state.item.author}</div>
-                    </Link>
-                  </div>
-                </div>
                 <div className="post-controls clearfix">
                   <div className="buttons-row" onClick={(e)=>{this.callPreventDefault(e)}}>
                     <VouteComponent
@@ -423,7 +441,7 @@ class ItemModal extends React.Component {
                   autoHide={true}
                 >
                   {this.renderDescription()}
-                  <Comments key="comments" item={this.state.item} newComment={this.state.newComment}/>
+                  <Comments key="comments" item={this.state.item} newComment={this.state.newComment} />
                 </ScrollViewComponent>
                 {
                   isUserAuth

@@ -19,12 +19,12 @@ class TabsWrapper extends React.Component {
         let activeTab = this.state.activeTab;
         return this.state.children.map((child, index) => {
             let styles = 'tab-pane fade';
-            
+
             if (index == activeTab) {
                 styles = 'tab-pane fade in active';
             }
 
-            return (           
+            return (
                 <div id={"tab-" + index} role="tabpanel" className={styles} key={index}>
                     {React.cloneElement(child, { ...child.props, isComponentVisible : index == activeTab})}
                 </div>

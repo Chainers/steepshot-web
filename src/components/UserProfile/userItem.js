@@ -21,6 +21,11 @@ class UserItem extends React.Component {
     };
   }
 
+  closeFunc() {
+      this.props.dispatch({ type : 'CLEAR_LIKES_INFO', url : this.state.url })
+      jqApp.closeLikesModal($(document));
+  }
+
   render() {
     let profileImageSrc = this.state.avatar || constants.NO_AVATAR;
     const name = this.state.item.author || this.state.item.name || 'Unknown';
@@ -31,15 +36,17 @@ class UserItem extends React.Component {
         <div className="item-wrap">
             <div className="user-card">
                 <div className="card-wrap clearfix">
-                  <div data-dismiss="modal">
-                    <Link to={authorLink}>
-                      <AvatarComponent src={profileImageSrc} />
-                    </Link>
-                  </div>
-                    <div className="text">
-                      <Link to={authorLink} className="name">
-                        {name}
+                    <div onClick={this.closeFunc.bind(this)}>
+                      <Link to={authorLink}>
+                        <AvatarComponent src={profileImageSrc} />
                       </Link>
+                    </div>
+                    <div className="text">
+                      <div onClick={this.closeFunc.bind(this)}>
+                        <Link to={authorLink} className="name">
+                          {name}
+                        </Link>
+                      </div>
                       <div className="location">{location}</div>
                     </div>
                 </div>

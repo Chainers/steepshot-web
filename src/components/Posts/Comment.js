@@ -33,6 +33,66 @@ class Comment extends React.Component {
     this.setState({ avatar: constants.NO_AVATAR });
   }
 
+  openLikesModal() {
+    let arr = this.state.item.url.split('');
+    for (let i = 0; i < arr.length; i++) {
+      if (arr[i] == '#') {
+        arr.splice(0, i + 1);
+      }
+    }
+    this.props.dispatch({ type : 'CLEAR_LIKES_INFO', url : `/${arr.join('')}` });
+    jqApp.openLikesModal($(document));
+  }
+
+  userLinkFunc() {
+    if (this.state.item.body.match(/@\w+/)) {
+      let arr = this.state.item.body.split(' ').map( (item, index) => {
+        if (/@\w+/.test(item)) {
+          return <span key={index}>
+                   <Link to={`/@${item.replace(/[^A-Za-z_.0-9]/g, '')}`}>
+                     {item + ' '}
+                   </Link>
+                 </span>
+        } else {
+          return item + ' '
+        }
+      });
+      return (
+        <span>
+          {arr}
+        </span>
+      )
+    } else {
+      return (
+        <span>
+          {this.state.item.body + ' '}
+        </span>
+      )
+    }
+  }
+
+  likeFunc() {
+    let like = this.state.item.net_votes;
+    let text = null;
+    let money = null;
+    if (like) {
+      if (like == 1 || like == -1) {
+        text = `${like} like`
+      } else {
+        text = `${like} likes`
+      }
+      if (this.state.item.total_payout_value > 0) {
+        money = `+ $ ${this.state.item.total_payout_value}`;
+      }
+      return (
+        <div className="comment-controls clearfix">
+          <a className="likes" data-toggle="modal" onClick={this.openLikesModal.bind(this)}>{text}</a>
+          <span>{money}</span>
+        </div>
+      )
+    }
+  }
+
   render() {
     let avatar = this.state.avatar || constants.NO_AVATAR;
     const authorLink = `/@${this.props.item.author}`;
@@ -43,8 +103,8 @@ class Comment extends React.Component {
           <div className="user-wrap clearfix">
             <div className="date">
               <TimeAgo
-                  datetime={this.props.item.created}
-                  locale='en_US'
+                datetime={this.props.item.created}
+                locale='en_US'
               />
             </div>
               <Link to={authorLink} className="user">
@@ -56,7 +116,7 @@ class Comment extends React.Component {
           </div>
         </div>
         <div className="comment-text">
-          {this.props.item.body}
+          {this.userLinkFunc()}
           <VouteComponent
               key="vote"
               item={this.props.item}
@@ -64,10 +124,7 @@ class Comment extends React.Component {
               parent='comment'
             />
         </div>
-        <div className="comment-controls clearfix">
-          <a data-toggle="modal">{this.props.item.net_votes} likes</a>
-          <span>+ $ {this.props.item.total_payout_value}</span>
-        </div>
+        {this.likeFunc()}
       </div>
     );
   }

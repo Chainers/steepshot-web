@@ -219,7 +219,7 @@ class Steem {
         const permlink = this._getPermLink();
         const operation = [constants.OPERATIONS.COMMENT, {
             parent_author: "",
-            parent_permlink: tags[0],
+            parent_permlink: tags[0] || 'steepshot',
             author: author,
             permlink: permlink + '-post',
             title: title,

@@ -141,7 +141,7 @@ class Login extends React.Component {
       <div className="container-fluid">
         <div className="container-fluid">
           <div className="row">
-            <div className="col-xs-12 col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3 lead">Sign in to Steepshot</div>
+            <div className="col-xs-12 col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3 lead text--center">Sign in Steepshot</div>
           </div>
         </div>
         <div className="container-fluid">
