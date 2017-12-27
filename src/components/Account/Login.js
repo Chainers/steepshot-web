@@ -146,13 +146,7 @@ class Login extends React.Component {
         </div>
         <div className="container-fluid">
           <div className="row position--relative">
-            {
-              this.state.needsLoader
-              ?
-              <LoadingSpinner />
-              :
-              null
-            }
+            <LoadingSpinner show={this.state.needsLoader}/>
             <div className={mainContainerClassName}>
               <form className="form-login form-horizontal">
                 <div className={this.state.userNameError ? "has-error" : null}>

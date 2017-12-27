@@ -335,13 +335,7 @@ class SinglePostModalComponent extends React.Component {
                                                 </div>
                                             </div>
                                         </form>
-                                    {
-                                        this.state.needsCommentFormLoader
-                                        ?
-                                        <LoadingSpinner />
-                                        :
-                                        null
-                                    }
+                                        <LoadingSpinner show={this.state.needsCommentFormLoader}/>
                                     </div>
                                 :
                                     null
