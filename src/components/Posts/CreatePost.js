@@ -1,11 +1,8 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import Steem from '../../libs/steem';
-import {
-    connect
-} from 'react-redux';
+import {connect} from 'react-redux';
 import LoadingSpinner from '../LoadingSpinner';
-import { documentTitle } from '../DocumentTitle';
+import {documentTitle} from '../DocumentTitle';
 
 class CreatePost extends React.Component {
     constructor(props) {
@@ -13,6 +10,7 @@ class CreatePost extends React.Component {
         this.state = {
             file: '',
             imagePreviewUrl: '',
+            imageError: '',
             title: '',
             tag: '',
             description: '',
@@ -24,7 +22,9 @@ class CreatePost extends React.Component {
             disabeleCreating: false,
             renderLoader: false,
             tagError: false,
-            titleError: false
+            titleError: false,
+            minPhotoWidth: 640,
+            minPhotoHeight: 420
         };
     }
 
@@ -40,9 +40,10 @@ class CreatePost extends React.Component {
         this.setState({
             file: '',
             imagePreviewUrl: '',
+            imageError: '',
             title: '',
             tagList: [],
-            tag: "",
+            tag: '',
             description: ''
         });
     }
@@ -105,8 +106,8 @@ class CreatePost extends React.Component {
         }
         if (this.state.file == '') {
             this.setState({
-                imageError: true
-            })
+                imageError: 'Photo is required'
+            });
             isValid = false
         }
         return isValid;
@@ -150,29 +151,36 @@ class CreatePost extends React.Component {
 
     _handleImageChange(e) {
         e.preventDefault();
-
         let reader = new FileReader();
         let file = e.target.files[0];
 
         reader.onloadend = () => {
-            this.setState({
-                file: file,
-                imagePreviewUrl: reader.result,
-                imageError: false,
-                rotate : false
-            }, () => {
-                let canvas = this.preview;
-                let ctx = canvas.getContext("2d");
-
-                let image = new Image();
-                image.src = this.state.imagePreviewUrl;
-                image.onload = () => {
-                    canvas.width = this.previewContainer.clientWidth;
-                    canvas.height = image.height * (this.previewContainer.clientWidth / image.width);
-                    ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
-                };
-            });
-        }
+            let image = new Image();
+            image.src = reader.result;
+            if (image.width >= this.state.minPhotoWidth && image.height >= this.state.minPhotoHeight) {
+                this.setState({
+                    file: file,
+                    imagePreviewUrl: reader.result,
+                    imageError: '',
+                    rotate: false
+                }, () => {
+                    let canvas = this.preview;
+                    let ctx = canvas.getContext("2d");
+                    image.onload = () => {
+                        canvas.width = this.previewContainer.clientWidth;
+                        canvas.height = image.height * (this.previewContainer.clientWidth / image.width);
+                        ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+                    };
+                });
+            } else {
+                this.setState({
+                    file: '',
+                    imagePreviewUrl: '',
+                    imageError: 'Photo size should be more then ' + this.state.minPhotoWidth + 'x' + this.state.minPhotoHeight,
+                    rotate: false
+                })
+            }
+        };
         reader.readAsDataURL(file)
     }
 
@@ -200,7 +208,7 @@ class CreatePost extends React.Component {
               this.setState({
                   file : blob,
                   imagePreviewUrl: canvas.toDataURL(),
-                  imageError : false,
+                  imageError : '',
                   rotate : !this.state.rotate
               });
             });
@@ -275,7 +283,7 @@ class CreatePost extends React.Component {
         let imageError = this.state.imageError
                          ?
                            <div className="help-block margin-top--small">
-                               <div className="text--red help-block__notice">Image is required</div>
+                               <div className="text--red help-block__notice">{this.state.imageError}</div>
                            </div>
                          :
                            null;
@@ -302,17 +310,15 @@ class CreatePost extends React.Component {
 
         if (imagePreviewUrl) {
             $imagePreview = (
-                <div>
-                    <div className="preview-component position--relative">
-                        <div className="post-info">
-                            <div className="info-block">
-                                <div className="img-preview" ref={ref => this.previewContainer = ref}>
-                                    <canvas id="preview" ref={ref => this.preview = ref}/>
-                                </div>
+                <div className="preview-component position--relative">
+                    <div className="post-info">
+                        <div className="info-block">
+                            <div className="img-preview" ref={ref => this.previewContainer = ref}>
+                                <canvas id="preview" ref={ref => this.preview = ref}/>
                             </div>
                         </div>
-                        <input id="upload-file" className="file-input" onChange={(e)=>this._handleImageChange(e)} type="file" />
                     </div>
+                    <input id="upload-file" className="file-input" onChange={(e)=>this._handleImageChange(e)} type="file" />
                 </div>
             );
 
