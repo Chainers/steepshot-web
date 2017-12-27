@@ -10,6 +10,7 @@ class CreatePost extends React.Component {
         this.state = {
             file: '',
             imagePreviewUrl: '',
+            imageError: '',
             title: '',
             tag: '',
             description: '',
@@ -39,9 +40,10 @@ class CreatePost extends React.Component {
         this.setState({
             file: '',
             imagePreviewUrl: '',
+            imageError: '',
             title: '',
             tagList: [],
-            tag: "",
+            tag: '',
             description: ''
         });
     }
@@ -159,7 +161,7 @@ class CreatePost extends React.Component {
                 this.setState({
                     file: file,
                     imagePreviewUrl: reader.result,
-                    imageError: false,
+                    imageError: '',
                     rotate: false
                 }, () => {
                     let canvas = this.preview;
@@ -206,7 +208,7 @@ class CreatePost extends React.Component {
               this.setState({
                   file : blob,
                   imagePreviewUrl: canvas.toDataURL(),
-                  imageError : "",
+                  imageError : '',
                   rotate : !this.state.rotate
               });
             });
@@ -308,17 +310,15 @@ class CreatePost extends React.Component {
 
         if (imagePreviewUrl) {
             $imagePreview = (
-                <div>
-                    <div className="preview-component position--relative">
-                        <div className="post-info">
-                            <div className="info-block">
-                                <div className="img-preview" ref={ref => this.previewContainer = ref}>
-                                    <canvas id="preview" ref={ref => this.preview = ref}/>
-                                </div>
+                <div className="preview-component position--relative">
+                    <div className="post-info">
+                        <div className="info-block">
+                            <div className="img-preview" ref={ref => this.previewContainer = ref}>
+                                <canvas id="preview" ref={ref => this.preview = ref}/>
                             </div>
                         </div>
-                        <input id="upload-file" className="file-input" onChange={(e)=>this._handleImageChange(e)} type="file" />
                     </div>
+                    <input id="upload-file" className="file-input" onChange={(e)=>this._handleImageChange(e)} type="file" />
                 </div>
             );
 
