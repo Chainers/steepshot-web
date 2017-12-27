@@ -408,6 +408,37 @@
     .container-settings__content-wrapper{
       padding-top: 20px;
     }
+    .lead {
+      margin-top: 4% !important;
+    }
+    .card-field.about {
+      max-width: none !important;
+      margin: 0 !important;
+    }
+    .modal-dialog {
+      margin: 0 !important;
+      padding: 0 !important;
+      width: 100% !important;
+    }
+    .modal-content {
+      width: 100%;
+    }
+    .post-single {
+      border-radius: 0 !important;
+    }
+    .crossWrapper {
+      display: block;
+      background-color: #fafafa;
+      width: 100%;
+      height: 60px;
+      padding: 10px 30px 10px 20px;
+    }
+    .modalButton i {
+      color: #0f181e;
+      position: absolute;
+      right: 10px;
+      top: 23px;
+    }
   }
 
   @media screen and (min-width: 320px) and (max-width: 420px) {
@@ -432,6 +463,43 @@
     .container-settings {
       position: relative;
       top: 40px;
+    }
+    .lead {
+      margin-top: 12% !important;
+    }
+    .g-content {
+      padding: 22px 0 40px 0 !important;
+    }
+    .card-field.about {
+      margin: 0 !important;
+    }
+    .modal-dialog {
+      margin: 0 !important;
+      padding: 0 !important;
+      width: 100% !important;
+    }
+    .modal-content {
+      width: 100%;
+    }
+    .post-single {
+      border-radius: 0 !important;
+    }
+    .crossWrapper {
+      display: block;
+      background-color: #fafafa;
+      width: 100%;
+      height: 60px;
+      padding: 10px 30px 10px 20px;
+    }
+    .modalButton i {
+      color: #0f181e;
+      position: absolute;
+      right: 10px;
+      top: 23px;
+    }
+    .fa-times:before {
+      width: 17px !important;
+      height: 19px !important;
     }
   }
 
@@ -573,6 +641,7 @@
   }
 
   .post__image-container img {
+    max-height: 460px;
     max-width: 680px;
   }
 

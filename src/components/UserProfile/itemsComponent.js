@@ -30,10 +30,7 @@ class ItemsComponent extends React.Component {
       renderNotEmptyOnly : this.props.renderNotEmptyOnly == undefined ? false : this.props.renderNotEmptyOnly,
       isComponentVisible : this.props.isComponentVisible == undefined ? true : this.props.isComponentVisible,
       ignored : this.props.ignored == undefined ? [] : this.props.ignored,
-      maxPosts : this.props.maxPosts || 9999,
-      forOffset : {
-        top: '0'
-      }
+      maxPosts : this.props.maxPosts || 9999
     };
   }
 
@@ -48,27 +45,6 @@ class ItemsComponent extends React.Component {
 
   componentDidMount() {
     this.fetchData();
-  }
-
-  componentWillMount() {
-    //this.startOffset();
-  }
-
-  startOffset() {
-    let obj = {...this.state.forOffset};
-    if (location.pathname.match(/\/search\/\w+/g)) {
-      obj.top = (document.documentElement.clientHeight / 2) - 230;
-      this.setState({forOffset: obj});
-    } else {
-      obj.top = (document.documentElement.clientHeight / 2) - 170;
-      this.setState({forOffset: obj});
-    }
-  }
-
-  spinnerPosition() {
-    let obj = {...this.state.forOffset};
-    obj.top = '0';
-    this.setState({forOffset: obj});
   }
 
   spinnerControlFunc() {
@@ -125,15 +101,16 @@ class ItemsComponent extends React.Component {
       this.state.getPosts(options, this.state.cancelPrevious).then((response) => {
         let newPosts = this.state.items.concat(response.results);
         let hasMore = !(this.state.offset == response.offset);
-        if (this.state.items.length + response.results.length == 0) hasMore = false;
+        if (this.state.items.length + response.results.length <= 4) hasMore = false;
         this.setState({
           items: newPosts,
           offset: response.offset,
           hasMore: hasMore,
           loading: false
         });
-        this.spinnerControlFunc();
-        //this.spinnerPosition();
+        // if (/\/search\/\w+/.test(document.location.pathname)) {
+        //   this.tabsFunc(this.state.items.length);
+        // }
       });
     });
   }
@@ -185,6 +162,10 @@ class ItemsComponent extends React.Component {
     },
         jqApp.openPostModal($(ReactDOM.findDOMNode(this)))
     );
+  }
+
+  tabsFunc(number) {
+    this.props.controlTabs(number);
   }
 
   renderItems() {

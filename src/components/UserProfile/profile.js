@@ -132,7 +132,7 @@ class UserProfile extends React.Component {
 
     if (this.state.profile) {
       name = this.state.profile.name;
-      if (name == undefined || name == '') name = `@${this.state.profile.username}`;[]
+      if (name == undefined || name == '') name = `@${this.state.profile.username}`;
       website = this.state.profile.website;
       about = this.state.profile.about;
       location = this.state.profile.location;
