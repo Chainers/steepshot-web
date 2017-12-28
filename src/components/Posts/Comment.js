@@ -96,7 +96,6 @@ class Comment extends React.Component {
   render() {
     let avatar = this.state.avatar || constants.NO_AVATAR;
     const authorLink = `/@${this.props.item.author}`;
-
     return (
       <div className="comment">
         <div className="comment-head">

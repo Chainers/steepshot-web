@@ -109,6 +109,8 @@ class Login extends React.Component {
     window.open('https://steemit.com/pick_account');
   }
 
+
+
   renderTutorVideo() {
     return (
       <div className="youtube-embed">
@@ -151,7 +153,7 @@ class Login extends React.Component {
               <form className="form-login form-horizontal">
                 <div className={this.state.userNameError ? "has-error" : null}>
                   <div className="form-group">
-                    <div className="input-container col-xs-12">
+                    <div className="input-container col-xs-12 ">
                       <input type="text"
                         name="userName"
                         id="formNAME"
@@ -206,7 +208,7 @@ class Login extends React.Component {
               </form>
               <div className="container-fluid">
                 <div className="row">
-                  <div className="col-xs-12 text--center">
+                  <div className="col-xs-12 text--center paddingNo">
                     {
                       this.state.withTutorVideo
                       ?

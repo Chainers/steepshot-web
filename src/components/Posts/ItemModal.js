@@ -24,7 +24,6 @@ import {Collapse} from 'react-collapse';
 import Constants from '../../common/constants';
 
 import utils from '../../utils/utils';
-import ReactCSSTransitionGroup from 'react-transition-group/CSSTransitionGroup';
 
 class ItemModal extends React.Component {
     constructor(props) {
@@ -277,7 +276,7 @@ class ItemModal extends React.Component {
       if (a) {
         description = this.state.item.title;
       } else {
-        description = this.state.item.description;
+        description = this.state.item.description.replace(/\n[\w\W]+/, '');
       }
       if (description.match(/@\w+/g)) {
         let arr = description.split(' ').map( (item, index) => {
@@ -307,7 +306,7 @@ class ItemModal extends React.Component {
 
     renderDescription() {
       let forceOpen = false;
-      if (this.state.item.description.length < 140) forceOpen = true;
+      if (this.state.item.description.replace(/\n[\w\W]+/, '').length < 140) forceOpen = true;
       return (
         <div className="post-description">
           <p>{this.userLinkFunc(true)}</p>
@@ -338,7 +337,6 @@ class ItemModal extends React.Component {
 
       let itemImage = this.state.item.body || constants.NO_IMAGE;
       let isUserAuth = (this.props.username && this.props.postingKey);
-
       const authorLink = `/@${this.state.item.author}`;
 
       return(
@@ -359,10 +357,8 @@ class ItemModal extends React.Component {
                       <AvatarComponent src={this.state.item.avatar} />
                       <div className="name">{this.state.item.author}</div>
                     </Link>
+                    <i data-dismiss="modal" className="modalButton" aria-hidden="true"></i>
                   </div>
-                  <button type="button" data-dismiss="modal" aria-hidden="true" className="modalButton">
-                    <i className="fa fa-times" aria-hidden="true"></i>
-                  </button>
                 </div>
                 :
                 null
