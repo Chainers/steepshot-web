@@ -1073,13 +1073,13 @@
   }
 }
 
-@media (min-width: 400px) and (max-width: 480px) {
+@media (min-width: 400px) and (max-width: 517px) {
   .message_action-info {
     font-size: 12px;
   }
 }
 
-@media (min-width: 480px) and (max-width: 551px) {
+@media (min-width: 517px) and (max-width: 551px) {
   .message_action-info {
     font-size: 13px;
   }
@@ -1091,7 +1091,13 @@
   }
 }
 
-@media (min-width: 680px) {
+@media (min-width: 680px) and (max-width: 1365px) {
+  .message_action-info {
+    font-size: 15px;
+  }
+}
+
+@media (min-width: 1365px) {
   .message_action-info {
     font-size: 16px;
   }

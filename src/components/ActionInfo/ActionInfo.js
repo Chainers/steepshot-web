@@ -16,6 +16,12 @@ class ActionInfo extends React.Component {
     });
   }
   
+  moveTo() {
+    this.setState({
+      closed: true,
+    });
+  }
+  
   render() {
     return (
       <ShowIf show={!this.state.closed}>
@@ -27,7 +33,10 @@ class ActionInfo extends React.Component {
                   <b>Happy New Year Contest 2018!<br/></b>
                   Post a photo on the New Year theme untill 5.01.2018, select
                   one of the tags: #steepshotcontest #steepshotchallenge.<br/>
-                  <a>More info</a>
+                  <a
+                    href="https://steemit.com/steem/@steepshot/new-year-2018-photochallenge-for-steepshot-users-150-steem-reward-for-the-best-10-photos"
+                    target="_blank"
+                    onClick={this.moveTo.bind(this)}>More info</a>
                 </p>
               </div>
               <div className="col-xs-2 col-md-1 col-lg-1 float-right">
@@ -41,7 +50,6 @@ class ActionInfo extends React.Component {
       </ShowIf>
     );
   }
-  
 }
 
 export default ActionInfo;
