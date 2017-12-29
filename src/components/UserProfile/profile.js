@@ -152,7 +152,7 @@ class UserProfile extends React.Component {
                 <div className="name">{name}</div>
                 <div className="location">{location}</div>
                 <p>{about}</p>
-                <p>
+                <p className="break--word">
                   <a href={website}>{website}</a>
                 </p>
                 <div className="amount">
