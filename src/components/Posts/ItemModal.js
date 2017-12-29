@@ -404,6 +404,24 @@ class ItemModal extends React.Component {
                 }
               </div>
               <div className="post__description-container">
+                {
+                  this.state.closeParam
+                  ?
+                    null
+                  :
+                    <div className="user-wrap clearfix">
+                      <div className="date">
+                        <TimeAgo
+                          datetime={this.state.item.created}
+                          locale='en_US'
+                        />
+                      </div>
+                      <Link to={authorLink} className="user">
+                        <AvatarComponent src={this.state.item.avatar} />
+                        <div className="name">{this.state.item.author}</div>
+                      </Link>
+                    </div>
+                }
                 <div className="post-controls clearfix">
                   <div className="buttons-row" onClick={(e)=>{this.callPreventDefault(e)}}>
                     <VouteComponent

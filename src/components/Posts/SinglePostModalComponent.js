@@ -200,7 +200,7 @@ class SinglePostModalComponent extends React.Component {
     }
 
     renderDescription() {
-        let text = this.state.item.description;
+        let text = this.state.item.description.replace(/\n[\w\W]+/, '');
         let forceOpen = false;
         this.state.item.tags.map(tag => text = text + ' #' + tag);
         if (text.length < 140) forceOpen = true;
@@ -210,7 +210,7 @@ class SinglePostModalComponent extends React.Component {
             <div
               className={(this.state.isDescriptionOpened || forceOpen) ? "collapse-opened" : "collapse-closed"}
             >
-                {this.state.item.description + ' '}
+                {this.state.item.description.replace(/\n[\w\W]+/, '') + ' '}
                 {
                   this.state.item.tags.map((tag, index) => {
                     return <span key={index}><TagComponent tag={tag}/> </span>
