@@ -22,15 +22,15 @@ class ActionInfo extends React.Component {
         <div className="container_action-info">
           <div className="container-fluid">
             <div className="row">
-              <div className="col-xs-10 col-md-8 col-md-offset-1 col-lg-8 col-lg-offset-1 text-center">
-                <p>
-                  Happy New Year Contest 2018!
+              <div className="col-xs-10 col-md-11 col-lg-11 text-center">
+                <p className="message_action-info">
+                  <b>Happy New Year Contest 2018!<br/></b>
                   Post a photo on the New Year theme untill 5.01.2018, select
-                  one of the tags: #steepshotcontest #steepshotchallenge.
+                  one of the tags: #steepshotcontest #steepshotchallenge.<br/>
                   <a>More info</a>
                 </p>
               </div>
-              <div className="col-xs-2 col-md-1 col-md-offset-1 col-lg-1 col-lg-offset-1">
+              <div className="col-xs-2 col-md-1 col-lg-1 float-right">
                 <img src="/static/images/close_button.png"
                      className="shape-close-button"
                      onClick={this.closeComponent.bind(this)}/>

@@ -1057,7 +1057,6 @@
   margin-top: 39px;
   width: 22px;
   height: 22px;
-  object-fit: contain;
   border-radius: 1px;
   cursor:pointer;
 }
@@ -1065,4 +1064,35 @@
 .content_action-info {
   display: inline-block;
   margin-top: 39px;
+
+}
+
+@media (max-width: 400px) {
+  .message_action-info {
+    font-size: 10px;
+  }
+}
+
+@media (min-width: 400px) and (max-width: 480px) {
+  .message_action-info {
+    font-size: 12px;
+  }
+}
+
+@media (min-width: 480px) and (max-width: 551px) {
+  .message_action-info {
+    font-size: 13px;
+  }
+}
+
+@media (min-width: 551px) and (max-width: 680px) {
+  .message_action-info {
+    font-size: 14px;
+  }
+}
+
+@media (min-width: 680px) {
+  .message_action-info {
+    font-size: 16px;
+  }
 }
