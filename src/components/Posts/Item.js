@@ -1,6 +1,6 @@
 import React from 'react';
+import {getPostComments} from '../../actions/posts';
 import { Link, Redirect } from 'react-router-dom';
-import { getPostComments } from '../../actions/posts';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Comments from './Comments';
@@ -131,43 +131,37 @@ class Item extends React.Component {
     return (
       <div className="item-wrap">
         <div className="post-card" >
-          {
-            !this.state.clearPropsHeader
-              ?
-              <div className="card-head clearfix">
-                <div className="date">
-                  <TimeAgo
-                    datetime={this.state.item.created}
-                    locale='en_US'
-                  />
-                </div>
-                <Link to={authorLink} className="user">
-                  <div className="photo">
-                    <img src={authorImage} alt="User" onError={this.setDefaultAvatar.bind(this)}/>
-                  </div>
-                  <div className="name">{this.state.item.author}</div>
-                </Link>
+          <ShowIf show={!this.state.clearPropsHeader}>
+            <div className="card-head clearfix">
+              <div className="date">
+                <TimeAgo
+                  datetime={this.state.item.created}
+                  locale='en_US'
+                />
               </div>
-              :
-              null
-          }
+              <Link to={authorLink} className="user">
+                <div className="photo">
+                  <img src={authorImage} alt="User"
+                       onError={this.setDefaultAvatar.bind(this)}/>
+                </div>
+                <div className="name">{this.state.item.author}</div>
+              </Link>
+            </div>
+          </ShowIf>
+
           <div className="card-body">
             <div className="card-pic" onClick={this._openModal.bind(this)}>
-            {
-              this.state.adultParam
-              ?
-                <div className="forAdult">
-                  <p>NSFW content</p>
-                </div>
-              :
-                this.state.lowParam
-              ?
-                <div className="forAdult">
-                  <p>Low rated content</p>
-                </div>
-              :
-                null
-            }
+              {
+                this.state.adultParam
+                  ? <div className="forAdult">
+                    <p>NSFW content</p>
+                  </div>
+                  : <ShowIf show={this.state.lowParam}>
+                    <div className="forAdult">
+                      <p>Low rated content</p>
+                    </div>
+                  </ShowIf>
+              }
             <a style={ cardPhotoStyles } className="img" alt="User" onError={this.setDefaultImage.bind(this)}></a>
             </div>
             <div className="card-wrap">
