@@ -226,11 +226,11 @@ class ItemModal extends React.Component {
       });
     }
 
-    commentChanged(event) {
-      this.setState({
-          commentValue : event.target.value
-      });
-    }
+    // commentChanged(event) {
+    //   this.setState({
+    //       commentValue : event.target.value
+    //   });
+    // }
 
     next() {
       if (this.state.index < this.state.items.length - 1) {
@@ -331,6 +331,13 @@ class ItemModal extends React.Component {
       } else {
         this.setState({closeParam : false});
       }
+    }
+
+    anyFunc(a) {
+      this.setState({commentValue : `@${a}, `}, () => {
+        this.commentInput.focus();
+      });
+      console.log(a);
     }
 
     render() {
@@ -455,7 +462,12 @@ class ItemModal extends React.Component {
                   autoHide={true}
                 >
                   {this.renderDescription()}
-                  <Comments key="comments" item={this.state.item} newComment={this.state.newComment} />
+                  <Comments
+                    key="comments"
+                    item={this.state.item}
+                    newComment={this.state.newComment}
+                    replyAuthor={this.anyFunc.bind(this)}
+                  />
                 </ScrollViewComponent>
                 {
                   isUserAuth
@@ -479,10 +491,10 @@ class ItemModal extends React.Component {
                               ref={ (ref) => {this.commentInput = ref} }
                               id="formCOMMENT"
                               name="commentValue"
-                              value={this.state.commentValue}
+                              //value={this.state.commentValue}
                               maxLength={2048}
                               className="form-control"
-                              onChange={this.commentChanged.bind(this)}
+                              // onChange={this.commentChanged.bind(this)}
                             />
                             <label htmlFor="formCOMMENT" className="name">Comment</label>
                           </div>

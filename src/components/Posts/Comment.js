@@ -71,10 +71,17 @@ class Comment extends React.Component {
     }
   }
 
+  replyAuthor() {
+    this.props.replyAuthor(this.state.item.author);
+  }
+
   likeFunc() {
     let like = this.state.item.net_votes;
     let text = null;
     let money = null;
+    let reply = <span className="rectangle_comment text--center">
+                  <span onClick={this.replyAuthor.bind(this)}>Reply</span>
+                </span>
     if (like) {
       if (like == 1 || like == -1) {
         text = `${like} like`
@@ -86,8 +93,15 @@ class Comment extends React.Component {
       }
       return (
         <div className="comment-controls clearfix">
+          {reply}
           <a className="likes" data-toggle="modal" onClick={this.openLikesModal.bind(this)}>{text}</a>
-          <span>{money}</span>
+          <span className="pull-right">{money}</span>
+        </div>
+      )
+    } else {
+      return (
+        <div className="comment-controls clearfix">
+          {reply}
         </div>
       )
     }

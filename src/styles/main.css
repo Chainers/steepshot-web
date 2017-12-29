@@ -338,13 +338,30 @@
   .card-wrap {
     min-width: 257px !important;
   }
+  .rectangle_comment span {
+    padding: 2.5px 20px 3.5px 20px;
+    border-radius: 12px;
+    background-color: #ffffff;
+    border: solid 1px #ececee;
+    transition: .15s all ease;
+  }
+  .rectangle_comment span:hover {
+    color: #e74800;
+    cursor: pointer;
+  }
 
   @media screen and (min-width: 768px) {
-    .user-wrap {
-      padding: 20px 10px !important;
+    .post__description-container .user-wrap {
+      padding: 20px !important;
+    }
+    .comment-head .user-wrap {
+      padding: 20px 0 !important;
     }
     .post-single .post-comment {
       position: absolute !important;
+    }
+    .list-scroll {
+      margin-bottom: 82px !important;
     }
   }
 

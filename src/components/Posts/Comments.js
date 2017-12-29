@@ -59,8 +59,11 @@ class Comments extends React.Component {
     });
   }
 
+  replyAuthor(author) {
+    this.props.replyAuthor(author);
+  }
+
   render() {
-    let _this = this;
     let comments = <div>No comments</div>;
 
     if (this.state.loading) {
@@ -69,7 +72,7 @@ class Comments extends React.Component {
 
     if (this.state.comments && this.state.comments.length != 0) {
       comments = this.state.comments.map((item, index) => {
-        return <Comment key={index} item={item} />
+        return <Comment key={index} item={item} replyAuthor={this.replyAuthor.bind(this)} />
       });
     }
 
