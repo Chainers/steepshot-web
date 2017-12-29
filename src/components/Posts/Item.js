@@ -19,6 +19,7 @@ import FlagComponent from './FlagComponent';
 import TagComponent from './TagComponent';
 import LikesComponent from './LikesComponent';
 import TimeAgo from 'timeago-react';
+import ShowIf from '../Common/ShowIf';
 
 class Item extends React.Component {
   constructor(props) {
@@ -219,13 +220,9 @@ class Item extends React.Component {
                 </div>
                 <div className="wrap-counts clearfix">
                   <LikesComponent likes={this.state.item.net_votes} url={this.state.item.url}/>
-                  {
-                    this.state.moneyParam
-                    ?
-                      <div className="amount">{this.state.item.total_payout_reward}</div>
-                    :
-                      null
-                  }
+                  <ShowIf show={this.state.moneyParam}>
+                    <div className="amount">{this.state.item.total_payout_reward}</div>
+                  </ShowIf>
                 </div>
               </div>
               <div className="card-preview">

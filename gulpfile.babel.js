@@ -76,7 +76,6 @@ const paths = {
   srcFonts: ['static/fonts/**/*'],
   dist: 'dist',
   distJs: 'dist/js',
-  distCss: 'dist/styles',
   distImg: 'dist/static/images',
   distFonts: 'dist/static/fonts/',
   prepare: 'dist/prepare'
@@ -156,11 +155,10 @@ gulp.task('browserify', () => {
 gulp.task('styles', () => {
   gulp.src(paths.srcCss)
   .pipe(rename({ extname: `${guid}.css` }))
-  .pipe(concat('main.css'))
   .pipe(sourcemaps.init())
   .pipe(postcss([vars, extend, nested, autoprefixer, cssnano]))
   .pipe(sourcemaps.write('.'))
-  .pipe(gulp.dest(paths.distCss))
+  .pipe(gulp.dest(paths.dist))
   .pipe(reload({ stream: true }));
 });
 
