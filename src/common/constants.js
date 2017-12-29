@@ -34,7 +34,7 @@ export default {
     },
 
     POSTS_SETTINGS: {
-        defaultLimit: 16
+        defaultLimit: 17
     },
 
     EMPTY_QUERY : "It's very strange, but we do not have anything yet for this query. Try to look for something else ...",

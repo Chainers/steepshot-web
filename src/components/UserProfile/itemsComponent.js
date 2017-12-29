@@ -99,7 +99,7 @@ class ItemsComponent extends React.Component {
       previousRequestOffset : this.state.offset
     }, () => {
       this.state.getPosts(options, this.state.cancelPrevious).then((response) => {
-        let newPosts = this.state.items.concat(response.results);
+        let newPosts = this.state.items.concat(response.results.slice(0, response.results.length - 1));
         let hasMore = !(this.state.offset == response.offset);
         if (this.state.items.length + response.results.length <= 4) hasMore = false;
         this.setState({

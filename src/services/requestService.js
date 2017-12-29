@@ -15,13 +15,13 @@ class RequestService extends BaseRequestService{
     //region Deprecated
     handlev1BaseRequestPosts(url, options) {
         return this.getBasev1Url() + '/' + url +
-        this.optionsConverter(this.getDefaultPostsOptions(options), this.getDefaultSettingsOptions(), options);
+        this.optionsConverter(this.getDefaultPostsOptions(), this.getDefaultSettingsOptions(), options);
     }
     //endregion
 
     handlev1_1BaseRequestPosts(url, options) {
         return this.getBasev1_1Url() + '/' + url +
-        this.optionsConverter(this.getDefaultPostsOptions(options), this.getDefaultSettingsOptions(), this.getAuthUser(), options);
+        this.optionsConverter(this.getDefaultPostsOptions(), this.getDefaultSettingsOptions(), this.getAuthUser(), options);
     }
 
     handlev1_1BaseRequestPost(url) {
