@@ -333,11 +333,9 @@ class ItemModal extends React.Component {
       }
     }
 
-    anyFunc(a) {
-      this.setState({commentValue : `@${a}, `}, () => {
-        this.commentInput.focus();
-      });
-      console.log(a);
+    anyFunc(author) {
+      this.commentInput.value = `@${author}, `;
+      this.commentInput.focus();
     }
 
     render() {
