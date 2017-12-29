@@ -4,15 +4,11 @@ import { getStore } from '../store/configureStore';
 
 const basev1_1Url = constants.URLS.baseUrl_v1_1;
 const basev1Url = constants.URLS.baseUrl_v1;
-const baseLimit = constants.POSTS_SETTINGS.defaultLimit;
 
 class BaseRequestService {
-    getDefaultPostsOptions(options) {
-        let calcLimit = baseLimit;
-        if (options != undefined)
-        if (options.offset != undefined && options.offset != '') calcLimit++;
+    getDefaultPostsOptions() {
         return {
-            limit: calcLimit,
+            limit: constants.POSTS_SETTINGS.defaultLimit,
             offset: null
         };
     }
