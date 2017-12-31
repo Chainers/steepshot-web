@@ -31,6 +31,7 @@ class ActionInfo extends React.Component {
     this.setState({
       closed: true,
     });
+    $("div.g-main").css('padding-top', '60px');
   }
   
   render() {
