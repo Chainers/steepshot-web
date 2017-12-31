@@ -33,12 +33,6 @@ class ActionInfo extends React.Component {
     });
   }
   
-  moveTo() {
-    this.setState({
-      closed: true,
-    });
-  }
-  
   render() {
     return (
       <ShowIf show={!this.state.closed}>
@@ -52,8 +46,7 @@ class ActionInfo extends React.Component {
                   one of the tags: #steepshotcontest #steepshotchallenge.
                   <a
                     href="https://steemit.com/steem/@steepshot/new-year-2018-photochallenge-for-steepshot-users-150-steem-reward-for-the-best-10-photos"
-                    target="_blank"
-                    onClick={this.moveTo.bind(this)}> More info</a>
+                    target="_blank"> More info</a>
                 </p>
               </div>
               <div className="col-xs-2 col-md-1 col-lg-1 float-right">
