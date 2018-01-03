@@ -81,7 +81,6 @@ class Login extends React.Component {
           jqApp.pushMessage.open(message);
         });
       }
-      console.log(this.state.userName);
       login(this.state.userName.toLowerCase(), this.state.postingKey, this.props.history, this.props.dispatch, callback);
     });
   }
