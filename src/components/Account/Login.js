@@ -81,7 +81,8 @@ class Login extends React.Component {
           jqApp.pushMessage.open(message);
         });
       }
-      login(this.state.userName, this.state.postingKey, this.props.history, this.props.dispatch, callback);
+      console.log(this.state.userName);
+      login(this.state.userName.toLowerCase(), this.state.postingKey, this.props.history, this.props.dispatch, callback);
     });
   }
 
@@ -158,7 +159,7 @@ class Login extends React.Component {
                         name="userName"
                         id="formNAME"
                         className="form-control autofil--gray"
-                        value={this.state.userName}
+                        value={this.state.userName.toLowerCase()}
                         onChange={this.handleChange.bind(this)}
                       />
                       <label htmlFor="formNAME" className="name">Name</label>

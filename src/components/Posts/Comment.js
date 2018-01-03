@@ -48,13 +48,13 @@ class Comment extends React.Component {
     if (this.state.item.body.match(/@\w+/)) {
       let arr = this.state.item.body.split(' ').map( (item, index) => {
         if (/@\w+\S/.test(item)) {
-          let replace1 = item.replace(/(@[\w.]+)/g, ' $1 ');
+          let lowItem = item.toLowerCase();
+          let replace1 = lowItem.replace(/(@[\w.]+)/g, ' $1 ');
           let replace2 = replace1.match(/\s(@[\w.]+)\s/g);
           let replace3 = replace1.match(/([\w\W]+)\s@/g);
           let replace4 = replace1.match(/\w\s([^@]+)/g);
+          let replace5 = lowItem.match(/@[\w.]+[\W]/);
           let replaceDot = replace2[0].match(/@\w+\.\s/);
-          let test = item.match(/@[\w.]+[\W]/);
-          console.log(item.match(/@[\w.]+[\W]/));
           return <span key={index}>
                    <span>
                      {
@@ -78,7 +78,7 @@ class Comment extends React.Component {
                        ?
                          replace2[0].replace(/\.\s+/g, '')
                        :
-                         test
+                         replace5
                        ?
                          replace2[0].replace(/\s+/g, '')
                        :

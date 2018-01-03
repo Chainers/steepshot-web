@@ -276,24 +276,71 @@ class ItemModal extends React.Component {
       if (a) {
         description = this.state.item.title;
       } else {
-        description = this.state.item.description.replace(/\n[\w\W]+/, '');
+        let descriptionStart = this.state.item.description.replace(/(<\w+>)+/, '');
+        description = descriptionStart.replace(/\n[\w\W]+/, '');
       }
       if (description.match(/@\w+/g)) {
         let arr = description.split(' ').map( (item, index) => {
-          if (/@\w+/.test(item)) {
+          if (/@\w+\S/.test(item)) {
+            let lowItem = item.toLowerCase();
+            let replace1 = lowItem.replace(/(@[\w.]+)/g, ' $1 ');
+            let replace2 = replace1.match(/\s(@[\w.]+)\s/g);
+            let replace3 = replace1.match(/([\w\W]+)\s@/g);
+            let replace4 = replace1.match(/\w\s([^@]+)/g);
+            let replace5 = lowItem.match(/@[\w.]+[\W]/);
+            let replaceDot = replace2[0].match(/@\w+\.\s/);
             return <span key={index}>
-                     <Link to={`/@${item.replace(/[^A-Za-z_.0-9]/g, '')}`}>
-                       {item + ' '}
-                     </Link>
+                   <span>
+                     {
+                       replace3
+                       ?
+                         replace3[0].replace(/\s@/g, '')
+                       :
+                         null
+                     }
                    </span>
+                   <Link to={`/${
+                     replaceDot
+                       ?
+                       replace2[0].replace(/\s(@\w+)\.\s+/g, '$1')
+                       :
+                       replace2[0].replace(/\s+/g, '')}`
+
+                   }>
+                     {
+                       replaceDot
+                         ?
+                         replace2[0].replace(/\.\s+/g, '')
+                         :
+                         replace5
+                           ?
+                           replace2[0].replace(/\s+/g, '')
+                           :
+                           replace2[0].replace(/\s+/g, '') + ' '
+                     }
+                   </Link>
+                   <span>
+                     {
+                       replace4
+                         ?
+                         replace4[0].replace(/\w\s/, '') + ' '
+                         :
+                         replaceDot
+                           ?
+                           '. '
+                           :
+                           null
+                     }
+                   </span>
+                 </span>
           } else {
             return item + ' '
           }
         });
         return (
           <span>
-            {arr}
-          </span>
+          {arr}
+        </span>
         )
       } else {
         return (
@@ -306,7 +353,8 @@ class ItemModal extends React.Component {
 
     renderDescription() {
       let forceOpen = false;
-      if (this.state.item.description.replace(/\n[\w\W]+/, '').length < 140) forceOpen = true;
+      let descriptionStart = this.state.item.description.replace(/(<\w+>)+/, '');
+      if (descriptionStart.replace(/\n[\w\W]+/, '').length < 140) forceOpen = true;
       return (
         <div className="post-description">
           <p>{this.userLinkFunc(true)}</p>
@@ -356,7 +404,9 @@ class ItemModal extends React.Component {
                       <AvatarComponent src={this.state.item.avatar} />
                       <div className="name">{this.state.item.author}</div>
                     </Link>
-                    <i data-dismiss="modal" className="modalButton" aria-hidden="true"></i>
+                    <div data-dismiss="modal" className="modalButtonWrapper">
+                      <i className="modalButton" aria-hidden="true"></i>
+                    </div>
                   </div>
                 </div>
                 :

@@ -37,7 +37,15 @@ class SinglePostModalComponent extends React.Component {
             notify : this.props.notify,
             isPostLoading : true,
             isDescriptionOpened : false,
+            adultParam : false,
+            moneyParam : true,
+            lowParam : false,
+            closeParam : false,
             ...this.props
+        }
+        this.mobileCoverParams ={
+          width: '100%',
+          height: '100%'
         }
     }
 
@@ -47,7 +55,37 @@ class SinglePostModalComponent extends React.Component {
       document.title = `${title.join('')} | Steepshot`;
     }
 
+    controlRestrictions() {
+      if (this.state.item.is_nsfw) {
+        this.setState({adultParam : true});
+      } else {
+        this.setState({adultParam : false});
+      }
+      if (this.state.item.total_payout_reward == 0) {
+        this.setState({moneyParam : false});
+      }
+      if (this.state.item.is_low_rated) {
+        this.setState({lowParam : true});
+      } else {
+        this.setState({lowParam : false});
+      }
+    }
+
+    hideFunc() {
+      this.setState({adultParam : false, lowParam : false});
+    }
+
+    closeButtonFunc() {
+      if (document.documentElement.clientWidth <= 767) {
+        this.setState({closeParam : true});
+      } else {
+        this.setState({closeParam : false});
+      }
+    }
+
     componentDidMount() {
+        this.closeButtonFunc();
+        this.setState({needsCommentFormLoader : false});
         const urlObject = this.props.location.pathname.split('/');
         if (urlObject.length < 3) {
             this.error();
@@ -76,6 +114,7 @@ class SinglePostModalComponent extends React.Component {
             } else {
                 this.error();
             }
+            this.controlRestrictions();
         });
     }
 
@@ -102,8 +141,8 @@ class SinglePostModalComponent extends React.Component {
 
     sendComment(e) {
       e.preventDefault();
-
-      if (this.state.commentValue == "") return false;
+      let comment = this.commentInput.value;
+      if (comment == '') return false;
 
       const urlObject = this.state.item.url.split('/');
 
@@ -122,11 +161,11 @@ class SinglePostModalComponent extends React.Component {
                 avatar : this.props.avatar,
                 author : this.props.username,
                 total_payout_value : 0,
-                body : this.state.commentValue,
+                body : comment,
                 created : Date.now()
               },
-              commentValue : ''
             }, () => {
+                this.commentInput.value = '';
                 this.scrollView.scrollBar.scrollToBottom();
                 jqApp.pushMessage.open(Constants.COMMENT_SUCCESS_MESSAGE);
             });
@@ -141,7 +180,7 @@ class SinglePostModalComponent extends React.Component {
           this.state.item.author,
           urlObject[urlObject.length - 1],
           this.props.username,
-          this.state.commentValue,
+          this.commentInput.value,
           this.state.item.tags,
           callback
         );
@@ -151,14 +190,6 @@ class SinglePostModalComponent extends React.Component {
     setDefaultImage() {
       this.setState({
         image: constants.NO_IMAGE
-      });
-    }
-
-    handleChange(event) {
-      let name = event.target.name;
-      let value = event.target.value;
-      this.setState({
-          [name] : value
       });
     }
 
@@ -200,17 +231,18 @@ class SinglePostModalComponent extends React.Component {
     }
 
     renderDescription() {
-        let text = this.state.item.description.replace(/\n[\w\W]+/, '');
+        let descriptionStart = this.state.item.description.replace(/(<\w+>)+/, '');
+        let description = descriptionStart.replace(/\n[\w\W]+/, '');
         let forceOpen = false;
-        this.state.item.tags.map(tag => text = text + ' #' + tag);
-        if (text.length < 140) forceOpen = true;
+        this.state.item.tags.map(tag => description = description + ' #' + tag);
+        if (description.length < 140) forceOpen = true;
         return (
           <div className="post-description">
             <p>{this.state.item.title}</p>
             <div
               className={(this.state.isDescriptionOpened || forceOpen) ? "collapse-opened" : "collapse-closed"}
             >
-                {this.state.item.description.replace(/\n[\w\W]+/, '') + ' '}
+                {description + ' '}
                 {
                   this.state.item.tags.map((tag, index) => {
                     return <span key={index}><TagComponent tag={tag}/> </span>
@@ -218,7 +250,6 @@ class SinglePostModalComponent extends React.Component {
                 }
                 <a className="lnk-more" onClick={this.openDescription.bind(this)}>Show more</a>
             </div>
-            <p></p>
           </div>
         )
     }
@@ -244,33 +275,86 @@ class SinglePostModalComponent extends React.Component {
             return(
                 <div>
                     <div className="post-single">
+                        {
+                          this.state.closeParam
+                            ?
+                            <div className="crossWrapper">
+                              <div className="user-wrap clearfix">
+                                <div className="date">
+                                  <TimeAgo
+                                    datetime={this.state.item.created}
+                                    locale='en_US'
+                                  />
+                                </div>
+                                <Link to={authorLink} className="user">
+                                  <AvatarComponent src={this.state.item.avatar} />
+                                  <div className="name">{this.state.item.author}</div>
+                                </Link>
+                                <i data-dismiss="modal" className="modalButton" aria-hidden="true"></i>
+                              </div>
+                            </div>
+                            :
+                            null
+                        }
                         <div className="post-wrap post">
                             <div className="post__image-container position--relative">
-                                <ShareComponent
-                                    url={this.state.item.url}
-                                    title="Share post"
-                                    containerModifier="block--right-top box--small post__share-button"
-                                />
-                                <img src={itemImage}
-                                    onError={this.setDefaultImage.bind(this)}
-                                    alt="image"
-                                />
+                              {
+                                this.state.adultParam
+                                  ?
+                                  <div style={this.mobileCoverParams}>
+                                    <div className="forAdult2">
+                                      <div className="forAdultInner">
+                                        <p className="par1">NSFW content</p>
+                                        <p className="par2">This content is for adults only. Not recommended for children or sensitive individuals.</p>
+                                        <button className="btn btn-index" onClick={this.hideFunc.bind(this)}>Show me</button>
+                                      </div>
+                                    </div>
+                                    <img src={itemImage} alt="Post picture."/>
+                                  </div>
+                                  :
+                                  this.state.lowParam
+                                    ?
+                                    <div style={this.mobileCoverParams}>
+                                      <div className="forAdult2">
+                                        <div className="forAdultInner">
+                                          <p className="par1">Low rated content</p>
+                                          <p className="par2">This content is hidden due to low ratings.</p>
+                                          <button className="btn btn-index" onClick={this.hideFunc.bind(this)}>Show me</button>
+                                        </div>
+                                      </div>
+                                      <img src={itemImage} alt="Post picture."/>
+                                    </div>
+                                    :
+                                    <div>
+                                      <ShareComponent
+                                        moneyParam={this.state.moneyParam}
+                                        url={this.state.item.url}
+                                        title="Share post"
+                                        containerModifier="block--right-top box--small post__share-button"
+                                      />
+                                      <img src={itemImage} alt="Post picture."/>
+                                    </div>
+                              }
                             </div>
                             <div className="post__description-container">
-                                <div className="post-header">
+                                {
+                                  this.state.closeParam
+                                  ?
+                                    null
+                                  :
                                     <div className="user-wrap clearfix">
-                                        <div className="date">
-                                            <TimeAgo
-                                                datetime={this.state.item.created}
-                                                locale='en_US'
-                                            />
-                                        </div>
-                                        <Link to={authorLink} className="user">
-                                            <AvatarComponent src={this.state.item.avatar} />
-                                            <div className="name">{this.state.item.author}</div>
-                                        </Link>
+                                      <div className="date">
+                                        <TimeAgo
+                                          datetime={this.state.item.created}
+                                          locale='en_US'
+                                        />
+                                      </div>
+                                      <Link to={authorLink} className="user">
+                                        <AvatarComponent src={this.state.item.avatar} />
+                                        <div className="name">{this.state.item.author}</div>
+                                      </Link>
                                     </div>
-                                </div>
+                                }
                                 <div className="post-controls clearfix">
                                     <div className="buttons-row" onClick={(e)=>{this.callPreventDefault(e)}}>
                                         <VouteComponent
@@ -310,7 +394,7 @@ class SinglePostModalComponent extends React.Component {
                                     autoHide={true}
                                 >
                                     {this.renderDescription()}
-                                    <Comments key="comments" item={this.state.item} newComment={this.state.newComment}/>
+                                    <Comments key="comments" replyUser={this.commentInput} item={this.state.item} newComment={this.state.newComment} />
                                 </ScrollViewComponent>
                                 {
                                 isUserAuth
@@ -318,24 +402,29 @@ class SinglePostModalComponent extends React.Component {
                                     <div className="post-comment">
                                         <form className="comment-form form-horizontal">
                                                 <div className="form-group clearfix">
-                                                    <div className="btn-wrap">
+                                                  {
+                                                    this.state.needsCommentFormLoader
+                                                      ?
+                                                      <div className="loaderInComments">
+                                                        <LoadingSpinner show={this.state.needsCommentFormLoader} />
+                                                      </div>
+                                                      :
+                                                      <div className="btn-wrap">
                                                         <button type="submit" className="btn-submit" onClick={this.sendComment.bind(this)}>Send</button>
-                                                    </div>
+                                                      </div>
+                                                  }
                                                 <div className="input-container">
                                                     <textarea
-                                                        ref="commentInput"
+                                                        ref={ (ref) => {this.commentInput = ref} }
                                                         id="formCOMMENT"
                                                         name="commentValue"
-                                                        value={this.state.commentValue}
                                                         maxLength={2048}
                                                         className="form-control"
-                                                        onChange={this.handleChange.bind(this)}
                                                     />
                                                     <label htmlFor="formCOMMENT" className="name">Comment</label>
                                                 </div>
                                             </div>
                                         </form>
-                                        <LoadingSpinner show={this.state.needsCommentFormLoader}/>
                                     </div>
                                 :
                                     null
