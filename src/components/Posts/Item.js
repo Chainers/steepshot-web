@@ -51,6 +51,7 @@ class Item extends React.Component {
 
   componentDidMount() {
     let propsItem = this.state.item;
+
     let money = parseFloat(propsItem.total_payout_reward).toFixed(2);
     if (money == 0.00) {
       this.setState({moneyParam: false});

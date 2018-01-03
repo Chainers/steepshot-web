@@ -28,7 +28,6 @@ class Comments extends React.Component {
 
     if (nextProps.newComment != undefined) {
       this.state.comments.push(nextProps.newComment);
-
       this.setState({
         comments: this.state.comments,
       });
@@ -59,10 +58,6 @@ class Comments extends React.Component {
     });
   }
 
-  replyAuthor(author) {
-    this.props.replyAuthor(author);
-  }
-
   render() {
     let comments = <div>No comments</div>;
 
@@ -72,7 +67,7 @@ class Comments extends React.Component {
 
     if (this.state.comments && this.state.comments.length != 0) {
       comments = this.state.comments.map((item, index) => {
-        return <Comment key={index} item={item} replyAuthor={this.replyAuthor.bind(this)} />
+        return <Comment replyUser={this.props.replyUser} key={index} item={item} />
       });
     }
 

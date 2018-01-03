@@ -40,7 +40,6 @@ class ItemModal extends React.Component {
             disableNext : false,
             disablePrev : false,
             redirectToReferrer : false,
-            commentValue : '',
             needsCommentFormLoader : false,
             isLoading : false,
             hasMore : this.props.hasMore,
@@ -155,10 +154,15 @@ class ItemModal extends React.Component {
       this.setState({adultParam : false, lowParam : false});
     }
 
+    clearCommentInput() {
+      this.commentInput.value = '';
+      this.formGr.classList.remove('not-empty');
+    }
+
     sendComment(e) {
       e.preventDefault();
-
-      if (this.state.commentValue == '') return false;
+      let comment = this.commentInput.value;
+      if (comment == '') return false;
 
       const urlObject = this.state.item.url.split('/');
 
@@ -168,6 +172,7 @@ class ItemModal extends React.Component {
         });
         if (err) {
           jqApp.pushMessage.open(err);
+          this.commentInput.value = '';
         } else if (success) {
             this.setState({
               newComment : {
@@ -176,16 +181,15 @@ class ItemModal extends React.Component {
                 avatar : this.props.avatar,
                 author : this.props.username,
                 total_payout_value : 0,
-                body : this.state.commentValue,
+                body : comment,
                 created : Date.now()
               },
-              commentValue: ''
             }, () => {
-              this.scrollView.scrollBar.scrollToBottom();
               jqApp.pushMessage.open(Constants.COMMENT_SUCCESS_MESSAGE);
+              this.scrollView.scrollBar.scrollToBottom();
             });
         }
-        this.formGr.classList.remove('not-empty');
+        this.clearCommentInput();
       }
 
       this.setState({
@@ -196,7 +200,7 @@ class ItemModal extends React.Component {
           this.state.item.author,
           urlObject[urlObject.length - 1],
           this.props.username,
-          this.state.commentValue,
+          this.commentInput.value,
           this.state.item.tags,
           callback
         );
@@ -226,20 +230,16 @@ class ItemModal extends React.Component {
       });
     }
 
-    // commentChanged(event) {
-    //   this.setState({
-    //       commentValue : event.target.value
-    //   });
-    // }
-
     next() {
       if (this.state.index < this.state.items.length - 1) {
+        this.clearCommentInput();
         this.clearNewComment(this.resetDefaultProperties(this.state.items[this.state.index + 1], 1));
       }
     }
 
     previous() {
       if (this.state.index > 0) {
+        this.clearCommentInput();
         this.clearNewComment(this.resetDefaultProperties(this.state.items[this.state.index - 1], -1));
       }
     }
@@ -316,7 +316,7 @@ class ItemModal extends React.Component {
               {this.userLinkFunc(false)}
               {
                 this.state.item.tags.map((tag, index) => {
-                  return <span key={index}><TagComponent tag={tag}/> </span>
+                  return <span key={index}><TagComponent tag={tag} /> </span>
                 })
               }
               <a className="lnk-more" onClick={this.openDescription.bind(this)}>Show more</a>
@@ -333,13 +333,7 @@ class ItemModal extends React.Component {
       }
     }
 
-    anyFunc(author) {
-      this.commentInput.value = `@${author}, `;
-      this.commentInput.focus();
-    }
-
     render() {
-
       let itemImage = this.state.item.body || constants.NO_IMAGE;
       let isUserAuth = (this.props.username && this.props.postingKey);
       const authorLink = `/@${this.state.item.author}`;
@@ -464,7 +458,7 @@ class ItemModal extends React.Component {
                     key="comments"
                     item={this.state.item}
                     newComment={this.state.newComment}
-                    replyAuthor={this.anyFunc.bind(this)}
+                    replyUser={this.commentInput}
                   />
                 </ScrollViewComponent>
                 {
@@ -489,10 +483,8 @@ class ItemModal extends React.Component {
                               ref={ (ref) => {this.commentInput = ref} }
                               id="formCOMMENT"
                               name="commentValue"
-                              //value={this.state.commentValue}
                               maxLength={2048}
                               className="form-control"
-                              // onChange={this.commentChanged.bind(this)}
                             />
                             <label htmlFor="formCOMMENT" className="name">Comment</label>
                           </div>
@@ -517,6 +509,7 @@ ItemModal.propTypes = {
 
 const mapStateToProps = (state) => {
   return {
+    reply: state.comment.author,
     localization: state.localization,
     username: state.auth.user,
     postingKey: state.auth.postingKey,

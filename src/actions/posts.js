@@ -33,7 +33,9 @@ async function getItems(url, promiseName, needsDestroyPrevious, where) {
   if (requestPromises[promiseName].isPending() && needsDestroyPrevious) requestPromises[promiseName].cancel();
 
   try {
-    return requestPromises[promiseName] = makeCancellableRequest(url).then(result => JSON.parse(result.target.response));
+    return requestPromises[promiseName] = makeCancellableRequest(url).then(result => {
+      return JSON.parse(result.target.response);
+    });
   }
   catch(e) {
     console.warn(where);
