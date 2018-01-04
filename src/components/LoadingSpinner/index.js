@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 class LoadingSpinner extends Component {
-  
+
   constructor(props) {
     super(props);
   }

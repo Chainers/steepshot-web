@@ -44,7 +44,6 @@ class BaseRequestService {
     getAuthUser() {
         const user = JSON.parse(localStorage.getItem("user"));
         if (user == undefined) return {};
-
         return {
             username: user
         }

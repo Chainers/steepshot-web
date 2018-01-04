@@ -47,11 +47,56 @@ class Comment extends React.Component {
   userLinkFunc() {
     if (this.state.item.body.match(/@\w+/)) {
       let arr = this.state.item.body.split(' ').map( (item, index) => {
-        if (/@\w+/.test(item)) {
+        if (/@\w+\S/.test(item)) {
+          let lowItem = item.toLowerCase();
+          let replace1 = lowItem.replace(/(@[\w.]+)/g, ' $1 ');
+          let replace2 = replace1.match(/\s(@[\w.]+)\s/g);
+          let replace3 = replace1.match(/([\w\W]+)\s@/g);
+          let replace4 = replace1.match(/\w\s([^@]+)/g);
+          let replace5 = lowItem.match(/@[\w.]+[\W]/);
+          let replaceDot = replace2[0].match(/@\w+\.\s/);
           return <span key={index}>
-                   <Link to={`/@${item.replace(/[^A-Za-z_.0-9]/g, '')}`}>
-                     {item + ' '}
+                   <span>
+                     {
+                       replace3
+                       ?
+                         replace3[0].replace(/\s@/g, '')
+                       :
+                         null
+                     }
+                   </span>
+                   <Link to={`/${
+                              replaceDot
+                              ?
+                                replace2[0].replace(/\s(@\w+)\.\s+/g, '$1')
+                              :
+                                replace2[0].replace(/\s+/g, '')}`
+                            }>
+                     {
+                       replaceDot
+                       ?
+                         replace2[0].replace(/\.\s+/g, '')
+                       :
+                         replace5
+                       ?
+                         replace2[0].replace(/\s+/g, '')
+                       :
+                         replace2[0].replace(/\s+/g, '') + ' '
+                     }
                    </Link>
+                   <span>
+                     {
+                       replace4
+                       ?
+                         replace4[0].replace(/\w\s/, '') + ' '
+                       :
+                         replaceDot
+                       ?
+                         '. '
+                       :
+                         null
+                     }
+                   </span>
                  </span>
         } else {
           return item + ' '
@@ -71,10 +116,18 @@ class Comment extends React.Component {
     }
   }
 
+  replyAuthor() {
+    this.props.replyUser.value = `@${this.state.item.author}, `;
+    this.props.replyUser.focus();
+  }
+
   likeFunc() {
     let like = this.state.item.net_votes;
     let text = null;
     let money = null;
+    let reply = <span className="rectangle_comment text--center">
+                  <span onClick={this.replyAuthor.bind(this)}>Reply</span>
+                </span>
     if (like) {
       if (like == 1 || like == -1) {
         text = `${like} like`
@@ -86,8 +139,15 @@ class Comment extends React.Component {
       }
       return (
         <div className="comment-controls clearfix">
+          {reply}
           <a className="likes" data-toggle="modal" onClick={this.openLikesModal.bind(this)}>{text}</a>
-          <span>{money}</span>
+          <span className="pull-right">{money}</span>
+        </div>
+      )
+    } else {
+      return (
+        <div className="comment-controls clearfix">
+          {reply}
         </div>
       )
     }
@@ -106,22 +166,22 @@ class Comment extends React.Component {
                 locale='en_US'
               />
             </div>
-              <Link to={authorLink} className="user">
-                <div className="photo">
-                  <img src={avatar} alt="Image" onError={this.setDefaultAvatar.bind(this)} />
-                </div>
-                <div className="name">{this.props.item.author}</div>
-              </Link>
+            <Link to={authorLink} className="user">
+              <div className="photo">
+                <img src={avatar} alt="Image" onError={this.setDefaultAvatar.bind(this)} />
+              </div>
+              <div className="name">{this.props.item.author}</div>
+            </Link>
           </div>
         </div>
         <div className="comment-text">
           {this.userLinkFunc()}
           <VouteComponent
-              key="vote"
-              item={this.props.item}
-              updateVoteInComponent={this.updateVoteInComponent.bind(this)}
-              parent='comment'
-            />
+            key="vote"
+            item={this.props.item}
+            updateVoteInComponent={this.updateVoteInComponent.bind(this)}
+            parent='comment'
+          />
         </div>
         {this.likeFunc()}
       </div>

@@ -40,7 +40,6 @@ class ItemModal extends React.Component {
             disableNext : false,
             disablePrev : false,
             redirectToReferrer : false,
-            commentValue : '',
             needsCommentFormLoader : false,
             isLoading : false,
             hasMore : this.props.hasMore,
@@ -105,6 +104,14 @@ class ItemModal extends React.Component {
       )
     }
 
+    lookTextarea() {
+      if (this.commentInput.value != '') {
+        this.sendButton.classList.add('send-button_item-mod');
+      } else {
+        this.sendButton.classList.remove('send-button_item-mod');
+      }
+    }
+
     moneyCheck() {
       let money = this.state.item.total_payout_reward;
       if (money == 0) {
@@ -155,10 +162,15 @@ class ItemModal extends React.Component {
       this.setState({adultParam : false, lowParam : false});
     }
 
+    clearCommentInput() {
+      this.commentInput.value = '';
+      this.formGr.classList.remove('not-empty');
+    }
+
     sendComment(e) {
       e.preventDefault();
-
-      if (this.state.commentValue == '') return false;
+      let comment = this.commentInput.value;
+      if (comment == '') return false;
 
       const urlObject = this.state.item.url.split('/');
 
@@ -168,6 +180,7 @@ class ItemModal extends React.Component {
         });
         if (err) {
           jqApp.pushMessage.open(err);
+          this.commentInput.value = '';
         } else if (success) {
             this.setState({
               newComment : {
@@ -176,16 +189,15 @@ class ItemModal extends React.Component {
                 avatar : this.props.avatar,
                 author : this.props.username,
                 total_payout_value : 0,
-                body : this.state.commentValue,
+                body : comment,
                 created : Date.now()
               },
-              commentValue: ''
             }, () => {
-              this.scrollView.scrollBar.scrollToBottom();
               jqApp.pushMessage.open(Constants.COMMENT_SUCCESS_MESSAGE);
+              this.scrollView.scrollBar.scrollToBottom();
             });
         }
-        this.formGr.classList.remove('not-empty');
+        this.clearCommentInput();
       }
 
       this.setState({
@@ -196,7 +208,7 @@ class ItemModal extends React.Component {
           this.state.item.author,
           urlObject[urlObject.length - 1],
           this.props.username,
-          this.state.commentValue,
+          this.commentInput.value,
           this.state.item.tags,
           callback
         );
@@ -226,20 +238,16 @@ class ItemModal extends React.Component {
       });
     }
 
-    commentChanged(event) {
-      this.setState({
-          commentValue : event.target.value
-      });
-    }
-
     next() {
       if (this.state.index < this.state.items.length - 1) {
+        this.clearCommentInput();
         this.clearNewComment(this.resetDefaultProperties(this.state.items[this.state.index + 1], 1));
       }
     }
 
     previous() {
       if (this.state.index > 0) {
+        this.clearCommentInput();
         this.clearNewComment(this.resetDefaultProperties(this.state.items[this.state.index - 1], -1));
       }
     }
@@ -276,24 +284,70 @@ class ItemModal extends React.Component {
       if (a) {
         description = this.state.item.title;
       } else {
-        description = this.state.item.description.replace(/\n[\w\W]+/, '');
+        let descriptionStart = this.state.item.description.replace(/(<\w+>)+/, '');
+        description = descriptionStart.replace(/\n[\w\W]+/, '');
       }
       if (description.match(/@\w+/g)) {
         let arr = description.split(' ').map( (item, index) => {
-          if (/@\w+/.test(item)) {
+          if (/@\w+\S/.test(item)) {
+            let lowItem = item.toLowerCase();
+            let replace1 = lowItem.replace(/(@[\w.]+)/g, ' $1 ');
+            let replace2 = replace1.match(/\s(@[\w.]+)\s/g);
+            let replace3 = replace1.match(/([\w\W]+)\s@/g);
+            let replace4 = replace1.match(/\w\s([^@]+)/g);
+            let replace5 = lowItem.match(/@[\w.]+[\W]/);
+            let replaceDot = replace2[0].match(/@\w+\.\s/);
             return <span key={index}>
-                     <Link to={`/@${item.replace(/[^A-Za-z_.0-9]/g, '')}`}>
-                       {item + ' '}
-                     </Link>
+                   <span>
+                     {
+                       replace3
+                         ?
+                         replace3[0].replace(/\s@/g, '')
+                         :
+                         null
+                     }
                    </span>
+                   <Link to={`/${
+                     replaceDot
+                       ?
+                       replace2[0].replace(/\s(@\w+)\.\s+/g, '$1')
+                       :
+                       replace2[0].replace(/\s+/g, '')}`
+                   }>
+                     {
+                       replaceDot
+                       ?
+                         replace2[0].replace(/\.\s+/g, '')
+                       :
+                         replace5
+                       ?
+                         replace2[0].replace(/\s+/g, '')
+                       :
+                         replace2[0].replace(/\s+/g, '') + ' '
+                     }
+                   </Link>
+                   <span>
+                     {
+                       replace4
+                       ?
+                         replace4[0].replace(/\w\s/, '') + ' '
+                       :
+                         replaceDot
+                       ?
+                         '. '
+                       :
+                         null
+                     }
+                   </span>
+                 </span>
           } else {
             return item + ' '
           }
         });
         return (
           <span>
-            {arr}
-          </span>
+          {arr}
+        </span>
         )
       } else {
         return (
@@ -306,7 +360,8 @@ class ItemModal extends React.Component {
 
     renderDescription() {
       let forceOpen = false;
-      if (this.state.item.description.replace(/\n[\w\W]+/, '').length < 140) forceOpen = true;
+      let descriptionStart = this.state.item.description.replace(/(<\w+>)+/, '');
+      if (descriptionStart.replace(/\n[\w\W]+/, '').length < 140) forceOpen = true;
       return (
         <div className="post-description">
           <p>{this.userLinkFunc(true)}</p>
@@ -316,7 +371,7 @@ class ItemModal extends React.Component {
               {this.userLinkFunc(false)}
               {
                 this.state.item.tags.map((tag, index) => {
-                  return <span key={index}><TagComponent tag={tag}/> </span>
+                  return <span key={index}><TagComponent tag={tag} /> </span>
                 })
               }
               <a className="lnk-more" onClick={this.openDescription.bind(this)}>Show more</a>
@@ -334,7 +389,6 @@ class ItemModal extends React.Component {
     }
 
     render() {
-
       let itemImage = this.state.item.body || constants.NO_IMAGE;
       let isUserAuth = (this.props.username && this.props.postingKey);
       const authorLink = `/@${this.state.item.author}`;
@@ -357,7 +411,9 @@ class ItemModal extends React.Component {
                       <AvatarComponent src={this.state.item.avatar} />
                       <div className="name">{this.state.item.author}</div>
                     </Link>
-                    <i data-dismiss="modal" className="modalButton" aria-hidden="true"></i>
+                    <div data-dismiss="modal" className="modalButtonWrapper">
+                      <i className="modalButton" aria-hidden="true"></i>
+                    </div>
                   </div>
                 </div>
                 :
@@ -455,7 +511,12 @@ class ItemModal extends React.Component {
                   autoHide={true}
                 >
                   {this.renderDescription()}
-                  <Comments key="comments" item={this.state.item} newComment={this.state.newComment} />
+                  <Comments
+                    key="comments"
+                    item={this.state.item}
+                    newComment={this.state.newComment}
+                    replyUser={this.commentInput}
+                  />
                 </ScrollViewComponent>
                 {
                   isUserAuth
@@ -471,7 +532,12 @@ class ItemModal extends React.Component {
                               </div>
                               :
                               <div className="btn-wrap">
-                                <button type="submit" className="btn-submit" onClick={this.sendComment.bind(this)}>Send</button>
+                                <button
+                                  type="submit"
+                                  className="btn-submit"
+                                  onClick={this.sendComment.bind(this)}
+                                  ref={ ref => {this.sendButton = ref} }
+                                  >Send</button>
                               </div>
                           }
                           <div className="input-container">
@@ -479,10 +545,9 @@ class ItemModal extends React.Component {
                               ref={ (ref) => {this.commentInput = ref} }
                               id="formCOMMENT"
                               name="commentValue"
-                              value={this.state.commentValue}
                               maxLength={2048}
                               className="form-control"
-                              onChange={this.commentChanged.bind(this)}
+                              onChange={this.lookTextarea.bind(this)}
                             />
                             <label htmlFor="formCOMMENT" className="name">Comment</label>
                           </div>
@@ -507,6 +572,7 @@ ItemModal.propTypes = {
 
 const mapStateToProps = (state) => {
   return {
+    reply: state.comment.author,
     localization: state.localization,
     username: state.auth.user,
     postingKey: state.auth.postingKey,
