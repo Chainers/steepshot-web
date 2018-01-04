@@ -292,9 +292,9 @@ class ItemModal extends React.Component {
             let replaceDot = replace2[0].match(/@\w+\.\s/);
             return <span key={index}>
                    <span>
-                     <showIf show={replace3}>
+                     <ShowIf show={replace3}>
                        {replace3[0].replace(/\s@/g, '')}
-                     </showIf>
+                     </ShowIf>
                    </span>
                    <Link to={`/${
                      replaceDot
