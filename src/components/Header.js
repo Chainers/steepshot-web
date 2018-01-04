@@ -16,6 +16,7 @@ import {
   logout
 } from '../actions/auth';
 import Constants from '../common/constants';
+import ActionInfo from './ActionInfo/ActionInfo';
 
 let localizedStrings = LocalizedStrings.getInstance();
 
@@ -91,7 +92,7 @@ class Header extends React.Component {
       this.setState({sizeParam: true});
     }
   }
-
+  
   render() {
     const isUserAuth = this.props.user && this.props.postingKey;
     let browse;
@@ -133,102 +134,103 @@ class Header extends React.Component {
     return (
       <header className="g-header">
         <div className="container">
+          <ActionInfo/>
           <div className="user-panel">
-            <div className="wrap-panel clearfix">
-              {
-                isUserAuth
-                ?
-                  <div className="section hamburger">
-                    <div className="wrap-hamburger">
-                      <button type="button" className="mm-opener">
-                        <span className="ico"></span>
-                      </button>
-                    </div>
-                  </div>
-                :
-                  null
-              }
-              {loginComponent}
-              <div className="section create">
-                <div className="wrap-create">
-                  {
-                    isUserAuth
-                    ?
-                      <div>
-                        <Link to="/createPost" type="button" className="btn btn-default btn-xs btn-create">
-                          Create post
-                        </Link>
-                        <Link to="/createPost" type="button" className="btn btn-default btn-create-mob">
-                        </Link>
+              <div className="wrap-panel clearfix">
+                {
+                  isUserAuth
+                  ?
+                    <div className="section hamburger">
+                      <div className="wrap-hamburger">
+                        <button type="button" className="mm-opener">
+                          <span className="ico"></span>
+                        </button>
                       </div>
-                    :
+                    </div>
+                  :
                     null
-                  }
-                </div>
-              </div>
-              <div className="section user">
-                <div className="wrap-user">
-                  {
-                    this.props.user
-                    ?
-                      <Link to={authorLink} className="user-link clearfix">
-                        <div className="photo">
-                          {
-                            this.props.avatar
-                            ?
-                              <img src={this.props.avatar} alt="user" />
-                            :
-                              <img src="/static/images/person.png" alt="user" />
-                          }
-                        </div>
-                        <div className="name">{this.props.user}</div>
-                      </Link>
-                    :
-                      null
-                  }
-                </div>
-              </div>
-              <div className="section logo">
-                  <a href="/" className="wrap-logo">
-                    <img src="/static/images/steepshotLogo@2x.svg" alt="logo" />
-                  </a>
-              </div>
-              <div className="section search">
-                <div className="wrap-search">
-                  <a href="#" className="lnk-search">Search</a>
-                  <a href="#" className="lnk-search-mob"></a>
-                </div>
-              </div>
-              {browse}
-            </div>
-          </div>
-          <div className="search-panel closed">
-            <div className="wrap-panel container clearfix">
-              <div className="wrap-btn">
-                <button type="button" className="btn-close"></button>
-              </div>
-              <div className="wrap-search">
-                <form className="form-search">
-                  <input
-                    type="text"
-                    name="search"
-                    value={this.state.searchValue}
-                    onChange={this.searchHandleChange.bind(this)}
-                    required={true}
-                    placeholder={
-                      this.state.sizeParam
+                }
+                {loginComponent}
+                <div className="section create">
+                  <div className="wrap-create">
+                    {
+                      isUserAuth
                       ?
-                        Constants.SEARCH_PLACEHOLDER_MIN
+                        <div>
+                          <Link to="/createPost" type="button" className="btn btn-default btn-xs btn-create">
+                            Create post
+                          </Link>
+                          <Link to="/createPost" type="button" className="btn btn-default btn-create-mob">
+                          </Link>
+                        </div>
                       :
-                        Constants.SEARCH_PLACEHOLDER
+                      null
                     }
-                    className="input-search"
-                    onKeyPress={this.searchKeyPress.bind(this)}
-                  />
-                </form>
+                  </div>
+                </div>
+                <div className="section user">
+                  <div className="wrap-user">
+                    {
+                      this.props.user
+                      ?
+                        <Link to={authorLink} className="user-link clearfix">
+                          <div className="photo">
+                            {
+                              this.props.avatar
+                              ?
+                                <img src={this.props.avatar} alt="user" />
+                              :
+                                <img src="/static/images/person.png" alt="user" />
+                            }
+                          </div>
+                          <div className="name">{this.props.user}</div>
+                        </Link>
+                      :
+                        null
+                    }
+                  </div>
+                </div>
+                <div className="section logo">
+                    <a href="/" className="wrap-logo">
+                      <img src="/static/images/steepshotLogo@2x.svg" alt="logo" />
+                    </a>
+                </div>
+                <div className="section search">
+                  <div className="wrap-search">
+                    <a href="#" className="lnk-search" onClick={this.toggleOpenSearch}>Search</a>
+                    <a href="#" className="lnk-search-mob" onClick={this.toggleOpenSearch}></a>
+                  </div>
+                </div>
+                {browse}
               </div>
             </div>
-          </div>
+          <div className="search-panel closed">
+              <div className="wrap-panel container clearfix">
+                <div className="wrap-btn">
+                  <button type="button" className="btn-close" onClick={this.toggleOpenSearch}></button>
+                </div>
+                <div className="wrap-search">
+                  <form className="form-search">
+                    <input
+                      type="text"
+                      name="search"
+                      value={this.state.searchValue}
+                      onChange={this.searchHandleChange.bind(this)}
+                      required={true}
+                      placeholder={
+                        this.state.sizeParam
+                        ?
+                          Constants.SEARCH_PLACEHOLDER_MIN
+                        :
+                          Constants.SEARCH_PLACEHOLDER
+                      }
+                      className="input-search"
+                      onKeyPress={this.searchKeyPress.bind(this)}
+                    />
+                  </form>
+                </div>
+              </div>
+            </div>
         </div>
       </header>
     );
