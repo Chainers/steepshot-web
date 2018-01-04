@@ -18,6 +18,8 @@ import AboutComponent from './components/About/AboutComponent';
 import BrowseWrapper from './components/Wrappers/BrowseWrapper';
 
 import Constants from './common/constants';
+import PostMenuButton from './components/Common/PostContextMenu/OpenMenuButton/PostMenuButton';
+import Testing from './components/Common/Testing/Testing';
 
 export default function getRoutes(store) {
   const clearMessages = () => {
@@ -33,7 +35,7 @@ export default function getRoutes(store) {
   let isUserLogin = !!store.getState().auth.user && !!store.getState().auth.postingKey;
   
   function baseBrowseFilter() {
-    const baseBrowseFilter = localStorage.getItem('browse') == undefined ? 
+    const baseBrowseFilter = localStorage.getItem('browse') == undefined ?
     Constants.BROWSE_ROUTES[0].NAME : localStorage.getItem('browse');
     return baseBrowseFilter;
   }
@@ -55,6 +57,7 @@ export default function getRoutes(store) {
         <Route path="/post" component={SinglePostModalWrapper} onLeave={clearMessages} />
         <Route path="/search/:searchValue" component={SearchWrapper} onLeave={clearMessages} />
         <Route path="/guide" component={AboutComponent} onLeave={clearMessages} />
+        <Route path="/dev/test" component={Testing} onLeave={clearMessages} />
         <PrivateRoute path="/feed" component={Feed} onLeave={clearMessages} />
         <PrivateRoute path="/createPost" component={CreatePost} onLeave={clearMessages} />
         <PrivateRoute path="/profile" component={Profile} onLeave={clearMessages} />

@@ -1,0 +1,42 @@
+.back_mod {
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0,0,0, 0.7);
+}
+
+.container_mod {
+  display: block;
+  position: absolute;
+  overflow-x: hidden;
+  overflow-y: hidden;
+  opacity: 1;
+  width: 100px;
+  height: 100px;
+  left: 50%;
+  top: 50%;
+  margin-left: -50px;
+  margin-top: -50px;
+  background-color: #fff;
+  opacity: 1;
+}
+
+.close_mod {
+  display: block;
+  position: absolute;
+  top: 30px;
+  right: 15px;
+  opacity: 1;
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  border: 0;
+  transform: translate( -50%, -50%);
+  background-size: 4.4em 47.2em;
+  background: url('/static/images/sprite_svg1910.svg') no-repeat -.2em -5.49em;
+  z-index: 1100;
+}
