@@ -57,13 +57,9 @@ class Comment extends React.Component {
           let replaceDot = replace2[0].match(/@\w+\.\s/);
           return <span key={index}>
                    <span>
-                     {
-                      replace3
-                      ?
-                        replace3[0].replace(/\s@/g, '')
-                      :
-                        null
-                     }
+                     <showIf show={replace3}>
+                       {replace3[0].replace(/\s@/g, '')}
+                     </showIf>
                    </span>
                    <Link to={`/${
                               replaceDot
@@ -71,7 +67,6 @@ class Comment extends React.Component {
                                 replace2[0].replace(/\s(@\w+)\.\s+/g, '$1')
                               :
                                 replace2[0].replace(/\s+/g, '')}`
-
                             }>
                      {
                        replaceDot
@@ -87,15 +82,15 @@ class Comment extends React.Component {
                    </Link>
                    <span>
                      {
-                     replace4
-                     ?
-                       replace4[0].replace(/\w\s/, '') + ' '
-                     :
-                       replaceDot
-                     ?
-                       '. '
-                     :
-                       null
+                       replace4
+                       ?
+                         replace4[0].replace(/\w\s/, '') + ' '
+                       :
+                         replaceDot
+                       ?
+                         '. '
+                       :
+                         null
                      }
                    </span>
                  </span>

@@ -24,6 +24,7 @@ import {Collapse} from 'react-collapse';
 import Constants from '../../common/constants';
 
 import utils from '../../utils/utils';
+import ShowIf from '../Common/ShowIf';
 
 class ItemModal extends React.Component {
     constructor(props) {
@@ -291,13 +292,9 @@ class ItemModal extends React.Component {
             let replaceDot = replace2[0].match(/@\w+\.\s/);
             return <span key={index}>
                    <span>
-                     {
-                       replace3
-                       ?
-                         replace3[0].replace(/\s@/g, '')
-                       :
-                         null
-                     }
+                     <showIf show={replace3}>
+                       {replace3[0].replace(/\s@/g, '')}
+                     </showIf>
                    </span>
                    <Link to={`/${
                      replaceDot
@@ -305,31 +302,30 @@ class ItemModal extends React.Component {
                        replace2[0].replace(/\s(@\w+)\.\s+/g, '$1')
                        :
                        replace2[0].replace(/\s+/g, '')}`
-
                    }>
                      {
                        replaceDot
-                         ?
+                       ?
                          replace2[0].replace(/\.\s+/g, '')
-                         :
+                       :
                          replace5
-                           ?
-                           replace2[0].replace(/\s+/g, '')
-                           :
-                           replace2[0].replace(/\s+/g, '') + ' '
+                       ?
+                         replace2[0].replace(/\s+/g, '')
+                       :
+                         replace2[0].replace(/\s+/g, '') + ' '
                      }
                    </Link>
                    <span>
                      {
                        replace4
-                         ?
+                       ?
                          replace4[0].replace(/\w\s/, '') + ' '
-                         :
+                       :
                          replaceDot
-                           ?
-                           '. '
-                           :
-                           null
+                       ?
+                         '. '
+                       :
+                         null
                      }
                    </span>
                  </span>

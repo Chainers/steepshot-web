@@ -8,7 +8,7 @@ class ShowIf extends React.Component {
   }
 
   render() {
-    return (this.props.show ?  this.props.children : null)
+    return (this.props.show ? this.props.children : null)
   }
 }
 
