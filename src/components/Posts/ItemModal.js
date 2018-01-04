@@ -24,7 +24,6 @@ import {Collapse} from 'react-collapse';
 import Constants from '../../common/constants';
 
 import utils from '../../utils/utils';
-import ShowIf from '../Common/ShowIf';
 
 class ItemModal extends React.Component {
     constructor(props) {
@@ -103,6 +102,14 @@ class ItemModal extends React.Component {
       return (
         <div className="likes" onClick={this.openLikesModal.bind(this)}>{like}</div>
       )
+    }
+
+    lookTextarea() {
+      if (this.commentInput.value != '') {
+        this.sendButton.classList.add('send-button_item-mod');
+      } else {
+        this.sendButton.classList.remove('send-button_item-mod');
+      }
     }
 
     moneyCheck() {
@@ -292,9 +299,13 @@ class ItemModal extends React.Component {
             let replaceDot = replace2[0].match(/@\w+\.\s/);
             return <span key={index}>
                    <span>
-                     <ShowIf show={replace3}>
-                       {replace3[0].replace(/\s@/g, '')}
-                     </ShowIf>
+                     {
+                       replace3
+                         ?
+                         replace3[0].replace(/\s@/g, '')
+                         :
+                         null
+                     }
                    </span>
                    <Link to={`/${
                      replaceDot
@@ -521,7 +532,12 @@ class ItemModal extends React.Component {
                               </div>
                               :
                               <div className="btn-wrap">
-                                <button type="submit" className="btn-submit" onClick={this.sendComment.bind(this)}>Send</button>
+                                <button
+                                  type="submit"
+                                  className="btn-submit"
+                                  onClick={this.sendComment.bind(this)}
+                                  ref={ ref => {this.sendButton = ref} }
+                                  >Send</button>
                               </div>
                           }
                           <div className="input-container">
@@ -531,6 +547,7 @@ class ItemModal extends React.Component {
                               name="commentValue"
                               maxLength={2048}
                               className="form-control"
+                              onChange={this.lookTextarea.bind(this)}
                             />
                             <label htmlFor="formCOMMENT" className="name">Comment</label>
                           </div>

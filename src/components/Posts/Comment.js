@@ -10,8 +10,6 @@ import constants from '../../common/constants';
 import VouteComponent from './VouteComponent';
 import TimeAgo from 'timeago-react';
 
-import ShowIf from '../Common/ShowIf';
-
 class Comment extends React.Component {
   constructor(props) {
     super(props);
@@ -59,9 +57,13 @@ class Comment extends React.Component {
           let replaceDot = replace2[0].match(/@\w+\.\s/);
           return <span key={index}>
                    <span>
-                     <ShowIf show={replace3}>
-                       {replace3[0].replace(/\s@/g, '')}
-                     </ShowIf>
+                     {
+                       replace3
+                       ?
+                         replace3[0].replace(/\s@/g, '')
+                       :
+                         null
+                     }
                    </span>
                    <Link to={`/${
                               replaceDot
