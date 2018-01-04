@@ -5,14 +5,16 @@ class PostMenuButton extends React.Component {
     super(props);
   }
   
+  openModal() {
+    this.props.setShow(true);
+  }
+  
   render() {
     return (
-      <div className="container_post-m-b">
+      <div className="container_post-men-but" onClick={this.openModal.bind(this)}>
         <img src="/static/images/postMenuButton/shape.png"
-             srcSet="/static/images/postMenuButton/shape@2x.png 2x,
-             /static/images/postMenuButton/shape@3x.png 3x"
-             className="shape_post-m-b"
-             alt="Post menu button"
+          className="shape_post-men-but"
+          alt="Post menu button"
         />
       </div>
     );
