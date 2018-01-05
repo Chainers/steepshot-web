@@ -16,7 +16,6 @@ import {
   logout
 } from '../actions/auth';
 import Constants from '../common/constants';
-import ActionInfo from './ActionInfo/ActionInfo';
 
 let localizedStrings = LocalizedStrings.getInstance();
 
@@ -92,7 +91,7 @@ class Header extends React.Component {
       this.setState({sizeParam: true});
     }
   }
-  
+
   render() {
     const isUserAuth = this.props.user && this.props.postingKey;
     let browse;
@@ -134,7 +133,6 @@ class Header extends React.Component {
     return (
       <header className="g-header">
         <div className="container">
-          <ActionInfo/>
           <div className="user-panel">
               <div className="wrap-panel clearfix">
                 {
