@@ -1,5 +1,5 @@
 import React from 'react';
-import ShowIf from '../../ShowIf';
+import ShowIf from '../ShowIf';
 
 class Modal extends React.Component {
   
@@ -7,7 +7,7 @@ class Modal extends React.Component {
     super(props);
     this.state = {
       closeParam: this.getCloseParam(),
-    }
+    };
   }
   
   getCloseParam() {
@@ -23,14 +23,14 @@ class Modal extends React.Component {
   
   render() {
     const zIndexStyle = {zIndex: 1002};
-    
     return (
       <ShowIf show={this.props.show}>
-        <div className="back_mod" onClick={this.clickOutside.bind(this)} style={ zIndexStyle }>
+        <div className="back_mod" onClick={this.clickOutside.bind(this)}
+             style={zIndexStyle}>
           <ShowIf show={this.state.closeParam}>
             <button className="close_mod"></button>
           </ShowIf>
-          <div className="container_mod center-block"
+          <div className="container_mod"
                ref={(modalContainer) => { this.modalContainer = modalContainer; }}>
             {this.props.children}
           </div>
