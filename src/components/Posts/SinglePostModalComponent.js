@@ -76,7 +76,7 @@ class SinglePostModalComponent extends React.Component {
     }
 
     closeButtonFunc() {
-      if (document.documentElement.clientWidth <= 767) {
+      if (document.documentElement.clientWidth <= 815) {
         this.setState({closeParam : true});
       } else {
         this.setState({closeParam : false});
@@ -84,7 +84,6 @@ class SinglePostModalComponent extends React.Component {
     }
 
     componentDidMount() {
-        this.closeButtonFunc();
         this.setState({needsCommentFormLoader : false});
         const urlObject = this.props.location.pathname.split('/');
         if (urlObject.length < 3) {
@@ -115,6 +114,10 @@ class SinglePostModalComponent extends React.Component {
                 this.error();
             }
             this.controlRestrictions();
+        });
+        this.closeButtonFunc();
+        window.addEventListener('resize', () => {
+            this.closeButtonFunc();
         });
     }
 

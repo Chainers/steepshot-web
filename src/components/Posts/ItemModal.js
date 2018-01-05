@@ -24,6 +24,9 @@ import {Collapse} from 'react-collapse';
 import Constants from '../../common/constants';
 
 import utils from '../../utils/utils';
+import ShowIf from '../Common/ShowIf';
+
+const START_TEXTAREA_HEIGHT= '42px';
 
 class ItemModal extends React.Component {
     constructor(props) {
@@ -47,7 +50,9 @@ class ItemModal extends React.Component {
             adultParam : false,
             moneyParam : true,
             lowParam : false,
-            closeParam : false
+            closeParam : false,
+            mirrorData : '',
+            txtHeight : START_TEXTAREA_HEIGHT
         };
         this.mobileCoverParams ={
           width: '100%',
@@ -105,11 +110,26 @@ class ItemModal extends React.Component {
     }
 
     lookTextarea() {
-      if (this.commentInput.value != '') {
+      let firstSpace = this.commentInput.value.match(/\s+/);
+      if (firstSpace && firstSpace['index'] == 0) {
+        this.commentInput.value = '';
+      } else if (this.commentInput.value != '') {
         this.sendButton.classList.add('send-button_item-mod');
       } else {
         this.sendButton.classList.remove('send-button_item-mod');
       }
+
+      this.liveTextArea();
+    }
+
+    liveTextArea() {
+      this.setState({mirrorData : this.commentInput.value}, () => {
+        if (this.hiddenDiv != undefined) {
+          this.setState({txtHeight : this.hiddenDiv.clientHeight + 'px'});
+        } else {
+          this.setState({txtHeight : START_TEXTAREA_HEIGHT});
+        }
+      });
     }
 
     moneyCheck() {
@@ -124,7 +144,8 @@ class ItemModal extends React.Component {
 
     clearNewComment(callback) {
       this.setState({
-        newComment : null
+        newComment : null,
+        txtHeight : START_TEXTAREA_HEIGHT
       }, () => callback ? callback() : false);
     }
 
@@ -151,11 +172,14 @@ class ItemModal extends React.Component {
     }
 
     componentDidMount() {
-      this.closeButtonFunc();
       this.needMore(this.props);
       setTimeout(() => {
         jqApp.forms.init();
       }, 0);
+      this.closeButtonFunc();
+      window.addEventListener('resize', () => {
+        this.closeButtonFunc();
+      });
     }
 
     hideFunc() {
@@ -176,7 +200,8 @@ class ItemModal extends React.Component {
 
       const callback = (err, success) => {
         this.setState({
-          needsCommentFormLoader : false
+          needsCommentFormLoader : false,
+          txtHeight : START_TEXTAREA_HEIGHT
         });
         if (err) {
           jqApp.pushMessage.open(err);
@@ -191,7 +216,7 @@ class ItemModal extends React.Component {
                 total_payout_value : 0,
                 body : comment,
                 created : Date.now()
-              },
+              }
             }, () => {
               jqApp.pushMessage.open(Constants.COMMENT_SUCCESS_MESSAGE);
               this.scrollView.scrollBar.scrollToBottom();
@@ -291,8 +316,8 @@ class ItemModal extends React.Component {
         let arr = description.split(' ').map( (item, index) => {
           if (/@\w+\S/.test(item)) {
             let lowItem = item.toLowerCase();
-            let replace1 = lowItem.replace(/(@[\w.]+)/g, ' $1 ');
-            let replace2 = replace1.match(/\s(@[\w.]+)\s/g);
+            let replace1 = lowItem.replace(/(@[\w-.]+\w)/g, ' $1 ');
+            let replace2 = replace1.match(/\s(@[\w-.]+)\s/g);
             let replace3 = replace1.match(/([\w\W]+)\s@/g);
             let replace4 = replace1.match(/\w\s([^@]+)/g);
             let replace5 = lowItem.match(/@[\w.]+[\W]/);
@@ -316,27 +341,27 @@ class ItemModal extends React.Component {
                    }>
                      {
                        replaceDot
-                       ?
+                         ?
                          replace2[0].replace(/\.\s+/g, '')
-                       :
+                         :
                          replace5
-                       ?
-                         replace2[0].replace(/\s+/g, '')
-                       :
-                         replace2[0].replace(/\s+/g, '') + ' '
+                           ?
+                           replace2[0].replace(/\s+/g, '')
+                           :
+                           replace2[0].replace(/\s+/g, '') + ' '
                      }
                    </Link>
                    <span>
                      {
                        replace4
-                       ?
+                         ?
                          replace4[0].replace(/\w\s/, '') + ' '
-                       :
+                         :
                          replaceDot
-                       ?
-                         '. '
-                       :
-                         null
+                           ?
+                           '. '
+                           :
+                           ' '
                      }
                    </span>
                  </span>
@@ -381,7 +406,7 @@ class ItemModal extends React.Component {
     }
 
     closeButtonFunc() {
-      if (document.documentElement.clientWidth <= 767) {
+      if (document.documentElement.clientWidth <= 815) {
         this.setState({closeParam : true});
       } else {
         this.setState({closeParam : false});
@@ -543,12 +568,18 @@ class ItemModal extends React.Component {
                           <div className="input-container">
                             <textarea
                               ref={ (ref) => {this.commentInput = ref} }
+                              style={{height : this.state.txtHeight}}
                               id="formCOMMENT"
                               name="commentValue"
                               maxLength={2048}
-                              className="form-control"
+                              className="form-control resize-textarea_item-mod"
                               onChange={this.lookTextarea.bind(this)}
                             />
+                            <ShowIf show={!!this.state.mirrorData}>
+                              <div className="hidden-div_item-mod" ref={ ref => {this.hiddenDiv = ref} }>
+                                {this.state.mirrorData}
+                              </div>
+                            </ShowIf>
                             <label htmlFor="formCOMMENT" className="name">Comment</label>
                           </div>
                         </div>
