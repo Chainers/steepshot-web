@@ -12,6 +12,11 @@ const getUserName = () => {
 }
 
 class Steem {
+  
+    constructor(){
+        steem.api.setOptions({ url: 'https://api.steemit.com' });
+    }
+  
     comment(wif, parentAuthor, parentPermlink, author, body, tags, callback) {
         const permlink = this._getPermLink();
         const commentObject = {
