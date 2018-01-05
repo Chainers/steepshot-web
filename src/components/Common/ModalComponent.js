@@ -11,10 +11,13 @@ class ModalComponent extends React.Component {
 
   componentWillMount() {
     this.closeButtonFunc();
+    window.addEventListener('resize', () => {
+      this.closeButtonFunc();
+    })
   }
 
   closeButtonFunc() {
-    if (document.documentElement.clientWidth <= 767) {
+    if (document.documentElement.clientWidth <= 815) {
       this.setState({closeParam : false});
     } else {
       this.setState({closeParam : true});

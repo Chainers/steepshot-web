@@ -163,10 +163,10 @@ class ItemsComponent extends React.Component {
 
   openModal(index) {
     this.setState({
-        currentItem : index
-    },
-        jqApp.openPostModal($(ReactDOM.findDOMNode(this)))
-    );
+      currentItem : index
+    }, () => {
+      jqApp.openPostModal($(ReactDOM.findDOMNode(this)));
+    });
   }
 
   tabsFunc(number) {

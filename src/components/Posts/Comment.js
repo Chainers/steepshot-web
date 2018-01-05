@@ -49,8 +49,8 @@ class Comment extends React.Component {
       let arr = this.state.item.body.split(' ').map( (item, index) => {
         if (/@\w+\S/.test(item)) {
           let lowItem = item.toLowerCase();
-          let replace1 = lowItem.replace(/(@[\w.]+)/g, ' $1 ');
-          let replace2 = replace1.match(/\s(@[\w.]+)\s/g);
+          let replace1 = lowItem.replace(/(@[\w-.]+\w)/g, ' $1 ');
+          let replace2 = replace1.match(/\s(@[\w-.]+)\s/g);
           let replace3 = replace1.match(/([\w\W]+)\s@/g);
           let replace4 = replace1.match(/\w\s([^@]+)/g);
           let replace5 = lowItem.match(/@[\w.]+[\W]/);
@@ -94,7 +94,7 @@ class Comment extends React.Component {
                        ?
                          '. '
                        :
-                         null
+                         ' '
                      }
                    </span>
                  </span>

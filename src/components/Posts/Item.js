@@ -78,8 +78,8 @@ class Item extends React.Component {
       let arr = this.state.item.title.split(' ').map( (item, index) => {
         if (/@\w+\S/.test(item)) {
           let lowItem = item.toLowerCase();
-          let replace1 = lowItem.replace(/(@[\w.]+)/g, ' $1 ');
-          let replace2 = replace1.match(/\s(@[\w.]+)\s/g);
+          let replace1 = lowItem.replace(/(@[\w-.]+\w)/g, ' $1 ');
+          let replace2 = replace1.match(/\s(@[\w-.]+)\s/g);
           let replace3 = replace1.match(/([\w\W]+)\s@/g);
           let replace4 = replace1.match(/\w\s([^@]+)/g);
           let replace5 = lowItem.match(/@[\w.]+[\W]/);
@@ -96,35 +96,34 @@ class Item extends React.Component {
                    </span>
                    <Link to={`/${
                      replaceDot
-                     ?
+                       ?
                        replace2[0].replace(/\s(@\w+)\.\s+/g, '$1')
-                     :
+                       :
                        replace2[0].replace(/\s+/g, '')}`
-
                    }>
                      {
                        replaceDot
-                       ?
+                         ?
                          replace2[0].replace(/\.\s+/g, '')
-                       :
+                         :
                          replace5
-                       ?
-                         replace2[0].replace(/\s+/g, '')
-                       :
-                         replace2[0].replace(/\s+/g, '') + ' '
+                           ?
+                           replace2[0].replace(/\s+/g, '')
+                           :
+                           replace2[0].replace(/\s+/g, '') + ' '
                      }
                    </Link>
                    <span>
                      {
                        replace4
-                       ?
+                         ?
                          replace4[0].replace(/\w\s/, '') + ' '
-                       :
+                         :
                          replaceDot
-                       ?
-                         '. '
-                       :
-                         null
+                           ?
+                           '. '
+                           :
+                           ' '
                      }
                    </span>
                  </span>
@@ -192,7 +191,7 @@ class Item extends React.Component {
   renderTags() {
     if (this.state.item.tags) {
       return this.state.item.tags.map((tag, index) => {
-        return <span key={index}><TagComponent tag={tag}/> </span>
+        return <span key={index}><TagComponent tag={tag} /> </span>
       });
     } else return null;
   }
