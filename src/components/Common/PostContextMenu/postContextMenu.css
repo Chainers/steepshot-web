@@ -1,5 +1,7 @@
 @import "OpenMenuButton/postMenuButton.css";
-@import "Modal/modal.css";
+@import "MenuItem/menuItem.css";
+@import "Menu/menu.css";
+@import "Delimiter/delimiter.css";
 
 .container_pos-con-men {
 
