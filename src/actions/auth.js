@@ -19,7 +19,9 @@ function getUrl() {
 
 export function login(username, postingKey, history, dispatch, callback) {
   const account = null;
+
   steem.api.getAccounts([username], function(err, result) {
+    console.log(steem.api);
     if (err) {
       callback('Something went wrong, please, try again later');
       return false;
@@ -87,7 +89,7 @@ export function login(username, postingKey, history, dispatch, callback) {
 }
 
 function baseBrowseFilter() {
-  const baseBrowseFilter = localStorage.getItem('browse') == undefined ? 
+  const baseBrowseFilter = localStorage.getItem('browse') == undefined ?
   Constants.BROWSE_ROUTES[0].NAME : localStorage.getItem('browse');
   return baseBrowseFilter;
 }
