@@ -18,7 +18,7 @@ import AboutComponent from './components/About/AboutComponent';
 import BrowseWrapper from './components/Wrappers/BrowseWrapper';
 
 import Constants from './common/constants';
-import PostMenuButton from './components/Common/PostContextMenu/OpenMenuButton/PostMenuButton';
+import PostMenuButton from './components/PostContextMenu/OpenMenuButton/PostMenuButton';
 import Testing from './components/Common/Testing/Testing';
 
 export default function getRoutes(store) {

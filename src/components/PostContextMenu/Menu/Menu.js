@@ -16,13 +16,17 @@ class Menu extends React.Component {
         hasDelimiter={item.hasDelimiter}
         key={index.toString()}
         count={this.props.buttonOption.length}
+        smallScreen={this.props.smallScreen}
       />
     });
   }
   
   render() {
     return (
-      <div className="container_menu">
+      <div className={this.props.smallScreen ? 'small_container_menu' : 'container_menu'}>
+        <div className="header_menu">
+        
+        </div>
         {this.getItems()}
       </div>
     )

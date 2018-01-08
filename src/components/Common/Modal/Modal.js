@@ -1,5 +1,6 @@
 import React from 'react';
 import ShowIf from '../ShowIf';
+import Constants from '../../../common/constants';
 
 class Modal extends React.Component {
   
@@ -11,7 +12,19 @@ class Modal extends React.Component {
   }
   
   getCloseParam() {
-    return document.documentElement.clientWidth <= 767 ? false : true;
+    return document.documentElement.clientWidth > 767 ? false : true;
+  }
+  
+  resizeWindow() {
+    if (window.innerWidth > Constants.POST_CONTEXT_MENU.SMALL_SCREEN_WIDTH) {
+      this.setState({
+        smallScreen: false,
+      });
+    } else {
+      this.setState({
+        smallScreen: true,
+      });
+    }
   }
   
   clickOutside(event) {

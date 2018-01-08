@@ -1,0 +1,19 @@
+.container_menu, .small_container_menu {
+  border-radius: 3px;
+}
+
+.container_menu {
+  width: 500px;
+  height: 150px;
+}
+
+.small_container_menu {
+  width: 100%;
+  height: 350px;
+}
+
+.header_menu {
+  width: 100%;
+  height: 50px;
+  float: none;
+}
