@@ -20,6 +20,7 @@ import TagComponent from './TagComponent';
 import LikesComponent from './LikesComponent';
 import TimeAgo from 'timeago-react';
 import ShowIf from '../Common/ShowIf';
+import { UserLinkFunc } from '../Common/UserLinkFunc';
 
 class Item extends React.Component {
   constructor(props) {
@@ -71,78 +72,6 @@ class Item extends React.Component {
       avatar: propsItem.avatar,
       image: propsItem.body
     });
-  }
-
-  userLinkFunc() {
-    if (this.state.item.title.match(/@\w+/g)) {
-      let arr = this.state.item.title.split(' ').map( (item, index) => {
-        if (/@\w+\S/.test(item)) {
-          let lowItem = item.toLowerCase();
-          let replace1 = lowItem.replace(/(@[\w-.]+\w)/g, ' $1 ');
-          let replace2 = replace1.match(/\s(@[\w-.]+)\s/g);
-          let replace3 = replace1.match(/([\w\W]+)\s@/g);
-          let replace4 = replace1.match(/\w\s([^@]+)/g);
-          let replace5 = lowItem.match(/@[\w.]+[\W]/);
-          let replaceDot = replace2[0].match(/@\w+\.\s/);
-          return <span key={index}>
-                   <span>
-                     {
-                       replace3
-                         ?
-                         replace3[0].replace(/\s@/g, '')
-                         :
-                         null
-                     }
-                   </span>
-                   <Link to={`/${
-                     replaceDot
-                       ?
-                       replace2[0].replace(/\s(@\w+)\.\s+/g, '$1')
-                       :
-                       replace2[0].replace(/\s+/g, '')}`
-                   }>
-                     {
-                       replaceDot
-                         ?
-                         replace2[0].replace(/\.\s+/g, '')
-                         :
-                         replace5
-                           ?
-                           replace2[0].replace(/\s+/g, '')
-                           :
-                           replace2[0].replace(/\s+/g, '') + ' '
-                     }
-                   </Link>
-                   <span>
-                     {
-                       replace4
-                         ?
-                         replace4[0].replace(/\w\s/, '') + ' '
-                         :
-                         replaceDot
-                           ?
-                           '. '
-                           :
-                           ' '
-                     }
-                   </span>
-                 </span>
-        } else {
-          return item + ' '
-        }
-      });
-      return (
-        <span>
-          {arr}
-        </span>
-      )
-    } else {
-      return (
-        <span>
-          {this.state.item.title + ' '}
-        </span>
-      )
-    }
   }
 
   resetDefaultProperties(newItem) {
@@ -265,14 +194,14 @@ class Item extends React.Component {
                   />
                 </div>
                 <div className="wrap-counts clearfix">
-                  <LikesComponent likes={this.state.item.net_votes} url={this.state.item.url}/>
+                  <LikesComponent likes={this.state.item.net_likes} url={this.state.item.url}/>
                   <ShowIf show={this.state.moneyParam}>
                     <div className="amount">{this.state.item.total_payout_reward}</div>
                   </ShowIf>
                 </div>
               </div>
               <div className="card-preview">
-                {this.userLinkFunc()}
+                {UserLinkFunc(null, this.state.item.title)}
                 {this.renderTags()}
               </div>
             </div>
