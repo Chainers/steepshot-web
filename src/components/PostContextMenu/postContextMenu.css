@@ -1,8 +1,8 @@
 @import "OpenMenuButton/postMenuButton.css";
 @import "MenuItem/menuItem.css";
 @import "Menu/menu.css";
-@import "Delimiter/delimiter.css";
+@import "DelimitersWrapper/delimitersWrapper.css";
 
 .container_pos-con-men {
-
+  border-radius: 3px;
 }

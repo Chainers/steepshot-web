@@ -143,8 +143,12 @@ export default {
         }
     ],
   
+    SCREEN: {
+      SMALL_SCREEN_WIDTH: 767
+    },
+  
     POST_CONTEXT_MENU: {
-      SMALL_SCREEN_WIDTH: 500
+      WIDTH: 300
     },
 
     COMMENT_ERROR_MESSAGE : 'You can only create comments once per 20 seconds',

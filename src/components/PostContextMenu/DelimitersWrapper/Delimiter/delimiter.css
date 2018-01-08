@@ -1,0 +1,10 @@
+.delimiter_del {
+  border-radius: 1px;
+  background-color: #fafafa;
+  border: solid 1px #f0f0f0;
+  margin: auto;
+}
+
+.center_del {
+  display: flex;
+}

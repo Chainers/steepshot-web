@@ -7,24 +7,27 @@ class Modal extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      closeParam: this.getCloseParam(),
+      smallScreen: this.isSmall(),
     };
+    this.resizeWindow = this.resizeWindow.bind(this);
   }
   
-  getCloseParam() {
-    return document.documentElement.clientWidth > 767 ? false : true;
+  componentDidMount() {
+    window.addEventListener('resize', this.resizeWindow);
+  }
+  
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.resizeWindow);
   }
   
   resizeWindow() {
-    if (window.innerWidth > Constants.POST_CONTEXT_MENU.SMALL_SCREEN_WIDTH) {
-      this.setState({
-        smallScreen: false,
-      });
-    } else {
-      this.setState({
-        smallScreen: true,
-      });
+    if (!this.props.show) {
+      return;
     }
+    
+    this.setState({
+      smallScreen: this.isSmall(),
+    });
   }
   
   clickOutside(event) {
@@ -34,13 +37,18 @@ class Modal extends React.Component {
     }
   }
   
+  isSmall() {
+    return document.documentElement.clientWidth <
+      Constants.SCREEN.SMALL_SCREEN_WIDTH
+  }
+  
   render() {
     const zIndexStyle = {zIndex: 1002};
     return (
       <ShowIf show={this.props.show}>
         <div className="back_mod" onClick={this.clickOutside.bind(this)}
              style={zIndexStyle}>
-          <ShowIf show={this.state.closeParam}>
+          <ShowIf show={!this.state.smallScreen}>
             <button className="close_mod"></button>
           </ShowIf>
           <div className="container_mod"
