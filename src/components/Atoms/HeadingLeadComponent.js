@@ -1,13 +1,13 @@
 import React from 'react';
-import { 
+import {
     connect
 } from 'react-redux';
 
 class HeadingLeadComponent extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { 
-            ...this.props 
+        this.state = {
+            ...this.props
         };
     }
 
@@ -22,6 +22,7 @@ class HeadingLeadComponent extends React.Component {
             wrapperModifier,
             text
         } = { ...this.state };
+
         return (
             <div className={"heading-lead " + wrapperModifier}>
                 <p>{text}</p>

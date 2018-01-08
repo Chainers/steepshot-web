@@ -94,13 +94,15 @@ class UsersComponent extends React.Component {
             loadingMore: false,
             loading : false
         });
+
+        this.props.hideTabs(this.state.items);
         //this.spinnerPosition();
     });
   }
 
   renderItems() {
     if (this.state.loading) return null;
-    if (this.state.items.length == 0) {
+    if (this.state.items[0] == undefined) {
       return (
         <div className="empty-query-message">
           {Constants.EMPTY_QUERY}

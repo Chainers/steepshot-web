@@ -14,7 +14,6 @@ class UserItem extends React.Component {
     this.state = {
       authorName: this.props.username,
       item: this.props.item,
-      avatar: this.props.item.avatar,
       localize: LocalizedStrings.getInstance(),
       showFollow: this.props.showFollow !== undefined ? this.props.showFollow  : true,
       items: []
@@ -27,7 +26,8 @@ class UserItem extends React.Component {
   }
 
   render() {
-    let profileImageSrc = this.state.avatar || constants.NO_AVATAR;
+
+    let profileImageSrc = this.state.item.avatar || constants.NO_AVATAR;
     const name = this.state.item.author || this.state.item.name || 'Unknown';
     const location = this.state.item.location || '';
     const authorLink = `/@${this.state.item.author}`;

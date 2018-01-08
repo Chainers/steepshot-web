@@ -21,7 +21,6 @@ export function login(username, postingKey, history, dispatch, callback) {
   const account = null;
 
   steem.api.getAccounts([username], function(err, result) {
-    console.log(steem.api);
     if (err) {
       callback('Something went wrong, please, try again later');
       return false;
