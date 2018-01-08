@@ -113,9 +113,9 @@ class ItemsComponent extends React.Component {
           hasMore: hasMore,
           loading: false
         });
-        // if (/\/search\/\w+/.test(document.location.pathname)) {
-        //   this.tabsFunc(this.state.items.length);
-        // }
+        if (/\/search\/\w+/.test(document.location.pathname)) {
+          this.tabsFunc(this.state.items.length);
+        }
       });
     });
   }

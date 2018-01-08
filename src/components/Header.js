@@ -195,8 +195,8 @@ class Header extends React.Component {
                 </div>
                 <div className="section search">
                   <div className="wrap-search">
-                    <a href="#" className="lnk-search" onClick={this.toggleOpenSearch}>Search</a>
-                    <a href="#" className="lnk-search-mob" onClick={this.toggleOpenSearch}></a>
+                    <a href="#" className="lnk-search">Search</a>
+                    <a href="#" className="lnk-search-mob"></a>
                   </div>
                 </div>
                 {browse}
@@ -205,7 +205,7 @@ class Header extends React.Component {
           <div className="search-panel closed">
               <div className="wrap-panel container clearfix">
                 <div className="wrap-btn">
-                  <button type="button" className="btn-close" onClick={this.toggleOpenSearch}></button>
+                  <button type="button" className="btn-close" onClick={ () => {this.setState({searchValue : ''}); } }></button>
                 </div>
                 <div className="wrap-search">
                   <form className="form-search">

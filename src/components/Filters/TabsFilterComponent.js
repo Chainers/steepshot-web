@@ -7,19 +7,21 @@ class TabsFilterComponent extends React.Component {
         super(props);
         this.state = {
           ...this.props,
-          param : false
+          whereIs : false
         }
     }
     componentDidMount() {
       let location = document.location.pathname.match(/\/@\w+/);
       if (location != null) {
-        this.setState({param : true});
+        this.setState({whereIs : true});
       }
     }
     componentWillReceiveProps(nextProps) {
         this.setState({
             keys : nextProps.keys
         });
+
+        this.switchFilter(nextProps.activeItemIndex);
     }
 
     switchFilter(index) {
@@ -33,7 +35,6 @@ class TabsFilterComponent extends React.Component {
     renderNavigation() {
         let navItems = [];
         this.state.keys.map((item, index) => {
-
             let styles = '';
             if (this.state.activeItemIndex == index) {
                 styles = 'active';

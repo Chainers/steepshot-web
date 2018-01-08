@@ -60,7 +60,7 @@ class VouteComponent extends React.Component {
     sessionStorage.setItem('voteQueue', "true");
 
     if (!(this.props.username || this.props.postingKey)) {
-      return;
+      return false;
     }
     const newVoteState = !this.state.vote;
     const urlObject = this.state.item.url.split('/');

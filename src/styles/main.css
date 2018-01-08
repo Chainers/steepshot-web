@@ -369,7 +369,6 @@ h2.card-field__heading {
   visibility: hidden;
   display: block;
   white-space: pre-wrap;
-  width: 280px;
   min-height: 42px;
   font: 12px OpenSans-Regular;
   padding: 9px 0;

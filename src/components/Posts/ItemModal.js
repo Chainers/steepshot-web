@@ -20,11 +20,12 @@ import ScrollViewComponent from '../Common/ScrollViewComponent';
 import TagComponent from './TagComponent';
 import AvatarComponent from '../Atoms/AvatarComponent';
 import TimeAgo from 'timeago-react';
-import {Collapse} from 'react-collapse';
+import { Collapse } from 'react-collapse';
 import Constants from '../../common/constants';
 
 import utils from '../../utils/utils';
 import ShowIf from '../Common/ShowIf';
+import { UserLinkFunc } from '../Common/UserLinkFunc';
 
 const START_TEXTAREA_HEIGHT= '42px';
 
@@ -52,7 +53,8 @@ class ItemModal extends React.Component {
             lowParam : false,
             closeParam : false,
             mirrorData : '',
-            txtHeight : START_TEXTAREA_HEIGHT
+            txtHeight : START_TEXTAREA_HEIGHT,
+            txtWidth : '280px'
         };
         this.mobileCoverParams ={
           width: '100%',
@@ -118,17 +120,20 @@ class ItemModal extends React.Component {
       } else {
         this.sendButton.classList.remove('send-button_item-mod');
       }
-
       this.liveTextArea();
     }
 
     liveTextArea() {
       this.setState({mirrorData : this.commentInput.value}, () => {
         if (this.hiddenDiv != undefined) {
-          this.setState({txtHeight : this.hiddenDiv.clientHeight + 'px'});
+          this.setState({txtHeight : this.hiddenDiv.clientHeight + 'px', txtWidth : this.commentInput.clientWidth}, () => {
+          });
         } else {
           this.setState({txtHeight : START_TEXTAREA_HEIGHT});
         }
+        // let a = this.sendButton.style.top.replace(/px/, '');
+        // a = +a + 5;
+        // this.sendButton.style.top = a + 'px';
       });
     }
 
@@ -187,8 +192,10 @@ class ItemModal extends React.Component {
     }
 
     clearCommentInput() {
-      this.commentInput.value = '';
-      this.formGr.classList.remove('not-empty');
+      if (this.commentInput && this.formGr) {
+        this.commentInput.value = '';
+        this.formGr.classList.remove('not-empty');
+      }
     }
 
     sendComment(e) {
@@ -304,96 +311,17 @@ class ItemModal extends React.Component {
       return true;
     }
 
-    userLinkFunc(a) {
-      let description = null;
-      if (a) {
-        description = this.state.item.title;
-      } else {
-        let descriptionStart = this.state.item.description.replace(/(<\w+>)+/, '');
-        description = descriptionStart.replace(/\n[\w\W]+/, '');
-      }
-      if (description.match(/@\w+/g)) {
-        let arr = description.split(' ').map( (item, index) => {
-          if (/@\w+\S/.test(item)) {
-            let lowItem = item.toLowerCase();
-            let replace1 = lowItem.replace(/(@[\w-.]+\w)/g, ' $1 ');
-            let replace2 = replace1.match(/\s(@[\w-.]+)\s/g);
-            let replace3 = replace1.match(/([\w\W]+)\s@/g);
-            let replace4 = replace1.match(/\w\s([^@]+)/g);
-            let replace5 = lowItem.match(/@[\w.]+[\W]/);
-            let replaceDot = replace2[0].match(/@\w+\.\s/);
-            return <span key={index}>
-                   <span>
-                     {
-                       replace3
-                         ?
-                         replace3[0].replace(/\s@/g, '')
-                         :
-                         null
-                     }
-                   </span>
-                   <Link to={`/${
-                     replaceDot
-                       ?
-                       replace2[0].replace(/\s(@\w+)\.\s+/g, '$1')
-                       :
-                       replace2[0].replace(/\s+/g, '')}`
-                   }>
-                     {
-                       replaceDot
-                         ?
-                         replace2[0].replace(/\.\s+/g, '')
-                         :
-                         replace5
-                           ?
-                           replace2[0].replace(/\s+/g, '')
-                           :
-                           replace2[0].replace(/\s+/g, '') + ' '
-                     }
-                   </Link>
-                   <span>
-                     {
-                       replace4
-                         ?
-                         replace4[0].replace(/\w\s/, '') + ' '
-                         :
-                         replaceDot
-                           ?
-                           '. '
-                           :
-                           ' '
-                     }
-                   </span>
-                 </span>
-          } else {
-            return item + ' '
-          }
-        });
-        return (
-          <span>
-          {arr}
-        </span>
-        )
-      } else {
-        return (
-          <span>
-            {description + ' '}
-          </span>
-        )
-      }
-    }
-
     renderDescription() {
       let forceOpen = false;
       let descriptionStart = this.state.item.description.replace(/(<\w+>)+/, '');
       if (descriptionStart.replace(/\n[\w\W]+/, '').length < 140) forceOpen = true;
       return (
         <div className="post-description">
-          <p>{this.userLinkFunc(true)}</p>
+          <p>{UserLinkFunc(true, this.state.item.title)}</p>
           <div
             className={(this.state.isDescriptionOpened || forceOpen) ? "collapse-opened" : "collapse-closed"}
           >
-              {this.userLinkFunc(false)}
+              {UserLinkFunc(false, this.state.item.description)}
               {
                 this.state.item.tags.map((tag, index) => {
                   return <span key={index}><TagComponent tag={tag} /> </span>
@@ -576,7 +504,7 @@ class ItemModal extends React.Component {
                               onChange={this.lookTextarea.bind(this)}
                             />
                             <ShowIf show={!!this.state.mirrorData}>
-                              <div className="hidden-div_item-mod" ref={ ref => {this.hiddenDiv = ref} }>
+                              <div className="hidden-div_item-mod" style={{width : this.state.txtWidth}} ref={ ref => {this.hiddenDiv = ref} }>
                                 {this.state.mirrorData}
                               </div>
                             </ShowIf>
