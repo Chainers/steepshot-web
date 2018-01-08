@@ -142,6 +142,10 @@ export default {
             INDEX : 2
         }
     ],
+  
+    POST_CONTEXT_MENU: {
+      SMALL_SCREEN_WIDTH: 500
+    },
 
     COMMENT_ERROR_MESSAGE : 'You can only create comments once per 20 seconds',
     COMMENT_SUCCESS_MESSAGE : 'Comment has been successfully added',

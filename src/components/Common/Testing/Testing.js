@@ -1,5 +1,5 @@
 import React from 'react';
-import PostContextMenu from '../PostContextMenu/PostContextMenu';
+import PostContextMenu from '../../PostContextMenu/PostContextMenu';
 
 class Testing extends React.Component {
   

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import ShowIf from '../../ShowIf';
+import ShowIf from '../../Common/ShowIf';
 
 class Delimiter extends React.Component {
   constructor(props) {
