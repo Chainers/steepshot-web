@@ -12,13 +12,10 @@
 }
 
 .container_mod {
-  display: flex;
-  align-items: center;
-  align-content: center;
-  justify-content: center;
   overflow-x: hidden;
   overflow-y: hidden;
   background-color: #fff;
+  border-radius: 3px;
 }
 
 .close_mod {

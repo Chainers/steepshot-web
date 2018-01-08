@@ -1,10 +1,16 @@
 import * as React from 'react';
 import MenuItem from '../MenuItem/MenuItem';
+import Constants from '../../../common/constants';
+import Delimiter from '../DelimitersWrapper/Delimiter/Delimiter';
 
 class Menu extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      smallScreen: this.isSmall(),
+    };
     this.getItems = this.getItems.bind(this);
+    this.resizeWindow = this.resizeWindow.bind(this);
   }
   
   getItems() {
@@ -16,20 +22,53 @@ class Menu extends React.Component {
         hasDelimiter={item.hasDelimiter}
         key={index.toString()}
         count={this.props.buttonOption.length}
-        smallScreen={this.props.smallScreen}
-      />
+        smallScreen={this.state.smallScreen}
+      />;
     });
+  }
+  
+  componentDidMount() {
+    window.addEventListener('resize', this.resizeWindow);
+  }
+  
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.resizeWindow);
+  }
+  
+  
+  resizeWindow() {
+    this.setState({
+      smallScreen: this.isSmall(),
+    });
+  }
+  
+  isSmall() {
+    return document.documentElement.clientWidth < Constants.SCREEN.SMALL_SCREEN_WIDTH
+  }
+  
+  closeModal(event){
+    event.stopPropagation();
+    this.props.setShow(false);
   }
   
   render() {
     return (
-      <div className={this.props.smallScreen ? 'small_container_menu' : 'container_menu'}>
+      <div className={this.state.smallScreen
+        ? 'small_container_menu'
+        : 'container_menu'}>
         <div className="header_menu">
-        
+          <div className="close-button_menu" onClick={this.closeModal.bind(this)}>
+            <button className="close_menu"></button>
+          </div>
+          <Delimiter horizontal={true}/>
         </div>
-        {this.getItems()}
+        <div className={this.state.smallScreen
+          ? 'small_content_menu'
+          : 'content_menu'}>
+          {this.getItems()}
+        </div>
       </div>
-    )
+    );
   }
 }
 

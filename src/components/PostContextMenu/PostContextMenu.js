@@ -11,10 +11,9 @@ class PostContextMenu extends React.Component {
     super(props);
     this.state = {
       showModal: false,
-      smallScreen: document.documentElement.clientWidth < Constants.POST_CONTEXT_MENU.SMALL_SCREEN_WIDTH
+      smallScreen: document.documentElement.clientWidth < Constants.SCREEN.SMALL_SCREEN_WIDTH
     };
     this.setShow = this.setShow.bind(this);
-    this.resizeWindow = this.resizeWindow.bind(this);
   }
   
   setShow(flag) {
@@ -22,25 +21,6 @@ class PostContextMenu extends React.Component {
     this.setState({
       showModal: flag
     });
-    if (this.state.showModal != flag) {
-      if (flag) {
-        window.addEventListener('resize', this.resizeWindow);
-      } else {
-        window.removeEventListener('resize', this.resizeWindow);
-      }
-    }
-  }
-  
-  resizeWindow() {
-    if (document.documentElement.clientWidth > Constants.POST_CONTEXT_MENU.SMALL_SCREEN_WIDTH) {
-      this.setState({
-        smallScreen: false,
-      });
-    } else {
-      this.setState({
-        smallScreen: true,
-      });
-    }
   }
   
   flagThis() {
@@ -73,7 +53,9 @@ class PostContextMenu extends React.Component {
       <div className="container_pos-con-men">
         <PostMenuButton setShow={this.setShow}/>
         <Modal show={this.state.showModal} setShow={this.setShow}>
-          <Menu buttonOption={this.getButtonOptions()} smallScreen={this.state.smallScreen}/>
+          <Menu buttonOption={this.getButtonOptions()}
+                smallScreen={this.state.smallScreen}
+                setShow={this.setShow}/>
         </Modal>
       </div>
     );
