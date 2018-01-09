@@ -1,6 +1,10 @@
 import * as React from 'react';
 
 class Delimiter extends React.Component {
+  static defaultProps = {
+    scale: 90
+  };
+  
   constructor(props) {
     super(props);
   }
@@ -14,7 +18,7 @@ class Delimiter extends React.Component {
         clear: 'both',
       };
       delimiterStyle = {
-        width: '90%',
+        width: this.props.scale + '%',
       };
     } else {
       wrapperStyle = {
@@ -22,7 +26,7 @@ class Delimiter extends React.Component {
         float: 'right',
       };
       delimiterStyle = {
-        height: '90%',
+        height: this.props.scale + '%',
       };
     }
     

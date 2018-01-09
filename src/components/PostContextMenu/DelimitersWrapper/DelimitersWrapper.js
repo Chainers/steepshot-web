@@ -15,7 +15,7 @@ class DelimitersWrapper extends React.Component {
             {this.props.children}
           </div>
           <ShowIf show={this.props.hasDelimiter && !this.props.fullScreen}>
-            <Delimiter horizontal={false}/>
+            <Delimiter horizontal={false} scale={60}/>
           </ShowIf>
         </div>
         <ShowIf show={this.props.hasDelimiter && this.props.fullScreen}>

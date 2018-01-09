@@ -1,6 +1,5 @@
 import * as React from 'react';
 import MenuItem from '../MenuItem/MenuItem';
-import Constants from '../../../common/constants';
 import Delimiter from '../DelimitersWrapper/Delimiter/Delimiter';
 
 class Menu extends React.Component {
@@ -23,7 +22,7 @@ class Menu extends React.Component {
     });
   }
   
-  closeModal(event){
+  closeModal(event) {
     event.stopPropagation();
     this.props.closeFunc();
   }
@@ -31,18 +30,23 @@ class Menu extends React.Component {
   render() {
     return (
       <div className={this.props.fullScreen
-        ? 'small_container_menu'
+        ? 'full-screen-container_menu'
         : 'container_menu'}>
         <div className="header_menu">
-          <div className="wrapper-close-button_menu" onClick={this.closeModal.bind(this)}>
+          <div className="wrapper-close-button_menu"
+               onClick={this.closeModal.bind(this)}>
             <button className="close-button_menu"></button>
           </div>
-          <Delimiter horizontal={true}/>
         </div>
+        <Delimiter horizontal={true}/>
         <div className={this.props.fullScreen
-          ? 'small_content_menu'
+          ? 'full-screen-content_menu'
           : 'content_menu'}>
           {this.getItems()}
+        </div>
+        <Delimiter horizontal={true}/>
+        <div className="footer_menu">
+          some text
         </div>
       </div>
     );

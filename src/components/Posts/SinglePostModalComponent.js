@@ -275,6 +275,7 @@ class SinglePostModalComponent extends React.Component {
           show={this.state.showModal}
           closeFunc={this.closeFunc.bind(this)}
           fullScreen={this.state.fullScreen}
+          showCloseButton={false}
         >
           <div className="post-single">
             <ShowIf show={this.state.fullScreen}>

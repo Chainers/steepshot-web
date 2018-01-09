@@ -1,11 +1,14 @@
 .container_menu {
   width: 500px;
-  height: 140px;
+  height: 180px;
 }
 
-.small_container_menu {
-  width: 100vw;
-  height: 340px;
+.full-screen-container_menu {
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: #fff;
 }
 
 .header_menu {
@@ -16,10 +19,11 @@
 
 .content_menu {
   height: 100px;
+  display: flex;
 }
 
-.small_content_menu {
-  height: 300px;
+.full-screen-content_menu {
+  display: flex;
 }
 
 .wrapper-close-button_menu {
@@ -36,4 +40,10 @@
   margin: 10px;
   width: 16px;
   height: 16px;
+}
+
+.footer_menu {
+  width: 100%;
+  height: 40px;
+  float: none;
 }
