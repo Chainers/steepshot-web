@@ -9,7 +9,7 @@ class MenuItem extends React.Component {
   render() {
     let itemStyle;
     let boxStyle;
-    if (this.props.smallScreen) {
+    if (this.props.fullScreen) {
       itemStyle = {
         width: '100%',
         height: 100 / this.props.count + '%',
@@ -31,7 +31,7 @@ class MenuItem extends React.Component {
     return (
       <div className="wrapper_men-ite" onClick={this.props.callback}
            style={itemStyle}>
-        <Delimiter hasDelimiter={this.props.hasDelimiter} smallScreen={this.props.smallScreen}>
+        <Delimiter hasDelimiter={this.props.hasDelimiter} fullScreen={this.props.fullScreen}>
           <div className="container_men-ite">
             <div className="box_men-ite" style={boxStyle}>
               <img src={this.props.img} alt={this.props.alt}

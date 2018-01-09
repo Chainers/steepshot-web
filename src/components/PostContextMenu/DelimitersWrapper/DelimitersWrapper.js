@@ -14,11 +14,11 @@ class DelimitersWrapper extends React.Component {
           <div className="content_del">
             {this.props.children}
           </div>
-          <ShowIf show={this.props.hasDelimiter && !this.props.smallScreen}>
+          <ShowIf show={this.props.hasDelimiter && !this.props.fullScreen}>
             <Delimiter horizontal={false}/>
           </ShowIf>
         </div>
-        <ShowIf show={this.props.hasDelimiter && this.props.smallScreen}>
+        <ShowIf show={this.props.hasDelimiter && this.props.fullScreen}>
           <Delimiter horizontal={true}/>
         </ShowIf>
       </div>

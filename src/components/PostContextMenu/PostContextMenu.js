@@ -5,22 +5,37 @@ import MenuItem from './MenuItem/MenuItem';
 import Menu from './Menu/Menu';
 import Constants from '../../common/constants';
 
+const MAX_WIDTH_FULL_SCREEN = 400;
+
 class PostContextMenu extends React.Component {
   
   constructor(props) {
     super(props);
     this.state = {
       showModal: false,
-      smallScreen: document.documentElement.clientWidth < Constants.SCREEN.SMALL_SCREEN_WIDTH
+      fullScreen: this.isFullScreen(),
     };
-    this.setShow = this.setShow.bind(this);
+    this.closeFunc = this.closeFunc.bind(this);
+    this.openFunc = this.openFunc.bind(this);
+    this.resizeWindow = this.resizeWindow.bind(this);
   }
   
-  setShow(flag) {
-    event.stopPropagation();
+  componentDidMount() {
+    window.addEventListener('resize', this.resizeWindow);
+  }
+  
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.resizeWindow);
+  }
+  
+  resizeWindow() {
     this.setState({
-      showModal: flag
+      fullScreen: this.isFullScreen(),
     });
+  }
+  
+  isFullScreen() {
+    return document.documentElement.clientWidth < MAX_WIDTH_FULL_SCREEN;
   }
   
   flagThis() {
@@ -30,32 +45,48 @@ class PostContextMenu extends React.Component {
   getButtonOptions() {
     return [
       {
-        img: "/static/images/flagTrue.svg",
-        alt: "Flag this",
+        img: '/static/images/flagTrue.svg',
+        alt: 'Flag this',
         callback: this.flagThis.bind(this),
-        hasDelimiter: true
-      },{
-        img: "/static/images/flagTrue.svg",
-        alt: "Flag this",
+        hasDelimiter: true,
+      }, {
+        img: '/static/images/flagTrue.svg',
+        alt: 'Flag this',
         callback: this.flagThis.bind(this),
-        hasDelimiter: true
-      },{
-        img: "/static/images/flagTrue.svg",
-        alt: "Flag this",
+        hasDelimiter: true,
+      }, {
+        img: '/static/images/flagTrue.svg',
+        alt: 'Flag this',
         callback: this.flagThis.bind(this),
-        hasDelimiter: false
-      }
+        hasDelimiter: false,
+      },
     ];
+  }
+  
+  closeFunc() {
+    this.setState({
+      showModal: false,
+    });
+  }
+  
+  openFunc() {
+    this.setState({
+      showModal: true,
+    });
   }
   
   render() {
     return (
       <div className="container_pos-con-men">
-        <PostMenuButton setShow={this.setShow}/>
-        <Modal show={this.state.showModal} setShow={this.setShow}>
+        <PostMenuButton openFunc={this.openFunc}/>
+        <Modal
+          show={this.state.showModal}
+          closeFunc={this.closeFunc}
+          fullScreen={this.state.fullScreen}
+        >
           <Menu buttonOption={this.getButtonOptions()}
-                smallScreen={this.state.smallScreen}
-                setShow={this.setShow}/>
+                fullScreen={this.state.fullScreen}
+                closeFunc={this.closeFunc}/>
         </Modal>
       </div>
     );
