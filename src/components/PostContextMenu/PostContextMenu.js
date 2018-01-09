@@ -5,7 +5,7 @@ import MenuItem from './MenuItem/MenuItem';
 import Menu from './Menu/Menu';
 import Constants from '../../common/constants';
 
-const MAX_WIDTH_FULL_SCREEN = 400;
+const MAX_WIDTH_FULL_SCREEN = 500;
 
 class PostContextMenu extends React.Component {
   

@@ -2,6 +2,9 @@ import React from 'react';
 import ShowIf from '../ShowIf';
 
 class Modal extends React.Component {
+  static defaultProps = {
+    showCloseButton: true,
+  };
   
   constructor(props) {
     super(props);
@@ -37,7 +40,9 @@ class Modal extends React.Component {
                  onClick={this.clickOutside.bind(this)}
                  style={zIndexStyle}
                  ref={'wrapper'}>
-              <button className="close_mod"/>
+              <ShowIf show={this.props.showCloseButton}>
+                <button className="close_mod"/>
+              </ShowIf>
               <div className="container_mod"
                    ref={'modalContainer'}
                    style={this.getDynamicStyle()}>
