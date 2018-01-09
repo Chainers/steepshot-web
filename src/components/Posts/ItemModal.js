@@ -350,7 +350,7 @@ class ItemModal extends React.Component {
         <div>
           <div className="post-single">
             {
-              this.state.smallScreen
+              this.state.closeParam
                 ?
                 <div className="crossWrapper">
                   <div className="user-wrap clearfix">
@@ -414,7 +414,7 @@ class ItemModal extends React.Component {
               </div>
               <div className="post__description-container">
                 {
-                  this.state.smallScreen
+                  this.state.closeParam
                   ?
                     null
                   :
