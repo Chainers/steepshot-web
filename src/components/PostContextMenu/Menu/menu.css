@@ -22,18 +22,18 @@
   height: 300px;
 }
 
-.close-button_menu {
+.wrapper-close-button_menu {
   float: right;
-  height: 40px;
-  width: 40px;
+  height: 36px;
+  width: 36px;
   cursor: pointer;
 }
 
-.close_menu {
+.close-button_menu {
   border: 0;
   background-size: 4.4em 47.2em;
   background: url('/static/images/sprite_svg1910.svg') no-repeat -.2em -2.49em;
-  margin: 12px;
+  margin: 10px;
   width: 16px;
   height: 16px;
 }

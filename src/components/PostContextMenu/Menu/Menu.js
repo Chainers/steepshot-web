@@ -57,8 +57,8 @@ class Menu extends React.Component {
         ? 'small_container_menu'
         : 'container_menu'}>
         <div className="header_menu">
-          <div className="close-button_menu" onClick={this.closeModal.bind(this)}>
-            <button className="close_menu"></button>
+          <div className="wrapper-close-button_menu" onClick={this.closeModal.bind(this)}>
+            <button className="close-button_menu"></button>
           </div>
           <Delimiter horizontal={true}/>
         </div>
