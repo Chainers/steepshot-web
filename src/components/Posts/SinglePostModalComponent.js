@@ -253,8 +253,9 @@ class SinglePostModalComponent extends React.Component {
     if (this.state.isPostLoading || this.state.error) {
       return null;
     }
+    
     let itemImage = this.state.item.body || constants.NO_IMAGE;
-    let isUserAuth = (this.props.username && this.props.postingKey);
+    let isUserAuth = (utils.isNotEmptyString(this.props.username) && utils.isNotEmptyString(this.props.postingKey));
     const authorLink = `/@${this.state.item.author}`;
 
     this.initLayout();
