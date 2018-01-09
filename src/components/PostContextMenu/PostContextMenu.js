@@ -43,7 +43,7 @@ class PostContextMenu extends React.Component {
         img: "/static/images/flagTrue.svg",
         alt: "Flag this",
         callback: this.flagThis.bind(this),
-        hasDelimiter: true
+        hasDelimiter: false
       }
     ];
   }
