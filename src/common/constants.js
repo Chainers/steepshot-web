@@ -143,10 +143,6 @@ export default {
         }
     ],
   
-    SCREEN: {
-      SMALL_SCREEN_WIDTH: 767
-    },
-  
     POST_CONTEXT_MENU: {
       WIDTH: 300
     },
