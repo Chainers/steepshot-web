@@ -51,7 +51,7 @@ class SinglePostModalComponent extends React.Component {
     } else {
       this.setState({adultParam: false});
     }
-    if (this.state.item.total_payout_reward == 0) {
+    if (this.state.item.total_payout_reward === 0) {
       this.setState({moneyParam: false});
     }
     if (this.state.item.is_low_rated) {
@@ -79,7 +79,7 @@ class SinglePostModalComponent extends React.Component {
     if (urlObject.length < 3) {
       this.error();
     } else
-      getPostShaddow(this.getPostIdentifier(urlObject[urlObject.length - 2],
+      getPostShaddow(SinglePostModalComponent.getPostIdentifier(urlObject[urlObject.length - 2],
         urlObject[urlObject.length - 1])).then((result) => {
         if (result) {
           this.setState({
@@ -129,14 +129,14 @@ class SinglePostModalComponent extends React.Component {
     }, 0);
   }
   
-  getPostIdentifier(author, permlink) {
+  static getPostIdentifier(author, permlink) {
     return `${author}/${permlink}`;
   }
   
   sendComment(e) {
     e.preventDefault();
     let comment = this.commentInput.value;
-    if (comment == '') return false;
+    if (comment === '') return false;
     
     const urlObject = this.state.item.url.split('/');
     
@@ -186,7 +186,7 @@ class SinglePostModalComponent extends React.Component {
     });
   }
   
-  updateFlagInComponent(flag, index) {
+  updateFlagInComponent(flag) {
     let newItem = this.state.item;
     if (flag && newItem.vote) {
       newItem.net_votes--;
@@ -206,7 +206,7 @@ class SinglePostModalComponent extends React.Component {
     });
   }
   
-  callPreventDefault(e) {
+  static callPreventDefault(e) {
     e.stopPropagation();
     e.preventDefault();
   }
@@ -243,7 +243,7 @@ class SinglePostModalComponent extends React.Component {
   }
   
   shouldComponentUpdate(nextProps, nextState) {
-    if (this.state.index != nextState.index)
+    if (this.state.index !== nextState.index)
       if (this.state.isDescriptionOpened) this.setState(
         {isDescriptionOpened: false});
     return true;
@@ -275,7 +275,7 @@ class SinglePostModalComponent extends React.Component {
                 <div className="name">{this.state.item.author}</div>
               </Link>
               <i data-dismiss="modal" className="modalButton"
-                 aria-hidden="true"></i>
+                 aria-hidden="true"/>
             </div>
           </div>
         </ShowIf>
@@ -338,7 +338,7 @@ class SinglePostModalComponent extends React.Component {
             </ShowIf>
             <div className="post-controls clearfix">
               <div className="buttons-row"
-                   onClick={(e) => {this.callPreventDefault(e);}}>
+                   onClick={(e) => {SinglePostModalComponent.callPreventDefault(e);}}>
                 <VouteComponent
                   key="vote"
                   item={this.state.item}
