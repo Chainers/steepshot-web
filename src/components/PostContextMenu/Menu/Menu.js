@@ -6,11 +6,7 @@ import Delimiter from '../DelimitersWrapper/Delimiter/Delimiter';
 class Menu extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      smallScreen: this.isSmall(),
-    };
     this.getItems = this.getItems.bind(this);
-    this.resizeWindow = this.resizeWindow.bind(this);
   }
   
   getItems() {
@@ -22,38 +18,19 @@ class Menu extends React.Component {
         hasDelimiter={item.hasDelimiter}
         key={index.toString()}
         count={this.props.buttonOption.length}
-        smallScreen={this.state.smallScreen}
+        fullScreen={this.props.fullScreen}
       />;
     });
   }
   
-  componentDidMount() {
-    window.addEventListener('resize', this.resizeWindow);
-  }
-  
-  componentWillUnmount() {
-    window.removeEventListener('resize', this.resizeWindow);
-  }
-  
-  
-  resizeWindow() {
-    this.setState({
-      smallScreen: this.isSmall(),
-    });
-  }
-  
-  isSmall() {
-    return document.documentElement.clientWidth < Constants.SCREEN.SMALL_SCREEN_WIDTH
-  }
-  
   closeModal(event){
     event.stopPropagation();
-    this.props.setShow(false);
+    this.props.closeFunc();
   }
   
   render() {
     return (
-      <div className={this.state.smallScreen
+      <div className={this.props.fullScreen
         ? 'small_container_menu'
         : 'container_menu'}>
         <div className="header_menu">
@@ -62,7 +39,7 @@ class Menu extends React.Component {
           </div>
           <Delimiter horizontal={true}/>
         </div>
-        <div className={this.state.smallScreen
+        <div className={this.props.fullScreen
           ? 'small_content_menu'
           : 'content_menu'}>
           {this.getItems()}

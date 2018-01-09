@@ -37,7 +37,7 @@ class Modal extends React.Component {
                  onClick={this.clickOutside.bind(this)}
                  style={zIndexStyle}
                  ref={'wrapper'}>
-              <button className="close_mod"></button>
+              <button className="close_mod"/>
               <div className="container_mod"
                    ref={'modalContainer'}
                    style={this.getDynamicStyle()}>
