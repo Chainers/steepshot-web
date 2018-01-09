@@ -19,6 +19,9 @@ import {getPostShaddow} from '../../actions/posts';
 
 import utils from '../../utils/utils';
 import ShowIf from '../Common/ShowIf';
+import Modal from '../Common/Modal/Modal';
+
+const MAX_WIDTH_FULL_SCREEN = 815;
 
 class SinglePostModalComponent extends React.Component {
   constructor(props) {
@@ -30,13 +33,15 @@ class SinglePostModalComponent extends React.Component {
       adultParam: false,
       moneyParam: true,
       lowParam: false,
-      closeParam: false,
+      fullScreen: document.documentElement.clientWidth <= MAX_WIDTH_FULL_SCREEN,
+      showModal: false,
       ...this.props,
     };
     this.mobileCoverParams = {
       width: '100%',
       height: '100%',
     };
+    this.resizeWindow = this.resizeWindow.bind(this);
   }
   
   sharedComponentTitle() {
@@ -65,39 +70,23 @@ class SinglePostModalComponent extends React.Component {
     this.setState({adultParam: false, lowParam: false});
   }
   
-  closeButtonFunc() {
-    if (document.documentElement.clientWidth <= 815) {
-      this.setState({closeParam: true});
-    } else {
-      this.setState({closeParam: false});
-    }
-  }
-  
   componentDidMount() {
     this.setState({needsCommentFormLoader: false});
     const urlObject = this.props.location.pathname.split('/');
     if (urlObject.length < 3) {
       this.error();
     } else
-      getPostShaddow(SinglePostModalComponent.getPostIdentifier(urlObject[urlObject.length - 2],
+      getPostShaddow(SinglePostModalComponent.getPostIdentifier(
+        urlObject[urlObject.length - 2],
         urlObject[urlObject.length - 1])).then((result) => {
         if (result) {
           this.setState({
             item: result,
             isPostLoading: false,
           }, () => {
-            const callbackClose = () => {
-              jqApp.data.callback = undefined;
-              if (!(this.props.username && this.props.postingKey)) {
-                this.props.history.push('/browse');
-              } else {
-                this.props.history.push('/feed');
-              }
-            };
-            jqApp.data = {} || jqApp.data;
-            jqApp.data.callback = {} || jqApp.data.callback;
-            jqApp.data.callback = callbackClose.bind(this);
-            jqApp.openPostModal();
+            this.setState({
+              showModal: true,
+            });
           });
           this.sharedComponentTitle();
         } else {
@@ -105,10 +94,20 @@ class SinglePostModalComponent extends React.Component {
         }
         this.controlRestrictions();
       });
-    this.closeButtonFunc();
-    window.addEventListener('resize', () => {
-      this.closeButtonFunc();
-    });
+    
+    window.addEventListener('resize', this.resizeWindow);
+  }
+  
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.resizeWindow);
+  }
+  
+  resizeWindow() {
+    if (document.documentElement.clientWidth <= MAX_WIDTH_FULL_SCREEN) {
+      this.setState({fullScreen: true});
+    } else {
+      this.setState({fullScreen: false});
+    }
   }
   
   error() {
@@ -249,154 +248,171 @@ class SinglePostModalComponent extends React.Component {
     return true;
   }
   
+  closeFunc() {
+    if (!(this.props.username && this.props.postingKey)) {
+      this.props.history.push('/browse');
+    } else {
+      this.props.history.push('/feed');
+    }
+  }
+  
   render() {
     if (this.state.isPostLoading || this.state.error) {
       return null;
     }
     
     let itemImage = this.state.item.body || constants.NO_IMAGE;
-    let isUserAuth = (utils.isNotEmptyString(this.props.username) && utils.isNotEmptyString(this.props.postingKey));
+    let isUserAuth = (utils.isNotEmptyString(this.props.username) &&
+      utils.isNotEmptyString(this.props.postingKey));
     const authorLink = `/@${this.state.item.author}`;
     
     this.initLayout();
     
     return (
-      <div className="post-single">
-        <ShowIf show={this.state.closeParam}>
-          <div className="crossWrapper">
-            <div className="user-wrap clearfix">
-              <div className="date">
-                <TimeAgo
-                  datetime={this.state.item.created}
-                  locale='en_US'
-                />
-              </div>
-              <Link to={authorLink} className="user">
-                <AvatarComponent src={this.state.item.avatar}/>
-                <div className="name">{this.state.item.author}</div>
-              </Link>
-              <i data-dismiss="modal" className="modalButton"
-                 aria-hidden="true"/>
-            </div>
-          </div>
-        </ShowIf>
-        <div className="post-wrap post">
-          <div className="post__image-container position--relative">
-            {
-              this.state.adultParam
-                ? <div style={this.mobileCoverParams}>
-                  <div className="forAdult2">
-                    <div className="forAdultInner">
-                      <p className="par1">NSFW content</p>
-                      <p className="par2">This content is for adults only. Not
-                        recommended for children or sensitive individuals.</p>
-                      <button className="btn btn-index"
-                              onClick={this.hideFunc.bind(this)}>Show me
-                      </button>
-                    </div>
+      <div>
+        <Modal
+          show={this.state.showModal}
+          closeFunc={this.closeFunc.bind(this)}
+          fullScreen={this.state.fullScreen}
+        >
+          <div className="post-single">
+            <ShowIf show={this.state.fullScreen}>
+              <div className="crossWrapper">
+                <div className="user-wrap clearfix">
+                  <div className="date">
+                    <TimeAgo
+                      datetime={this.state.item.created}
+                      locale='en_US'
+                    />
                   </div>
-                  <img src={itemImage} alt="Post picture."/>
+                  <Link to={authorLink} className="user">
+                    <AvatarComponent src={this.state.item.avatar}/>
+                    <div className="name">{this.state.item.author}</div>
+                  </Link>
+                  <i data-dismiss="modal" className="modalButton"
+                     aria-hidden="true"/>
                 </div>
-                : this.state.lowParam
-                ? <div style={this.mobileCoverParams}>
-                  <div className="forAdult2">
-                    <div className="forAdultInner">
-                      <p className="par1">Low rated content</p>
-                      <p className="par2">This content is hidden due to low
-                        ratings.</p>
-                      <button className="btn btn-index"
-                              onClick={this.hideFunc.bind(this)}>Show me
-                      </button>
-                    </div>
-                  </div>
-                  <img src={itemImage} alt="Post picture."/>
-                </div>
-                : <div>
-                  <ShareComponent
-                    moneyParam={this.state.moneyParam}
-                    url={this.state.item.url}
-                    title="Share post"
-                    containerModifier="block--right-top box--small post__share-button"
-                  />
-                  <img src={itemImage} alt="Post picture."/>
-                </div>
-            }
-          </div>
-          <div className="post__description-container">
-            <ShowIf show={!this.state.closeParam}>
-              <div className="user-wrap clearfix">
-                <div className="date">
-                  <TimeAgo
-                    datetime={this.state.item.created}
-                    locale='en_US'
-                  />
-                </div>
-                <Link to={authorLink} className="user">
-                  <AvatarComponent src={this.state.item.avatar}/>
-                  <div className="name">{this.state.item.author}</div>
-                </Link>
               </div>
             </ShowIf>
-            <div className="post-controls clearfix">
-              <div className="buttons-row"
-                   onClick={(e) => {SinglePostModalComponent.callPreventDefault(e);}}>
-                <VouteComponent
-                  key="vote"
-                  item={this.state.item}
-                  index={this.state.index}
-                  parent='post'
-                  updateVoteInComponent={this.updateVoteInComponent}
-                />
-                <FlagComponent
-                  key="flag"
-                  item={this.state.item}
-                  index={this.state.index}
-                  updateFlagInComponent={this.props.updateFlagInComponent}
-                />
-              </div>
-              <div className="wrap-counts clearfix">
-                <LikesComponent likes={this.state.item.net_votes}
-                                url={this.state.item.url}/>
-                <ShowIf show={this.state.moneyParam}>
-                  <div className="amount">
-                    {utils.currencyChecker(
-                      this.state.item.total_payout_reward)}
-                  </div>
-                </ShowIf>
-              </div>
-            </div>
-            <ScrollViewComponent
-              ref={(ref) => this.scrollView = ref}
-              wrapperModifier="list-scroll"
-              scrollViewModifier="list-scroll__view"
-              autoHeight={window.innerWidth <
-              constants.DISPLAY.DESK_BREAKPOINT}
-              autoHeightMax={350}
-              autoHeightMin={100}
-              autoHide={true}
-            >
-              {this.renderDescription()}
-              <Comments key="comments" replyUser={this.commentInput}
-                        item={this.state.item}
-                        newComment={this.state.newComment}/>
-            </ScrollViewComponent>
-            <ShowIf show={isUserAuth}>
-              <div className="post-comment">
-                <form className="comment-form form-horizontal">
-                  <div className="form-group clearfix">
-                    {
-                      this.state.needsCommentFormLoader
-                        ? <div className="loaderInComments">
-                          <LoadingSpinner
-                            show={this.state.needsCommentFormLoader}/>
-                        </div>
-                        : <div className="btn-wrap">
-                          <button type="submit" className="btn-submit"
-                                  onClick={this.sendComment.bind(this)}>Send
+            <div className="post-wrap post">
+              <div className="post__image-container position--relative">
+                {
+                  this.state.adultParam
+                    ? <div style={this.mobileCoverParams}>
+                      <div className="forAdult2">
+                        <div className="forAdultInner">
+                          <p className="par1">NSFW content</p>
+                          <p className="par2">This content is for adults only. Not
+                            recommended for children or sensitive individuals.</p>
+                          <button className="btn btn-index"
+                                  onClick={this.hideFunc.bind(this)}>Show me
                           </button>
                         </div>
-                    }
-                    <div className="input-container">
+                      </div>
+                      <img src={itemImage} alt="Post picture."/>
+                    </div>
+                    : this.state.lowParam
+                    ? <div style={this.mobileCoverParams}>
+                      <div className="forAdult2">
+                        <div className="forAdultInner">
+                          <p className="par1">Low rated content</p>
+                          <p className="par2">This content is hidden due to low
+                            ratings.</p>
+                          <button className="btn btn-index"
+                                  onClick={this.hideFunc.bind(this)}>Show me
+                          </button>
+                        </div>
+                      </div>
+                      <img src={itemImage} alt="Post picture."/>
+                    </div>
+                    : <div>
+                      <ShareComponent
+                        moneyParam={this.state.moneyParam}
+                        url={this.state.item.url}
+                        title="Share post"
+                        containerModifier="block--right-top box--small post__share-button"
+                      />
+                      <img src={itemImage} alt="Post picture."/>
+                    </div>
+                }
+              </div>
+              <div className="post__description-container">
+                <ShowIf show={!this.state.fullScreen}>
+                  <div className="user-wrap clearfix">
+                    <div className="date">
+                      <TimeAgo
+                        datetime={this.state.item.created}
+                        locale='en_US'
+                      />
+                    </div>
+                    <Link to={authorLink} className="user">
+                      <AvatarComponent src={this.state.item.avatar}/>
+                      <div className="name">{this.state.item.author}</div>
+                    </Link>
+                  </div>
+                </ShowIf>
+                <div className="post-controls clearfix">
+                  <div className="buttons-row"
+                       onClick={(e) => {
+                         SinglePostModalComponent.callPreventDefault(e);
+                       }}>
+                    <VouteComponent
+                      key="vote"
+                      item={this.state.item}
+                      index={this.state.index}
+                      parent='post'
+                      updateVoteInComponent={this.updateVoteInComponent}
+                    />
+                    <FlagComponent
+                      key="flag"
+                      item={this.state.item}
+                      index={this.state.index}
+                      updateFlagInComponent={this.props.updateFlagInComponent}
+                    />
+                  </div>
+                  <div className="wrap-counts clearfix">
+                    <LikesComponent likes={this.state.item.net_votes}
+                                    url={this.state.item.url}/>
+                    <ShowIf show={this.state.moneyParam}>
+                      <div className="amount">
+                        {utils.currencyChecker(
+                          this.state.item.total_payout_reward)}
+                      </div>
+                    </ShowIf>
+                  </div>
+                </div>
+                <ScrollViewComponent
+                  ref={(ref) => this.scrollView = ref}
+                  wrapperModifier="list-scroll"
+                  scrollViewModifier="list-scroll__view"
+                  autoHeight={window.innerWidth <
+                  constants.DISPLAY.DESK_BREAKPOINT}
+                  autoHeightMax={350}
+                  autoHeightMin={100}
+                  autoHide={true}
+                >
+                  {this.renderDescription()}
+                  <Comments key="comments" replyUser={this.commentInput}
+                            item={this.state.item}
+                            newComment={this.state.newComment}/>
+                </ScrollViewComponent>
+                <ShowIf show={isUserAuth}>
+                  <div className="post-comment">
+                    <form className="comment-form form-horizontal">
+                      <div className="form-group clearfix">
+                        {
+                          this.state.needsCommentFormLoader
+                            ? <div className="loaderInComments">
+                              <LoadingSpinner
+                                show={this.state.needsCommentFormLoader}/>
+                            </div>
+                            : <div className="btn-wrap">
+                              <button type="submit" className="btn-submit"
+                                      onClick={this.sendComment.bind(this)}>Send
+                              </button>
+                            </div>
+                        }
+                        <div className="input-container">
                         <textarea
                           ref={(ref) => {this.commentInput = ref;}}
                           id="formCOMMENT"
@@ -404,15 +420,17 @@ class SinglePostModalComponent extends React.Component {
                           maxLength={2048}
                           className="form-control"
                         />
-                      <label htmlFor="formCOMMENT"
-                             className="name">Comment</label>
-                    </div>
+                          <label htmlFor="formCOMMENT"
+                                 className="name">Comment</label>
+                        </div>
+                      </div>
+                    </form>
                   </div>
-                </form>
+                </ShowIf>
               </div>
-            </ShowIf>
+            </div>
           </div>
-        </div>
+        </Modal>
       </div>
     );
   }

@@ -1,8 +1,6 @@
 import React from 'react';
 import { Route, Switch, Redirect } from 'react-router-dom';
 import App from './components/App';
-import Browse from './components/Browse/Browse';
-import Login from './components/Account/Login';
 import NotFound from './components/NotFound';
 import Localization from './components/Localization/index';
 import Signin from './components/Account/Login';
@@ -12,14 +10,12 @@ import Feed from './components/Feed/Feed';
 import Profile from './components/Profile';
 import Settings from './components/Settings';
 import CreatePost from './components/Posts/CreatePost';
-import SinglePostModalWrapper from './components/Wrappers/SinglePostModalWrapper';
 import SearchWrapper from './components/Wrappers/SearchWrapper';
 import AboutComponent from './components/About/AboutComponent';
 import BrowseWrapper from './components/Wrappers/BrowseWrapper';
-
 import Constants from './common/constants';
-import PostMenuButton from './components/PostContextMenu/OpenMenuButton/PostMenuButton';
 import Testing from './components/Common/Testing/Testing';
+import SinglePostModalComponent from './components/Posts/SinglePostModalComponent';
 
 export default function getRoutes(store) {
   const clearMessages = () => {
@@ -54,7 +50,7 @@ export default function getRoutes(store) {
         <Redirect path="/browse" to={`/browse/${baseBrowseFilter()}`} />
         <Route path="/@:username" component={UserProfile} onLeave={clearMessages} />
         <Route path="/signin" component={Signin} onLeave={clearMessages} />
-        <Route path="/post" component={SinglePostModalWrapper} onLeave={clearMessages} />
+        <Route path="/post" component={SinglePostModalComponent} onLeave={clearMessages} />
         <Route path="/search/:searchValue" component={SearchWrapper} onLeave={clearMessages} />
         <Route path="/guide" component={AboutComponent} onLeave={clearMessages} />
         <Route path="/dev/test" component={Testing} onLeave={clearMessages} />
