@@ -290,7 +290,7 @@ class SinglePostModalComponent extends React.Component {
                     <div className="name">{this.state.item.author}</div>
                   </Link>
                   <i data-dismiss="modal" className="modalButton"
-                     aria-hidden="true"/>
+                     aria-hidden="true" onClick={this.closeFunc.bind(this)}/>
                 </div>
               </div>
             </ShowIf>
