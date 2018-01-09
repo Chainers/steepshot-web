@@ -385,7 +385,7 @@ class ItemModal extends React.Component {
         <div>
           <div className="post-single">
             {
-              this.state.smallScreen
+              this.state.closeParam
                 ?
                 <div className="crossWrapper">
                   <div className="user-wrap clearfix">
@@ -457,7 +457,7 @@ class ItemModal extends React.Component {
                 }
               </div>
               <ShowIf show={this.state.fullScreenMode} >
-	              <div className="post__description-container">
+                <div className="post__description-container">
 	                {
 	                  this.state.closeParam
 	                  ?
@@ -532,11 +532,11 @@ class ItemModal extends React.Component {
 	                              :
 	                              <div className="btn-wrap">
 	                                <button
-	                                  ref={ ref => {this.sendButton = ref} }
-	                                  style={{top : (this.state.txtHeight.replace(/px/, '') - 40) + 'px'}}
 	                                  type="submit"
 	                                  className="btn-submit"
 	                                  onClick={this.sendComment.bind(this)}
+	                                  ref={ ref => {this.sendButton = ref} }
+	                                  style={{top : (this.state.txtHeight.replace(/px/, '') - 40) + 'px'}}
 	                                  >Send</button>
 	                              </div>
 	                          }
@@ -565,7 +565,7 @@ class ItemModal extends React.Component {
 	                  :
 	                    null
 	                }
-	              </div>
+                </div>
               </ShowIf>
             </div>
           </div>
