@@ -1,11 +1,13 @@
 import * as React from 'react';
 import MenuItem from '../MenuItem/MenuItem';
 import Delimiter from '../DelimitersWrapper/Delimiter/Delimiter';
+import ShowIf from '../../Common/ShowIf';
 
 class Menu extends React.Component {
   constructor(props) {
     super(props);
     this.getItems = this.getItems.bind(this);
+    this.getDimension = this.getDimension.bind(this);
   }
   
   getItems() {
@@ -27,26 +29,44 @@ class Menu extends React.Component {
     this.props.closeFunc();
   }
   
+  getDimension() {
+    return;
+  }
+  
   render() {
     return (
       <div className={this.props.fullScreen
         ? 'full-screen-container_menu'
         : 'container_menu'}>
         <div className="header_menu">
+          <span className="title_menu">Action with this post</span>
           <div className="wrapper-close-button_menu"
                onClick={this.closeModal.bind(this)}>
-            <button className="close-button_menu"></button>
+            <img src="/static/images/postMenuButton/close-but_menu.png"
+                 alt="Close menu button"
+                 className="close-button_menu"/>
           </div>
         </div>
         <Delimiter horizontal={true}/>
-        <div className={this.props.fullScreen
-          ? 'full-screen-content_menu'
-          : 'content_menu'}>
-          {this.getItems()}
+        <div className="box-item_menu">
+          <div
+            className={this.props.fullScreen
+              ? 'full-screen-content_menu'
+              : 'content_menu'}
+            style={{
+              width: this.props.contentWidth,
+              height: this.props.contentHeight,
+            }}>
+            {this.getItems()}
+          </div>
         </div>
+        <ShowIf show={this.props.fullScreen}>
+          <div className="filler_menu">
+          </div>
+        </ShowIf>
         <Delimiter horizontal={true}/>
         <div className="footer_menu">
-          some text
+          Select the action you want to perform with the post
         </div>
       </div>
     );

@@ -1,11 +1,17 @@
 import * as React from 'react';
 import PostMenuButton from './OpenMenuButton/PostMenuButton';
 import Modal from '../Common/Modal/Modal';
-import MenuItem from './MenuItem/MenuItem';
 import Menu from './Menu/Menu';
-import Constants from '../../common/constants';
 
-const MAX_WIDTH_FULL_SCREEN = 500;
+const BUTTON_AMOUNT = 5;
+const MIN_BUTTON_WIDTH = 110;
+const MAX_BUTTON_WIDTH = 150;
+const CONTENT_PADDING = 20;
+const CONTENT_MARGIN = 40;
+const MIN_CONTENT_WIDTH = BUTTON_AMOUNT * MIN_BUTTON_WIDTH + 2 *
+  (CONTENT_PADDING + CONTENT_MARGIN);
+const MAX_CONTENT_WIDTH = BUTTON_AMOUNT * MAX_BUTTON_WIDTH + 2 *
+  (CONTENT_PADDING + CONTENT_MARGIN);
 
 class PostContextMenu extends React.Component {
   
@@ -13,7 +19,9 @@ class PostContextMenu extends React.Component {
     super(props);
     this.state = {
       showModal: false,
-      fullScreen: this.isFullScreen(),
+      fullScreen: false,
+      contentWidth: MAX_CONTENT_WIDTH,
+      contentHeight: MAX_BUTTON_WIDTH,
     };
     this.closeFunc = this.closeFunc.bind(this);
     this.openFunc = this.openFunc.bind(this);
@@ -22,6 +30,7 @@ class PostContextMenu extends React.Component {
   
   componentDidMount() {
     window.addEventListener('resize', this.resizeWindow);
+    this.resizeWindow();
   }
   
   componentWillUnmount() {
@@ -29,38 +38,35 @@ class PostContextMenu extends React.Component {
   }
   
   resizeWindow() {
-    this.setState({
-      fullScreen: this.isFullScreen(),
-    });
+    if (document.documentElement.clientWidth > MAX_CONTENT_WIDTH) {
+      if (this.state.contentWidth !== MAX_CONTENT_WIDTH) {
+        this.setState({
+          fullScreen: false,
+          contentWidth: MAX_BUTTON_WIDTH * BUTTON_AMOUNT + 'px',
+          contentHeight: MAX_BUTTON_WIDTH  + 'px',
+        });
+      }
+    } else if (document.documentElement.clientWidth < MIN_CONTENT_WIDTH) {
+      this.setState({
+        fullScreen: true,
+        contentWidth: document.documentElement.clientWidth -
+        (CONTENT_MARGIN + CONTENT_PADDING) * 2 + 'px',
+        contentHeight: 'auto',
+      });
+    } else {
+      let contentWidth = document.documentElement.clientWidth -
+        (CONTENT_MARGIN + CONTENT_PADDING) * 2;
+      this.setState({
+        fullScreen: false,
+        contentWidth: contentWidth  + 'px',
+        contentHeight: contentWidth / BUTTON_AMOUNT  + 'px',
+      });
+    }
   }
   
-  isFullScreen() {
-    return document.documentElement.clientWidth < MAX_WIDTH_FULL_SCREEN;
-  }
   
   flagThis() {
     console.log('Flag this');
-  }
-  
-  getButtonOptions() {
-    return [
-      {
-        img: '/static/images/flagTrue.svg',
-        alt: 'Flag this',
-        callback: this.flagThis.bind(this),
-        hasDelimiter: true,
-      }, {
-        img: '/static/images/flagTrue.svg',
-        alt: 'Flag this',
-        callback: this.flagThis.bind(this),
-        hasDelimiter: true,
-      }, {
-        img: '/static/images/flagTrue.svg',
-        alt: 'Flag this',
-        callback: this.flagThis.bind(this),
-        hasDelimiter: false,
-      },
-    ];
   }
   
   closeFunc() {
@@ -82,15 +88,50 @@ class PostContextMenu extends React.Component {
         <Modal
           show={this.state.showModal}
           closeFunc={this.closeFunc}
-          fullScreen={this.state.fullScreen}
+          fullScreen={false}
+          closeButton={false}
         >
-          <Menu buttonOption={this.getButtonOptions()}
+          <Menu buttonOption={this.getButtonsOptions.bind(this)()}
                 fullScreen={this.state.fullScreen}
-                closeFunc={this.closeFunc}/>
+                closeFunc={this.closeFunc}
+                contentWidth={this.state.contentWidth}
+                contentHeight={this.state.contentHeight}/>
         </Modal>
       </div>
     );
   }
+  
+  getButtonsOptions() {
+    return [
+      {
+        img: '/static/images/flagTrue.svg',
+        alt: 'Flag this',
+        callback: this.flagThis.bind(this),
+        hasDelimiter: true,
+      }, {
+        img: '/static/images/flagTrue.svg',
+        alt: 'Flag this',
+        callback: this.flagThis.bind(this),
+        hasDelimiter: true,
+      }, {
+        img: '/static/images/flagTrue.svg',
+        alt: 'Flag this',
+        callback: this.flagThis.bind(this),
+        hasDelimiter: true,
+      }, {
+        img: '/static/images/flagTrue.svg',
+        alt: 'Flag this',
+        callback: this.flagThis.bind(this),
+        hasDelimiter: true,
+      }, {
+        img: '/static/images/flagTrue.svg',
+        alt: 'Flag this',
+        callback: this.flagThis.bind(this),
+        hasDelimiter: false,
+      },
+    ];
+  }
+  
 }
 
 export default PostContextMenu;

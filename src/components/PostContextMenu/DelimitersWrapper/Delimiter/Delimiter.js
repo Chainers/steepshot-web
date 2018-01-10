@@ -2,7 +2,7 @@ import * as React from 'react';
 
 class Delimiter extends React.Component {
   static defaultProps = {
-    scale: 90
+    scale: '100%'
   };
   
   constructor(props) {
@@ -14,19 +14,19 @@ class Delimiter extends React.Component {
     let delimiterStyle;
     if (this.props.horizontal) {
       wrapperStyle = {
-        height: '1px',
         clear: 'both',
       };
       delimiterStyle = {
-        width: this.props.scale + '%',
+        width: this.props.scale,
+        height: '1px',
       };
     } else {
       wrapperStyle = {
-        width: '1px',
         float: 'right',
       };
       delimiterStyle = {
-        height: this.props.scale + '%',
+        height: this.props.scale,
+        width: '1px',
       };
     }
     
