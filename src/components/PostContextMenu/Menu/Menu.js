@@ -35,9 +35,7 @@ class Menu extends React.Component {
   
   render() {
     return (
-      <div className={this.props.fullScreen
-        ? 'full-screen-container_menu'
-        : 'container_menu'}>
+      <div className="container_menu" style={{width: this.props.fullScreen ? this.props.contentWidth : 'auto'}}>
         <div className="header_menu">
           <span className="title_menu">Action with this post</span>
           <div className="wrapper-close-button_menu"
