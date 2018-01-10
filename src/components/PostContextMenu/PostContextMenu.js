@@ -8,6 +8,7 @@ const MIN_BUTTON_WIDTH = 110;
 const MAX_BUTTON_WIDTH = 150;
 const CONTENT_PADDING = 20;
 const CONTENT_MARGIN = 40;
+const MAX_HORIZONTAL_CONTENT_WIDTH = 200;
 const MIN_CONTENT_WIDTH = BUTTON_AMOUNT * MIN_BUTTON_WIDTH + 2 *
   (CONTENT_PADDING + CONTENT_MARGIN);
 const MAX_CONTENT_WIDTH = BUTTON_AMOUNT * MAX_BUTTON_WIDTH + 2 *
@@ -47,10 +48,14 @@ class PostContextMenu extends React.Component {
         });
       }
     } else if (document.documentElement.clientWidth < MIN_CONTENT_WIDTH) {
+      let contentWidth = document.documentElement.clientWidth -
+        (CONTENT_MARGIN) * 2;
+      if (contentWidth > MAX_HORIZONTAL_CONTENT_WIDTH) {
+        contentWidth = MAX_HORIZONTAL_CONTENT_WIDTH;
+      }
       this.setState({
         fullScreen: true,
-        contentWidth: document.documentElement.clientWidth -
-        (CONTENT_MARGIN + CONTENT_PADDING) * 2 + 'px',
+        contentWidth: contentWidth + 'px',
         contentHeight: 'auto',
       });
     } else {

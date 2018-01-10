@@ -8,6 +8,9 @@ class Modal extends React.Component {
   
   constructor(props) {
     super(props);
+    this.state = {
+      alignSelf: 'center',
+    }
   }
   
   clickOutside(event) {
@@ -15,19 +18,22 @@ class Modal extends React.Component {
     if (this.refs.modalContainer &&
       !this.refs.modalContainer.contains(event.target)) {
       this.props.closeFunc();
-      this.getDynamicStyle = this.getDynamicStyle.bind(this);
     }
   }
   
-  getDynamicStyle() {
-    let flextAlignSelf = {alignSelf: 'center'};
-    if (this.refs.modalContainer && this.refs.wrapper) {
+  componentDidUpdate() {
+    let alignSelf = 'center';
+    if (this.props.show) {
       if (this.refs.modalContainer.clientHeight >
         this.refs.wrapper.clientHeight) {
-        flextAlignSelf = {alignSelf: 'flex-start'};
+        alignSelf = 'flex-start';
       }
     }
-    return flextAlignSelf;
+    if (this.state.alignSelf != alignSelf) {
+      this.setState({
+        alignSelf: alignSelf,
+      })
+    }
   }
   
   render() {
@@ -45,7 +51,7 @@ class Modal extends React.Component {
               </ShowIf>
               <div className="container_mod"
                    ref={'modalContainer'}
-                   style={this.getDynamicStyle()}>
+                   style={{alignSelf: this.state.alignSelf}}>
                 {this.props.children}
               </div>
             </div>
