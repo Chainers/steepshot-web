@@ -181,7 +181,7 @@ class Item extends React.Component {
                   />
                 </div>
                 <div className="wrap-counts clearfix">
-                  <LikesComponent likes={this.state.item.net_likes} url={this.state.item.url} />
+                  <LikesComponent likes={this.state.item.net_likes} url={this.state.item.url}/>
                   <ShowIf show={this.state.moneyParam}>
                     <div className="amount">{this.state.item.total_payout_reward}</div>
                   </ShowIf>
