@@ -1,9 +1,23 @@
 import React from 'react';
-import {Link} from 'react-router-dom';
-import {getPostComments} from '../../actions/posts';
+import Modal from 'react-modal';
+import {
+  Link,
+  Redirect
+} from 'react-router-dom';
+import {
+  getPostComments
+} from '../../actions/posts';
+import ReactResizeDetector from 'react-resize-detector';
+import {
+  connect
+} from 'react-redux';
+import PropTypes from 'prop-types';
 import Comments from './Comments';
 import constants from '../../common/constants';
+import VouteComponent from './VouteComponent';
+import FlagComponent from './FlagComponent';
 import TagComponent from './TagComponent';
+import LikesComponent from './LikesComponent';
 import TimeAgo from 'timeago-react';
 import ShowIf from '../Common/ShowIf';
 import { UserLinkFunc } from '../Common/UserLinkFunc';
@@ -11,7 +25,7 @@ import { UserLinkFunc } from '../Common/UserLinkFunc';
 class Item extends React.Component {
   constructor(props) {
     super(props);
-
+    
     this.state = {
       item : this.props.item,
       items : this.props.items,
@@ -25,20 +39,20 @@ class Item extends React.Component {
       moneyParam : true,
       lowParam : false
     };
-
+    
     this.localConstants = {
-       THIS_POST_MODAL_REF : "thisPostModal" + this.props.index
+      THIS_POST_MODAL_REF : "thisPostModal" + this.props.index
     }
   }
-
+  
   shouldComponentUpdate(nextProps, nextState) {
     if (nextProps == this.props && nextState == this.state) return false;
     return true;
   }
-
+  
   componentDidMount() {
     let propsItem = this.state.item;
-
+    
     let money = parseFloat(propsItem.total_payout_reward).toFixed(2);
     if (money == 0.00) {
       this.setState({moneyParam: false});
@@ -46,7 +60,7 @@ class Item extends React.Component {
       propsItem.total_payout_reward = '$' + money;
     }
     propsItem.tags = (propsItem.tags instanceof Array) ? propsItem.tags : propsItem.tags.split(',');
-
+    
     if (propsItem.is_nsfw) {
       this.setState({adultParam : true});
     }
@@ -59,7 +73,7 @@ class Item extends React.Component {
       image: propsItem.body
     });
   }
-
+  
   resetDefaultProperties(newItem) {
     this.setState({
       avatar: newItem.avatar,
@@ -67,24 +81,24 @@ class Item extends React.Component {
       item: newItem
     });
   }
-
+  
   redirectToUserProfile() {
     this.setState({ redirectToReferrer: true });
   }
-
+  
   setDefaultAvatar() {
     this.setState({ avatar: constants.NO_AVATAR });
   }
-
+  
   setDefaultImage() {
     this.setState({ image: constants.NO_IMAGE });
   }
-
+  
   callPreventDefault(e) {
     e.stopPropagation();
     e.preventDefault();
   }
-
+  
   _getPostImageStyles(itemImage) {
     return {
       backgroundImage: `url(${itemImage})`,
@@ -96,13 +110,13 @@ class Item extends React.Component {
       backgroundPosition: 'center'
     };
   }
-
+  
   _openModal() {
     if (this.state.openModal != undefined) {
       this.state.openModal(this.state.currentIndex)
     }
   }
-
+  
   renderTags() {
     if (this.state.item.tags) {
       return this.state.item.tags.map((tag, index) => {
@@ -110,61 +124,67 @@ class Item extends React.Component {
       });
     } else return null;
   }
-
+  
   render() {
     let itemImage = this.state.image || constants.NO_IMAGE;
     let authorImage = this.state.avatar || constants.NO_AVATAR;
     let comments = <Comments key="comments" item={this.state.item} />;
-
+    
     const authorLink = `/@${this.state.item.author}`;
     const cardPhotoStyles = {
       backgroundImage : 'url(' + itemImage + ')'
     };
-
+    
     return (
       <div className="item-wrap">
         <div className="post-card" >
-          <ShowIf show={!this.state.clearPropsHeader}>
-            <div className="card-head clearfix">
-              <div className="date">
-                <TimeAgo
-                  datetime={this.state.item.created}
-                  locale='en_US'
-                />
-              </div>
-              <Link to={authorLink} className="user">
-                <div className="photo">
-                  <img src={authorImage} alt="User"
-                       onError={this.setDefaultAvatar.bind(this)}/>
+          {
+            !this.state.clearPropsHeader
+              ?
+              <div className="card-head clearfix">
+                <div className="date">
+                  <TimeAgo
+                    datetime={this.state.item.created}
+                    locale='en_US'
+                  />
                 </div>
-                <div className="name">{this.state.item.author}</div>
-              </Link>
-            </div>
-          </ShowIf>
-          
+                <Link to={authorLink} className="user">
+                  <div className="photo">
+                    <img src={authorImage} alt="User" onError={this.setDefaultAvatar.bind(this)}/>
+                  </div>
+                  <div className="name">{this.state.item.author}</div>
+                </Link>
+              </div>
+              :
+              null
+          }
           <div className="card-body">
             <div className="card-pic" onClick={this._openModal.bind(this)}>
               {
                 this.state.adultParam
-                  ? <div className="forAdult">
+                  ?
+                  <div className="forAdult">
                     <p>NSFW content</p>
                   </div>
-                  : <ShowIf show={this.state.lowParam}>
+                  :
+                  this.state.lowParam
+                    ?
                     <div className="forAdult">
                       <p>Low rated content</p>
                     </div>
-                  </ShowIf>
+                    :
+                    null
               }
-            <a style={ cardPhotoStyles } className="img" alt="User" onError={this.setDefaultImage.bind(this)}></a>
+              <a style={ cardPhotoStyles } className="img" alt="User" onError={this.setDefaultImage.bind(this)}></a>
             </div>
             <div className="card-wrap">
               <div className="card-controls clearfix">
                 <div className="buttons-row" onClick={(e)=>{this.callPreventDefault(e)}}>
                   <VouteComponent key="vote"
-                    item={this.state.item}
-                    index={this.state.currentIndex}
-                    updateVoteInComponent={this.props.updateVoteInComponent}
-                    parent='post'
+                                  item={this.state.item}
+                                  index={this.state.currentIndex}
+                                  updateVoteInComponent={this.props.updateVoteInComponent}
+                                  parent='post'
                   />
                   <FlagComponent
                     key="flag"
