@@ -40,7 +40,7 @@ class Modal extends React.Component {
                  onClick={this.clickOutside.bind(this)}
                  style={zIndexStyle}
                  ref={'wrapper'}>
-              <ShowIf show={this.props.showCloseButton}>
+              <ShowIf show={this.props.closeButton}>
                 <button className="close_mod"/>
               </ShowIf>
               <div className="container_mod"

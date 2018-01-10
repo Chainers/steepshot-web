@@ -8,18 +8,17 @@ class DelimitersWrapper extends React.Component {
   }
   
   render() {
+    let wrapperStyle = {
+      flexDirection: this.props.fullScreen ? 'column' : 'row',
+    };
+    
     return (
-      <div className="wrapper_del">
-        <div className="vertical-wrapper_del">
-          <div className="content_del">
-            {this.props.children}
-          </div>
-          <ShowIf show={this.props.hasDelimiter && !this.props.fullScreen}>
-            <Delimiter horizontal={false} scale={60}/>
-          </ShowIf>
+      <div className="wrapper_del" style={wrapperStyle}>
+        <div className="content_del">
+          {this.props.children}
         </div>
-        <ShowIf show={this.props.hasDelimiter && this.props.fullScreen}>
-          <Delimiter horizontal={true}/>
+        <ShowIf show={this.props.hasDelimiter}>
+          <Delimiter horizontal={this.props.fullScreen} scale={this.props.fullScreen ? '90%' : '60%'}/>
         </ShowIf>
       </div>
     );

@@ -7,37 +7,23 @@ class MenuItem extends React.Component {
   }
   
   render() {
-    let itemStyle;
-    let boxStyle;
-    if (this.props.fullScreen) {
-      itemStyle = {
-        width: '100%',
-        height: 100 / this.props.count + '%',
-        float: 'none',
-      };
-      boxStyle = {
-        display: 'flex',
-      }
-    } else {
-      itemStyle = {
-        width: 100 / this.props.count + '%',
-        height: '100%',
-        float: 'left',
-      };
-      boxStyle = {
-      
-      }
-    }
+    const boxStyle = {
+      flexDirection: this.props.fullScreen ? 'row' : 'column',
+      alignItems: this.props.fullScreen ? 'center' : 'stretch',
+      justifyContent: this.props.fullScreen ? 'center' : 'stretch',
+    };
+    const contentStyle = {
+      margin: this.props.fullScreen ? 'auto 5px' : 'auto',
+    };
     return (
-      <div className="wrapper_men-ite" onClick={this.props.callback}
-           style={itemStyle}>
-        <Delimiter hasDelimiter={this.props.hasDelimiter} fullScreen={this.props.fullScreen}>
-          <div className="container_men-ite">
-            <div className="box_men-ite" style={boxStyle}>
-              <img src={this.props.img} alt={this.props.alt}
-                   className="img_men_ite"/>
-              <span className="text-menu_men-ite">{this.props.alt}</span>
-            </div>
+      <div className="wrapper_men-ite" onClick={this.props.callback}>
+        <Delimiter hasDelimiter={this.props.hasDelimiter}
+                   fullScreen={this.props.fullScreen}>
+          <div className="box_men-ite" style={boxStyle}>
+            <img src={this.props.img} alt={this.props.alt}
+                 className="img_men_ite" style={contentStyle}/>
+            <span className="text-menu_men-ite"
+                  style={contentStyle}>{this.props.alt}</span>
           </div>
         </Delimiter>
       </div>
