@@ -15,6 +15,8 @@ import TabsWrapper from '../Wrappers/TabsWrapper';
 import TabWrapper from '../Wrappers/TabWrapper';
 import _ from 'lodash';
 
+import ShowIf from '../Common/ShowIf';
+
 class SearchResultsComponent extends React.Component {
   constructor(props) {
     super(props);
@@ -25,6 +27,8 @@ class SearchResultsComponent extends React.Component {
         { label : Constants.SEARCH_FILTERS.USERS.label }
       ],
       activeItemIndex : 0,
+      hideParam : true,
+      number : 0,
       hotSectionOptions : {
         limit : 4
       },
@@ -82,22 +86,36 @@ class SearchResultsComponent extends React.Component {
 
   controlTabs(number) {
     if (number == 0) {
-      this.setState({activeItemIndex : 1});
+        this.setState({activeItemIndex : 1, number : number});
     } else {
-      this.setState({activeItemIndex : 0});
+        this.setState({activeItemIndex : 0, number : number});
+    }
+  }
+
+  hideTabs(number) {
+    if (number[0] == undefined && this.state.number == 0) {
+      this.setState({hideParam : false});
+    } else {
+      this.setState({hideParam : true});
     }
   }
 
   render() {
 
+    let headTxt = <ShowIf show={this.state.hideParam} >
+                    <span>{Constants.SEARCH_HEADING_LABELS.HOT_POSTS_RESULT}<u>{this.state.searchValue}</u></span>
+                  </ShowIf>;
+
     return (
       <div className="g-main_i container">
         <div id="workspace" className="g-content clearfix">
-          <TabsFilterComponent
-            keys={this.state.keys}
-            activeItemIndex={this.state.activeItemIndex}
-            updateCallback={this.updateActiveTab.bind(this)}
-          />
+          <ShowIf show={this.state.hideParam}>
+            <TabsFilterComponent
+              keys={this.state.keys}
+              activeItemIndex={this.state.activeItemIndex}
+              updateCallback={this.updateActiveTab.bind(this)}
+            />
+          </ShowIf>
           <TabsWrapper
             activeTab={this.state.activeItemIndex}
           >
@@ -110,7 +128,7 @@ class SearchResultsComponent extends React.Component {
                 renderNotEmptyOnly={true}
                 maxPosts={4}
                 forceRefresh={this.state.needsForceRefresh}
-                headerText={<span>{Constants.SEARCH_HEADING_LABELS.HOT_POSTS_RESULT}<u>{this.state.searchValue}</u></span>}
+                headerText= {headTxt}
                 controlTabs={this.controlTabs.bind(this)}
                 key={1}
               />
@@ -123,7 +141,7 @@ class SearchResultsComponent extends React.Component {
                     ignored={this.state.ignored}
                     wrapperModifier="posts-list clearfix"
                     forceRefresh={this.state.needsForceRefresh}
-                    headerText={<span>{Constants.SEARCH_HEADING_LABELS.NEW_POSTS_RESULT}<u>{this.state.searchValue}</u></span>}
+                    headerText={headTxt}
                     controlTabs={this.controlTabs.bind(this)}
                     key={2}
                   />
@@ -137,7 +155,8 @@ class SearchResultsComponent extends React.Component {
                 getUsers={getUsersSearch}
                 options={this.state.usersSearchOptions}
                 wrapperModifier="posts-list clearfix type-2"
-                headerText={<span>{Constants.SEARCH_HEADING_LABELS.USERS_RESULT}<u>{this.state.searchValue}</u></span>}
+                headerText={headTxt}
+                hideTabs={this.hideTabs.bind(this)}
               />
           </TabsWrapper>
         </div>

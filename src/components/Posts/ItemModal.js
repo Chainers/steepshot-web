@@ -77,7 +77,6 @@ class ItemModal extends React.Component {
     }
 
     controlRestrictions() {
-      console.log(this.state.index);
       if (this.state.item.is_nsfw) {
         this.setState({adultParam : true});
       } else {
