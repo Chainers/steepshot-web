@@ -342,18 +342,28 @@ h2.card-field__heading {
   border-radius: 4px;
   opacity: 0.8;
   cursor: pointer;
-  transition: .2s all ease;
+
   animation-name: fadeShare;
   animation-duration: 0.3s;
   animation-fill-mode: both;
+}
+
+.post__image-container .full-screen_item-mod1 {
+  background-size: 16px;
+}
+.post__image-container .full-screen_item-mod2 {
+  background-size: 20px;
+}
+.full-screen_item-mod1:hover {
+  background-size: 20px;
+}
+.full-screen_item-mod2:hover {
+  background-size: 16px;
 }
 .post__image-container:hover .full-screen_item-mod {
   animation-name: showShare;
   animation-duration: 0.3s;
   animation-fill-mode: both;
-}
-.full-screen_item-mod:hover {
-  background-size: 20px;
 }
 
 .pm-wrap {
@@ -457,12 +467,6 @@ h2.card-field__heading {
 }
 
 @media screen and (max-width: 815px) {
-  .post__image-container img {
-    max-height: none !important;
-  }
-  .post__description-container {
-    max-width: none !important;
-  }
   .card-field.about {
     max-width: none !important;
     margin: 0 !important;
@@ -479,7 +483,7 @@ h2.card-field__heading {
     border-radius: 0 !important;
   }
   .crossWrapper {
-    display: block;
+    position: relative;
     background-color: #fafafa;
     width: 100%;
     height: 60px;
@@ -779,7 +783,7 @@ h2.card-field__heading {
   .post__image-container-full-screen-img {
     min-width: 300px;
     min-height: 100vh !important;
-    max-width: calc(1424px - 5vw) !important;
+    max-width: 924px !important;
   }
   .list-scroll {
     display: flex;
@@ -806,7 +810,7 @@ h2.card-field__heading {
   }
   .post__image-container-full-screen {
     min-height: 100vh !important;
-    max-width: calc(1224px - 5vw) !important;
+    max-width: 1024px !important;
   }
   .post__image-container-full-screen-img {
     min-width: 300px;
@@ -818,7 +822,7 @@ h2.card-field__heading {
 @media (min-width: 1224px) {
   .post__image-container {
     min-width: auto;
-    min-height: 80vh;
+    min-height: 90vh;
     max-height: 100vh;
     max-width: calc(924px - 10vw);
   }
@@ -829,7 +833,7 @@ h2.card-field__heading {
   }
   .post__image-container-full-screen {
     min-height: 100vh !important;
-    max-width: 1224px !important;
+    max-width: 1124px !important;
   }
   .post__image-container-full-screen-img {
     min-width: 300px;
@@ -841,7 +845,7 @@ h2.card-field__heading {
 @media (min-width: 1324px) {
   .post__image-container {
     min-width: auto;
-    min-height: 80vh;
+    min-height: 90vh;
     max-height: 100vh;
     max-width: calc(1024px - 10vw);
   }
@@ -852,7 +856,7 @@ h2.card-field__heading {
   }
   .post__image-container-full-screen {
     min-height: 100vh !important;
-    max-width: 1324px !important;
+    max-width: 1224px !important;
   }
   .post__image-container-full-screen-img {
     min-width: 300px;

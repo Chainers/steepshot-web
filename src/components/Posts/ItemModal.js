@@ -59,7 +59,7 @@ class ItemModal extends React.Component {
             fullScreenMode : true,
             noFullScreen : true
         };
-        this.mobileCoverParams ={
+        this.mobileCoverParams = {
           width: '100%',
           height: '100%'
         };
@@ -80,6 +80,10 @@ class ItemModal extends React.Component {
     }
 
     controlRestrictions() {
+      // let a = document.getElementsByClassName('list-scroll');
+      // let b = a[0].clientHeight;
+      // console.log(b, a[0]);
+
       if (this.state.item.is_nsfw) {
         this.setState({adultParam : true});
       } else {
@@ -347,23 +351,25 @@ class ItemModal extends React.Component {
     }
 
     fullScreen() {
-      let backgroundOpacity = {...document.getElementsByClassName('modal-backdrop')};
       if(this.state.fullScreenMode && this.state.noFullScreen) {
         this.setState({fullScreenMode : false}, () => {
-          backgroundOpacity[0].style.opacity = '1';
-          this.imgContainer.style.background = '#000000';
+          this.props.fullParam(this.state.fullScreenMode);
           this.img.classList.add('post__image-container-full-screen-img');
           this.imgContainer.classList.add('post__image-container-full-screen');
         });
       } else {
         this.setState({fullScreenMode : true}, () => {
-          backgroundOpacity[0].style.opacity = '.7';
-          this.imgContainer.style.background = '';
+          this.props.fullParam(this.state.fullScreenMode);
           this.img.classList.remove('post__image-container-full-screen-img');
           this.imgContainer.classList.remove('post__image-container-full-screen');
         });
       }
     }
+
+    // testFunc() {
+    //   console.log(this.label);
+    //   this.label.style.top = '-12px';
+    // }
 
     render() {
       let itemImage = this.state.item.body || constants.NO_IMAGE;
@@ -388,8 +394,8 @@ class ItemModal extends React.Component {
                       <AvatarComponent src={this.state.item.avatar} />
                       <div className="name">{this.state.item.author}</div>
                     </Link>
-                    <div data-dismiss="modal" className="modalButtonWrapper">
-                      <i className="modalButton" aria-hidden="true"></i>
+                    <div onClick={this.props.closeFunc.bind(this)} className="modalButtonWrapper">
+                      <i className="modalButton"></i>
                     </div>
                   </div>
                 </div>
@@ -433,7 +439,13 @@ class ItemModal extends React.Component {
                         containerModifier="block--right-top box--small post__share-button"
                       />
                       <ShowIf show={this.state.noFullScreen}>
-                        <div title="Full screen mode" className="full-screen_item-mod" onClick={this.fullScreen.bind(this)}></div>
+                        {
+                          this.state.fullScreenMode
+                          ?
+                            <div title="Full screen mode" className="full-screen_item-mod full-screen_item-mod1" onClick={this.fullScreen.bind(this)}></div>
+                          :
+                            <div title="Modal screen" className="full-screen_item-mod full-screen_item-mod2" onClick={this.fullScreen.bind(this)}></div>
+                        }
                       </ShowIf>
                       <img src={itemImage} alt="Post picture." ref={ ref => {this.img = ref} } onDoubleClick={this.fullScreen.bind(this)} />
                     </div>
@@ -532,13 +544,14 @@ class ItemModal extends React.Component {
                                 maxLength={2048}
                                 className="form-control resize-textarea_item-mod"
                                 onChange={this.lookTextarea.bind(this)}
+                                // onFocus={this.testFunc.bind(this)}
                               />
                               <ShowIf show={!!this.state.mirrorData}>
                                 <div className="hidden-div_item-mod" style={{width : this.state.txtWidth}} ref={ ref => {this.hiddenDiv = ref} }>
                                   {this.state.mirrorData}
                                 </div>
                               </ShowIf>
-                              <label htmlFor="formCOMMENT" className="name">Comment</label>
+                              <label htmlFor="formCOMMENT" className="name" ref={ ref => {this.label = ref} }>Comment</label>
                             </div>
                           </div>
                         </div>

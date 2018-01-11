@@ -1,18 +1,15 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import LocalizedStrings from '../Localization/index.js';
-import {
-    getPosts
-} from '../../actions/posts';
+import { getPosts } from '../../actions/posts';
 import { connect } from 'react-redux';
 import LoadingSpinner from '../LoadingSpinner';
 import PostItem from '../Posts/Item';
 import Constants from '../../common/constants';
-import ModalComponent from '../Common/ModalComponent';
 import ItemModal from '../Posts/ItemModal';
 import InfiniteScroll from 'react-infinite-scroller';
 import HeadingLeadComponent from '../Atoms/HeadingLeadComponent';
 import { debounce } from 'lodash';
+import Modal from '../Common/Modal/Modal';
 
 class ItemsComponent extends React.Component {
   constructor(props) {
@@ -67,7 +64,10 @@ class ItemsComponent extends React.Component {
       items : [],
       hasMore : true,
       previousRequestOffset : 'none',
-      clearPostHeader : this.props.clearPostHeader
+      clearPostHeader : this.props.clearPostHeader,
+      showModal : false,
+      fullScreen : false,
+      customFullScreen : true
     }
   }
 
@@ -144,6 +144,24 @@ class ItemsComponent extends React.Component {
     });
   }
 
+  fullParam(param) {
+    this.setState({customFullScreen : param});
+  };
+
+  closeFunc() {
+    document.body.style.overflowY = 'auto';
+    this.setState({showModal: false, customFullScreen : true});
+  }
+
+  openFunc(index) {
+    this.setState({
+      currentItem : index
+    }, () => {
+      document.body.style.overflowY = 'hidden';
+      this.setState({showModal: true});
+    });
+  }
+
   _renderModal() {
       if (this.state.currentItem != undefined) {
         return (
@@ -155,18 +173,12 @@ class ItemsComponent extends React.Component {
             updateFlagInComponent={this.updateFlagInComponent.bind(this)}
             loadMore={this.fetchData.bind(this)}
             hasMore={this.state.hasMore}
+            fullParam={this.fullParam.bind(this)}
+            closeFunc={this.closeFunc.bind(this)}
           />
         );
       }
       return null;
-  }
-
-  openModal(index) {
-    this.setState({
-      currentItem : index
-    }, () => {
-      jqApp.openPostModal($(ReactDOM.findDOMNode(this)));
-    });
   }
 
   renderItems() {
@@ -186,7 +198,7 @@ class ItemsComponent extends React.Component {
             key={index}
             item={post}
             index={index}
-            openModal={this.openModal.bind(this)}
+            openModal={this.openFunc.bind(this)}
             updateVoteInComponent={this.updateVoteInComponent.bind(this)}
             updateFlagInComponent={this.updateFlagInComponent.bind(this)}
             clearPostHeader={this.state.clearPostHeader}
@@ -227,9 +239,15 @@ class ItemsComponent extends React.Component {
             {this.renderItems()}
           </div>
         </InfiniteScroll>
-        <ModalComponent>
-            {this._renderModal()}
-        </ModalComponent>
+        <Modal
+          show={this.state.showModal}
+          closeFunc={this.closeFunc.bind(this)}
+          fullScreen={false}
+          closeButton={true}
+          fullParam={this.state.customFullScreen}
+        >
+          {this._renderModal()}
+        </Modal>
       </div>
     );
   }

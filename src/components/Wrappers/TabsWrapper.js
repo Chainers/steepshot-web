@@ -20,7 +20,7 @@ class TabsWrapper extends React.Component {
         return this.state.children.map((child, index) => {
             let styles = 'tab-pane fade';
             if (index == activeTab) {
-                styles = 'tab-pane fade active';
+                styles = 'tab-pane fade in active';
             }
 
             return (

@@ -1,12 +1,6 @@
 import React from 'react';
-import {
-  connect
-} from 'react-redux';
-import {
-  getUsersSearch,
-  getPosts
-} from '../../actions/posts';
-import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { getUsersSearch, getPosts } from '../../actions/posts';
 import TabsFilterComponent from '../Filters/TabsFilterComponent';
 import ItemsComponent from '../UserProfile/itemsComponent';
 import UsersComponent from '../UserProfile/UsersComponent';
@@ -14,6 +8,7 @@ import Constants from '../../common/constants';
 import TabsWrapper from '../Wrappers/TabsWrapper';
 import TabWrapper from '../Wrappers/TabWrapper';
 import _ from 'lodash';
+import { documentTitle } from '../DocumentTitle';
 
 import ShowIf from '../Common/ShowIf';
 
@@ -69,6 +64,10 @@ class SearchResultsComponent extends React.Component {
     this.setState({
       activeItemIndex : index
     })
+  }
+
+  componentWillUpdate() {
+    documentTitle();
   }
 
   componentDidMount() {
