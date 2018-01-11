@@ -11,7 +11,6 @@ const Index = (() => {
 
   function setNewLanguage(newLang) {
     strings.setLanguage(newLang);
-    console.log('dispatch');
   }
 
   return {

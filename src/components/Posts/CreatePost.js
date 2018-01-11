@@ -23,8 +23,8 @@ class CreatePost extends React.Component {
       renderLoader: false,
       tagError: false,
       titleError: false,
-      minPhotoWidth: 640,
-      minPhotoHeight: 420,
+      minPhotoWidth: 100,
+      minPhotoHeight: 100,
     };
   }
   

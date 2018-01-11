@@ -7,8 +7,9 @@ class PostMenuButton extends React.Component {
   
   render() {
     return (
-      <div className="container_post-men-but" onClick={this.props.openFunc}>
-        <img src="/static/images/postMenuButton/shape.png"
+      <div className="container_post-men-but" onClick={this.props.openFunc}
+           style={this.props.style}>
+        <img src="/static/images/postContextMenu/shape.png"
           className="shape_post-men-but"
           alt="Post menu button"
         />
