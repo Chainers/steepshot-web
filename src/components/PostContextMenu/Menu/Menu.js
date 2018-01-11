@@ -14,6 +14,7 @@ class Menu extends React.Component {
     return this.props.buttonOption.map((item, index) => {
       return <MenuItem
         img={item.img}
+        revertImg={item.revertImg}
         alt={item.alt}
         callback={item.callback}
         hasDelimiter={item.hasDelimiter}
@@ -40,7 +41,7 @@ class Menu extends React.Component {
           <span className="title_menu">Action with this post</span>
           <div className="wrapper-close-button_menu"
                onClick={this.closeModal.bind(this)}>
-            <img src="/static/images/postMenuButton/close-but_menu.png"
+            <img src="/static/images/postContextMenu/close-but_menu.png"
                  alt="Close menu button"
                  className="close-button_menu"/>
           </div>

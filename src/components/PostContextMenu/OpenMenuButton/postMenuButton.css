@@ -1,9 +1,15 @@
 .container_post-men-but {
   width: 30px;
-  height: 30px;
   border-radius: 4px;
-  background-color: #fff;
   position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.container_post-men-but:hover {
+  border-radius: 1px;
+  border: 1px solid #979b9e;
+  cursor: pointer;
 }
 
 .shape_post-men-but {

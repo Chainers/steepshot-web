@@ -54,7 +54,7 @@ class FlagComponent extends React.Component {
     const newFlagState = !this.state.flag;
     const urlObject = this.state.item.url.split('/');
 
-    this.setState({ 
+    this.setState({
       flag : newFlagState,
       isFlagLoading : true
     }, () => {
@@ -65,7 +65,7 @@ class FlagComponent extends React.Component {
         })
         sessionStorage.setItem('voteQueue', "false");
         if (err) {
-          this.setState({ 
+          this.setState({
             flag: !newFlagState
           }, () => {
               let text = 'Something went wrong when you clicked the flag, please, try again later';
@@ -74,8 +74,8 @@ class FlagComponent extends React.Component {
               }
               jqApp.pushMessage.open(text);
             }
-          ); 
-        } else 
+          );
+        } else
         if (success) {
             let text = `The post has been successfully flaged. If you don't see your flag, please give it a few minutes to sync from the blockchain`;
             if (!newFlagState) text = `The post has been successfully unflaged. If you don't see your flag, please give it a few minutes to sync from the blockchain`;
@@ -84,10 +84,10 @@ class FlagComponent extends React.Component {
         }
       }
 
-      Steem.flag(this.props.postingKey, 
-                this.props.username, 
-                this.state.item.author, 
-                urlObject[urlObject.length-1], 
+      Steem.flag(this.props.postingKey,
+                this.props.username,
+                this.state.item.author,
+                urlObject[urlObject.length-1],
                 newFlagState,
                 callback
                 );
@@ -102,11 +102,10 @@ class FlagComponent extends React.Component {
     if (this.state.isFlagLoading) {
       buttonClasses = buttonClasses + " loading";
     }
-    let component = <button type="button" className={buttonClasses}></button>;
     
     return (
         <div className="wrap-btn" onClick={this.updateFlag.bind(this)}>
-          {component}
+          <button type="button" className={buttonClasses}></button>
         </div>
     );
   }

@@ -365,7 +365,6 @@ class SinglePostModalComponent extends React.Component {
                       updateVoteInComponent={this.updateVoteInComponent}
                     />
                     <FlagComponent
-                      key="flag"
                       item={this.state.item}
                       index={this.state.index}
                       updateFlagInComponent={this.props.updateFlagInComponent}

@@ -3,6 +3,10 @@ import ShowIf from '../../Common/ShowIf';
 import Delimiter from './Delimiter/Delimiter';
 
 class DelimitersWrapper extends React.Component {
+  static defaultProps = {
+    hasDelimiter: true,
+  };
+  
   constructor(props) {
     super(props);
   }
