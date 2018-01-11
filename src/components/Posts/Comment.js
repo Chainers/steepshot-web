@@ -42,8 +42,12 @@ class Comment extends React.Component {
   }
 
   replyAuthor() {
-    this.props.replyUser.value = `@${this.state.item.author}, `;
-    this.props.replyUser.focus();
+    if (this.props.replyUser) {
+      this.props.replyUser.value = `@${this.state.item.author}, `;
+      this.props.replyUser.focus();
+    } else {
+      jqApp.pushMessage.open(constants.VOTE_ACTION_WHEN_NOT_AUTH);
+    }
   }
 
   likeFunc() {

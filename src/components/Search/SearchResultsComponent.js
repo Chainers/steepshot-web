@@ -27,8 +27,10 @@ class SearchResultsComponent extends React.Component {
         { label : Constants.SEARCH_FILTERS.USERS.label }
       ],
       activeItemIndex : 0,
-      hideParam : true,
-      number : 0,
+      hideParam : false,
+      fullHideParam : true,
+      numberPosts : 0,
+      numberUsers : 0,
       hotSectionOptions : {
         limit : 4
       },
@@ -85,26 +87,40 @@ class SearchResultsComponent extends React.Component {
   }
 
   controlTabs(number) {
-    if (number == 0) {
-        this.setState({activeItemIndex : 1, number : number});
-    } else {
-        this.setState({activeItemIndex : 0, number : number});
-    }
+      if (number == 0) {
+          this.setState({activeItemIndex : 1, numberPosts : number});
+      } else {
+          this.setState({activeItemIndex : 0, numberPosts : number});
+      }
+      if (this.state.numberUsers[0] == undefined && number > 0) {
+          this.setState({fullHideParam : true});
+      }
   }
 
   hideTabs(number) {
-    if (number[0] == undefined && this.state.number == 0) {
-      this.setState({hideParam : false});
-    } else {
-      this.setState({hideParam : true});
-    }
+      this.setState({numberUsers : number}, () => {
+        if (number[0] != undefined && this.state.numberPosts > 0) {
+          this.setState({hideParam : true});
+        } else {
+          this.setState({hideParam : false});
+        }
+        if (number[0] == undefined && this.state.numberPosts == 0) {
+          this.setState({fullHideParam : false});
+        } else {
+          this.setState({fullHideParam : true});
+        }
+      });
   }
 
   render() {
 
-    let headTxt = <ShowIf show={this.state.hideParam} >
-                    <span>{Constants.SEARCH_HEADING_LABELS.HOT_POSTS_RESULT}<u>{this.state.searchValue}</u></span>
+    let hotPost = <ShowIf show={this.state.fullHideParam}>
+                     <span>{Constants.SEARCH_HEADING_LABELS.HOT_POSTS_RESULT}<u>{this.state.searchValue}</u></span>
                   </ShowIf>;
+    let newPost = <span>{Constants.SEARCH_HEADING_LABELS.NEW_POSTS_RESULT}<u>{this.state.searchValue}</u></span>
+    let userResult = <ShowIf show={this.state.fullHideParam}>
+                        <span>{Constants.SEARCH_HEADING_LABELS.USERS_RESULT}<u>{this.state.searchValue}</u></span>
+                     </ShowIf>;
 
     return (
       <div className="g-main_i container">
@@ -128,7 +144,7 @@ class SearchResultsComponent extends React.Component {
                 renderNotEmptyOnly={true}
                 maxPosts={4}
                 forceRefresh={this.state.needsForceRefresh}
-                headerText= {headTxt}
+                headerText= {hotPost}
                 controlTabs={this.controlTabs.bind(this)}
                 key={1}
               />
@@ -141,7 +157,7 @@ class SearchResultsComponent extends React.Component {
                     ignored={this.state.ignored}
                     wrapperModifier="posts-list clearfix"
                     forceRefresh={this.state.needsForceRefresh}
-                    headerText={headTxt}
+                    headerText={newPost}
                     controlTabs={this.controlTabs.bind(this)}
                     key={2}
                   />
@@ -155,7 +171,7 @@ class SearchResultsComponent extends React.Component {
                 getUsers={getUsersSearch}
                 options={this.state.usersSearchOptions}
                 wrapperModifier="posts-list clearfix type-2"
-                headerText={headTxt}
+                headerText={userResult}
                 hideTabs={this.hideTabs.bind(this)}
               />
           </TabsWrapper>

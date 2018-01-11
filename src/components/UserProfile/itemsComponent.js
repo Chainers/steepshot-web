@@ -114,7 +114,7 @@ class ItemsComponent extends React.Component {
           loading: false
         });
         if (/\/search\/\w+/.test(document.location.pathname)) {
-          this.tabsFunc(this.state.items.length);
+          this.props.controlTabs(newPosts.length);
         }
       });
     });
@@ -167,10 +167,6 @@ class ItemsComponent extends React.Component {
     }, () => {
       jqApp.openPostModal($(ReactDOM.findDOMNode(this)));
     });
-  }
-
-  tabsFunc(number) {
-    this.props.controlTabs(number);
   }
 
   renderItems() {

@@ -94,10 +94,11 @@ class UsersComponent extends React.Component {
             loadingMore: false,
             loading : false
         });
-
-        this.props.hideTabs(this.state.items);
+        if (/\/search\/\w+/.test(document.location.pathname)) {
+          this.props.hideTabs(newItems);
+        }
         //this.spinnerPosition();
-    });
+      });
   }
 
   renderItems() {
