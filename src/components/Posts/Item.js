@@ -1,16 +1,7 @@
 import React from 'react';
-import Modal from 'react-modal';
-import {
-  Link,
-  Redirect
-} from 'react-router-dom';
-import {
-  getPostComments
-} from '../../actions/posts';
-import ReactResizeDetector from 'react-resize-detector';
-import {
-  connect
-} from 'react-redux';
+import { Link, Redirect } from 'react-router-dom';
+import { getPostComments } from '../../actions/posts';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Comments from './Comments';
 import constants from '../../common/constants';
@@ -120,7 +111,9 @@ class Item extends React.Component {
   renderTags() {
     if (this.state.item.tags) {
       return this.state.item.tags.map((tag, index) => {
-        return <span key={index}><TagComponent tag={tag} /> </span>
+        return <span key={index}>
+                 <TagComponent tag={tag} />
+               </span>
       });
     } else return null;
   }
@@ -194,7 +187,7 @@ class Item extends React.Component {
                   />
                 </div>
                 <div className="wrap-counts clearfix">
-                  <LikesComponent likes={this.state.item.net_likes} url={this.state.item.url}/>
+                  <LikesComponent likes={this.state.item.net_likes} url={this.state.item.url} />
                   <ShowIf show={this.state.moneyParam}>
                     <div className="amount">{this.state.item.total_payout_reward}</div>
                   </ShowIf>

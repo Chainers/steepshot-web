@@ -20,7 +20,6 @@ class TabsFilterComponent extends React.Component {
         this.setState({
             keys : nextProps.keys
         });
-
         this.switchFilter(nextProps.activeItemIndex);
     }
 
@@ -35,9 +34,9 @@ class TabsFilterComponent extends React.Component {
     renderNavigation() {
         let navItems = [];
         this.state.keys.map((item, index) => {
-            let styles = '';
+            let styles = 'nav-item';
             if (this.state.activeItemIndex == index) {
-                styles = 'active';
+                styles = 'nav-item active';
             }
 
             navItems.push(
@@ -51,9 +50,9 @@ class TabsFilterComponent extends React.Component {
                         className={
                           this.state.param
                           ?
-                            "tab-head tabs-width"
+                            "nav-link tab-head tabs-width"
                           :
-                            "tab-head"
+                            "nav-link tab-head"
                         }
                     >
                         {item.label}

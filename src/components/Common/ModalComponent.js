@@ -26,7 +26,8 @@ class ModalComponent extends React.Component {
 
   render() {
     return (
-      <div id="postModal" tabIndex="-1" role="dialog" aria-hidden="true" className="modal modal-post-single fade">
+      <div id="postModal" tabIndex="-1" role="dialog" aria-hidden="true"
+           className="modal modal-post-single fade">
         {
           this.state.closeParam
           ?

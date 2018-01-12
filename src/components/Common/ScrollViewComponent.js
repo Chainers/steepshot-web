@@ -27,8 +27,17 @@ class ScrollViewComponent extends React.Component {
     }
 
     render() {
+        let marginControl = null;
+        if (this.state.wrapperModifier == 'list-scroll') {
+          if (this.state.isUserAuth) {
+            marginControl = {marginBottom : '82px'}
+          } else {
+            marginControl = {marginBottom : '0'}
+          }
+        }
+
         return (
-            <div className={this.state.wrapperModifier || null} ref="scrollFrame">
+            <div className={this.state.wrapperModifier || null} style={marginControl} ref={ ref => {this.scrollFrame = ref} }>
                 <Scrollbars
                     ref={(ref) => this.scrollBar = ref}
                     renderView={this.renderScrollbarContainer.bind(this)}
