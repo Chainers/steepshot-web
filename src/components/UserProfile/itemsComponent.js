@@ -9,12 +9,16 @@ import ItemModal from '../Posts/ItemModal';
 import InfiniteScroll from 'react-infinite-scroller';
 import HeadingLeadComponent from '../Atoms/HeadingLeadComponent';
 import { debounce } from 'lodash';
+import {
+  addFlag, addUpdateFlagInComponentFunc,
+  clearFlags,
+} from '../../actions/flag';
 import Modal from '../Common/Modal/Modal';
 
 class ItemsComponent extends React.Component {
   constructor(props) {
     super(props);
-
+    this.props.addUpdateFlagInComponentFunc(this.updateFlagInComponent.bind(this));
     this.state = {
       ...this.getInitialData(),
       authorName : this.props.username,
@@ -105,6 +109,20 @@ class ItemsComponent extends React.Component {
         } else {
           newPosts = this.state.items.concat(response.results.slice(1, response.results.length));
         }
+
+        this.props.clearFlagsInStore();
+        newPosts.forEach((post, index) => {
+          let urlObject = post.url.split('/');
+          let options = {
+            index: index,
+            state: post.flag,
+            isFlagLoading: false,
+            author: post.author,
+            postId: urlObject[urlObject.length - 1]
+          };
+          this.props.addFlagToStore(options);
+        });
+
         let hasMore = !(this.state.offset == response.offset);
         if (this.state.items.length + response.results.length <= 4) hasMore = false;
         this.setState({
@@ -261,4 +279,18 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps)(ItemsComponent);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    addFlagToStore: (options) => {
+      dispatch(addFlag(options));
+    },
+    clearFlagsInStore: () => {
+      dispatch(clearFlags());
+    },
+    addUpdateFlagInComponentFunc: (func) => {
+      dispatch(addUpdateFlagInComponentFunc(func));
+    }
+  }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ItemsComponent);
