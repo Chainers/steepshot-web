@@ -22,7 +22,6 @@ class Item extends React.Component {
       item: this.props.item,
       items: this.props.items,
       openModal: this.props.openModal,
-      currentIndex: this.props.index,
       comments: [],
       redirectToReferrer: false,
       needsRenderSlider: true,
@@ -107,7 +106,7 @@ class Item extends React.Component {
   
   _openModal() {
     if (this.state.openModal != undefined) {
-      this.state.openModal(this.state.currentIndex);
+      this.state.openModal(this.props.index);
     }
   }
   
@@ -137,7 +136,7 @@ class Item extends React.Component {
               <div className="date">
                 <PostContextMenu style={{float: 'left', height: '22px'}}
                                  item={this.props.item}
-                                 index={this.state.currentIndex}
+                                 index={this.props.index}
                                  updateFlagInComponent={this.props.updateFlagInComponent}/>
                 <TimeAgo
                   datetime={this.state.item.created}
@@ -175,13 +174,13 @@ class Item extends React.Component {
                      onClick={(e) => {this.callPreventDefault(e);}}>
                   <VouteComponent key="vote"
                                   item={this.state.item}
-                                  index={this.state.currentIndex}
+                                  index={this.props.index}
                                   updateVoteInComponent={this.props.updateVoteInComponent}
                                   parent='post'
                   />
                   <FlagComponent
                     item={this.state.item}
-                    index={this.state.currentIndex}
+                    postIndex={this.props.index}
                     updateFlagInComponent={this.props.updateFlagInComponent}
                   />
                 </div>
