@@ -20,12 +20,17 @@ import {getPostShaddow} from '../../actions/posts';
 import utils from '../../utils/utils';
 import ShowIf from '../Common/ShowIf';
 import Modal from '../Common/Modal/Modal';
+import {
+  addFlag, addUpdateFlagInComponentFunc,
+  clearFlags,
+} from '../../actions/flag';
 
 const MAX_WIDTH_FULL_SCREEN = 815;
 
 class SinglePostModalComponent extends React.Component {
   constructor(props) {
     super(props);
+    this.props.addUpdateFlagInComponentFunc(this.updateFlagInComponent.bind(this));
     this.state = {
       notify: this.props.notify,
       isPostLoading: true,
@@ -79,7 +84,19 @@ class SinglePostModalComponent extends React.Component {
       getPostShaddow(SinglePostModalComponent.getPostIdentifier(
         urlObject[urlObject.length - 2],
         urlObject[urlObject.length - 1])).then((result) => {
+        this.props.clearFlagsInStore();
         if (result) {
+  
+          this.props.clearFlagsInStore();
+          let options = {
+            index: 0,
+            state: result.flag,
+            isFlagLoading: false,
+            author: result.author,
+            postId: urlObject[urlObject.length - 1],
+          };
+          this.props.addFlagToStore(options);
+          
           this.setState({
             item: result,
             isPostLoading: false,
@@ -364,11 +381,7 @@ class SinglePostModalComponent extends React.Component {
                       parent='post'
                       updateVoteInComponent={this.updateVoteInComponent}
                     />
-                    <FlagComponent
-                      item={this.state.item}
-                      index={this.state.index}
-                      updateFlagInComponent={this.props.updateFlagInComponent}
-                    />
+                    <FlagComponent postIndex={0}/>
                   </div>
                   <div className="wrap-counts clearfix">
                     <LikesComponent likes={this.state.item.net_votes}
@@ -445,4 +458,19 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps)(SinglePostModalComponent);
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    addFlagToStore: (options) => {
+      dispatch(addFlag(options));
+    },
+    clearFlagsInStore: () => {
+      dispatch(clearFlags());
+    },
+    addUpdateFlagInComponentFunc: (func) => {
+      dispatch(addUpdateFlagInComponentFunc(func));
+    }
+  }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(SinglePostModalComponent);

@@ -7,7 +7,7 @@ import localization from './localization';
 import search from './search';
 import comment from './comment';
 import votes from './votes';
-import flag from './flag';
+import flags from './flags';
 
 export default combineReducers({
     messages,
@@ -18,5 +18,5 @@ export default combineReducers({
     search,
     comment,
     votes,
-    flag
+    flags
 });

@@ -440,11 +440,7 @@ class ItemModal extends React.Component {
                       updateVoteInComponent={this.props.updateVoteInComponent}
                       parent='post'
                     />
-                    <FlagComponent
-                      item={this.state.item}
-                      index={this.state.index}
-                      updateFlagInComponent={this.props.updateFlagInComponent}
-                    />
+                    <FlagComponent postIndex={this.state.index}/>
                   </div>
                   <div className="wrap-counts clearfix">
                     <div className="likeMoneyPopup">

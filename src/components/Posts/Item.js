@@ -178,11 +178,7 @@ class Item extends React.Component {
                                   updateVoteInComponent={this.props.updateVoteInComponent}
                                   parent='post'
                   />
-                  <FlagComponent
-                    item={this.state.item}
-                    postIndex={this.props.index}
-                    updateFlagInComponent={this.props.updateFlagInComponent}
-                  />
+                  <FlagComponent postIndex={this.props.index}/>
                 </div>
                 <div className="wrap-counts clearfix">
                   <LikesComponent likes={this.state.item.net_likes}
