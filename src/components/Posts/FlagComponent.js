@@ -16,7 +16,7 @@ class FlagComponent extends React.Component {
     super(props);
 
     this.state = {
-      index: this.props.index,
+      index: this.props.postIndex,
       item: this.props.item,
       flag: this.props.item.flag,
       isFlagLoading: false
@@ -25,7 +25,7 @@ class FlagComponent extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     this.setState({
-      index: nextProps.index,
+      index: nextProps.postIndex,
       item: nextProps.item,
       flag: nextProps.item.flag,
       isFlagLoading: false
