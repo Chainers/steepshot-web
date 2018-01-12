@@ -80,10 +80,10 @@ class LikesModalComponent extends React.Component {
   }
 
   usersChanged() {
-    let store = getStore();
-    let state = store.getState();
     let votersInfo = this.selectVotesInfo(getStore().getState());
-    if (this.state.url != votersInfo.url || votersInfo.voters.results.length == 0) {
+    if (votersInfo.url !== undefined &&
+      (this.state.url != votersInfo.url
+        || votersInfo.voters.results.length == 0)) {
       this.setState({
         ...this.getInitialData,
         url : votersInfo.url
