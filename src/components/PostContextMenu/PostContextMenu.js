@@ -6,6 +6,10 @@ import {connect} from 'react-redux';
 import Constants from '../../common/constants';
 import {debounce} from 'lodash';
 import Steem from '../../libs/steem';
+import {
+  addFlag, addUpdateFlagInComponentFunc,
+  clearFlags, toggleFlag,
+} from '../../actions/flag';
 
 const MIN_BUTTON_WIDTH = 90;
 const MAX_BUTTON_WIDTH = 100;
@@ -26,11 +30,6 @@ class PostContextMenu extends React.Component {
       (CONTENT_PADDING + CONTENT_MARGIN);
     
     this.state = {
-      index: this.props.index,
-      item: this.props.item,
-      flag: this.props.item.flag,
-      isFlagLoading: false,
-      
       showModal: false,
       fullScreen: false,
       contentWidth: minContentWidth,
@@ -85,78 +84,6 @@ class PostContextMenu extends React.Component {
     }
   }
   
-  componentWillReceiveProps(nextProps) {
-    this.setState({
-      index: nextProps.index,
-      item: nextProps.item,
-      flag: nextProps.item.flag,
-      isFlagLoading: false
-    });
-  }
-  
-  updateFlag(e) {
-    
-    e.preventDefault();
-    
-    if (!(this.props.username || this.props.postingKey)) {
-      debounce(jqApp.pushMessage.open(Constants.VOTE_ACTION_WHEN_NOT_AUTH), Constants.VOTE_ACTION_WHEN_NOT_AUTH_DEBOUNCE);
-      return false;
-    }
-    
-    let queue = sessionStorage.getItem('voteQueue');
-    if (queue == "true")  {
-      return false;
-    }
-    
-    sessionStorage.setItem('voteQueue', "true");
-    
-    if (!(this.props.username || this.props.postingKey)) {
-      return;
-    }
-    const newFlagState = !this.state.flag;
-    const urlObject = this.state.item.url.split('/');
-    
-    this.setState({
-      flag : newFlagState,
-      isFlagLoading : true
-    }, () => {
-      
-      const callback = (err, success) => {
-        this.setState({
-          isFlagLoading : false
-        })
-        sessionStorage.setItem('voteQueue', "false");
-        if (err) {
-          this.setState({
-              flag: !newFlagState
-            }, () => {
-              let text = 'Something went wrong when you clicked the flag, please, try again later';
-              if (err.payload.error.data.code == 10) {
-                text = 'Sorry, you had used the maximum number of vote changes on this post';
-              }
-              jqApp.pushMessage.open(text);
-            }
-          );
-        } else
-        if (success) {
-          let text = `The post has been successfully flaged. If you don't see your flag, please give it a few minutes to sync from the blockchain`;
-          if (!newFlagState) text = `The post has been successfully unflaged. If you don't see your flag, please give it a few minutes to sync from the blockchain`;
-          jqApp.pushMessage.open(text);
-          this.props.updateFlagInComponent(newFlagState, this.state.index)
-        }
-        this.props.closeFunc();
-      }
-      
-      Steem.flag(this.props.postingKey,
-        this.props.username,
-        this.state.item.author,
-        urlObject[urlObject.length-1],
-        newFlagState,
-        callback
-      );
-    });
-  }
-  
   hidePost() {
   
   }
@@ -174,11 +101,17 @@ class PostContextMenu extends React.Component {
   }
   
   copyLink() {
-  
+    
+    this.closeFunc();
   }
   
   embed() {
   
+  }
+  
+  toggleFlag() {
+    this.props.toggleFlag(this.props.index);
+    this.closeFunc();
   }
   
   closeFunc() {
@@ -215,13 +148,14 @@ class PostContextMenu extends React.Component {
   
   setButtonsOptions() {
     let BUTTONS_OPTIONS = [
+      /*TODO uncomment when will be implemented share
       {
         img: '/static/images/postContextMenu/shareTrue.svg',
         revertImg: '/static/images/postContextMenu/shareFalse.svg',
         alt: 'Share',
         callback: this.share.bind(this),
         hasDelimiter: true,
-      }, {
+      }, */{
         img: '/static/images/postContextMenu/copyTrue.svg',
         revertImg: '/static/images/postContextMenu/copyFalse.svg',
         alt: 'Copy link',
@@ -241,13 +175,14 @@ class PostContextMenu extends React.Component {
     let tmp;
     if (this.props.item.author == this.props.username) {
       tmp = [
+        /*TODO uncomment when will be implemented delete
         {
           img: '/static/images/postContextMenu/deleteTrue.svg',
           revertImg: '/static/images/postContextMenu/deleteFalse.svg',
           alt: 'Delete',
           callback: this.deletePost.bind(this),
           hasDelimiter: true,
-        }, /* TODO uncomment when will be implemented edit post on backend
+        }, *//* TODO uncomment when will be implemented edit post
         {
           img: '/static/images/postContextMenu/editTrue.svg',
           revertImg: '/static/images/postContextMenu/editFalse.svg',
@@ -262,15 +197,16 @@ class PostContextMenu extends React.Component {
           img: '/static/images/flagTrue.svg',
           revertImg: '/static/images/flagFalse.svg',
           alt: 'Flag this',
-          callback: this.updateFlag.bind(this),
+          callback: this.toggleFlag.bind(this),
           hasDelimiter: true,
-        }, {
+        }, /* TODO uncomment when will be implemented delete
+        {
           img: '/static/images/postContextMenu/hideTrue.svg',
           revertImg: '/static/images/postContextMenu/hideFalse.svg',
           alt: 'Hide',
           callback: this.hidePost.bind(this),
           hasDelimiter: true,
-        }];
+        }*/];
     }
     return tmp.concat(BUTTONS_OPTIONS);
   }
@@ -286,4 +222,12 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps)(PostContextMenu);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    toggleFlag: (postIndex) => {
+      dispatch(toggleFlag(postIndex));
+    }
+  }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(PostContextMenu);
