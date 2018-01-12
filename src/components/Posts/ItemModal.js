@@ -1,13 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Steem from '../../libs/steem';
-import {
-  Link,
-  Redirect
-} from 'react-router-dom';
-import {
-  connect
-} from 'react-redux';
+import { Link, Redirect } from 'react-router-dom';
+import { connect } from 'react-redux';
 import Comments from './Comments';
 import PropTypes from 'prop-types';
 import constants from '../../common/constants';
@@ -57,7 +52,8 @@ class ItemModal extends React.Component {
             txtHeight : START_TEXTAREA_HEIGHT,
             txtWidth : START_TEXTAREA_WIDTH,
             fullScreenMode : true,
-            noFullScreen : true
+            noFullScreen : true,
+            commentValue : ''
         };
         this.mobileCoverParams = {
           width: '100%',
@@ -105,7 +101,7 @@ class ItemModal extends React.Component {
     }
 
     likeCheck() {
-      let like = this.state.item.net_votes;
+      let like = this.state.item.net_likes;
       if (like == 0) {
         return false
       } else if (like == 1 || like == -1) {
@@ -197,8 +193,9 @@ class ItemModal extends React.Component {
 
     clearCommentInput() {
       if (this.commentInput && this.formGr) {
+        this.label.style.top = '12px';
         this.commentInput.value = '';
-        this.formGr.classList.remove('not-empty');
+        this.sendButton.classList.remove('send-button_item-mod');
       }
     }
 
@@ -352,24 +349,36 @@ class ItemModal extends React.Component {
 
     fullScreen() {
       if(this.state.fullScreenMode && this.state.noFullScreen) {
-        this.setState({fullScreenMode : false}, () => {
+        this.setState({commentValue : this.commentInput.value, fullScreenMode : false}, () => {
           this.props.fullParam(this.state.fullScreenMode);
           this.img.classList.add('post__image-container-full-screen-img');
           this.imgContainer.classList.add('post__image-container-full-screen');
+          this.imgContainer.style.background = '#000000';
         });
       } else {
         this.setState({fullScreenMode : true}, () => {
+          if (this.state.commentValue) {
+            this.label.style.top = '-12px';
+            this.commentInput.value = this.state.commentValue;
+            this.sendButton.classList.add('send-button_item-mod');
+          }
           this.props.fullParam(this.state.fullScreenMode);
           this.img.classList.remove('post__image-container-full-screen-img');
           this.imgContainer.classList.remove('post__image-container-full-screen');
+          this.imgContainer.style.background = '#fafafa'
+          this.setState({commentValue : ''});
         });
       }
     }
 
-    // testFunc() {
-    //   console.log(this.label);
-    //   this.label.style.top = '-12px';
-    // }
+    focusInput() {
+      this.label.style.top = '-12px';
+    }
+    blurInput() {
+      if (this.commentInput.value == '') {
+        this.label.style.top = '12px';
+      }
+    }
 
     render() {
       let itemImage = this.state.item.body || constants.NO_IMAGE;
@@ -544,7 +553,8 @@ class ItemModal extends React.Component {
                                 maxLength={2048}
                                 className="form-control resize-textarea_item-mod"
                                 onChange={this.lookTextarea.bind(this)}
-                                // onFocus={this.testFunc.bind(this)}
+                                onFocus={this.focusInput.bind(this)}
+                                onBlur={this.blurInput.bind(this)}
                               />
                               <ShowIf show={!!this.state.mirrorData}>
                                 <div className="hidden-div_item-mod" style={{width : this.state.txtWidth}} ref={ ref => {this.hiddenDiv = ref} }>

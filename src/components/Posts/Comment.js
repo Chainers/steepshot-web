@@ -20,6 +20,7 @@ class Comment extends React.Component {
   updateVoteInComponent(vote) {
     let newItem = this.state.item;
     vote ? newItem.net_votes++ : newItem.net_votes--;
+    vote ? newItem.net_likes++ : newItem.net_likes--;
     newItem.vote = vote;
     this.setState({
       item: newItem
@@ -51,7 +52,7 @@ class Comment extends React.Component {
   }
 
   likeFunc() {
-    let like = this.state.item.net_votes;
+    let like = this.state.item.net_likes;
     let text = null;
     let money = null;
     let reply = <span className="rectangle_comment text--center">

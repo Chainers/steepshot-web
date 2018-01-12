@@ -1,20 +1,10 @@
 import React from 'react';
-import {
-  Link,
-  withRouter
-} from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import LocalizedStrings from './Localization/index.js';
-import {
-  getLanguage,
-  getAllLanguages
-} from '../actions/localization';
-import {
-  connect
-} from 'react-redux';
+import { getLanguage, getAllLanguages } from '../actions/localization';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import {
-  logout
-} from '../actions/auth';
+import { logout } from '../actions/auth';
 import Constants from '../common/constants';
 
 let localizedStrings = LocalizedStrings.getInstance();
@@ -103,14 +93,14 @@ class Header extends React.Component {
           Sign in
         </Link>
       </div>
-    </div>
+    </div>;
 
     if (isUserAuth) {
       authorLink = `/@${this.props.user}`;
       loginComponent = <div className="section controls">
         <div className="wrap-controls">
-          <Link to="/settings" className="btn-control settings"></Link>
-          <a onClick={this.handleLogout.bind(this)} className="btn-control logout"></a>
+          <Link to="/settings" className="btn-control settings"/>
+          <a onClick={this.handleLogout.bind(this)} className="btn-control logout"/>
         </div>
       </div>
     }
@@ -141,7 +131,7 @@ class Header extends React.Component {
                     <div className="section hamburger">
                       <div className="wrap-hamburger">
                         <button type="button" className="mm-opener">
-                          <span className="ico"></span>
+                          <span className="ico"/>
                         </button>
                       </div>
                     </div>
@@ -158,8 +148,10 @@ class Header extends React.Component {
                           <Link to="/createPost" type="button" className="btn btn-default btn-xs btn-create">
                             Create post
                           </Link>
-                          <Link to="/createPost" type="button" className="btn btn-default btn-create-mob">
-                          </Link>
+                          <Link to="/createPost" type="button"
+                                className="btn btn-default btn-create-mob"
+                                onClick={ () => {jqApp.mobileMenu._menuHide();} }
+                          />
                         </div>
                       :
                       null
@@ -196,7 +188,7 @@ class Header extends React.Component {
                 <div className="section search">
                   <div className="wrap-search">
                     <a href="#" className="lnk-search">Search</a>
-                    <a href="#" className="lnk-search-mob"></a>
+                    <a href="#" className="lnk-search-mob"/>
                   </div>
                 </div>
                 {browse}
@@ -205,7 +197,7 @@ class Header extends React.Component {
           <div className="search-panel closed">
               <div className="wrap-panel container clearfix">
                 <div className="wrap-btn">
-                  <button type="button" className="btn-close" onClick={ () => {this.setState({searchValue : ''}); } }></button>
+                  <button type="button" className="btn-close" onClick={ () => {this.setState({searchValue : ''}); } }/>
                 </div>
                 <div className="wrap-search">
                   <form className="form-search">

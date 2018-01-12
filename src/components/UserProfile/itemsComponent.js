@@ -122,10 +122,11 @@ class ItemsComponent extends React.Component {
 
   updateVoteInComponent(vote, index) {
     let newItems = this.state.items;
-     if (vote && newItems[index].flag) {
+    if (vote && newItems[index].flag) {
       newItems[index].flag = false;
     }
     vote ? newItems[index].net_votes++ : newItems[index].net_votes--;
+    vote ? newItems[index].net_likes++ : newItems[index].net_likes--;
     newItems[index].vote = vote;
     this.setState({
       items: newItems
@@ -136,6 +137,7 @@ class ItemsComponent extends React.Component {
     let newItems = this.state.items;
     if (flag && newItems[index].vote) {
       newItems[index].net_votes--;
+      newItems[index].net_likes--;
       newItems[index].vote = false;
     }
     newItems[index].flag = flag;
