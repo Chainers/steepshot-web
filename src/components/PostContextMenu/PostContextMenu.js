@@ -3,13 +3,8 @@ import PostMenuButton from './OpenMenuButton/PostMenuButton';
 import Modal from '../Common/Modal/Modal';
 import Menu from './Menu/Menu';
 import {connect} from 'react-redux';
-import Constants from '../../common/constants';
 import {debounce} from 'lodash';
-import Steem from '../../libs/steem';
-import {
-  addFlag, addUpdateFlagInComponentFunc,
-  clearFlags, toggleFlag,
-} from '../../actions/flag';
+import {toggleFlag,} from '../../actions/flag';
 
 const MIN_BUTTON_WIDTH = 90;
 const MAX_BUTTON_WIDTH = 100;
@@ -18,17 +13,17 @@ const CONTENT_MARGIN = 40;
 const MAX_HORIZONTAL_CONTENT_WIDTH = 200;
 
 class PostContextMenu extends React.Component {
-  
+
   constructor(props) {
     super(props);
-    let buttonsOptions  = this.setButtonsOptions.call(this);
+    let buttonsOptions = this.setButtonsOptions.call(this);
     let buttonsAmount = buttonsOptions.length;
-    
+
     let minContentWidth = buttonsAmount * MIN_BUTTON_WIDTH + 2 *
       (CONTENT_PADDING + CONTENT_MARGIN);
     let maxContentWidth = buttonsAmount * MAX_BUTTON_WIDTH + 2 *
       (CONTENT_PADDING + CONTENT_MARGIN);
-    
+
     this.state = {
       showModal: false,
       fullScreen: false,
@@ -43,16 +38,16 @@ class PostContextMenu extends React.Component {
     this.openFunc = this.openFunc.bind(this);
     this.resizeWindow = this.resizeWindow.bind(this);
   }
-  
+
   componentDidMount() {
     window.addEventListener('resize', this.resizeWindow);
     this.resizeWindow();
   }
-  
+
   componentWillUnmount() {
     window.removeEventListener('resize', this.resizeWindow);
   }
-  
+
   resizeWindow() {
     if (document.documentElement.clientWidth > this.state.MAX_CONTENT_WIDTH) {
       if (this.state.contentWidth !== this.state.MAX_CONTENT_WIDTH) {
@@ -83,53 +78,53 @@ class PostContextMenu extends React.Component {
       });
     }
   }
-  
+
   hidePost() {
-  
+
   }
-  
+
   deletePost() {
-  
+
   }
-  
+
   editPost() {
-  
+
   }
-  
+
   share() {
-  
+
   }
-  
+
   copyLink() {
-    
+
     this.closeFunc();
   }
-  
+
   embed() {
-  
+
   }
-  
+
   toggleFlag() {
     this.props.toggleFlag(this.props.index);
     this.closeFunc();
   }
-  
+
   closeFunc() {
     this.setState({
       showModal: false,
     });
   }
-  
+
   openFunc() {
     this.setState({
       showModal: true,
     });
   }
-  
+
   render() {
     return (
       <div className="container_pos-con-men" style={this.props.style}>
-        <PostMenuButton openFunc={this.openFunc} style={this.props.style} />
+        <PostMenuButton openFunc={this.openFunc} style={this.props.style}/>
         <Modal
           show={this.state.showModal}
           closeFunc={this.closeFunc}
@@ -145,7 +140,7 @@ class PostContextMenu extends React.Component {
       </div>
     );
   }
-  
+
   setButtonsOptions() {
     let BUTTONS_OPTIONS = [
       /*TODO uncomment when will be implemented share
@@ -171,7 +166,7 @@ class PostContextMenu extends React.Component {
         hasDelimiter: false,
       },*/
     ];
-    
+
     let tmp;
     if (this.props.item.author == this.props.username) {
       tmp = [
@@ -210,7 +205,7 @@ class PostContextMenu extends React.Component {
     }
     return tmp.concat(BUTTONS_OPTIONS);
   }
-  
+
 }
 
 

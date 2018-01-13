@@ -7,9 +7,8 @@ class Menu extends React.Component {
   constructor(props) {
     super(props);
     this.getItems = this.getItems.bind(this);
-    this.getDimension = this.getDimension.bind(this);
   }
-  
+
   getItems() {
     return this.props.buttonOption.map((item, index) => {
       return <MenuItem
@@ -24,19 +23,17 @@ class Menu extends React.Component {
       />;
     });
   }
-  
+
   closeModal(event) {
     event.stopPropagation();
     this.props.closeFunc();
   }
-  
-  getDimension() {
-    return;
-  }
-  
+
   render() {
     return (
-      <div className="container_menu" style={{width: this.props.fullScreen ? this.props.contentWidth : 'auto'}}>
+      <div className="container_menu" style={{
+        width: this.props.contentWidth,
+      }}>
         <div className="header_menu">
           <span className="title_menu">Action with this post</span>
           <div className="wrapper-close-button_menu"
@@ -47,17 +44,14 @@ class Menu extends React.Component {
           </div>
         </div>
         <Delimiter horizontal={true}/>
-        <div className="box-item_menu">
-          <div
-            className={this.props.fullScreen
-              ? 'full-screen-content_menu'
-              : 'content_menu'}
-            style={{
-              width: this.props.contentWidth,
-              height: this.props.contentHeight,
-            }}>
-            {this.getItems()}
-          </div>
+        <div
+          className={this.props.fullScreen
+            ? 'full-screen-content_menu'
+            : 'content_menu'}
+          style={{
+            height: this.props.contentHeight,
+          }}>
+          {this.getItems()}
         </div>
         <ShowIf show={this.props.fullScreen}>
           <div className="filler_menu">
