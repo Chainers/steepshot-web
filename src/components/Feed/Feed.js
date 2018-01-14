@@ -5,7 +5,7 @@ import {
 import PropTypes from 'prop-types';
 import ItemsComponent from '../UserProfile/itemsComponent';
 import Constants from '../../common/constants';
-import { documentTitle } from "../DocumentTitle";
+import { documentTitle } from '../DocumentTitle';
 
 class Feed extends React.Component {
   constructor(props) {

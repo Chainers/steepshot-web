@@ -20,6 +20,7 @@ class Comment extends React.Component {
   updateVoteInComponent(vote) {
     let newItem = this.state.item;
     vote ? newItem.net_votes++ : newItem.net_votes--;
+    vote ? newItem.net_likes++ : newItem.net_likes--;
     newItem.vote = vote;
     this.setState({
       item: newItem
@@ -42,12 +43,16 @@ class Comment extends React.Component {
   }
 
   replyAuthor() {
-    this.props.replyUser.value = `@${this.state.item.author}, `;
-    this.props.replyUser.focus();
+    if (this.props.replyUser) {
+      this.props.replyUser.value = `@${this.state.item.author}, `;
+      this.props.replyUser.focus();
+    } else {
+      jqApp.pushMessage.open(constants.VOTE_ACTION_WHEN_NOT_AUTH);
+    }
   }
 
   likeFunc() {
-    let like = this.state.item.net_votes;
+    let like = this.state.item.net_likes;
     let text = null;
     let money = null;
     let reply = <span className="rectangle_comment text--center">

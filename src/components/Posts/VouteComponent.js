@@ -1,10 +1,6 @@
 import React from 'react';
-import {
-  Link
-} from 'react-router-dom';
-import {
-  connect
-} from 'react-redux';
+import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Steem from '../../libs/steem';
 import utils from '../../utils/utils';
@@ -29,18 +25,6 @@ class VouteComponent extends React.Component {
       index: nextProps.index,
       item: nextProps.item,
       vote: nextProps.item.vote
-    });
-  }
-
-  updateVoteInComponent(vote, index) {
-    let newItem = this.state.item;
-    if (vote && newItem.flag) {
-      newItem.flag = false;
-    }
-    vote ? newItem.net_votes++ : newItem.net_votes--;
-    newItem.vote = vote;
-    this.setState({
-      item: newItem
     });
   }
 
@@ -73,24 +57,23 @@ class VouteComponent extends React.Component {
         this.setState({
           isVoteLoading : false
         })
-        sessionStorage.setItem('voteQueue', "false");
+        sessionStorage.setItem('voteQueue', 'false');
         if (err) {
           this.setState({
             vote: !newVoteState
           }, () => {
               let text = 'Something went wrong when you voted, please, try again later';
-              if (err.payload.error.data.code == 10) {
+              if (err.data.code == 10) {
                 text = `Sorry, you had used the maximum number of vote changes on this ${this.state.parent}`;
               }
               jqApp.pushMessage.open(text);
             }
           );
-        } else
-        if (success) {
+        } else if (success) {
             let text = `${utils.capitalize(this.state.parent)} has been successfully liked. If you don't see your like, please give it a few minutes to sync from the blockchain`;
             if (!newVoteState) text = `${utils.capitalize(this.state.parent)} has been successfully disliked. If you don't see your dislike, please give it a few minutes to sync from the blockchain`;
             jqApp.pushMessage.open(text);
-            this.updateVoteInComponent(newVoteState, this.state.index);
+            this.props.updateVoteInComponent(newVoteState, this.state.index);
         }
       }
 
@@ -112,7 +95,7 @@ class VouteComponent extends React.Component {
     if (this.state.isVoteLoading) {
       buttonClasses = buttonClasses + " loading";
     }
-    let button = <button type="button" className={buttonClasses}></button>
+    let button = <button type="button" className={buttonClasses} />
     return (
         <div className="wrap-btn" onClick={this.ratingVotes.bind(this)}>
           {button}

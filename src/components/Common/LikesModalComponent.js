@@ -1,12 +1,7 @@
 import React from 'react';
 import { getStore } from '../../store/configureStore';
-import {
-  connect
-} from 'react-redux';
-import {
-  getVoters
-} from '../../actions/voters';
-
+import { connect } from 'react-redux';
+import { getVoters } from '../../actions/voters';
 import UserItem from '../UserProfile/userItem';
 import Constants from '../../common/constants';
 import ScrollViewComponent from '../Common/ScrollViewComponent';
@@ -15,6 +10,7 @@ import { debounce } from 'lodash';
 import LoadingSpinner from '../LoadingSpinner';
 import TabsFilterComponent from '../Filters/TabsFilterComponent';
 import TabsWrapper from '../Wrappers/TabsWrapper';
+import Modal from '../Common/Modal/Modal';
 
 class LikesModalComponent extends React.Component {
   constructor(props) {
@@ -80,10 +76,10 @@ class LikesModalComponent extends React.Component {
   }
 
   usersChanged() {
-    let store = getStore();
-    let state = store.getState();
     let votersInfo = this.selectVotesInfo(getStore().getState());
-    if (this.state.url != votersInfo.url || votersInfo.voters.results.length == 0) {
+    if (votersInfo.url !== undefined &&
+      (this.state.url != votersInfo.url
+        || votersInfo.voters.results.length == 0)) {
       this.setState({
         ...this.getInitialData,
         url : votersInfo.url
@@ -116,7 +112,7 @@ class LikesModalComponent extends React.Component {
     return items;
   }
 
-  get voters(){
+  get voters() {
     if (this.state.initialLoading) {
       return  (
         <LoadingSpinner/>
@@ -127,7 +123,7 @@ class LikesModalComponent extends React.Component {
     }
     return (
       <ScrollViewComponent
-        ref={(ref) => this.scrollView = ref}
+        ref={ ref => {this.scrollView = ref} }
         wrapperModifier="user-list"
         scrollViewModifier="list-scroll__view"
         autoHeight={true}
@@ -167,7 +163,7 @@ class LikesModalComponent extends React.Component {
                 {
                   this.state.forWindowSize
                     ?
-                    <button className="close" data-dismiss="modal"></button>
+                    <button className="close" data-dismiss="modal"/>
                     :
                     null
                 }

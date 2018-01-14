@@ -44,6 +44,7 @@ class UserProfile extends React.Component {
   }
 
   componentDidMount() {
+    document.body.style.overflowY = 'auto';
     this.getUserProfile();
   }
 

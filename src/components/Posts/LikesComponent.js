@@ -1,19 +1,24 @@
 import React from 'react';
-import {
-  connect
-} from 'react-redux';
+import { connect } from 'react-redux';
 
 class LikesComponent extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       ...this.props,
-      likeParam: 2
+      likeParam: 2,
+      showModal : false
     };
   }
 
   componentDidMount() {
     this.likeControl();
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState({likes : nextProps.likes}, () => {
+      this.likeControl();
+    });
   }
 
   likeControl() {
@@ -31,12 +36,11 @@ class LikesComponent extends React.Component {
   }
 
   openLikesModal() {
-      this.props.dispatch({ type : 'CLEAR_LIKES_INFO', url : this.state.url })
-      jqApp.openLikesModal($(document));
+    this.props.dispatch({ type : 'CLEAR_LIKES_INFO', url : this.state.url });
+    jqApp.openLikesModal($(document));
   }
 
   render() {
-    const {likes, persons} = this.state;
     return (
       <div>
         {
@@ -46,9 +50,9 @@ class LikesComponent extends React.Component {
           :
             this.state.likeParam == 1
           ?
-            <div className="likes" onClick={this.openLikesModal.bind(this)}>{likes} like</div>
+            <div className="likes" onClick={this.openLikesModal.bind(this)}>{this.state.likes} like</div>
           :
-            <div className="likes" onClick={this.openLikesModal.bind(this)}>{likes} likes</div>
+            <div className="likes" onClick={this.openLikesModal.bind(this)}>{this.state.likes} likes</div>
         }
       </div>
     );

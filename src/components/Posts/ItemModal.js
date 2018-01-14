@@ -1,13 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Steem from '../../libs/steem';
-import {
-  Link,
-  Redirect
-} from 'react-router-dom';
-import {
-  connect
-} from 'react-redux';
+import { Link, Redirect } from 'react-router-dom';
+import { connect } from 'react-redux';
 import Comments from './Comments';
 import PropTypes from 'prop-types';
 import constants from '../../common/constants';
@@ -27,7 +22,8 @@ import utils from '../../utils/utils';
 import ShowIf from '../Common/ShowIf';
 import { UserLinkFunc } from '../Common/UserLinkFunc';
 
-const START_TEXTAREA_HEIGHT= '42px';
+const START_TEXTAREA_HEIGHT = '42px';
+const START_TEXTAREA_WIDTH = '280px';
 
 class ItemModal extends React.Component {
     constructor(props) {
@@ -54,12 +50,15 @@ class ItemModal extends React.Component {
             closeParam : false,
             mirrorData : '',
             txtHeight : START_TEXTAREA_HEIGHT,
-            txtWidth : '280px'
+            txtWidth : START_TEXTAREA_WIDTH,
+            fullScreenMode : true,
+            noFullScreen : true,
+            commentValue : ''
         };
-        this.mobileCoverParams ={
+        this.mobileCoverParams = {
           width: '100%',
           height: '100%'
-        }
+        };
         this.initKeypress();
     }
 
@@ -77,6 +76,10 @@ class ItemModal extends React.Component {
     }
 
     controlRestrictions() {
+      // let a = document.getElementsByClassName('list-scroll');
+      // let b = a[0].clientHeight;
+      // console.log(b, a[0]);
+
       if (this.state.item.is_nsfw) {
         this.setState({adultParam : true});
       } else {
@@ -98,7 +101,7 @@ class ItemModal extends React.Component {
     }
 
     likeCheck() {
-      let like = this.state.item.net_votes;
+      let like = this.state.item.net_likes;
       if (like == 0) {
         return false
       } else if (like == 1 || like == -1) {
@@ -131,9 +134,6 @@ class ItemModal extends React.Component {
         } else {
           this.setState({txtHeight : START_TEXTAREA_HEIGHT});
         }
-        // let a = this.sendButton.style.top.replace(/px/, '');
-        // a = +a + 5;
-        // this.sendButton.style.top = a + 'px';
       });
     }
 
@@ -193,8 +193,9 @@ class ItemModal extends React.Component {
 
     clearCommentInput() {
       if (this.commentInput && this.formGr) {
+        this.label.style.top = '12px';
         this.commentInput.value = '';
-        this.formGr.classList.remove('not-empty');
+        this.sendButton.classList.remove('send-button_item-mod');
       }
     }
 
@@ -230,7 +231,7 @@ class ItemModal extends React.Component {
             });
         }
         this.clearCommentInput();
-      }
+      };
 
       this.setState({
         needsCommentFormLoader : true
@@ -339,6 +340,44 @@ class ItemModal extends React.Component {
       } else {
         this.setState({closeParam : false});
       }
+      if (document.documentElement.clientWidth <= 1023) {
+        this.setState({noFullScreen : false});
+      } else {
+        this.setState({noFullScreen : true});
+      }
+    }
+
+    fullScreen() {
+      if(this.state.fullScreenMode && this.state.noFullScreen) {
+        this.setState({commentValue : this.commentInput.value, fullScreenMode : false}, () => {
+          this.props.fullParam(this.state.fullScreenMode);
+          this.img.classList.add('post__image-container-full-screen-img');
+          this.imgContainer.classList.add('post__image-container-full-screen');
+          this.imgContainer.style.background = '#000000';
+        });
+      } else {
+        this.setState({fullScreenMode : true}, () => {
+          if (this.state.commentValue) {
+            this.label.style.top = '-12px';
+            this.commentInput.value = this.state.commentValue;
+            this.sendButton.classList.add('send-button_item-mod');
+          }
+          this.props.fullParam(this.state.fullScreenMode);
+          this.img.classList.remove('post__image-container-full-screen-img');
+          this.imgContainer.classList.remove('post__image-container-full-screen');
+          this.imgContainer.style.background = '#fafafa'
+          this.setState({commentValue : ''});
+        });
+      }
+    }
+
+    focusInput() {
+      this.label.style.top = '-12px';
+    }
+    blurInput() {
+      if (this.commentInput.value == '') {
+        this.label.style.top = '12px';
+      }
     }
 
     render() {
@@ -364,8 +403,8 @@ class ItemModal extends React.Component {
                       <AvatarComponent src={this.state.item.avatar} />
                       <div className="name">{this.state.item.author}</div>
                     </Link>
-                    <div data-dismiss="modal" className="modalButtonWrapper">
-                      <i className="modalButton" aria-hidden="true"></i>
+                    <div onClick={this.props.closeFunc.bind(this)} className="modalButtonWrapper">
+                      <i className="modalButton"></i>
                     </div>
                   </div>
                 </div>
@@ -373,7 +412,7 @@ class ItemModal extends React.Component {
                 null
             }
             <div className="post-wrap post">
-              <div className="post__image-container position--relative">
+              <div className="post__image-container position--relative" ref={ ref => {this.imgContainer = ref} }>
                 {
                   this.state.adultParam
                   ?
@@ -385,7 +424,7 @@ class ItemModal extends React.Component {
                           <button className="btn btn-index" onClick={this.hideFunc.bind(this)}>Show me</button>
                         </div>
                       </div>
-                      <img src={itemImage} alt="Post picture."/>
+                      <img src={itemImage} alt="Post picture." ref={ ref => {this.img = ref} } onDoubleClick={this.fullScreen.bind(this)} />
                     </div>
                   :
                     this.state.lowParam
@@ -398,7 +437,7 @@ class ItemModal extends React.Component {
                           <button className="btn btn-index" onClick={this.hideFunc.bind(this)}>Show me</button>
                         </div>
                       </div>
-                      <img src={itemImage} alt="Post picture."/>
+                      <img src={itemImage} alt="Post picture." ref={ ref => {this.img = ref} } onDoubleClick={this.fullScreen.bind(this)} />
                     </div>
                   :
                     <div>
@@ -408,115 +447,130 @@ class ItemModal extends React.Component {
                         title="Share post"
                         containerModifier="block--right-top box--small post__share-button"
                       />
-                      <img src={itemImage} alt="Post picture."/>
+                      <ShowIf show={this.state.noFullScreen}>
+                        {
+                          this.state.fullScreenMode
+                          ?
+                            <div title="Full screen mode" className="full-screen_item-mod full-screen_item-mod1" onClick={this.fullScreen.bind(this)}></div>
+                          :
+                            <div title="Modal screen" className="full-screen_item-mod full-screen_item-mod2" onClick={this.fullScreen.bind(this)}></div>
+                        }
+                      </ShowIf>
+                      <img src={itemImage} alt="Post picture." ref={ ref => {this.img = ref} } onDoubleClick={this.fullScreen.bind(this)} />
                     </div>
                 }
               </div>
-              <div className="post__description-container">
-                {
-                  this.state.closeParam
-                  ?
-                    null
-                  :
-                    <div className="user-wrap clearfix">
-                      <div className="date">
-                        <TimeAgo
-                          datetime={this.state.item.created}
-                          locale='en_US'
-                        />
+              <ShowIf show={this.state.fullScreenMode} >
+                <div className="post__description-container">
+                  {
+                    this.state.closeParam
+                    ?
+                      null
+                    :
+                      <div className="user-wrap clearfix">
+                        <div className="date">
+                          <TimeAgo
+                            datetime={this.state.item.created}
+                            locale='en_US'
+                          />
+                        </div>
+                        <Link to={authorLink} className="user">
+                          <AvatarComponent src={this.state.item.avatar} />
+                          <div className="name">{this.state.item.author}</div>
+                        </Link>
                       </div>
-                      <Link to={authorLink} className="user">
-                        <AvatarComponent src={this.state.item.avatar} />
-                        <div className="name">{this.state.item.author}</div>
-                      </Link>
+                  }
+                  <div className="post-controls clearfix">
+                    <div className="buttons-row" onClick={(e)=>{this.callPreventDefault(e)}}>
+                      <VouteComponent
+                        key='vote'
+                        item={this.state.item}
+                        index={this.state.index}
+                        updateVoteInComponent={this.props.updateVoteInComponent}
+                        parent='post'
+                      />
+                      <FlagComponent
+                        key="flag"
+                        item={this.state.item}
+                        index={this.state.index}
+                        updateFlagInComponent={this.props.updateFlagInComponent}
+                      />
                     </div>
-                }
-                <div className="post-controls clearfix">
-                  <div className="buttons-row" onClick={(e)=>{this.callPreventDefault(e)}}>
-                    <VouteComponent
-                      key='vote'
-                      item={this.state.item}
-                      index={this.state.index}
-                      updateVoteInComponent={this.props.updateVoteInComponent}
-                      parent='post'
-                    />
-                    <FlagComponent
-                      key="flag"
-                      item={this.state.item}
-                      index={this.state.index}
-                      updateFlagInComponent={this.props.updateFlagInComponent}
-                    />
-                  </div>
-                  <div className="wrap-counts clearfix">
-                    <div className="likeMoneyPopup">
-                      {this.likeCheck()}
-                      {this.moneyCheck()}
+                    <div className="wrap-counts clearfix">
+                      <div className="likeMoneyPopup">
+                        {this.likeCheck()}
+                        {this.moneyCheck()}
+                      </div>
                     </div>
                   </div>
-                </div>
-                <ScrollViewComponent
-                  ref={ (ref) => this.scrollView = ref }
-                  wrapperModifier="list-scroll"
-                  scrollViewModifier="list-scroll__view"
-                  autoHeight={window.innerWidth < constants.DISPLAY.DESK_BREAKPOINT}
-                  autoHeightMax={350}
-                  autoHeightMin={100}
-                  autoHide={true}
-                >
-                  {this.renderDescription()}
-                  <Comments
-                    key="comments"
-                    item={this.state.item}
-                    newComment={this.state.newComment}
-                    replyUser={this.commentInput}
-                  />
-                </ScrollViewComponent>
-                {
-                  isUserAuth
-                  ?
-                    <div className="post-comment">
-                      <div className="comment-form form-horizontal">
-                        <div className="form-group clearfix" ref={ (ref) => {this.formGr = ref} }>
-                          {
-                            this.state.needsCommentFormLoader
-                            ?
-                              <div className="loaderInComments">
-                                <LoadingSpinner />
-                              </div>
-                              :
-                              <div className="btn-wrap">
-                                <button
-                                  type="submit"
-                                  className="btn-submit"
-                                  onClick={this.sendComment.bind(this)}
-                                  ref={ ref => {this.sendButton = ref} }
-                                  >Send</button>
-                              </div>
-                          }
-                          <div className="input-container">
-                            <textarea
-                              ref={ (ref) => {this.commentInput = ref} }
-                              style={{height : this.state.txtHeight}}
-                              id="formCOMMENT"
-                              name="commentValue"
-                              maxLength={2048}
-                              className="form-control resize-textarea_item-mod"
-                              onChange={this.lookTextarea.bind(this)}
-                            />
-                            <ShowIf show={!!this.state.mirrorData}>
-                              <div className="hidden-div_item-mod" style={{width : this.state.txtWidth}} ref={ ref => {this.hiddenDiv = ref} }>
-                                {this.state.mirrorData}
-                              </div>
-                            </ShowIf>
-                            <label htmlFor="formCOMMENT" className="name">Comment</label>
+                  <ScrollViewComponent
+                    ref={ (ref) => this.scrollView = ref }
+                    wrapperModifier="list-scroll"
+                    scrollViewModifier="list-scroll__view"
+                    autoHeight={window.innerWidth < constants.DISPLAY.DESK_BREAKPOINT}
+                    autoHeightMax={350}
+                    autoHeightMin={100}
+                    autoHide={true}
+                    isUserAuth={isUserAuth}
+                  >
+                    {this.renderDescription()}
+                    <Comments
+                      key="comments"
+                      item={this.state.item}
+                      newComment={this.state.newComment}
+                      replyUser={this.commentInput}
+                    />
+                  </ScrollViewComponent>
+                  {
+                    isUserAuth
+                    ?
+                      <div className="post-comment">
+                        <div className="comment-form form-horizontal">
+                          <div className="form-group position--relative clearfix" ref={ (ref) => {this.formGr = ref} }>
+                            {
+                              this.state.needsCommentFormLoader
+                              ?
+                                <div className="loaderInComments">
+                                  <LoadingSpinner />
+                                </div>
+                                :
+                                <div className="btn-wrap">
+                                  <button
+                                    ref={ ref => {this.sendButton = ref} }
+                                    style={{top : (this.state.txtHeight.replace(/px/, '') - 40) + 'px'}}
+                                    type="submit"
+                                    className="btn-submit"
+                                    onClick={this.sendComment.bind(this)}
+                                    >Send</button>
+                                </div>
+                            }
+                            <div className="input-container">
+                              <textarea
+                                ref={ (ref) => {this.commentInput = ref} }
+                                style={{height : this.state.txtHeight}}
+                                id="formCOMMENT"
+                                name="commentValue"
+                                maxLength={2048}
+                                className="form-control resize-textarea_item-mod"
+                                onChange={this.lookTextarea.bind(this)}
+                                onFocus={this.focusInput.bind(this)}
+                                onBlur={this.blurInput.bind(this)}
+                              />
+                              <ShowIf show={!!this.state.mirrorData}>
+                                <div className="hidden-div_item-mod" style={{width : this.state.txtWidth}} ref={ ref => {this.hiddenDiv = ref} }>
+                                  {this.state.mirrorData}
+                                </div>
+                              </ShowIf>
+                              <label htmlFor="formCOMMENT" className="name" ref={ ref => {this.label = ref} }>Comment</label>
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-                  :
-                    null
-                }
-              </div>
+                    :
+                      null
+                  }
+                </div>
+              </ShowIf>
             </div>
           </div>
         </div>
