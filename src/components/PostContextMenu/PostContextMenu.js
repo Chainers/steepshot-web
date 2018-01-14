@@ -5,9 +5,10 @@ import Menu from './Menu/Menu';
 import {connect} from 'react-redux';
 import {debounce} from 'lodash';
 import {toggleFlag,} from '../../actions/flag';
+import {copyToClipboard} from "../../actions/clipboard";
 
 const MIN_BUTTON_WIDTH = 90;
-const MAX_BUTTON_WIDTH = 100;
+const MAX_BUTTON_SIZE = 100;
 const CONTENT_PADDING = 20;
 const CONTENT_MARGIN = 40;
 const MAX_HORIZONTAL_CONTENT_WIDTH = 200;
@@ -21,14 +22,14 @@ class PostContextMenu extends React.Component {
 
     let minContentWidth = buttonsAmount * MIN_BUTTON_WIDTH + 2 *
       (CONTENT_PADDING + CONTENT_MARGIN);
-    let maxContentWidth = buttonsAmount * MAX_BUTTON_WIDTH + 2 *
+    let maxContentWidth = buttonsAmount * MAX_BUTTON_SIZE + 2 *
       (CONTENT_PADDING + CONTENT_MARGIN);
 
     this.state = {
       showModal: false,
       fullScreen: false,
       contentWidth: minContentWidth,
-      contentHeight: MAX_BUTTON_WIDTH,
+      contentHeight: MAX_BUTTON_SIZE,
       MAX_CONTENT_WIDTH: maxContentWidth,
       MIN_CONTENT_WIDTH: minContentWidth,
       BUTTONS_AMOUNT: buttonsAmount,
@@ -53,8 +54,8 @@ class PostContextMenu extends React.Component {
       if (this.state.contentWidth !== this.state.MAX_CONTENT_WIDTH) {
         this.setState({
           fullScreen: false,
-          contentWidth: MAX_BUTTON_WIDTH * this.state.BUTTONS_AMOUNT + 'px',
-          contentHeight: MAX_BUTTON_WIDTH + 'px',
+          contentWidth: MAX_BUTTON_SIZE * this.state.BUTTONS_AMOUNT + 'px',
+          contentHeight: MAX_BUTTON_SIZE + 'px',
         });
       }
     } else if (document.documentElement.clientWidth < this.state.MIN_CONTENT_WIDTH) {
@@ -96,7 +97,8 @@ class PostContextMenu extends React.Component {
   }
 
   copyLink() {
-
+    let url = document.location.origin + '/post' + this.props.item.url;
+    this.props.copyToClipboard(url);
     this.closeFunc();
   }
 
@@ -221,6 +223,9 @@ const mapDispatchToProps = (dispatch) => {
   return {
     toggleFlag: (postIndex) => {
       dispatch(toggleFlag(postIndex));
+    },
+    copyToClipboard: (text) => {
+      dispatch(copyToClipboard(text));
     }
   }
 };
