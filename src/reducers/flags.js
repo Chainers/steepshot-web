@@ -1,13 +1,5 @@
 const initialState = {
-  flags: [
-    /*{
-      index: index,
-      state: post.flag,
-      isFlagLoading: false,
-      author: post.author,
-      postId: urlObject[urlObject.length - 1]
-    }*/
-  ],
+  flags: [ ],
   updateFlagInComponent: null
 };
 

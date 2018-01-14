@@ -78,7 +78,6 @@ class LikesModalComponent extends React.Component {
         },
         this.state.options)
     };
-    console.log('getVoters');
     getVoters(options, this.props.dispatch.bind(this));
   }
 

@@ -40,14 +40,13 @@ function toggleFlagFailure(postIndex) {
 export function toggleFlag(postIndex) {
   return function(dispatch) {
     let state = getStore().getState();
-    console.log(state);
     let username = state.auth.user;
     let postingKey = state.auth.postingKey;
     let updateFlagInComponent = state.flags.updateFlagInComponent;
     let flagOptions = state.flags.flags[postIndex];
     const newFlagState = !flagOptions.state;
 
-    if (!(username || postingKey)) {
+    if (!username && !postingKey) {
       debounce(jqApp.pushMessage.open(Constants.VOTE_ACTION_WHEN_NOT_AUTH), Constants.VOTE_ACTION_WHEN_NOT_AUTH_DEBOUNCE);
       return ;
     }
@@ -55,7 +54,7 @@ export function toggleFlag(postIndex) {
     if (queue == "true")  {
       return;
     }
-    sessionStorage.setItem('voteQueue', "true");
+    sessionStorage.setItem('voteQueue', 'true');
 
     dispatch(toggleFlagRequest(postIndex));
 
