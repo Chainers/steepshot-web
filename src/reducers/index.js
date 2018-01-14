@@ -8,8 +8,10 @@ import search from './search';
 import comment from './comment';
 import votes from './votes';
 import flags from './flags';
+import clipboard from "./clipboard";
 
 export default combineReducers({
+    clipboard,
     messages,
     auth,
     admin,
