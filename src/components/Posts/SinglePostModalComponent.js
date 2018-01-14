@@ -196,22 +196,24 @@ class SinglePostModalComponent extends React.Component {
       });
     }
 
-    // updateVoteInComponent(vote, index) {
-    //     let newItem = this.state.item;
-    //     if (vote && newItem.flag) {
-    //         newItem.flag = false;
-    //     }
-    //     vote ? newItem.net_votes++ : newItem.net_votes--;
-    //     newItem.vote = vote;
-    //     this.setState({
-    //         item: newItem
-    //     });
-    // }
+    updateVoteInComponent(vote, index) {
+        let newItem = this.state.item;
+        if (vote && newItem.flag) {
+            newItem.flag = false;
+        }
+        vote ? newItem.net_votes++ : newItem.net_votes--;
+        vote ? newItem.net_likes++ : newItem.net_likes--;
+        newItem.vote = vote;
+        this.setState({
+            item: newItem
+        });
+    }
 
     updateFlagInComponent(flag, index) {
         let newItem = this.state.item;
         if (flag && newItem.vote) {
             newItem.net_votes--;
+            newItem.net_likes--;
             newItem.vote = false;
         }
         newItem.flag = flag;
@@ -365,13 +367,13 @@ class SinglePostModalComponent extends React.Component {
                                             item={this.state.item}
                                             index={this.state.index}
                                             parent='post'
-                                            updateVoteInComponent={this.updateVoteInComponent}
+                                            updateVoteInComponent={this.updateVoteInComponent.bind(this)}
                                         />
                                         <FlagComponent
                                             key="flag"
                                             item={this.state.item}
                                             index={this.state.index}
-                                            updateFlagInComponent={this.props.updateFlagInComponent}
+                                            updateFlagInComponent={this.updateFlagInComponent.bind(this)}
                                         />
                                     </div>
                                     <div className="wrap-counts clearfix">

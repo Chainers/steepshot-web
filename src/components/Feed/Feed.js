@@ -16,7 +16,7 @@ class Feed extends React.Component {
     };
   }
 
-  componentWillMount() {
+  componentDidMount() {
     documentTitle();
   }
 

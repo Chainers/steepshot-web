@@ -21,7 +21,7 @@ class Modal extends React.Component {
     }
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.closeButtonFunc();
     window.addEventListener('resize', () => {
       this.closeButtonFunc();

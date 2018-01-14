@@ -17,7 +17,7 @@ class LikesModalComponent extends React.Component {
     super();
     this.state = {
       ...this.getInitialData,
-      forWindowSize: false
+      forWindowSize : false
     }
   }
 
@@ -55,11 +55,8 @@ class LikesModalComponent extends React.Component {
       this.setState({forWindowSize : true});
     }
   }
-  componentWillMount() {
-    this.windowSizeFunc();
-  }
-
   componentDidMount() {
+    this.windowSizeFunc();
     let unsubscribe = getStore().subscribe(this.usersChanged.bind(this));
   }
 
@@ -157,22 +154,22 @@ class LikesModalComponent extends React.Component {
       <div id="likesModal" tabIndex="-1" role="dialog" aria-hidden="true" className="modal modal-like fade">
         <div className="modal-dialog">
           <div className="modal-content likes-modal__content">
-            <div className="modal-header">
-              <div className="modal-title clearfix">
-                {Constants.POST_LIKED_BY}
-                {
-                  this.state.forWindowSize
-                    ?
-                    <button className="close" data-dismiss="modal"/>
-                    :
-                    null
-                }
+              <div className="modal-header">
+                <div className="modal-title clearfix">
+                  {Constants.POST_LIKED_BY}
+                  {
+                    this.state.forWindowSize
+                      ?
+                      <button className="close" data-dismiss="modal"/>
+                      :
+                      null
+                  }
+                </div>
+              </div>
+              <div className="modal-like__body">
+                {this.voters}
               </div>
             </div>
-            <div className="modal-like__body">
-              {this.voters}
-            </div>
-          </div>
         </div>
       </div>
     )

@@ -219,7 +219,6 @@ class ItemsComponent extends React.Component {
   }
 
   render() {
-
     if (this.state.renderNotEmptyOnly && this.state.items.length == 0) return null;
 
     return (
