@@ -66,7 +66,7 @@ class LikesModalComponent extends React.Component {
   fetchData() {
     if (this.state.offset == this.state.previousRequestOffset) return false;
     const options = {
-      point : `post/${this.permLink}/voters`,
+      point : `post${this.permLink}/voters`,
       params : Object.assign({}, {
           offset : this.state.offset
         },
@@ -77,9 +77,10 @@ class LikesModalComponent extends React.Component {
 
   usersChanged() {
     let votersInfo = this.selectVotesInfo(getStore().getState());
-    if (votersInfo.url !== undefined &&
-      (this.state.url != votersInfo.url
-        || votersInfo.voters.results.length == 0)) {
+    if (this.state.url === undefined || votersInfo.url === undefined) {
+      return;
+    }
+    if (this.state.url != votersInfo.url || votersInfo.voters.results.length == 0) {
       this.setState({
         ...this.getInitialData,
         url : votersInfo.url
