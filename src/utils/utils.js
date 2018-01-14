@@ -13,8 +13,10 @@ class utils {
     currencyChecker = str => str.charAt(0) == Constants.CURRENCY ? str : Constants.CURRENCY + str;
 
     tagPrettify = str => str.charAt(0) != '#' ? '#' + str : str;
-    
-    isNotEmptyString = str => str.trim().length > 0
+
+    isNotEmptyString = str => str !== undefined && str.trim().length > 0;
+
+    isEmptyString = str => !this.isNotEmptyString(str);
 }
 
 export default new utils();
