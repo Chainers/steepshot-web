@@ -4,7 +4,6 @@ import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
 import Comments from './Comments';
 import constants from '../../common/constants';
-import Constants from '../../common/constants';
 import VouteComponent from './VouteComponent';
 import FlagComponent from './FlagComponent';
 import ShareComponent from './ShareComponent';
@@ -200,7 +199,7 @@ class SinglePostModalComponent extends React.Component {
     });
   }
 
-  updateFlagInComponent(flag, index) {
+  updateFlagInComponent(flag) {
     let newItem = this.state.item;
     if (flag && newItem.vote) {
       newItem.net_votes--;

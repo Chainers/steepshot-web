@@ -79,7 +79,6 @@ class LikesModalComponent extends React.Component {
 
   usersChanged() {
     let votersInfo = this.selectVotesInfo(getStore().getState());
-
     if (utils.isEmptyString(votersInfo.url)) {
       return;
     }

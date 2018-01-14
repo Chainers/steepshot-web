@@ -1,7 +1,7 @@
 import React from 'react';
+import {Link} from 'react-router-dom';
 import {getPostComments} from '../../actions/posts';
-import { Link, Redirect } from 'react-router-dom';
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import Comments from './Comments';
 import constants from '../../common/constants';
@@ -175,10 +175,10 @@ class Item extends React.Component {
                 <div className="buttons-row"
                      onClick={(e) => {this.callPreventDefault(e);}}>
                   <VouteComponent key="vote"
-                                  item={this.state.item}
-                                  index={this.props.index}
-                                  updateVoteInComponent={this.props.updateVoteInComponent}
-                                  parent='post'
+                    item={this.state.item}
+                    index={this.state.currentIndex}
+                    updateVoteInComponent={this.props.updateVoteInComponent}
+                    parent='post'
                   />
                   <FlagComponent postIndex={this.props.index}/>
                 </div>
