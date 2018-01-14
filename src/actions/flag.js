@@ -46,7 +46,7 @@ export function toggleFlag(postIndex) {
     let updateFlagInComponent = state.flags.updateFlagInComponent;
     let flagOptions = state.flags.flags[postIndex];
     const newFlagState = !flagOptions.state;
-    
+
     if (!(username || postingKey)) {
       debounce(jqApp.pushMessage.open(Constants.VOTE_ACTION_WHEN_NOT_AUTH), Constants.VOTE_ACTION_WHEN_NOT_AUTH_DEBOUNCE);
       return ;
@@ -56,11 +56,11 @@ export function toggleFlag(postIndex) {
       return;
     }
     sessionStorage.setItem('voteQueue', "true");
-    
+
     dispatch(toggleFlagRequest(postIndex));
-    
+
     const callback = (err, success) => {
-      
+
       sessionStorage.setItem('voteQueue', 'false');
       if (err) {
         console.log(err);
@@ -70,7 +70,7 @@ export function toggleFlag(postIndex) {
           text = 'Sorry, you had used the maximum number of vote changes on this post';
         }
         jqApp.pushMessage.open(text);
-        
+
       } else if (success) {
         dispatch(toggleFlagSuccess(postIndex));
         let text = `The post has been successfully flaged. If you don't see your flag, please give it a few minutes to sync from the blockchain`;
@@ -79,7 +79,7 @@ export function toggleFlag(postIndex) {
         updateFlagInComponent(newFlagState, postIndex);
       }
     };
-    
+
     Steem.flag(postingKey,
       username,
       flagOptions.author,

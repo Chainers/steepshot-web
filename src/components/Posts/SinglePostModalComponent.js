@@ -30,6 +30,7 @@ const MAX_WIDTH_FULL_SCREEN = 815;
 class SinglePostModalComponent extends React.Component {
   constructor(props) {
     super(props);
+    this.props.clearFlagsInStore();
     this.props.addUpdateFlagInComponentFunc(this.updateFlagInComponent.bind(this));
     this.state = {
       notify: this.props.notify,
@@ -84,10 +85,7 @@ class SinglePostModalComponent extends React.Component {
       getPostShaddow(SinglePostModalComponent.getPostIdentifier(
         urlObject[urlObject.length - 2],
         urlObject[urlObject.length - 1])).then((result) => {
-        this.props.clearFlagsInStore();
         if (result) {
-  
-          this.props.clearFlagsInStore();
           let options = {
             index: 0,
             state: result.flag,
@@ -96,7 +94,7 @@ class SinglePostModalComponent extends React.Component {
             postId: urlObject[urlObject.length - 1],
           };
           this.props.addFlagToStore(options);
-          
+
           this.setState({
             item: result,
             isPostLoading: false,
@@ -264,7 +262,6 @@ class SinglePostModalComponent extends React.Component {
         {isDescriptionOpened: false});
     return true;
   }
-
 
   closeFunc() {
     if (!(this.props.username && this.props.postingKey)) {

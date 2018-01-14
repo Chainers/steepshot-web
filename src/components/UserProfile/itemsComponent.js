@@ -18,6 +18,7 @@ import Modal from '../Common/Modal/Modal';
 class ItemsComponent extends React.Component {
   constructor(props) {
     super(props);
+    this.props.clearFlagsInStore();
     this.props.addUpdateFlagInComponentFunc(this.updateFlagInComponent.bind(this));
     this.state = {
       ...this.getInitialData(),
@@ -110,7 +111,6 @@ class ItemsComponent extends React.Component {
           newPosts = this.state.items.concat(response.results.slice(1, response.results.length));
         }
 
-        this.props.clearFlagsInStore();
         newPosts.forEach((post, index) => {
           let urlObject = post.url.split('/');
           let options = {
