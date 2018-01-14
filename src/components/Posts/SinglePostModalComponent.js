@@ -30,6 +30,7 @@ const MAX_WIDTH_FULL_SCREEN = 815;
 class SinglePostModalComponent extends React.Component {
   constructor(props) {
     super(props);
+    this.props.clearFlagsInStore();
     this.props.addUpdateFlagInComponentFunc(this.updateFlagInComponent.bind(this));
     this.state = {
       notify: this.props.notify,
@@ -48,13 +49,13 @@ class SinglePostModalComponent extends React.Component {
     };
     this.resizeWindow = this.resizeWindow.bind(this);
   }
-  
+
   sharedComponentTitle() {
     let title = this.state.item.title.split('');
     title[0] = title[0].toUpperCase();
     document.title = `${title.join('')} | Steepshot`;
   }
-  
+
   controlRestrictions() {
     if (this.state.item.is_nsfw) {
       this.setState({adultParam: true});
@@ -70,11 +71,11 @@ class SinglePostModalComponent extends React.Component {
       this.setState({lowParam: false});
     }
   }
-  
+
   hideFunc() {
     this.setState({adultParam: false, lowParam: false});
   }
-  
+
   componentDidMount() {
     this.setState({needsCommentFormLoader: false});
     const urlObject = this.props.location.pathname.split('/');
@@ -84,10 +85,7 @@ class SinglePostModalComponent extends React.Component {
       getPostShaddow(SinglePostModalComponent.getPostIdentifier(
         urlObject[urlObject.length - 2],
         urlObject[urlObject.length - 1])).then((result) => {
-        this.props.clearFlagsInStore();
         if (result) {
-  
-          this.props.clearFlagsInStore();
           let options = {
             index: 0,
             state: result.flag,
@@ -96,7 +94,7 @@ class SinglePostModalComponent extends React.Component {
             postId: urlObject[urlObject.length - 1],
           };
           this.props.addFlagToStore(options);
-          
+
           this.setState({
             item: result,
             isPostLoading: false,
@@ -111,14 +109,14 @@ class SinglePostModalComponent extends React.Component {
         }
         this.controlRestrictions();
       });
-    
+
     window.addEventListener('resize', this.resizeWindow);
   }
-  
+
   componentWillUnmount() {
     window.removeEventListener('resize', this.resizeWindow);
   }
-  
+
   resizeWindow() {
     if (document.documentElement.clientWidth <= MAX_WIDTH_FULL_SCREEN) {
       this.setState({fullScreen: true});
@@ -126,7 +124,7 @@ class SinglePostModalComponent extends React.Component {
       this.setState({fullScreen: false});
     }
   }
-  
+
   error() {
     jqApp.pushMessage.open(
       'Something went wrong, please, check the URL or try again later');
@@ -138,24 +136,24 @@ class SinglePostModalComponent extends React.Component {
       }
     }, 3000);
   }
-  
+
   initLayout() {
     setTimeout(() => {
       jqApp.forms.init();
     }, 0);
   }
-  
+
   static getPostIdentifier(author, permlink) {
     return `${author}/${permlink}`;
   }
-  
+
   sendComment(e) {
     e.preventDefault();
     let comment = this.commentInput.value;
     if (comment === '') return false;
-    
+
     const urlObject = this.state.item.url.split('/');
-    
+
     const callback = (err, success) => {
       this.setState({
         needsCommentFormLoader: false,
@@ -180,7 +178,7 @@ class SinglePostModalComponent extends React.Component {
         });
       }
     };
-    
+
     this.setState({
       needsCommentFormLoader: true,
     }, () => {
@@ -195,13 +193,13 @@ class SinglePostModalComponent extends React.Component {
       );
     });
   }
-  
+
   setDefaultImage() {
     this.setState({
       image: constants.NO_IMAGE,
     });
   }
-  
+
   updateFlagInComponent(flag) {
     let newItem = this.state.item;
     if (flag && newItem.vote) {
@@ -213,7 +211,7 @@ class SinglePostModalComponent extends React.Component {
       item: newItem,
     });
   }
-  
+
   resetDefaultProperties(newItem, indexUpdater) {
     this.setState({
       image: newItem.body,
@@ -221,12 +219,12 @@ class SinglePostModalComponent extends React.Component {
       index: this.state.index + indexUpdater,
     });
   }
-  
+
   static callPreventDefault(e) {
     e.stopPropagation();
     e.preventDefault();
   }
-  
+
   renderDescription() {
     let descriptionStart = this.state.item.description.replace(/(<\w+>)+/, '');
     let description = descriptionStart.replace(/\n[\w\W]+/, '');
@@ -253,18 +251,18 @@ class SinglePostModalComponent extends React.Component {
       </div>
     );
   }
-  
+
   openDescription() {
     this.setState({isDescriptionOpened: true});
   }
-  
+
   shouldComponentUpdate(nextProps, nextState) {
     if (this.state.index !== nextState.index)
       if (this.state.isDescriptionOpened) this.setState(
         {isDescriptionOpened: false});
     return true;
   }
-  
+
   closeFunc() {
     if (!(this.props.username && this.props.postingKey)) {
       this.props.history.push('/browse');
@@ -272,19 +270,19 @@ class SinglePostModalComponent extends React.Component {
       this.props.history.push('/feed');
     }
   }
-  
+
   render() {
     if (this.state.isPostLoading || this.state.error) {
       return null;
     }
-    
+
     let itemImage = this.state.item.body || constants.NO_IMAGE;
     let isUserAuth = (utils.isNotEmptyString(this.props.username) &&
       utils.isNotEmptyString(this.props.postingKey));
     const authorLink = `/@${this.state.item.author}`;
-    
+
     this.initLayout();
-    
+
     return (
       <div>
         <Modal

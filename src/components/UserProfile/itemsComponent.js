@@ -20,6 +20,7 @@ import {
 class ItemsComponent extends React.Component {
   constructor(props) {
     super(props);
+    this.props.clearFlagsInStore();
     this.props.addUpdateFlagInComponentFunc(this.updateFlagInComponent.bind(this));
     this.state = {
       ...this.getInitialData(),
@@ -108,8 +109,7 @@ class ItemsComponent extends React.Component {
         } else {
           newPosts = this.state.items.concat(response.results.slice(1, response.results.length));
         }
-  
-        this.props.clearFlagsInStore();
+
         newPosts.forEach((post, index) => {
           let urlObject = post.url.split('/');
           let options = {
@@ -121,7 +121,7 @@ class ItemsComponent extends React.Component {
           };
           this.props.addFlagToStore(options);
         });
-        
+
         let hasMore = !(this.state.offset == response.offset);
         if (this.state.items.length + response.results.length <= 4) hasMore = false;
         this.setState({

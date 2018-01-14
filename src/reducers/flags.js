@@ -14,6 +14,9 @@ const initialState = {
 export default function flag(state = initialState, action) {
   switch (action.type) {
     case 'ADD_FLAG_TO_STATE':
+      if (state.flags[action.options.index] !== undefined) {
+        return state;
+      }
       return Object.assign({}, state, {
         flags: [
           ...state.flags, {
@@ -64,7 +67,7 @@ export default function flag(state = initialState, action) {
       return Object.assign({}, state, {
         updateFlagInComponent: action.func
       });
-      
+
     default:
       return state;
   }
