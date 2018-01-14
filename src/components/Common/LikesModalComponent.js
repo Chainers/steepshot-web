@@ -15,6 +15,8 @@ import { debounce } from 'lodash';
 import LoadingSpinner from '../LoadingSpinner';
 import TabsFilterComponent from '../Filters/TabsFilterComponent';
 import TabsWrapper from '../Wrappers/TabsWrapper';
+import ShowIf from "./ShowIf";
+import utils from "../../utils/utils";
 
 class LikesModalComponent extends React.Component {
   constructor(props) {
@@ -70,18 +72,20 @@ class LikesModalComponent extends React.Component {
   fetchData() {
     if (this.state.offset == this.state.previousRequestOffset) return false;
     const options = {
-      point : `post${this.permLink}/voters`,
+      point : `post/${this.permLink}/voters`,
       params : Object.assign({}, {
           offset : this.state.offset
         },
         this.state.options)
     };
+    console.log('getVoters');
     getVoters(options, this.props.dispatch.bind(this));
   }
 
   usersChanged() {
     let votersInfo = this.selectVotesInfo(getStore().getState());
-    if (this.state.url === undefined || votersInfo.url === undefined) {
+
+    if (utils.isEmptyString(votersInfo.url)) {
       return;
     }
     if (this.state.url != votersInfo.url || votersInfo.voters.results.length == 0) {
@@ -165,13 +169,9 @@ class LikesModalComponent extends React.Component {
             <div className="modal-header">
               <div className="modal-title clearfix">
                 {Constants.POST_LIKED_BY}
-                {
-                  this.state.forWindowSize
-                    ?
-                    <button className="close" data-dismiss="modal"></button>
-                    :
-                    null
-                }
+                <ShowIf show={this.state.forWindowSize}>
+                  <button className="close" data-dismiss="modal"></button>
+                </ShowIf>
               </div>
             </div>
             <div className="modal-like__body">
