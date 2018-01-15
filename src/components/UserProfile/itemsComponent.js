@@ -110,7 +110,7 @@ class ItemsComponent extends React.Component {
         } else {
           newPosts = this.state.items.concat(response.results.slice(1, response.results.length));
         }
-
+        newPosts = this.removeDuplicate(newPosts);
         newPosts.forEach((post, index) => {
           let urlObject = post.url.split('/');
           let options = {
@@ -235,6 +235,18 @@ class ItemsComponent extends React.Component {
       <HeadingLeadComponent text={this.state.headerText} />
     );
     return null;
+  }
+  
+  removeDuplicate(items) {
+    for (let i = 0; i < items.length - 1; i++) {
+      for(let j = i + 1; j < items.length; j ++) {
+        if (items[i].url === items[j].url) {
+          items.splice(j, 1);
+          j--;
+        }
+      }
+    }
+    return items;
   }
 
   render() {
