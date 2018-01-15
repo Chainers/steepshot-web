@@ -9,6 +9,7 @@ import comment from './comment';
 import votes from './votes';
 import flags from './flags';
 import clipboard from "./clipboard";
+import itemsList from './itemsList';
 
 export default combineReducers({
     clipboard,
@@ -20,5 +21,6 @@ export default combineReducers({
     search,
     comment,
     votes,
-    flags
+    flags,
+    itemsList
 });
