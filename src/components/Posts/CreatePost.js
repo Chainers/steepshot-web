@@ -23,19 +23,19 @@ class CreatePost extends React.Component {
       renderLoader: false,
       tagError: false,
       titleError: false,
-      minPhotoWidth: 100,
-      minPhotoHeight: 100,
+      minPhotoWidth: 640,
+      minPhotoHeight: 420,
     };
   }
-  
+
   componentDidMount() {
     setTimeout(() => { jqApp.forms.init(); }, 0);
   }
-  
+
   componentWillMount() {
     documentTitle();
   }
-  
+
   _clearAll() {
     this.setState({
       file: '',
@@ -47,17 +47,17 @@ class CreatePost extends React.Component {
       description: '',
     });
   }
-  
+
   handleChange(event) {
     let name = event.target.name;
     let value = event.target.value;
-    
+
     if (name == this.state.titleInputName) {
       if (value.length >= 256) {
         return false;
       }
     }
-    
+
     if (name == this.state.tagInputName) {
       let valueArr = value.replace(/[^^a-zA-ZА-Яа-яЁё0-9\s]/g, '').
         toLowerCase().
@@ -87,11 +87,11 @@ class CreatePost extends React.Component {
       });
     }
   }
-  
+
   getTagsArray(stringWithTags) {
     return stringWithTags.replace(/^\s+|\s+$/gm, '').split(/\s+/);
   }
-  
+
   validateFields() {
     let isValid = true;
     if (this.state.tagList.length > 20) {
@@ -114,18 +114,18 @@ class CreatePost extends React.Component {
     }
     return isValid;
   }
-  
+
   _handleSubmit(e) {
     e.preventDefault();
-    
+
     if (this.state.disabeleCreating) return false;
     if (!this.validateFields()) return false;
-    
+
     const callback = (err, success) => {
       if (success) {
         this.setState({
           renderLoader: false,
-          
+
         }, () => {
           jqApp.pushMessage.open(
             'Post has been successfully created. If you don\'t see the post in your profile, please give it a few minutes to sync from the blockchain');
@@ -148,21 +148,21 @@ class CreatePost extends React.Component {
           this.state.file, callback),
     );
   }
-  
+
   _getTags() {
     let tags = this.state.tagList.splice(0, 20);
     return tags;
   }
-  
+
   _handleImageChange(e) {
     e.preventDefault();
     let reader = new FileReader();
     let file = e.target.files[0];
-    
+
     reader.onloadend = () => {
       let image = new Image();
       image.src = reader.result;
-      
+
       this.setState({
         file: file,
         imagePreviewUrl: reader.result,
@@ -191,12 +191,12 @@ class CreatePost extends React.Component {
     };
     reader.readAsDataURL(file);
   }
-  
+
   rotateImage(e) {
     e.preventDefault();
     let canvas = this.preview;
     let ctx = canvas.getContext('2d');
-    
+
     let image = new Image();
     image.src = this.state.imagePreviewUrl;
     image.onload = () => {
@@ -222,7 +222,7 @@ class CreatePost extends React.Component {
       });
     };
   }
-  
+
   _getPostImageStyles(itemImage) {
     return {
       backgroundImage: `url(${itemImage})`,
@@ -234,17 +234,17 @@ class CreatePost extends React.Component {
       backgroundPosition: 'center',
     };
   }
-  
+
   addTag() {
     let tagList = this.state.tagList;
     tagList.push(this.state.tag);
-    
+
     this.setState({
       tag: '',
       tagList: tagList,
     });
   }
-  
+
   removeTag(index) {
     let newTagList = this.state.tagList;
     newTagList.splice(index, 1);
@@ -254,7 +254,7 @@ class CreatePost extends React.Component {
       tagError: false,
     });
   }
-  
+
   _renderTags() {
     if (this.state.tagList.length == 0) return null;
     if (this.state.tagList[0] == '') return null;
@@ -269,7 +269,7 @@ class CreatePost extends React.Component {
     });
     return items;
   }
-  
+
   _renderLoader() {
     if (this.state.renderLoader) {
       return <LoadingSpinner/>;
@@ -277,25 +277,25 @@ class CreatePost extends React.Component {
       return null;
     }
   }
-  
+
   render() {
     let {imagePreviewUrl} = this.state;
     let $imagePreview = null;
     let rotateButton = null;
     let addDescriptionBlock = null;
     let mainContainerClassName = 'col-xs-12 col-md-6 col-md-offset-3 col-lg-6 col-lg-offset-3 for-justification';
-    
+
     if (this.state.renderLoader == true) {
       mainContainerClassName = mainContainerClassName + ' blur-blocker';
     }
-    
+
     let imageError = this.state.imageError
       ? <div className="help-block margin-top--small">
         <div
           className="text--red help-block__notice">{this.state.imageError}</div>
       </div>
       : null;
-    
+
     addDescriptionBlock =
       <div className="form-group">
         <div className="input-container col-xs-12">
@@ -317,7 +317,7 @@ class CreatePost extends React.Component {
           </div>
         </div>
       </div>;
-    
+
     if (imagePreviewUrl) {
       $imagePreview = (
         <div className="preview-component position--relative">
@@ -333,13 +333,13 @@ class CreatePost extends React.Component {
                  onChange={(e) => this._handleImageChange(e)} type="file"/>
         </div>
       );
-      
+
       rotateButton = <div className="rotate-button">
         <div className="sub-rotate-button" title="rotate"
              onClick={this.rotateImage.bind(this)}>
         </div>
       </div>;
-      
+
     } else {
       $imagePreview = (
         <div className="upload-field empty">
@@ -352,7 +352,7 @@ class CreatePost extends React.Component {
         </div>
       );
     }
-    
+
     return (
       <div>
         <div className={mainContainerClassName}>
