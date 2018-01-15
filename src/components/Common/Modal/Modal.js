@@ -28,6 +28,12 @@ class Modal extends React.Component {
     })
   }
 
+  componentWillUnmount() {
+    window.removeEventListener('resize', () => {
+      this.closeButtonFunc();
+    })
+  }
+  
   closeButtonFunc() {
     if (document.documentElement.clientWidth <= 815) {
       this.setState({closeParam : false});
