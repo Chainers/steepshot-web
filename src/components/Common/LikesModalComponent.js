@@ -8,9 +8,6 @@ import ScrollViewComponent from '../Common/ScrollViewComponent';
 import InfiniteScroll from 'react-infinite-scroller';
 import { debounce } from 'lodash';
 import LoadingSpinner from '../LoadingSpinner';
-import TabsFilterComponent from '../Filters/TabsFilterComponent';
-import TabsWrapper from '../Wrappers/TabsWrapper';
-import Modal from '../Common/Modal/Modal';
 
 class LikesModalComponent extends React.Component {
   constructor(props) {
@@ -56,6 +53,7 @@ class LikesModalComponent extends React.Component {
     }
   }
   componentDidMount() {
+
     this.windowSizeFunc();
     let unsubscribe = getStore().subscribe(this.usersChanged.bind(this));
   }
@@ -75,7 +73,7 @@ class LikesModalComponent extends React.Component {
   usersChanged() {
     let store = getStore();
     let state = store.getState();
-    let votersInfo = this.selectVotesInfo(getStore().getState());
+    let votersInfo = this.selectVotesInfo(state);
     if (this.state.url != votersInfo.url || votersInfo.voters.results.length == 0) {
       this.setState({
         ...this.getInitialData,
@@ -151,7 +149,7 @@ class LikesModalComponent extends React.Component {
 
   render() {
     return (
-      <div id="likesModal" tabIndex="-1" role="dialog" aria-hidden="true" className="modal modal-like fade">
+      <div id="likesModal" tabIndex="-1" role="dialog" aria-hidden="true" className="modal modal-like">
         <div className="modal-dialog">
           <div className="modal-content likes-modal__content">
               <div className="modal-header">

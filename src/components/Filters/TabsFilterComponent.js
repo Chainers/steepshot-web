@@ -20,15 +20,32 @@ class TabsFilterComponent extends React.Component {
         this.setState({
             keys : nextProps.keys
         });
-        this.switchFilter(nextProps.activeItemIndex);
+        this.testing(nextProps.activeItemIndex);
+    }
+
+    testing(index) {
+      if (this.state.activeItemIndex == index) return false;
+      this.props.updateCallback(index);
+      this.setState({
+        activeItemIndex : index,
+      });
     }
 
     switchFilter(index) {
-        if (this.state.activeItemIndex == index) return false;
+      // if(this.props.numberPosts && this.props.numberUsers) {
+      //   console.log(this.props.numberPosts, this.props.numberUsers)
+      //   if (this.state.activeItemIndex == index) return false;
+      //   this.props.updateCallback(index);
+      //   this.setState({
+      //     activeItemIndex : index,
+      //   });
+      // } else {
+      if (this.state.activeItemIndex == index) return false;
         this.props.updateCallback(index);
         this.setState({
-            activeItemIndex : index,
-        })
+          activeItemIndex : index,
+        });
+      // }
     }
 
     renderNavigation() {

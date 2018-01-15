@@ -129,6 +129,8 @@ class SearchResultsComponent extends React.Component {
               keys={this.state.keys}
               activeItemIndex={this.state.activeItemIndex}
               updateCallback={this.updateActiveTab.bind(this)}
+              numberUsers={this.state.numberUsers}
+              numberPosts={this.state.numberPosts}
             />
           </ShowIf>
           <TabsWrapper

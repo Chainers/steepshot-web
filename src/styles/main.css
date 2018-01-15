@@ -43,7 +43,7 @@ body {
   font: 27px OpenSans-Light;
   width: 100%;
   height: 100%;
-  opacity: .955;
+  opacity: .97;
   cursor: pointer;
 }
 
@@ -774,7 +774,7 @@ h2.card-field__heading {
   .post__image-container img {
     min-width: 300px;
     width: auto;
-    min-height: 420px;
+    min-height: 100%;
     max-width: calc(724px - 10vw);
   }
   .post__image-container-full-screen {
@@ -807,7 +807,7 @@ h2.card-field__heading {
   .post__image-container img {
     min-width: 300px;
     width: auto;
-    min-height: 420px;
+    min-height: 100%;
     max-width: calc(824px - 10vw);
   }
   .post__image-container-full-screen {
@@ -831,7 +831,7 @@ h2.card-field__heading {
   .post__image-container img {
     min-width: 300px;
     width: auto;
-    min-height: 420px;
+    min-height: 100%;
     max-width: calc(924px - 10vw);
   }
   .post__image-container-full-screen {
@@ -855,7 +855,7 @@ h2.card-field__heading {
   .post__image-container img {
     min-width: 300px;
     width: auto;
-    min-height: 420px;
+    min-height: 100%;
     max-width: calc(1024px - 10vw);
   }
   .post__image-container-full-screen {

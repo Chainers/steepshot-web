@@ -125,6 +125,7 @@ class ItemsComponent extends React.Component {
     if (vote && newItems[index].flag) {
       newItems[index].flag = false;
     }
+
     vote ? newItems[index].net_votes++ : newItems[index].net_votes--;
     vote ? newItems[index].net_likes++ : newItems[index].net_likes--;
     newItems[index].vote = vote;
