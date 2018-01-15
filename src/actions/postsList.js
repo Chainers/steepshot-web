@@ -14,80 +14,64 @@ export function clearPosts() {
   };
 }
 
-function getPostsListRequest(point) {
+function getPostsListRequest(pointOptions) {
   return {
     type: 'GET_POSTS_LIST_REQUEST',
-    point: point
+    point: pointOptions
   };
 }
 
-function getPostsListSuccess(pointOptions, posts) {
+function getPostsListSuccess(pointOptions) {
   return {
     type: 'GET_POSTS_LIST_SUCCESS',
-    options: pointOptions,
-    posts
+    options: pointOptions
   };
 }
 
-export function getPostsListAction(point) {
+export function getPostsList(point) {
   return (dispatch) => {
     
-    dispatch(getPostsListRequest(point));
-    const state = getStore().getState();
-    const statePoint = getStore().getState().postsList[point];
+    dispatch(getPostsListRequest());
+    const state = getStore().getState().postsList[point];
     const requestOptions = {
       point,
       param: Object.assign({}, {
-          offset: statePoint.offset
+          offset: state.offset
         },
-        statePoint.options)
+        state.options)
     };
-    getPosts(requestOptions, statePoint.cancelPrevious).then((response) => {
-      let newPosts = statePoint.postsIndices.length ? response.results :
+    getPosts(requestOptions, state.cancelPrevious).then((response) => {
+      let newPosts = state.posts.length ? response.results :
         response.results.slice(1);
-      newPosts = removeDuplicate(statePoint.postsIndices, newPosts);
-      let postsIndices = newPosts.map(post => {
-        return post.url
+      
+      newPosts = this.removeDuplicate(state.posts, newPosts);
+      newPosts.map((post) => {
+        return Object.assign({}, post, {
+          flagLoading: false
+        })
       });
-      let hasMore = !(statePoint.offset == response.offset);
+      
+      let hasMore = !(this.state.offset == response.offset);
       if (response.results.length == 1) hasMore = false;
       let pointOptions = {
         point,
-        postsIndices,
+        posts: newPosts,
         offset: response.offset,
         hasMore: hasMore,
-        length: postsIndices.length,
       };
-      
-      let postsObject = {};
-      let postsLength = newPosts.length;
-      for (let i = 0; i < postsLength; i++) {
-        let post = Object.assign({}, newPosts[i], {
-          ui: {
-            flagLoading: false,
-          }
-        });
-        post.tags = (post.tags instanceof Array)
-          ? post.tags
-          : post.tags.split(',');
-        postsObject[newPosts[i].url] = post;
-      }
-      newPosts = postsObject;
-      
-      dispatch(getPostsListSuccess(pointOptions, newPosts));
+      dispatch(getPostsListSuccess(pointOptions));
     });
   };
 }
 
 function removeDuplicate(posts, newPosts) {
-  if (posts.length) {
-    for (let i = 0; i < newPosts.length; i++) {
-      if (posts[newPosts[i].url]) {
+  for (let i = 0; i < newPosts.length; i++) {
+    for(let j = 0; j < posts.length; j++) {
+      if (newPosts[i].url === posts[j].url) {
         newPosts.splice(i, 1);
         i--;
       }
     }
   }
-  
-  return newPosts;
+  return posts;
 }

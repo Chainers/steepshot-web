@@ -1,5 +1,11 @@
 import React from 'react';
 import {connect} from 'react-redux';
+import {clearPosts, getPostsList, initPostsList} from '../../actions/postsList';
+import {debounce} from 'lodash';
+import Constants from '../../common/constants';
+import InfiniteScroll from 'react-infinite-scroll-es2015';
+import LoadingSpinner from '../LoadingSpinner';
+import ShowIf from '../Common/ShowIf';
 import {
   clearPosts, getPostsListAction,
   initPostsList,
@@ -30,6 +36,16 @@ class PostsList extends React.Component {
       option: this.props.option,
       maxPosts: this.props.maxPosts,
       loading: true,
+      posts: [],
+      hashMore: true,
+      ignored: this.props.ignored
+    };
+    this.props.initPostsList(postsListOptions);
+    this.getPostsList = this.getPostsList.bind(this);
+  }
+  
+  componentDidUpdate() {
+    getPostsList();
       postsIndices: [],
       length: 0,
       hashMore: true,
@@ -48,6 +64,7 @@ class PostsList extends React.Component {
   }
   
   updateFlagInComponent(flag, index) {
+    let newItems = this.state.items;
     let newItems = this.getComponentState().posts;
     if (flag && newItems[index].vote) {
       newItems[index].net_votes--;
@@ -55,6 +72,13 @@ class PostsList extends React.Component {
       newItems[index].vote = false;
     }
     newItems[index].flag = flag;
+    this.setState({
+      items: newItems,
+    });
+  }
+  
+  updateVoteInComponent(vote, index) {
+    let newItems = this.state.items;
     //TODO update flag in state
   }
   
@@ -67,6 +91,39 @@ class PostsList extends React.Component {
     vote ? newItems[index].net_votes++ : newItems[index].net_votes--;
     vote ? newItems[index].net_likes++ : newItems[index].net_likes--;
     newItems[index].vote = vote;
+    this.setState({
+      items: newItems,
+    });
+  }
+  
+  renderItems() {
+    if (this.props.loading) return null;
+    if (!this.props.posts.length) {
+      return (
+        <div className="empty-query-message">
+          {Constants.EMPTY_QUERY}
+        </div>
+      )
+    } else {
+      let items = [];
+      this.props.post.map((post) => {
+        if (this.props.ignored.indexOf(post.url) == -1)
+          items.push(
+            <PostItem
+              item={post}
+              index={post.url}
+              openModal={this.openFunc.bind(this)}
+              updateVoteInComponent={this.updateVoteInComponent.bind(this)}
+              clearPostHeader={this.props.clearPostHeader}
+            />
+          );
+      });
+      return items;
+    }
+  }
+  
+  
+  render() {
     //TODO update vote in state
   }
   
@@ -107,6 +164,7 @@ class PostsList extends React.Component {
           initialLoad={false}
           loadMore={debounce(this.getPostsList,
             Constants.ENDLESS_SCROLL.DEBOUNCE_TIMEOUT)}
+          hasMore={this.props.hasMore}
           hasMore={state.hasMore}
           loader={
             <div className="position--relative">
@@ -115,6 +173,9 @@ class PostsList extends React.Component {
           }
           threshold={Constants.ENDLESS_SCROLL.OFFSET}
         >
+          <ShowIf show={!this.props.loading}>
+            {this.getPosts()}
+          </ShowIf>
           {this.renderPosts.bind(this)()}
         </InfiniteScroll>
       </div>
@@ -128,6 +189,7 @@ class PostsList extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
+    ...state.postsList[this.props.point],
     postsList: state.postsList,
   };
 };
@@ -141,7 +203,7 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(clearPosts());
     },
     getPosts: (point) => {
-      dispatch(getPostsListAction(point));
+      dispatch(getPostsList(point));
     },
   };
 };
