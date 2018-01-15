@@ -4,6 +4,7 @@ import ShowIf from '../ShowIf';
 class Modal extends React.Component {
   static defaultProps = {
     showCloseButton: true,
+    fullParam: true
   };
 
   constructor(props) {
