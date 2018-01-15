@@ -10,6 +10,7 @@ export function preparePost(message, transaction) {
   form.append('description', message[1].description);
   form.append('username', message[1].author);
   form.append('photo', message[1].body);
+  form.append('post_permlink',  '@' + message[1].author + '/' + message[1].permlink,);
   form.append('trx', JSON.stringify(transaction));
   return fetch(`${baseUrl}/post/prepare`, {
     method: 'POST',
