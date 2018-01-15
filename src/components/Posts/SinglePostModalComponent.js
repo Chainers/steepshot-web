@@ -75,6 +75,14 @@ class SinglePostModalComponent extends React.Component {
     this.setState({adultParam: false, lowParam: false});
   }
 
+  closeButtonFunc() {
+    if (document.documentElement.clientWidth <= 815) {
+      this.setState({closeParam : true});
+    } else {
+      this.setState({closeParam : false});
+    }
+  }
+
   componentDidMount() {
     this.setState({needsCommentFormLoader: false});
     const urlObject = this.props.location.pathname.split('/');
@@ -108,7 +116,10 @@ class SinglePostModalComponent extends React.Component {
         }
         this.controlRestrictions();
       });
-
+    this.closeButtonFunc();
+    window.addEventListener('resize', () => {
+      this.closeButtonFunc();
+    });
     window.addEventListener('resize', this.resizeWindow);
   }
 
@@ -199,17 +210,31 @@ class SinglePostModalComponent extends React.Component {
     });
   }
 
-  updateFlagInComponent(flag) {
-    let newItem = this.state.item;
-    if (flag && newItem.vote) {
-      newItem.net_votes--;
-      newItem.vote = false;
+    updateVoteInComponent(vote, index) {
+        let newItem = this.state.item;
+        if (vote && newItem.flag) {
+            newItem.flag = false;
+        }
+        vote ? newItem.net_votes++ : newItem.net_votes--;
+        vote ? newItem.net_likes++ : newItem.net_likes--;
+        newItem.vote = vote;
+        this.setState({
+            item: newItem
+        });
     }
-    newItem.flag = flag;
-    this.setState({
-      item: newItem,
-    });
-  }
+
+    updateFlagInComponent(flag, index) {
+        let newItem = this.state.item;
+        if (flag && newItem.vote) {
+            newItem.net_votes--;
+            newItem.net_likes--;
+            newItem.vote = false;
+        }
+        newItem.flag = flag;
+        this.setState({
+            item: newItem
+        });
+    }
 
   resetDefaultProperties(newItem, indexUpdater) {
     this.setState({
@@ -451,7 +476,7 @@ const mapStateToProps = (state) => {
     localization: state.localization,
     username: state.auth.user,
     postingKey: state.auth.postingKey,
-    avatar: state.auth.avatar,
+    avatar: state.auth.avatar
   };
 };
 

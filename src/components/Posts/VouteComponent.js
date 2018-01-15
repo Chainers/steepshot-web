@@ -41,7 +41,7 @@ class VouteComponent extends React.Component {
       return false;
     }
 
-    sessionStorage.setItem('voteQueue', "true");
+    sessionStorage.setItem('voteQueue', 'true');
 
     if (!(this.props.username || this.props.postingKey)) {
       return false;
@@ -95,7 +95,7 @@ class VouteComponent extends React.Component {
     if (this.state.isVoteLoading) {
       buttonClasses = buttonClasses + " loading";
     }
-    let button = <button type="button" className={buttonClasses} />
+    let button = <button type="button" className={buttonClasses} />;
     return (
         <div className="wrap-btn" onClick={this.ratingVotes.bind(this)}>
           {button}

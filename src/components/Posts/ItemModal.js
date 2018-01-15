@@ -62,8 +62,8 @@ class ItemModal extends React.Component {
         this.initKeypress();
     }
 
-    needMore() {
-      this.controlRestrictions();
+    needMore(param) {
+      this.controlRestrictions(param);
       if (this.state.isLoading || !this.state.hasMore) return false;
       const curIndex = this.state.index;
       if (curIndex + 7 >= this.state.items.length) {
@@ -75,19 +75,23 @@ class ItemModal extends React.Component {
       }
     }
 
-    controlRestrictions() {
-      if (this.state.item.is_nsfw) {
-        this.setState({adultParam : true});
+    controlRestrictions(param) {
+      if(param) {
+        this.setState({adultParam : false, lowParam : false});
       } else {
-        this.setState({adultParam : false});
+        if (this.state.item.is_nsfw) {
+          this.setState({adultParam : true});
+        } else {
+          this.setState({adultParam : false});
+        }
+        if (this.state.item.is_low_rated) {
+          this.setState({lowParam : true});
+        } else {
+          this.setState({lowParam : false});
+        }
       }
       if (this.state.item.total_payout_reward == 0) {
         this.setState({moneyParam : false});
-      }
-      if (this.state.item.is_low_rated) {
-        this.setState({lowParam : true});
-      } else {
-        this.setState({lowParam : false});
       }
     }
 
@@ -168,12 +172,12 @@ class ItemModal extends React.Component {
         newComment : null,
         isLoading : isLoading
       }, () => {
-        this.needMore();
+        this.needMore(true);
       });
     }
 
     componentDidMount() {
-      this.needMore(this.props);
+      this.needMore(false);
       setTimeout(() => {
         jqApp.forms.init();
       }, 0);
@@ -286,7 +290,7 @@ class ItemModal extends React.Component {
         item: newItem,
         index: this.state.index + indexUpdater
       });
-      this.needMore();
+      this.needMore(false);
     }
 
     redirectToLoginPage() {
@@ -361,7 +365,7 @@ class ItemModal extends React.Component {
           this.props.fullParam(this.state.fullScreenMode);
           this.img.classList.remove('post__image-container-full-screen-img');
           this.imgContainer.classList.remove('post__image-container-full-screen');
-          this.imgContainer.style.background = '#fafafa'
+          this.imgContainer.style.background = '#fafafa';
           this.setState({commentValue : ''});
         });
       }
