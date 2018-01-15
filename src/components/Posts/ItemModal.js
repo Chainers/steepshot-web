@@ -76,10 +76,6 @@ class ItemModal extends React.Component {
     }
 
     controlRestrictions() {
-      // let a = document.getElementsByClassName('list-scroll');
-      // let b = a[0].clientHeight;
-      // console.log(b, a[0]);
-
       if (this.state.item.is_nsfw) {
         this.setState({adultParam : true});
       } else {
@@ -462,113 +458,108 @@ class ItemModal extends React.Component {
               </div>
               <ShowIf show={this.state.fullScreenMode} >
                 <div className="post__description-container">
-                  {
-                    this.state.closeParam
-                    ?
-                      null
-                    :
-                      <div className="user-wrap clearfix">
-                        <div className="date">
-                          <TimeAgo
-                            datetime={this.state.item.created}
-                            locale='en_US'
-                          />
-                        </div>
-                        <Link to={authorLink} className="user">
-                          <AvatarComponent src={this.state.item.avatar} />
-                          <div className="name">{this.state.item.author}</div>
-                        </Link>
-                      </div>
-                  }
-                  <div className="post-controls clearfix">
-                    <div className="buttons-row" onClick={(e)=>{this.callPreventDefault(e)}}>
-                      <VouteComponent
-                        key='vote'
-                        item={this.state.item}
-                        index={this.state.index}
-                        updateVoteInComponent={this.props.updateVoteInComponent}
-                        parent='post'
-                      />
-                      <FlagComponent
-                        key="flag"
-                        item={this.state.item}
-                        index={this.state.index}
-                        updateFlagInComponent={this.props.updateFlagInComponent}
-                      />
-                    </div>
-                    <div className="wrap-counts clearfix">
-                      <div className="likeMoneyPopup">
-                        {this.likeCheck()}
-                        {this.moneyCheck()}
-                      </div>
-                    </div>
-                  </div>
-                  <ScrollViewComponent
-                    ref={ (ref) => this.scrollView = ref }
-                    wrapperModifier="list-scroll"
-                    scrollViewModifier="list-scroll__view"
-                    autoHeight={window.innerWidth < constants.DISPLAY.DESK_BREAKPOINT}
-                    autoHeightMax={350}
-                    autoHeightMin={100}
-                    autoHide={true}
-                    isUserAuth={isUserAuth}
-                  >
-                    {this.renderDescription()}
-                    <Comments
-                      key="comments"
-                      item={this.state.item}
-                      newComment={this.state.newComment}
-                      replyUser={this.commentInput}
-                    />
-                  </ScrollViewComponent>
-                  {
-                    isUserAuth
-                    ?
-                      <div className="post-comment">
-                        <div className="comment-form form-horizontal">
-                          <div className="form-group position--relative clearfix" ref={ (ref) => {this.formGr = ref} }>
-                            {
-                              this.state.needsCommentFormLoader
-                              ?
-                                <div className="loaderInComments">
-                                  <LoadingSpinner />
-                                </div>
-                                :
-                                <div className="btn-wrap">
-                                  <button
-                                    ref={ ref => {this.sendButton = ref} }
-                                    style={{top : (this.state.txtHeight.replace(/px/, '') - 40) + 'px'}}
-                                    type="submit"
-                                    className="btn-submit"
-                                    onClick={this.sendComment.bind(this)}
-                                    >Send</button>
-                                </div>
-                            }
-                            <div className="input-container">
-                              <textarea
-                                ref={ (ref) => {this.commentInput = ref} }
-                                style={{height : this.state.txtHeight}}
-                                id="formCOMMENT"
-                                name="commentValue"
-                                maxLength={2048}
-                                className="form-control resize-textarea_item-mod"
-                                onChange={this.lookTextarea.bind(this)}
-                                onFocus={this.focusInput.bind(this)}
-                                onBlur={this.blurInput.bind(this)}
-                              />
-                              <ShowIf show={!!this.state.mirrorData}>
-                                <div className="hidden-div_item-mod" style={{width : this.state.txtWidth}} ref={ ref => {this.hiddenDiv = ref} }>
-                                  {this.state.mirrorData}
-                                </div>
-                              </ShowIf>
-                              <label htmlFor="formCOMMENT" className="name" ref={ ref => {this.label = ref} }>Comment</label>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    :
-                      null
-                  }
+	                {
+	                  this.state.closeParam
+	                  ?
+	                    null
+	                  :
+	                    <div className="user-wrap clearfix">
+	                      <div className="date">
+	                        <TimeAgo
+	                          datetime={this.state.item.created}
+	                          locale='en_US'
+	                        />
+	                      </div>
+	                      <Link to={authorLink} className="user">
+	                        <AvatarComponent src={this.state.item.avatar} />
+	                        <div className="name">{this.state.item.author}</div>
+	                      </Link>
+	                    </div>
+	                }
+	                <div className="post-controls clearfix">
+	                  <div className="buttons-row" onClick={(e)=>{this.callPreventDefault(e)}}>
+	                    <VouteComponent
+	                      key='vote'
+	                      item={this.state.item}
+	                      index={this.state.index}
+	                      updateVoteInComponent={this.props.updateVoteInComponent}
+	                      parent='post'
+	                    />
+                      <FlagComponent postIndex={this.state.index}/>
+	                  </div>
+	                  <div className="wrap-counts clearfix">
+	                    <div className="likeMoneyPopup">
+	                      {this.likeCheck()}
+	                      {this.moneyCheck()}
+	                    </div>
+	                  </div>
+	                </div>
+	                <ScrollViewComponent
+	                  ref={ (ref) => this.scrollView = ref }
+	                  wrapperModifier="list-scroll"
+	                  scrollViewModifier="list-scroll__view"
+	                  autoHeight={window.innerWidth < constants.DISPLAY.DESK_BREAKPOINT}
+	                  autoHeightMax={350}
+	                  autoHeightMin={100}
+	                  autoHide={true}
+	                  isUserAuth={isUserAuth}
+	                >
+	                  {this.renderDescription()}
+	                  <Comments
+	                    key="comments"
+	                    item={this.state.item}
+	                    newComment={this.state.newComment}
+	                    replyUser={this.commentInput}
+	                  />
+	                </ScrollViewComponent>
+	                {
+	                  isUserAuth
+	                  ?
+	                    <div className="post-comment">
+	                      <div className="comment-form form-horizontal">
+	                        <div className="form-group clearfix" ref={ (ref) => {this.formGr = ref} }>
+	                          {
+	                            this.state.needsCommentFormLoader
+	                            ?
+	                              <div className="loaderInComments">
+	                                <LoadingSpinner />
+	                              </div>
+	                              :
+	                              <div className="btn-wrap">
+	                                <button
+	                                  type="submit"
+	                                  className="btn-submit"
+	                                  onClick={this.sendComment.bind(this)}
+	                                  ref={ ref => {this.sendButton = ref} }
+	                                  style={{top : (this.state.txtHeight.replace(/px/, '') - 40) + 'px'}}
+	                                  >Send</button>
+	                              </div>
+	                          }
+	                          <div className="input-container">
+	                            <textarea
+	                              ref={ (ref) => {this.commentInput = ref} }
+	                              style={{height : this.state.txtHeight}}
+	                              id="formCOMMENT"
+	                              name="commentValue"
+	                              maxLength={2048}
+	                              className="form-control resize-textarea_item-mod"
+	                              onChange={this.lookTextarea.bind(this)}
+	                              onFocus={this.focusInput.bind(this)}
+	                              onBlur={this.blurInput.bind(this)}
+	                            />
+	                            <ShowIf show={!!this.state.mirrorData}>
+	                              <div className="hidden-div_item-mod" style={{width : this.state.txtWidth}} ref={ ref => {this.hiddenDiv = ref} }>
+	                                {this.state.mirrorData}
+	                              </div>
+	                            </ShowIf>
+	                            <label htmlFor="formCOMMENT" className="name">Comment</label>
+	                          </div>
+	                        </div>
+	                      </div>
+	                    </div>
+	                  :
+	                    null
+	                }
                 </div>
               </ShowIf>
             </div>

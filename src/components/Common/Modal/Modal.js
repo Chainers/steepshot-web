@@ -5,42 +5,27 @@ class Modal extends React.Component {
   static defaultProps = {
     showCloseButton: true,
   };
-
+  
   constructor(props) {
     super(props);
     this.state = {
-      alignSelf : 'center',
-      closeParam : false
+      alignSelf: 'center',
     }
   }
-
+  
   clickOutside(event) {
     event.stopPropagation();
-    if (this.modalContainer && !this.modalContainer.contains(event.target) && this.props.fullParam) {
+    if (this.refs.modalContainer &&
+      !this.refs.modalContainer.contains(event.target)) {
       this.props.closeFunc();
     }
   }
-
-  componentWillMount() {
-    this.closeButtonFunc();
-    window.addEventListener('resize', () => {
-      this.closeButtonFunc();
-    })
-  }
-
-  closeButtonFunc() {
-    if (document.documentElement.clientWidth <= 815) {
-      this.setState({closeParam : false});
-    } else {
-      this.setState({closeParam : true});
-    }
-  }
-
+  
   componentDidUpdate() {
     let alignSelf = 'center';
     if (this.props.show) {
-      if (this.modalContainer.clientHeight >
-        this.wrapper.clientHeight) {
+      if (this.refs.modalContainer.clientHeight >
+        this.refs.wrapper.clientHeight) {
         alignSelf = 'flex-start';
       }
     }
@@ -49,15 +34,8 @@ class Modal extends React.Component {
         alignSelf: alignSelf,
       })
     }
-    if (this.wrapper) {
-      if (this.props.fullParam) {
-        this.wrapper.style.backgroundColor = 'rgba(0, 0, 0, .7)';
-      } else {
-        this.wrapper.style.backgroundColor = 'rgba(0, 0, 0, 1)';
-      }
-    }
   }
-
+  
   render() {
     let zIndexStyle = {zIndex: 1002};
     return (
@@ -67,17 +45,14 @@ class Modal extends React.Component {
             <div className="back_mod"
                  onClick={this.clickOutside.bind(this)}
                  style={zIndexStyle}
-                 ref={ ref => {this.wrapper = ref} }
-            >
-              <ShowIf show={this.state.closeParam}>
-                <ShowIf show={this.props.closeButton}>
-                  <button className="close_mod" onClick={this.props.closeFunc.bind(this)} />
-                </ShowIf>
+                 ref={'wrapper'}>
+              <ShowIf show={this.props.closeButton}>
+                <button className="close_mod"/>
               </ShowIf>
               <div className="container_mod"
-                   ref={ ref => {this.modalContainer = ref} }
+                   ref={'modalContainer'}
                    style={{alignSelf: this.state.alignSelf}}>
-                   {this.props.children}
+                {this.props.children}
               </div>
             </div>
           </ShowIf>

@@ -3,6 +3,7 @@ import Header from './Header';
 import MobileNavigationComponent from './MobileNavigationComponent';
 import FooterComponent from './FooterComponent';
 import LikesModalComponent from './Common/LikesModalComponent';
+import Clipboard from "./Common/Clipboard/Clipboard";
 
 const App = ({ children }) => (
   <div className="g-wrap">
@@ -21,11 +22,12 @@ const App = ({ children }) => (
     <FooterComponent />
 
     <LikesModalComponent />
+    <Clipboard />
   </div>
 );
 
-App.propTypes = { 
-  children: React.PropTypes.object 
+App.propTypes = {
+  children: React.PropTypes.object
 };
 
 export default App;

@@ -7,8 +7,11 @@ import localization from './localization';
 import search from './search';
 import comment from './comment';
 import votes from './votes';
+import flags from './flags';
+import clipboard from "./clipboard";
 
 export default combineReducers({
+    clipboard,
     messages,
     auth,
     admin,
@@ -16,5 +19,6 @@ export default combineReducers({
     post,
     search,
     comment,
-    votes
+    votes,
+    flags
 });

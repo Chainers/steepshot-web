@@ -41,7 +41,6 @@ class Steem {
                 });
                 logComment(parentAuthor, parentPermlink, data);
                 callback(null, success);
-                console.log(success);
             }
         };
         this.handleBroadcastMessagesComment(commentOperation, [], wif, callbackBc);
@@ -55,7 +54,6 @@ class Steem {
                 let beneficiaries = self._getCommentBenificiaries(message[1].permlink);
 
                 const operations = [message, beneficiaries];
-                console.log(operations);
 
                 steem.broadcast.sendAsync(
                     { operations, extensions: [] },
@@ -122,7 +120,6 @@ class Steem {
             if (success) {
                 logVoute(voteStatus, author, url, data);
                 callback(null, success);
-                console.log(success);
             }
         };
 
@@ -144,7 +141,6 @@ class Steem {
                 });
                 logFlag(author, url, data);
                 callback(null, success);
-                console.log(success)
             }
         };
 
@@ -205,7 +201,6 @@ class Steem {
                 });
                 logFollow(status, following, data)
                 callback(null, result);
-                console.log(result);
             }
         }
 
@@ -243,7 +238,6 @@ class Steem {
                 });
                 logPost(data);
                 callback(null, success);
-                console.log(success);
             }
         };
         this.handleBroadcastMessages(operation, [], wif, callbackBc);
