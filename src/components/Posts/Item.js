@@ -176,7 +176,7 @@ class Item extends React.Component {
                      onClick={(e) => {this.callPreventDefault(e);}}>
                   <VouteComponent key="vote"
                     item={this.state.item}
-                    index={this.state.currentIndex}
+                    index={this.props.index}
                     updateVoteInComponent={this.props.updateVoteInComponent}
                     parent='post'
                   />
