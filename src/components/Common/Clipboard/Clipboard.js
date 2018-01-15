@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from "react-redux";
 
-class Clipboard extends React.Component {
+class  Clipboard extends React.Component {
   constructor(props){
     super(props);
   }

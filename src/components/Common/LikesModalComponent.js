@@ -58,7 +58,6 @@ class LikesModalComponent extends React.Component {
     }
   }
   componentDidMount() {
-
     this.windowSizeFunc();
     let unsubscribe = getStore().subscribe(this.usersChanged.bind(this));
   }
@@ -162,7 +161,7 @@ class LikesModalComponent extends React.Component {
               <div className="modal-title clearfix">
                 {Constants.POST_LIKED_BY}
                 <ShowIf show={this.state.forWindowSize}>
-                  <button className="close" data-dismiss="modal"></button>
+                  <button className="close" data-dismiss="modal"/>
                 </ShowIf>
               </div>
             </div>

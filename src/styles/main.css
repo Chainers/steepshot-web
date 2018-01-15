@@ -1154,5 +1154,7 @@ h2.card-field__heading {
   position: relative;
   height: 150px;
   margin-top: 50px;
-  cursor: pointer;
+}
+#likesModal {
+  overflow-y: hidden;
 }
