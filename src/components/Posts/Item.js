@@ -13,6 +13,7 @@ import TimeAgo from 'timeago-react';
 import ShowIf from '../Common/ShowIf';
 import {UserLinkFunc} from '../Common/UserLinkFunc';
 import PostContextMenu from '../PostContextMenu/PostContextMenu';
+import NewLikesComponent from '../CustomLikesModal/NewLikesComponent';
 
 class Item extends React.Component {
   constructor(props) {
@@ -167,8 +168,7 @@ class Item extends React.Component {
                   <p>Low rated content</p>
                 </div>
               </ShowIf>
-              <a style={cardPhotoStyles} className="img" alt="User"
-                 onError={this.setDefaultImage.bind(this)}></a>
+              <a style={cardPhotoStyles} className="img" alt="User" onError={this.setDefaultImage.bind(this)}/>
             </div>
             <div className="card-wrap">
               <div className="card-controls clearfix">
@@ -176,15 +176,14 @@ class Item extends React.Component {
                      onClick={(e) => {this.callPreventDefault(e);}}>
                   <VouteComponent key="vote"
                     item={this.state.item}
-                    index={this.state.currentIndex}
+                    index={this.props.index}
                     updateVoteInComponent={this.props.updateVoteInComponent}
                     parent='post'
                   />
-                  <FlagComponent postIndex={this.props.index}/>
+                  <FlagComponent postIndex={this.props.index} />
                 </div>
                 <div className="wrap-counts clearfix">
-                  <LikesComponent likes={this.state.item.net_likes}
-                                  url={this.state.item.url}/>
+                  <LikesComponent likes={this.state.item.net_likes} url={this.state.item.url} />
                   <ShowIf show={this.state.moneyParam}>
                     <div className="amount">{this.state.item.total_payout_reward}</div>
                   </ShowIf>

@@ -336,7 +336,6 @@ h2.card-field__heading {
   position: absolute;
   bottom: 20px;
   right: 20px;
-  background: url(/static/images/shape.svg) #000000 no-repeat center;
   height: 38px;
   width: 38px;
   border-radius: 4px;
@@ -349,9 +348,11 @@ h2.card-field__heading {
 }
 
 .post__image-container .full-screen_item-mod1 {
+  background: url(/static/images/shape.svg) #000000 no-repeat center;
   background-size: 16px;
 }
 .post__image-container .full-screen_item-mod2 {
+  background: url(/static/images/shape-copy-6.svg) #000000 no-repeat center;
   background-size: 20px;
 }
 .full-screen_item-mod1:hover {
@@ -372,6 +373,7 @@ h2.card-field__heading {
 
 .card-wrap {
   min-width: 257px !important;
+  border: none !important;
 }
 .rectangle_comment span {
   padding: 2.5px 20px 3.5px 20px;
@@ -738,7 +740,7 @@ h2.card-field__heading {
 
 .post__image-container img {
   max-height: 460px;
-  max-width: 680px;
+  max-width: 100%;
 }
 
 @media (min-width: 769px) {
@@ -1154,5 +1156,11 @@ h2.card-field__heading {
   position: relative;
   height: 150px;
   margin-top: 50px;
-  cursor: pointer;
 }
+/*.testing {*/
+  /*max-width: */
+/*}*/
+#likesModal {
+  overflow-y: hidden;
+}
+

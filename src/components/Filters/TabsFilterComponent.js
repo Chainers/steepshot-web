@@ -3,6 +3,7 @@ import constants from '../../common/constants';
 import PropTypes from 'prop-types';
 
 class TabsFilterComponent extends React.Component {
+
     constructor(props) {
         super(props);
         this.state = {
@@ -20,10 +21,10 @@ class TabsFilterComponent extends React.Component {
         this.setState({
             keys : nextProps.keys
         });
-        this.testing(nextProps.activeItemIndex);
+        this.autoClick(nextProps.activeItemIndex);
     }
 
-    testing(index) {
+    autoClick(index) {
       if (this.state.activeItemIndex == index) return false;
       this.props.updateCallback(index);
       this.setState({
@@ -32,20 +33,23 @@ class TabsFilterComponent extends React.Component {
     }
 
     switchFilter(index) {
-      // if(this.props.numberPosts && this.props.numberUsers) {
-      //   console.log(this.props.numberPosts, this.props.numberUsers)
-      //   if (this.state.activeItemIndex == index) return false;
-      //   this.props.updateCallback(index);
-      //   this.setState({
-      //     activeItemIndex : index,
-      //   });
-      // } else {
-      if (this.state.activeItemIndex == index) return false;
+      if (/\/search\/\w+/.test(document.location.pathname)) {
+        if (this.props.activeItemIndex == index) return false;
+        if (this.props.numberUsers && this.props.numberPosts) {
+          this.props.updateCallback(index);
+          this.setState({
+            activeItemIndex: index,
+          });
+        } else {
+          return false
+        }
+      } else {
+        if (this.state.activeItemIndex == index) return false;
         this.props.updateCallback(index);
         this.setState({
-          activeItemIndex : index,
+          activeItemIndex: index,
         });
-      // }
+      }
     }
 
     renderNavigation() {
@@ -60,10 +64,6 @@ class TabsFilterComponent extends React.Component {
                 <li role="presentation" key={index} className={styles}>
                     <a
                         onClick={this.switchFilter.bind(this, index)}
-                        aria-controls={"tab-" + index}
-                        href={"#tab-" + index}
-                        role="tab"
-                        data-toggle="tab"
                         className={
                           this.state.param
                           ?

@@ -36,3 +36,21 @@
   background-size: 4.4em 47.2em;
   background: url('/static/images/sprite_svg1910.svg') no-repeat -.2em -5.49em;
 }
+
+@media screen and (max-width: 815px) {
+  .container_mod.mobile-modal {
+    max-width: 100vw;
+    min-width: 100vw;
+    min-height: 100%;
+    border-radius: 0 !important;
+  }
+  .post__description-container {
+    min-width: 100vw;
+  }
+}
+@media screen and (min-width: 1024px) {
+  .close_mod {
+    top: 12px;
+    right: 12px;
+  }
+}

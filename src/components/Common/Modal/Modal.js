@@ -4,6 +4,7 @@ import ShowIf from '../ShowIf';
 class Modal extends React.Component {
   static defaultProps = {
     showCloseButton: true,
+    fullParam: true
   };
 
   constructor(props) {
@@ -80,7 +81,7 @@ class Modal extends React.Component {
                   <button className="close_mod" onClick={this.props.closeFunc.bind(this)} />
                 </ShowIf>
               </ShowIf>
-              <div className="container_mod"
+              <div className={this.props.styles}
                    ref={ ref => {this.modalContainer = ref} }
                    style={{alignSelf: this.state.alignSelf}}>
                    {this.props.children}
