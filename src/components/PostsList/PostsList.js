@@ -30,10 +30,9 @@ class PostsList extends React.Component {
       option: this.props.option,
       maxPosts: this.props.maxPosts,
       loading: true,
-      posts: {},
+      postsIndices: [],
       length: 0,
       hashMore: true,
-      clearPostHeader: this.props.clearPostHeader,
     };
     this.props.initPostsList(postsListOptions);
     this.getPostsList = this.getPostsList.bind(this);
@@ -83,12 +82,13 @@ class PostsList extends React.Component {
     }
     
     let posts = [];
-    for (let postKey in state.posts) {
-      if (this.props.ignored.indexOf(postKey) == -1) {
-        posts.push(<Post key={postKey} index={postKey}
-                         point={this.props.point}/>);
+    state.postsIndices.forEach((postIndex) => {
+      if (this.props.ignored.indexOf(postIndex) == -1) {
+        posts.push(<Post key={postIndex} index={postIndex}
+                         clearPostHeader={this.props.clearPostHeader}/>);
       }
-    }
+    });
+    
     return posts;
   }
   
@@ -98,7 +98,7 @@ class PostsList extends React.Component {
   
   render() {
     let state = this.getComponentState();
-    if (!state.posts) return null;
+    if (!state.postsIndices.length) return null;
     
     return (
       <div className={this.props.className}>
