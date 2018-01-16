@@ -32,6 +32,32 @@ export default function postsList(state = initialState, action) {
           action.options.length,
         }),
       });
+    case 'TOGGLE_FLAG_REQUEST':
+      return Object.assign({}, state, {
+        posts: Object.assign({}, state.posts, {
+          [action.index]: Object.assign({}, state.posts[action.index], {
+            flag: !state.posts[action.index].flag,
+            flagLoading: true
+          })
+        }),
+      });
+    case 'TOGGLE_FLAG_FAILURE':
+      return Object.assign({}, state, {
+        posts: Object.assign({}, state.posts, {
+          [action.index]: Object.assign({}, state.posts[action.index], {
+            flag: !state.posts[action.index].flag,
+            flagLoading: false
+          })
+        }),
+      });
+    case 'TOGGLE_FLAG_SUCCESS':
+      return Object.assign({}, state, {
+        posts: Object.assign({}, state.posts, {
+          [action.index]: Object.assign({}, state.posts[action.index], {
+            flagLoading: false
+          })
+        }),
+      });
     default:
       return state;
   }
