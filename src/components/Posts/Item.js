@@ -115,7 +115,7 @@ class Item extends React.Component {
     if (this.state.item.tags) {
       return this.state.item.tags.map((tag, index) => {
         return <span key={index}>
-                 <TagComponent tag={tag} />
+                 <TagComponent tag={tag + ' '} />
                </span>
       });
     } else return null;

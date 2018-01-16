@@ -57,9 +57,10 @@ class LikesModalComponent extends React.Component {
       this.setState({forWindowSize : true});
     }
   }
+
   componentDidMount() {
     this.windowSizeFunc();
-    let unsubscribe = getStore().subscribe(this.usersChanged.bind(this));
+    getStore().subscribe(this.usersChanged.bind(this));
   }
 
   fetchData() {
