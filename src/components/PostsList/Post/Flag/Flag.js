@@ -11,6 +11,7 @@ class Flag extends React.Component {
   }
 
   updateFlag(e) {
+    e.preventDefault();
     this.props.toggleFlag(this.props.postIndex);
   }
   
@@ -24,7 +25,7 @@ class Flag extends React.Component {
     if (options.flag) {
       buttonClasses = buttonClasses + " marked";
     }
-    if (options.ui.flagLoading) {
+    if (options.flagLoading) {
       buttonClasses = buttonClasses + " loading";
     }
     
