@@ -21,10 +21,11 @@ function getPostsListRequest(point) {
   };
 }
 
-function getPostsListSuccess(pointOptions) {
+function getPostsListSuccess(pointOptions, posts) {
   return {
     type: 'GET_POSTS_LIST_SUCCESS',
-    options: pointOptions
+    options: pointOptions,
+    posts
   };
 }
 
@@ -32,18 +33,32 @@ export function getPostsListAction(point) {
   return (dispatch) => {
     
     dispatch(getPostsListRequest(point));
-    const state = getStore().getState().postsList[point];
+    const state = getStore().getState();
+    const statePoint = getStore().getState().postsList[point];
     const requestOptions = {
       point,
       param: Object.assign({}, {
-          offset: state.offset
+          offset: statePoint.offset
         },
-        state.options)
+        statePoint.options)
     };
-    getPosts(requestOptions, state.cancelPrevious).then((response) => {
-      let newPosts = state.posts.length ? response.results :
+    getPosts(requestOptions, statePoint.cancelPrevious).then((response) => {
+      let newPosts = statePoint.postsIndices.length ? response.results :
         response.results.slice(1);
-      newPosts = removeDuplicate(state.posts, newPosts);
+      newPosts = removeDuplicate(statePoint.postsIndices, newPosts);
+      let postsIndices = newPosts.map(post => {
+        return post.url
+      });
+      let hasMore = !(statePoint.offset == response.offset);
+      if (response.results.length == 1) hasMore = false;
+      let pointOptions = {
+        point,
+        postsIndices,
+        offset: response.offset,
+        hasMore: hasMore,
+        length: postsIndices.length,
+      };
+      
       let postsObject = {};
       let postsLength = newPosts.length;
       for (let i = 0; i < postsLength; i++) {
@@ -58,28 +73,21 @@ export function getPostsListAction(point) {
         postsObject[newPosts[i].url] = post;
       }
       newPosts = postsObject;
-      let hasMore = !(state.offset == response.offset);
-      if (response.results.length == 1) hasMore = false;
-      let pointOptions = {
-        point,
-        posts: newPosts,
-        offset: response.offset,
-        hasMore: hasMore,
-        length: postsLength,
-      };
-      dispatch(getPostsListSuccess(pointOptions));
+      
+      dispatch(getPostsListSuccess(pointOptions, newPosts));
     });
   };
 }
 
 function removeDuplicate(posts, newPosts) {
-  for (let i = 0; i < newPosts.length; i++) {
-    for(let j = 0; j < posts.length; j++) {
-      if (newPosts[i].url === posts[j].url) {
+  if (posts.length) {
+    for (let i = 0; i < newPosts.length; i++) {
+      if (posts[newPosts[i].url]) {
         newPosts.splice(i, 1);
         i--;
       }
     }
   }
+  
   return newPosts;
 }
