@@ -1,6 +1,9 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {clearPosts, getPostsListAction, initPostsList} from '../../actions/postsList';
+import {
+  clearPosts, getPostsListAction,
+  initPostsList,
+} from '../../actions/postsList';
 import {debounce} from 'lodash';
 import Constants from '../../common/constants';
 import InfiniteScroll from 'react-infinite-scroller';
@@ -20,6 +23,8 @@ class PostsList extends React.Component {
     this.props.clearPosts();
     let postsListOptions = {
       updateFlagInComponent: this.updateFlagInComponent.bind(this),
+      openModal: this.openFunc.bind(this),
+      updateVoteInComponent: this.updateVoteInComponent.bind(this),
       point: this.props.point,
       cancelPrevious: this.props.cancelPrevious,
       option: this.props.option,
@@ -28,10 +33,11 @@ class PostsList extends React.Component {
       posts: {},
       length: 0,
       hashMore: true,
+      clearPostHeader: this.props.clearPostHeader,
     };
     this.props.initPostsList(postsListOptions);
     this.getPostsList = this.getPostsList.bind(this);
-    this.getOptions = this.getOptions.bind(this);
+    this.getComponentState = this.getComponentState.bind(this);
   }
   
   componentDidMount() {
@@ -43,7 +49,7 @@ class PostsList extends React.Component {
   }
   
   updateFlagInComponent(flag, index) {
-    let newItems = this.getOptions().posts;
+    let newItems = this.getComponentState().posts;
     if (flag && newItems[index].vote) {
       newItems[index].net_votes--;
       newItems[index].net_likes--;
@@ -54,7 +60,7 @@ class PostsList extends React.Component {
   }
   
   updateVoteInComponent(vote, index) {
-    let newItems = this.getOptions().posts;
+    let newItems = this.getComponentState().posts;
     if (vote && newItems[index].flag) {
       newItems[index].flag = false;
     }
@@ -66,45 +72,33 @@ class PostsList extends React.Component {
   }
   
   renderPosts() {
-    let options = this.getOptions();
-    console.log(options);
-    if (options.loading) return (<div>Loading...</div>);
-    if (!options.length) {
+    let state = this.getComponentState();
+    if (state.loading) return (<div>Loading...</div>);
+    if (!state.length) {
       return (
-        <div className="empty-query-message">
+        <div className="empty-query-message_pos-lis">
           {Constants.EMPTY_QUERY}
         </div>
       );
-    } else {
-      let posts = [];
-      for (let postKey in options.posts) {
-        let post = options.posts[postKey];
-        if (this.props.ignored.indexOf(post.url) == -1)
-          posts.push(
-            <Post
-              key={postKey}
-              item={post}
-              index={postKey}
-              openModal={this.openFunc.bind(this)}
-              updateVoteInComponent={this.updateVoteInComponent.bind(this)}
-              clearPostHeader={this.props.clearPostHeader}
-            />,
-          );
-      };
-      return posts;
     }
+    
+    let posts = [];
+    for (let postKey in state.posts) {
+      if (this.props.ignored.indexOf(postKey) == -1) {
+        posts.push(<Post key={postKey} index={postKey}
+                         point={this.props.point}/>);
+      }
+    }
+    return posts;
   }
   
   openFunc(index) {
   
   }
   
-  getOptions() {
-    return this.props.postsList[this.props.point];
-  }
-  
   render() {
-    if (!this.getOptions().posts) return null;
+    let state = this.getComponentState();
+    if (!state.posts) return null;
     
     return (
       <div className={this.props.className}>
@@ -113,7 +107,7 @@ class PostsList extends React.Component {
           initialLoad={false}
           loadMore={debounce(this.getPostsList,
             Constants.ENDLESS_SCROLL.DEBOUNCE_TIMEOUT)}
-          hasMore={this.getOptions().hasMore}
+          hasMore={state.hasMore}
           loader={
             <div className="position--relative">
               <LoadingSpinner/>
@@ -125,6 +119,10 @@ class PostsList extends React.Component {
         </InfiniteScroll>
       </div>
     );
+  }
+  
+  getComponentState() {
+    return this.props.postsList[this.props.point];
   }
 }
 
