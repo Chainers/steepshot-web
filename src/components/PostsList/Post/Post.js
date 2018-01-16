@@ -12,6 +12,11 @@ import constants from '../../../common/constants';
 import Tags from './Tags/Tags';
 
 class Post extends React.Component {
+  
+  static defaultProps = {
+    clearPostHeader: false,
+  };
+  
   constructor(props) {
     super(props);
     this.localConstants = {
@@ -39,8 +44,8 @@ class Post extends React.Component {
   
   _openModal() {
     let state = this.getComponentState();
-    if (this.state.openModal != undefined) {
-      this.state.openModal(this.props.index);
+    if (state.openModal != undefined) {
+      state.openModal(this.props.index);
     }
   }
   
@@ -59,7 +64,7 @@ class Post extends React.Component {
     
     return (
       <div className="post-card">
-        <ShowIf show={!this.props.postsList[this.props.point].clearPropsHeader}>
+        <ShowIf show={!this.props.clearPostHeader}>
           <div className="card-head clearfix">
             <div className="date">
               <PostContextMenu style={{float: 'left', height: '22px'}}
@@ -100,7 +105,7 @@ class Post extends React.Component {
                 <VouteComponent key="vote"
                                 item={state}
                                 index={this.props.index}
-                                updateVoteInComponent={this.props.postsList[this.props.point].updateVoteInComponent}
+                                updateVoteInComponent={()=>{}}
                                 parent='post'
                 />
                 <Flag postIndex={this.props.index}/>
@@ -125,8 +130,9 @@ class Post extends React.Component {
   }
   
   getComponentState() {
-    return this.props.postsList[this.props.point].posts[this.props.index];
+    return this.props.postsList.posts[this.props.index];
   }
+  
 }
 
 const mapStateToProps = (state) => {
