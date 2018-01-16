@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import {clearPosts, getPostsList, initPostsList} from '../../actions/postsList';
 import {debounce} from 'lodash';
 import Constants from '../../common/constants';
-import InfiniteScroll from 'react-infinite-scroll-es2015';
+import InfiniteScroll from 'react-infinite-scroller';
 import LoadingSpinner from '../LoadingSpinner';
 import ShowIf from '../Common/ShowIf';
 import {
