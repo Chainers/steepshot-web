@@ -15,8 +15,7 @@ class Flag extends React.Component {
   }
   
   getOptions() {
-    return this.props.postsList[Constants.POSTS_FILTERS.POSTS_HOT.point]
-      .posts[this.props.postIndex];
+    return this.props.postsList.posts[this.props.postIndex];
   }
   
   render() {
