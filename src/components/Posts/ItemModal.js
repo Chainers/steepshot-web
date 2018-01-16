@@ -17,6 +17,7 @@ import AvatarComponent from '../Atoms/AvatarComponent';
 import TimeAgo from 'timeago-react';
 import { Collapse } from 'react-collapse';
 import Constants from '../../common/constants';
+import FullScreenFunctional from './FullScreenButtons/FullScreenFunctional';
 
 import utils from '../../utils/utils';
 import ShowIf from '../Common/ShowIf';
@@ -199,6 +200,7 @@ class ItemModal extends React.Component {
     }
 
     componentDidMount() {
+      this.escKeyPress();
       this.needMore(false);
       setTimeout(() => {
         jqApp.forms.init();
@@ -285,6 +287,17 @@ class ItemModal extends React.Component {
               break;
           }
         }
+      }
+    }
+
+    escKeyPress() {
+      if (!this.state.fullScreen) {
+        document.addEventListener('keydown', (e) => {
+          e = e || window.event;
+          if(e.keyCode == 27) {
+            this.fullScreen();
+          }
+        })
       }
     }
 
@@ -463,6 +476,18 @@ class ItemModal extends React.Component {
                       <img src={itemImage} alt="Post picture." ref={ ref => {this.img = ref} } onDoubleClick={this.fullScreen.bind(this)} />
                     </div>
                   :
+                    <div>
+                    <ShowIf show={!this.state.noFullScreen}>
+                      <div>
+                        <ShareComponent
+                          moneyParam={this.state.moneyParam}
+                          url={this.state.item.url}
+                          title="Share post"
+                          containerModifier="block--right-top box--small post__share-button"
+                        />
+                        <img src={itemImage} alt="Post picture." ref={ ref => {this.img = ref} } />
+                      </div>
+                    </ShowIf>
                     <ShowIf show={this.state.noFullScreen}>
                       {
                         this.state.fullScreenMode
@@ -491,10 +516,12 @@ class ItemModal extends React.Component {
                                  onClick={this.fullScreen.bind(this)}
                                  style={{right : this.state.buttonOffset}}
                             />
+                            <FullScreenFunctional />
                             <img src={itemImage} alt="Post picture." ref={ ref => {this.img = ref} } onDoubleClick={this.fullScreen.bind(this)} />
                           </div>
                       }
                     </ShowIf>
+                    </div>
                 }
               </div>
               <ShowIf show={this.state.fullScreenMode} >

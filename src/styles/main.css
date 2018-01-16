@@ -259,7 +259,7 @@ h2.card-field__heading {
   right: 0;
 }
 
-.container-settings__content-wrapper{
+.container-settings__content-wrapper {
   position:relative;
   padding-top: 80px;
 }
@@ -339,12 +339,9 @@ h2.card-field__heading {
   height: 38px;
   width: 38px;
   border-radius: 4px;
-  opacity: 0.8;
   cursor: pointer;
-
-  animation-name: fadeShare;
-  animation-duration: 0.3s;
-  animation-fill-mode: both;
+  transition: .3s opacity ease;
+  opacity: 0;
 }
 
 .post__image-container .full-screen_item-mod1 {
@@ -362,9 +359,7 @@ h2.card-field__heading {
   background-size: 16px;
 }
 .post__image-container:hover .full-screen_item-mod {
-  animation-name: showShare;
-  animation-duration: 0.3s;
-  animation-fill-mode: both;
+  opacity: 1;
 }
 
 .pm-wrap {
@@ -1155,12 +1150,5 @@ h2.card-field__heading {
 .rotate-button {
   position: relative;
   height: 150px;
-  margin-top: 50px;
-}
-/*.testing {*/
-  /*max-width: */
-/*}*/
-#likesModal {
-  overflow-y: hidden;
 }
 

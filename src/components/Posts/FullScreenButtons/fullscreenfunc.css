@@ -1,0 +1,56 @@
+.buttons-wrapper_fsf {
+  display: flex;
+  color: #ffffff;
+  font: 12px OpenSans;
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  background: black;
+  border-radius: 4px;
+  padding: 8px;
+  justify-content: center;
+  align-items: center;
+}
+
+.button_fsf {
+  display: flex;
+  align-items: center;
+}
+.text_fsf {
+  margin: 0;
+  padding: 0 16px 0 10px;
+}
+.button_fsf:last-child .text_fsf {
+  padding-right: 0;
+}
+
+.escape-img_fsf {
+  width: 26px;
+  height: 22px;
+  background: url(/static/images/esc.svg);
+}
+.like-img_fsf {
+  width: 46px;
+  height: 22px;
+  background: url(/static/images/enter.svg);
+}
+.arrow-left-img_fsf {
+  width: 22px;
+  height: 22px;
+  background: url(/static/images/arrow-left.svg);
+}
+.arrow-right-img_fsf {
+  width: 22px;
+  height: 22px;
+  background: url(/static/images/arrow-right.svg);
+}
+
+
+
+.post__image-container .buttons-wrapper_fsf {
+  transition: .3s opacity ease;
+  opacity: 0;
+}
+.post__image-container:hover .buttons-wrapper_fsf {
+  opacity: 1;
+}
