@@ -47,9 +47,15 @@ export function getPostsListAction(point) {
       let postsObject = {};
       let postsLength = newPosts.length;
       for (let i = 0; i < postsLength; i++) {
-        postsObject[newPosts[i].url] = Object.assign({}, newPosts[i], {
-          flagLoading: false
-        })
+        let post = Object.assign({}, newPosts[i], {
+          ui: {
+            flagLoading: false,
+          }
+        });
+        post.tags = (post.tags instanceof Array)
+          ? post.tags
+          : post.tags.split(',');
+        postsObject[newPosts[i].url] = post;
       }
       newPosts = postsObject;
       let hasMore = !(state.offset == response.offset);

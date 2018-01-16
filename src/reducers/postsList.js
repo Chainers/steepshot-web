@@ -19,8 +19,6 @@ export default function postsList(state = initialState, action) {
           })
         });
     case 'GET_POSTS_LIST_SUCCESS':
-      console.log(state[action.options.point].length);
-      console.log(action.options.length);
       return Object.assign({}, state, {
         [action.options.point]: Object.assign({}, state[action.options.point], {
           posts: Object.assign({} ,
