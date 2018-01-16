@@ -24,6 +24,8 @@ import { UserLinkFunc } from '../Common/UserLinkFunc';
 
 const START_TEXTAREA_HEIGHT = '42px';
 const START_TEXTAREA_WIDTH = '280px';
+const START_BUTTON_OFFSET = '20px';
+const START_SHARE_OFFSET = '0';
 
 class ItemModal extends React.Component {
     constructor(props) {
@@ -53,7 +55,9 @@ class ItemModal extends React.Component {
             txtWidth : START_TEXTAREA_WIDTH,
             fullScreenMode : true,
             noFullScreen : true,
-            commentValue : ''
+            commentValue : '',
+            buttonOffset : START_BUTTON_OFFSET,
+            shareOffset : START_SHARE_OFFSET
         };
         this.mobileCoverParams = {
           width: '100%',
@@ -75,7 +79,25 @@ class ItemModal extends React.Component {
       }
     }
 
+    controlFullScreenButtons() {
+      if(!this.state.fullScreenMode) {
+        if(this.fullScreenWrapper.clientWidth != this.imgContainer.clientWidth) {
+          let fullScreenWidth = this.fullScreenWrapper.clientWidth;
+          let imgContWidth = this.imgContainer.clientWidth;
+          let hideWidth = fullScreenWidth - imgContWidth;
+          if(hideWidth > 0) {
+            let countShareOffset = (hideWidth/2 + 20) + 'px';
+            let countButtonOffset = (hideWidth/2) + 'px';
+            this.setState({buttonOffset : countShareOffset, shareOffset : countButtonOffset});
+          }
+        } else {
+          this.setState({buttonOffset : START_BUTTON_OFFSET, shareOffset : START_SHARE_OFFSET});
+        }
+      }
+    }
+
     controlRestrictions(param) {
+      this.controlFullScreenButtons();
       if(param) {
         this.setState({adultParam : false, lowParam : false});
       } else {
@@ -183,6 +205,7 @@ class ItemModal extends React.Component {
       }, 0);
       this.closeButtonFunc();
       window.addEventListener('resize', () => {
+        this.controlFullScreenButtons();
         this.closeButtonFunc();
       });
     }
@@ -404,7 +427,7 @@ class ItemModal extends React.Component {
                       <div className="name">{this.state.item.author}</div>
                     </Link>
                     <div onClick={this.props.closeFunc.bind(this)} className="modalButtonWrapper">
-                      <i className="modalButton"></i>
+                      <i className="modalButton" />
                     </div>
                   </div>
                 </div>
@@ -440,24 +463,38 @@ class ItemModal extends React.Component {
                       <img src={itemImage} alt="Post picture." ref={ ref => {this.img = ref} } onDoubleClick={this.fullScreen.bind(this)} />
                     </div>
                   :
-                    <div>
-                      <ShareComponent
-                        moneyParam={this.state.moneyParam}
-                        url={this.state.item.url}
-                        title="Share post"
-                        containerModifier="block--right-top box--small post__share-button"
-                      />
-                      <ShowIf show={this.state.noFullScreen}>
-                        {
-                          this.state.fullScreenMode
-                          ?
-                            <div title="Full screen mode" className="full-screen_item-mod full-screen_item-mod1" onClick={this.fullScreen.bind(this)}></div>
-                          :
-                            <div title="Modal screen" className="full-screen_item-mod full-screen_item-mod2" onClick={this.fullScreen.bind(this)}></div>
-                        }
-                      </ShowIf>
-                      <img src={itemImage} alt="Post picture." ref={ ref => {this.img = ref} } onDoubleClick={this.fullScreen.bind(this)} />
-                    </div>
+                    <ShowIf show={this.state.noFullScreen}>
+                      {
+                        this.state.fullScreenMode
+                        ?
+                          <div>
+                            <ShareComponent
+                              moneyParam={this.state.moneyParam}
+                              url={this.state.item.url}
+                              title="Share post"
+                              containerModifier="block--right-top box--small post__share-button"
+                            />
+                            <div title="Full screen mode" className="full-screen_item-mod full-screen_item-mod1" onClick={this.fullScreen.bind(this)}/>
+                            <img src={itemImage} alt="Post picture." ref={ ref => {this.img = ref} } onDoubleClick={this.fullScreen.bind(this)} />
+                          </div>
+                        :
+                          <div className="position--relative" ref={ref => {this.fullScreenWrapper = ref}}>
+                            <ShareComponent
+                              moneyParam={this.state.moneyParam}
+                              url={this.state.item.url}
+                              title="Share post"
+                              containerModifier="block--right-top box--small post__share-button"
+                              offset={this.state.shareOffset}
+                            />
+                            <div title="Modal screen"
+                                 className="full-screen_item-mod full-screen_item-mod2"
+                                 onClick={this.fullScreen.bind(this)}
+                                 style={{right : this.state.buttonOffset}}
+                            />
+                            <img src={itemImage} alt="Post picture." ref={ ref => {this.img = ref} } onDoubleClick={this.fullScreen.bind(this)} />
+                          </div>
+                      }
+                    </ShowIf>
                 }
               </div>
               <ShowIf show={this.state.fullScreenMode} >
@@ -489,7 +526,7 @@ class ItemModal extends React.Component {
 	                      updateVoteInComponent={this.props.updateVoteInComponent}
 	                      parent='post'
 	                    />
-                      <FlagComponent postIndex={this.state.index}/>
+                      <FlagComponent postIndex={this.state.index} />
 	                  </div>
 	                  <div className="wrap-counts clearfix">
 	                    <div className="likeMoneyPopup">
@@ -556,7 +593,7 @@ class ItemModal extends React.Component {
 	                                {this.state.mirrorData}
 	                              </div>
 	                            </ShowIf>
-	                            <label htmlFor="formCOMMENT" className="name">Comment</label>
+	                            <label htmlFor="formCOMMENT" className="name" ref={ ref => {this.label = ref} }>Comment</label>
 	                          </div>
 	                        </div>
 	                      </div>

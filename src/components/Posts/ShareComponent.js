@@ -1,11 +1,6 @@
 import React from 'react';
-import {
-  Link
-} from 'react-router-dom';
-import {
-  connect
-} from 'react-redux';
-import PropTypes from 'prop-types';
+import {Link} from 'react-router-dom';
+import {connect} from 'react-redux';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import Constants from '../../common/constants';
 
@@ -13,7 +8,7 @@ class ShareComponent extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-        ...this.props
+      ...this.props
     }
   }
 
@@ -33,7 +28,7 @@ class ShareComponent extends React.Component {
 
   render() {
     return (
-        <div className={this.state.containerModifier}>
+        <div className={this.state.containerModifier} style={{right : this.props.offset}}>
             <CopyToClipboard text={this.getUrl()}
                 onCopy={() => this.onSuccess()}>
                 <button title="Share this post" className="btn btn-default btn-xs">{this.state.title}</button>

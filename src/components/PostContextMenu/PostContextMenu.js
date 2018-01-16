@@ -132,6 +132,7 @@ class PostContextMenu extends React.Component {
           closeFunc={this.closeFunc}
           fullScreen={false}
           closeButton={false}
+          styles={'container_mod'}
         >
           <Menu buttonOption={this.state.BUTTONS_OPTIONS}
                 fullScreen={this.state.fullScreen}

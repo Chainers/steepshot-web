@@ -225,7 +225,7 @@ class ItemsComponent extends React.Component {
             clearPostHeader={this.state.clearPostHeader}
           />
         );
-      })
+      });
       return items;
     }
   }
@@ -265,6 +265,7 @@ class ItemsComponent extends React.Component {
           fullScreen={false}
           closeButton={true}
           fullParam={this.state.customFullScreen}
+          styles={'container_mod mobile-modal'}
         >
           {this._renderModal()}
         </Modal>

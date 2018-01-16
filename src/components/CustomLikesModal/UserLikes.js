@@ -8,15 +8,12 @@ import ScrollViewComponent from '../Common/ScrollViewComponent';
 import InfiniteScroll from 'react-infinite-scroller';
 import { debounce } from 'lodash';
 import LoadingSpinner from '../LoadingSpinner';
-import TabsFilterComponent from '../Filters/TabsFilterComponent';
-import TabsWrapper from '../Wrappers/TabsWrapper';
-import Modal from '../Common/Modal/Modal';
-import ShowIf from "./ShowIf";
-import utils from "../../utils/utils";
+import ShowIf from '../Common/ShowIf';
+import utils from '../../utils/utils';
 
 class LikesModalComponent extends React.Component {
   constructor(props) {
-    super();
+    super(props);
     this.state = {
       ...this.getInitialData,
       forWindowSize: false
@@ -59,7 +56,7 @@ class LikesModalComponent extends React.Component {
   }
   componentDidMount() {
     this.windowSizeFunc();
-    let unsubscribe = getStore().subscribe(this.usersChanged.bind(this));
+    getStore().subscribe(this.usersChanged.bind(this));
   }
 
   fetchData() {
@@ -152,29 +149,19 @@ class LikesModalComponent extends React.Component {
     )
   }
 
-  controlClose(e) {
-    if(!this.modalCont.contains(e.target)) {
-      jqApp.closeLikesModal($(document));
-    }
-  }
-
   render() {
     return (
-      <div id="likesModal" tabIndex="-1" role="dialog" aria-hidden="true" className="modal modal-like">
-        <div className="modal-dialog" onClick={this.controlClose.bind(this)}>
-          <div className="modal-content likes-modal__content" ref={ ref => (this.modalCont = ref)}>
-            <div className="modal-header">
-              <div className="modal-title clearfix">
-                {Constants.POST_LIKED_BY}
-                <ShowIf show={this.state.forWindowSize}>
-                  <button className="close" data-dismiss="modal" />
-                </ShowIf>
-              </div>
-            </div>
-            <div className="modal-like__body">
-              {this.voters}
-            </div>
+      <div className="modal-content likes-modal__content">
+        <div className="modal-header">
+          <div className="modal-title clearfix">
+            {Constants.POST_LIKED_BY}
+            <ShowIf show={this.state.forWindowSize}>
+              <button className="close" />
+            </ShowIf>
           </div>
+        </div>
+        <div className="modal-like__body">
+          {this.voters}
         </div>
       </div>
     )
