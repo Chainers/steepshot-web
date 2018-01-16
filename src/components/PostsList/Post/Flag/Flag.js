@@ -11,12 +11,12 @@ class Flag extends React.Component {
   }
 
   updateFlag(e) {
-    e.preventDefault();
     this.props.toggleFlag(this.props.postIndex);
   }
   
   getOptions() {
-    return this.props.postsList[Constants.POSTS_FILTERS.POSTS_HOT.point].posts[this.props.postIndex];
+    return this.props.postsList[Constants.POSTS_FILTERS.POSTS_HOT.point]
+      .posts[this.props.postIndex];
   }
   
   render() {
@@ -25,7 +25,7 @@ class Flag extends React.Component {
     if (options.flag) {
       buttonClasses = buttonClasses + " marked";
     }
-    if (options.flagLoading) {
+    if (options.ui.flagLoading) {
       buttonClasses = buttonClasses + " loading";
     }
     
