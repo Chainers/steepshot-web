@@ -9,12 +9,8 @@ class Flag extends React.Component {
     this.getOptions = this.getOptions.bind(this);
   }
 
-  updateFlag(e) {
+  toggleFlag() {
     this.props.toggleFlag(this.props.postIndex);
-  }
-  
-  getOptions() {
-    return this.props.postsList.posts[this.props.postIndex];
   }
   
   render() {
@@ -28,10 +24,14 @@ class Flag extends React.Component {
     }
     
     return (
-        <div className="wrap-btn" onClick={this.updateFlag.bind(this)}>
-          <button type="button" className={buttonClasses}></button>
+        <div className="wrap-btn" onClick={this.toggleFlag.bind(this)}>
+          <button type="button" className={buttonClasses}/>
         </div>
     );
+  }
+  
+  getOptions() {
+    return this.props.postsList.posts[this.props.postIndex];
   }
 }
 

@@ -58,6 +58,32 @@ export default function postsList(state = initialState, action) {
           })
         }),
       });
+    case 'TOGGLE_VOTE_REQUEST':
+      return Object.assign({}, state, {
+        posts: Object.assign({}, state.posts, {
+          [action.index]: Object.assign({}, state.posts[action.index], {
+            vote: !state.posts[action.index].vote,
+            voteLoading: true
+          })
+        }),
+      });
+    case 'TOGGLE_VOTE_FAILURE':
+      return Object.assign({}, state, {
+        posts: Object.assign({}, state.posts, {
+          [action.index]: Object.assign({}, state.posts[action.index], {
+            vote: !state.posts[action.index].vote,
+            voteLoading: false
+          })
+        }),
+      });
+    case 'TOGGLE_VOTE_SUCCESS':
+      return Object.assign({}, state, {
+        posts: Object.assign({}, state.posts, {
+          [action.index]: Object.assign({}, state.posts[action.index], {
+            voteLoading: false
+          })
+        }),
+      });
     default:
       return state;
   }

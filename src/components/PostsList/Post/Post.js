@@ -10,6 +10,7 @@ import LikesComponent from '../../Posts/LikesComponent';
 import {UserLinkFunc} from '../../Common/UserLinkFunc';
 import constants from '../../../common/constants';
 import Tags from './Tags/Tags';
+import Vote from './Vote/Vote';
 
 class Post extends React.Component {
   
@@ -102,12 +103,7 @@ class Post extends React.Component {
             <div className="card-controls clearfix">
               <div className="buttons-row"
                    onClick={(e) => {this.callPreventDefault(e);}}>
-                <VouteComponent key="vote"
-                                item={state}
-                                index={this.props.index}
-                                updateVoteInComponent={()=>{}}
-                                parent='post'
-                />
+                <Vote postIndex={this.props.index}/>
                 <Flag postIndex={this.props.index}/>
               </div>
               <div className="wrap-counts clearfix">
