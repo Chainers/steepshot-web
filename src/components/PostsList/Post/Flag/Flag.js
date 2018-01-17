@@ -6,7 +6,6 @@ import {toggleFlag} from '../../../../actions/flag';
 class Flag extends React.Component {
   constructor(props) {
     super(props);
-    this.getOptions = this.getOptions.bind(this);
   }
 
   toggleFlag() {
@@ -14,12 +13,11 @@ class Flag extends React.Component {
   }
   
   render() {
-    let options = this.getOptions();
     let buttonClasses = "btn-flag";
-    if (options.flag) {
+    if (this.props.flag) {
       buttonClasses = buttonClasses + " marked";
     }
-    if (options.flagLoading) {
+    if (this.props.flagLoading) {
       buttonClasses = buttonClasses + " loading";
     }
     
@@ -29,15 +27,11 @@ class Flag extends React.Component {
         </div>
     );
   }
-  
-  getOptions() {
-    return this.props.postsList.posts[this.props.postIndex];
-  }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state, props) => {
   return {
-    postsList: state.postsList,
+    ...state.postsList.posts[props.postIndex],
   };
 };
 

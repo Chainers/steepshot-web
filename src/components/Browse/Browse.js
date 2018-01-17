@@ -7,10 +7,10 @@ import {
 } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import TabsFilterComponent from '../Filters/TabsFilterComponent';
-import ItemsComponent from '../UserProfile/itemsComponent';
 import Constants from '../../common/constants';
 import TabsWrapper from '../Wrappers/TabsWrapper';
 import { documentTitle } from '../DocumentTitle';
+import PostsList from '../PostsList/PostsList';
 
 class Browse extends React.Component {
   constructor(props) {
@@ -65,20 +65,20 @@ class Browse extends React.Component {
           <TabsWrapper
             activeTab={this.state.activeItemIndex}
           >
-            <ItemsComponent
+            <PostsList
               point={Constants.POSTS_FILTERS.POSTS_HOT.point}
               cancelPrevious={false}
-              wrapperModifier="posts-list clearfix"
+              className="posts-list clearfix"
             />
-            <ItemsComponent
+            <PostsList
               point={Constants.POSTS_FILTERS.POSTS_NEW.point}
               cancelPrevious={false}
-              wrapperModifier="posts-list clearfix"
+              className="posts-list clearfix"
             />
-            <ItemsComponent
+            <PostsList
               point={Constants.POSTS_FILTERS.POSTS_TOP.point}
               cancelPrevious={false}
-              wrapperModifier="posts-list clearfix"
+              className="posts-list clearfix"
             />
           </TabsWrapper>
         </div>

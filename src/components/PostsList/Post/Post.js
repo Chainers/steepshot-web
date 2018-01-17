@@ -22,7 +22,6 @@ class Post extends React.Component {
     this.localConstants = {
       THIS_POST_MODAL_REF: 'thisPostModal' + this.props.index,
     };
-    this.getComponentState = this.getComponentState.bind(this);
   }
   
   callPreventDefault(e) {
@@ -43,21 +42,19 @@ class Post extends React.Component {
   }
   
   _openModal() {
-    let state = this.getComponentState();
-    if (state.openModal != undefined) {
-      state.openModal(this.props.index);
+    if (this.props.openModal != undefined) {
+      this.props.openModal(this.props.index);
     }
   }
   
   render() {
-    let state = this.getComponentState();
-    if (!state) {
+    if (!this.props) {
       return null;
     }
-    let itemImage = state.body || constants.NO_IMAGE;
-    let authorImage = state.avatar || constants.NO_AVATAR;
+    let itemImage = this.props.body || constants.NO_IMAGE;
+    let authorImage = this.props.avatar || constants.NO_AVATAR;
     
-    const authorLink = `/@${state.author}`;
+    const authorLink = `/@${this.props.author}`;
     const cardPhotoStyles = {
       backgroundImage: 'url(' + itemImage + ')',
     };
@@ -68,10 +65,10 @@ class Post extends React.Component {
           <div className="card-head clearfix">
             <div className="date">
               <PostContextMenu style={{float: 'left', height: '22px'}}
-                               item={state}
+                               item={this.props}
                                index={this.props.index}/>
               <TimeAgo
-                datetime={state.created}
+                datetime={this.props.created}
                 locale='en_US'
                 style={{float: 'right'}}
               />
@@ -80,18 +77,18 @@ class Post extends React.Component {
               <div className="photo">
                 <img src={authorImage} alt="User"/>
               </div>
-              <div className="name">{state.author}</div>
+              <div className="name">{this.props.author}</div>
             </Link>
           </div>
         </ShowIf>
         <div className="card-body">
           <div className="card-pic" onClick={this._openModal.bind(this)}>
-            <ShowIf show={state.is_nsfw}>
+            <ShowIf show={this.props.is_nsfw}>
               <div className="forAdult">
                 <p>NSFW content</p>
               </div>
             </ShowIf>
-            <ShowIf show={!state.is_nsfw && state.is_low_rated}>
+            <ShowIf show={!this.props.is_nsfw && this.props.is_low_rated}>
               <div className="forAdult">
                 <p>Low rated content</p>
               </div>
@@ -105,31 +102,26 @@ class Post extends React.Component {
                 <Flag postIndex={this.props.index}/>
               </div>
               <div className="wrap-counts clearfix">
-                <LikesComponent likes={state.net_likes} url={state.url}/>
-                <ShowIf show={parseFloat(state.total_payout_reward).toFixed(2) != 0}>
-                  <div className="amount">${state.total_payout_reward}</div>
+                <LikesComponent likes={this.props.net_likes} url={this.props.url}/>
+                <ShowIf show={parseFloat(this.props.total_payout_reward).toFixed(2) != 0}>
+                  <div className="amount">${this.props.total_payout_reward}</div>
                 </ShowIf>
               </div>
             </div>
             <div className="card-preview">
-              {UserLinkFunc(null, state.title)}
-              <Tags tags={state.tags}/>
+              {UserLinkFunc(null, this.props.title)}
+              <Tags tags={this.props.tags}/>
             </div>
           </div>
         </div>
       </div>
     );
   }
-  
-  getComponentState() {
-    return this.props.postsList.posts[this.props.index];
-  }
-  
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state, props) => {
   return {
-    postsList: state.postsList,
+    ...state.postsList.posts[props.index],
   };
 };
 

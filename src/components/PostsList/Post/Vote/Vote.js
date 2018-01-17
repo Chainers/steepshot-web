@@ -9,7 +9,6 @@ import {toggleVote} from '../../../../actions/vote';
 class Vote extends React.Component {
   constructor(props) {
     super(props);
-    this.getOptions = this.getOptions.bind(this);
   }
   
   toggleVote() {
@@ -17,12 +16,11 @@ class Vote extends React.Component {
   }
   
   render() {
-    let options = this.getOptions();
     let buttonClasses = 'btn-like';
-    if (options.vote) {
+    if (this.props.vote) {
       buttonClasses = buttonClasses + ' liked';
     }
-    if (options.voteLoading) {
+    if (this.props.voteLoading) {
       buttonClasses = buttonClasses + ' loading';
     }
     return (
@@ -31,16 +29,11 @@ class Vote extends React.Component {
       </div>
     );
   }
-  
-  getOptions() {
-    return this.props.postsList.posts[this.props.postIndex];
-  }
-  
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state, props) => {
   return {
-    postsList: state.postsList,
+    ...state.postsList.posts[props.postIndex],
   };
 };
 
