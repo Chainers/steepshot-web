@@ -62,20 +62,14 @@ export function toggleFlag(postIndex) {
         jqApp.pushMessage.open(text);
       }
     };
-
+  
+    let urlObject = post.url.split('/');
     Steem.flag(postingKey,
       username,
       post.author,
-      postIndex,
+      urlObject[urlObject.length - 1],
       newFlagState,
       callback,
     );
-  };
-}
-
-export function addUpdateFlagInComponentFunc(func) {
-  return {
-    type: 'ADD_UPDATE_FLAG_IN_COMPONENT_FUNC',
-    func: func
   };
 }
