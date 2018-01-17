@@ -1,10 +1,6 @@
 import React from 'react';
-import {
-  Link
-} from 'react-router-dom';
-import {
-  connect
-} from 'react-redux';
+import {Link} from 'react-router-dom';
+import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import Steem from '../../libs/steem';
 
@@ -33,7 +29,7 @@ class FollowComponent extends React.Component {
       });
       if (err) {
         jqApp.pushMessage.open('Something went wrong, please, try again later');
-      } else 
+      } else
       if (result) {
         let statusText = 'unfollowed';
         if (!status) statusText = 'followed';

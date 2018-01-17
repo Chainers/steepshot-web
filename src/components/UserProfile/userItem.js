@@ -26,7 +26,6 @@ class UserItem extends React.Component {
   }
 
   render() {
-
     let profileImageSrc = this.state.item.avatar || constants.NO_AVATAR;
     const name = this.state.item.author || this.state.item.name || 'Unknown';
     const location = this.state.item.location || '';

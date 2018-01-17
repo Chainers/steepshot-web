@@ -12,11 +12,11 @@ const getUserName = () => {
 }
 
 class Steem {
-  
+
     constructor(){
         steem.api.setOptions({ url: 'https://api.steemit.com' });
     }
-  
+
     comment(wif, parentAuthor, parentPermlink, author, body, tags, callback) {
         const permlink = this._getPermLink();
         const commentObject = {
@@ -124,6 +124,7 @@ class Steem {
         };
 
         steem.api.getContentAsync(author, url).then((response) => {
+            console.log(steem.broadcast.vote);
             steem.broadcast.vote(wif, username, response.author, response.permlink, voteStatus ? 10000 : 0, callbackBc);
         });
     }

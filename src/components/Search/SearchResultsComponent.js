@@ -91,7 +91,7 @@ class SearchResultsComponent extends React.Component {
       } else {
           this.setState({activeItemIndex : 0, numberPosts : number});
       }
-      if (this.state.numberUsers[0] == undefined && number > 0) {
+      if (this.state.numberUsers[0] == undefined && this.state.numberPosts > 0) {
           this.setState({fullHideParam : true});
       }
   }

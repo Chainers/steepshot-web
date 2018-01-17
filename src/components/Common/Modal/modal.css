@@ -43,6 +43,7 @@
     min-width: 100vw;
     min-height: 100%;
     border-radius: 0 !important;
+    align-self: flex-start !important;
   }
   .post__description-container {
     min-width: 100vw;
