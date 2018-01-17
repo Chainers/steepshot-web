@@ -34,7 +34,7 @@ export function toggleFlag(postIndex) {
 
     if (!username && !postingKey) {
       debounce(jqApp.pushMessage.open(Constants.VOTE_ACTION_WHEN_NOT_AUTH), Constants.VOTE_ACTION_WHEN_NOT_AUTH_DEBOUNCE);
-      return ;
+      return;
     }
     let queue = sessionStorage.getItem('voteQueue');
     if (queue === "true")  {
@@ -47,10 +47,8 @@ export function toggleFlag(postIndex) {
     const callback = (err, success) => {
       sessionStorage.setItem('voteQueue', 'false');
       if (err) {
-        console.log(err);
         dispatch(toggleFlagFailure(postIndex));
         let text = 'Something went wrong when you clicked the flag, please, try again later';
-        console.log(err);
         if (err.data.code === 10) {
           text = 'Sorry, you had used the maximum number of vote changes on this post';
         }

@@ -63,9 +63,8 @@ export function getPostsListAction(point) {
       let postsLength = newPosts.length;
       for (let i = 0; i < postsLength; i++) {
         let post = Object.assign({}, newPosts[i], {
-          ui: {
-            flagLoading: false,
-          }
+          flagLoading: false,
+          voteLoading: false,
         });
         post.tags = (post.tags instanceof Array)
           ? post.tags
