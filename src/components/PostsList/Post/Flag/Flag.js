@@ -2,7 +2,6 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {debounce} from 'lodash';
 import {toggleFlag} from '../../../../actions/flag';
-import Constants from '../../../../common/constants';
 
 class Flag extends React.Component {
   constructor(props) {
@@ -24,7 +23,7 @@ class Flag extends React.Component {
     if (options.flag) {
       buttonClasses = buttonClasses + " marked";
     }
-    if (options.ui.flagLoading) {
+    if (options.flagLoading) {
       buttonClasses = buttonClasses + " loading";
     }
     

@@ -22,9 +22,7 @@ class PostsList extends React.Component {
     super(props);
     this.props.clearPosts();
     let postsListOptions = {
-      updateFlagInComponent: this.updateFlagInComponent.bind(this),
       openModal: this.openFunc.bind(this),
-      updateVoteInComponent: this.updateVoteInComponent.bind(this),
       point: this.props.point,
       cancelPrevious: this.props.cancelPrevious,
       option: this.props.option,
@@ -45,29 +43,6 @@ class PostsList extends React.Component {
   
   getPostsList() {
     this.props.getPosts(this.props.point);
-  }
-  
-  updateFlagInComponent(flag, index) {
-    let newItems = this.getComponentState().posts;
-    if (flag && newItems[index].vote) {
-      newItems[index].net_votes--;
-      newItems[index].net_likes--;
-      newItems[index].vote = false;
-    }
-    newItems[index].flag = flag;
-    //TODO update flag in state
-  }
-  
-  updateVoteInComponent(vote, index) {
-    let newItems = this.getComponentState().posts;
-    if (vote && newItems[index].flag) {
-      newItems[index].flag = false;
-    }
-    
-    vote ? newItems[index].net_votes++ : newItems[index].net_votes--;
-    vote ? newItems[index].net_likes++ : newItems[index].net_likes--;
-    newItems[index].vote = vote;
-    //TODO update vote in state
   }
   
   renderPosts() {
@@ -98,7 +73,7 @@ class PostsList extends React.Component {
   
   render() {
     let state = this.getComponentState();
-    if (!state.postsIndices.length) return null;
+    if (!state) return null;
     
     return (
       <div className={this.props.className}>
