@@ -2,7 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { getUsersSearch, getPosts } from '../../actions/posts';
 import TabsFilterComponent from '../Filters/TabsFilterComponent';
-import ItemsComponent from '../UserProfile/itemsComponent';
 import UsersComponent from '../UserProfile/UsersComponent';
 import Constants from '../../common/constants';
 import TabsWrapper from '../Wrappers/TabsWrapper';
