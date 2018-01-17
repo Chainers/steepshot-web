@@ -40,8 +40,7 @@ class Modal extends React.Component {
   componentDidUpdate() {
     let alignSelf = 'center';
     if (this.props.show) {
-      if (this.modalContainer.clientHeight >
-        this.wrapper.clientHeight) {
+      if (this.modalContainer.clientHeight > this.wrapper.clientHeight) {
         alignSelf = 'flex-start';
       }
     }

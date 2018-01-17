@@ -15,6 +15,11 @@
 .button_fsf {
   display: flex;
   align-items: center;
+  cursor: pointer;
+}
+.button_fsf_esc {
+  display: flex;
+  align-items: center;
 }
 .text_fsf {
   margin: 0;

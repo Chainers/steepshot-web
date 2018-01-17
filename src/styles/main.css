@@ -361,6 +361,11 @@ h2.card-field__heading {
 .post__image-container:hover .full-screen_item-mod {
   opacity: 1;
 }
+.hideDescCont {
+  position: absolute !important;
+  top: -100%;
+  visibility: hidden;
+}
 
 .pm-wrap {
   background: rgba(0, 0, 0, .9) !important;
@@ -1151,4 +1156,3 @@ h2.card-field__heading {
   position: relative;
   height: 150px;
 }
-

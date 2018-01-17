@@ -28,7 +28,7 @@ class Browse extends React.Component {
 
   componentDidMount() {
     if (this.state.activeItemIndex == -1) this.props.history.replace('/*');
-    if (localStorage.getItem('browse') != undefined) this.props.history.replace('/browse/' + localStorage.getItem('browse'));
+    localStorage.setItem('browse', Constants.BROWSE_ROUTES[this.state.activeItemIndex].NAME);
     documentTitle();
   }
 

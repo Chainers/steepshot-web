@@ -16,11 +16,19 @@ class VouteComponent extends React.Component {
       index: this.props.index,
       item: this.props.item,
       vote: this.props.item.vote,
-      parent: this.props.parent || 'post'
+      parent: this.props.parent || 'post',
+      enterLike: false
     }
   }
 
   componentWillReceiveProps(nextProps) {
+    if (nextProps.enterLike) {
+      this.setState({enterLike : nextProps.enterLike}, () => {
+        if (this.state.enterLike) {
+          this.ratingVotes();
+        }
+      });
+    }
     this.setState({
       index: nextProps.index,
       item: nextProps.item,
@@ -29,7 +37,9 @@ class VouteComponent extends React.Component {
   }
 
   ratingVotes(e) {
-    e.preventDefault();
+    if (e) {
+      e.preventDefault();
+    }
 
     if (!(this.props.username || this.props.postingKey)) {
       debounce(jqApp.pushMessage.open(Constants.VOTE_ACTION_WHEN_NOT_AUTH), Constants.VOTE_ACTION_WHEN_NOT_AUTH_DEBOUNCE);
@@ -56,7 +66,7 @@ class VouteComponent extends React.Component {
       const callback = (err, success) => {
         this.setState({
           isVoteLoading : false
-        })
+        });
         sessionStorage.setItem('voteQueue', 'false');
         if (err) {
           this.setState({
