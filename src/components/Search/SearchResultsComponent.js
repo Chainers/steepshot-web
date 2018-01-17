@@ -11,6 +11,7 @@ import _ from 'lodash';
 import { documentTitle } from '../DocumentTitle';
 
 import ShowIf from '../Common/ShowIf';
+import PostsList from '../PostsList/PostsList';
 
 class SearchResultsComponent extends React.Component {
   constructor(props) {
@@ -137,7 +138,7 @@ class SearchResultsComponent extends React.Component {
             activeTab={this.state.activeItemIndex}
           >
             <TabWrapper>
-              <ItemsComponent
+              <PostsList
                 point={this.insertCategory(Constants.POSTS_FILTERS.POSTS_HOT.point, this.state.searchValue)}
                 cancelPrevious={false}
                 wrapperModifier="posts-list clearfix"
@@ -152,7 +153,7 @@ class SearchResultsComponent extends React.Component {
               {
                 this.state.showResults
                 ?
-                  <ItemsComponent
+                  <PostsList
                     point={this.insertCategory(Constants.POSTS_FILTERS.POSTS_NEW.point, this.state.searchValue)}
                     cancelPrevious={false}
                     ignored={this.state.ignored}

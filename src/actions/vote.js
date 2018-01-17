@@ -2,6 +2,7 @@ import Steem from '../libs/steem';
 import {getStore} from '../store/configureStore';
 import Constants from '../common/constants';
 import {debounce} from 'lodash';
+import {updatePost} from './postsList';
 
 function toggleVoteRequest(postIndex) {
   return {
@@ -57,6 +58,7 @@ export function toggleVote(postIndex) {
         jqApp.pushMessage.open(text);
       } else if (success) {
         dispatch(toggleVoteSuccess(postIndex));
+        dispatch(updatePost(postIndex));
         let text = `The post has been successfully liked. If you don't see your like, please give it a few minutes to sync from the blockchain`;
         if (!newVoteState) text = `The post has been successfully disliked. If you don't see your dislike, please give it a few minutes to sync from the blockchain`;
         jqApp.pushMessage.open(text);
