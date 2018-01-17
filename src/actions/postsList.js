@@ -1,4 +1,4 @@
-import {getPosts} from './posts';
+import {getPosts, getPostShaddow} from './posts';
 import {getStore} from '../store/configureStore';
 
 export function initPostsList(options) {
@@ -29,6 +29,19 @@ function getPostsListSuccess(pointOptions, posts) {
   };
 }
 
+export function updatePost(postIndex) {
+  return (dispatch) => {
+    const urlObject = postIndex.split('/');
+    getPostShaddow(urlObject[urlObject.length - 2] + '/' +
+      urlObject[urlObject.length - 1]).then((result) => {
+      dispatch({
+        type: 'UPDATE_POST',
+        post: result
+      })
+    });
+  }
+}
+
 export function getPostsListAction(point) {
   const statePoint = getStore().getState().postsList[point];
   if (statePoint.loading) {
@@ -38,11 +51,13 @@ export function getPostsListAction(point) {
   }
   return (dispatch) => {
     dispatch(getPostsListRequest(point));
-    
+    let userSettings = getStore().getState().auth.settings;
     const requestOptions = {
       point,
       params: Object.assign({}, {
-          offset: statePoint.offset
+          offset: statePoint.offset,
+          show_nsfw: userSettings.show_nsfw,
+          show_low_rated: userSettings.show_low_rated
         },
         statePoint.options)
     };

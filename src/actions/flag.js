@@ -2,6 +2,7 @@ import Steem from '../libs/steem';
 import {getStore} from '../store/configureStore';
 import Constants from '../common/constants';
 import {debounce} from 'lodash';
+import {updatePost} from './postsList';
 
 function toggleFlagRequest(postIndex) {
   return {
@@ -55,6 +56,7 @@ export function toggleFlag(postIndex) {
         jqApp.pushMessage.open(text);
       } else if (success) {
         dispatch(toggleFlagSuccess(postIndex));
+        dispatch(updatePost(postIndex));
         let text = `The post has been successfully flaged. If you don't see your flag, please give it a few minutes to sync from the blockchain`;
         if (!newFlagState) text = `The post has been successfully unflaged. If you don't see your flag, please give it a few minutes to sync from the blockchain`;
         jqApp.pushMessage.open(text);

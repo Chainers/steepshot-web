@@ -60,7 +60,7 @@ class Post extends React.Component {
     };
     
     return (
-      <div className="post-card">
+      <div className="post-card" style={{width: 300}}>
         <ShowIf show={!this.props.clearPostHeader}>
           <div className="card-head clearfix">
             <div className="date">

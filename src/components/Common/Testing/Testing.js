@@ -16,7 +16,7 @@ class Testing extends React.Component {
             className="col-lg-6 col-lg-offset-3 col-md-8 col-md-offset-2 col-sm-10 col-lg-offset-1 col-xs-12">
             <div className="main-container_test">
               <PostsList point={Constants.POSTS_FILTERS.POSTS_HOT.point}
-              className="posts-list clearfix"/>
+                         wrapper="posts-list clearfix"/>
             </div>
           </div>
         </div>

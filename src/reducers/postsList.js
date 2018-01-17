@@ -84,6 +84,12 @@ export default function postsList(state = initialState, action) {
           })
         }),
       });
+    case 'UPDATE_POST':
+      return Object.assign({}, state, {
+        posts: Object.assign({}, state.posts, {
+          [action.post.url]: action.post
+        }),
+      });
     default:
       return state;
   }

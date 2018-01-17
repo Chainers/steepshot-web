@@ -47,7 +47,7 @@ class PostsList extends React.Component {
   renderPosts() {
     if (!this.props.length) {
       return (
-        <div className="empty-query-message_pos-lis">
+        <div className="empty-query-message">
           {Constants.EMPTY_QUERY}
         </div>
       );
@@ -86,7 +86,9 @@ class PostsList extends React.Component {
           }
           threshold={Constants.ENDLESS_SCROLL.OFFSET}
         >
+          <div className="posts-list container_pos-lis">
             {this.renderPosts.bind(this)()}
+          </div>
         </InfiniteScroll>
       </div>
     );
