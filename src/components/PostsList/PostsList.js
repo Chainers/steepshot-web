@@ -27,7 +27,7 @@ class PostsList extends React.Component {
       cancelPrevious: this.props.cancelPrevious,
       option: this.props.option,
       maxPosts: this.props.maxPosts,
-      loading: true,
+      loading: false,
       postsIndices: [],
       length: 0,
       hashMore: true,
@@ -47,7 +47,6 @@ class PostsList extends React.Component {
   
   renderPosts() {
     let state = this.getComponentState();
-    if (state.loading) return (<div>Loading...</div>);
     if (!state.length) {
       return (
         <div className="empty-query-message_pos-lis">
@@ -90,7 +89,9 @@ class PostsList extends React.Component {
           }
           threshold={Constants.ENDLESS_SCROLL.OFFSET}
         >
-          {this.renderPosts.bind(this)()}
+          <div className={this.props.className}>
+            {this.renderPosts.bind(this)()}
+          </div>
         </InfiniteScroll>
       </div>
     );
