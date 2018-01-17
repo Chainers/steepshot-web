@@ -34,7 +34,6 @@ class PostsList extends React.Component {
     };
     this.props.initPostsList(postsListOptions);
     this.getPostsList = this.getPostsList.bind(this);
-    this.getComponentState = this.getComponentState.bind(this);
   }
   
   componentDidMount() {
@@ -46,8 +45,7 @@ class PostsList extends React.Component {
   }
   
   renderPosts() {
-    let state = this.getComponentState();
-    if (!state.length) {
+    if (!this.props.length) {
       return (
         <div className="empty-query-message_pos-lis">
           {Constants.EMPTY_QUERY}
@@ -56,7 +54,7 @@ class PostsList extends React.Component {
     }
     
     let posts = [];
-    state.postsIndices.forEach((postIndex) => {
+    this.props.postsIndices.forEach((postIndex) => {
       if (this.props.ignored.indexOf(postIndex) == -1) {
         posts.push(<Post key={postIndex} index={postIndex}
                          clearPostHeader={this.props.clearPostHeader}/>);
@@ -71,8 +69,7 @@ class PostsList extends React.Component {
   }
   
   render() {
-    let state = this.getComponentState();
-    if (!state) return null;
+    if (!this.props.length) return null;
     
     return (
       <div className={this.props.className}>
@@ -81,7 +78,7 @@ class PostsList extends React.Component {
           initialLoad={false}
           loadMore={debounce(this.getPostsList,
             Constants.ENDLESS_SCROLL.DEBOUNCE_TIMEOUT)}
-          hasMore={state.hasMore}
+          hasMore={this.props.hasMore}
           loader={
             <div className="position--relative">
               <LoadingSpinner/>
@@ -89,22 +86,16 @@ class PostsList extends React.Component {
           }
           threshold={Constants.ENDLESS_SCROLL.OFFSET}
         >
-          <div className={this.props.className}>
             {this.renderPosts.bind(this)()}
-          </div>
         </InfiniteScroll>
       </div>
     );
   }
-  
-  getComponentState() {
-    return this.props.postsList[this.props.point];
-  }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state, props) => {
   return {
-    postsList: state.postsList,
+    ...state.postsList[props.point],
   };
 };
 

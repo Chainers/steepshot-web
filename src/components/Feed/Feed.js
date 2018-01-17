@@ -2,10 +2,9 @@ import React from 'react';
 import {
   connect
 } from 'react-redux';
-import PropTypes from 'prop-types';
-import ItemsComponent from '../UserProfile/itemsComponent';
 import Constants from '../../common/constants';
 import { documentTitle } from '../DocumentTitle';
+import PostsList from '../PostsList/PostsList';
 
 class Feed extends React.Component {
   constructor(props) {
@@ -24,9 +23,9 @@ class Feed extends React.Component {
     return (
       <div className="g-main_i container">
         <div id="workspace" className="g-content clearfix">
-          <ItemsComponent
+          <PostsList
             point={this.state.point}
-            wrapperModifier="posts-list clearfix"
+            className="posts-list clearfix"
           />
         </div>
       </div>
