@@ -26,6 +26,10 @@ export default function auth(state = initialState, action) {
         settings: JSON.parse(localStorage.getItem('settings')) || null,
         avatar: JSON.parse(localStorage.getItem('avatar')) || null
       };
+    case 'UPDATE_SETTINGS':
+      return Object.assign({}, state, {
+        settings: action.settings
+      });
     default:
       return state;
   }
