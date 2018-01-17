@@ -30,21 +30,24 @@ function getPostsListSuccess(pointOptions, posts) {
 }
 
 export function getPostsListAction(point) {
+  const statePoint = getStore().getState().postsList[point];
+  if (statePoint.loading) {
+    return {
+      type: 'EMPTY_ACTION'
+    }
+  }
   return (dispatch) => {
-    
     dispatch(getPostsListRequest(point));
-    const state = getStore().getState();
-    const statePoint = getStore().getState().postsList[point];
+    
     const requestOptions = {
       point,
-      param: Object.assign({}, {
+      params: Object.assign({}, {
           offset: statePoint.offset
         },
         statePoint.options)
     };
     getPosts(requestOptions, statePoint.cancelPrevious).then((response) => {
-      let newPosts = statePoint.postsIndices.length ? response.results :
-        response.results.slice(1);
+      let newPosts = response.results;
       newPosts = removeDuplicate(statePoint.postsIndices, newPosts);
       let postsIndices = newPosts.map(post => {
         return post.url
@@ -72,7 +75,6 @@ export function getPostsListAction(point) {
         postsObject[newPosts[i].url] = post;
       }
       newPosts = postsObject;
-      
       dispatch(getPostsListSuccess(pointOptions, newPosts));
     });
   };
@@ -81,9 +83,11 @@ export function getPostsListAction(point) {
 function removeDuplicate(posts, newPosts) {
   if (posts.length) {
     for (let i = 0; i < newPosts.length; i++) {
-      if (posts[newPosts[i].url]) {
-        newPosts.splice(i, 1);
-        i--;
+      for (let j = 0; j < posts.length; j++) {
+        if (posts[j] === newPosts[i].url) {
+          newPosts.splice(i, 1);
+          i--;
+        }
       }
     }
   }

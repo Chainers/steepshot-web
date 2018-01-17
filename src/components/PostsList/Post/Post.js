@@ -5,7 +5,6 @@ import TimeAgo from 'timeago-react';
 import Flag from './Flag/Flag';
 import ShowIf from '../../Common/ShowIf';
 import PostContextMenu from '../../PostContextMenu/PostContextMenu';
-import VouteComponent from '../../Posts/VouteComponent';
 import LikesComponent from '../../Posts/LikesComponent';
 import {UserLinkFunc} from '../../Common/UserLinkFunc';
 import constants from '../../../common/constants';
@@ -101,17 +100,14 @@ class Post extends React.Component {
           </div>
           <div className="card-wrap">
             <div className="card-controls clearfix">
-              <div className="buttons-row"
-                   onClick={(e) => {this.callPreventDefault(e);}}>
+              <div className="buttons-row">
                 <Vote postIndex={this.props.index}/>
                 <Flag postIndex={this.props.index}/>
               </div>
               <div className="wrap-counts clearfix">
-                <LikesComponent likes={state.net_likes}
-                                url={state.url}/>
+                <LikesComponent likes={state.net_likes} url={state.url}/>
                 <ShowIf show={parseFloat(state.total_payout_reward).toFixed(2) != 0}>
-                  <div
-                    className="amount">${state.total_payout_reward}</div>
+                  <div className="amount">${state.total_payout_reward}</div>
                 </ShowIf>
               </div>
             </div>
