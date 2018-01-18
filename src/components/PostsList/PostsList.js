@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {
-  clearPosts, getPostsListAction,
+  clearPostsList, getPostsListAction,
   initPostsList,
 } from '../../actions/postsList';
 import {debounce} from 'lodash';
@@ -9,6 +9,7 @@ import Constants from '../../common/constants';
 import InfiniteScroll from 'react-infinite-scroller';
 import LoadingSpinner from '../LoadingSpinner';
 import Post from './Post/Post';
+import PostModal from './PostModal/PostModal';
 
 class PostsList extends React.Component {
   static defaultProps = {
@@ -22,7 +23,6 @@ class PostsList extends React.Component {
     super(props);
     this.props.clearPosts();
     let postsListOptions = {
-      openModal: this.openFunc.bind(this),
       point: this.props.point,
       cancelPrevious: this.props.cancelPrevious,
       option: this.props.option,
@@ -64,9 +64,6 @@ class PostsList extends React.Component {
     return posts;
   }
   
-  openFunc(index) {
-  
-  }
   
   render() {
     if (!this.props.length) return null;
@@ -90,6 +87,7 @@ class PostsList extends React.Component {
             {this.renderPosts.bind(this)()}
           </div>
         </InfiniteScroll>
+        <PostModal point={this.props.point}/>
       </div>
     );
   }
@@ -107,7 +105,7 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(initPostsList(options));
     },
     clearPosts: () => {
-      dispatch(clearPosts());
+      dispatch(clearPostsList());
     },
     getPosts: (point) => {
       dispatch(getPostsListAction(point));

@@ -31,7 +31,7 @@ class Flag extends React.Component {
 
 const mapStateToProps = (state, props) => {
   return {
-    ...state.postsList.posts[props.postIndex],
+    ...state.posts[props.postIndex],
   };
 };
 
