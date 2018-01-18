@@ -6,6 +6,7 @@ import {connect} from 'react-redux';
 import {debounce} from 'lodash';
 import {toggleFlag,} from '../../actions/flag';
 import {copyToClipboard} from "../../actions/clipboard";
+import {closeModal, openModal} from '../../actions/modal';
 
 const MIN_BUTTON_WIDTH = 90;
 const MAX_BUTTON_SIZE = 100;
@@ -28,7 +29,7 @@ class PostContextMenu extends React.Component {
     this.state = {
       showModal: false,
       fullScreen: false,
-      contentWidth: minContentWidth,
+      contentWidth: maxContentWidth,
       contentHeight: MAX_BUTTON_SIZE,
       MAX_CONTENT_WIDTH: maxContentWidth,
       MIN_CONTENT_WIDTH: minContentWidth,
@@ -99,7 +100,6 @@ class PostContextMenu extends React.Component {
   copyLink() {
     let url = document.location.origin + '/post' + this.props.item.url;
     this.props.copyToClipboard(url);
-    this.closeFunc();
   }
 
   embed() {
@@ -108,38 +108,28 @@ class PostContextMenu extends React.Component {
 
   toggleFlag() {
     this.props.toggleFlag(this.props.index);
-    this.closeFunc();
   }
 
   closeFunc() {
-    this.setState({
-      showModal: false,
-    });
+    this.props.closeModal("MenuModal");
   }
 
   openFunc() {
-    this.setState({
-      showModal: true,
-    });
+    let modalOption = {
+      body: (<Menu buttonOption={this.state.BUTTONS_OPTIONS}
+                   fullScreen={this.state.fullScreen}
+                   closeFunc={this.closeFunc.bind(this)}
+                   contentWidth={this.state.contentWidth}
+                   contentHeight={this.state.contentHeight}/>),
+      
+    };
+    this.props.openModal("MenuModal", modalOption);
   }
 
   render() {
     return (
       <div className="container_pos-con-men" style={this.props.style}>
         <PostMenuButton openFunc={this.openFunc} style={this.props.style}/>
-        <Modal
-          show={this.state.showModal}
-          closeFunc={this.closeFunc}
-          fullScreen={false}
-          closeButton={false}
-          styles={'container_mod'}
-        >
-          <Menu buttonOption={this.state.BUTTONS_OPTIONS}
-                fullScreen={this.state.fullScreen}
-                closeFunc={this.closeFunc}
-                contentWidth={this.state.contentWidth}
-                contentHeight={this.state.contentHeight}/>
-        </Modal>
       </div>
     );
   }
@@ -227,6 +217,12 @@ const mapDispatchToProps = (dispatch) => {
     },
     copyToClipboard: (text) => {
       dispatch(copyToClipboard(text));
+    },
+    openModal: (index, options) => {
+      dispatch(openModal(index, options));
+    },
+    closeModal: (index) => {
+      dispatch(closeModal(index));
     }
   }
 };

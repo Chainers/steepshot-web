@@ -1,4 +1,4 @@
-import {getPosts, getPostShaddow} from './posts';
+import {getPosts} from './posts';
 import {getStore} from '../store/configureStore';
 import {addPosts} from './post';
 

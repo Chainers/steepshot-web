@@ -9,7 +9,6 @@ import Constants from '../../common/constants';
 import InfiniteScroll from 'react-infinite-scroller';
 import LoadingSpinner from '../LoadingSpinner';
 import Post from './Post/Post';
-import PostModal from './PostModal/PostModal';
 
 class PostsList extends React.Component {
   static defaultProps = {
@@ -57,6 +56,7 @@ class PostsList extends React.Component {
     this.props.postsIndices.forEach((postIndex) => {
       if (this.props.ignored.indexOf(postIndex) == -1) {
         posts.push(<Post key={postIndex} index={postIndex}
+                         point={this.props.point}
                          clearPostHeader={this.props.clearPostHeader}/>);
       }
     });
@@ -87,7 +87,6 @@ class PostsList extends React.Component {
             {this.renderPosts.bind(this)()}
           </div>
         </InfiniteScroll>
-        <PostModal point={this.props.point}/>
       </div>
     );
   }

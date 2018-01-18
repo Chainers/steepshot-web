@@ -10,8 +10,9 @@ import {UserLinkFunc} from '../../Common/UserLinkFunc';
 import constants from '../../../common/constants';
 import Tags from './Tags/Tags';
 import Vote from './Vote/Vote';
-import {openPostModal} from '../../../actions/postModal';
+import {openModal} from '../../../actions/modal';
 import {setDefaultAvatar} from '../../../actions/post';
+import PostModal from '../PostModal/PostModal';
 
 class Post extends React.Component {
   
@@ -41,6 +42,14 @@ class Post extends React.Component {
       backgroundSize: 'cover',
       backgroundPosition: 'center',
     };
+  }
+  
+  openPostModal() {
+    let modalOption = {
+      point: this.props.point,
+      body: (<PostModal index={this.props.index}/>),
+    };
+    this.props.openModal(this.props.index, modalOption);
   }
   
   render() {
@@ -81,7 +90,7 @@ class Post extends React.Component {
         </ShowIf>
         <div className="card-body">
           <div className="card-pic"
-               onClick={() => {this.props.openPostModal(this.props.index)}}>
+               onClick={this.openPostModal.bind(this)}>
             <ShowIf show={this.props.is_nsfw}>
               <div className="forAdult">
                 <p>NSFW content</p>
@@ -126,8 +135,8 @@ const mapStateToProps = (state, props) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    openPostModal: (postIndex) => {
-      dispatch(openPostModal(postIndex));
+    openModal: (postIndex, options) => {
+      dispatch(openModal(postIndex, options));
     },
     setDefaultAvatar: (postIndex => {
       dispatch(setDefaultAvatar(postIndex));

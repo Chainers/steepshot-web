@@ -31,9 +31,7 @@ class Menu extends React.Component {
 
   render() {
     return (
-      <div className="container_menu" style={{
-        width: this.props.contentWidth,
-      }}>
+      <div className="container_menu" style={{width: this.props.contentWidth}}>
         <div className="header_menu">
           <span className="title_menu">Action with this post</span>
           <div className="wrapper-close-button_menu"
