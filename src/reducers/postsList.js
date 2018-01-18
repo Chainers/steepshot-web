@@ -16,11 +16,6 @@ export default function postsList(state = initialState, action) {
       });
     case 'GET_POSTS_LIST_SUCCESS':
       return Object.assign({}, state, {
-        
-        posts: Object.assign({},
-          state.posts,
-          action.posts),
-        
         [action.options.point]: Object.assign({}, state[action.options.point], {
           postsIndices: [
             ...state[action.options.point].postsIndices,
@@ -32,64 +27,7 @@ export default function postsList(state = initialState, action) {
           action.options.length,
         }),
       });
-    case 'TOGGLE_FLAG_REQUEST':
-      return Object.assign({}, state, {
-        posts: Object.assign({}, state.posts, {
-          [action.index]: Object.assign({}, state.posts[action.index], {
-            flag: !state.posts[action.index].flag,
-            flagLoading: true
-          })
-        }),
-      });
-    case 'TOGGLE_FLAG_FAILURE':
-      return Object.assign({}, state, {
-        posts: Object.assign({}, state.posts, {
-          [action.index]: Object.assign({}, state.posts[action.index], {
-            flag: !state.posts[action.index].flag,
-            flagLoading: false
-          })
-        }),
-      });
-    case 'TOGGLE_FLAG_SUCCESS':
-      return Object.assign({}, state, {
-        posts: Object.assign({}, state.posts, {
-          [action.index]: Object.assign({}, state.posts[action.index], {
-            flagLoading: false
-          })
-        }),
-      });
-    case 'TOGGLE_VOTE_REQUEST':
-      return Object.assign({}, state, {
-        posts: Object.assign({}, state.posts, {
-          [action.index]: Object.assign({}, state.posts[action.index], {
-            vote: !state.posts[action.index].vote,
-            voteLoading: true
-          })
-        }),
-      });
-    case 'TOGGLE_VOTE_FAILURE':
-      return Object.assign({}, state, {
-        posts: Object.assign({}, state.posts, {
-          [action.index]: Object.assign({}, state.posts[action.index], {
-            vote: !state.posts[action.index].vote,
-            voteLoading: false
-          })
-        }),
-      });
-    case 'TOGGLE_VOTE_SUCCESS':
-      return Object.assign({}, state, {
-        posts: Object.assign({}, state.posts, {
-          [action.index]: Object.assign({}, state.posts[action.index], {
-            voteLoading: false
-          })
-        }),
-      });
-    case 'UPDATE_POST':
-      return Object.assign({}, state, {
-        posts: Object.assign({}, state.posts, {
-          [action.post.url]: action.post
-        }),
-      });
+    
     default:
       return state;
   }

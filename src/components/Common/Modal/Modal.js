@@ -11,7 +11,6 @@ class Modal extends React.Component {
     super(props);
     this.state = {
       alignSelf: 'center',
-      closeParam: false
     }
   }
 
@@ -21,27 +20,7 @@ class Modal extends React.Component {
       this.props.closeFunc();
     }
   }
-
-  componentDidMount() {
-    this.closeButtonFunc();
-    window.addEventListener('resize', () => {
-      this.closeButtonFunc();
-    })
-  }
-
-  componentWillUnmount() {
-    window.removeEventListener('resize', () => {
-      this.closeButtonFunc();
-    })
-  }
   
-  closeButtonFunc() {
-    if (document.documentElement.clientWidth <= 815) {
-      this.setState({closeParam : false});
-    } else {
-      this.setState({closeParam : true});
-    }
-  }
 
   componentDidUpdate() {
     let alignSelf = 'center';
@@ -75,7 +54,7 @@ class Modal extends React.Component {
                  style={zIndexStyle}
                  ref={ ref => {this.wrapper = ref} }
             >
-              <ShowIf show={this.state.closeParam}>
+              <ShowIf show={document.documentElement.clientWidth > 815}>
                 <ShowIf show={this.props.closeButton}>
                   <button className="close_mod" onClick={this.props.closeFunc.bind(this)} />
                 </ShowIf>

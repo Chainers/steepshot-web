@@ -1,5 +1,6 @@
 import {getPosts, getPostShaddow} from './posts';
 import {getStore} from '../store/configureStore';
+import {addPosts} from './post';
 
 export function initPostsList(options) {
   return {
@@ -8,7 +9,7 @@ export function initPostsList(options) {
   };
 }
 
-export function clearPosts() {
+export function clearPostsList() {
   return {
     type: 'CLEAR_POSTS'
   };
@@ -21,25 +22,11 @@ function getPostsListRequest(point) {
   };
 }
 
-function getPostsListSuccess(pointOptions, posts) {
+function getPostsListSuccess(pointOptions) {
   return {
     type: 'GET_POSTS_LIST_SUCCESS',
-    options: pointOptions,
-    posts
+    options: pointOptions
   };
-}
-
-export function updatePost(postIndex) {
-  return (dispatch) => {
-    const urlObject = postIndex.split('/');
-    getPostShaddow(urlObject[urlObject.length - 2] + '/' +
-      urlObject[urlObject.length - 1]).then((result) => {
-      dispatch({
-        type: 'UPDATE_POST',
-        post: result
-      })
-    });
-  }
 }
 
 export function getPostsListAction(point) {
@@ -90,7 +77,8 @@ export function getPostsListAction(point) {
         postsObject[newPosts[i].url] = post;
       }
       newPosts = postsObject;
-      dispatch(getPostsListSuccess(pointOptions, newPosts));
+      dispatch(addPosts(newPosts));
+      dispatch(getPostsListSuccess(pointOptions));
     });
   };
 }

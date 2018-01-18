@@ -10,6 +10,8 @@ import {UserLinkFunc} from '../../Common/UserLinkFunc';
 import constants from '../../../common/constants';
 import Tags from './Tags/Tags';
 import Vote from './Vote/Vote';
+import {openPostModal} from '../../../actions/postModal';
+import {setDefaultAvatar} from '../../../actions/post';
 
 class Post extends React.Component {
   
@@ -41,12 +43,6 @@ class Post extends React.Component {
     };
   }
   
-  _openModal() {
-    if (this.props.openModal != undefined) {
-      this.props.openModal(this.props.index);
-    }
-  }
-  
   render() {
     if (!this.props) {
       return null;
@@ -75,14 +71,17 @@ class Post extends React.Component {
             </div>
             <Link to={authorLink} className="user">
               <div className="photo">
-                <img src={authorImage} alt="User"/>
+                <img src={authorImage} alt="User"
+                     onError={
+                       () => this.props.setDefaultAvatar(this.props.index)}/>
               </div>
               <div className="name">{this.props.author}</div>
             </Link>
           </div>
         </ShowIf>
         <div className="card-body">
-          <div className="card-pic" onClick={this._openModal.bind(this)}>
+          <div className="card-pic"
+               onClick={() => {this.props.openPostModal(this.props.index)}}>
             <ShowIf show={this.props.is_nsfw}>
               <div className="forAdult">
                 <p>NSFW content</p>
@@ -121,8 +120,19 @@ class Post extends React.Component {
 
 const mapStateToProps = (state, props) => {
   return {
-    ...state.postsList.posts[props.index],
+    ...state.posts[props.index],
   };
 };
 
-export default connect(mapStateToProps)(Post);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    openPostModal: (postIndex) => {
+      dispatch(openPostModal(postIndex));
+    },
+    setDefaultAvatar: (postIndex => {
+      dispatch(setDefaultAvatar(postIndex));
+    })
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Post);

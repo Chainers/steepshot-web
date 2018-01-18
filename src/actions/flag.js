@@ -2,7 +2,7 @@ import Steem from '../libs/steem';
 import {getStore} from '../store/configureStore';
 import Constants from '../common/constants';
 import {debounce} from 'lodash';
-import {updatePost} from './postsList';
+import {updatePost} from './post';
 
 function toggleFlagRequest(postIndex) {
   return {
@@ -30,7 +30,7 @@ export function toggleFlag(postIndex) {
     let state = getStore().getState();
     let username = state.auth.user;
     let postingKey = state.auth.postingKey;
-    let post = state.postsList.posts[postIndex];
+    let post = state.posts[postIndex];
     const newFlagState = !post.flag;
 
     if (!username && !postingKey) {

@@ -12,12 +12,7 @@ import {
     store
 } from 'react-redux';
 import Constants from '../../common/constants';
-import PropTypes from 'prop-types';
 import { documentTitle } from '../DocumentTitle';
-import {
-  clearPosts, getPostsListAction,
-  initPostsList,
-} from '../../actions/postsList';
 
 class Settings extends React.Component {
     constructor(props) {
