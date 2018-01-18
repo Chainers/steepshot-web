@@ -6,14 +6,15 @@ class Modal extends React.Component {
     showCloseButton: true,
     fullParam: true
   };
-
+  
   constructor(props) {
     super(props);
     this.state = {
       alignSelf: 'center',
+      closeParam: false
     }
   }
-
+  
   clickOutside(event) {
     event.stopPropagation();
     if (this.modalContainer && !this.modalContainer.contains(event.target) && this.props.fullParam) {
@@ -21,7 +22,27 @@ class Modal extends React.Component {
     }
   }
   
-
+  componentDidMount() {
+    this.closeButtonFunc();
+    window.addEventListener('resize', () => {
+      this.closeButtonFunc();
+    })
+  }
+  
+  componentWillUnmount() {
+    window.removeEventListener('resize', () => {
+      this.closeButtonFunc();
+    })
+  }
+  
+  closeButtonFunc() {
+    if (document.documentElement.clientWidth <= 815) {
+      this.setState({closeParam : false});
+    } else {
+      this.setState({closeParam : true});
+    }
+  }
+  
   componentDidUpdate() {
     let alignSelf = 'center';
     if (this.props.show) {
@@ -42,7 +63,7 @@ class Modal extends React.Component {
       }
     }
   }
-
+  
   render() {
     let zIndexStyle = {zIndex: 1002};
     return (
@@ -54,7 +75,7 @@ class Modal extends React.Component {
                  style={zIndexStyle}
                  ref={ ref => {this.wrapper = ref} }
             >
-              <ShowIf show={document.documentElement.clientWidth > 815}>
+              <ShowIf show={this.state.closeParam}>
                 <ShowIf show={this.props.closeButton}>
                   <button className="close_mod" onClick={this.props.closeFunc.bind(this)} />
                 </ShowIf>
@@ -62,7 +83,7 @@ class Modal extends React.Component {
               <div className={this.props.styles}
                    ref={ ref => {this.modalContainer = ref} }
                    style={{alignSelf: this.state.alignSelf}}>
-                   {this.props.children}
+                {this.props.children}
               </div>
             </div>
           </ShowIf>
