@@ -50,7 +50,9 @@ export function getPostsListAction(point) {
     };
     getPosts(requestOptions, statePoint.cancelPrevious).then((response) => {
       let newPosts = response.results;
-      newPosts = removeDuplicate(statePoint.postsIndices, newPosts);
+      newPosts = removeDuplicate(newPosts);
+      newPosts = removeOldDuplicate(statePoint.postsIndices, newPosts);
+      
       let postsIndices = newPosts.map(post => {
         return post.url
       });
@@ -83,7 +85,7 @@ export function getPostsListAction(point) {
   };
 }
 
-function removeDuplicate(posts, newPosts) {
+function removeOldDuplicate(posts, newPosts) {
   if (posts.length) {
     for (let i = 0; i < newPosts.length; i++) {
       for (let j = 0; j < posts.length; j++) {
@@ -94,6 +96,19 @@ function removeDuplicate(posts, newPosts) {
       }
     }
   }
-  
   return newPosts;
+}
+
+function removeDuplicate(posts) {
+  if (posts.length) {
+    for (let i = 0; i < posts.length - 1; i++) {
+      for (let j = i + 1; j < posts.length; j++) {
+        if (posts[j].url === posts[i].url) {
+          posts.splice(j, 1);
+          j--;
+        }
+      }
+    }
+  }
+  return posts;
 }

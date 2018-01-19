@@ -55,7 +55,8 @@ class PostsList extends React.Component {
     let posts = [];
     this.props.postsIndices.forEach((postIndex) => {
       if (this.props.ignored.indexOf(postIndex) == -1) {
-        posts.push(<Post key={postIndex} index={postIndex}
+        posts.push(<Post key={this.props.point + "/" + postIndex}
+                         index={postIndex}
                          point={this.props.point}
                          clearPostHeader={this.props.clearPostHeader}/>);
       }

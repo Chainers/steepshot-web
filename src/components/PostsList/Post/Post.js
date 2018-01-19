@@ -12,7 +12,6 @@ import Tags from './Tags/Tags';
 import Vote from './Vote/Vote';
 import {openModal} from '../../../actions/modal';
 import {setDefaultAvatar} from '../../../actions/post';
-import PostModal from '../PostModal/PostModal';
 
 class Post extends React.Component {
   
@@ -47,7 +46,7 @@ class Post extends React.Component {
   openPostModal() {
     let modalOption = {
       point: this.props.point,
-      body: (<PostModal index={this.props.index}/>),
+      body: (<div/>),
     };
     this.props.openModal(this.props.index, modalOption);
   }
