@@ -5,3 +5,5 @@
 @import "../components/Common/Modal/modal.css";
 @import "../components/Common/Clipboard/clipboard.css";
 @import "../components/Posts/FullScreenButtons/fullscreenfunc.css";
+@import "../components/PostsList/postsList.css";
+@import "../components/Modals/modals.css";

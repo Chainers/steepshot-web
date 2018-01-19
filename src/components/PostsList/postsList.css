@@ -1,0 +1,9 @@
+.container_pos-lis {
+  display: flex;
+  flex-flow: wrap;
+  align-content: space-between;
+  flex-basis: 1px;
+  flex-grow: 1;
+  width: 100%;
+  margin: 0;
+}

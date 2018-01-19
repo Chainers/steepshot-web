@@ -1,4 +1,3 @@
-@import "OpenMenuButton/postMenuButton.css";
 @import "MenuItem/menuItem.css";
 @import "Menu/menu.css";
 @import "DelimitersWrapper/delimitersWrapper.css";
@@ -7,4 +6,23 @@
   border-radius: 3px;
   height: 100%;
   background-color: rgba(0,0,0,0);
+}
+
+.container_post-men-but {
+  width: 30px;
+  border-radius: 4px;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.container_post-men-but:hover {
+  cursor: pointer;
+}
+
+.shape_post-men-but {
+  margin-left: 7px;
+  width: 16px;
+  height: 4px;
+  vertical-align: initial;
 }

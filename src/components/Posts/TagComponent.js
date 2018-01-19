@@ -38,7 +38,6 @@ class TagComponent extends React.Component {
                 key={this.state.key}
                 to={`/search/${this.checkFirst(this.state.tag)}`}
             >
-              {utils.tagPrettify(this.state.tag)}
             </Link>
         )
     }

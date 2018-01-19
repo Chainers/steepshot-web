@@ -1,83 +1,23 @@
 import * as React from 'react';
-import PostMenuButton from './OpenMenuButton/PostMenuButton';
-import Modal from '../Common/Modal/Modal';
 import Menu from './Menu/Menu';
 import {connect} from 'react-redux';
 import {debounce} from 'lodash';
 import {toggleFlag,} from '../../actions/flag';
 import {copyToClipboard} from "../../actions/clipboard";
-
-const MIN_BUTTON_WIDTH = 90;
-const MAX_BUTTON_SIZE = 100;
-const CONTENT_PADDING = 20;
-const CONTENT_MARGIN = 40;
-const MAX_HORIZONTAL_CONTENT_WIDTH = 200;
+import {closeModal, openModal} from '../../actions/modal';
 
 class PostContextMenu extends React.Component {
 
   constructor(props) {
     super(props);
     let buttonsOptions = this.setButtonsOptions.call(this);
-    let buttonsAmount = buttonsOptions.length;
-
-    let minContentWidth = buttonsAmount * MIN_BUTTON_WIDTH + 2 *
-      (CONTENT_PADDING + CONTENT_MARGIN);
-    let maxContentWidth = buttonsAmount * MAX_BUTTON_SIZE + 2 *
-      (CONTENT_PADDING + CONTENT_MARGIN);
 
     this.state = {
       showModal: false,
       fullScreen: false,
-      contentWidth: minContentWidth,
-      contentHeight: MAX_BUTTON_SIZE,
-      MAX_CONTENT_WIDTH: maxContentWidth,
-      MIN_CONTENT_WIDTH: minContentWidth,
-      BUTTONS_AMOUNT: buttonsAmount,
       BUTTONS_OPTIONS: buttonsOptions,
     };
-    this.closeFunc = this.closeFunc.bind(this);
     this.openFunc = this.openFunc.bind(this);
-    this.resizeWindow = this.resizeWindow.bind(this);
-  }
-
-  componentDidMount() {
-    window.addEventListener('resize', this.resizeWindow);
-    this.resizeWindow();
-  }
-
-  componentWillUnmount() {
-    window.removeEventListener('resize', this.resizeWindow);
-  }
-
-  resizeWindow() {
-    if (document.documentElement.clientWidth > this.state.MAX_CONTENT_WIDTH) {
-      if (this.state.contentWidth !== this.state.MAX_CONTENT_WIDTH) {
-        this.setState({
-          fullScreen: false,
-          contentWidth: MAX_BUTTON_SIZE * this.state.BUTTONS_AMOUNT + 'px',
-          contentHeight: MAX_BUTTON_SIZE + 'px',
-        });
-      }
-    } else if (document.documentElement.clientWidth < this.state.MIN_CONTENT_WIDTH) {
-      let contentWidth = document.documentElement.clientWidth -
-        (CONTENT_MARGIN) * 2;
-      if (contentWidth > MAX_HORIZONTAL_CONTENT_WIDTH) {
-        contentWidth = MAX_HORIZONTAL_CONTENT_WIDTH;
-      }
-      this.setState({
-        fullScreen: true,
-        contentWidth: contentWidth + 'px',
-        contentHeight: 'auto',
-      });
-    } else {
-      let contentWidth = document.documentElement.clientWidth -
-        (CONTENT_MARGIN + CONTENT_PADDING) * 2;
-      this.setState({
-        fullScreen: false,
-        contentWidth: contentWidth + 'px',
-        contentHeight: contentWidth / this.state.BUTTONS_AMOUNT + 'px',
-      });
-    }
   }
 
   hidePost() {
@@ -99,7 +39,7 @@ class PostContextMenu extends React.Component {
   copyLink() {
     let url = document.location.origin + '/post' + this.props.item.url;
     this.props.copyToClipboard(url);
-    this.closeFunc();
+    this.props.closeModal("MenuModal");
   }
 
   embed() {
@@ -108,38 +48,28 @@ class PostContextMenu extends React.Component {
 
   toggleFlag() {
     this.props.toggleFlag(this.props.index);
-    this.closeFunc();
+    this.props.closeModal("MenuModal");
   }
-
-  closeFunc() {
-    this.setState({
-      showModal: false,
-    });
-  }
+  
 
   openFunc() {
-    this.setState({
-      showModal: true,
-    });
+    let modalOption = {
+      body: (<Menu buttonOption={this.state.BUTTONS_OPTIONS}
+                   closeModal={()=>{this.props.closeModal("MenuModal")}}/>),
+    };
+    this.props.openModal("MenuModal", modalOption);
   }
 
   render() {
     return (
       <div className="container_pos-con-men" style={this.props.style}>
-        <PostMenuButton openFunc={this.openFunc} style={this.props.style}/>
-        <Modal
-          show={this.state.showModal}
-          closeFunc={this.closeFunc}
-          fullScreen={false}
-          closeButton={false}
-          styles={'container_mod'}
-        >
-          <Menu buttonOption={this.state.BUTTONS_OPTIONS}
-                fullScreen={this.state.fullScreen}
-                closeFunc={this.closeFunc}
-                contentWidth={this.state.contentWidth}
-                contentHeight={this.state.contentHeight}/>
-        </Modal>
+        <div className="container_post-men-but" onClick={this.openFunc}
+             style={this.props.style}>
+          <img src="/static/images/postContextMenu/shape.png"
+               className="shape_post-men-but"
+               alt="Post menu button"
+          />
+        </div>
       </div>
     );
   }
@@ -160,8 +90,8 @@ class PostContextMenu extends React.Component {
         callback: this.copyLink.bind(this),
         hasDelimiter: false,
       },
-      /* TODO uncomment when will be implemented embed
-      {
+      // TODO uncomment when will be implemented embed
+      /*{
         img: '/static/images/postContextMenu/embedTrue.svg',
         revertImg: '/static/images/postContextMenu/embedFalse.svg',
         alt: 'Embed',
@@ -214,9 +144,7 @@ class PostContextMenu extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    localization: state.localization,
     username: state.auth.user,
-    postingKey: state.auth.postingKey
   };
 };
 
@@ -227,7 +155,13 @@ const mapDispatchToProps = (dispatch) => {
     },
     copyToClipboard: (text) => {
       dispatch(copyToClipboard(text));
-    }
+    },
+    openModal: (index, options) => {
+      dispatch(openModal(index, options));
+    },
+    closeModal: (index) => {
+      dispatch(closeModal(index));
+    },
   }
 };
 

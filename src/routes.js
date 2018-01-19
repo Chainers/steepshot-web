@@ -53,9 +53,7 @@ export default function getRoutes(store) {
         <Route path="/post" component={SinglePostModalComponent} onLeave={clearMessages} />
         <Route path="/search/:searchValue" component={SearchWrapper} onLeave={clearMessages} />
         <Route path="/guide" component={AboutComponent} onLeave={clearMessages} />
-        {/* onli for development
         <Route path="/dev/test" component={Testing} onLeave={clearMessages} />
-        */}
         <PrivateRoute path="/feed" component={Feed} onLeave={clearMessages} />
         <PrivateRoute path="/createPost" component={CreatePost} onLeave={clearMessages} />
         <PrivateRoute path="/profile" component={Profile} onLeave={clearMessages} />

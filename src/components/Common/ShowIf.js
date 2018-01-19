@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
 class ShowIf extends React.Component {
 
@@ -8,12 +7,12 @@ class ShowIf extends React.Component {
   }
 
   render() {
-    return (this.props.show ? this.props.children : null)
+    if (!this.props.show) return null;
+    return this.props.children.length > 1 ?
+        <div className="container_show-if">{this.props.children}</div>
+      : this.props.children
+      
   }
 }
-
-ShowIf.propTypes = {
-  show: PropTypes.bool.isRequired
-};
 
 export default ShowIf;

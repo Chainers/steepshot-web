@@ -4,6 +4,7 @@ import MobileNavigationComponent from './MobileNavigationComponent';
 import FooterComponent from './FooterComponent';
 import LikesModalComponent from './Common/LikesModalComponent';
 import Clipboard from "./Common/Clipboard/Clipboard";
+import Modals from './Modals/Modals';
 
 const App = ({ children }) => (
   <div className="g-wrap">
@@ -23,6 +24,7 @@ const App = ({ children }) => (
 
     <LikesModalComponent />
     <Clipboard />
+    <Modals />
   </div>
 );
 

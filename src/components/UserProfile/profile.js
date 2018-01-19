@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import LocalizedStrings from '../Localization/index.js';
 import {
   getUserProfile
@@ -14,11 +13,11 @@ import {
 import { connect } from 'react-redux';
 import UsersComponent from './UsersComponent';
 import FollowComponent from '../Posts/FollowComponent';
-import ItemsComponent from './itemsComponent';
 import Constants from '../../common/constants';
 import TabsFilterComponent from '../Filters/TabsFilterComponent';
 import TabsWrapper from '../Wrappers/TabsWrapper';
 import AvatarComponent from '../Atoms/AvatarComponent';
+import PostsList from '../PostsList/PostsList';
 
 class UserProfile extends React.Component {
   constructor(props) {
@@ -186,7 +185,7 @@ class UserProfile extends React.Component {
                     <TabsWrapper
                       activeTab={this.state.activeItemIndex}
                     >
-                      <ItemsComponent
+                      <PostsList
                         point={this.state.itemsPoint}
                         wrapperModifier="posts-list clearfix type-2"
                         forceRefresh={this.state.needsForceRefresh}

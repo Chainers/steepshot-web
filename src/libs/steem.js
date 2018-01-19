@@ -124,7 +124,6 @@ class Steem {
         };
 
         steem.api.getContentAsync(author, url).then((response) => {
-            console.log(steem.broadcast.vote);
             steem.broadcast.vote(wif, username, response.author, response.permlink, voteStatus ? 10000 : 0, callbackBc);
         });
     }

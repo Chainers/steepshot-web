@@ -2,19 +2,7 @@ import Steem from '../libs/steem';
 import {getStore} from '../store/configureStore';
 import Constants from '../common/constants';
 import {debounce} from 'lodash';
-
-export function addFlag(options) {
-  return {
-    type: 'ADD_FLAG_TO_STATE',
-    options: options,
-  };
-}
-
-export function clearFlags() {
-  return {
-    type: 'CLEAR_FLAGS',
-  };
-}
+import {updatePost} from './post';
 
 function toggleFlagRequest(postIndex) {
   return {
@@ -42,56 +30,46 @@ export function toggleFlag(postIndex) {
     let state = getStore().getState();
     let username = state.auth.user;
     let postingKey = state.auth.postingKey;
-    let updateFlagInComponent = state.flags.updateFlagInComponent;
-    let flagOptions = state.flags.flags[postIndex];
-    const newFlagState = !flagOptions.state;
+    let post = state.posts[postIndex];
+    const newFlagState = !post.flag;
 
     if (!username && !postingKey) {
       debounce(jqApp.pushMessage.open(Constants.VOTE_ACTION_WHEN_NOT_AUTH), Constants.VOTE_ACTION_WHEN_NOT_AUTH_DEBOUNCE);
-      return ;
+      return;
     }
     let queue = sessionStorage.getItem('voteQueue');
-    if (queue == "true")  {
+    if (queue === "true")  {
       return;
     }
     sessionStorage.setItem('voteQueue', 'true');
-
+    
     dispatch(toggleFlagRequest(postIndex));
 
     const callback = (err, success) => {
-
       sessionStorage.setItem('voteQueue', 'false');
       if (err) {
-        console.log(err);
         dispatch(toggleFlagFailure(postIndex));
         let text = 'Something went wrong when you clicked the flag, please, try again later';
-        if (err.data.code == 10) {
+        if (err.data.code === 10) {
           text = 'Sorry, you had used the maximum number of vote changes on this post';
         }
         jqApp.pushMessage.open(text);
-
       } else if (success) {
         dispatch(toggleFlagSuccess(postIndex));
+        dispatch(updatePost(postIndex));
         let text = `The post has been successfully flaged. If you don't see your flag, please give it a few minutes to sync from the blockchain`;
         if (!newFlagState) text = `The post has been successfully unflaged. If you don't see your flag, please give it a few minutes to sync from the blockchain`;
         jqApp.pushMessage.open(text);
-        updateFlagInComponent(newFlagState, postIndex);
       }
     };
-
+  
+    let urlObject = post.url.split('/');
     Steem.flag(postingKey,
       username,
-      flagOptions.author,
-      flagOptions.postId,
+      post.author,
+      urlObject[urlObject.length - 1],
       newFlagState,
       callback,
     );
-  };
-}
-
-export function addUpdateFlagInComponentFunc(func) {
-  return {
-    type: 'ADD_UPDATE_FLAG_IN_COMPONENT_FUNC',
-    func: func
   };
 }

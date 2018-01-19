@@ -23,14 +23,14 @@ import {
   addFlag, addUpdateFlagInComponentFunc,
   clearFlags,
 } from '../../actions/flag';
+import Vote from '../PostsList/Post/Vote/Vote';
+import Flag from '../PostsList/Post/Flag/Flag';
 
 const MAX_WIDTH_FULL_SCREEN = 815;
 
 class SinglePostModalComponent extends React.Component {
   constructor(props) {
     super(props);
-    this.props.clearFlagsInStore();
-    this.props.addUpdateFlagInComponentFunc(this.updateFlagInComponent.bind(this));
     this.state = {
       notify: this.props.notify,
       isPostLoading: true,
@@ -93,15 +93,6 @@ class SinglePostModalComponent extends React.Component {
         urlObject[urlObject.length - 2],
         urlObject[urlObject.length - 1])).then((result) => {
         if (result) {
-          let options = {
-            index: 0,
-            state: result.flag,
-            isFlagLoading: false,
-            author: result.author,
-            postId: urlObject[urlObject.length - 1],
-          };
-          this.props.addFlagToStore(options);
-
           this.setState({
             item: result,
             isPostLoading: false,
@@ -209,32 +200,6 @@ class SinglePostModalComponent extends React.Component {
       image: constants.NO_IMAGE,
     });
   }
-
-    updateVoteInComponent(vote, index) {
-        let newItem = this.state.item;
-        if (vote && newItem.flag) {
-            newItem.flag = false;
-        }
-        vote ? newItem.net_votes++ : newItem.net_votes--;
-        vote ? newItem.net_likes++ : newItem.net_likes--;
-        newItem.vote = vote;
-        this.setState({
-            item: newItem
-        });
-    }
-
-    updateFlagInComponent(flag, index) {
-        let newItem = this.state.item;
-        if (flag && newItem.vote) {
-            newItem.net_votes--;
-            newItem.net_likes--;
-            newItem.vote = false;
-        }
-        newItem.flag = flag;
-        this.setState({
-            item: newItem
-        });
-    }
 
   resetDefaultProperties(newItem, indexUpdater) {
     this.setState({
@@ -396,14 +361,8 @@ class SinglePostModalComponent extends React.Component {
                        onClick={(e) => {
                          SinglePostModalComponent.callPreventDefault(e);
                        }}>
-                    <VouteComponent
-                      key="vote"
-                      item={this.state.item}
-                      index={this.state.index}
-                      parent='post'
-                      updateVoteInComponent={this.updateVoteInComponent}
-                    />
-                    <FlagComponent postIndex={0}/>
+                    <Vote postIndex={this.state.item.url}/>
+                    <Flag postIndex={this.state.item.url}/>
                   </div>
                   <div className="wrap-counts clearfix">
                     <LikesComponent likes={this.state.item.net_votes}
@@ -480,19 +439,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    addFlagToStore: (options) => {
-      dispatch(addFlag(options));
-    },
-    clearFlagsInStore: () => {
-      dispatch(clearFlags());
-    },
-    addUpdateFlagInComponentFunc: (func) => {
-      dispatch(addUpdateFlagInComponentFunc(func));
-    }
-  }
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(SinglePostModalComponent);
+export default connect(mapStateToProps)(SinglePostModalComponent);
