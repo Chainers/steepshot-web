@@ -6,7 +6,7 @@ const defaultOption = {
   body: null,
   callBeforeClosed: () => {},
   callAfterClosed: () => {},
-  point: 'without'
+  point: 'without',
 };
 
 export default function modals(state = initialState, action) {
@@ -16,6 +16,8 @@ export default function modals(state = initialState, action) {
         [action.index]: Object.assign({},
           defaultOption, action.options),
       });
+    case 'CLOSE_MODALS':
+      return initialState;
     case 'SET_MODAL_OPTIONS':
       return Object.assign({}, state, {
         [action.index]: Object.assign({},

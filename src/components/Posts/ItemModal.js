@@ -190,11 +190,11 @@ class ItemModal extends React.Component {
   }
   
   next() {
-    this.openPostModal(this.props.items[this.props.currentIndex + 1]);
+  
   }
   
   previous() {
-    this.openPostModal(this.props.items[this.props.currentIndex - 1]);
+  
   }
   
   redirectToLoginPage() {
@@ -237,7 +237,6 @@ class ItemModal extends React.Component {
   }
   
   render() {
-    if (this.props.item.body) return null;
     let closeParam = document.documentElement.clientWidth <= 815;
     let itemImage = this.props.item.body || constants.NO_IMAGE;
     let isUserAuth = (this.props.username && this.props.postingKey);
