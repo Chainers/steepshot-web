@@ -19,7 +19,7 @@ export default function modals(state = initialState, action) {
     case 'SET_MODAL_OPTIONS':
       return Object.assign({}, state, {
         [action.index]: Object.assign({},
-          state.modal[action.index], action.options),
+          state[action.index], action.options),
       });
     case 'CLOSE_MODAL':
       let newState = Object.assign({}, state);

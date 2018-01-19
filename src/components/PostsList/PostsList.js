@@ -9,6 +9,8 @@ import Constants from '../../common/constants';
 import InfiniteScroll from 'react-infinite-scroller';
 import LoadingSpinner from '../LoadingSpinner';
 import Post from './Post/Post';
+import ItemModal from '../Posts/ItemModal';
+import {openModal} from '../../actions/modal';
 
 class PostsList extends React.Component {
   static defaultProps = {
@@ -33,6 +35,7 @@ class PostsList extends React.Component {
     };
     this.props.initPostsList(postsListOptions);
     this.getPostsList = this.getPostsList.bind(this);
+    this.openPostModal = this.openPostModal.bind(this);
   }
   
   componentDidMount() {
@@ -58,11 +61,24 @@ class PostsList extends React.Component {
         posts.push(<Post key={this.props.point + "/" + postIndex}
                          index={postIndex}
                          point={this.props.point}
-                         clearPostHeader={this.props.clearPostHeader}/>);
+                         clearPostHeader={this.props.clearPostHeader}
+                         openModal={() => {this.openPostModal(postIndex)}}/>);
       }
     });
     
     return posts;
+  }
+  
+  openPostModal(postIndex) {
+    let modalOption = {
+      point: this.props.point,
+      body: (<ItemModal
+        point={this.props.point}
+        index={postIndex}
+        loadMore={this.getPostsList}
+      />),
+    };
+    this.props.openModal(postIndex, modalOption);
   }
   
   
@@ -109,6 +125,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     getPosts: (point) => {
       dispatch(getPostsListAction(point));
+    },
+    openModal: (index, options) => {
+      dispatch(openModal(index, options));
     },
   };
 };

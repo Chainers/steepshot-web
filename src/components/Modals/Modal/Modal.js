@@ -1,13 +1,35 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {closeModal} from '../../../actions/modal';
+import {closeModal, setModalOptions} from '../../../actions/modal';
 import ShowIf from '../../Common/ShowIf';
 
 class Modal extends React.Component {
   
   constructor(props) {
     super(props);
+    this.resizeWindow = this.resizeWindow.bind(this);
   }
+  
+  componentDidMount() {
+    window.addEventListener('resize', this.resizeWindow);
+    this.resizeWindow();
+  }
+  
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.resizeWindow);
+  }
+  
+  resizeWindow() {
+    let alignItems = 'center';
+    
+    if (this.modalContainer.clientHeight > this.wrapper.clientHeight) {
+      alignItems = 'flex-start';
+    }
+    if (this.props.alignItems !== alignItems) {
+      this.props.setModalOptions(this.props.index, {alignItems: alignItems});
+    }
+  }
+  
   
   clickOutside(event) {
     event.stopPropagation();
@@ -16,26 +38,15 @@ class Modal extends React.Component {
     }
   }
   
-  componentDidUpdate() {
-    let alignSelf = 'center';
-    if (this.props.show) {
-      if (this.modalContainer.clientHeight > this.wrapper.clientHeight) {
-        alignSelf = 'flex-start';
-      }
-    }
-    if (this.props.alignSelf !== alignSelf) {
-      this.props.setModalOptions(this.props.index, {alignSelf: 'flex-start'});
-    }
-  }
-  
   render() {
     let styleBack = this.props.fullScreen ? {
       backgroundColor: 'rgba(0,0,0, 1)',
-      zIndex: 1002,
     } : {
       backgroundColor: 'rgba(0,0,0, 0.7)',
-      zIndex: 1002,
     };
+    styleBack.alignItems = this.props.alignItems;
+    styleBack.zIndex = 1002;
+    console.log(this.props.alignSelf);
     return (
       <div className="modal-wrapper_mods">
         <div className="back_mods"
@@ -50,8 +61,7 @@ class Modal extends React.Component {
               </ShowIf>
             </ShowIf>
             <div className={this.props.styles}
-                 ref={ref => {this.modalContainer = ref;}}
-                 style={{alignSelf: this.props.alignSelf}}>
+                 ref={ref => {this.modalContainer = ref;}}>
               {this.props.body}
             </div>
           </ShowIf>
@@ -77,6 +87,9 @@ const mapDispatchToProps = (dispatch) => {
     closeModal: (index) => {
       dispatch(closeModal(index));
     },
+    setModalOptions: (index, options) => {
+      dispatch(setModalOptions(index, options))
+    }
   };
 };
 

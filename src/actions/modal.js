@@ -8,11 +8,11 @@ export function openModal(index, options) {
   }
 }
 
-export function setModalOptions(index, option) {
+export function setModalOptions(index, options) {
   return {
     type: 'SET_MODAL_OPTIONS',
     index,
-    option
+    options
   }
 }
 
