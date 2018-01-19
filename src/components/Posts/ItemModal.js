@@ -18,6 +18,7 @@ import ShowIf from '../Common/ShowIf';
 import {UserLinkFunc} from '../Common/UserLinkFunc';
 import Vote from '../PostsList/Post/Vote/Vote';
 import Flag from '../PostsList/Post/Flag/Flag';
+import {closeModal, openModal} from '../../actions/modal';
 
 const START_TEXTAREA_HEIGHT = '42px';
 
@@ -51,6 +52,7 @@ class ItemModal extends React.Component {
     if (curIndex + 7 >= this.props.items.length) {
       this.props.loadMore();
     }
+    return true;
   }
   
   openLikesModal() {
@@ -86,8 +88,6 @@ class ItemModal extends React.Component {
     this.setState({tmp: 1});
   }
   
-
-  
   clearNewComment(callback) {
     this.setState({
       newComment: null,
@@ -95,7 +95,6 @@ class ItemModal extends React.Component {
   }
   
   componentDidMount() {
-    this.needMore();
     setTimeout(() => {
       jqApp.forms.init();
     }, 0);
@@ -415,4 +414,17 @@ const mapStateToProps = (state, props) => {
   };
 };
 
-export default connect(mapStateToProps)(ItemModal);
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    closeModal: (index) => {
+      dispatch(closeModal(index));
+    },
+    openModal: (index, options) => {
+      dispatch(openModal(index, options))
+    }
+  };
+};
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(ItemModal);

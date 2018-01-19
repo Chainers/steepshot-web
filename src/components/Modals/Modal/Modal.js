@@ -46,7 +46,6 @@ class Modal extends React.Component {
     };
     styleBack.alignItems = this.props.alignItems;
     styleBack.zIndex = 1002;
-    console.log(this.props.alignSelf);
     return (
       <div className="modal-wrapper_mods">
         <div className="back_mods"
