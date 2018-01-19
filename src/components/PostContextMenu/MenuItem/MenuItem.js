@@ -26,7 +26,7 @@ class MenuItem extends React.Component {
       flexDirection: this.props.fullScreen ? 'row' : 'column',
       alignItems: this.props.fullScreen ? 'center' : 'stretch',
       justifyContent: this.props.fullScreen ? 'flex-start' : 'stretch',
-      marginLeft: this.props.fullScreen ? '60px' : 'auto',
+      marginLeft: this.props.fullScreen ? '45px' : 'auto',
     };
     const contentStyle = {
       margin: this.props.fullScreen ? 'auto 5px' : 'auto',
