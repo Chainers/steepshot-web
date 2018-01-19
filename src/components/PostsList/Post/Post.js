@@ -61,9 +61,9 @@ class Post extends React.Component {
         <ShowIf show={!this.props.clearPostHeader}>
           <div className="card-head clearfix">
             <div className="date">
-              <PostContextMenu style={{float: 'left', height: '22px'}}
+              {/*<PostContextMenu style={{float: 'left', height: '22px'}}
                                item={this.props}
-                               index={this.props.index}/>
+                               index={this.props.index}/>*/}
               <TimeAgo
                 datetime={this.props.created}
                 locale='en_US'
