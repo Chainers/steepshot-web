@@ -2,13 +2,54 @@ import * as React from 'react';
 import MenuItem from '../MenuItem/MenuItem';
 import Delimiter from '../DelimitersWrapper/Delimiter/Delimiter';
 import ShowIf from '../../Common/ShowIf';
+import {connect} from 'react-redux';
+import {closeModal} from '../../../actions/modal';
+
+const BUTTON_SIZE = 100;
+const PADDING_CONTAINER = 10;
+const MARGIN_CONTAINER = 20;
+const HOR_CONTAINER_WIDTH = 220;
 
 class Menu extends React.Component {
   constructor(props) {
     super(props);
     this.getItems = this.getItems.bind(this);
+    this.getScreenProperty = this.getScreenProperty.bind(this);
+    this.resizeWindow = this.resizeWindow.bind(this);
+    this.state = this.getScreenProperty();
   }
-
+  
+  componentDidMount() {
+    window.addEventListener('resize', this.resizeWindow);
+  }
+  
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.resizeWindow);
+  }
+  
+  resizeWindow() {
+    this.setState(this.getScreenProperty());
+  }
+  
+  getScreenProperty() {
+    let buttonAmount = this.props.buttonOption.length;
+    let clientWidth = BUTTON_SIZE * buttonAmount
+      + (PADDING_CONTAINER + MARGIN_CONTAINER) * 2;
+    
+    if (document.documentElement.clientWidth > clientWidth) {
+      return {
+        fullScreen: false,
+        contentWidth: BUTTON_SIZE * buttonAmount + PADDING_CONTAINER * 2,
+        contentHeight: BUTTON_SIZE,
+      };
+    }
+    return {
+      fullScreen: true,
+      contentWidth: HOR_CONTAINER_WIDTH,
+      contentHeight: 'auto',
+    };
+  }
+  
   getItems() {
     return this.props.buttonOption.map((item, index) => {
       return <MenuItem
@@ -19,19 +60,19 @@ class Menu extends React.Component {
         hasDelimiter={item.hasDelimiter}
         key={index.toString()}
         count={this.props.buttonOption.length}
-        fullScreen={this.props.fullScreen}
+        fullScreen={this.state.fullScreen}
       />;
     });
   }
-
+  
   closeModal(event) {
     event.stopPropagation();
-    this.props.closeFunc();
+    this.props.closeModal();
   }
-
+  
   render() {
     return (
-      <div className="container_menu" style={{width: this.props.contentWidth}}>
+      <div className="container_menu" style={{width: this.state.contentWidth}}>
         <div className="header_menu">
           <span className="title_menu">Action with this post</span>
           <div className="wrapper-close-button_menu"
@@ -43,15 +84,15 @@ class Menu extends React.Component {
         </div>
         <Delimiter horizontal={true}/>
         <div
-          className={this.props.fullScreen
+          className={this.state.fullScreen
             ? 'full-screen-content_menu'
             : 'content_menu'}
           style={{
-            height: this.props.contentHeight,
+            height: this.state.contentHeight,
           }}>
           {this.getItems()}
         </div>
-        <ShowIf show={this.props.fullScreen}>
+        <ShowIf show={this.state.fullScreen}>
           <div className="filler_menu">
           </div>
         </ShowIf>
@@ -63,5 +104,6 @@ class Menu extends React.Component {
     );
   }
 }
+
 
 export default Menu;
