@@ -17,7 +17,6 @@ export function setModalOptions(index, options) {
 }
 
 export function closeModal(index) {
-  console.log(getStore().getState().modals);
   let modal = getStore().getState().modals[index];
   if (!modal) {
     return {
