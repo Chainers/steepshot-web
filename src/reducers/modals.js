@@ -16,7 +16,7 @@ export default function modals(state = initialState, action) {
         [action.index]: Object.assign({},
           defaultOption, action.options),
       });
-    case 'CLOSE_MODALS':
+    case 'CLOSE_ALL_MODALS':
       return initialState;
     case 'SET_MODAL_OPTIONS':
       return Object.assign({}, state, {

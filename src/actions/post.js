@@ -7,13 +7,13 @@ export function setDefaultAvatar(postIndex) {
   }
 }
 
+
 export function addPosts(posts) {
   return {
     type: 'ADD_POSTS',
     posts
   }
 }
-
 
 export function updatePost(postIndex) {
   return (dispatch) => {

@@ -1,6 +1,8 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import Modal from './Modal/Modal';
+import {withRouter} from 'react-router-dom';
+import {closeAllModals} from '../../actions/modal';
 
 class Modals extends React.Component {
   
@@ -8,10 +10,26 @@ class Modals extends React.Component {
     super(props);
   }
   
+  componentWillMount() {
+    const {history} = this.props;
+    this.unsubscribeFromHistory = history.listen(this.handleLocationChange);
+    this.handleLocationChange(history.location);
+  }
+  
+  componentWillUnmount() {
+    if (this.unsubscribeFromHistory) this.unsubscribeFromHistory();
+  }
+  
+  handleLocationChange = () => {
+    if (this.props.modals.length > 0) {
+      this.props.closeAllModals();
+    }
+  };
+  
   render() {
     let modals = [];
-    for(let key in this.props.modals) {
-      modals.push(<Modal key={key} index={key}/>)
+    for (let key in this.props.modals) {
+      modals.push(<Modal key={key} index={key}/>);
     }
     return (
       <div className="modals-component_mod">
@@ -27,4 +45,12 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps)(Modals);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    closeAllModals: () => {
+      dispatch(closeAllModals());
+    },
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Modals));

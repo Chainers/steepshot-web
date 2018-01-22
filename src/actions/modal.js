@@ -32,3 +32,11 @@ export function closeModal(index) {
     modal.callAfterClosed();
   }
 }
+
+export function closeAllModals() {
+  return {
+    type: 'CLOSE_ALL_MODALS'
+  }
+}
+
+
