@@ -43,8 +43,8 @@ export function getPostsListAction(point) {
       point,
       params: Object.assign({}, {
           offset: statePoint.offset,
-          show_nsfw: userSettings.show_nsfw,
-          show_low_rated: userSettings.show_low_rated
+          show_nsfw: userSettings ? userSettings.show_nsfw : false,
+          show_low_rated: userSettings ? userSettings.show_low_rated : false
         },
         statePoint.options)
     };
@@ -52,7 +52,7 @@ export function getPostsListAction(point) {
       let newPosts = response.results;
       newPosts = removeDuplicate(newPosts);
       newPosts = removeOldDuplicate(statePoint.postsIndices, newPosts);
-      
+
       let postsIndices = newPosts.map(post => {
         return post.url
       });
@@ -65,7 +65,7 @@ export function getPostsListAction(point) {
         hasMore: hasMore,
         length: postsIndices.length,
       };
-      
+
       let postsObject = {};
       let postsLength = newPosts.length;
       for (let i = 0; i < postsLength; i++) {
