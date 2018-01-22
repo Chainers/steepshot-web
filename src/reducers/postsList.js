@@ -1,8 +1,4 @@
-const initialState = {
-  posts: {},
-};
-
-export default function postsList(state = initialState, action) {
+export default function postsList(state = {}, action) {
   switch (action.type) {
     case 'INIT_POSTS_LIST':
       return Object.assign({}, state, {

@@ -31,7 +31,7 @@ class ShareComponent extends React.Component {
         <div className={this.state.containerModifier} style={{right : this.props.offset}}>
             <CopyToClipboard text={this.getUrl()}
                 onCopy={() => this.onSuccess()}>
-                <button title="Share this post" className="btn btn-default btn-xs">{this.state.title}</button>
+                
             </CopyToClipboard>
         </div>
     );

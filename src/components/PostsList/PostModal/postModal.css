@@ -1,0 +1,22 @@
+.container_pos-mod {
+  background-color: #fff;
+  height: 100vh;
+}
+
+.image-container_pos-mod {
+  position: relative;
+}
+
+.image-container_pos-mod > button {
+  opacity: 0;
+  position: absolute;
+  top: 20px;
+  right: 20px;
+}
+
+.image-container_pos-mod:hover > button {
+  opacity: 1;
+}
+
+.image-container_pos-mod > img {
+}

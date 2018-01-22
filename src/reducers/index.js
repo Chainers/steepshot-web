@@ -10,6 +10,7 @@ import votes from './votes';
 import clipboard from './clipboard';
 import postsList from './postsList';
 import modals from './modals';
+import postModal from './postModal';
 
 export default combineReducers({
   clipboard,
@@ -23,4 +24,5 @@ export default combineReducers({
   votes,
   postsList,
   modals,
+  postModal
 });
