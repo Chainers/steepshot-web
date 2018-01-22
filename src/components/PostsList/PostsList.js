@@ -92,7 +92,7 @@ class PostsList extends React.Component {
           initialLoad={false}
           loadMore={debounce(this.getPostsList,
             Constants.ENDLESS_SCROLL.DEBOUNCE_TIMEOUT)}
-          hasMore={this.props.hasMore}
+          hasMore={this.props.isComponentVisible && this.props.hasMore}
           loader={
             <div className="position--relative">
               <LoadingSpinner/>
