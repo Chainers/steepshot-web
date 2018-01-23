@@ -1,5 +1,5 @@
 .container_pos-mod {
-  background-color: #e7e7e7;
+  background-color: #FFF;
   height: 90vh;
   display: flex;
   flex-wrap: wrap;
@@ -8,9 +8,12 @@
   flex-grow: 1;
   flex-shrink: 1;
   flex-basis: 1px;
+  border-radius: 4px;
+  overflow: hidden;
 }
 
 .image-container_pos-mod {
+  background-color: #e7e7e7;
   position: relative;
   height: 100%;
   display: flex;
@@ -34,8 +37,7 @@
 }
 
 .header_pos-mod {
-  width: 380px;
-  height: 50px;
+  padding: 20px;
   background-color: #fff;
   oreder: 2;
 }
@@ -45,4 +47,41 @@
   background-color: #fff;
   order: 3;
   flex-grow: 10;
+}
+
+.date_pos-mod {
+  float: right;
+  color: #979b9e;
+  font-size: 12px;
+  line-height: 22px;
+}
+
+.user_pos-mod {
+  display: block;
+  color: #0f181e;
+  text-decoration: none;
+  overflow: hidden;
+  line-height: 20px;
+}
+
+.user_pos-mod:hover {
+  color: #eb443d;
+  outline: 0;
+}
+
+.user_pos-mod .pic {
+  position: relative;
+  width: 20px;
+  height: 20px;
+  overflow: hidden;
+  border-radius: 50%;
+  margin-right: 10px;
+  float: left;
+}
+
+.name_pos-mod {
+  font-size: 14px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
