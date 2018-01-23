@@ -26,6 +26,14 @@ class Header extends React.Component {
     return baseBrowseFilter;
   }
 
+  scrollTopAndReload() {
+    if (window.location.pathname == '/feed') {
+      window.location.reload();
+    } else if (/\/browse\/\w+/.test(window.location.pathname)) {
+      window.location.reload();
+    }
+  }
+
   componentDidMount() {
     if (this.refs[this.props.location.pathname]) $(this.refs[this.props.location.pathname]).addClass('active');
     setTimeout(() => {
@@ -109,16 +117,16 @@ class Header extends React.Component {
         <div className="wrap-menu">
         {
           (isUserAuth) ? (
-          <div className="item nav-item">
+          <div className="item nav-item" onClick={this.scrollTopAndReload.bind(this)}>
             <Link to="/feed" >Feed</Link>
           </div>
           ) : null
         }
-          <div className="item nav-item" ref="/browse">
+          <div className="item nav-item" onClick={this.scrollTopAndReload.bind(this)}>
             <Link to={`/browse/${this.baseBrowseFilter()}`}>Browse</Link>
           </div>
         </div>
-      </div>
+      </div>;
 
     return (
       <header className="g-header">

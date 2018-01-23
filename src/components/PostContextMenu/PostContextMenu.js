@@ -25,7 +25,8 @@ class PostContextMenu extends React.Component {
   }
 
   deletePost() {
-
+    this.props.deletePost(this.props.index);
+    this.props.closeModal("MenuModal");
   }
 
   editPost() {
@@ -50,7 +51,7 @@ class PostContextMenu extends React.Component {
     this.props.toggleFlag(this.props.index);
     this.props.closeModal("MenuModal");
   }
-  
+
 
   openFunc() {
     let modalOption = {
@@ -103,14 +104,14 @@ class PostContextMenu extends React.Component {
     let tmp;
     if (this.props.item.author == this.props.username) {
       tmp = [
-        /*TODO uncomment when will be implemented delete
+        /*TODO uncomment when will be implemented delete*/
         {
           img: '/static/images/postContextMenu/deleteTrue.svg',
           revertImg: '/static/images/postContextMenu/deleteFalse.svg',
           alt: 'Delete',
           callback: this.deletePost.bind(this),
           hasDelimiter: true,
-        }, *//* TODO uncomment when will be implemented edit post
+        }/* TODO uncomment when will be implemented edit post
         {
           img: '/static/images/postContextMenu/editTrue.svg',
           revertImg: '/static/images/postContextMenu/editFalse.svg',
@@ -162,6 +163,9 @@ const mapDispatchToProps = (dispatch) => {
     closeModal: (index) => {
       dispatch(closeModal(index));
     },
+    deletePost: (index) => {
+      dispatch(deleteModal(index));
+    }
   }
 };
 

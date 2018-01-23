@@ -13,23 +13,23 @@ import Vote from './Vote/Vote';
 import {setDefaultAvatar} from '../../../actions/post';
 
 class Post extends React.Component {
-  
+
   static defaultProps = {
     clearPostHeader: false,
   };
-  
+
   constructor(props) {
     super(props);
     this.localConstants = {
       THIS_POST_MODAL_REF: 'thisPostModal' + this.props.index,
     };
   }
-  
+
   callPreventDefault(e) {
     e.stopPropagation();
     e.preventDefault();
   }
-  
+
   _getPostImageStyles(itemImage) {
     return {
       backgroundImage: `url(${itemImage})`,
@@ -41,29 +41,30 @@ class Post extends React.Component {
       backgroundPosition: 'center',
     };
   }
-  
-  
-  
+
+
+
   render() {
     if (!this.props) {
       return null;
     }
     let itemImage = this.props.body || constants.NO_IMAGE;
     let authorImage = this.props.avatar || constants.NO_AVATAR;
-    
+
     const authorLink = `/@${this.props.author}`;
     const cardPhotoStyles = {
       backgroundImage: 'url(' + itemImage + ')',
     };
-    
+
     return (
       <div className="post-card" style={{width: 300}}>
         <ShowIf show={!this.props.clearPostHeader}>
           <div className="card-head clearfix">
             <div className="date">
-              {/*<PostContextMenu style={{float: 'left', height: '22px'}}
+              <PostContextMenu style={{float: 'left', height: '22px'}}
                                item={this.props}
-                               index={this.props.index}/>*/}
+                               index={this.props.index}
+              />
               <TimeAgo
                 datetime={this.props.created}
                 locale='en_US'
