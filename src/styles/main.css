@@ -1156,3 +1156,20 @@ h2.card-field__heading {
   position: relative;
   height: 150px;
 }
+
+.container_tags a {
+  opacity: 1;
+  transition: .2s opacity ease;
+}
+.container_tags a:hover {
+  opacity: 0.6;
+}
+.testClass {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+.testClass .post__image-container {
+  background-color: #ffffff;
+}

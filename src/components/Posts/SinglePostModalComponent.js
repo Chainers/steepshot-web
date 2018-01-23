@@ -273,13 +273,7 @@ class SinglePostModalComponent extends React.Component {
     this.initLayout();
 
     return (
-      <div>
-        <Modal
-          show={this.state.showModal}
-          closeFunc={this.closeFunc.bind(this)}
-          fullScreen={this.state.fullScreen}
-          closeButton={false}
-        >
+      <div className="testClass">
           <div className="post-single">
             <ShowIf show={this.state.fullScreen}>
               <div className="crossWrapper">
@@ -424,7 +418,6 @@ class SinglePostModalComponent extends React.Component {
               </div>
             </div>
           </div>
-        </Modal>
       </div>
     );
   }

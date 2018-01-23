@@ -13,7 +13,6 @@ import TimeAgo from 'timeago-react';
 import ShowIf from '../Common/ShowIf';
 import {UserLinkFunc} from '../Common/UserLinkFunc';
 import PostContextMenu from '../PostContextMenu/PostContextMenu';
-import NewLikesComponent from '../CustomLikesModal/NewLikesComponent';
 
 class Item extends React.Component {
   constructor(props) {
@@ -115,7 +114,7 @@ class Item extends React.Component {
     if (this.state.item.tags) {
       return this.state.item.tags.map((tag, index) => {
         return <span key={index}>
-                 <TagComponent tag={tag + ' '} />
+                 <TagComponent tag={tag} />
                </span>
       });
     } else return null;
