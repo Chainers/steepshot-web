@@ -33,7 +33,8 @@ class SearchResultsComponent extends React.Component {
         query : this.props.searchValue
       },
       searchValue : this.props.searchValue,
-      showResults: false
+      showResults: false,
+      ...this.props
     };
   }
 
@@ -146,7 +147,6 @@ class SearchResultsComponent extends React.Component {
                 maxPosts={4}
                 forceRefresh={this.state.needsForceRefresh}
                 headerText= {hotPost}
-                controlTabs={this.controlTabs.bind(this)}
                 key={1}
               />
               {
@@ -159,7 +159,6 @@ class SearchResultsComponent extends React.Component {
                     wrapperModifier="posts-list clearfix"
                     forceRefresh={this.state.needsForceRefresh}
                     headerText={newPost}
-                    controlTabs={this.controlTabs.bind(this)}
                     key={2}
                   />
                 :

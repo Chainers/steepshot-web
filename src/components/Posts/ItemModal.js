@@ -393,12 +393,8 @@ class ItemModal extends React.Component {
                               onChange={this.lookTextarea.bind(this)}
                             />
 
-                            <div className="hidden-div_item-mod"
-                                 ref={ref => {this.hiddenDiv = ref;}}>
-                            </div>
-
-                          <label htmlFor="formCOMMENT"
-                                 className="name">Comment</label>
+                            <div className="hidden-div_item-mod" ref={ref => {this.hiddenDiv = ref}}/>
+                            <label htmlFor="formCOMMENT" className="name">Comment</label>
                         </div>
                       </div>
                     </div>
