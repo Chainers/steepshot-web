@@ -11,8 +11,8 @@ import constants from '../../../common/constants';
 import Tags from './Tags/Tags';
 import Vote from './Vote/Vote';
 import {setDefaultAvatar} from '../../../actions/post';
-import {openModal} from '../../../actions/modal';
 import PostModal from '../PostModal/PostModal';
+import {initPostModal, openPostModal} from '../../../actions/postModal';
 
 class Post extends React.Component {
   
@@ -42,14 +42,10 @@ class Post extends React.Component {
   }
   
   openPostModal() {
-    console.log(this.props);
     let modalOption = {
-      body: (<PostModal
-        point={this.props.point}
-        index={this.props.index}
-      />),
+      body: (<PostModal />),
     };
-    this.props.openModal(this.props.point, modalOption);
+    this.props.openModal(this.props.point, this.props.index, modalOption);
   }
   
   render() {
@@ -138,9 +134,9 @@ const mapDispatchToProps = (dispatch) => {
     setDefaultAvatar: (postIndex => {
       dispatch(setDefaultAvatar(postIndex));
     }),
-    openModal: (index, options) => {
-      dispatch(openModal(index, options));
-    },
+    openModal: (point, index, options) => {
+      dispatch(openPostModal(point, index, options));
+    }
   };
 };
 
