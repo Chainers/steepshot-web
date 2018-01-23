@@ -1164,12 +1164,16 @@ h2.card-field__heading {
 .container_tags a:hover {
   opacity: 0.6;
 }
-.testClass {
+.shareWrapper {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
 }
-.testClass .post__image-container {
+.shareWrapper .post__image-container {
   background-color: #ffffff;
 }
+.post-single {
+  height: auto;
+}
+
+

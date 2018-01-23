@@ -13,14 +13,11 @@ class Tags extends React.Component {
   }
 
   getTags() {
-    if (!this.props.tags)
-      return null;
-
+    if (!this.props.tags) return null;
     return this.props.tags.map((tag, index) => {
       if (tag == 'steepshot' || tag == '#steepshot') {
         return null;
       }
-
       return <Link key={index} to={`/search/${this.checkFirst(tag)}`}>
                {utils.tagPrettify(tag) + ' '}
              </Link>
@@ -28,9 +25,11 @@ class Tags extends React.Component {
   }
 
   render() {
-    return (<span className="container_tags">
-              {this.getTags.bind(this)()}
-            </span>);
+    return (
+            <div className="container_tags">
+              {this.getTags()}
+            </div>
+           );
   }
 }
 

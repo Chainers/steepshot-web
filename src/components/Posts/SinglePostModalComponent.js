@@ -3,12 +3,12 @@ import Steem from '../../libs/steem';
 import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
 import Comments from './Comments';
-import constants from '../../common/constants';
+import Constants from '../../common/constants';
 import ShareComponent from './ShareComponent';
 import ScrollViewComponent from '../Common/ScrollViewComponent';
-import TagComponent from './TagComponent';
+import Tag from '../PostsList/Post/Tags/Tags';
 import LoadingSpinner from '../LoadingSpinner';
-import Avatar from '../Common/Avatar/Avatar';
+import AvatarComponent from '../Atoms/AvatarComponent';
 import LikesComponent from '../Posts/LikesComponent';
 import TimeAgo from 'timeago-react';
 
@@ -20,6 +20,7 @@ import Vote from '../PostsList/Post/Vote/Vote';
 import Flag from '../PostsList/Post/Flag/Flag';
 
 const MAX_WIDTH_FULL_SCREEN = 815;
+const START_TEXT_HEIGHT = '42px';
 
 class SinglePostModalComponent extends React.Component {
   constructor(props) {
@@ -33,7 +34,7 @@ class SinglePostModalComponent extends React.Component {
       lowParam: false,
       fullScreen: document.documentElement.clientWidth <= MAX_WIDTH_FULL_SCREEN,
       showModal: false,
-      ...this.props,
+      ...this.props
     };
     this.mobileCoverParams = {
       width: '100%',
@@ -99,6 +100,7 @@ class SinglePostModalComponent extends React.Component {
           this.error();
         }
         this.controlRestrictions();
+        this.countHeight();
       });
     this.closeButtonFunc();
     window.addEventListener('resize', () => {
@@ -168,7 +170,7 @@ class SinglePostModalComponent extends React.Component {
         }, () => {
           this.commentInput.value = '';
           this.scrollView.scrollBar.scrollToBottom();
-          jqApp.pushMessage.open(constants.COMMENT_SUCCESS_MESSAGE);
+          jqApp.pushMessage.open(Constants.COMMENT_SUCCESS_MESSAGE);
         });
       }
     };
@@ -190,7 +192,7 @@ class SinglePostModalComponent extends React.Component {
 
   setDefaultImage() {
     this.setState({
-      image: constants.NO_IMAGE,
+      image: Constants.NO_IMAGE,
     });
   }
 
@@ -211,7 +213,6 @@ class SinglePostModalComponent extends React.Component {
     let descriptionStart = this.state.item.description.replace(/(<\w+>)+/, '');
     let description = descriptionStart.replace(/\n[\w\W]+/, '');
     let forceOpen = false;
-    this.state.item.tags.map(tag => description = description + ' #' + tag);
     if (description.length < 140) forceOpen = true;
     return (
       <div className="post-description">
@@ -222,13 +223,8 @@ class SinglePostModalComponent extends React.Component {
             : 'collapse-closed'}
         >
           {description + ' '}
-          {
-            this.state.item.tags.map((tag, index) => {
-              return <span key={index}><TagComponent tag={tag}/> </span>;
-            })
-          }
-          <a className="lnk-more" onClick={this.openDescription.bind(this)}>Show
-            more</a>
+          <Tag tags={this.state.item.tags}/>
+          <a className="lnk-more" onClick={this.openDescription.bind(this)}>Show more</a>
         </div>
       </div>
     );
@@ -253,21 +249,40 @@ class SinglePostModalComponent extends React.Component {
     }
   }
 
+  countHeight() {
+    let height = this.shareWrapper.parentNode.clientHeight - 60;
+    this.setState({wrapperHeight: height + 'px'});
+  }
+
+  lookTextarea() {
+    let firstSpace = this.commentInput.value.match(/\s+/);
+    if (firstSpace && firstSpace['index'] == 0) {
+      this.commentInput.value = '';
+    } else if (this.commentInput.value != '') {
+      this.sendButton.classList.add('send-button_item-mod');
+    } else {
+      this.sendButton.classList.remove('send-button_item-mod');
+    }
+    this.hiddenDiv.textContent = this.commentInput.value;
+  }
+
+
   render() {
     if (this.state.isPostLoading || this.state.error) {
       return null;
     }
-
-    let itemImage = this.state.item.body || constants.NO_IMAGE;
+    let itemImage = this.state.item.body || Constants.NO_IMAGE;
     let isUserAuth = (utils.isNotEmptyString(this.props.username) &&
       utils.isNotEmptyString(this.props.postingKey));
     const authorLink = `/@${this.state.item.author}`;
 
     this.initLayout();
-
     return (
-      <div className="testClass">
-          <div className="post-single">
+      <div className="shareWrapper"
+           ref={ ref => {this.shareWrapper = ref} }
+           style={{height: this.state.wrapperHeight}}
+      >
+          <div className="post-single" style={{maxHeight: this.state.wrapperHeight}}>
             <ShowIf show={this.state.fullScreen}>
               <div className="crossWrapper">
                 <div className="user-wrap clearfix">
@@ -278,7 +293,7 @@ class SinglePostModalComponent extends React.Component {
                     />
                   </div>
                   <Link to={authorLink} className="user">
-                    <Avatar src={this.state.item.avatar}/>
+                    <AvatarComponent src={this.state.item.avatar}/>
                     <div className="name">{this.state.item.author}</div>
                   </Link>
                   <i data-dismiss="modal" className="modalButton"
@@ -308,11 +323,8 @@ class SinglePostModalComponent extends React.Component {
                       <div className="forAdult2">
                         <div className="forAdultInner">
                           <p className="par1">Low rated content</p>
-                          <p className="par2">This content is hidden due to low
-                            ratings.</p>
-                          <button className="btn btn-index"
-                                  onClick={this.hideFunc.bind(this)}>Show me
-                          </button>
+                          <p className="par2">This content is hidden due to low ratings.</p>
+                          <button className="btn btn-index" onClick={this.hideFunc.bind(this)}>Show me</button>
                         </div>
                       </div>
                       <img src={itemImage} alt="Post picture."/>
@@ -328,7 +340,7 @@ class SinglePostModalComponent extends React.Component {
                     </div>
                 }
               </div>
-              <div className="post__description-container">
+              <div className="post__description-container" style={{maxHeight: this.state.wrapperHeight}}>
                 <ShowIf show={!this.state.fullScreen}>
                   <div className="user-wrap clearfix">
                     <div className="date">
@@ -338,7 +350,7 @@ class SinglePostModalComponent extends React.Component {
                       />
                     </div>
                     <Link to={authorLink} className="user">
-                      <Avatar src={this.state.item.avatar}/>
+                      <AvatarComponent src={this.state.item.avatar}/>
                       <div className="name">{this.state.item.author}</div>
                     </Link>
                   </div>
@@ -366,8 +378,7 @@ class SinglePostModalComponent extends React.Component {
                   ref={(ref) => this.scrollView = ref}
                   wrapperModifier="list-scroll"
                   scrollViewModifier="list-scroll__view"
-                  autoHeight={window.innerWidth <
-                  constants.DISPLAY.DESK_BREAKPOINT}
+                  autoHeight={window.innerWidth < Constants.DISPLAY.DESK_BREAKPOINT}
                   autoHeightMax={350}
                   autoHeightMin={100}
                   autoHide={true}
@@ -381,28 +392,38 @@ class SinglePostModalComponent extends React.Component {
                   <div className="post-comment">
                     <form className="comment-form form-horizontal">
                       <div className="form-group clearfix">
-                        {
-                          this.state.needsCommentFormLoader
-                            ? <div className="loaderInComments">
-                              <LoadingSpinner
-                                show={this.state.needsCommentFormLoader}/>
-                            </div>
-                            : <div className="btn-wrap">
-                              <button type="submit" className="btn-submit"
-                                      onClick={this.sendComment.bind(this)}>Send
-                              </button>
-                            </div>
-                        }
-                        <div className="input-container">
-                        <textarea
-                          ref={(ref) => {this.commentInput = ref;}}
-                          id="formCOMMENT"
-                          name="commentValue"
-                          maxLength={2048}
-                          className="form-control"
-                        />
-                          <label htmlFor="formCOMMENT"
-                                 className="name">Comment</label>
+                          {
+                            this.state.needsCommentFormLoader
+                              ? <div className="loaderInComments">
+                                <LoadingSpinner show={this.state.needsCommentFormLoader}/>
+                              </div>
+                              : <div className="btn-wrap">
+                                <button
+                                  type="submit"
+                                  className="btn-submit"
+                                  onClick={this.sendComment.bind(this)}
+                                  ref={ref => {this.sendButton = ref}}
+                                >Send</button>
+                              </div>
+                          }
+                          <div className="input-container">
+                          <textarea
+                            ref={(ref) => {this.commentInput = ref}}
+                            style={{
+                                    height: this.hiddenDiv != undefined
+                                      ? this.hiddenDiv.clientHeight + 'px'
+                                      : START_TEXT_HEIGHT,
+                                  }}
+                            id="formCOMMENT"
+                            name="commentValue"
+                            maxLength={2048}
+                            className="form-control"
+                            onChange={this.lookTextarea.bind(this)}
+                          />
+                          <div className="hidden-div_item-mod"
+                               ref={ref => {this.hiddenDiv = ref}}>
+                          </div>
+                          <label htmlFor="formCOMMENT" className="name">Comment</label>
                         </div>
                       </div>
                     </form>
@@ -416,7 +437,7 @@ class SinglePostModalComponent extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state, props) => {
   return {
     localization: state.localization,
     username: state.auth.user,
