@@ -414,6 +414,7 @@ h2.card-field__heading {
   font: 11px OpenSans-Regular;
 }
 .hidden-div_item-mod {
+  width: 280px;
   position: absolute;
   visibility: hidden;
   display: block;

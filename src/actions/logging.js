@@ -106,5 +106,5 @@ export function logFollow(isFollowed, user, data) {
 }
 
 export function logDeletedPost(data) {
-
+    // logCORS();
 }

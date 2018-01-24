@@ -62,7 +62,6 @@ class SearchResultsComponent extends React.Component {
   }
 
   updateActiveTab(index) {
-    console.log(index);
     this.setState({
       activeItemIndex : index
     })

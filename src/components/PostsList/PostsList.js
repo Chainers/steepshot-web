@@ -53,7 +53,6 @@ class PostsList extends React.Component {
         </div>
       );
     }
-
     let posts = [];
     this.props.postsIndices.forEach((postIndex) => {
       if (this.props.ignored.indexOf(postIndex) == -1) {
@@ -90,7 +89,6 @@ class PostsList extends React.Component {
 
   render() {
     if (!this.props.length) return null;
-
     return (
       <div className={this.props.className}>
         {this.renderHeader()}

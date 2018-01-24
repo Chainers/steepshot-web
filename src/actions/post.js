@@ -56,9 +56,8 @@ export function deletePost(postIndex) {
     let state = getStore().getState();
     let username = state.auth.user;
     let postingKey = state.auth.postingKey;
-    console.log(state.auth);
     const urlObject = postIndex.split('/');
-    let permlink = urlObject[urlObject.length - 2] + '/' + urlObject[urlObject.length - 1];
+    let permlink = urlObject[urlObject.length - 1];
 
     let queue = sessionStorage.getItem('voteQueue');
     if (queue == 'true')  {
@@ -72,11 +71,15 @@ export function deletePost(postIndex) {
       sessionStorage.setItem('voteQueue', 'false');
 
       if (success) {
-        dispatch(successDeletePost(postIndex));
+        try {
+          dispatch(successDeletePost(postIndex));
+        } catch (err) {
+          console.log(err);
+        }
         let text = 'The post has been successfully deleted. If you still see your post, please give it a few minutes to sync from the blockchain';
         jqApp.pushMessage.open(text);
       } else if (err) {
-        let text = 'We are sooorry... post can\'t be deleted';
+        let text = 'We are sooooorry... it\'s impossible to delete this post';
         jqApp.pushMessage.open(text);
         dispatch(failureDeletePost(postIndex));
         // const nullCreateDeleteCallback = () => {

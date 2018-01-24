@@ -59,7 +59,7 @@ class Post extends React.Component {
       <div className="post-card" style={{width: 300, position: 'relative'}}>
         <ShowIf show={this.props.postDeleting}>
           <div className="delete-loader_post">
-            <LoadingSpinner show={true} deleting={true}/>
+            <LoadingSpinner show={true} deleting={true} />
           </div>
         </ShowIf>
         <ShowIf show={!this.props.clearPostHeader}>
@@ -86,8 +86,7 @@ class Post extends React.Component {
           </div>
         </ShowIf>
         <div className="card-body">
-          <div className="card-pic"
-               onClick={this.props.openModal}>
+          <div className="card-pic" onClick={this.props.openModal}>
             <ShowIf show={this.props.is_nsfw}>
               <div className="forAdult">
                 <p>NSFW content</p>
