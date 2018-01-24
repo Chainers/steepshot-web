@@ -38,7 +38,6 @@
 .header_pos-mod {
   padding: 20px;
   background-color: #fafafa;
-  oreder: 2;
 }
 
 .description_pos-mod {
@@ -145,12 +144,6 @@
   font-family: OpenSans-Light,Helvetica,Arial,sans-serif;
 }
 
-.add-comment_pos-mod {
-  width: 100%;
-  height: 80px;
-  box-shadow:0 0 10px 0 rgba(204,204,204,.5)
-}
-
 .list-scroll_pos-mod {
   overflow: hidden;
   flex-grow: 1;
@@ -162,7 +155,7 @@
 }
 
 .text-description_pos-menu {
-  padding: 15px 0;
+  padding-bottom: 15px;
 }
 
 .list-scroll-view_pos-mod .comment-text {
@@ -184,6 +177,9 @@
 
 .list-scroll-view_pos-mod .date {
   float: right;
+  color: #979b9e;
+  font-size: 12px;
+  line-height: 22px;
 }
 
 .list-scroll-view_pos-mod .comment {
@@ -206,4 +202,57 @@
 .list-scroll-view_pos-mod .user:hover {
   color: #eb443d;
   outline: 0;
+}
+
+.add-comment_pos-mod {
+  display: flex;
+  align-items: flex-end;
+  width: 100%;
+  height: 82px;
+  box-shadow:0 0 10px 0 rgba(204,204,204,.5);
+  padding: 20px 10px 20px 20px;
+  position: relative;
+}
+
+.add-comment_pos-mod .form-horizontal {
+  flex: 1;
+  height: 100%;
+}
+
+.text-area_pos-mod {
+  font-size: 12px;
+}
+
+.btn_pos-mod {
+  height: 40px;
+  width: 60px;
+  border: none;
+  border-radius: 40px;
+  background: 0 0;
+  cursor: pointer;
+  color: #979b9e;
+  font-size: 12px;
+  font-family: inherit;
+  line-height: inherit;
+}
+
+.btn_pos-mod:hover {
+  cursor: pointer;
+  border: 1px solid #ececee
+}
+
+.label_pos-mod {
+  font-size: 12px;
+  position: absolute;
+  white-space: nowrap;
+  color: #979b9e;
+  line-height: 1.6;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  transition: all .2s ease;
+}
+
+textarea:focus ~ .label_pos-mod {
+  top: 5px;
+  transition: all .2s ease;
 }

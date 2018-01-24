@@ -363,21 +363,6 @@ class ItemModal extends React.Component {
                     <div className="comment-form form-horizontal">
                       <div className="form-group clearfix"
                            ref={(ref) => {this.formGr = ref;}}>
-                        {
-                          this.state.needsCommentFormLoader
-                            ? <div className="loaderInComments">
-                              <LoadingSpinner/>
-                            </div>
-                            : <div className="btn-wrap">
-                              <button
-                                type="submit"
-                                className="btn-submit"
-                                onClick={this.sendComment.bind(this)}
-                                ref={ref => {this.sendButton = ref;}}
-                              >Send
-                              </button>
-                            </div>
-                        }
                         <div className="input-container">
                             <textarea
                               ref={(ref) => {this.commentInput = ref;}}

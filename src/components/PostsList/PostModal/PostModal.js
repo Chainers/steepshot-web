@@ -138,8 +138,19 @@ class PostModal extends React.Component {
               />
             </ScrollViewComponent>
           </div>
+          
           <ShowIf show={this.props.isUserAuth}>
             <div className="add-comment_pos-mod">
+              <textarea ref={(ref) => {this.commentInput = ref;}}
+                        maxLength={2048}
+                        className="form-control text-area_pos-mod"
+              />
+              <div className="hidden-div_item-mod"
+                   ref={ref => {this.hiddenDiv = ref;}}/>
+              <label className="label_pos-mod">Comment</label>
+              <button type="submit"
+                      className="btn-submit btn_pos-mod">Send
+              </button>
             </div>
           </ShowIf>
         </div>
@@ -220,8 +231,8 @@ class PostModal extends React.Component {
       },
       headerCont,
       description: {
-        width: headerCont.width
-      }
+        width: headerCont.width,
+      },
     };
     this.props.setPostModalOptions({style, closeButton});
   }
