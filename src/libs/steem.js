@@ -215,6 +215,19 @@ class Steem {
     }
 
     /** Broadcast a post */
+
+    deletePost(wif, author, permlink, callback) {
+      const callbackBc = (err, success) => {
+        if (err) {
+          callback(err, null);
+        } else if (success) {
+          // logDeletedPost(data); loggin deleted posts
+          callback(null, success);
+        }
+      };
+      steem.broadcast.deleteComment(wif, author, permlink, callbackBc);
+    }
+
     createPost(wif, tags, author, title, description, file, callback) {
         const permlink = this._getPermLink();
         const operation = [constants.OPERATIONS.COMMENT, {

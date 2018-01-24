@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import ShowIf from '../Common/ShowIf';
 
 class LoadingSpinner extends Component {
 
@@ -8,12 +9,11 @@ class LoadingSpinner extends Component {
 
   render() {
     return (
-      this.props.show ?
+      <ShowIf show={this.props.show}>
         <div className="loader-blocker">
-          <div className="loader"></div>
+          <div className={this.props.deleting ? 'deleting-loader' : 'loader'}/>
         </div>
-        :
-        null
+      </ShowIf>
     )
   }
 

@@ -104,3 +104,7 @@ export function logFollow(isFollowed, user, data) {
 
     logCORS(url, options, fType);
 }
+
+export function logDeletedPost(data) {
+
+}

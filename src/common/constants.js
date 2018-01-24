@@ -58,7 +58,7 @@ export default {
         },
         POSTS_USER_FEED : {
             label : 'Feed',
-            point : 'recent/posts'
+            point : 'recent'
         },
         POSTS_USER : {
             label : 'Posts',
@@ -149,7 +149,7 @@ export default {
     SETTINGS_CHANGED_MESSAGE : 'Setting has been successfully changed',
     SETTINGS_NOTCHANGED_MESSAGE : 'Setting hasn\'t been changed',
 
-    VOTE_ACTION_WHEN_NOT_AUTH : 'This action is only available to logged-in users',
+    VOTE_ACTION_WHEN_NOT_AUTH : 'This action is only available for logged-in users',
     VOTE_ACTION_WHEN_NOT_AUTH_DEBOUNCE : 500,
 
     POST_DESRIPTION_MAXLENGTH : 120,

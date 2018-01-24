@@ -13,22 +13,23 @@ import Vote from './Vote/Vote';
 import {setDefaultAvatar} from '../../../actions/post';
 import PostModal from '../PostModal/PostModal';
 import {initPostModal, openPostModal} from '../../../actions/postModal';
+import LoadingSpinner from "../../LoadingSpinner/index";
 
 class Post extends React.Component {
-  
+
   static defaultProps = {
     clearPostHeader: false,
   };
-  
+
   constructor(props) {
     super(props);
   }
-  
+
   callPreventDefault(e) {
     e.stopPropagation();
     e.preventDefault();
   }
-  
+
   _getPostImageStyles(itemImage) {
     return {
       backgroundImage: `url(${itemImage})`,
@@ -40,28 +41,33 @@ class Post extends React.Component {
       backgroundPosition: 'center',
     };
   }
-  
+
   openPostModal() {
     let modalOption = {
       body: (<PostModal />),
     };
     this.props.openModal(this.props.point, this.props.index, modalOption);
   }
-  
+
   render() {
     if (!this.props) {
       return null;
     }
     let itemImage = this.props.body || constants.NO_IMAGE;
     let authorImage = this.props.avatar || constants.NO_AVATAR;
-    
+
     const authorLink = `/@${this.props.author}`;
     const cardPhotoStyles = {
       backgroundImage: 'url(' + itemImage + ')',
     };
-    
+
     return (
-      <div className="post-card" style={{width: 300}}>
+      <div className="post-card" style={{width: 300, position: 'relative'}}>
+        <ShowIf show={this.props.postDeleting}>
+          <div className="delete-loader_post">
+            <LoadingSpinner show={true} deleting={true}/>
+          </div>
+        </ShowIf>
         <ShowIf show={!this.props.clearPostHeader}>
           <div className="card-head clearfix">
             <div className="date">

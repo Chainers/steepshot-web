@@ -19,6 +19,7 @@ import {UserLinkFunc} from '../Common/UserLinkFunc';
 import Vote from '../PostsList/Post/Vote/Vote';
 import Flag from '../PostsList/Post/Flag/Flag';
 import {closeModal, openModal} from '../../actions/modal';
+import PostContextMenu from '../PostContextMenu/PostContextMenu';
 
 const START_TEXTAREA_HEIGHT = '42px';
 
@@ -317,6 +318,10 @@ class ItemModal extends React.Component {
                         locale='en_US'
                       />
                     </div>
+                    <PostContextMenu style={{float: 'left', height: '22px'}}
+                                     item={this.props}
+                                     index={this.props.index}
+                    />
                     <Link to={authorLink} className="user">
                       <AvatarComponent src={this.props.item.avatar}/>
                       <div className="name">{this.props.item.author}</div>

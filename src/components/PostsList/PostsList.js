@@ -9,6 +9,10 @@ import Constants from '../../common/constants';
 import InfiniteScroll from 'react-infinite-scroller';
 import LoadingSpinner from '../LoadingSpinner';
 import Post from './Post/Post';
+import ItemModal from '../Posts/ItemModal';
+import {openModal} from '../../actions/modal';
+import HeadingLeadComponent from '../Atoms/HeadingLeadComponent';
+import ShowIf from '../Common/ShowIf';
 
 class PostsList extends React.Component {
   static defaultProps = {
@@ -17,7 +21,7 @@ class PostsList extends React.Component {
     ignored: [],
     clearPostHeader: false,
   };
-  
+
   constructor(props) {
     super(props);
     this.props.clearPosts();
@@ -34,15 +38,15 @@ class PostsList extends React.Component {
     this.props.initPostsList(postsListOptions);
     this.getPostsList = this.getPostsList.bind(this);
   }
-  
+
   componentDidMount() {
     this.getPostsList();
   }
-  
+
   getPostsList() {
     this.props.getPosts(this.props.point);
   }
-  
+
   renderPosts() {
     if (!this.props.length) {
       return (
@@ -51,7 +55,7 @@ class PostsList extends React.Component {
         </div>
       );
     }
-    
+
     let posts = [];
     this.props.postsIndices.forEach((postIndex) => {
       if (this.props.ignored.indexOf(postIndex) == -1) {
@@ -61,13 +65,13 @@ class PostsList extends React.Component {
                          clearPostHeader={this.props.clearPostHeader}/>);
       }
     });
-    
+
     return posts;
   }
-  
+
   render() {
     if (!this.props.length) return null;
-    
+
     return (
       <div className={this.props.className}>
         <InfiniteScroll

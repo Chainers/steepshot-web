@@ -21,35 +21,40 @@ class TabsFilterComponent extends React.Component {
         this.setState({
             keys : nextProps.keys
         });
-        this.autoClick(nextProps.activeItemIndex);
+        //this.autoClick(nextProps.activeItemIndex);
     }
 
-    autoClick(index) {
+    // autoClick(index) {
+    //   if (this.state.activeItemIndex == index) return false;
+    //   this.props.updateCallback(index);
+    //   this.setState({
+    //     activeItemIndex : index,
+    //   });
+    // }
+
+    switchFilter(index) {
+      // if (/\/search\/\w+/.test(document.location.pathname)) {
+      //   if (this.props.activeItemIndex == index) return false;
+      //   if (this.props.numberUsers && this.props.numberPosts) {
+      //     this.props.updateCallback(index);
+      //     this.setState({
+      //       activeItemIndex: index,
+      //     });
+      //   } else {
+      //     return false
+      //   }
+      // } else {
+      //   if (this.state.activeItemIndex == index) return false;
+      //   this.props.updateCallback(index);
+      //   this.setState({
+      //     activeItemIndex: index,
+      //   });
+      // }
       if (this.state.activeItemIndex == index) return false;
       this.props.updateCallback(index);
       this.setState({
-        activeItemIndex : index,
+        activeItemIndex: index,
       });
-    }
-
-    switchFilter(index) {
-      if (/\/search\/\w+/.test(document.location.pathname)) {
-        if (this.props.activeItemIndex == index) return false;
-        if (this.props.numberUsers && this.props.numberPosts) {
-          this.props.updateCallback(index);
-          this.setState({
-            activeItemIndex: index,
-          });
-        } else {
-          return false
-        }
-      } else {
-        if (this.state.activeItemIndex == index) return false;
-        this.props.updateCallback(index);
-        this.setState({
-          activeItemIndex: index,
-        });
-      }
     }
 
     renderNavigation() {
