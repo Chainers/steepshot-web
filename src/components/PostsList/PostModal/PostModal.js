@@ -4,7 +4,7 @@ import {setPostModalOptions} from '../../../actions/postModal';
 import constants from '../../../common/constants';
 import TimeAgo from 'timeago-react';
 import {Link} from 'react-router-dom';
-import AvatarComponent from '../../Atoms/AvatarComponent';
+import Avatar from '../../Common/Avatar/Avatar';
 import {closeModal, setModalOptions} from '../../../actions/modal';
 import ShowIf from '../../Common/ShowIf';
 
@@ -25,7 +25,6 @@ class PostModal extends React.Component {
   }
   
   render() {
-    console.log("render ");
     const authorLink = `/@${this.props.post.author}`;
     return (
       <div className="container_pos-mod"
@@ -59,7 +58,7 @@ class PostModal extends React.Component {
             </ShowIf>
           </div>
           <Link to={authorLink} className="user_pos-mod">
-            <AvatarComponent src={this.props.post.avatar}/>
+            <Avatar src={this.props.post.avatar}/>
             <div className="name_pos-mod">{this.props.post.author}</div>
           </Link>
         </div>

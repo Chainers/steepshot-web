@@ -5,7 +5,7 @@ import {
   Link
 } from 'react-router-dom';
 import constants from '../../common/constants';
-import AvatarComponent from '../Atoms/AvatarComponent';
+import Avatar from '../Common/Avatar/Avatar';
 
 class UserItem extends React.Component {
   constructor(props) {
@@ -37,7 +37,7 @@ class UserItem extends React.Component {
                 <div className="card-wrap clearfix">
                     <div onClick={this.closeFunc.bind(this)}>
                       <Link to={authorLink}>
-                        <AvatarComponent src={profileImageSrc} />
+                        <Avatar src={profileImageSrc} />
                       </Link>
                     </div>
                     <div className="text">

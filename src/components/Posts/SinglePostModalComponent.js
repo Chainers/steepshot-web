@@ -4,13 +4,11 @@ import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
 import Comments from './Comments';
 import constants from '../../common/constants';
-import VouteComponent from './VouteComponent';
-import FlagComponent from './FlagComponent';
 import ShareComponent from './ShareComponent';
 import ScrollViewComponent from '../Common/ScrollViewComponent';
 import TagComponent from './TagComponent';
 import LoadingSpinner from '../LoadingSpinner';
-import AvatarComponent from '../Atoms/AvatarComponent';
+import Avatar from '../Common/Avatar/Avatar';
 import LikesComponent from '../Posts/LikesComponent';
 import TimeAgo from 'timeago-react';
 
@@ -18,11 +16,6 @@ import {getPostShaddow} from '../../actions/posts';
 
 import utils from '../../utils/utils';
 import ShowIf from '../Common/ShowIf';
-import Modal from '../Common/Modal/Modal';
-import {
-  addFlag, addUpdateFlagInComponentFunc,
-  clearFlags,
-} from '../../actions/flag';
 import Vote from '../PostsList/Post/Vote/Vote';
 import Flag from '../PostsList/Post/Flag/Flag';
 
@@ -175,7 +168,7 @@ class SinglePostModalComponent extends React.Component {
         }, () => {
           this.commentInput.value = '';
           this.scrollView.scrollBar.scrollToBottom();
-          jqApp.pushMessage.open(Constants.COMMENT_SUCCESS_MESSAGE);
+          jqApp.pushMessage.open(constants.COMMENT_SUCCESS_MESSAGE);
         });
       }
     };
@@ -285,7 +278,7 @@ class SinglePostModalComponent extends React.Component {
                     />
                   </div>
                   <Link to={authorLink} className="user">
-                    <AvatarComponent src={this.state.item.avatar}/>
+                    <Avatar src={this.state.item.avatar}/>
                     <div className="name">{this.state.item.author}</div>
                   </Link>
                   <i data-dismiss="modal" className="modalButton"
@@ -345,7 +338,7 @@ class SinglePostModalComponent extends React.Component {
                       />
                     </div>
                     <Link to={authorLink} className="user">
-                      <AvatarComponent src={this.state.item.avatar}/>
+                      <Avatar src={this.state.item.avatar}/>
                       <div className="name">{this.state.item.author}</div>
                     </Link>
                   </div>

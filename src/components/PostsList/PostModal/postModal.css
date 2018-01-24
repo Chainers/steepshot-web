@@ -70,16 +70,6 @@
   outline: 0;
 }
 
-.user_pos-mod .pic {
-  position: relative;
-  width: 20px;
-  height: 20px;
-  overflow: hidden;
-  border-radius: 50%;
-  margin-right: 10px;
-  float: left;
-}
-
 .name_pos-mod {
   font-size: 14px;
   white-space: nowrap;

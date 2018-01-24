@@ -10,7 +10,7 @@ import ShareComponent from './ShareComponent';
 import LoadingSpinner from '../LoadingSpinner';
 import ScrollViewComponent from '../Common/ScrollViewComponent';
 import TagComponent from './TagComponent';
-import AvatarComponent from '../Atoms/AvatarComponent';
+import Avatar from '../Common/Avatar/Avatar';
 import TimeAgo from 'timeago-react';
 
 import utils from '../../utils/utils';
@@ -255,7 +255,7 @@ class ItemModal extends React.Component {
                   />
                 </div>
                 <Link to={authorLink} className="user">
-                  <AvatarComponent src={this.props.item.avatar}/>
+                  <Avatar src={this.props.item.avatar}/>
                   <div className="name">{this.props.item.author}</div>
                 </Link>
                 <div data-dismiss="modal" className="modalButtonWrapper">
@@ -318,7 +318,7 @@ class ItemModal extends React.Component {
                       />
                     </div>
                     <Link to={authorLink} className="user">
-                      <AvatarComponent src={this.props.item.avatar}/>
+                      <Avatar src={this.props.item.avatar}/>
                       <div className="name">{this.props.item.author}</div>
                     </Link>
                   </div>
