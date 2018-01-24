@@ -6,6 +6,7 @@ import constants from '../../common/constants';
 import VouteComponent from './VouteComponent';
 import TimeAgo from 'timeago-react';
 import { UserLinkFunc } from '../Common/UserLinkFunc'
+import Avatar from '../Common/Avatar/Avatar';
 
 class Comment extends React.Component {
   constructor(props) {
@@ -26,10 +27,7 @@ class Comment extends React.Component {
       item: newItem
     });
   }
-
-  setDefaultAvatar() {
-    this.setState({ avatar: constants.NO_AVATAR });
-  }
+  
 
   openLikesModal() {
     let arr = this.state.item.url.split('');
@@ -97,9 +95,7 @@ class Comment extends React.Component {
               />
             </div>
             <Link to={authorLink} className="user">
-              <div className="photo">
-                <img src={avatar} alt="Image" onError={this.setDefaultAvatar.bind(this)} />
-              </div>
+              <Avatar src={avatar}/>
               <div className="name">{this.props.item.author}</div>
             </Link>
           </div>

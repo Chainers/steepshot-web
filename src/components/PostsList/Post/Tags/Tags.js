@@ -28,9 +28,9 @@ class Tags extends React.Component {
   }
 
   render() {
-    return (<div className="container_tags">
+    return (<span className="container_tags">
               {this.getTags.bind(this)()}
-            </div>);
+            </span>);
   }
 }
 

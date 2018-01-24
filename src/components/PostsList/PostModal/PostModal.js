@@ -10,6 +10,10 @@ import ShowIf from '../../Common/ShowIf';
 import Flag from '../Post/Flag/Flag';
 import Vote from '../Post/Vote/Vote';
 import LikesComponent from '../../Posts/LikesComponent';
+import {UserLinkFunc} from '../../Common/UserLinkFunc';
+import Tags from '../Post/Tags/Tags';
+import ScrollViewComponent from '../../Common/ScrollViewComponent';
+import Comments from '../../Posts/Comments';
 
 class PostModal extends React.Component {
   
@@ -25,6 +29,33 @@ class PostModal extends React.Component {
   
   componentWillUnmount() {
     window.removeEventListener('resize', this.setComponentSize);
+  }
+  
+  openDescription() {
+    this.props.setPostModalOptions({isDescriptionOpened: true});
+  }
+  
+  renderDescription() {
+    let forceOpen = false;
+    let descriptionStart = this.props.post.description.replace(/(<\w+>)+/, '');
+    if (descriptionStart.replace(/\n[\w\W]+/, '').length <
+      140) forceOpen = true;
+    
+    return (
+      <div className="text-description_pos-menu">
+        <p>{UserLinkFunc(null, this.props.post.title)}</p>
+        <div
+          className={(this.props.isDescriptionOpened || forceOpen)
+            ? 'collapse-opened'
+            : 'collapse-closed'}
+        >
+          
+          {UserLinkFunc(false, this.props.post.description)}
+          <Tags tags={this.props.post.tags}/>
+          <a className="lnk-more" onClick={this.openDescription.bind(this)}>Show
+            more</a>
+        </div>
+      </div>);
   }
   
   render() {
@@ -67,8 +98,9 @@ class PostModal extends React.Component {
         </div>
         
         <div className="description_pos-mod"
+             style={this.props.style.description}
              ref={ref => this.descContainer = ref}>
-          <div className="post-control-cont_pos-mod">
+          <div className="control-cont_pos-mod">
             <div className="post-control_pos-mod">
               <div className="likes_pos-mod">
                 <LikesComponent likes={this.props.post.net_votes}
@@ -87,8 +119,30 @@ class PostModal extends React.Component {
               </div>
             </div>
           </div>
+          
+          <div className="comment-container_pos-mod">
+            <ScrollViewComponent
+              ref={(ref) => this.scrollView = ref}
+              wrapperModifier="list-scroll_pos-mod"
+              scrollViewModifier="list-scroll-view_pos-mod"
+              autoHeight={window.innerWidth <
+              constants.DISPLAY.DESK_BREAKPOINT}
+              autoHeightMax={350}
+              autoHeightMin={100}
+              autoHide={true}
+            >
+              {this.renderDescription.bind(this)()}
+              <Comments
+                key="comments"
+                item={this.props.post}
+              />
+            </ScrollViewComponent>
+          </div>
+          <ShowIf show={this.props.isUserAuth}>
+            <div className="add-comment_pos-mod">
+            </div>
+          </ShowIf>
         </div>
-      
       </div>
     );
   }
@@ -107,8 +161,12 @@ class PostModal extends React.Component {
     let contHeight = '100%';
     let contWidth = docWidth;
     let imgContWidth = '100%';
-    let headerOrder = 0;
-    let headerBackColor = '#FFF';
+    
+    let headerCont = {
+      order: 0,
+      backgroundColor: '#FFF',
+      width: '100%',
+    };
     if (docWidth > MAX_WIDTH_FULL_SCREEN) {
       contHeight = docHeight * 0.9 > MIN_HEIGHT
         ? docHeight * 0.9
@@ -129,14 +187,15 @@ class PostModal extends React.Component {
       contWidth = imgWidth + DESC_WIDTH;
       imgContWidth = imgWidth;
       
-      headerOrder = 2;
+      headerCont.order = 2;
+      headerCont.width = DESC_WIDTH;
     } else {
       imgWidth = imgWidth < document.documentElement.clientWidth
         ? imgWidth
         : document.documentElement.clientWidth;
       imgHeight = imgHeight * imgWidth / this.image.naturalWidth;
       imgContWidth = '100%';
-      headerBackColor = '#fafafa';
+      headerCont.backgroundColor = '#fafafa';
     }
     let closeButton;
     if (this.container.clientWidth + 100 <
@@ -159,10 +218,10 @@ class PostModal extends React.Component {
       imgCont: {
         width: imgContWidth,
       },
-      headerCont: {
-        order: headerOrder,
-        backgroundColor: headerBackColor,
-      },
+      headerCont,
+      description: {
+        width: headerCont.width
+      }
     };
     this.props.setPostModalOptions({style, closeButton});
   }
@@ -172,6 +231,7 @@ const mapStateToProps = (state) => {
   return {
     ...state.postModal,
     post: state.posts[state.postModal.currentIndex],
+    isUserAuth: state.auth.user && state.auth.postingKey,
   };
 };
 
