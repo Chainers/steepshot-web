@@ -73,7 +73,8 @@ class Post extends React.Component {
             <div className="date">
               <PostContextMenu style={{float: 'left', height: '22px'}}
                                item={this.props}
-                               index={this.props.index}/>
+                               index={this.props.index}
+              />
               <TimeAgo
                 datetime={this.props.created}
                 locale='en_US'

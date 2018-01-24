@@ -101,9 +101,7 @@ class SinglePostModalComponent extends React.Component {
         this.countHeight();
       });
     this.closeButtonFunc();
-    window.addEventListener('resize', () => {
-      this.closeButtonFunc();
-    });
+    window.addEventListener('resize', this.closeButtonFunc());
     window.addEventListener('resize', this.resizeWindow);
   }
 
@@ -281,7 +279,7 @@ class SinglePostModalComponent extends React.Component {
       >
           <div className="post-single" style={this.state.fullScreen ? {maxHeight: this.state.wrapperHeight} : null}>
             <ShowIf show={!this.state.fullScreen}>
-              <div className="crossWrapper">
+              <div className="crossWrapper" style={{paddingRight: '20px'}}>
                 <div className="user-wrap clearfix">
                   <div className="date">
                     <TimeAgo
@@ -419,9 +417,10 @@ class SinglePostModalComponent extends React.Component {
                             onChange={this.lookTextarea.bind(this)}
                             onFocus={this.lookTextarea.bind(this)}
                           />
-                          <div className="hidden-div_item-mod"
-                               ref={ref => {this.hiddenDiv = ref}}>
-                          </div>
+                          <div
+                            className="hidden-div_item-mod"
+                            ref={ref => {this.hiddenDiv = ref}}
+                          />
                           <label htmlFor="formCOMMENT" className="name">Comment</label>
                         </div>
                       </div>
