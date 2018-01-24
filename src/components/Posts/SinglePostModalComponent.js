@@ -18,6 +18,8 @@ import utils from '../../utils/utils';
 import ShowIf from '../Common/ShowIf';
 import Vote from '../PostsList/Post/Vote/Vote';
 import Flag from '../PostsList/Post/Flag/Flag';
+import {addPosts} from '../../actions/post';
+import PostContextMenu from '../PostContextMenu/PostContextMenu';
 
 const MAX_WIDTH_FULL_SCREEN = 815;
 const START_TEXT_HEIGHT = '42px';
@@ -32,8 +34,7 @@ class SinglePostModalComponent extends React.Component {
       adultParam: false,
       moneyParam: true,
       lowParam: false,
-      fullScreen: document.documentElement.clientWidth <= MAX_WIDTH_FULL_SCREEN,
-      showModal: false,
+      fullScreen: document.documentElement.clientWidth >= MAX_WIDTH_FULL_SCREEN,
       ...this.props
     };
     this.mobileCoverParams = {
@@ -55,7 +56,7 @@ class SinglePostModalComponent extends React.Component {
     } else {
       this.setState({adultParam: false});
     }
-    if (this.state.item.total_payout_reward === 0) {
+    if (this.state.item.total_payout_reward == 0) {
       this.setState({moneyParam: false});
     }
     if (this.state.item.is_low_rated) {
@@ -70,7 +71,7 @@ class SinglePostModalComponent extends React.Component {
   }
 
   closeButtonFunc() {
-    if (document.documentElement.clientWidth <= 815) {
+    if (document.documentElement.clientWidth <= MAX_WIDTH_FULL_SCREEN) {
       this.setState({closeParam : true});
     } else {
       this.setState({closeParam : false});
@@ -83,19 +84,16 @@ class SinglePostModalComponent extends React.Component {
     if (urlObject.length < 3) {
       this.error();
     } else
-      getPostShaddow(SinglePostModalComponent.getPostIdentifier(
-        urlObject[urlObject.length - 2],
+      getPostShaddow(SinglePostModalComponent.getPostIdentifier(urlObject[urlObject.length - 2],
         urlObject[urlObject.length - 1])).then((result) => {
         if (result) {
           this.setState({
             item: result,
             isPostLoading: false,
-          }, () => {
-            this.setState({
-              showModal: true,
-            });
+            url: result.url
           });
           this.sharedComponentTitle();
+          this.props.addPosts({[result.url]: result});
         } else {
           this.error();
         }
@@ -114,7 +112,7 @@ class SinglePostModalComponent extends React.Component {
   }
 
   resizeWindow() {
-    if (document.documentElement.clientWidth <= MAX_WIDTH_FULL_SCREEN) {
+    if (document.documentElement.clientWidth >= MAX_WIDTH_FULL_SCREEN) {
       this.setState({fullScreen: true});
     } else {
       this.setState({fullScreen: false});
@@ -272,18 +270,17 @@ class SinglePostModalComponent extends React.Component {
       return null;
     }
     let itemImage = this.state.item.body || Constants.NO_IMAGE;
-    let isUserAuth = (utils.isNotEmptyString(this.props.username) &&
-      utils.isNotEmptyString(this.props.postingKey));
+    let isUserAuth = this.props.username && this.props.postingKey;
     const authorLink = `/@${this.state.item.author}`;
 
     this.initLayout();
     return (
       <div className="shareWrapper"
            ref={ ref => {this.shareWrapper = ref} }
-           style={{height: this.state.wrapperHeight}}
+           style={this.state.fullScreen ? {height: this.state.wrapperHeight} : null}
       >
-          <div className="post-single" style={{maxHeight: this.state.wrapperHeight}}>
-            <ShowIf show={this.state.fullScreen}>
+          <div className="post-single" style={this.state.fullScreen ? {maxHeight: this.state.wrapperHeight} : null}>
+            <ShowIf show={!this.state.fullScreen}>
               <div className="crossWrapper">
                 <div className="user-wrap clearfix">
                   <div className="date">
@@ -296,8 +293,6 @@ class SinglePostModalComponent extends React.Component {
                     <AvatarComponent src={this.state.item.avatar}/>
                     <div className="name">{this.state.item.author}</div>
                   </Link>
-                  <i data-dismiss="modal" className="modalButton"
-                     aria-hidden="true" onClick={this.closeFunc.bind(this)}/>
                 </div>
               </div>
             </ShowIf>
@@ -340,10 +335,17 @@ class SinglePostModalComponent extends React.Component {
                     </div>
                 }
               </div>
-              <div className="post__description-container" style={{maxHeight: this.state.wrapperHeight}}>
-                <ShowIf show={!this.state.fullScreen}>
+              <div
+                className="post__description-container"
+                style={this.state.fullScreen ? {maxHeight: this.state.wrapperHeight} : null}
+              >
+                <ShowIf show={this.state.fullScreen}>
                   <div className="user-wrap clearfix">
                     <div className="date">
+                      <PostContextMenu style={{float: 'left', height: '22px'}}
+                                       item={this.state.item}
+                                       index={this.state.url}
+                      />
                       <TimeAgo
                         datetime={this.state.item.created}
                         locale='en_US'
@@ -356,20 +358,15 @@ class SinglePostModalComponent extends React.Component {
                   </div>
                 </ShowIf>
                 <div className="post-controls clearfix">
-                  <div className="buttons-row"
-                       onClick={(e) => {
-                         SinglePostModalComponent.callPreventDefault(e);
-                       }}>
-                    <Vote postIndex={this.state.item.url}/>
-                    <Flag postIndex={this.state.item.url}/>
+                  <div className="buttons-row" onClick={(e) => {SinglePostModalComponent.callPreventDefault(e)}}>
+                    <Vote postIndex={this.state.url} />
+                    <Flag postIndex={this.state.url} />
                   </div>
                   <div className="wrap-counts clearfix">
-                    <LikesComponent likes={this.state.item.net_votes}
-                                    url={this.state.item.url}/>
+                    <LikesComponent likes={this.state.item.net_likes} url={this.state.url}/>
                     <ShowIf show={this.state.moneyParam}>
                       <div className="amount">
-                        {utils.currencyChecker(
-                          this.state.item.total_payout_reward)}
+                        {utils.currencyChecker(this.state.item.total_payout_reward)}
                       </div>
                     </ShowIf>
                   </div>
@@ -382,6 +379,7 @@ class SinglePostModalComponent extends React.Component {
                   autoHeightMax={350}
                   autoHeightMin={100}
                   autoHide={true}
+                  isUserAuth={isUserAuth}
                 >
                   {this.renderDescription()}
                   <Comments key="comments" replyUser={this.commentInput}
@@ -419,6 +417,7 @@ class SinglePostModalComponent extends React.Component {
                             maxLength={2048}
                             className="form-control"
                             onChange={this.lookTextarea.bind(this)}
+                            onFocus={this.lookTextarea.bind(this)}
                           />
                           <div className="hidden-div_item-mod"
                                ref={ref => {this.hiddenDiv = ref}}>
@@ -437,7 +436,7 @@ class SinglePostModalComponent extends React.Component {
   }
 }
 
-const mapStateToProps = (state, props) => {
+const mapStateToProps = (state) => {
   return {
     localization: state.localization,
     username: state.auth.user,
@@ -446,4 +445,13 @@ const mapStateToProps = (state, props) => {
   };
 };
 
-export default connect(mapStateToProps)(SinglePostModalComponent);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    addPosts: (post => {
+      dispatch(addPosts(post));
+    })
+  };
+};
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(SinglePostModalComponent);

@@ -175,6 +175,16 @@ input.autofil--gray:-webkit-autofill {
   animation: spin 2s linear infinite;
 }
 
+.deleting-loader {
+  border: 7px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 7px solid #b2280b;
+  width: 60px;
+  height: 60px;
+  -webkit-animation: spin 2s linear infinite;
+  animation: spin 2s linear infinite;
+}
+
 .loaderInComments {
   position: absolute;
   right: 14px;
@@ -584,9 +594,6 @@ h2.card-field__heading {
   }
   .card-field.about {
     margin: 0 !important;
-  }
-  .post-single {
-    border-radius: 0 !important;
   }
   .youtube-embed iframe {
     width: 100%;
@@ -1176,4 +1183,13 @@ h2.card-field__heading {
   height: auto;
 }
 
-
+.delete-loader_post {
+  z-index: 1000;
+  position: absolute;
+  width: 310px;
+  height: 486px;
+  top: -4px;
+  left: -4px;
+  border-radius: 4px;
+  background: rgba(0, 0, 0, .75);
+}

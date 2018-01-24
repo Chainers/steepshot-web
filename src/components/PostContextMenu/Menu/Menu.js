@@ -18,24 +18,24 @@ class Menu extends React.Component {
     this.resizeWindow = this.resizeWindow.bind(this);
     this.state = this.getScreenProperty();
   }
-  
+
   componentDidMount() {
     window.addEventListener('resize', this.resizeWindow);
   }
-  
+
   componentWillUnmount() {
     window.removeEventListener('resize', this.resizeWindow);
   }
-  
+
   resizeWindow() {
     this.setState(this.getScreenProperty());
   }
-  
+
   getScreenProperty() {
     let buttonAmount = this.props.buttonOption.length;
     let clientWidth = BUTTON_SIZE * buttonAmount
       + (PADDING_CONTAINER + MARGIN_CONTAINER) * 2;
-    
+
     if (document.documentElement.clientWidth > clientWidth) {
       return {
         fullScreen: false,
@@ -49,7 +49,7 @@ class Menu extends React.Component {
       contentHeight: 'auto',
     };
   }
-  
+
   getItems() {
     return this.props.buttonOption.map((item, index) => {
       return <MenuItem
@@ -64,12 +64,12 @@ class Menu extends React.Component {
       />;
     });
   }
-  
+
   closeModal(event) {
     event.stopPropagation();
     this.props.closeModal();
   }
-  
+
   render() {
     return (
       <div className="container_menu" style={{width: this.state.contentWidth}}>

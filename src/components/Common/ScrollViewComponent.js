@@ -3,6 +3,9 @@ import ReactDOM from 'react-dom';
 
 import { Scrollbars } from 'react-custom-scrollbars';
 
+const MARGIN_COMMENTS_AUTH = '82px';
+const MARGIN_COMMENTS_NOT_AUTH = '0px'
+
 class ScrollViewComponent extends React.Component {
     constructor(props) {
         super(props);
@@ -30,9 +33,9 @@ class ScrollViewComponent extends React.Component {
         let marginControl = null;
         if (this.state.wrapperModifier == 'list-scroll') {
           if (this.state.isUserAuth) {
-            marginControl = {marginBottom : '82px'}
+            marginControl = {marginBottom : MARGIN_COMMENTS_AUTH}
           } else {
-            marginControl = {marginBottom : '0'}
+            marginControl = {marginBottom : MARGIN_COMMENTS_NOT_AUTH}
           }
         }
 

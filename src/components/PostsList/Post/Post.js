@@ -11,6 +11,7 @@ import constants from '../../../common/constants';
 import Tags from './Tags/Tags';
 import Vote from './Vote/Vote';
 import {setDefaultAvatar} from '../../../actions/post';
+import LoadingSpinner from "../../LoadingSpinner/index";
 
 class Post extends React.Component {
 
@@ -42,8 +43,6 @@ class Post extends React.Component {
     };
   }
 
-
-
   render() {
     if (!this.props) {
       return null;
@@ -57,7 +56,12 @@ class Post extends React.Component {
     };
 
     return (
-      <div className="post-card" style={{width: 300}}>
+      <div className="post-card" style={{width: 300, position: 'relative'}}>
+        <ShowIf show={this.props.postDeleting}>
+          <div className="delete-loader_post">
+            <LoadingSpinner show={true} deleting={true}/>
+          </div>
+        </ShowIf>
         <ShowIf show={!this.props.clearPostHeader}>
           <div className="card-head clearfix">
             <div className="date">

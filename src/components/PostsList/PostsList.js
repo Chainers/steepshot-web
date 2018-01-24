@@ -1,9 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {
-  clearPostsList, getPostsListAction,
-  initPostsList,
-} from '../../actions/postsList';
+import {clearPostsList, getPostsListAction, initPostsList} from '../../actions/postsList';
 import {debounce} from 'lodash';
 import Constants from '../../common/constants';
 import InfiniteScroll from 'react-infinite-scroller';
@@ -11,6 +8,8 @@ import LoadingSpinner from '../LoadingSpinner';
 import Post from './Post/Post';
 import ItemModal from '../Posts/ItemModal';
 import {openModal} from '../../actions/modal';
+import HeadingLeadComponent from '../Atoms/HeadingLeadComponent';
+import ShowIf from '../Common/ShowIf';
 
 class PostsList extends React.Component {
   static defaultProps = {
@@ -19,7 +18,7 @@ class PostsList extends React.Component {
     ignored: [],
     clearPostHeader: false,
   };
-  
+
   constructor(props) {
     super(props);
     this.props.clearPosts();
@@ -31,21 +30,21 @@ class PostsList extends React.Component {
       loading: false,
       postsIndices: [],
       length: 0,
-      hashMore: true,
+      hashMore: true
     };
     this.props.initPostsList(postsListOptions);
     this.getPostsList = this.getPostsList.bind(this);
     this.openPostModal = this.openPostModal.bind(this);
   }
-  
+
   componentDidMount() {
     this.getPostsList();
   }
-  
+
   getPostsList() {
     this.props.getPosts(this.props.point);
   }
-  
+
   renderPosts() {
     if (!this.props.length) {
       return (
@@ -54,7 +53,7 @@ class PostsList extends React.Component {
         </div>
       );
     }
-    
+
     let posts = [];
     this.props.postsIndices.forEach((postIndex) => {
       if (this.props.ignored.indexOf(postIndex) == -1) {
@@ -62,13 +61,14 @@ class PostsList extends React.Component {
                          index={postIndex}
                          point={this.props.point}
                          clearPostHeader={this.props.clearPostHeader}
-                         openModal={() => {this.openPostModal(postIndex)}}/>);
+                         openModal={() => {this.openPostModal(postIndex)}}
+                  />);
       }
     });
-    
+
     return posts;
   }
-  
+
   openPostModal(postIndex) {
     let modalOption = {
       point: this.props.point,
@@ -80,13 +80,20 @@ class PostsList extends React.Component {
     };
     this.props.openModal(postIndex, modalOption);
   }
-  
-  
+
+  renderHeader() {
+    if (this.props.headerText) return (
+      <HeadingLeadComponent text={this.props.headerText} />
+    );
+    return null;
+  }
+
   render() {
     if (!this.props.length) return null;
-    
+
     return (
       <div className={this.props.className}>
+        {this.renderHeader()}
         <InfiniteScroll
           pageStart={0}
           initialLoad={false}
