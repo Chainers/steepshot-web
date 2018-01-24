@@ -5,7 +5,8 @@ import constants from '../../../common/constants';
 import TimeAgo from 'timeago-react';
 import {Link} from 'react-router-dom';
 import AvatarComponent from '../../Atoms/AvatarComponent';
-import {setModalOptions} from '../../../actions/modal';
+import {closeModal, setModalOptions} from '../../../actions/modal';
+import ShowIf from '../../Common/ShowIf';
 
 class PostModal extends React.Component {
   
@@ -24,28 +25,38 @@ class PostModal extends React.Component {
   }
   
   render() {
+    console.log("render ");
     const authorLink = `/@${this.props.post.author}`;
-    console.log(this.props.post);
     return (
       <div className="container_pos-mod"
-           ref={ref => this.container = ref}>
+           ref={ref => this.container = ref}
+           style={this.props.style.container}>
         <div className="image-container_pos-mod"
-             ref={ref => this.imgCont = ref}>
+             ref={ref => this.imgCont = ref}
+             style={this.props.style.imgCont}>
           <button title="Share this post"
                   className="btn btn-default btn-xs">
             Share post
           </button>
           <img src={this.props.post.body || constants.NO_IMAGE}
                alt="Post picture."
+               style={this.props.style.image}
                ref={ref => this.image = ref}/>
         </div>
         
         <div className="header_pos-mod"
-             ref={ref => this.headerContainer = ref}>
+             ref={ref => this.headerContainer = ref}
+             style={this.props.style.headerCont}>
           <div className="date_pos-mod">
             <TimeAgo datetime={this.props.post.created}
                      locale='en_US'
             />
+            <ShowIf show={this.props.closeButton}>
+              <div className="cont-close-btn_pos-mod"
+                   onClick={() => this.props.closeModal(this.props.point)}>
+                <i className="close-btn_pos-mod"/>
+              </div>
+            </ShowIf>
           </div>
           <Link to={authorLink} className="user_pos-mod">
             <AvatarComponent src={this.props.post.avatar}/>
@@ -67,13 +78,18 @@ class PostModal extends React.Component {
     const MIN_HEIGHT = 440;
     const PREF_IMG_WIDTH = 640;
     const CONT_MARGIN = 80;
+    const MAX_WIDTH_FULL_SCREEN = 815;
     
     let imgHeight = this.image.naturalHeight;
     let imgWidth = this.image.naturalWidth;
     let docWidth = document.documentElement.clientWidth;
     let docHeight = document.documentElement.clientHeight;
-    if (docWidth > 815) {
-      let contHeight = docHeight * 0.9 > MIN_HEIGHT
+    let contHeight = '100%';
+    let contWidth = docWidth;
+    let imgContWidth = '100%';
+    let headerOrder = 0;
+    if (docWidth > MAX_WIDTH_FULL_SCREEN) {
+      contHeight = docHeight * 0.9 > MIN_HEIGHT
         ? docHeight * 0.9
         : MIN_HEIGHT;
       
@@ -89,40 +105,44 @@ class PostModal extends React.Component {
         imgHeight = contHeight;
       }
       
-      this.image.style.width = imgWidth + 'px';
-      this.imgCont.style.height = imgHeight + 'px';
+      contWidth = imgWidth + DESC_WIDTH;
+      imgContWidth = imgWidth;
       
-      this.container.style.width = imgWidth + DESC_WIDTH + 'px';
-      this.container.style.height = contHeight + 'px';
-      
-      this.imgCont.style.height = '100%';
-      this.imgCont.style.width = imgWidth + 'px';
-      
-      this.descContainer.style.width = DESC_WIDTH + 'px';
-      this.headerContainer.style.width = DESC_WIDTH + 'px';
-      this.headerContainer.style.order = 2;
+      headerOrder = 2;
     } else {
-      this.container.style.height = '100%';
-      this.container.style.width = docWidth + 'px';
-      this.imgCont.style.height = '100%';
-      this.imgCont.style.width = '100%';
       imgWidth = imgWidth < document.documentElement.clientWidth
         ? imgWidth
         : document.documentElement.clientWidth;
-      this.image.style.width = imgWidth + 'px';
       imgHeight = imgHeight * imgWidth / this.image.naturalWidth;
-      this.imgCont.style.height = imgHeight + 'px';
       
-      this.descContainer.style.width = '100%';
-      this.headerContainer.style.width = '100%';
-      this.headerContainer.style.order = 0;
+      imgContWidth = '100%';
     }
+    let closeButton;
     if (this.container.clientWidth + 100 <
       document.documentElement.clientWidth) {
       this.props.setModalOptions(this.props.point, {closeButton: true});
+      closeButton = false;
     } else {
       this.props.setModalOptions(this.props.point, {closeButton: false});
+      closeButton = true;
     }
+    let style = {
+      container: {
+        width: contWidth,
+        height: contHeight,
+      },
+      image: {
+        width: imgWidth,
+        height: imgHeight,
+      },
+      imgCont: {
+        width: imgContWidth,
+      },
+      headerCont: {
+        order: headerOrder,
+      },
+    };
+    this.props.setPostModalOptions({style, closeButton});
   }
 }
 
@@ -141,6 +161,9 @@ const mapDispatchToProps = (dispatch) => {
     setModalOptions: (point, options) => {
       dispatch(setModalOptions(point, options));
     },
+    closeModal: (point) => {
+      dispatch(closeModal(point));
+    }
   };
 };
 

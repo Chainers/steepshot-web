@@ -38,7 +38,7 @@
 
 .header_pos-mod {
   padding: 20px;
-  background-color: #fff;
+  background-color: #fafafa;
   oreder: 2;
 }
 
@@ -62,6 +62,7 @@
   text-decoration: none;
   overflow: hidden;
   line-height: 20px;
+  float: left;
 }
 
 .user_pos-mod:hover {
@@ -84,4 +85,19 @@
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
+}
+
+.cont-close-btn_pos-mod {
+  height: 16px;
+  width: 16px;
+  float: right;
+  margin-left: 20px;
+  cursor: pointer;
+}
+
+.close-btn_pos-mod {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  background: url(/static/images/sprite_svg1910.svg) no-repeat 0 99.8%;
 }

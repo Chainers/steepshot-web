@@ -1,7 +1,11 @@
-export default function postModal(state = {}, action) {
+const initialState = {
+  style: {}
+};
+
+export default function postModal(state = initialState, action) {
   switch (action.type) {
     case 'INIT_POST_MODAL':
-      return action.options;
+      return Object.assign({}, state, action.options);
       
     case 'SET_POST_MODAL_OPTIONS':
       return Object.assign({}, state, action.options);

@@ -21,6 +21,10 @@ class Modal extends React.Component {
     document.body.style.overflow = 'auto';
   }
   
+  componentDidUpdate() {
+    this.resizeWindow();
+  }
+  
   resizeWindow() {
     let alignItems = 'center';
     
