@@ -7,6 +7,9 @@ import {Link} from 'react-router-dom';
 import Avatar from '../../Common/Avatar/Avatar';
 import {closeModal, setModalOptions} from '../../../actions/modal';
 import ShowIf from '../../Common/ShowIf';
+import Flag from '../Post/Flag/Flag';
+import Vote from '../Post/Vote/Vote';
+import LikesComponent from '../../Posts/LikesComponent';
 
 class PostModal extends React.Component {
   
@@ -65,7 +68,25 @@ class PostModal extends React.Component {
         
         <div className="description_pos-mod"
              ref={ref => this.descContainer = ref}>
-          test
+          <div className="post-control-cont_pos-mod">
+            <div className="post-control_pos-mod">
+              <div className="likes_pos-mod">
+                <LikesComponent likes={this.props.post.net_votes}
+                                url={this.props.post.url}/>
+              </div>
+              <div className="amount_pos-mod">
+                <ShowIf show={parseFloat(this.props.post.total_payout_reward)}>
+                  ${this.props.post.total_payout_reward}
+                </ShowIf>
+              </div>
+              <div className="button_pos-mod">
+                <Flag postIndex={this.props.currentIndex}/>
+              </div>
+              <div className="button_pos-mod">
+                <Vote postIndex={this.props.currentIndex}/>
+              </div>
+            </div>
+          </div>
         </div>
       
       </div>
@@ -87,6 +108,7 @@ class PostModal extends React.Component {
     let contWidth = docWidth;
     let imgContWidth = '100%';
     let headerOrder = 0;
+    let headerBackColor = '#FFF';
     if (docWidth > MAX_WIDTH_FULL_SCREEN) {
       contHeight = docHeight * 0.9 > MIN_HEIGHT
         ? docHeight * 0.9
@@ -113,8 +135,8 @@ class PostModal extends React.Component {
         ? imgWidth
         : document.documentElement.clientWidth;
       imgHeight = imgHeight * imgWidth / this.image.naturalWidth;
-      
       imgContWidth = '100%';
+      headerBackColor = '#fafafa';
     }
     let closeButton;
     if (this.container.clientWidth + 100 <
@@ -139,6 +161,7 @@ class PostModal extends React.Component {
       },
       headerCont: {
         order: headerOrder,
+        backgroundColor: headerBackColor,
       },
     };
     this.props.setPostModalOptions({style, closeButton});
@@ -162,7 +185,7 @@ const mapDispatchToProps = (dispatch) => {
     },
     closeModal: (point) => {
       dispatch(closeModal(point));
-    }
+    },
   };
 };
 

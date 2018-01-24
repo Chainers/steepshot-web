@@ -91,3 +91,47 @@
   height: 16px;
   background: url(/static/images/sprite_svg1910.svg) no-repeat 0 99.8%;
 }
+
+.post-control-cont_pos-mod {
+  height: 62px;
+  border-top: 1px solid #f4f4f6;
+  border-bottom: 1px solid #f4f4f6;
+  display: flex;
+  align-items: center;
+}
+
+.post-control_pos-mod {
+  display: flex;
+  flex: 1;
+  height: 21px;
+  width: 100%;
+  font-size: 12px;
+  line-height: 21px;
+}
+
+.post-control_pos-mod > div {
+  display: flex;
+  align-items: center;
+}
+
+.likes_pos-mod {
+  cursor: pointer;
+  transition: color .15s ease;
+  margin-left: 20px;
+}
+
+.likes_pos-mod:hover {
+  color: #979b9e;
+}
+
+.amount_pos-mod {
+  flex: 10;
+  justify-content: flex-end;
+  margin-right: 20px;
+}
+
+.button_pos-mod {
+  width: 55px;
+  border-left: 1px solid #f4f4f6;
+  justify-content: center;
+}
