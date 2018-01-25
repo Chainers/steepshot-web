@@ -1,6 +1,8 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {setPostModalOptions} from '../../../actions/postModal';
+import {
+  nextPostModal, previousPostModal, setPostModalOptions,
+} from '../../../actions/postModal';
 import constants from '../../../common/constants';
 import TimeAgo from 'timeago-react';
 import {Link} from 'react-router-dom';
@@ -17,6 +19,7 @@ import Comments from '../../Posts/Comments';
 import LoadingSpinner from '../../LoadingSpinner';
 import {sendComment} from '../../../actions/comment';
 import {copyToClipboard} from '../../../actions/clipboard';
+import ReactDOM from 'react-dom';
 
 const START_TEXTAREA_HEIGHT = '42px';
 
@@ -25,6 +28,7 @@ class PostModal extends React.Component {
   constructor(props) {
     super(props);
     this.setComponentSize = this.setComponentSize.bind(this);
+    this.initKeyPress();
   }
   
   componentDidMount() {
@@ -42,6 +46,25 @@ class PostModal extends React.Component {
   
   openDescription() {
     this.props.setPostModalOptions({isDescriptionOpened: true});
+  }
+  
+  initKeyPress() {
+    document.onkeydown = (e) => {
+      if (document.activeElement !== ReactDOM.findDOMNode(this.textArea)) {
+        switch (e.keyCode) {
+          case 37:
+            this.props.previous(this.props.currentIndex);
+            this.setComponentSize();
+            break;
+          case 39:
+            this.props.next(this.props.currentIndex);
+            this.setComponentSize();
+            break;
+          default :
+            break;
+        }
+      }
+    };
   }
   
   renderDescription() {
@@ -339,6 +362,12 @@ const mapDispatchToProps = (dispatch) => {
     copyToClipboard: (text) => {
       dispatch(copyToClipboard(text));
     },
+    next: (index) => {
+      dispatch(nextPostModal(index));
+    },
+    previous: (index) => {
+      dispatch(previousPostModal(index))
+    }
   };
 };
 
