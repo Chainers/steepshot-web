@@ -4,18 +4,18 @@ import {closeModal, setModalOptions} from '../../../actions/modal';
 import ShowIf from '../../Common/ShowIf';
 
 class Modal extends React.Component {
-  
+
   constructor(props) {
     super(props);
     this.resizeWindow = this.resizeWindow.bind(this);
   }
-  
+
   componentDidMount() {
     window.addEventListener('resize', this.resizeWindow);
     document.body.style.overflow = 'hidden';
     this.resizeWindow();
   }
-  
+
   componentWillUnmount() {
     window.removeEventListener('resize', this.resizeWindow);
     document.body.style.overflow = 'auto';
@@ -24,10 +24,10 @@ class Modal extends React.Component {
   componentDidUpdate() {
     this.resizeWindow();
   }
-  
+
   resizeWindow() {
     let alignItems = 'center';
-    
+
     if (this.modalContainer.clientHeight > this.wrapper.clientHeight) {
       alignItems = 'flex-start';
     }
@@ -35,15 +35,15 @@ class Modal extends React.Component {
       this.props.setModalOptions(this.props.index, {alignItems: alignItems});
     }
   }
-  
-  
+
+
   clickOutside(event) {
     event.stopPropagation();
     if (this.modalContainer && !this.modalContainer.contains(event.target)) {
       this.props.closeModal(this.props.index);
     }
   }
-  
+
   render() {
     let styleBack = this.props.fullScreen ? {
       backgroundColor: 'rgba(0,0,0, 1)',

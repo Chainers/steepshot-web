@@ -12,14 +12,14 @@ import Post from './Post/Post';
 import ItemModal from '../Posts/ItemModal';
 import {openModal} from '../../actions/modal';
 import HeadingLeadComponent from '../Atoms/HeadingLeadComponent';
-import ShowIf from '../Common/ShowIf';
+import ShowIf from "../Common/ShowIf";
 
 class PostsList extends React.Component {
   static defaultProps = {
     cancelPrevious: false,
     maxPosts: 9999,
     ignored: [],
-    clearPostHeader: false,
+    clearPostHeader: false
   };
 
   constructor(props) {

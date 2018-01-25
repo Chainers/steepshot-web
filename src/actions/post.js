@@ -71,11 +71,9 @@ export function deletePost(postIndex) {
       sessionStorage.setItem('voteQueue', 'false');
 
       if (success) {
-        try {
-          dispatch(successDeletePost(postIndex));
-        } catch (err) {
-          console.log(err);
-        }
+
+        dispatch(successDeletePost(postIndex));
+
         let text = 'The post has been successfully deleted. If you still see your post, please give it a few minutes to sync from the blockchain';
         jqApp.pushMessage.open(text);
       } else if (err) {

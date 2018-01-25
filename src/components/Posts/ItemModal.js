@@ -72,8 +72,7 @@ class ItemModal extends React.Component {
       like = `${like} likes`;
     }
     return (
-      <div className="likes"
-           onClick={this.openLikesModal.bind(this)}>{like}</div>
+      <div className="likes" onClick={this.openLikesModal.bind(this)}>{like}</div>
     );
   }
 

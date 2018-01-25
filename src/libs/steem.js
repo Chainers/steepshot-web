@@ -3,7 +3,7 @@ import constants from '../common/constants';
 import Promise from 'bluebird';
 import { getStore } from '../store/configureStore';
 import { preparePost, prepareComment } from '../actions/steemPayout';
-import { logComment, logVoute, logFlag, logPost, logFollow } from '../actions/logging';
+import { logComment, logVoute, logFlag, logPost, logFollow, logDeletedPost } from '../actions/logging';
 
 import _ from 'underscore';
 
@@ -199,7 +199,7 @@ class Steem {
                 const data = JSON.stringify({
                     username : follower
                 });
-                logFollow(status, following, data)
+                logFollow(status, following, data);
                 callback(null, result);
             }
         }
@@ -221,7 +221,7 @@ class Steem {
         if (err) {
           callback(err, null);
         } else if (success) {
-          // logDeletedPost(data); loggin deleted posts
+          logDeletedPost(author, permlink, 'delete');
           callback(null, success);
         }
       };

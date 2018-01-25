@@ -27,6 +27,7 @@ class PostContextMenu extends React.Component {
   deletePost() {
     this.props.deletePost(this.props.index);
     this.props.closeModal("MenuModal");
+    this.props.closeModal(this.props.index);
   }
 
   editPost() {

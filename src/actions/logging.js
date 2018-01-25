@@ -105,6 +105,12 @@ export function logFollow(isFollowed, user, data) {
     logCORS(url, options, fType);
 }
 
-export function logDeletedPost(data) {
-    // logCORS();
+export function logDeletedPost(author, permlink, data) {
+
+    const url = `${baseUrl}/log/post/${makePostId(author, permlink)}/${data}`;
+
+    let options = baseCORSOptions;
+    options.body = data;
+
+    logCORS(url, options, 'delete');
 }

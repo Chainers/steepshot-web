@@ -50,7 +50,7 @@ class Post extends React.Component {
   }
 
   render() {
-    if (!this.props) {
+    if (!this.props || !this.props.body) {
       return null;
     }
     let itemImage = this.props.body || constants.NO_IMAGE;
@@ -62,7 +62,7 @@ class Post extends React.Component {
     };
 
     return (
-      <div className="post-card" style={{width: 300, position: 'relative'}}>
+      <div className="post-card" style={{width: '300px', position: 'relative'/*width: '320px', position: 'relative', display: 'inline-block'*/}}>
         <ShowIf show={this.props.postDeleting}>
           <div className="delete-loader_post">
             <LoadingSpinner show={true} deleting={true}/>
