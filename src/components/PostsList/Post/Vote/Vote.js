@@ -1,20 +1,16 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import * as utils from 'lodash';
-import {debounce} from 'lodash';
-import {toggleFlag} from '../../../../actions/flag';
-import Constants from '../../../../common/constants';
 import {toggleVote} from '../../../../actions/vote';
 
 class Vote extends React.Component {
   constructor(props) {
     super(props);
   }
-  
+
   toggleVote() {
     this.props.toggleVote(this.props.postIndex);
   }
-  
+
   render() {
     let buttonClasses = 'btn-like';
     if (this.props.vote) {

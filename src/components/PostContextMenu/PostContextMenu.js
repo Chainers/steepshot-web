@@ -3,15 +3,15 @@ import Menu from './Menu/Menu';
 import {connect} from 'react-redux';
 import {debounce} from 'lodash';
 import {toggleFlag,} from '../../actions/flag';
-import {copyToClipboard} from "../../actions/clipboard";
+import {copyToClipboard} from '../../actions/clipboard';
 import {closeModal, openModal} from '../../actions/modal';
+import {deletePost} from '../../actions/post';
 
 class PostContextMenu extends React.Component {
 
   constructor(props) {
     super(props);
     let buttonsOptions = this.setButtonsOptions.call(this);
-
     this.state = {
       showModal: false,
       fullScreen: false,
@@ -27,6 +27,7 @@ class PostContextMenu extends React.Component {
   deletePost() {
     this.props.deletePost(this.props.index);
     this.props.closeModal("MenuModal");
+    this.props.closeModal(this.props.index);
   }
 
   editPost() {
@@ -56,7 +57,8 @@ class PostContextMenu extends React.Component {
   openFunc() {
     let modalOption = {
       body: (<Menu buttonOption={this.state.BUTTONS_OPTIONS}
-                   closeModal={()=>{this.props.closeModal("MenuModal")}}/>),
+                   closeModal={()=>{this.props.closeModal("MenuModal")}}
+            />),
     };
     this.props.openModal("MenuModal", modalOption);
   }
@@ -64,8 +66,7 @@ class PostContextMenu extends React.Component {
   render() {
     return (
       <div className="container_pos-con-men" style={this.props.style}>
-        <div className="container_post-men-but" onClick={this.openFunc}
-             style={this.props.style}>
+        <div className="container_post-men-but" onClick={this.openFunc} style={this.props.style}>
           <img src="/static/images/postContextMenu/shape.png"
                className="shape_post-men-but"
                alt="Post menu button"
@@ -102,7 +103,8 @@ class PostContextMenu extends React.Component {
     ];
 
     let tmp;
-    if (this.props.item.author == this.props.username) {
+    let author = this.props.index.match(/@[\w-.]+/)[0];
+    if (author == `@${this.props.username}`) {
       tmp = [
         /*TODO uncomment when will be implemented delete*/
         {
@@ -164,7 +166,7 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(closeModal(index));
     },
     deletePost: (index) => {
-      dispatch(deleteModal(index));
+      dispatch(deletePost(index));
     }
   }
 };

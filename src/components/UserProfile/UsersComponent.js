@@ -34,19 +34,6 @@ class UsersComponent extends React.Component {
   componentWillMount() {
     document.body.classList.remove('modal-open');
     documentTitle();
-    //this.startOffset();
-  }
-
-  spinnerPosition() {
-    let obj = {...this.state.forOffset};
-    obj.top = '0';
-    this.setState({forOffset: obj});
-  }
-
-  startOffset() {
-    let obj = {...this.state.forOffset};
-    obj.top = (document.documentElement.clientHeight / 2) - 170;
-    this.setState({forOffset: obj});
   }
 
   getInitialData() {
@@ -94,10 +81,9 @@ class UsersComponent extends React.Component {
             loadingMore: false,
             loading : false
         });
-        if (/\/search\/\w+/.test(document.location.pathname)) {
-          this.props.hideTabs(newItems);
-        }
-        //this.spinnerPosition();
+        // if (/\/search\/\w+/.test(document.location.pathname)) {
+        //   this.props.hideTabs(newItems);
+        // }
       });
   }
 

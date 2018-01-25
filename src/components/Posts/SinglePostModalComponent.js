@@ -3,12 +3,11 @@ import Steem from '../../libs/steem';
 import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
 import Comments from './Comments';
-import constants from '../../common/constants';
+import Constants from '../../common/constants';
 import ShareComponent from './ShareComponent';
 import ScrollViewComponent from '../Common/ScrollViewComponent';
-import TagComponent from './TagComponent';
+import Tag from '../PostsList/Post/Tags/Tags';
 import LoadingSpinner from '../LoadingSpinner';
-import Avatar from '../Common/Avatar/Avatar';
 import LikesComponent from '../Posts/LikesComponent';
 import TimeAgo from 'timeago-react';
 
@@ -18,8 +17,13 @@ import utils from '../../utils/utils';
 import ShowIf from '../Common/ShowIf';
 import Vote from '../PostsList/Post/Vote/Vote';
 import Flag from '../PostsList/Post/Flag/Flag';
+import {addPosts} from '../../actions/post';
+import PostContextMenu from '../PostContextMenu/PostContextMenu';
+import Avatar from "../Common/Avatar/Avatar";
 
 const MAX_WIDTH_FULL_SCREEN = 815;
+const LIVE_TEXT_OFFSET_TOP = 163;
+const START_TEXT_HEIGHT = '42px';
 
 class SinglePostModalComponent extends React.Component {
   constructor(props) {
@@ -31,9 +35,9 @@ class SinglePostModalComponent extends React.Component {
       adultParam: false,
       moneyParam: true,
       lowParam: false,
-      fullScreen: document.documentElement.clientWidth <= MAX_WIDTH_FULL_SCREEN,
-      showModal: false,
-      ...this.props,
+      fullScreen: document.documentElement.clientWidth >= MAX_WIDTH_FULL_SCREEN,
+      txtHeight: START_TEXT_HEIGHT,
+      ...this.props
     };
     this.mobileCoverParams = {
       width: '100%',
@@ -54,7 +58,7 @@ class SinglePostModalComponent extends React.Component {
     } else {
       this.setState({adultParam: false});
     }
-    if (this.state.item.total_payout_reward === 0) {
+    if (this.state.item.total_payout_reward == 0) {
       this.setState({moneyParam: false});
     }
     if (this.state.item.is_low_rated) {
@@ -69,7 +73,7 @@ class SinglePostModalComponent extends React.Component {
   }
 
   closeButtonFunc() {
-    if (document.documentElement.clientWidth <= 815) {
+    if (document.documentElement.clientWidth <= MAX_WIDTH_FULL_SCREEN) {
       this.setState({closeParam : true});
     } else {
       this.setState({closeParam : false});
@@ -81,29 +85,25 @@ class SinglePostModalComponent extends React.Component {
     const urlObject = this.props.location.pathname.split('/');
     if (urlObject.length < 3) {
       this.error();
-    } else
-      getPostShaddow(SinglePostModalComponent.getPostIdentifier(
-        urlObject[urlObject.length - 2],
+    } else getPostShaddow(SinglePostModalComponent.getPostIdentifier(urlObject[urlObject.length - 2],
         urlObject[urlObject.length - 1])).then((result) => {
         if (result) {
           this.setState({
             item: result,
             isPostLoading: false,
-          }, () => {
-            this.setState({
-              showModal: true,
-            });
+            url: result.url
           });
           this.sharedComponentTitle();
+          this.props.addPosts({[result.url]: result});
         } else {
           this.error();
         }
         this.controlRestrictions();
+        this.countHeight();
+        this.textareaWidth();
       });
     this.closeButtonFunc();
-    window.addEventListener('resize', () => {
-      this.closeButtonFunc();
-    });
+    window.addEventListener('resize', this.closeButtonFunc());
     window.addEventListener('resize', this.resizeWindow);
   }
 
@@ -112,7 +112,8 @@ class SinglePostModalComponent extends React.Component {
   }
 
   resizeWindow() {
-    if (document.documentElement.clientWidth <= MAX_WIDTH_FULL_SCREEN) {
+    this.textareaWidth();
+    if (document.documentElement.clientWidth >= MAX_WIDTH_FULL_SCREEN) {
       this.setState({fullScreen: true});
     } else {
       this.setState({fullScreen: false});
@@ -168,7 +169,7 @@ class SinglePostModalComponent extends React.Component {
         }, () => {
           this.commentInput.value = '';
           this.scrollView.scrollBar.scrollToBottom();
-          jqApp.pushMessage.open(constants.COMMENT_SUCCESS_MESSAGE);
+          jqApp.pushMessage.open(Constants.COMMENT_SUCCESS_MESSAGE);
         });
       }
     };
@@ -190,7 +191,7 @@ class SinglePostModalComponent extends React.Component {
 
   setDefaultImage() {
     this.setState({
-      image: constants.NO_IMAGE,
+      image: Constants.NO_IMAGE,
     });
   }
 
@@ -211,7 +212,6 @@ class SinglePostModalComponent extends React.Component {
     let descriptionStart = this.state.item.description.replace(/(<\w+>)+/, '');
     let description = descriptionStart.replace(/\n[\w\W]+/, '');
     let forceOpen = false;
-    this.state.item.tags.map(tag => description = description + ' #' + tag);
     if (description.length < 140) forceOpen = true;
     return (
       <div className="post-description">
@@ -222,13 +222,8 @@ class SinglePostModalComponent extends React.Component {
             : 'collapse-closed'}
         >
           {description + ' '}
-          {
-            this.state.item.tags.map((tag, index) => {
-              return <span key={index}><TagComponent tag={tag}/> </span>;
-            })
-          }
-          <a className="lnk-more" onClick={this.openDescription.bind(this)}>Show
-            more</a>
+          <Tag tags={this.state.item.tags}/>
+          <a className="lnk-more" onClick={this.openDescription.bind(this)}>Show more</a>
         </div>
       </div>
     );
@@ -253,23 +248,71 @@ class SinglePostModalComponent extends React.Component {
     }
   }
 
+  countHeight() {
+    let height = this.shareWrapper.parentNode.clientHeight - 60;
+    this.setState({wrapperHeight: height + 'px'});
+  }
+
+  lookTextarea() {
+    let firstSpace = this.commentInput.value.match(/\s+/);
+    if (firstSpace && firstSpace['index'] == 0) {
+      this.commentInput.value = '';
+    } else if (this.commentInput.value != '') {
+      this.sendButton.classList.add('send-button_item-mod');
+      if (this.hiddenDiv.clientHeight <= (this.postDescCont.clientHeight - LIVE_TEXT_OFFSET_TOP)) {
+        this.setState({text: this.commentInput.value}, () => {
+          this.setState({
+            txtHeight: this.hiddenDiv.clientHeight + 'px'
+          });
+        });
+      } else {
+        this.setState({text: this.commentInput.value});
+      }
+    } else {
+      this.sendButton.classList.remove('send-button_item-mod');
+      this.setState({
+        txtHeight: START_TEXT_HEIGHT, text: ''
+      });
+    }
+  }
+
+  textareaWidth() {
+    if (this.commentInput) {
+      this.setState({txtWidth: this.commentInput.clientWidth + 'px'});
+    }
+  }
+
+  labelFocus() {
+    this.lookTextarea();
+    this.label.style.top = '-12px';
+  }
+  labelBlur() {
+    if(this.commentInput.value) {
+      this.label.style.top = '-12px';
+    } else {
+      this.label.style.top = '12px';
+    }
+  }
+
   render() {
     if (this.state.isPostLoading || this.state.error) {
       return null;
     }
-
-    let itemImage = this.state.item.body || constants.NO_IMAGE;
-    let isUserAuth = (utils.isNotEmptyString(this.props.username) &&
-      utils.isNotEmptyString(this.props.postingKey));
+    let itemImage = this.state.item.body || Constants.NO_IMAGE;
+    let isUserAuth = this.props.username && this.props.postingKey;
     const authorLink = `/@${this.state.item.author}`;
 
-    this.initLayout();
+    let title = this.state.item.title;
 
+    this.initLayout();
     return (
-      <div className="testClass">
-          <div className="post-single">
-            <ShowIf show={this.state.fullScreen}>
-              <div className="crossWrapper">
+      <div className="shareWrapper"
+           ref={ ref => {this.shareWrapper = ref} }
+           style={this.state.fullScreen ? {height: this.state.wrapperHeight} : null}
+      >
+          <div className="post-single" style={this.state.fullScreen ? {maxHeight: this.state.wrapperHeight} : null}>
+            <ShowIf show={!this.state.fullScreen}>
+              <div className="crossWrapper" style={{paddingRight: '20px'}}>
                 <div className="user-wrap clearfix">
                   <div className="date">
                     <TimeAgo
@@ -281,8 +324,6 @@ class SinglePostModalComponent extends React.Component {
                     <Avatar src={this.state.item.avatar}/>
                     <div className="name">{this.state.item.author}</div>
                   </Link>
-                  <i data-dismiss="modal" className="modalButton"
-                     aria-hidden="true" onClick={this.closeFunc.bind(this)}/>
                 </div>
               </div>
             </ShowIf>
@@ -296,26 +337,21 @@ class SinglePostModalComponent extends React.Component {
                           <p className="par1">NSFW content</p>
                           <p className="par2">This content is for adults only. Not
                             recommended for children or sensitive individuals.</p>
-                          <button className="btn btn-index"
-                                  onClick={this.hideFunc.bind(this)}>Show me
-                          </button>
+                          <button className="btn btn-index" onClick={this.hideFunc.bind(this)}>Show me</button>
                         </div>
                       </div>
-                      <img src={itemImage} alt="Post picture."/>
+                      <img src={itemImage} title={title} alt="Post picture."/>
                     </div>
                     : this.state.lowParam
                     ? <div style={this.mobileCoverParams}>
                       <div className="forAdult2">
                         <div className="forAdultInner">
                           <p className="par1">Low rated content</p>
-                          <p className="par2">This content is hidden due to low
-                            ratings.</p>
-                          <button className="btn btn-index"
-                                  onClick={this.hideFunc.bind(this)}>Show me
-                          </button>
+                          <p className="par2">This content is hidden due to low ratings.</p>
+                          <button className="btn btn-index" onClick={this.hideFunc.bind(this)}>Show me</button>
                         </div>
                       </div>
-                      <img src={itemImage} alt="Post picture."/>
+                      <img src={itemImage} title={title} alt="Post picture."/>
                     </div>
                     : <div>
                       <ShareComponent
@@ -324,14 +360,22 @@ class SinglePostModalComponent extends React.Component {
                         title="Share post"
                         containerModifier="block--right-top box--small post__share-button"
                       />
-                      <img src={itemImage} alt="Post picture."/>
+                      <img src={itemImage} title={title} alt="Post picture."/>
                     </div>
                 }
               </div>
-              <div className="post__description-container">
-                <ShowIf show={!this.state.fullScreen}>
+              <div
+                className="post__description-container"
+                style={this.state.fullScreen ? {maxHeight: this.state.wrapperHeight} : null}
+                ref={ ref => {this.postDescCont = ref} }
+              >
+                <ShowIf show={this.state.fullScreen}>
                   <div className="user-wrap clearfix">
                     <div className="date">
+                      <PostContextMenu style={{float: 'left', height: '22px'}}
+                                       item={this.state.item}
+                                       index={this.state.url}
+                      />
                       <TimeAgo
                         datetime={this.state.item.created}
                         locale='en_US'
@@ -344,20 +388,15 @@ class SinglePostModalComponent extends React.Component {
                   </div>
                 </ShowIf>
                 <div className="post-controls clearfix">
-                  <div className="buttons-row"
-                       onClick={(e) => {
-                         SinglePostModalComponent.callPreventDefault(e);
-                       }}>
-                    <Vote postIndex={this.state.item.url}/>
-                    <Flag postIndex={this.state.item.url}/>
+                  <div className="buttons-row" onClick={(e) => {SinglePostModalComponent.callPreventDefault(e)}}>
+                    <Vote postIndex={this.state.url} />
+                    <Flag postIndex={this.state.url} />
                   </div>
                   <div className="wrap-counts clearfix">
-                    <LikesComponent likes={this.state.item.net_votes}
-                                    url={this.state.item.url}/>
+                    <LikesComponent likes={this.state.item.net_likes} url={this.state.url}/>
                     <ShowIf show={this.state.moneyParam}>
                       <div className="amount">
-                        {utils.currencyChecker(
-                          this.state.item.total_payout_reward)}
+                        {utils.currencyChecker(this.state.item.total_payout_reward)}
                       </div>
                     </ShowIf>
                   </div>
@@ -366,46 +405,55 @@ class SinglePostModalComponent extends React.Component {
                   ref={(ref) => this.scrollView = ref}
                   wrapperModifier="list-scroll"
                   scrollViewModifier="list-scroll__view"
-                  autoHeight={window.innerWidth <
-                  constants.DISPLAY.DESK_BREAKPOINT}
+                  autoHeight={window.innerWidth < Constants.DISPLAY.DESK_BREAKPOINT}
                   autoHeightMax={350}
                   autoHeightMin={100}
                   autoHide={true}
+                  isUserAuth={isUserAuth}
                 >
                   {this.renderDescription()}
                   <Comments key="comments" replyUser={this.commentInput}
                             item={this.state.item}
-                            newComment={this.state.newComment}/>
+                            newComment={this.state.newComment}
+                  />
                 </ScrollViewComponent>
                 <ShowIf show={isUserAuth}>
                   <div className="post-comment">
-                    <form className="comment-form form-horizontal">
                       <div className="form-group clearfix">
-                        {
-                          this.state.needsCommentFormLoader
-                            ? <div className="loaderInComments">
-                              <LoadingSpinner
-                                show={this.state.needsCommentFormLoader}/>
-                            </div>
-                            : <div className="btn-wrap">
-                              <button type="submit" className="btn-submit"
-                                      onClick={this.sendComment.bind(this)}>Send
-                              </button>
-                            </div>
-                        }
-                        <div className="input-container">
-                        <textarea
-                          ref={(ref) => {this.commentInput = ref;}}
-                          id="formCOMMENT"
-                          name="commentValue"
-                          maxLength={2048}
-                          className="form-control"
-                        />
-                          <label htmlFor="formCOMMENT"
-                                 className="name">Comment</label>
+                          {
+                            this.state.needsCommentFormLoader
+                              ? <div className="loaderInComments">
+                                <LoadingSpinner show={this.state.needsCommentFormLoader}/>
+                              </div>
+                              : <div className="btn-wrap">
+                                <button
+                                  type="submit"
+                                  className="btn-submit"
+                                  onClick={this.sendComment.bind(this)}
+                                  ref={ref => {this.sendButton = ref}}
+                                >Send</button>
+                              </div>
+                          }
+                          <div className="input-container">
+                          <textarea
+                            ref={(ref) => {this.commentInput = ref}}
+                            style={{height: this.state.txtHeight}}
+                            id="formCOMMENT"
+                            name="commentValue"
+                            maxLength={2048}
+                            className="form-control"
+                            onChange={this.lookTextarea.bind(this)}
+                            onFocus={this.labelFocus.bind(this)}
+                            onBlur={this.labelBlur.bind(this)}
+                          />
+                          <div
+                            className="hidden-div_item-mod"
+                            ref={ref => {this.hiddenDiv = ref}}
+                            style={{width: this.state.txtWidth ? this.state.txtWidth : null}}
+                          >{this.state.text}</div>
+                          <label htmlFor="formCOMMENT" className="name" ref={ ref => {this.label = ref} }>Comment</label>
                         </div>
                       </div>
-                    </form>
                   </div>
                 </ShowIf>
               </div>
@@ -416,7 +464,7 @@ class SinglePostModalComponent extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state, props) => {
   return {
     localization: state.localization,
     username: state.auth.user,
@@ -425,4 +473,13 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps)(SinglePostModalComponent);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    addPosts: (post => {
+      dispatch(addPosts(post));
+    })
+  };
+};
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(SinglePostModalComponent);

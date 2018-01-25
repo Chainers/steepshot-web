@@ -1,8 +1,7 @@
 .container_menu {
   margin-left: 20px;
   margin-right: 20px;
-  padding-left: 10px;
-  padding-right: 10px;
+  padding: 3px 10px;
   background-color: #FFF;
   border-radius: 3px;
 }
@@ -10,6 +9,7 @@
 .header_menu {
   height: 40px;
   line-height: 3;
+  text-align: right;
 }
 
 .title_menu {
@@ -38,10 +38,9 @@
 }
 
 .close-button_menu {
-  margin-top: 12px;
+  margin-top: -3px;
   width: 16px;
   height: 16px;
-  float: right;
 }
 
 .footer_menu {

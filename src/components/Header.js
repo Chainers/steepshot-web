@@ -36,9 +36,9 @@ class Header extends React.Component {
 
   componentDidMount() {
     if (this.refs[this.props.location.pathname]) $(this.refs[this.props.location.pathname]).addClass('active');
-    setTimeout(() => {
-      jqApp.search.init();
-    }, 0);
+    // setTimeout(() => {
+    //   jqApp.search.init();
+    // }, 0);
   }
 
   componentWillMount() {
@@ -60,22 +60,19 @@ class Header extends React.Component {
   _changeLanguageEn() {
     event.preventDefault();
     LocalizedStrings.setNewLanguage('en');
-    this._dispatch();
     this.forceUpdate();
   }
 
   _changeLanguageIt() {
     event.preventDefault();
     LocalizedStrings.setNewLanguage('ru');
-    this._dispatch();
     this.forceUpdate();
   }
 
   searchKeyPress(e) {
     if (e.key === 'Enter') {
       e.preventDefault();
-      let a = this.state.searchValue;
-      this.props.history.push(`/search/${a}`);
+      this.props.history.push(`/search/${this.state.searchValue}`);
     }
   }
 

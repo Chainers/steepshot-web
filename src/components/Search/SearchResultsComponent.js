@@ -24,8 +24,8 @@ class SearchResultsComponent extends React.Component {
       activeItemIndex : 0,
       hideParam : false,
       fullHideParam : true,
-      numberPosts : 0,
-      numberUsers : 0,
+      // numberPosts : 0,
+      // numberUsers : 0,
       hotSectionOptions : {
         limit : 4
       },
@@ -33,7 +33,8 @@ class SearchResultsComponent extends React.Component {
         query : this.props.searchValue
       },
       searchValue : this.props.searchValue,
-      showResults: false
+      showResults: false,
+      ...this.props
     };
   }
 
@@ -85,54 +86,49 @@ class SearchResultsComponent extends React.Component {
     });
   }
 
-  controlTabs(number) {
-      if (number == 0) {
-          this.setState({activeItemIndex : 1, numberPosts : number});
-      } else {
-          this.setState({activeItemIndex : 0, numberPosts : number});
-      }
-      if (this.state.numberUsers[0] == undefined && this.state.numberPosts > 0) {
-          this.setState({fullHideParam : true});
-      }
-  }
-
-  hideTabs(number) {
-      this.setState({numberUsers : number}, () => {
-        if (number[0] != undefined && this.state.numberPosts > 0) {
-          this.setState({hideParam : true});
-        } else {
-          this.setState({hideParam : false});
-        }
-        if (number[0] == undefined && this.state.numberPosts == 0) {
-          this.setState({fullHideParam : false});
-        } else {
-          this.setState({fullHideParam : true});
-        }
-      });
-  }
+  // controlTabs(number) {
+  //     if (number == 0) {
+  //         this.setState({activeItemIndex : 1, numberPosts : number});
+  //     } else {
+  //         this.setState({activeItemIndex : 0, numberPosts : number});
+  //     }
+  //     if (this.state.numberUsers[0] == undefined && this.state.numberPosts > 0) {
+  //         this.setState({fullHideParam : true});
+  //     }
+  // }
+  //
+  // hideTabs(number) {
+  //     this.setState({numberUsers : number}, () => {
+  //       if (number[0] != undefined && this.state.numberPosts > 0) {
+  //         this.setState({hideParam : true});
+  //       } else {
+  //         this.setState({hideParam : false});
+  //       }
+  //       if (number[0] == undefined && this.state.numberPosts == 0) {
+  //         this.setState({fullHideParam : false});
+  //       } else {
+  //         this.setState({fullHideParam : true});
+  //       }
+  //     });
+  // }
 
   render() {
 
-    let hotPost = <ShowIf show={this.state.fullHideParam}>
-                     <span>{Constants.SEARCH_HEADING_LABELS.HOT_POSTS_RESULT}<u>{this.state.searchValue}</u></span>
-                  </ShowIf>;
-    let newPost = <span>{Constants.SEARCH_HEADING_LABELS.NEW_POSTS_RESULT}<u>{this.state.searchValue}</u></span>
-    let userResult = <ShowIf show={this.state.fullHideParam}>
-                        <span>{Constants.SEARCH_HEADING_LABELS.USERS_RESULT}<u>{this.state.searchValue}</u></span>
-                     </ShowIf>;
-
+    let hotPost = <span>{Constants.SEARCH_HEADING_LABELS.HOT_POSTS_RESULT}<u>{this.state.searchValue}</u></span>;
+    let newPost = <span>{Constants.SEARCH_HEADING_LABELS.NEW_POSTS_RESULT}<u>{this.state.searchValue}</u></span>;
+    let userResult = <span>{Constants.SEARCH_HEADING_LABELS.USERS_RESULT}<u>{this.state.searchValue}</u></span>;
     return (
       <div className="g-main_i container">
         <div id="workspace" className="g-content clearfix">
-          <ShowIf show={this.state.hideParam}>
+          {/*<ShowIf show={this.state.hideParam}>*/}
             <TabsFilterComponent
               keys={this.state.keys}
               activeItemIndex={this.state.activeItemIndex}
               updateCallback={this.updateActiveTab.bind(this)}
-              numberUsers={this.state.numberUsers}
-              numberPosts={this.state.numberPosts}
+              //numberUsers={this.state.numberUsers}
+              //numberPosts={this.state.numberPosts}
             />
-          </ShowIf>
+          {/*</ShowIf>*/}
           <TabsWrapper
             activeTab={this.state.activeItemIndex}
           >
@@ -145,8 +141,7 @@ class SearchResultsComponent extends React.Component {
                 renderNotEmptyOnly={true}
                 maxPosts={4}
                 forceRefresh={this.state.needsForceRefresh}
-                headerText= {hotPost}
-                controlTabs={this.controlTabs.bind(this)}
+                headerText={hotPost}
                 key={1}
               />
               {
@@ -159,7 +154,6 @@ class SearchResultsComponent extends React.Component {
                     wrapperModifier="posts-list clearfix"
                     forceRefresh={this.state.needsForceRefresh}
                     headerText={newPost}
-                    controlTabs={this.controlTabs.bind(this)}
                     key={2}
                   />
                 :
@@ -173,7 +167,7 @@ class SearchResultsComponent extends React.Component {
                 options={this.state.usersSearchOptions}
                 wrapperModifier="posts-list clearfix type-2"
                 headerText={userResult}
-                hideTabs={this.hideTabs.bind(this)}
+                //hideTabs={this.hideTabs.bind(this)}
               />
           </TabsWrapper>
         </div>

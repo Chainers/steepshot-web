@@ -3,7 +3,7 @@ import constants from '../common/constants';
 import Promise from 'bluebird';
 import { getStore } from '../store/configureStore';
 import { preparePost, prepareComment } from '../actions/steemPayout';
-import { logComment, logVoute, logFlag, logPost, logFollow } from '../actions/logging';
+import { logComment, logVoute, logFlag, logPost, logFollow, logDeletedPost } from '../actions/logging';
 
 import _ from 'underscore';
 
@@ -199,7 +199,7 @@ class Steem {
                 const data = JSON.stringify({
                     username : follower
                 });
-                logFollow(status, following, data)
+                logFollow(status, following, data);
                 callback(null, result);
             }
         }
@@ -215,6 +215,19 @@ class Steem {
     }
 
     /** Broadcast a post */
+
+    deletePost(wif, author, permlink, callback) {
+      const callbackBc = (err, success) => {
+        if (err) {
+          callback(err, null);
+        } else if (success) {
+          logDeletedPost(author, permlink, 'delete');
+          callback(null, success);
+        }
+      };
+      steem.broadcast.deleteComment(wif, author, permlink, callbackBc);
+    }
+
     createPost(wif, tags, author, title, description, file, callback) {
         const permlink = this._getPermLink();
         const operation = [constants.OPERATIONS.COMMENT, {

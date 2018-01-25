@@ -23,7 +23,7 @@ export default function postsList(state = {}, action) {
           action.options.length,
         }),
       });
-    
+
     default:
       return state;
   }
