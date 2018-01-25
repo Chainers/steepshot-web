@@ -62,7 +62,7 @@ class Post extends React.Component {
     };
 
     return (
-      <div className="post-card" style={{width: '300px', position: 'relative'/*width: '320px', position: 'relative', display: 'inline-block'*/}}>
+      <div className="post-card" style={{width: '300px', position: 'relative'}}>
         <ShowIf show={this.props.postDeleting}>
           <div className="delete-loader_post">
             <LoadingSpinner show={true} deleting={true}/>
