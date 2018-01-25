@@ -8,7 +8,6 @@ import ShareComponent from './ShareComponent';
 import ScrollViewComponent from '../Common/ScrollViewComponent';
 import Tag from '../PostsList/Post/Tags/Tags';
 import LoadingSpinner from '../LoadingSpinner';
-import AvatarComponent from '../Atoms/AvatarComponent';
 import LikesComponent from '../Posts/LikesComponent';
 import TimeAgo from 'timeago-react';
 
@@ -20,6 +19,7 @@ import Vote from '../PostsList/Post/Vote/Vote';
 import Flag from '../PostsList/Post/Flag/Flag';
 import {addPosts} from '../../actions/post';
 import PostContextMenu from '../PostContextMenu/PostContextMenu';
+import Avatar from "../Common/Avatar/Avatar";
 
 const MAX_WIDTH_FULL_SCREEN = 815;
 const LIVE_TEXT_OFFSET_TOP = 163;
@@ -321,7 +321,7 @@ class SinglePostModalComponent extends React.Component {
                     />
                   </div>
                   <Link to={authorLink} className="user">
-                    <AvatarComponent src={this.state.item.avatar}/>
+                    <Avatar src={this.state.item.avatar}/>
                     <div className="name">{this.state.item.author}</div>
                   </Link>
                 </div>
@@ -382,7 +382,7 @@ class SinglePostModalComponent extends React.Component {
                       />
                     </div>
                     <Link to={authorLink} className="user">
-                      <AvatarComponent src={this.state.item.avatar}/>
+                      <Avatar src={this.state.item.avatar}/>
                       <div className="name">{this.state.item.author}</div>
                     </Link>
                   </div>

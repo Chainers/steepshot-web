@@ -10,7 +10,6 @@ import ShareComponent from './ShareComponent';
 import LoadingSpinner from '../LoadingSpinner';
 import ScrollViewComponent from '../Common/ScrollViewComponent';
 import TagComponent from './TagComponent';
-import AvatarComponent from '../Atoms/AvatarComponent';
 import TimeAgo from 'timeago-react';
 
 import utils from '../../utils/utils';
@@ -20,6 +19,7 @@ import Vote from '../PostsList/Post/Vote/Vote';
 import Flag from '../PostsList/Post/Flag/Flag';
 import {closeModal, openModal} from '../../actions/modal';
 import PostContextMenu from '../PostContextMenu/PostContextMenu';
+import Avatar from "../Common/Avatar/Avatar";
 
 const START_TEXTAREA_HEIGHT = '42px';
 
@@ -255,7 +255,7 @@ class ItemModal extends React.Component {
                   />
                 </div>
                 <Link to={authorLink} className="user">
-                  <AvatarComponent src={this.props.item.avatar}/>
+                  <Avatar src={this.props.item.avatar}/>
                   <div className="name">{this.props.item.author}</div>
                 </Link>
                 <div data-dismiss="modal" className="modalButtonWrapper">
@@ -322,7 +322,7 @@ class ItemModal extends React.Component {
                                      index={this.props.index}
                     />
                     <Link to={authorLink} className="user">
-                      <AvatarComponent src={this.props.item.avatar}/>
+                      <Avatar src={this.props.item.avatar}/>
                       <div className="name">{this.props.item.author}</div>
                     </Link>
                   </div>
