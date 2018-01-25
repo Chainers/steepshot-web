@@ -15,7 +15,7 @@ import AboutComponent from './components/About/AboutComponent';
 import BrowseWrapper from './components/Wrappers/BrowseWrapper';
 import Constants from './common/constants';
 import Testing from './components/Common/Testing/Testing';
-import SinglePostModalComponent from './components/Posts/SinglePostModalComponent';
+import SinglePost from './components/PostsList/SinglePost/SinglePost';
 
 export default function getRoutes(store) {
   const clearMessages = () => {
@@ -57,7 +57,7 @@ export default function getRoutes(store) {
         <Redirect path="/browse" to={`/browse/${baseBrowseFilter()}`} />
         <Route path="/@:username" component={UserProfile} onLeave={clearMessages} />
         <Route path="/signin" component={Signin} onLeave={clearMessages} />
-        <Route path="/post" component={SinglePostModalComponent} onLeave={clearMessages} />
+        <Route path="/post" component={SinglePost} onLeave={clearMessages} />
         <Route path="/search/:searchValue" component={SearchWrapper} onLeave={clearMessages} />
         <Route path="/guide" component={AboutComponent} onLeave={clearMessages} />
         <Route path="/dev/test" component={Testing} onLeave={clearMessages} />

@@ -33,7 +33,7 @@ class PostsList extends React.Component {
       loading: false,
       postsIndices: [],
       length: 0,
-      hashMore: true,
+      hasMore: true,
     };
     this.props.initPostsList(postsListOptions);
     this.getPostsList = this.getPostsList.bind(this);
