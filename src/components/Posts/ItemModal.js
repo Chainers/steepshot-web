@@ -285,7 +285,6 @@ class ItemModal extends React.Component {
                   </div>
                   : <div>
                     <ShareComponent
-                      moneyParam={this.props.item.total_payout_reward != 0}
                       url={this.props.item.url}
                       title="Share post"
                       containerModifier="block--right-top box--small post__share-button"

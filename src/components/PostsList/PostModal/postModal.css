@@ -268,3 +268,28 @@
 textarea:focus ~ .label_pos-mod {
   top: 0px;
 }
+
+.curtain_pos-mod {
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(255, 255, 255, 0.955);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.title_pos-mod {
+  margin-bottom: 20px;
+  color: #000;
+  font: 27px OpenSans-Light;
+}
+
+.message_pos-mod {
+  margin-bottom: 30px;
+  color: #696969;
+  font: 14px OpenSans-Regular;
+}

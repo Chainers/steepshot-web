@@ -16,6 +16,7 @@ import ScrollViewComponent from '../../Common/ScrollViewComponent';
 import Comments from '../../Posts/Comments';
 import LoadingSpinner from '../../LoadingSpinner';
 import {sendComment} from '../../../actions/comment';
+import {copyToClipboard} from '../../../actions/clipboard';
 
 const START_TEXTAREA_HEIGHT = '42px';
 
@@ -97,16 +98,42 @@ class PostModal extends React.Component {
         <div className="image-container_pos-mod"
              ref={ref => this.imgCont = ref}
              style={this.props.style.imgCont}>
-          <button title="Share this post"
-                  className="btn btn-default btn-xs">
+          <ShowIf show={this.props.post.is_nsfw && !this.props.showAll}>
+            <div className="curtain_pos-mod">
+              <p className="title_pos-mod">NSFW content</p>
+              <p className="message_pos-mod">This content is for adults only. Not
+                recommended for children or sensitive individuals.</p>
+              <button className="btn btn-index"
+                      onClick={
+                        () => this.props.setPostModalOptions({showAll: true})
+                      }>Show me
+              </button>
+            </div>
+          </ShowIf>
+          <ShowIf show={this.props.post.is_low_rated && !this.props.showAll}>
+            <div className="curtain_pos-mod">
+              <p className="title_pos-mod">Low rated content</p>
+              <p className="message_pos-mod">This content is hidden due to low
+                ratings.</p>
+              <button className="btn btn-index"
+                      onClick={
+                        () => this.props.setPostModalOptions({showAll: true})
+                      }>Show me
+              </button>
+            </div>
+          </ShowIf>
+          <button className="btn btn-default btn-xs"
+                  onClick={() => this.props.copyToClipboard(
+                    document.location.origin + '/post' + this.props.post.url,
+                  )}>
             Share post
           </button>
           <img src={this.props.post.body || constants.NO_IMAGE}
                alt="Post picture."
                style={this.props.style.image}
                ref={ref => this.image = ref}/>
-        </div>
         
+        </div>
         <div className="header_pos-mod"
              ref={ref => this.headerContainer = ref}
              style={this.props.style.headerCont}>
@@ -307,8 +334,11 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(closeModal(point));
     },
     sendComment: (index, comment) => {
-      dispatch(sendComment(index, comment))
-    }
+      dispatch(sendComment(index, comment));
+    },
+    copyToClipboard: (text) => {
+      dispatch(copyToClipboard(text));
+    },
   };
 };
 
