@@ -33,7 +33,6 @@ class PostModal extends React.Component {
   
   componentDidMount() {
     window.addEventListener('resize', this.setComponentSize);
-    this.setComponentSize();
   }
   
   componentWillUnmount() {
@@ -154,7 +153,8 @@ class PostModal extends React.Component {
           <img src={this.props.post.body || constants.NO_IMAGE}
                alt="Post picture."
                style={this.props.style.image}
-               ref={ref => this.image = ref}/>
+               ref={ref => this.image = ref}
+               onLoad={() => this.setComponentSize()}/>
         
         </div>
         <div className="header_pos-mod"
@@ -308,13 +308,15 @@ class PostModal extends React.Component {
       headerCont.backgroundColor = '#fafafa';
     }
     let closeButton;
-    if (this.container.clientWidth + 100 <
-      document.documentElement.clientWidth) {
-      this.props.setModalOptions(this.props.point, {closeButton: true});
-      closeButton = false;
-    } else {
-      this.props.setModalOptions(this.props.point, {closeButton: false});
-      closeButton = true;
+    if (this.props.point !== 'SinglePost') {
+      if (this.container.clientWidth + 100 <
+        document.documentElement.clientWidth) {
+        this.props.setModalOptions(this.props.point, {closeButton: true});
+        closeButton = false;
+      } else {
+        this.props.setModalOptions(this.props.point, {closeButton: false});
+        closeButton = true;
+      }
     }
     let style = {
       container: {

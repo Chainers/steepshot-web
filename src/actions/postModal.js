@@ -2,15 +2,19 @@ import {openModal} from './modal';
 import {getStore} from '../store/configureStore';
 import {getPostsListAction} from './postsList';
 
+export function initPostModal(point, index) {
+  return {
+    type: 'INIT_POST_MODAL',
+    options: {
+      point,
+      currentIndex: index,
+    }
+  }
+}
+
 export function openPostModal(point, index, options) {
   return (dispatch) => {
-    dispatch({
-      type: 'INIT_POST_MODAL',
-      options: {
-        point,
-        currentIndex: index,
-      }
-    });
+    dispatch(initPostModal(point, index));
     dispatch(openModal(point, options));
   }
 }
