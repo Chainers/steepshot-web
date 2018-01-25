@@ -2,6 +2,9 @@ import {getPostShaddow} from './posts';
 import Steem from '../libs/steem';
 import {getStore} from '../store/configureStore';
 import {debounce} from 'lodash';
+import {browserHistory} from 'react-router';
+import {initPostsList} from './postsList';
+import {initPostModal} from './postModal';
 
 export function setDefaultAvatar(postIndex) {
   return {
@@ -99,6 +102,62 @@ export function deletePost(postIndex) {
     Steem.deletePost(postingKey, username, permlink, callback);
   }
 }
+
+export function addSinglePost(url) {
+  return dispatch => {
+    const urlObject = url.split('/');
+    
+    if (urlObject.length < 3) {
+      error();
+    } else {
+      getPostShaddow(getPostIdentifier(urlObject[urlObject.length - 2],
+        urlObject[urlObject.length - 1]))
+      .then((result) => {
+        if (result) {
+          let postOptions = {
+            point: 'SinglePost',
+            cancelPrevious: false,
+            maxPosts: 1,
+            loading: false,
+            postsIndices: [result.url],
+            length: 0,
+            hasMore: false,
+          };
+          dispatch(initPostsList(postOptions));
+          dispatch(addPosts({[result.url]: result}));
+          dispatch(initPostModal('SinglePost', result.url));
+          sharedComponentTitle(result);
+        } else {
+          this.error();
+        }
+      });
+    }
+  }
+}
+
+function getPostIdentifier(author, permlink) {
+  return `${author}/${permlink}`;
+}
+
+function sharedComponentTitle(post) {
+  let title = post.title.split('');
+  title[0] = title[0].toUpperCase();
+  document.title = `${title.join('')} | Steepshot`;
+}
+
+function error() {
+  let state = getStore().getState();
+  jqApp.pushMessage.open(
+    'Something went wrong, please, check the URL or try again later');
+  setTimeout(() => {
+    if (state.auth.name && state.auth.postingKey) {
+      browserHistory.push('/feed');
+    } else {
+      browserHistory.push('/browse');
+    }
+  }, 3000);
+}
+
 
 
 
