@@ -12,11 +12,17 @@ class Modal extends React.Component {
   
   componentDidMount() {
     window.addEventListener('resize', this.resizeWindow);
+    document.body.style.overflow = 'hidden';
     this.resizeWindow();
   }
   
   componentWillUnmount() {
     window.removeEventListener('resize', this.resizeWindow);
+    document.body.style.overflow = 'auto';
+  }
+  
+  componentDidUpdate() {
+    this.resizeWindow();
   }
   
   resizeWindow() {

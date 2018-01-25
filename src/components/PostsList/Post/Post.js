@@ -11,25 +11,24 @@ import constants from '../../../common/constants';
 import Tags from './Tags/Tags';
 import Vote from './Vote/Vote';
 import {setDefaultAvatar} from '../../../actions/post';
+import PostModal from '../PostModal/PostModal';
+import {initPostModal, openPostModal} from '../../../actions/postModal';
 
 class Post extends React.Component {
-
+  
   static defaultProps = {
     clearPostHeader: false,
   };
-
+  
   constructor(props) {
     super(props);
-    this.localConstants = {
-      THIS_POST_MODAL_REF: 'thisPostModal' + this.props.index,
-    };
   }
-
+  
   callPreventDefault(e) {
     e.stopPropagation();
     e.preventDefault();
   }
-
+  
   _getPostImageStyles(itemImage) {
     return {
       backgroundImage: `url(${itemImage})`,
@@ -41,21 +40,26 @@ class Post extends React.Component {
       backgroundPosition: 'center',
     };
   }
-
-
-
+  
+  openPostModal() {
+    let modalOption = {
+      body: (<PostModal />),
+    };
+    this.props.openModal(this.props.point, this.props.index, modalOption);
+  }
+  
   render() {
     if (!this.props) {
       return null;
     }
     let itemImage = this.props.body || constants.NO_IMAGE;
     let authorImage = this.props.avatar || constants.NO_AVATAR;
-
+    
     const authorLink = `/@${this.props.author}`;
     const cardPhotoStyles = {
       backgroundImage: 'url(' + itemImage + ')',
     };
-
+    
     return (
       <div className="post-card" style={{width: 300}}>
         <ShowIf show={!this.props.clearPostHeader}>
@@ -63,8 +67,7 @@ class Post extends React.Component {
             <div className="date">
               <PostContextMenu style={{float: 'left', height: '22px'}}
                                item={this.props}
-                               index={this.props.index}
-              />
+                               index={this.props.index}/>
               <TimeAgo
                 datetime={this.props.created}
                 locale='en_US'
@@ -83,7 +86,7 @@ class Post extends React.Component {
         </ShowIf>
         <div className="card-body">
           <div className="card-pic"
-               onClick={this.props.openModal}>
+               onClick={this.openPostModal.bind(this)}>
             <ShowIf show={this.props.is_nsfw}>
               <div className="forAdult">
                 <p>NSFW content</p>
@@ -130,7 +133,10 @@ const mapDispatchToProps = (dispatch) => {
   return {
     setDefaultAvatar: (postIndex => {
       dispatch(setDefaultAvatar(postIndex));
-    })
+    }),
+    openModal: (point, index, options) => {
+      dispatch(openPostModal(point, index, options));
+    }
   };
 };
 
