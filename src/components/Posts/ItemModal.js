@@ -10,7 +10,7 @@ import ShareComponent from './ShareComponent';
 import LoadingSpinner from '../LoadingSpinner';
 import ScrollViewComponent from '../Common/ScrollViewComponent';
 import TagComponent from './TagComponent';
-import Avatar from '../Common/Avatar/Avatar';
+import AvatarComponent from '../Atoms/AvatarComponent';
 import TimeAgo from 'timeago-react';
 
 import utils from '../../utils/utils';
@@ -18,14 +18,13 @@ import ShowIf from '../Common/ShowIf';
 import {UserLinkFunc} from '../Common/UserLinkFunc';
 import Vote from '../PostsList/Post/Vote/Vote';
 import Flag from '../PostsList/Post/Flag/Flag';
-import {closeModal, openModal} from '../../actions/modal';
 
 const START_TEXTAREA_HEIGHT = '42px';
 
 class ItemModal extends React.Component {
   constructor(props) {
     super(props);
-
+    
     this.mobileCoverParams = {
       width: '100%',
       height: '100%',
@@ -38,29 +37,27 @@ class ItemModal extends React.Component {
     };
     this.initKeypress();
     this.showMe = this.showMe.bind(this);
-    this.openPostModal = this.openPostModal.bind(this);
   }
-
+  
   showMe() {
     this.setState({
       showMe: false,
     });
   }
-
+  
   needMore() {
     if (this.props.item.loading || !this.props.item.hasMore) return false;
     const curIndex = this.props.currentIndex;
     if (curIndex + 7 >= this.props.items.length) {
       this.props.loadMore();
     }
-    return true;
   }
-
+  
   openLikesModal() {
     this.props.dispatch({type: 'CLEAR_LIKES_INFO', url: this.props.item.url});
     jqApp.openLikesModal($(document));
   }
-
+  
   likeCheck() {
     let like = this.props.item.net_votes;
     if (like == 0) {
@@ -75,7 +72,7 @@ class ItemModal extends React.Component {
            onClick={this.openLikesModal.bind(this)}>{like}</div>
     );
   }
-
+  
   lookTextarea() {
     let firstSpace = this.commentInput.value.match(/\s+/);
     if (firstSpace && firstSpace['index'] == 0) {
@@ -85,34 +82,37 @@ class ItemModal extends React.Component {
     } else {
       this.sendButton.classList.remove('send-button_item-mod');
     }
-    this.hiddenDiv.textContent = this.commentInput.value;
+    this.hiddenDiv.textContent = this.commentInput.value
     this.setState({tmp: 1});
   }
-
+  
+  
+  
   clearNewComment(callback) {
     this.setState({
       newComment: null,
     }, () => callback ? callback() : false);
   }
-
+  
   componentDidMount() {
+    this.needMore();
     setTimeout(() => {
       jqApp.forms.init();
     }, 0);
   }
-
+  
   clearCommentInput() {
     this.commentInput.value = '';
     this.formGr.classList.remove('not-empty');
   }
-
+  
   sendComment(e) {
     e.preventDefault();
     let comment = this.commentInput.value;
     if (comment == '') return false;
-
+    
     const urlObject = this.props.item.url.split('/');
-
+    
     const callback = (err, success) => {
       this.setState({
         needsCommentFormLoader: false,
@@ -138,7 +138,7 @@ class ItemModal extends React.Component {
       }
       this.clearCommentInput();
     };
-
+    
     this.setState({
       needsCommentFormLoader: true,
     }, () => {
@@ -153,7 +153,7 @@ class ItemModal extends React.Component {
       );
     });
   }
-
+  
   initKeypress() {
     document.onkeydown = (e) => {
       if (document.activeElement !== ReactDOM.findDOMNode(this.commentInput)) {
@@ -170,46 +170,34 @@ class ItemModal extends React.Component {
       }
     };
   }
-
+  
   setDefaultImage() {
     this.setState({
       image: constants.NO_IMAGE,
     });
   }
-
-  openPostModal(postIndex) {
-    let modalOption = {
-      point: this.props.point,
-      body: (<ItemModal
-        point={this.props.point}
-        index={postIndex}
-        loadMore={this.getPostsList}
-      />),
-    };
-    this.props.openModal(postIndex, modalOption);
-  }
-
+  
   next() {
-
+  
   }
-
+  
   previous() {
-
+  
   }
-
+  
   redirectToLoginPage() {
     this.props.history.push('/signin');
   }
-
+  
   callPreventDefault(e) {
     e.stopPropagation();
     e.preventDefault();
   }
-
+  
   openDescription() {
     this.setState({isDescriptionOpened: true});
   }
-
+  
   renderDescription() {
     let forceOpen = false;
     let descriptionStart = this.props.item.description.replace(/(<\w+>)+/, '');
@@ -235,13 +223,13 @@ class ItemModal extends React.Component {
       </div>
     );
   }
-
+  
   render() {
     let closeParam = document.documentElement.clientWidth <= 815;
     let itemImage = this.props.item.body || constants.NO_IMAGE;
     let isUserAuth = (this.props.username && this.props.postingKey);
     const authorLink = `/@${this.props.item.author}`;
-
+    
     return (
       <div>
         <div className="post-single">
@@ -255,7 +243,7 @@ class ItemModal extends React.Component {
                   />
                 </div>
                 <Link to={authorLink} className="user">
-                  <Avatar src={this.props.item.avatar}/>
+                  <AvatarComponent src={this.props.item.avatar}/>
                   <div className="name">{this.props.item.author}</div>
                 </Link>
                 <div data-dismiss="modal" className="modalButtonWrapper">
@@ -318,7 +306,7 @@ class ItemModal extends React.Component {
                       />
                     </div>
                     <Link to={authorLink} className="user">
-                      <Avatar src={this.props.item.avatar}/>
+                      <AvatarComponent src={this.props.item.avatar}/>
                       <div className="name">{this.props.item.author}</div>
                     </Link>
                   </div>
@@ -363,6 +351,21 @@ class ItemModal extends React.Component {
                     <div className="comment-form form-horizontal">
                       <div className="form-group clearfix"
                            ref={(ref) => {this.formGr = ref;}}>
+                        {
+                          this.state.needsCommentFormLoader
+                            ? <div className="loaderInComments">
+                              <LoadingSpinner/>
+                            </div>
+                            : <div className="btn-wrap">
+                              <button
+                                type="submit"
+                                className="btn-submit"
+                                onClick={this.sendComment.bind(this)}
+                                ref={ref => {this.sendButton = ref;}}
+                              >Send
+                              </button>
+                            </div>
+                        }
                         <div className="input-container">
                             <textarea
                               ref={(ref) => {this.commentInput = ref;}}
@@ -377,11 +380,11 @@ class ItemModal extends React.Component {
                               className="form-control resize-textarea_item-mod"
                               onChange={this.lookTextarea.bind(this)}
                             />
-
-                            <div className="hidden-div_item-mod"
-                                 ref={ref => {this.hiddenDiv = ref;}}>
-                            </div>
-
+                          
+                          <div className="hidden-div_item-mod"
+                               ref={ref => {this.hiddenDiv = ref;}}>
+                          </div>
+                          
                           <label htmlFor="formCOMMENT"
                                  className="name">Comment</label>
                         </div>
@@ -400,7 +403,6 @@ class ItemModal extends React.Component {
 
 const mapStateToProps = (state, props) => {
   return {
-    modals: state.modals,
     items: state.postsList[props.point].postsIndices,
     item: state.posts[props.index],
     currentIndex: state.postsList[props.point].postsIndices.indexOf(
@@ -413,17 +415,4 @@ const mapStateToProps = (state, props) => {
   };
 };
 
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    closeModal: (index) => {
-      dispatch(closeModal(index));
-    },
-    openModal: (index, options) => {
-      dispatch(openModal(index, options))
-    }
-  };
-};
-
-
-export default connect(mapStateToProps, mapDispatchToProps)(ItemModal);
+export default connect(mapStateToProps)(ItemModal);

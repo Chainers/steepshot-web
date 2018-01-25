@@ -141,7 +141,7 @@
   overflow-x: hidden;
   flex-grow: 1;
   font-size: 13px;
-  font-family: OpenSans-Light,Helvetica,Arial,sans-serif;
+  font-family: OpenSans-Light, Helvetica, Arial, sans-serif;
 }
 
 .list-scroll_pos-mod {
@@ -164,14 +164,14 @@
   min-height: 3.2em;
 }
 
-.list-scroll-view_pos-mod .btn-like{
+.list-scroll-view_pos-mod .btn-like {
   position: absolute;
   right: 0;
   top: 50%;
   margin-top: -11px;
 }
 
-.list-scroll-view_pos-mod .wrap-btn{
+.list-scroll-view_pos-mod .wrap-btn {
   padding: 10px;
 }
 
@@ -208,19 +208,15 @@
   display: flex;
   align-items: flex-end;
   width: 100%;
-  height: 82px;
-  box-shadow:0 0 10px 0 rgba(204,204,204,.5);
+  box-shadow: 0 0 10px 0 rgba(204, 204, 204, .5);
   padding: 20px 10px 20px 20px;
   position: relative;
 }
 
-.add-comment_pos-mod .form-horizontal {
-  flex: 1;
-  height: 100%;
-}
-
 .text-area_pos-mod {
+  height: 100%;
   font-size: 12px;
+  z-index: 1;
 }
 
 .btn_pos-mod {
@@ -242,6 +238,8 @@
 }
 
 .label_pos-mod {
+  z-index: 0;
+  top: 35px;
   font-size: 12px;
   position: absolute;
   white-space: nowrap;
@@ -249,10 +247,24 @@
   line-height: 1.6;
   overflow-wrap: break-word;
   word-wrap: break-word;
-  transition: all .2s ease;
+  transition: all .3s ease;
+}
+
+.focused_pos-mod {
+  top: 0px;
+}
+
+.hidden-div_pos-mod {
+  position: absolute;
+  visibility: hidden;
+  display: block;
+  white-space: pre-wrap;
+  min-height: 42px;
+  font: 11px OpenSans-Regular;
+  padding: 9px 0;
+  word-wrap: break-word;
 }
 
 textarea:focus ~ .label_pos-mod {
-  top: 5px;
-  transition: all .2s ease;
+  top: 0px;
 }

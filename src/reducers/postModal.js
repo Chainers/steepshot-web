@@ -1,5 +1,6 @@
 const initialState = {
-  style: {}
+  style: {},
+  needsCommentFormLoader: false
 };
 
 export default function postModal(state = initialState, action) {

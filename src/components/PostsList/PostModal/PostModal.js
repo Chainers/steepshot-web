@@ -14,6 +14,10 @@ import {UserLinkFunc} from '../../Common/UserLinkFunc';
 import Tags from '../Post/Tags/Tags';
 import ScrollViewComponent from '../../Common/ScrollViewComponent';
 import Comments from '../../Posts/Comments';
+import LoadingSpinner from '../../LoadingSpinner';
+import {sendComment} from '../../../actions/comment';
+
+const START_TEXTAREA_HEIGHT = '42px';
 
 class PostModal extends React.Component {
   
@@ -29,6 +33,10 @@ class PostModal extends React.Component {
   
   componentWillUnmount() {
     window.removeEventListener('resize', this.setComponentSize);
+  }
+  
+  componentDidUpdate() {
+    this.scrollView.scrollBar.scrollToBottom();
   }
   
   openDescription() {
@@ -56,6 +64,28 @@ class PostModal extends React.Component {
             more</a>
         </div>
       </div>);
+  }
+  
+  changeText() {
+    this.hiddenDiv.style.width = this.textArea.clientWidth;
+    this.hiddenDiv.textContent = this.textArea.value;
+    
+    let label = '';
+    if (this.textArea.value) {
+      label = 'focused_pos-mod';
+    }
+    this.props.setPostModalOptions({
+      addCommentHeight: this.hiddenDiv.clientHeight + 40,
+      label,
+    });
+  }
+  
+  sendComment(e) {
+    e.preventDefault();
+    let comment = this.textArea.value;
+    if (comment === '') return false;
+    this.props.sendComment(this.props.currentIndex, comment);
+    this.textArea.value = '';
   }
   
   render() {
@@ -135,22 +165,41 @@ class PostModal extends React.Component {
               <Comments
                 key="comments"
                 item={this.props.post}
+                newComment={this.props.newComment}
+                replyUser={this.textArea}
               />
             </ScrollViewComponent>
           </div>
           
           <ShowIf show={this.props.isUserAuth}>
-            <div className="add-comment_pos-mod">
-              <textarea ref={(ref) => {this.commentInput = ref;}}
+            <div className="add-comment_pos-mod"
+                 style={{height: this.props.addCommentHeight}}>
+              <div className="hidden-div_pos-mod"
+                   ref={ref => {this.hiddenDiv = ref;}}/>
+              <textarea ref={ref => this.textArea = ref}
                         maxLength={2048}
                         className="form-control text-area_pos-mod"
+                        onChange={this.changeText.bind(this)}
+                        style={{
+                          height: this.hiddenDiv !== undefined
+                            ? this.hiddenDiv.clientHeight + 'px'
+                            : START_TEXTAREA_HEIGHT,
+                        }}
               />
-              <div className="hidden-div_item-mod"
-                   ref={ref => {this.hiddenDiv = ref;}}/>
-              <label className="label_pos-mod">Comment</label>
-              <button type="submit"
-                      className="btn-submit btn_pos-mod">Send
-              </button>
+              <label className={this.props.label + ' label_pos-mod'}>
+                Comment</label>
+              <ShowIf show={this.props.needsCommentFormLoader}>
+                <div className="comment-loader_pos-mod">
+                  <LoadingSpinner/>
+                </div>
+              </ShowIf>
+              <ShowIf show={!this.props.needsCommentFormLoader}>
+                <button type="submit"
+                        className="btn-submit btn_pos-mod"
+                        onClick={this.sendComment.bind(this)}
+                        ref={ref => {this.sendButton = ref;}}>Send
+                </button>
+              </ShowIf>
             </div>
           </ShowIf>
         </div>
@@ -257,6 +306,9 @@ const mapDispatchToProps = (dispatch) => {
     closeModal: (point) => {
       dispatch(closeModal(point));
     },
+    sendComment: (index, comment) => {
+      dispatch(sendComment(index, comment))
+    }
   };
 };
 
