@@ -15,7 +15,6 @@ export default function postsList(state = initialState, action) {
         }),
       });
     case 'GET_POSTS_LIST_SUCCESS':
-      console.log(Object.assign({}, state));
       return Object.assign({}, state, {
         [action.options.point]: Object.assign({}, state[action.options.point], {
           postsIndices: [

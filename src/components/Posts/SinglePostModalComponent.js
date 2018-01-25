@@ -22,6 +22,7 @@ import {addPosts} from '../../actions/post';
 import PostContextMenu from '../PostContextMenu/PostContextMenu';
 
 const MAX_WIDTH_FULL_SCREEN = 815;
+const LIVE_TEXT_OFFSET_TOP = 163;
 const START_TEXT_HEIGHT = '42px';
 
 class SinglePostModalComponent extends React.Component {
@@ -35,6 +36,7 @@ class SinglePostModalComponent extends React.Component {
       moneyParam: true,
       lowParam: false,
       fullScreen: document.documentElement.clientWidth >= MAX_WIDTH_FULL_SCREEN,
+      txtHeight: START_TEXT_HEIGHT,
       ...this.props
     };
     this.mobileCoverParams = {
@@ -83,8 +85,7 @@ class SinglePostModalComponent extends React.Component {
     const urlObject = this.props.location.pathname.split('/');
     if (urlObject.length < 3) {
       this.error();
-    } else
-      getPostShaddow(SinglePostModalComponent.getPostIdentifier(urlObject[urlObject.length - 2],
+    } else getPostShaddow(SinglePostModalComponent.getPostIdentifier(urlObject[urlObject.length - 2],
         urlObject[urlObject.length - 1])).then((result) => {
         if (result) {
           this.setState({
@@ -99,6 +100,7 @@ class SinglePostModalComponent extends React.Component {
         }
         this.controlRestrictions();
         this.countHeight();
+        this.textareaWidth();
       });
     this.closeButtonFunc();
     window.addEventListener('resize', this.closeButtonFunc());
@@ -110,6 +112,7 @@ class SinglePostModalComponent extends React.Component {
   }
 
   resizeWindow() {
+    this.textareaWidth();
     if (document.documentElement.clientWidth >= MAX_WIDTH_FULL_SCREEN) {
       this.setState({fullScreen: true});
     } else {
@@ -256,12 +259,40 @@ class SinglePostModalComponent extends React.Component {
       this.commentInput.value = '';
     } else if (this.commentInput.value != '') {
       this.sendButton.classList.add('send-button_item-mod');
+      if (this.hiddenDiv.clientHeight <= (this.postDescCont.clientHeight - LIVE_TEXT_OFFSET_TOP)) {
+        this.setState({text: this.commentInput.value}, () => {
+          this.setState({
+            txtHeight: this.hiddenDiv.clientHeight + 'px'
+          });
+        });
+      } else {
+        this.setState({text: this.commentInput.value});
+      }
     } else {
       this.sendButton.classList.remove('send-button_item-mod');
+      this.setState({
+        txtHeight: START_TEXT_HEIGHT, text: ''
+      });
     }
-    this.hiddenDiv.textContent = this.commentInput.value;
   }
 
+  textareaWidth() {
+    if (this.commentInput) {
+      this.setState({txtWidth: this.commentInput.clientWidth + 'px'});
+    }
+  }
+
+  labelFocus() {
+    this.lookTextarea();
+    this.label.style.top = '-12px';
+  }
+  labelBlur() {
+    if(this.commentInput.value) {
+      this.label.style.top = '-12px';
+    } else {
+      this.label.style.top = '12px';
+    }
+  }
 
   render() {
     if (this.state.isPostLoading || this.state.error) {
@@ -270,6 +301,8 @@ class SinglePostModalComponent extends React.Component {
     let itemImage = this.state.item.body || Constants.NO_IMAGE;
     let isUserAuth = this.props.username && this.props.postingKey;
     const authorLink = `/@${this.state.item.author}`;
+
+    let title = this.state.item.title;
 
     this.initLayout();
     return (
@@ -304,12 +337,10 @@ class SinglePostModalComponent extends React.Component {
                           <p className="par1">NSFW content</p>
                           <p className="par2">This content is for adults only. Not
                             recommended for children or sensitive individuals.</p>
-                          <button className="btn btn-index"
-                                  onClick={this.hideFunc.bind(this)}>Show me
-                          </button>
+                          <button className="btn btn-index" onClick={this.hideFunc.bind(this)}>Show me</button>
                         </div>
                       </div>
-                      <img src={itemImage} alt="Post picture."/>
+                      <img src={itemImage} title={title} alt="Post picture."/>
                     </div>
                     : this.state.lowParam
                     ? <div style={this.mobileCoverParams}>
@@ -320,7 +351,7 @@ class SinglePostModalComponent extends React.Component {
                           <button className="btn btn-index" onClick={this.hideFunc.bind(this)}>Show me</button>
                         </div>
                       </div>
-                      <img src={itemImage} alt="Post picture."/>
+                      <img src={itemImage} title={title} alt="Post picture."/>
                     </div>
                     : <div>
                       <ShareComponent
@@ -329,13 +360,14 @@ class SinglePostModalComponent extends React.Component {
                         title="Share post"
                         containerModifier="block--right-top box--small post__share-button"
                       />
-                      <img src={itemImage} alt="Post picture."/>
+                      <img src={itemImage} title={title} alt="Post picture."/>
                     </div>
                 }
               </div>
               <div
                 className="post__description-container"
                 style={this.state.fullScreen ? {maxHeight: this.state.wrapperHeight} : null}
+                ref={ ref => {this.postDescCont = ref} }
               >
                 <ShowIf show={this.state.fullScreen}>
                   <div className="user-wrap clearfix">
@@ -382,11 +414,11 @@ class SinglePostModalComponent extends React.Component {
                   {this.renderDescription()}
                   <Comments key="comments" replyUser={this.commentInput}
                             item={this.state.item}
-                            newComment={this.state.newComment}/>
+                            newComment={this.state.newComment}
+                  />
                 </ScrollViewComponent>
                 <ShowIf show={isUserAuth}>
                   <div className="post-comment">
-                    <form className="comment-form form-horizontal">
                       <div className="form-group clearfix">
                           {
                             this.state.needsCommentFormLoader
@@ -405,26 +437,23 @@ class SinglePostModalComponent extends React.Component {
                           <div className="input-container">
                           <textarea
                             ref={(ref) => {this.commentInput = ref}}
-                            style={{
-                                    height: this.hiddenDiv != undefined
-                                      ? this.hiddenDiv.clientHeight + 'px'
-                                      : START_TEXT_HEIGHT,
-                                  }}
+                            style={{height: this.state.txtHeight}}
                             id="formCOMMENT"
                             name="commentValue"
                             maxLength={2048}
                             className="form-control"
                             onChange={this.lookTextarea.bind(this)}
-                            onFocus={this.lookTextarea.bind(this)}
+                            onFocus={this.labelFocus.bind(this)}
+                            onBlur={this.labelBlur.bind(this)}
                           />
                           <div
                             className="hidden-div_item-mod"
                             ref={ref => {this.hiddenDiv = ref}}
-                          />
-                          <label htmlFor="formCOMMENT" className="name">Comment</label>
+                            style={{width: this.state.txtWidth ? this.state.txtWidth : null}}
+                          >{this.state.text}</div>
+                          <label htmlFor="formCOMMENT" className="name" ref={ ref => {this.label = ref} }>Comment</label>
                         </div>
                       </div>
-                    </form>
                   </div>
                 </ShowIf>
               </div>
@@ -435,7 +464,7 @@ class SinglePostModalComponent extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state, props) => {
   return {
     localization: state.localization,
     username: state.auth.user,
