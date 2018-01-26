@@ -40,14 +40,21 @@ export function nextPostModal(index) {
   let point = state.postModal.point;
   let postsList = state.postsList[point].postsIndices;
   let positionPost = postsList.indexOf(index);
-  if (positionPost === postsList.length - 1) {
-    return {
-      type: 'THE_POST_IS_LAST'
+  return dispatch => {
+    if (positionPost === postsList.length - 6) {
+      dispatch(getPostsList(point));
     }
-  }
-  let newIndex = postsList[positionPost + 1];
-  return (dispatch) => {
-    dispatch(swapPostModal(newIndex))
+    if (positionPost === postsList.length - 1) {
+      if (!state.postsList[point].hasMore) {
+        dispatch({type: 'THE_POST_IS_LAST'})
+      }
+      if (state.postsList[point].loading) {
+        dispatch({type: 'WAIT_NEXT_POSTS'});
+      }
+    } else {
+      let newIndex = postsList[positionPost + 1];
+      dispatch(swapPostModal(newIndex))
+    }
   }
 }
 
@@ -61,11 +68,8 @@ export function previousPostModal(index) {
       type: 'THE_POST_IS_FIRST'
     }
   }
-  let newIndex = postsList[positionPost - 1];
   return (dispatch) => {
-    if (positionPost === 0) {
-      dispatch(getPostsList(point))
-    }
+    let newIndex = postsList[positionPost - 1];
     dispatch(swapPostModal(newIndex))
   }
 }

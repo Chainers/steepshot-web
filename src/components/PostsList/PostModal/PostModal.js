@@ -54,11 +54,11 @@ class PostModal extends React.Component {
         switch (e.keyCode) {
           case 37:
             this.props.previous(this.props.currentIndex);
-            this.setCommentInput();
+            this.clearTextArea();
             break;
           case 39:
             this.props.next(this.props.currentIndex);
-            this.setCommentInput();
+            this.clearTextArea();
             break;
           default :
             break;
@@ -67,7 +67,7 @@ class PostModal extends React.Component {
     };
   }
 
-  setCommentInput() {
+  clearTextArea() {
     this.textArea.value = '';
     this.hiddenDiv.textContent = '';
     this.setComponentSize();
@@ -347,6 +347,7 @@ class PostModal extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
+    postList: state.postsList[state.postModal.point],
     ...state.postModal,
     post: state.posts[state.postModal.currentIndex],
     isUserAuth: state.auth.user && state.auth.postingKey,

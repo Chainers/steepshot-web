@@ -36,6 +36,11 @@ export function getPostsList(point) {
       type: 'EMPTY_ACTION'
     }
   }
+  if (!statePoint.hasMore) {
+    return {
+      type: 'ALL_POSTS_LOADED'
+    }
+  }
   return (dispatch) => {
     dispatch(getPostsListRequest(point));
     let userSettings = getStore().getState().auth.settings;
