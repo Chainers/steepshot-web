@@ -13,6 +13,7 @@ import TimeAgo from 'timeago-react';
 import ShowIf from '../Common/ShowIf';
 import {UserLinkFunc} from '../Common/UserLinkFunc';
 import PostContextMenu from '../PostContextMenu/PostContextMenu';
+import Avatar from '../Common/Avatar/Avatar';
 
 class Item extends React.Component {
   constructor(props) {
@@ -79,10 +80,6 @@ class Item extends React.Component {
     this.setState({redirectToReferrer: true});
   }
 
-  setDefaultAvatar() {
-    this.setState({avatar: constants.NO_AVATAR});
-  }
-
   setDefaultImage() {
     this.setState({image: constants.NO_IMAGE});
   }
@@ -147,8 +144,7 @@ class Item extends React.Component {
               </div>
               <Link to={authorLink} className="user">
                 <div className="photo">
-                  <img src={authorImage} alt="User"
-                       onError={this.setDefaultAvatar.bind(this)}/>
+                  <Avatar src={authorImage}/>
                 </div>
                 <div className="name">{this.state.item.author}</div>
               </Link>

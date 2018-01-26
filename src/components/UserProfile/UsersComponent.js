@@ -8,6 +8,7 @@ import InfiniteScroll from 'react-infinite-scroller';
 import HeadingLeadComponent from '../Atoms/HeadingLeadComponent';
 import { debounce } from 'lodash';
 import { documentTitle } from '../DocumentTitle';
+import {getIgnoredPostsList, setActiveIndex} from '../../actions/search';
 
 class UsersComponent extends React.Component {
   constructor(props) {
@@ -72,12 +73,12 @@ class UsersComponent extends React.Component {
     this.state.getUsers(options, true).then((response) => {
         this.state.items.pop();
         let newItems = this.state.items.concat(response.results);
-        let hasMore = !(this.state.offset == response.offset);
+        let hasMore = this.state.offset !== response.offset;
         this.setState({
             items: newItems,
             previousRequestOffset : this.state.offset,
             offset: response.offset,
-            hasMore: !(this.state.offset == response.offset),
+            hasMore,
             loadingMore: false,
             loading : false
         });
@@ -145,6 +146,14 @@ class UsersComponent extends React.Component {
 const mapStateToProps = (state) => {
   return {
     localization: state.localization
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    refreshed: (searchValue) => {
+      dispatch(refreshed(searchValue));
+    },
   };
 };
 

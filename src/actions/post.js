@@ -6,13 +6,6 @@ import {browserHistory} from 'react-router';
 import {initPostsList} from './postsList';
 import {initPostModal} from './postModal';
 
-export function setDefaultAvatar(postIndex) {
-  return {
-    type: 'SET_DEFAULT_AVATAR',
-    index: postIndex
-  }
-}
-
 export function addPosts(posts) {
   return {
     type: 'ADD_POSTS',

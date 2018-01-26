@@ -5,7 +5,7 @@ import {addPosts} from './post';
 export function initPostsList(options) {
   return {
     type: 'INIT_POSTS_LIST',
-    options: options
+    options
   };
 }
 
@@ -29,7 +29,7 @@ function getPostsListSuccess(pointOptions) {
   };
 }
 
-export function getPostsListAction(point) {
+export function getPostsList(point) {
   const statePoint = getStore().getState().postsList[point];
   if (statePoint.loading) {
     return {
@@ -57,7 +57,12 @@ export function getPostsListAction(point) {
         return post.url
       });
       let hasMore = !(statePoint.offset == response.offset);
-      if (response.results.length == 1) hasMore = false;
+      if (statePoint.maxPosts <=
+        postsIndices.length + statePoint.postsIndices.length) {
+        postsIndices = postsIndices
+          .slice(0, statePoint.maxPosts - statePoint.postsIndices.length);
+        hasMore = false;
+      }
       let pointOptions = {
         point,
         postsIndices,

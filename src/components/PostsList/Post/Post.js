@@ -10,10 +10,10 @@ import {UserLinkFunc} from '../../Common/UserLinkFunc';
 import constants from '../../../common/constants';
 import Tags from './Tags/Tags';
 import Vote from './Vote/Vote';
-import {setDefaultAvatar} from '../../../actions/post';
 import PostModal from '../PostModal/PostModal';
-import {initPostModal, openPostModal} from '../../../actions/postModal';
+import {openPostModal} from '../../../actions/postModal';
 import LoadingSpinner from "../../LoadingSpinner/index";
+import Avatar from '../../Common/Avatar/Avatar';
 
 class Post extends React.Component {
 
@@ -83,9 +83,7 @@ class Post extends React.Component {
             </div>
             <Link to={authorLink} className="user">
               <div className="photo">
-                <img src={authorImage} alt="User"
-                     onError={
-                       () => this.props.setDefaultAvatar(this.props.index)}/>
+                <Avatar src={authorImage}/>
               </div>
               <div className="name">{this.props.author}</div>
             </Link>
@@ -138,9 +136,6 @@ const mapStateToProps = (state, props) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    setDefaultAvatar: (postIndex => {
-      dispatch(setDefaultAvatar(postIndex));
-    }),
     openModal: (point, index, options) => {
       dispatch(openPostModal(point, index, options));
     }
