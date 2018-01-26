@@ -14,9 +14,6 @@ import {
 } from '../../actions/search';
 import TabWrapper from '../Wrappers/TabWrapper';
 import {debounce} from 'lodash';
-import InfiniteScroll from 'react-infinite-scroller';
-import LoadingSpinner from '../LoadingSpinner';
-import {getPostsList} from '../../actions/postsList';
 
 class Search extends React.Component {
   constructor(props) {
@@ -58,20 +55,6 @@ class Search extends React.Component {
           <TabsWrapper
             activeTab={this.props.activeIndex}
           >
-            <InfiniteScroll
-              pageStart={0}
-              initialLoad={false}
-              loadMore={debounce(() => this.props.getPosts(this.props.point),
-                Constants.ENDLESS_SCROLL.DEBOUNCE_TIMEOUT)}
-              hasMore={this.props.isComponentVisible &&
-              this.props.hasMore}
-              loader={
-                <div className="position--relative">
-                  <LoadingSpinner/>
-                </div>
-              }
-              threshold={Constants.ENDLESS_SCROLL.OFFSET}
-            >
             <TabWrapper>
                 <PostsList
                   point={insertCategory(
@@ -95,7 +78,6 @@ class Search extends React.Component {
                   />
                 </ShowIf>
             </TabWrapper>
-            </InfiniteScroll>
             <UsersComponent
               point={Constants.SEARCH_FILTERS.USERS.point}
               forceRefresh={this.props.needsForceRefresh}
@@ -131,9 +113,6 @@ const mapDispatchToProps = (dispatch) => {
     setActiveIndex: (options) => {
       dispatch(setActiveIndex(options));
     },
-    getPosts: (point) => {
-      dispatch(getPostsList(point));
-    }
   };
 };
 

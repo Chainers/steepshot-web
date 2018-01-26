@@ -25,6 +25,7 @@ class Feed extends React.Component {
         <div id="workspace" className="g-content clearfix">
           <PostsList
             point={this.state.point}
+            cancelPrevious={false}
             wrapper="posts-list clearfix"
           />
         </div>
