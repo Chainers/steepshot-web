@@ -185,7 +185,7 @@ class PostModal extends React.Component {
             <div className="name_pos-mod">{this.props.post.author}</div>
           </Link>
         </div>
-
+        
         <div className="description_pos-mod"
              style={this.props.style.description}
              ref={ref => this.descContainer = ref}>
@@ -316,17 +316,6 @@ class PostModal extends React.Component {
       imgContWidth = '100%';
       headerCont.backgroundColor = '#fafafa';
     }
-    let closeButton;
-    if (this.props.point !== 'SinglePost') {
-      if (this.container.clientWidth + 100 <
-        document.documentElement.clientWidth) {
-        this.props.setModalOptions(this.props.point, {closeButton: true});
-        closeButton = false;
-      } else {
-        this.props.setModalOptions(this.props.point, {closeButton: false});
-        closeButton = true;
-      }
-    }
     let style = {
       container: {
         width: contWidth,
@@ -344,7 +333,15 @@ class PostModal extends React.Component {
         width: headerCont.width,
       },
     };
-    this.props.setPostModalOptions({style, closeButton});
+    this.props.setPostModalOptions({style});
+    if (this.props.point !== 'SinglePost') {
+      if (contHeight >=
+        document.documentElement.clientHeight || contHeight === '100%') {
+        this.props.setModalOptions(this.props.point,{alignItems: 'flex-start'});
+      } else {
+        this.props.setModalOptions(this.props.point,{alignItems: 'center'});
+      }
+    }
   }
 }
 

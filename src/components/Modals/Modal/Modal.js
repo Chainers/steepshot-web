@@ -60,11 +60,6 @@ class Modal extends React.Component {
              ref={ref => {this.wrapper = ref;}}
         >
           <ShowIf show={!this.props.fullScreen}>
-            {/*<ShowIf show={document.documentElement.clientWidth > 815}>*/}
-              {/*<ShowIf show={this.props.closeButton}>*/}
-                {/*<button className="close_mods" />*/}
-              {/*</ShowIf>*/}
-            {/*</ShowIf>*/}
             <div className={this.props.styles}
                  ref={ref => {this.modalContainer = ref;}}>
               {this.props.body}
