@@ -81,6 +81,7 @@ class Search extends React.Component {
                   cancelPrevious={false}
                   options={this.props.hotSectionOptions}
                   maxPosts={4}
+                  headerText={hotPost}
                 />
                 <ShowIf show={this.props.showResults}>
                   <PostsList
@@ -90,6 +91,7 @@ class Search extends React.Component {
                     wrapperModifier="posts-list clearfix"
                     cancelPrevious={false}
                     ignored={this.props.ignored}
+                    headerText={newPost}
                   />
                 </ShowIf>
             </TabWrapper>

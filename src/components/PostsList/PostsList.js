@@ -9,6 +9,7 @@ import Constants from '../../common/constants';
 import InfiniteScroll from 'react-infinite-scroller';
 import LoadingSpinner from '../LoadingSpinner';
 import Post from './Post/Post';
+import HeadingLeadComponent from '../Atoms/HeadingLeadComponent';
 
 
 class PostsList extends React.Component {
@@ -82,7 +83,7 @@ class PostsList extends React.Component {
 
     return posts;
   }
-
+  
   renderHeader() {
     if (this.props.headerText) return (
       <HeadingLeadComponent text={this.props.headerText} />
