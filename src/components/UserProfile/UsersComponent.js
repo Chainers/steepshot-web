@@ -105,7 +105,7 @@ class UsersComponent extends React.Component {
             history={this.props.history}
           />
         );
-      })
+      });
       return items;
     }
   }

@@ -205,6 +205,7 @@
 }
 
 .add-comment_pos-mod {
+  transition: .2s all ease;
   display: flex;
   align-items: flex-end;
   width: 100%;
@@ -215,31 +216,32 @@
 
 .text-area_pos-mod {
   height: 100%;
-  font-size: 12px;
+  font: 11px OpenSans-Regular;
   z-index: 1;
 }
 
 .btn_pos-mod {
-  height: 40px;
+  height: 42px;
   width: 60px;
   border: none;
-  border-radius: 40px;
+  border-radius: 30px;
   background: 0 0;
-  cursor: pointer;
+  cursor: default;
   color: #979b9e;
   font-size: 12px;
   font-family: inherit;
   line-height: inherit;
 }
 
-.btn_pos-mod:hover {
+.btn-hover_pos-mod:hover {
   cursor: pointer;
-  border: 1px solid #ececee
+  border: 1px solid #ececee;
+  color: #e74800;
 }
 
 .label_pos-mod {
   z-index: 0;
-  top: 35px;
+  top: 32px;
   font-size: 12px;
   position: absolute;
   white-space: nowrap;
@@ -247,11 +249,11 @@
   line-height: 1.6;
   overflow-wrap: break-word;
   word-wrap: break-word;
-  transition: all .3s ease;
+  transition: all .2s ease;
 }
 
 .focused_pos-mod {
-  top: 0px;
+  top: 10px;
 }
 
 .hidden-div_pos-mod {
@@ -265,8 +267,8 @@
   word-wrap: break-word;
 }
 
-textarea:focus ~ .label_pos-mod {
-  top: 0px;
+textarea:focus + .label_pos-mod {
+  top: 10px;
 }
 
 .curtain_pos-mod {

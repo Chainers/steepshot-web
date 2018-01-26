@@ -61,22 +61,31 @@ class PostsList extends React.Component {
         posts.push(<Post key={this.props.point + "/" + postIndex}
                          index={postIndex}
                          point={this.props.point}
-                         clearPostHeader={this.props.clearPostHeader}/>);
+                         clearPostHeader={this.props.clearPostHeader}
+        />);
       }
     });
 
     return posts;
   }
 
+  renderHeader() {
+    if (this.props.headerText) return (
+      <HeadingLeadComponent text={this.props.headerText} />
+    );
+    return null;
+  }
+
   render() {
     if (!this.props.length) return null;
     return (
       <div className={this.props.className}>
+        {this.renderHeader()}
         <InfiniteScroll
           pageStart={0}
           initialLoad={false}
           loadMore={debounce(this.getPostsList,
-            Constants.ENDLESS_SCROLL.DEBOUNCE_TIMEOUT)}
+          Constants.ENDLESS_SCROLL.DEBOUNCE_TIMEOUT)}
           hasMore={this.props.isComponentVisible && this.props.hasMore}
           loader={
             <div className="position--relative">

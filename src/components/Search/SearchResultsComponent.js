@@ -22,8 +22,6 @@ class SearchResultsComponent extends React.Component {
         { label : Constants.SEARCH_FILTERS.USERS.label }
       ],
       activeItemIndex : 0,
-      hideParam : false,
-      fullHideParam : true,
       // numberPosts : 0,
       // numberUsers : 0,
       hotSectionOptions : {

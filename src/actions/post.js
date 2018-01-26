@@ -80,7 +80,7 @@ export function deletePost(postIndex) {
         let text = 'The post has been successfully deleted. If you still see your post, please give it a few minutes to sync from the blockchain';
         jqApp.pushMessage.open(text);
       } else if (err) {
-        let text = 'We are sooooorry... it\'s impossible to delete this post';
+        let text = 'We are sorry... it\'s impossible to delete this post';
         jqApp.pushMessage.open(text);
         dispatch(failureDeletePost(postIndex));
         // const nullCreateDeleteCallback = () => {

@@ -1,8 +1,18 @@
 .container_sin-pos {
   width: 100%;
+  height: 100%;
   display: flex;
 }
 
 .to-center_sin-pos {
-  margin: auto;
+  margin: 50px auto;
+}
+
+@media screen and (max-width: 815px) {
+  .to-center_sin-pos {
+    margin: 0 auto;
+  }
+  .container_sin-pos {
+    display: block;
+  }
 }

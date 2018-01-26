@@ -7,15 +7,17 @@
 }
 
 .header_menu {
+  display: flex;
   height: 40px;
-  line-height: 3;
-  text-align: right;
+  text-align: center;
+  justify-content: space-around;
 }
 
 .title_menu {
   font-size: 14px;
   color: #0f181e;
   font-weight: bold;
+  line-height: 40px;
 }
 
 .content_menu {
@@ -56,4 +58,17 @@
 
 .filler_menu {
   flex-grow: 1;
+}
+
+.cross1 {
+  height: 40px;
+  width: 30px;
+  position: relative;
+}
+.cross2 {
+  position: absolute;
+  top: 10px;
+  width: 16px;
+  height: 16px;
+  background: url(/static/images/sprite_svg1910.svg) no-repeat 0 99.8%;
 }
