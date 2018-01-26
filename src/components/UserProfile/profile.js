@@ -1,17 +1,8 @@
 import React from 'react';
-import LocalizedStrings from '../Localization/index.js';
-import {
-  getUserProfile
-} from '../../actions/profile';
-import {
-  withRouter
-} from 'react-router-dom';
-import {
-  getFollowers,
-  getFollowing
-} from '../../actions/posts';
-import { connect } from 'react-redux';
-import UsersComponent from './UsersComponent';
+import {getUserProfile} from '../../actions/profile';
+import {withRouter} from 'react-router-dom';
+import {getFollowers, getFollowing} from '../../actions/posts';
+import {connect} from 'react-redux';
 import FollowComponent from '../Posts/FollowComponent';
 import Constants from '../../common/constants';
 import TabsFilterComponent from '../Filters/TabsFilterComponent';
@@ -23,41 +14,45 @@ import UsersList from '../UsersList/UsersList';
 class UserProfile extends React.Component {
   constructor(props) {
     super(props);
-
+    
     this.state = {
-      watcher : this.props.user,
-      authorName : this.props.username,
-      profile : null,
-      localize : LocalizedStrings.getInstance(),
-      showFollow : this.props.showFollow !== undefined ? this.props.showFollow  : true,
-      itemsPoint : this.insertUsername(Constants.POSTS_FILTERS.POSTS_USER.point, this.props.username),
-      followingPoint : this.insertUsername(Constants.USERS_FILTERS.FOLLOWING.point, this.props.username),
-      followersPoint : this.insertUsername(Constants.USERS_FILTERS.FOLLOWERS.point, this.props.username),
+      watcher: this.props.user,
+      authorName: this.props.username,
+      profile: null,
+      showFollow: this.props.showFollow !== undefined
+        ? this.props.showFollow
+        : true,
+      itemsPoint: this.insertUsername(Constants.POSTS_FILTERS.POSTS_USER.point,
+        this.props.username),
+      followingPoint: this.insertUsername(
+        Constants.USERS_FILTERS.FOLLOWING.point, this.props.username),
+      followersPoint: this.insertUsername(
+        Constants.USERS_FILTERS.FOLLOWERS.point, this.props.username),
       yourOrNot: false,
-      keys : [
-        { label : Constants.POSTS_FILTERS.POSTS_USER.label },
-        { label : Constants.USERS_FILTERS.FOLLOWERS.label },
-        { label : Constants.USERS_FILTERS.FOLLOWING.label }
+      keys: [
+        {label: Constants.POSTS_FILTERS.POSTS_USER.label},
+        {label: Constants.USERS_FILTERS.FOLLOWERS.label},
+        {label: Constants.USERS_FILTERS.FOLLOWING.label},
       ],
-      activeItemIndex : 0
+      activeItemIndex: 0,
     };
   }
-
+  
   componentDidMount() {
     document.body.style.overflowY = 'auto';
     this.getUserProfile();
   }
-
+  
   updateActiveTab(index) {
     this.setState({
-      activeItemIndex : index
-    })
+      activeItemIndex: index,
+    });
   }
-
+  
   getUserProfile(userName) {
     this.setState({
-      wrongProfile : false,
-      profile : undefined
+      wrongProfile: false,
+      profile: undefined,
     }, () => {
       let showFollow = true;
       userName = userName || this.state.authorName;
@@ -73,56 +68,61 @@ class UserProfile extends React.Component {
           showFollow: showFollow,
           profile: result,
           avatar: result.profile_image,
-          keys : [
-            { label : `${result.post_count} ${Constants.POSTS_FILTERS.POSTS_USER.label}` },
-            { label : `${result.followers_count} ${Constants.USERS_FILTERS.FOLLOWERS.label}`},
-            { label : `${result.following_count} ${Constants.USERS_FILTERS.FOLLOWING.label}`}
+          keys: [
+            {label: `${result.post_count} ${Constants.POSTS_FILTERS.POSTS_USER.label}`},
+            {label: `${result.followers_count} ${Constants.USERS_FILTERS.FOLLOWERS.label}`},
+            {label: `${result.following_count} ${Constants.USERS_FILTERS.FOLLOWING.label}`},
           ],
-          needsForceRefresh : true
+          needsForceRefresh: true,
         }, () => {
           this.filterNav.switchFilter(0);
           this.setState({
-            needsForceRefresh : false
-          })
+            needsForceRefresh: false,
+          });
         });
       });
     });
     this.correctText();
   }
-
+  
   componentWillReceiveProps(nextProps) {
     if (nextProps.username === this.state.authorName) {
-        return;
+      return;
     }
     this.setState({
-        avatar : Constants.NO_AVATAR,
-        authorName : nextProps.username,
-        itemsPoint : this.insertUsername(Constants.POSTS_FILTERS.POSTS_USER.point, nextProps.username),
-        followingPoint : this.insertUsername(Constants.USERS_FILTERS.FOLLOWING.point, nextProps.username),
-        followersPoint : this.insertUsername(Constants.USERS_FILTERS.FOLLOWERS.point, nextProps.username)
+      avatar: Constants.NO_AVATAR,
+      authorName: nextProps.username,
+      itemsPoint: this.insertUsername(Constants.POSTS_FILTERS.POSTS_USER.point,
+        nextProps.username),
+      followingPoint: this.insertUsername(
+        Constants.USERS_FILTERS.FOLLOWING.point, nextProps.username),
+      followersPoint: this.insertUsername(
+        Constants.USERS_FILTERS.FOLLOWERS.point, nextProps.username),
     });
-
+    
     this.getUserProfile(nextProps.username);
   }
-
+  
   insertUsername(point, userName) {
-      if (userName == undefined) return point;
-      let path = point.split('/');
-      return `${path[0]}/${userName}/${path[1]}`;
+    if (userName == undefined) return point;
+    let path = point.split('/');
+    return `${path[0]}/${userName}/${path[1]}`;
   }
-
+  
   correctText() {
-    if (window.localStorage.user == undefined || this.props.history.location.pathname == undefined) {
-      this.setState({yourOrNot : false});
+    if (window.localStorage.user == undefined ||
+      this.props.history.location.pathname == undefined) {
+      this.setState({yourOrNot: false});
     } else {
-      if(window.localStorage.user.replace(/"/g, '') == this.props.history.location.pathname.replace('/@', '')) {
-        this.setState({yourOrNot : true});
+      if (window.localStorage.user.replace(/"/g, '') ==
+        this.props.history.location.pathname.replace('/@', '')) {
+        this.setState({yourOrNot: true});
       } else {
-        this.setState({yourOrNot : false});
+        this.setState({yourOrNot: false});
       }
     }
   }
-
+  
   render() {
     let profileImageSrc = this.state.avatar || Constants.NO_AVATAR;
     let name = '';
@@ -130,16 +130,17 @@ class UserProfile extends React.Component {
     let about = '';
     let location = '';
     let balance = 0;
-
+    
     if (this.state.profile) {
       name = this.state.profile.name;
-      if (name == undefined || name == '') name = `@${this.state.profile.username}`;
+      if (name == undefined ||
+        name == '') name = `@${this.state.profile.username}`;
       website = this.state.profile.website;
       about = this.state.profile.about;
       location = this.state.profile.location;
       balance = this.state.profile.estimated_balance;
     }
-
+    
     return (
       <div className="g-main_i container">
         <div className="g-content col-xs-12 clearfix" id="workspace">
@@ -147,8 +148,9 @@ class UserProfile extends React.Component {
             <div className="col-xs-12 col-md-4 col-lg-3">
               <div className="user-information">
                 <div className="pic-wrap clearfix">
-                  <Avatar src={profileImageSrc} />
-                  { this.state.showFollow ? <FollowComponent item={this.state.profile} /> : null }
+                  <Avatar src={profileImageSrc}/>
+                  {this.state.showFollow ?
+                    <FollowComponent item={this.state.profile}/> : null}
                 </div>
                 <div className="name">{name}</div>
                 <div className="location">{location}</div>
@@ -160,12 +162,14 @@ class UserProfile extends React.Component {
                   <div className="count">$ {balance}</div>
                   {
                     this.state.yourOrNot
-                    ?
-                    <div className="description">This is the current amount of funds in your account in the
-                      application.</div>
-                    :
-                    <div className="description">This is the current amount of funds in user account in the
-                      application.</div>
+                      ?
+                      <div className="description">This is the current amount of
+                        funds in your account in the
+                        application.</div>
+                      :
+                      <div className="description">This is the current amount of
+                        funds in user account in the
+                        application.</div>
                   }
                 </div>
               </div>
@@ -180,10 +184,8 @@ class UserProfile extends React.Component {
                 />
                 {
                   this.state.profile == undefined
-                  ?
-                    null
-                  :
-                    <TabsWrapper
+                    ? null
+                    : <TabsWrapper
                       activeTab={this.state.activeItemIndex}
                     >
                       <PostsList
@@ -214,8 +216,8 @@ class UserProfile extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    localization : state.localization,
-    user : state.auth.user
+    localization: state.localization,
+    user: state.auth.user,
   };
 };
 

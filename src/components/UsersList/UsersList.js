@@ -72,8 +72,6 @@ class UsersList extends React.Component {
   }
   
   render() {
-    console.log(this.props.point);
-    console.log(this.props.isComponentVisible);
     return (
       <div>
         {this.renderHeader()}

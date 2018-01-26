@@ -2,8 +2,6 @@ import * as React from 'react';
 import MenuItem from '../MenuItem/MenuItem';
 import Delimiter from '../DelimitersWrapper/Delimiter/Delimiter';
 import ShowIf from '../../Common/ShowIf';
-import {connect} from 'react-redux';
-import {closeModal} from '../../../actions/modal';
 
 const BUTTON_SIZE = 100;
 const PADDING_CONTAINER = 10;

@@ -1,5 +1,3 @@
-import moment from 'moment';
-import cookie from 'react-cookie';
 import { browserHistory } from 'react-router';
 import fakeAuth from '../components/Routes/fakeAuth';
 import constants from '../common/constants';

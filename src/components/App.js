@@ -2,7 +2,6 @@ import React from 'react';
 import Header from './Header';
 import MobileNavigationComponent from './MobileNavigationComponent';
 import FooterComponent from './FooterComponent';
-import LikesModalComponent from './Common/LikesModalComponent';
 import Clipboard from "./Common/Clipboard/Clipboard";
 import Modals from './Modals/Modals';
 
@@ -21,8 +20,7 @@ const App = ({ children }) => (
     <MobileNavigationComponent />
     <div className="pm"></div>
     <FooterComponent />
-
-    <LikesModalComponent />
+    
     <Clipboard />
     <Modals />
   </div>

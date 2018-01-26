@@ -92,8 +92,6 @@ class PostsList extends React.Component {
   }
 
   render() {
-    console.log(this.props.point);
-    console.log(this.props.isComponentVisible);
     if (!this.props.length) return null;
     return (
       <div className={this.props.className}>

@@ -1,5 +1,4 @@
 import constants from '../common/constants';
-import { getStore } from '../store/configureStore';
 import FormData from 'form-data';
 
 const baseUrl = constants.URLS.baseUrl_v1;

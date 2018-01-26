@@ -1,5 +1,4 @@
 import React from 'react';
-import LocalizedStrings from '../Localization/index.js';
 import { connect } from 'react-redux';
 import {
   Link
@@ -14,7 +13,6 @@ class UserItem extends React.Component {
     this.state = {
       authorName: this.props.username,
       item: this.props.item,
-      localize: LocalizedStrings.getInstance(),
       showFollow: this.props.showFollow !== undefined ? this.props.showFollow  : true,
       items: []
     };

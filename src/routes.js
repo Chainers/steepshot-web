@@ -2,7 +2,6 @@ import React from 'react';
 import { Route, Switch, Redirect } from 'react-router-dom';
 import App from './components/App';
 import NotFound from './components/NotFound';
-import Localization from './components/Localization/index';
 import Signin from './components/Account/Login';
 import UserProfile from './components/UserProfile/index';
 import PrivateRoute from './components/Routes/PrivateRoute';
@@ -23,11 +22,7 @@ export default function getRoutes(store) {
       type: 'CLEAR_MESSAGES'
     });
   };
-
-  function setLanguages(nextState, replace, callback) {
-    Localization.getInstance(callback);
-  }
-
+  
   let isUserLogin = !!store.getState().auth.user && !!store.getState().auth.postingKey;
 
   function baseBrowseFilter() {
