@@ -18,6 +18,7 @@ import TabsFilterComponent from '../Filters/TabsFilterComponent';
 import TabsWrapper from '../Wrappers/TabsWrapper';
 import Avatar from '../Common/Avatar/Avatar';
 import PostsList from '../PostsList/PostsList';
+import UsersList from '../UsersList/UsersList';
 
 class UserProfile extends React.Component {
   constructor(props) {
@@ -188,26 +189,17 @@ class UserProfile extends React.Component {
                       <PostsList
                         point={this.state.itemsPoint}
                         wrapperModifier="posts-list clearfix type-2"
-                        forceRefresh={this.state.needsForceRefresh}
                         clearPostHeader={true}
                       />
-                      <UsersComponent
+                      <UsersList
                         point={this.state.followersPoint}
-                        usersLabel={Constants.USERS_FILTERS.FOLLOWERS.label}
                         wrapperModifier="posts-list clearfix type-2"
                         getUsers={getFollowers}
-                        forceRefresh={this.state.needsForceRefresh}
-                        ownerOfPage={this.state.profile.username}
-                        pathName={this.props.history.location.pathname}
                       />
-                      <UsersComponent
+                      <UsersList
                         point={this.state.followingPoint}
-                        usersLabel={Constants.USERS_FILTERS.FOLLOWING.label}
                         wrapperModifier="posts-list clearfix type-2"
                         getUsers={getFollowing}
-                        forceRefresh={this.state.needsForceRefresh}
-                        ownerOfPage={this.state.profile.username}
-                        pathName={this.props.history.location.pathname}
                       />
                     </TabsWrapper>
                 }

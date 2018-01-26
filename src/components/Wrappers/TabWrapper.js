@@ -4,7 +4,7 @@ const TabWrapper = (props) =>
   <div>
     {
       props.children.map((child, index) =>
-        child === undefined ? null :
+        !child ? null :
           React.cloneElement(child, {
             ...child.props,
             key: index,

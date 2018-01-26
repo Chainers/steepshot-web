@@ -18,7 +18,6 @@ class PostsList extends React.Component {
     maxPosts: 9999,
     ignored: [],
     clearPostHeader: false,
-    isComponentVisible: true
   };
 
   constructor(props) {
@@ -32,7 +31,7 @@ class PostsList extends React.Component {
       postsIndices: [],
       length: 0,
       hasMore: true,
-      ignored: this.props.ignored
+      ignored: this.props.ignored,
     };
     this.props.initPostsList(postsListOptions);
     this.getPostsList = this.getPostsList.bind(this);
@@ -93,6 +92,8 @@ class PostsList extends React.Component {
   }
 
   render() {
+    console.log(this.props.point);
+    console.log(this.props.isComponentVisible);
     if (!this.props.length) return null;
     return (
       <div className={this.props.className}>

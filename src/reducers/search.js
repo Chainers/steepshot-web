@@ -11,7 +11,6 @@ const initialState = {
     {label: Constants.SEARCH_FILTERS.USERS.label},
   ],
   ignored: [],
-  needsForceRefresh: true
 };
 
 export default function search(state = initialState, action) {
@@ -26,8 +25,6 @@ export default function search(state = initialState, action) {
       };
     case 'SET_ACTIVE_INDEX':
       return {...state, activeIndex: action.index};
-    case 'USERS_REFRESHED':
-      return {...state, needsForceRefresh: false};
     default:
       return state;
   }

@@ -8,6 +8,7 @@ import search from './search';
 import comment from './comment';
 import votes from './votes';
 import clipboard from './clipboard';
+import usersList from './usersList';
 import postsList from './postsList';
 import modals from './modals';
 import postModal from './postModal';
@@ -23,6 +24,7 @@ export default combineReducers({
   comment,
   votes,
   postsList,
+  usersList,
   modals,
   postModal
 });

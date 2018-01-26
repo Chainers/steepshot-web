@@ -61,7 +61,7 @@ export function getPostsList(point) {
       let postsIndices = newPosts.map(post => {
         return post.url
       });
-      let hasMore = !(statePoint.offset == response.offset);
+      let hasMore = statePoint.offset !== response.offset;
       if (statePoint.maxPosts <=
         postsIndices.length + statePoint.postsIndices.length) {
         postsIndices = postsIndices

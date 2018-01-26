@@ -9,12 +9,6 @@ export function setActiveIndex(index) {
   }
 }
 
-export function refreshed() {
-  return {
-    type: 'USERS_REFRESHED'
-  }
-}
-
 export function getIgnoredPostsList(searchValue) {
   return dispatch => {
     dispatch({

@@ -4,8 +4,6 @@ import Constants from '../../common/constants';
 import TabsFilterComponent from '../Filters/TabsFilterComponent';
 import TabsWrapper from '../Wrappers/TabsWrapper';
 import PostsList from '../PostsList/PostsList';
-import ShowIf from '../Common/ShowIf';
-import UsersComponent from '../UserProfile/UsersComponent';
 import {getUsersSearch} from '../../actions/posts';
 import {documentTitle} from '../DocumentTitle';
 import {
@@ -14,6 +12,7 @@ import {
 } from '../../actions/search';
 import TabWrapper from '../Wrappers/TabWrapper';
 import {debounce} from 'lodash';
+import UsersList from '../UsersList/UsersList';
 
 class Search extends React.Component {
   constructor(props) {
@@ -56,31 +55,29 @@ class Search extends React.Component {
             activeTab={this.props.activeIndex}
           >
             <TabWrapper>
-                <PostsList
+              <PostsList
+                point={insertCategory(
+                  Constants.POSTS_FILTERS.POSTS_HOT.point,
+                  this.props.searchValue)}
+                wrapperModifier="posts-list clearfix"
+                cancelPrevious={false}
+                options={this.props.hotSectionOptions}
+                maxPosts={4}
+                headerText={hotPost}
+              />
+              {this.props.showResults ? <PostsList
                   point={insertCategory(
-                    Constants.POSTS_FILTERS.POSTS_HOT.point,
+                    Constants.POSTS_FILTERS.POSTS_NEW.point,
                     this.props.searchValue)}
                   wrapperModifier="posts-list clearfix"
                   cancelPrevious={false}
-                  options={this.props.hotSectionOptions}
-                  maxPosts={4}
-                  headerText={hotPost}
+                  ignored={this.props.ignored}
+                  headerText={newPost}
                 />
-                <ShowIf show={this.props.showResults}>
-                  <PostsList
-                    point={insertCategory(
-                      Constants.POSTS_FILTERS.POSTS_NEW.point,
-                      this.props.searchValue)}
-                    wrapperModifier="posts-list clearfix"
-                    cancelPrevious={false}
-                    ignored={this.props.ignored}
-                    headerText={newPost}
-                  />
-                </ShowIf>
+                : null}
             </TabWrapper>
-            <UsersComponent
+            <UsersList
               point={Constants.SEARCH_FILTERS.USERS.point}
-              forceRefresh={this.props.needsForceRefresh}
               getUsers={getUsersSearch}
               options={{
                 query: this.props.searchValue,
