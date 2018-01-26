@@ -77,7 +77,6 @@ class PostsList extends React.Component {
   }
 
   render() {
-    console.log(this.props);
     if (!this.props.length) return null;
     return (
       <div className={this.props.className}>

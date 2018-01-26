@@ -74,12 +74,9 @@ class Menu extends React.Component {
     return (
       <div className="container_menu" style={{width: this.state.contentWidth}}>
         <div className="header_menu">
-          <span className="title_menu">Action with this post</span>
-          <div className="wrapper-close-button_menu"
-               onClick={this.closeModal.bind(this)}>
-            <img src="/static/images/postContextMenu/close-but_menu.png"
-                 alt="Close menu button"
-                 className="close-button_menu"/>
+          <div className="title_menu">Actions with this post</div>
+          <div className="cross1" onClick={this.closeModal.bind(this)}>
+            <i className="cross2"/>
           </div>
         </div>
         <Delimiter horizontal={true}/>

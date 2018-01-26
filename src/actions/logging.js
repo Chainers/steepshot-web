@@ -114,3 +114,13 @@ export function logDeletedPost(author, permlink, data) {
 
     logCORS(url, options, 'delete');
 }
+
+// export function logSharePost() {
+//
+//   const url = `${baseUrl}/log/post/info`;
+//
+//   let options = baseCORSOptions;
+//   options.body = 'sharepost';
+//
+//   logCORS(url, options, 'sharepost');
+// }

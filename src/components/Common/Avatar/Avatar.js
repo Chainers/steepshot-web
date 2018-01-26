@@ -18,8 +18,7 @@ class Avatar extends React.Component {
         };
         return (
             <div className="pic_ava-com" style={ stylesError }>
-                <div className="pic_ava-com" style={ stylesPic } >
-                </div>
+                <div className="pic_ava-com" style={ stylesPic } />
             </div>
         )
     }

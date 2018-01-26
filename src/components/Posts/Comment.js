@@ -27,7 +27,7 @@ class Comment extends React.Component {
       item: newItem
     });
   }
-  
+
 
   openLikesModal() {
     let arr = this.state.item.url.split('');
@@ -55,7 +55,7 @@ class Comment extends React.Component {
     let money = null;
     let reply = <span className="rectangle_comment text--center">
                   <span onClick={this.replyAuthor.bind(this)}>Reply</span>
-                </span>
+                </span>;
     if (like) {
       if (like == 1 || like == -1) {
         text = `${like} like`
@@ -68,7 +68,11 @@ class Comment extends React.Component {
       return (
         <div className="comment-controls clearfix">
           {reply}
-          <a className="likes" data-toggle="modal" onClick={this.openLikesModal.bind(this)}>{text}</a>
+          <a
+            className="likes"
+            data-toggle="modal"
+            onClick={this.openLikesModal.bind(this)}
+          >{text}</a>
           <span className="pull-right">{money}</span>
         </div>
       )

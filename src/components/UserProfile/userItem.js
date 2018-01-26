@@ -21,7 +21,7 @@ class UserItem extends React.Component {
   }
 
   closeFunc() {
-      this.props.dispatch({ type : 'CLEAR_LIKES_INFO', url : this.state.url })
+      this.props.dispatch({ type : 'CLEAR_LIKES_INFO', url : this.state.url });
       jqApp.closeLikesModal($(document));
   }
 
