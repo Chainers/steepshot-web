@@ -1,13 +1,6 @@
 export default function posts(state = {}, action) {
   switch (action.type) {
-
-    case 'SET_DEFAULT_AVATAR':
-      return Object.assign({}, state, {
-        [action.index]: Object.assign({}, state[action.index], {
-          avatar: null,
-        }),
-      });
-
+    
     case 'ADD_POSTS':
       return Object.assign({},
         state,

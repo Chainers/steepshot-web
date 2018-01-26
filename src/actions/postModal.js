@@ -1,6 +1,6 @@
 import {openModal} from './modal';
 import {getStore} from '../store/configureStore';
-import {getPostsListAction} from './postsList';
+import {getPostsList} from './postsList';
 
 export function initPostModal(point, index) {
   return {
@@ -64,7 +64,7 @@ export function previousPostModal(index) {
   let newIndex = postsList[positionPost - 1];
   return (dispatch) => {
     if (positionPost === 0) {
-      dispatch(getPostsListAction(point))
+      dispatch(getPostsList(point))
     }
     dispatch(swapPostModal(newIndex))
   }

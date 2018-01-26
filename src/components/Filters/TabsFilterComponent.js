@@ -21,16 +21,16 @@ class TabsFilterComponent extends React.Component {
         this.setState({
             keys : nextProps.keys
         });
-        //this.autoClick(nextProps.activeItemIndex);
+        this.autoClick(nextProps.activeItemIndex);
     }
 
-    // autoClick(index) {
-    //   if (this.state.activeItemIndex == index) return false;
-    //   this.props.updateCallback(index);
-    //   this.setState({
-    //     activeItemIndex : index,
-    //   });
-    // }
+    autoClick(index) {
+      if (this.state.activeItemIndex == index) return false;
+      this.props.updateCallback(index);
+      this.setState({
+        activeItemIndex : index,
+      });
+    }
 
     switchFilter(index) {
       // if (/\/search\/\w+/.test(document.location.pathname)) {

@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {
-  clearPostsList, getPostsListAction,
+  getPostsList,
   initPostsList,
 } from '../../actions/postsList';
 import {debounce} from 'lodash';
@@ -9,10 +9,7 @@ import Constants from '../../common/constants';
 import InfiniteScroll from 'react-infinite-scroller';
 import LoadingSpinner from '../LoadingSpinner';
 import Post from './Post/Post';
-import ItemModal from '../Posts/ItemModal';
-import {openModal} from '../../actions/modal';
-import HeadingLeadComponent from '../Atoms/HeadingLeadComponent';
-import ShowIf from "../Common/ShowIf";
+
 
 class PostsList extends React.Component {
   static defaultProps = {
@@ -24,16 +21,16 @@ class PostsList extends React.Component {
 
   constructor(props) {
     super(props);
-    this.props.clearPosts();
     let postsListOptions = {
       point: this.props.point,
       cancelPrevious: this.props.cancelPrevious,
-      option: this.props.option,
+      options: this.props.options,
       maxPosts: this.props.maxPosts,
       loading: false,
       postsIndices: [],
       length: 0,
       hasMore: true,
+      ignored: this.props.ignored
     };
     this.props.initPostsList(postsListOptions);
     this.getPostsList = this.getPostsList.bind(this);
@@ -41,6 +38,23 @@ class PostsList extends React.Component {
 
   componentDidMount() {
     this.getPostsList();
+  }
+  
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.point !== this.props.point) {
+      let postsListOptions = {
+        point: this.props.point,
+        cancelPrevious: this.props.cancelPrevious,
+        options: this.props.options,
+        maxPosts: this.props.maxPosts,
+        loading: false,
+        postsIndices: [],
+        length: 0,
+        hasMore: true,
+        ignored: this.props.ignored
+      };
+      this.props.initPostsList(postsListOptions);
+    }
   }
 
   getPostsList() {
@@ -114,11 +128,8 @@ const mapDispatchToProps = (dispatch) => {
     initPostsList: (options) => {
       dispatch(initPostsList(options));
     },
-    clearPosts: () => {
-      dispatch(clearPostsList());
-    },
     getPosts: (point) => {
-      dispatch(getPostsListAction(point));
+      dispatch(getPostsList(point));
     }
   };
 };

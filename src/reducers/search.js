@@ -1,18 +1,33 @@
-import constants from '../common/constants';
+import Constants from '../common/constants';
+
 const initialState = {
-  value: '',
-  text: '',
-  category: constants.CATEGORIES.user
+  activeIndex: 0,
+  hotSectionOptions: {
+    limit: 4,
+  },
+  showResults: false,
+  keys: [
+    {label: Constants.SEARCH_FILTERS.CATEGORIES.label},
+    {label: Constants.SEARCH_FILTERS.USERS.label},
+  ],
+  ignored: [],
+  needsForceRefresh: true
 };
 
 export default function search(state = initialState, action) {
   switch (action.type) {
-    case 'SET_SEARCH_VALUE':
+    case 'GET_IGNORED_POSTS_REQUEST':
+      return initialState;
+    case 'GET_IGNORED_POSTS_SUCCESS':
       return {...state,
-        value: action.value,
-        text: action.text,
-        category: action.category
+        ignored: action.ignored,
+        showResults: true,
+        activeIndex: 0
       };
+    case 'SET_ACTIVE_INDEX':
+      return {...state, activeIndex: action.index};
+    case 'USERS_REFRESHED':
+      return {...state, needsForceRefresh: false};
     default:
       return state;
   }
