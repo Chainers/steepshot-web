@@ -173,16 +173,12 @@ class PostModal extends React.Component {
             <TimeAgo datetime={this.props.post.created}
                      locale='en_US'
             />
-            {
-              this.props.showClose != 'yes'
-              ?
+            <ShowIf show={this.props.showClose != 'yes'}>
               <div className="cont-close-btn_pos-mod"
                    onClick={() => this.props.closeModal(this.props.point)}>
                 <i className="close-btn_pos-mod"/>
               </div>
-              :
-              null
-            }
+            </ShowIf>
           </div>
           <Link to={authorLink} className="user_pos-mod">
             <Avatar src={this.props.post.avatar}/>

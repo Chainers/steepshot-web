@@ -75,8 +75,8 @@ class Menu extends React.Component {
       <div className="container_menu" style={{width: this.state.contentWidth}}>
         <div className="header_menu">
           <div className="title_menu">Actions with this post</div>
-          <div className="cross1" onClick={this.closeModal.bind(this)}>
-            <i className="cross2"/>
+          <div className="cross-wrapper_menu" onClick={this.closeModal.bind(this)}>
+            <i className="cross_menu"/>
           </div>
         </div>
         <Delimiter horizontal={true}/>
