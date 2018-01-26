@@ -18,6 +18,7 @@ class PostsList extends React.Component {
     maxPosts: 9999,
     ignored: [],
     clearPostHeader: false,
+    isComponentVisible: true
   };
 
   constructor(props) {
