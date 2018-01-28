@@ -1,16 +1,12 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {
-  getPostsList,
-  initPostsList,
-} from '../../actions/postsList';
+import {getPostsList, initPostsList} from '../../actions/postsList';
 import {debounce} from 'lodash';
 import Constants from '../../common/constants';
 import InfiniteScroll from 'react-infinite-scroller';
 import LoadingSpinner from '../LoadingSpinner';
 import Post from './Post/Post';
 import HeadingLeadComponent from '../Atoms/HeadingLeadComponent';
-
 
 class PostsList extends React.Component {
   static defaultProps = {
@@ -41,7 +37,7 @@ class PostsList extends React.Component {
   componentDidMount() {
     this.getPostsList();
   }
-  
+
   componentWillReceiveProps(nextProps) {
     if (nextProps.point !== this.props.point) {
       let postsListOptions = {
@@ -84,7 +80,7 @@ class PostsList extends React.Component {
 
     return posts;
   }
-  
+
   renderHeader() {
     if (this.props.headerText) return (
       <HeadingLeadComponent text={this.props.headerText} />

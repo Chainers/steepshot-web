@@ -122,5 +122,5 @@ export function logDeletedPost(author, permlink, data) {
 //   let options = baseCORSOptions;
 //   options.body = 'sharepost';
 //
-//   logCORS(url, options, 'sharepost');
+//   logCORS(url, options, 'share post');
 // }

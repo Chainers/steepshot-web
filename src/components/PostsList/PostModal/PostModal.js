@@ -106,7 +106,6 @@ class PostModal extends React.Component {
     }
     this.props.setPostModalOptions({
       addCommentHeight: this.hiddenDiv.clientHeight,
-      limitTop: this.descContainer.clientHeight,
       label,
       sendHover,
     });
@@ -188,7 +187,7 @@ class PostModal extends React.Component {
         
         <div className="description_pos-mod"
              style={this.props.style.description}
-             ref={ref => this.descContainer = ref}>
+        >
           <div className="control-cont_pos-mod">
             <div className="post-control_pos-mod">
               <div className="likes_pos-mod">
@@ -231,7 +230,7 @@ class PostModal extends React.Component {
           </div>
 
           <ShowIf show={this.props.isUserAuth}>
-            <div className="add-comment_pos-mod">
+            <div className="add-comment_pos-mod" ref={ref => {this.addCommentArea = ref}}>
               <div className="hidden-div_pos-mod" ref={ref => {this.hiddenDiv = ref}}/>
               <textarea ref={ref => this.textArea = ref}
                         maxLength={2048}
@@ -239,11 +238,8 @@ class PostModal extends React.Component {
                         onChange={this.changeText.bind(this)}
                         style={{
                           height: this.hiddenDiv !== undefined
-                            ? this.props.addCommentHeight + 'px'
-                            : START_TEXTAREA_HEIGHT,
-                          maxHeight: this.hiddenDiv !== undefined
-                            ? this.props.limitTop + 'px'
-                            : null
+                                  ? this.props.addCommentHeight + 'px'
+                                  : START_TEXTAREA_HEIGHT
                         }}
               />
               <label className={this.props.label + ' label_pos-mod'}>Comment</label>

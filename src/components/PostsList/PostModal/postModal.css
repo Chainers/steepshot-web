@@ -36,6 +36,7 @@
 }
 
 .header_pos-mod {
+  position: relative;
   padding: 20px;
   background-color: #fafafa;
 }
@@ -78,8 +79,8 @@
 }
 
 .cont-close-btn_pos-mod {
-  height: 16px;
-  width: 16px;
+  height: 12px;
+  width: 12px;
   float: right;
   margin-left: 20px;
   cursor: pointer;
@@ -87,13 +88,14 @@
 
 .close-btn_pos-mod {
   position: absolute;
-  width: 16px;
-  height: 16px;
+  width: 12px;
+  height: 12px;
+  top: 25px;
   background: url(/static/images/sprite_svg1910.svg) no-repeat 0 99.8%;
 }
 
 .control-cont_pos-mod {
-  height: 62px;
+  min-height: 62px;
   border-top: 1px solid #f4f4f6;
   border-bottom: 1px solid #f4f4f6;
   display: flex;
@@ -294,4 +296,10 @@ textarea:focus + .label_pos-mod {
   margin-bottom: 30px;
   color: #696969;
   font: 14px OpenSans-Regular;
+}
+
+@media screen and (max-width: 815px) {
+  .container_pos-mod {
+    border-radius: 0
+  }
 }
