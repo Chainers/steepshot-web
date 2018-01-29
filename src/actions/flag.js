@@ -35,14 +35,14 @@ export function toggleFlag(postIndex) {
 
     if (!username && !postingKey) {
       debounce(jqApp.pushMessage.open(Constants.VOTE_ACTION_WHEN_NOT_AUTH), Constants.VOTE_ACTION_WHEN_NOT_AUTH_DEBOUNCE);
-      return;
+      return false;
     }
     let queue = sessionStorage.getItem('voteQueue');
     if (queue === "true")  {
       return;
     }
     sessionStorage.setItem('voteQueue', 'true');
-    
+
     dispatch(toggleFlagRequest(postIndex));
 
     const callback = (err, success) => {
@@ -62,7 +62,7 @@ export function toggleFlag(postIndex) {
         jqApp.pushMessage.open(text);
       }
     };
-  
+
     let urlObject = post.url.split('/');
     Steem.flag(postingKey,
       username,

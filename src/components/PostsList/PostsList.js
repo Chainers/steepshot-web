@@ -29,6 +29,7 @@ class PostsList extends React.Component {
       length: 0,
       hasMore: true,
       ignored: this.props.ignored,
+      loader: true
     };
     this.props.initPostsList(postsListOptions);
     this.getPostsList = this.getPostsList.bind(this);
@@ -60,25 +61,30 @@ class PostsList extends React.Component {
   }
 
   renderPosts() {
-    if (!this.props.length) {
+    if(this.props.loader) {
+      return (
+        <span/>
+      )
+    } else if (!this.props.length) {
       return (
         <div className="empty-query-message">
           {Constants.EMPTY_QUERY}
         </div>
       );
-    }
-    let posts = [];
-    this.props.postsIndices.forEach((postIndex) => {
-      if (this.props.ignored.indexOf(postIndex) == -1) {
-        posts.push(<Post key={this.props.point + "/" + postIndex}
-                         index={postIndex}
-                         point={this.props.point}
-                         clearPostHeader={this.props.clearPostHeader}
-        />);
-      }
-    });
+    } else {
+      let posts = [];
+      this.props.postsIndices.forEach((postIndex) => {
+        if (this.props.ignored.indexOf(postIndex) == -1) {
+          posts.push(<Post key={this.props.point + "/" + postIndex}
+                           index={postIndex}
+                           point={this.props.point}
+                           clearPostHeader={this.props.clearPostHeader}
+          />);
+        }
+      });
 
-    return posts;
+      return posts;
+    }
   }
 
   renderHeader() {
@@ -89,7 +95,6 @@ class PostsList extends React.Component {
   }
 
   render() {
-    if (!this.props.length) return null;
     return (
       <div className={this.props.className}>
         {this.renderHeader()}
@@ -99,15 +104,11 @@ class PostsList extends React.Component {
           loadMore={debounce(this.getPostsList,
           Constants.ENDLESS_SCROLL.DEBOUNCE_TIMEOUT)}
           hasMore={this.props.isComponentVisible && this.props.hasMore}
-          loader={
-            <div className="position--relative">
-              <LoadingSpinner/>
-            </div>
-          }
+          loader={<LoadingSpinner/>}
           threshold={Constants.ENDLESS_SCROLL.OFFSET}
         >
           <div className="posts-list container_pos-lis">
-            {this.renderPosts.bind(this)()}
+            {this.renderPosts()}
           </div>
         </InfiniteScroll>
       </div>

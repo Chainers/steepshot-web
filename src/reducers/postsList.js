@@ -19,8 +19,8 @@ export default function postsList(state = {}, action) {
           offset: action.options.offset,
           hasMore: action.options.hasMore,
           loading: false,
-          length: state[action.options.point].length +
-          action.options.length,
+          length: state[action.options.point].length + action.options.length,
+          loader: false
         }),
       });
 

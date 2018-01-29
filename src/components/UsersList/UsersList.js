@@ -15,9 +15,9 @@ import UserItem from '../UserProfile/userItem';
 class UsersList extends React.Component {
   static defaultProps = {
     isComponentVisible: true,
-    
+
   };
-  
+
   constructor(props) {
     super(props);
     this.props.clearUsersList(this.props.point);
@@ -28,23 +28,27 @@ class UsersList extends React.Component {
       users: [],
       offset: null,
       options: this.props.options,
+      loader: true
     };
     this.props.initUsersList(usersListOptions);
     this.getUsersList = this.getUsersList.bind(this);
   }
-  
+
   getUsersList() {
     this.props.getUsersList(this.props.point, this.props.getUsers);
   }
-  
+
   componentDidMount() {
     this.getUsersList();
     documentTitle();
   }
-  
+
   renderUsers() {
-    if (this.props.loading) return null;
-    if (!this.props.users || !this.props.users[0]) {
+    if(this.props.loader) {
+      return (
+        <span/>
+      )
+    } else if (!this.props.users || !this.props.users[0]) {
       return (
         <div className="empty-query-message">
           {Constants.EMPTY_QUERY}
@@ -63,14 +67,14 @@ class UsersList extends React.Component {
       return users;
     }
   }
-  
+
   renderHeader() {
     if (this.props.headerText) return (
       <HeadingLeadComponent text={this.props.headerText}/>
     );
     return null;
   }
-  
+
   render() {
     return (
       <div>
@@ -82,7 +86,7 @@ class UsersList extends React.Component {
             Constants.ENDLESS_SCROLL.DEBOUNCE_TIMEOUT)}
           hasMore={this.props.isComponentVisible && this.props.hasMore}
           loader={
-            <div className="position--relative">
+            <div style={{marginTop: '-15px'}}>
               <LoadingSpinner/>
             </div>
           }
