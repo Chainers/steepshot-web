@@ -65,7 +65,8 @@ class PostsList extends React.Component {
       return (
         <span/>
       )
-    } else if (!this.props.length) {
+    };
+    if (!this.props.length) {
       return (
         <div className="empty-query-message">
           {Constants.EMPTY_QUERY}
