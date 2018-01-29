@@ -21,6 +21,7 @@ export default function usersList(state = {}, action) {
           hasMore : action.options.hasMore,
           users: [...state[action.options.point].users, ...action.options.users],
           offset: action.options.offset,
+          loader: false
         }),
       });
 

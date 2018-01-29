@@ -14,7 +14,7 @@ import UsersList from '../UsersList/UsersList';
 class UserProfile extends React.Component {
   constructor(props) {
     super(props);
-    
+
     this.state = {
       watcher: this.props.user,
       authorName: this.props.username,
@@ -37,18 +37,18 @@ class UserProfile extends React.Component {
       activeItemIndex: 0,
     };
   }
-  
+
   componentDidMount() {
     document.body.style.overflowY = 'auto';
     this.getUserProfile();
   }
-  
+
   updateActiveTab(index) {
     this.setState({
       activeItemIndex: index,
     });
   }
-  
+
   getUserProfile(userName) {
     this.setState({
       wrongProfile: false,
@@ -84,7 +84,7 @@ class UserProfile extends React.Component {
     });
     this.correctText();
   }
-  
+
   componentWillReceiveProps(nextProps) {
     if (nextProps.username === this.state.authorName) {
       return;
@@ -99,30 +99,29 @@ class UserProfile extends React.Component {
       followersPoint: this.insertUsername(
         Constants.USERS_FILTERS.FOLLOWERS.point, nextProps.username),
     });
-    
+
     this.getUserProfile(nextProps.username);
   }
-  
+
   insertUsername(point, userName) {
     if (userName == undefined) return point;
     let path = point.split('/');
     return `${path[0]}/${userName}/${path[1]}`;
   }
-  
+
   correctText() {
     if (window.localStorage.user == undefined ||
       this.props.history.location.pathname == undefined) {
       this.setState({yourOrNot: false});
     } else {
-      if (window.localStorage.user.replace(/"/g, '') ==
-        this.props.history.location.pathname.replace('/@', '')) {
+      if (window.localStorage.user.replace(/"/g, '') == this.props.history.location.pathname.replace('/@', '')) {
         this.setState({yourOrNot: true});
       } else {
         this.setState({yourOrNot: false});
       }
     }
   }
-  
+
   render() {
     let profileImageSrc = this.state.avatar || Constants.NO_AVATAR;
     let name = '';
@@ -130,17 +129,16 @@ class UserProfile extends React.Component {
     let about = '';
     let location = '';
     let balance = 0;
-    
+
     if (this.state.profile) {
       name = this.state.profile.name;
-      if (name == undefined ||
-        name == '') name = `@${this.state.profile.username}`;
+      if (name == undefined || name == '') name = `@${this.state.profile.username}`;
       website = this.state.profile.website;
       about = this.state.profile.about;
       location = this.state.profile.location;
       balance = this.state.profile.estimated_balance;
     }
-    
+
     return (
       <div className="g-main_i container">
         <div className="g-content col-xs-12 clearfix" id="workspace">

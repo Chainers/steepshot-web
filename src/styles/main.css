@@ -154,8 +154,8 @@ input.autofil--gray:-webkit-autofill {
 }
 
 .loader-blocker{
-  position: absolute;
-  top: 0;
+  position: relative;
+  top: 30px;
   bottom: 0;
   left: 0;
   right: 0;
@@ -383,7 +383,6 @@ h2.card-field__heading {
 
 .card-wrap {
   min-width: 257px !important;
-  border: none !important;
 }
 .rectangle_comment span {
   padding: 2.5px 20px 3.5px 20px;
@@ -1204,4 +1203,11 @@ h2.card-field__heading {
 }
 .comment-controls a.likes:hover {
   opacity: .7;
+}
+.loding-spinner_create-post {
+  position: absolute;
+  top: 50%;
+  left: 50.5%;
+  z-index: 1003;
+  transform: translate(-50%, -50.5%);
 }

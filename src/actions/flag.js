@@ -42,7 +42,7 @@ export function toggleFlag(postIndex) {
       return;
     }
     sessionStorage.setItem('voteQueue', 'true');
-    
+
     dispatch(toggleFlagRequest(postIndex));
 
     const callback = (err, success) => {
@@ -62,7 +62,7 @@ export function toggleFlag(postIndex) {
         jqApp.pushMessage.open(text);
       }
     };
-  
+
     let urlObject = post.url.split('/');
     Steem.flag(postingKey,
       username,

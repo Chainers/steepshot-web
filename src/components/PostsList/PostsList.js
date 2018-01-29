@@ -29,6 +29,7 @@ class PostsList extends React.Component {
       length: 0,
       hasMore: true,
       ignored: this.props.ignored,
+      loader: true
     };
     this.props.initPostsList(postsListOptions);
     this.getPostsList = this.getPostsList.bind(this);
@@ -60,6 +61,11 @@ class PostsList extends React.Component {
   }
 
   renderPosts() {
+    if(this.props.loader) {
+      return (
+        <span/>
+      )
+    };
     if (!this.props.length) {
       return (
         <div className="empty-query-message">
@@ -77,7 +83,6 @@ class PostsList extends React.Component {
         />);
       }
     });
-
     return posts;
   }
 
@@ -89,7 +94,6 @@ class PostsList extends React.Component {
   }
 
   render() {
-    if (!this.props.length) return null;
     return (
       <div className={this.props.className}>
         {this.renderHeader()}
@@ -99,15 +103,11 @@ class PostsList extends React.Component {
           loadMore={debounce(this.getPostsList,
           Constants.ENDLESS_SCROLL.DEBOUNCE_TIMEOUT)}
           hasMore={this.props.isComponentVisible && this.props.hasMore}
-          loader={
-            <div className="position--relative">
-              <LoadingSpinner/>
-            </div>
-          }
+          loader={<LoadingSpinner/>}
           threshold={Constants.ENDLESS_SCROLL.OFFSET}
         >
           <div className="posts-list container_pos-lis">
-            {this.renderPosts.bind(this)()}
+            {this.renderPosts()}
           </div>
         </InfiniteScroll>
       </div>

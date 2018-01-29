@@ -10,6 +10,7 @@
   position: relative;
   display: flex;
   align-items: center;
+  background: #ffffff;
 }
 
 .container_post-men-but:hover {
@@ -17,8 +18,8 @@
 }
 
 .shape_post-men-but {
-  margin-left: 7px;
-  width: 16px;
+  width: 100%;
   height: 4px;
   vertical-align: initial;
+  background: url(/static/images/postContextMenu/shape-copy-3.svg) center no-repeat;
 }

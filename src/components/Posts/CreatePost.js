@@ -125,7 +125,6 @@ class CreatePost extends React.Component {
       if (success) {
         this.setState({
           renderLoader: false,
-
         }, () => {
           jqApp.pushMessage.open(
             'Post has been successfully created. If you don\'t see the post in your profile, please give it a few minutes to sync from the blockchain');
@@ -262,8 +261,7 @@ class CreatePost extends React.Component {
     let items = this.state.tagList.map((tag, index) => {
       return (
         <div key={index} className="tag">{tag}
-          <button type="button" className="btn-close"
-                  onClick={this.removeTag.bind(_this, index)}></button>
+          <button type="button" className="btn-close" onClick={this.removeTag.bind(_this, index)}/>
         </div>
       );
     });
@@ -272,7 +270,11 @@ class CreatePost extends React.Component {
 
   _renderLoader() {
     if (this.state.renderLoader) {
-      return <LoadingSpinner/>;
+      return (
+        <div className="loding-spinner_create-post">
+           <LoadingSpinner/>
+        </div>
+      );
     } else {
       return null;
     }
@@ -344,7 +346,7 @@ class CreatePost extends React.Component {
       $imagePreview = (
         <div className="upload-field empty">
           <div className="uf-preview">
-            <div className="uf-icon"></div>
+            <div className="uf-icon"/>
             <div className="uf-text">Click to upload a picture</div>
           </div>
           <input id="upload-file" className="file-input"
@@ -355,6 +357,7 @@ class CreatePost extends React.Component {
 
     return (
       <div>
+        {this._renderLoader()}
         <div className={mainContainerClassName}>
           <form className="form-create form-horizontal">
             <div className="form-group">
@@ -429,7 +432,6 @@ class CreatePost extends React.Component {
             </div>
           </form>
         </div>
-        {this._renderLoader()}
       </div>
     );
   }

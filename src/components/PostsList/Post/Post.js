@@ -71,14 +71,15 @@ class Post extends React.Component {
         <ShowIf show={!this.props.clearPostHeader}>
           <div className="card-head clearfix">
             <div className="date">
-              <PostContextMenu style={{float: 'left', height: '22px'}}
-                               item={this.props}
-                               index={this.props.index}
-              />
               <TimeAgo
                 datetime={this.props.created}
                 locale='en_US'
-                style={{float: 'right'}}
+                style={{float: 'left'}}
+              />
+              <PostContextMenu style={{float: 'right', height: '22px', width: '22px', marginLeft: '10px'}}
+                               className="post-context-menu_post"
+                               item={this.props}
+                               index={this.props.index}
               />
             </div>
             <Link to={authorLink} className="user">
