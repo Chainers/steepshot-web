@@ -1,8 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {
-  nextPostModal, previousPostModal,
-  setPostModalOptions,
+  nextPostModal, previousPostModal, setPostModalOptions,
 } from '../../../actions/postModal';
 import constants from '../../../common/constants';
 import TimeAgo from 'timeago-react';
@@ -25,41 +24,41 @@ import ReactDOM from 'react-dom';
 const START_TEXTAREA_HEIGHT = '42px';
 
 class PostModal extends React.Component {
-  
+
   static defaultProps = {
     showClose: true,
   };
-  
+
   constructor(props) {
     super(props);
     this.setComponentSize = this.setComponentSize.bind(this);
     this.initKeyPress();
   }
-  
+
   componentDidMount() {
     window.addEventListener('resize', this.setComponentSize);
     this.hiddenDiv.style.width = this.textArea.clientWidth + 'px';
   }
-  
+
   componentWillUnmount() {
     window.removeEventListener('resize', this.setComponentSize);
   }
-  
+
   componentDidUpdate() {
     this.scrollView.scrollBar.scrollToBottom();
   }
-  
+
   componentWillReceiveProps(nextProps) {
     if (nextProps.currentIndex !== this.props.currentIndex) {
       console.log('clear');
       this.props.setPostModalOptions({imgLoaded: false});
     }
   }
-  
+
   openDescription() {
     this.props.setPostModalOptions({isDescriptionOpened: true});
   }
-  
+
   initKeyPress() {
     document.onkeydown = (e) => {
       if (document.activeElement !== ReactDOM.findDOMNode(this.textArea)) {
@@ -78,13 +77,13 @@ class PostModal extends React.Component {
       }
     };
   }
-  
+
   clearTextArea() {
     this.textArea.value = '';
     this.hiddenDiv.textContent = '';
     this.setComponentSize();
   }
-  
+
   renderImage() {
     return (
       <div className="image-container_pos-mod"
@@ -132,23 +131,23 @@ class PostModal extends React.Component {
         </ShowIf>
       </div>);
   }
-  
+
   renderDescription() {
     let forceOpen = false;
     let descriptionStart = this.props.post.description.replace(/(<\w+>)+/, '');
     if (descriptionStart.replace(/\n[\w\W]+/, '').length < 140) {
       forceOpen = true;
     }
-    
+
     return (
       <div className="text-description_pos-menu">
-        <p>{UserLinkFunc(null, this.props.post.title)}</p>
+        <p>{UserLinkFunc(true, this.props.post.title)}</p>
         <div
           className={(this.props.isDescriptionOpened || forceOpen)
             ? 'collapse-opened'
             : 'collapse-closed'}
         >
-          
+
           {UserLinkFunc(false, this.props.post.description)}
           <Tags tags={this.props.post.tags}/>
           <a className="lnk-more" onClick={this.openDescription.bind(this)}>Show
@@ -156,16 +155,16 @@ class PostModal extends React.Component {
         </div>
       </div>);
   }
-  
+
   imageLoaded() {
     this.props.setPostModalOptions({imgLoaded: true});
     this.setComponentSize();
   }
-  
+
   changeText() {
     this.hiddenDiv.style.width = this.textArea.clientWidth;
     this.hiddenDiv.textContent = this.textArea.value;
-    
+
     let label = '';
     let sendHover = '';
     if (this.textArea.value) {
@@ -178,7 +177,7 @@ class PostModal extends React.Component {
       sendHover,
     });
   }
-  
+
   sendComment(e) {
     e.preventDefault();
     let comment = this.textArea.value;
@@ -186,7 +185,7 @@ class PostModal extends React.Component {
     this.props.sendComment(this.props.currentIndex, comment);
     this.textArea.value = '';
   }
-  
+
   render() {
     const authorLink = `/@${this.props.post.author}`;
     return (
@@ -199,9 +198,16 @@ class PostModal extends React.Component {
             <TimeAgo datetime={this.props.post.created}
                      locale='en_US'
             />
-            <ShowIf show={this.props.showClose}>
-              <div className="cont-close-btn_pos-mod"
-                   onClick={() => this.props.closeModal(this.props.point)}>
+            <div className="cont-close-btn_pos-mod"
+                 onClick={() => this.props.closeModal(this.props.point)}/>
+
+            <PostContextMenu style={{height: '22px', width: '22px', marginLeft: '5px'}}
+                             className="post-context-menu_post"
+                             item={this.props.post}
+                             index={this.props.currentIndex}
+            />
+            <ShowIf show={!this.props.showClose}>
+              <div className="cont-close-btn_pos-mod" onClick={() => this.props.closeModal(this.props.point)}>
                 <i className="close-btn_pos-mod"/>
               </div>
             </ShowIf>
@@ -211,7 +217,7 @@ class PostModal extends React.Component {
             <div className="name_pos-mod">{this.props.post.author}</div>
           </Link>
         </div>
-        
+
         <div className="description_pos-mod"
              style={this.props.style.description}
         >
@@ -236,7 +242,7 @@ class PostModal extends React.Component {
               </div>
             </div>
           </div>
-          
+
           <div className="comment-container_pos-mod">
             <ScrollViewComponent
               ref={(ref) => this.scrollView = ref}
@@ -257,7 +263,7 @@ class PostModal extends React.Component {
               />
             </ScrollViewComponent>
           </div>
-          
+
           <ShowIf show={this.props.isUserAuth}>
             <div className="add-comment_pos-mod">
               <div className="hidden-div_pos-mod"
@@ -293,14 +299,14 @@ class PostModal extends React.Component {
       </div>
     );
   }
-  
+
   setComponentSize() {
     const DESC_WIDTH = 380;
     const MIN_HEIGHT = 440;
     const PREF_IMG_WIDTH = 640;
     const CONT_MARGIN = 80;
     const MAX_WIDTH_FULL_SCREEN = 815;
-    
+
     let imgHeight = this.image.naturalHeight;
     let imgWidth = this.image.naturalWidth;
     let docWidth = document.documentElement.clientWidth;
@@ -308,7 +314,7 @@ class PostModal extends React.Component {
     let contHeight = '100%';
     let contWidth = docWidth;
     let imgContWidth = '100%';
-    
+
     let headerCont = {
       order: 0,
       backgroundColor: '#FFF',
@@ -318,15 +324,15 @@ class PostModal extends React.Component {
       contHeight = docHeight * 0.9 > MIN_HEIGHT
         ? docHeight * 0.9
         : MIN_HEIGHT;
-      
+
       imgWidth = imgWidth < PREF_IMG_WIDTH ? imgWidth : PREF_IMG_WIDTH;
       imgWidth = imgWidth < docWidth - DESC_WIDTH - CONT_MARGIN
         ? imgWidth
         : docWidth - DESC_WIDTH - CONT_MARGIN;
       imgWidth = imgWidth ? imgWidth : this.image.clientWidth;
-      
+
       imgHeight = imgHeight * imgWidth / this.image.naturalWidth;
-      
+
       if (imgHeight > contHeight) {
         imgWidth = imgWidth * contHeight / imgHeight;
         imgHeight = contHeight;
@@ -337,7 +343,7 @@ class PostModal extends React.Component {
       }
       contWidth = imgWidth + DESC_WIDTH;
       imgContWidth = imgWidth;
-      
+
       headerCont.order = 2;
       headerCont.width = DESC_WIDTH;
     } else {

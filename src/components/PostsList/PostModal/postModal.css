@@ -61,6 +61,7 @@
 }
 
 .date_pos-mod {
+  display: flex;
   float: right;
   color: #979b9e;
   font-size: 12px;
@@ -92,7 +93,7 @@
   height: 12px;
   width: 12px;
   float: right;
-  margin-left: 20px;
+  margin-left: 14px;
   cursor: pointer;
 }
 
@@ -245,10 +246,12 @@
   line-height: inherit;
 }
 
+.btn-hover_pos-mod {
+  color: #e74800;
+}
 .btn-hover_pos-mod:hover {
   cursor: pointer;
   border: 1px solid #ececee;
-  color: #e74800;
 }
 
 .label_pos-mod {

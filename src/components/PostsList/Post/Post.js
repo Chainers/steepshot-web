@@ -60,7 +60,6 @@ class Post extends React.Component {
     const cardPhotoStyles = {
       backgroundImage: 'url(' + itemImage + ')',
     };
-
     return (
       <div className="post-card" style={{width: '300px', position: 'relative'}}>
         <ShowIf show={this.props.postDeleting}>

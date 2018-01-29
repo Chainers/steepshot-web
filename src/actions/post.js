@@ -99,7 +99,7 @@ export function deletePost(postIndex) {
 export function addSinglePost(url) {
   return dispatch => {
     const urlObject = url.split('/');
-    
+
     if (urlObject.length < 3) {
       error();
     } else {
@@ -130,12 +130,6 @@ export function addSinglePost(url) {
 
 function getPostIdentifier(author, permlink) {
   return `${author}/${permlink}`;
-}
-
-function sharedComponentTitle(post) {
-  let title = post.title.split('');
-  title[0] = title[0].toUpperCase();
-  document.title = `${title.join('')} | Steepshot`;
 }
 
 function error() {

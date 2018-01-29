@@ -67,9 +67,7 @@ class PostContextMenu extends React.Component {
     return (
       <div className="container_pos-con-men" style={this.props.style}>
         <div className="container_post-men-but" onClick={this.openFunc} style={this.props.style}>
-          <span className="shape_post-men-but"
-               alt="Post menu button"
-          />
+          <div className="shape_post-men-but" alt="Open post menu" title="Open post menu"/>
         </div>
       </div>
     );

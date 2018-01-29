@@ -1,4 +1,4 @@
-import {getPosts} from './posts';
+import {getPosts, getComments} from './posts';
 import {getStore} from '../store/configureStore';
 import {addPosts} from './post';
 
@@ -57,15 +57,20 @@ export function getPostsList(point) {
       let newPosts = response.results;
       newPosts = removeDuplicate(newPosts);
       newPosts = removeOldDuplicate(statePoint.postsIndices, newPosts);
-
-      let postsIndices = newPosts.map(post => {
+      // getComments(options, true).then((response) => {
+      //   console.log(response);
+      // });
+      // const options = {
+      //   point : `post/${nextProps.item.author}/${nextProps.item.url}/comments`,
+      //   params : {}
+      // };
+      let postsIndices = newPosts.map( (post, index) => {
         return post.url
       });
+      console.log(postsIndices);
       let hasMore = statePoint.offset !== response.offset;
-      if (statePoint.maxPosts <=
-        postsIndices.length + statePoint.postsIndices.length) {
-        postsIndices = postsIndices
-          .slice(0, statePoint.maxPosts - statePoint.postsIndices.length);
+      if (statePoint.maxPosts <= postsIndices.length + statePoint.postsIndices.length) {
+        postsIndices = postsIndices.slice(0, statePoint.maxPosts - statePoint.postsIndices.length);
         hasMore = false;
       }
       let pointOptions = {
