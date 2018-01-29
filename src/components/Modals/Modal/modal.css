@@ -11,6 +11,7 @@
   overflow-y: auto;
   overflow-x: hidden;
   align-items: center;
+  transition: all .3s cubic-bezier(0.1, 0.23, 0.25, 1);
 }
 
 .container_mods {
@@ -54,4 +55,17 @@
     top: 12px;
     right: 12px;
   }
+}
+
+.body_modal {
+  transition: all .3s cubic-bezier(0.1, 0.23, 0.25, 1);
+}
+
+.before-load_modal {
+  margin-top: -200vh;
+  opacity: 0;
+}
+
+.before-load-back_modal {
+  opacity: 0;
 }

@@ -26,9 +26,13 @@ export function closeModal(index) {
   return (dispatch) => {
     modal.callBeforeClosed();
     dispatch({
-      type: 'CLOSE_MODAL',
+      type: 'WILL_CLOSE_MODAL',
       index
     });
+    setTimeout(() => {dispatch({
+      type: 'CLOSE_MODAL',
+      index
+    });}, 250);
     modal.callAfterClosed();
   }
 }

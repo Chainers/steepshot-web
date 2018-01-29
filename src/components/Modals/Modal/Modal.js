@@ -13,6 +13,8 @@ class Modal extends React.Component {
   componentDidMount() {
     window.addEventListener('resize', this.resizeWindow);
     document.body.style.overflow = 'hidden';
+    this.wrapper.classList.remove('before-load-back_modal');
+    this.modalContainer.classList.remove('before-load_modal');
     this.resizeWindow();
   }
 
@@ -20,7 +22,15 @@ class Modal extends React.Component {
     window.removeEventListener('resize', this.resizeWindow);
     document.body.style.overflow = 'auto';
   }
-
+  
+  shouldComponentUpdate(props) {
+    if (props.willClose) {
+      this.modalContainer.classList.add('before-load_modal');
+      this.wrapper.classList.add('before-load-back_modal');
+    }
+    return true;
+  }
+  
   componentDidUpdate() {
      this.resizeWindow();
   }
@@ -54,13 +64,13 @@ class Modal extends React.Component {
     styleBack.zIndex = 1002;
     return (
       <div className="modal-wrapper_mods">
-        <div className="back_mods"
+        <div className="back_mods before-load-back_modal"
              onClick={this.clickOutside.bind(this)}
              style={styleBack}
              ref={ref => {this.wrapper = ref;}}
         >
           <ShowIf show={!this.props.fullScreen}>
-            <div className={this.props.styles}
+            <div className={this.props.styles + " body_modal before-load_modal"}
                  ref={ref => {this.modalContainer = ref;}}>
               {this.props.body}
             </div>
