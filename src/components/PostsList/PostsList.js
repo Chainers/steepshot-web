@@ -72,20 +72,18 @@ class PostsList extends React.Component {
           {Constants.EMPTY_QUERY}
         </div>
       );
-    } else {
-      let posts = [];
-      this.props.postsIndices.forEach((postIndex) => {
-        if (this.props.ignored.indexOf(postIndex) == -1) {
-          posts.push(<Post key={this.props.point + "/" + postIndex}
-                           index={postIndex}
-                           point={this.props.point}
-                           clearPostHeader={this.props.clearPostHeader}
-          />);
-        }
-      });
-
-      return posts;
     }
+    let posts = [];
+    this.props.postsIndices.forEach((postIndex) => {
+      if (this.props.ignored.indexOf(postIndex) == -1) {
+        posts.push(<Post key={this.props.point + "/" + postIndex}
+                         index={postIndex}
+                         point={this.props.point}
+                         clearPostHeader={this.props.clearPostHeader}
+        />);
+      }
+    });
+    return posts;
   }
 
   renderHeader() {
