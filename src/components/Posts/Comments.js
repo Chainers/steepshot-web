@@ -45,7 +45,6 @@ class Comments extends React.Component {
       point : `post/${nextProps.item.author}/${nextProps.item.url}/comments`,
       params : {}
     };
-    console.log(options);
     getComments(options, true).then((response) => {
       this.setState({
         comments: response.results,

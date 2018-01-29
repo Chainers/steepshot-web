@@ -1158,7 +1158,8 @@ h2.card-field__heading {
 .card-preview {
   height: 61px;
   overflow: hidden;
-  margin-bottom: 15px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #f4f4f6;
 }
 
 .rotate-button {
@@ -1210,4 +1211,12 @@ h2.card-field__heading {
   left: 50.5%;
   z-index: 1003;
   transform: translate(-50%, -50.5%);
+}
+
+.number-of-comments_post {
+  height: 50px;
+}
+.number-of-comments_post p {
+  font: 12px OpenSans;
+  line-height: 50px;
 }

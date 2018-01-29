@@ -50,6 +50,7 @@ class Post extends React.Component {
   }
 
   render() {
+    console.log(this.props);
     if (!this.props || !this.props.body) {
       return null;
     }
@@ -120,6 +121,9 @@ class Post extends React.Component {
             <div className="card-preview">
               {UserLinkFunc(null, this.props.title)}
               <Tags tags={this.props.tags}/>
+            </div>
+            <div className="number-of-comments_post">
+               <p>There are no comments yet</p>
             </div>
           </div>
         </div>

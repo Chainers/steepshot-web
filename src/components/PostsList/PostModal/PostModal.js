@@ -198,15 +198,12 @@ class PostModal extends React.Component {
             <TimeAgo datetime={this.props.post.created}
                      locale='en_US'
             />
-            <div className="cont-close-btn_pos-mod"
-                 onClick={() => this.props.closeModal(this.props.point)}/>
-
             <PostContextMenu style={{height: '22px', width: '22px', marginLeft: '5px'}}
                              className="post-context-menu_post"
                              item={this.props.post}
                              index={this.props.currentIndex}
             />
-            <ShowIf show={!this.props.showClose}>
+            <ShowIf show={this.props.showClose}>
               <div className="cont-close-btn_pos-mod" onClick={() => this.props.closeModal(this.props.point)}>
                 <i className="close-btn_pos-mod"/>
               </div>

@@ -331,3 +331,6 @@ textarea:focus + .label_pos-mod {
 .before-load-curtain_pos-mod .loader-blocker {
   top: 0;
 }
+.user-links_post {
+  word-wrap: break-word;
+}

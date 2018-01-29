@@ -119,7 +119,6 @@ export function addSinglePost(url) {
           dispatch(initPostsList(postOptions));
           dispatch(addPosts({[result.url]: result}));
           dispatch(initPostModal('SinglePost', result.url));
-          sharedComponentTitle(result);
         } else {
           this.error();
         }

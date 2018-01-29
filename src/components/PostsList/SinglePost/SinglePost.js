@@ -21,7 +21,7 @@ class SinglePost extends React.Component {
       itemPost = this.props.post[this.props.location.pathname.replace(/\/post/, '')];
       let arr = itemPost.title.split('');
       arr[0] = arr[0].toUpperCase();
-      let username = this.props.location.pathname.match(/@\w+\//)[0];
+      let username = this.props.location.pathname.match(/@[\w-.]+\//)[0];
       meta = {
         title: `${username.replace(/\//, '')}: «${arr.join('')}»` + ' | Steepshot',
         description: itemPost.description,
