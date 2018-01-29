@@ -35,7 +35,7 @@ export function toggleFlag(postIndex) {
 
     if (!username && !postingKey) {
       debounce(jqApp.pushMessage.open(Constants.VOTE_ACTION_WHEN_NOT_AUTH), Constants.VOTE_ACTION_WHEN_NOT_AUTH_DEBOUNCE);
-      return false;
+      return;
     }
     let queue = sessionStorage.getItem('voteQueue');
     if (queue === "true")  {
