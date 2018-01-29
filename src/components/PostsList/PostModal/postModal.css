@@ -12,6 +12,10 @@
   width: 1020px;
 }
 
+.container_pos-mod p {
+  text-align: center;
+}
+
 @media (max-width: 768px) {
 
 }
@@ -43,7 +47,7 @@
 .header_pos-mod {
   position: relative;
   padding: 20px;
-  background-color: #fafafa;
+  background-color: #FFF;
   width: 380px;
 }
 

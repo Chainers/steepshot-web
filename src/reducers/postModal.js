@@ -16,6 +16,7 @@ export default function postModal(state = initialState, action) {
       return Object.assign({}, initialState, {
         point: state.point,
         currentIndex: action.index,
+        imgLoaded: true
       });
     
     default:

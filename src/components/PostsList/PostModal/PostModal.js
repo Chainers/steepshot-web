@@ -49,6 +49,13 @@ class PostModal extends React.Component {
     this.scrollView.scrollBar.scrollToBottom();
   }
   
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.currentIndex !== this.props.currentIndex) {
+      console.log('clear');
+      this.props.setPostModalOptions({imgLoaded: false});
+    }
+  }
+  
   openDescription() {
     this.props.setPostModalOptions({isDescriptionOpened: true});
   }
@@ -81,7 +88,6 @@ class PostModal extends React.Component {
   renderImage() {
     return (
       <div className="image-container_pos-mod"
-           ref={ref => this.imgCont = ref}
            style={this.props.style.imgCont}>
         <ShowIf show={this.props.post.is_nsfw && !this.props.showAll}>
           <div className="curtain_pos-mod">
@@ -185,11 +191,9 @@ class PostModal extends React.Component {
     const authorLink = `/@${this.props.post.author}`;
     return (
       <div className="container_pos-mod"
-           ref={ref => this.container = ref}
            style={this.props.style.container}>
         {this.renderImage.bind(this)()}
         <div className="header_pos-mod"
-             ref={ref => this.headerContainer = ref}
              style={this.props.style.headerCont}>
           <div className="date_pos-mod">
             <TimeAgo datetime={this.props.post.created}
@@ -255,8 +259,7 @@ class PostModal extends React.Component {
           </div>
           
           <ShowIf show={this.props.isUserAuth}>
-            <div className="add-comment_pos-mod"
-                 ref={ref => {this.addCommentArea = ref;}}>
+            <div className="add-comment_pos-mod">
               <div className="hidden-div_pos-mod"
                    ref={ref => {this.hiddenDiv = ref;}}/>
               <textarea ref={ref => this.textArea = ref}
@@ -320,6 +323,7 @@ class PostModal extends React.Component {
       imgWidth = imgWidth < docWidth - DESC_WIDTH - CONT_MARGIN
         ? imgWidth
         : docWidth - DESC_WIDTH - CONT_MARGIN;
+      imgWidth = imgWidth ? imgWidth : this.image.clientWidth;
       
       imgHeight = imgHeight * imgWidth / this.image.naturalWidth;
       
@@ -327,7 +331,10 @@ class PostModal extends React.Component {
         imgWidth = imgWidth * contHeight / imgHeight;
         imgHeight = contHeight;
       }
-      
+      contHeight = imgHeight;
+      if (contHeight < MIN_HEIGHT) {
+        contHeight = MIN_HEIGHT;
+      }
       contWidth = imgWidth + DESC_WIDTH;
       imgContWidth = imgWidth;
       
