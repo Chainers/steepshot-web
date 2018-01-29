@@ -39,7 +39,7 @@ class SinglePost extends React.Component {
       <div className="container_sin-pos">
         <DocumentMeta {...meta} />
         <div className="to-center_sin-pos">
-          <PostModal showClose={'yes'}/>
+          <PostModal showClose={false}/>
         </div>
       </div>
     );

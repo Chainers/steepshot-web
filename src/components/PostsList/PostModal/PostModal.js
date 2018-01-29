@@ -1,7 +1,8 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {
-  nextPostModal, previousPostModal, setPostModalOptions,
+  nextPostModal, previousPostModal,
+  setPostModalOptions,
 } from '../../../actions/postModal';
 import constants from '../../../common/constants';
 import TimeAgo from 'timeago-react';
@@ -24,30 +25,34 @@ import ReactDOM from 'react-dom';
 const START_TEXTAREA_HEIGHT = '42px';
 
 class PostModal extends React.Component {
-
+  
+  static defaultProps = {
+    showClose: true,
+  };
+  
   constructor(props) {
     super(props);
     this.setComponentSize = this.setComponentSize.bind(this);
     this.initKeyPress();
   }
-
+  
   componentDidMount() {
     window.addEventListener('resize', this.setComponentSize);
     this.hiddenDiv.style.width = this.textArea.clientWidth + 'px';
   }
-
+  
   componentWillUnmount() {
     window.removeEventListener('resize', this.setComponentSize);
   }
-
+  
   componentDidUpdate() {
     this.scrollView.scrollBar.scrollToBottom();
   }
-
+  
   openDescription() {
     this.props.setPostModalOptions({isDescriptionOpened: true});
   }
-
+  
   initKeyPress() {
     document.onkeydown = (e) => {
       if (document.activeElement !== ReactDOM.findDOMNode(this.textArea)) {
@@ -66,18 +71,69 @@ class PostModal extends React.Component {
       }
     };
   }
-
+  
   clearTextArea() {
     this.textArea.value = '';
     this.hiddenDiv.textContent = '';
     this.setComponentSize();
   }
-
+  
+  renderImage() {
+    return (
+      <div className="image-container_pos-mod"
+           ref={ref => this.imgCont = ref}
+           style={this.props.style.imgCont}>
+        <ShowIf show={this.props.post.is_nsfw && !this.props.showAll}>
+          <div className="curtain_pos-mod">
+            <p className="title_pos-mod">NSFW content</p>
+            <p className="message_pos-mod">This content is for adults only.
+              Not
+              recommended for children or sensitive individuals.</p>
+            <button className="btn btn-index"
+                    onClick={
+                      () => this.props.setPostModalOptions({showAll: true})
+                    }>Show me
+            </button>
+          </div>
+        </ShowIf>
+        <ShowIf show={this.props.post.is_low_rated && !this.props.showAll}>
+          <div className="curtain_pos-mod">
+            <p className="title_pos-mod">Low rated content</p>
+            <p className="message_pos-mod">This content is hidden due to low
+              ratings.</p>
+            <button className="btn btn-index"
+                    onClick={
+                      () => this.props.setPostModalOptions({showAll: true})
+                    }>Show me
+            </button>
+          </div>
+        </ShowIf>
+        <button className="btn btn-default btn-xs"
+                onClick={() => this.props.copyToClipboard(
+                  document.location.origin + '/post' + this.props.post.url,
+                )}>
+          Share post
+        </button>
+        <img src={this.props.post.body || constants.NO_IMAGE}
+             alt="Post picture."
+             style={this.props.style.image}
+             ref={ref => this.image = ref}
+             onLoad={this.imageLoaded.bind(this)}/>
+        <ShowIf show={!this.props.imgLoaded}>
+          <div className="before-load-curtain_pos-mod">
+            <LoadingSpinner/>
+          </div>
+        </ShowIf>
+      </div>);
+  }
+  
   renderDescription() {
     let forceOpen = false;
     let descriptionStart = this.props.post.description.replace(/(<\w+>)+/, '');
-    if (descriptionStart.replace(/\n[\w\W]+/, '').length < 140) forceOpen = true;
-
+    if (descriptionStart.replace(/\n[\w\W]+/, '').length < 140) {
+      forceOpen = true;
+    }
+    
     return (
       <div className="text-description_pos-menu">
         <p>{UserLinkFunc(null, this.props.post.title)}</p>
@@ -86,18 +142,24 @@ class PostModal extends React.Component {
             ? 'collapse-opened'
             : 'collapse-closed'}
         >
-
+          
           {UserLinkFunc(false, this.props.post.description)}
           <Tags tags={this.props.post.tags}/>
-          <a className="lnk-more" onClick={this.openDescription.bind(this)}>Show more</a>
+          <a className="lnk-more" onClick={this.openDescription.bind(this)}>Show
+            more</a>
         </div>
       </div>);
   }
-
+  
+  imageLoaded() {
+    this.props.setPostModalOptions({imgLoaded: true});
+    this.setComponentSize();
+  }
+  
   changeText() {
     this.hiddenDiv.style.width = this.textArea.clientWidth;
     this.hiddenDiv.textContent = this.textArea.value;
-
+    
     let label = '';
     let sendHover = '';
     if (this.textArea.value) {
@@ -110,7 +172,7 @@ class PostModal extends React.Component {
       sendHover,
     });
   }
-
+  
   sendComment(e) {
     e.preventDefault();
     let comment = this.textArea.value;
@@ -118,53 +180,14 @@ class PostModal extends React.Component {
     this.props.sendComment(this.props.currentIndex, comment);
     this.textArea.value = '';
   }
-
+  
   render() {
     const authorLink = `/@${this.props.post.author}`;
     return (
       <div className="container_pos-mod"
            ref={ref => this.container = ref}
            style={this.props.style.container}>
-        <div className="image-container_pos-mod"
-             ref={ref => this.imgCont = ref}
-             style={this.props.style.imgCont}>
-          <ShowIf show={this.props.post.is_nsfw && !this.props.showAll}>
-            <div className="curtain_pos-mod">
-              <p className="title_pos-mod">NSFW content</p>
-              <p className="message_pos-mod">This content is for adults only. Not
-                recommended for children or sensitive individuals.</p>
-              <button className="btn btn-index"
-                      onClick={
-                        () => this.props.setPostModalOptions({showAll: true})
-                      }>Show me
-              </button>
-            </div>
-          </ShowIf>
-          <ShowIf show={this.props.post.is_low_rated && !this.props.showAll}>
-            <div className="curtain_pos-mod">
-              <p className="title_pos-mod">Low rated content</p>
-              <p className="message_pos-mod">This content is hidden due to low
-                ratings.</p>
-              <button className="btn btn-index"
-                      onClick={
-                        () => this.props.setPostModalOptions({showAll: true})
-                      }>Show me
-              </button>
-            </div>
-          </ShowIf>
-          <button className="btn btn-default btn-xs"
-                  onClick={() => this.props.copyToClipboard(
-                    document.location.origin + '/post' + this.props.post.url,
-                  )}>
-            Share post
-          </button>
-          <img src={this.props.post.body || constants.NO_IMAGE}
-               alt="Post picture."
-               style={this.props.style.image}
-               ref={ref => this.image = ref}
-               onLoad={() => this.setComponentSize()}/>
-
-        </div>
+        {this.renderImage.bind(this)()}
         <div className="header_pos-mod"
              ref={ref => this.headerContainer = ref}
              style={this.props.style.headerCont}>
@@ -172,7 +195,7 @@ class PostModal extends React.Component {
             <TimeAgo datetime={this.props.post.created}
                      locale='en_US'
             />
-            <ShowIf show={this.props.showClose != 'yes'}>
+            <ShowIf show={this.props.showClose}>
               <div className="cont-close-btn_pos-mod"
                    onClick={() => this.props.closeModal(this.props.point)}>
                 <i className="close-btn_pos-mod"/>
@@ -196,7 +219,9 @@ class PostModal extends React.Component {
               </div>
               <div className="amount_pos-mod">
                 <ShowIf show={parseFloat(this.props.post.total_payout_reward)}>
-                  ${this.props.post.total_payout_reward}
+                  <div>
+                    ${this.props.post.total_payout_reward}
+                  </div>
                 </ShowIf>
               </div>
               <div className="button_pos-mod">
@@ -207,7 +232,7 @@ class PostModal extends React.Component {
               </div>
             </div>
           </div>
-
+          
           <div className="comment-container_pos-mod">
             <ScrollViewComponent
               ref={(ref) => this.scrollView = ref}
@@ -228,21 +253,24 @@ class PostModal extends React.Component {
               />
             </ScrollViewComponent>
           </div>
-
+          
           <ShowIf show={this.props.isUserAuth}>
-            <div className="add-comment_pos-mod" ref={ref => {this.addCommentArea = ref}}>
-              <div className="hidden-div_pos-mod" ref={ref => {this.hiddenDiv = ref}}/>
+            <div className="add-comment_pos-mod"
+                 ref={ref => {this.addCommentArea = ref;}}>
+              <div className="hidden-div_pos-mod"
+                   ref={ref => {this.hiddenDiv = ref;}}/>
               <textarea ref={ref => this.textArea = ref}
                         maxLength={2048}
                         className="form-control text-area_pos-mod"
                         onChange={this.changeText.bind(this)}
                         style={{
                           height: this.hiddenDiv !== undefined
-                                  ? this.props.addCommentHeight + 'px'
-                                  : START_TEXTAREA_HEIGHT
+                            ? this.props.addCommentHeight + 'px'
+                            : START_TEXTAREA_HEIGHT,
                         }}
               />
-              <label className={this.props.label + ' label_pos-mod'}>Comment</label>
+              <label
+                className={this.props.label + ' label_pos-mod'}>Comment</label>
               <ShowIf show={this.props.needsCommentFormLoader}>
                 <div className="comment-loader_pos-mod">
                   <LoadingSpinner/>
@@ -250,9 +278,10 @@ class PostModal extends React.Component {
               </ShowIf>
               <ShowIf show={!this.props.needsCommentFormLoader}>
                 <button type="submit"
-                        className={'btn-submit' + ' ' + 'btn_pos-mod' + ' ' + this.props.sendHover}
+                        className={'btn-submit' + ' ' + 'btn_pos-mod' + ' ' +
+                        this.props.sendHover}
                         onClick={this.sendComment.bind(this)}
-                        ref={ref => {this.sendButton = ref}}>Send
+                        ref={ref => {this.sendButton = ref;}}>Send
                 </button>
               </ShowIf>
             </div>
@@ -261,14 +290,14 @@ class PostModal extends React.Component {
       </div>
     );
   }
-
+  
   setComponentSize() {
     const DESC_WIDTH = 380;
     const MIN_HEIGHT = 440;
     const PREF_IMG_WIDTH = 640;
     const CONT_MARGIN = 80;
     const MAX_WIDTH_FULL_SCREEN = 815;
-
+    
     let imgHeight = this.image.naturalHeight;
     let imgWidth = this.image.naturalWidth;
     let docWidth = document.documentElement.clientWidth;
@@ -276,7 +305,7 @@ class PostModal extends React.Component {
     let contHeight = '100%';
     let contWidth = docWidth;
     let imgContWidth = '100%';
-
+    
     let headerCont = {
       order: 0,
       backgroundColor: '#FFF',
@@ -286,22 +315,22 @@ class PostModal extends React.Component {
       contHeight = docHeight * 0.9 > MIN_HEIGHT
         ? docHeight * 0.9
         : MIN_HEIGHT;
-
+      
       imgWidth = imgWidth < PREF_IMG_WIDTH ? imgWidth : PREF_IMG_WIDTH;
       imgWidth = imgWidth < docWidth - DESC_WIDTH - CONT_MARGIN
         ? imgWidth
         : docWidth - DESC_WIDTH - CONT_MARGIN;
-
+      
       imgHeight = imgHeight * imgWidth / this.image.naturalWidth;
-
+      
       if (imgHeight > contHeight) {
         imgWidth = imgWidth * contHeight / imgHeight;
         imgHeight = contHeight;
       }
-
+      
       contWidth = imgWidth + DESC_WIDTH;
       imgContWidth = imgWidth;
-
+      
       headerCont.order = 2;
       headerCont.width = DESC_WIDTH;
     } else {
@@ -323,6 +352,7 @@ class PostModal extends React.Component {
       },
       imgCont: {
         width: imgContWidth,
+        order: 1,
       },
       headerCont,
       description: {
@@ -333,9 +363,10 @@ class PostModal extends React.Component {
     if (this.props.point !== 'SinglePost') {
       if (contHeight >=
         document.documentElement.clientHeight || contHeight === '100%') {
-        this.props.setModalOptions(this.props.point,{alignItems: 'flex-start'});
+        this.props.setModalOptions(this.props.point,
+          {alignItems: 'flex-start'});
       } else {
-        this.props.setModalOptions(this.props.point,{alignItems: 'center'});
+        this.props.setModalOptions(this.props.point, {alignItems: 'center'});
       }
     }
   }
@@ -371,8 +402,8 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(nextPostModal(index));
     },
     previous: (index) => {
-      dispatch(previousPostModal(index))
-    }
+      dispatch(previousPostModal(index));
+    },
   };
 };
 
