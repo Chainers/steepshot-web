@@ -48,24 +48,24 @@ class UsersList extends React.Component {
       return (
         <span/>
       )
-    } else if (!this.props.users || !this.props.users[0]) {
+    }; 
+    if (!this.props.users || !this.props.users[0]) {
       return (
         <div className="empty-query-message">
           {Constants.EMPTY_QUERY}
         </div>
       );
-    } else {
-      let users = [];
-      this.props.users.map((user, index) => {
-        users.push(
-          <UserItem
-            key={index}
-            item={user}
-          />,
-        );
-      });
-      return users;
-    }
+    } 
+    let users = [];
+    this.props.users.map((user, index) => {
+      users.push(
+        <UserItem
+          key={index}
+          item={user}
+        />,
+      );
+    });
+    return users;
   }
 
   renderHeader() {
