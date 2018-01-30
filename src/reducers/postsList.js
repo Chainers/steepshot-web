@@ -13,9 +13,9 @@ export default function postsList(state = {}, action) {
     case 'GET_POSTS_LIST_SUCCESS':
       return Object.assign({}, state, {
         [action.options.point]: Object.assign({}, state[action.options.point], {
-          postsIndices: [
-            ...state[action.options.point].postsIndices,
-            ...action.options.postsIndices],
+          posts: [
+            ...state[action.options.point].posts,
+            ...action.options.posts],
           offset: action.options.offset,
           hasMore: action.options.hasMore,
           loading: false,

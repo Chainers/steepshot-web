@@ -12,9 +12,9 @@ class PostsList extends React.Component {
   static defaultProps = {
     cancelPrevious: false,
     maxPosts: 9999,
-    ignored: [],
     clearPostHeader: false,
-    isComponentVisible: true
+    isComponentVisible: true,
+    headerText: ''
   };
 
   constructor(props) {
@@ -25,39 +25,33 @@ class PostsList extends React.Component {
       options: this.props.options,
       maxPosts: this.props.maxPosts,
       loading: false,
-      postsIndices: [],
+      posts: [],
       length: 0,
       hasMore: true,
-      ignored: this.props.ignored,
       loader: true
     };
     this.props.initPostsList(postsListOptions);
-    this.getPostsList = this.getPostsList.bind(this);
   }
 
   componentDidMount() {
-    this.getPostsList();
+    this.props.getPosts(this.props.point);
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.point !== this.props.point) {
       let postsListOptions = {
-        point: this.props.point,
-        cancelPrevious: this.props.cancelPrevious,
-        options: this.props.options,
-        maxPosts: this.props.maxPosts,
+        point: nextProps.point,
+        cancelPrevious: nextProps.cancelPrevious,
+        options: nextProps.options,
+        maxPosts: nextProps.maxPosts,
         loading: false,
-        postsIndices: [],
+        posts: [],
         length: 0,
         hasMore: true,
-        ignored: this.props.ignored
       };
       this.props.initPostsList(postsListOptions);
+      this.props.getPosts(nextProps.point);
     }
-  }
-
-  getPostsList() {
-    this.props.getPosts(this.props.point);
   }
 
   renderPosts() {
@@ -65,7 +59,7 @@ class PostsList extends React.Component {
       return (
         <span/>
       )
-    };
+    }
     if (!this.props.length) {
       return (
         <div className="empty-query-message">
@@ -74,9 +68,9 @@ class PostsList extends React.Component {
       );
     }
     let posts = [];
-    this.props.postsIndices.forEach((postIndex) => {
-      if (this.props.ignored.indexOf(postIndex) == -1) {
-        posts.push(<Post key={this.props.point + "/" + postIndex}
+    this.props.posts.forEach((postIndex, index) => {
+      if (this.props.ignored.indexOf(postIndex) === -1) {
+        posts.push(<Post key={index}
                          index={postIndex}
                          point={this.props.point}
                          clearPostHeader={this.props.clearPostHeader}
@@ -100,7 +94,7 @@ class PostsList extends React.Component {
         <InfiniteScroll
           pageStart={0}
           initialLoad={false}
-          loadMore={debounce(this.getPostsList,
+          loadMore={debounce(() => this.props.getPosts(this.props.point),
           Constants.ENDLESS_SCROLL.DEBOUNCE_TIMEOUT)}
           hasMore={this.props.isComponentVisible && this.props.hasMore}
           loader={<LoadingSpinner/>}
@@ -118,6 +112,8 @@ class PostsList extends React.Component {
 const mapStateToProps = (state, props) => {
   return {
     ...state.postsList[props.point],
+    point: props.point,
+    ignored: state.postsList[props.ignored] ? state.postsList[props.ignored].posts : []
   };
 };
 

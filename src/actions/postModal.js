@@ -38,7 +38,7 @@ function swapPostModal(index) {
 export function nextPostModal(index) {
   let state = getStore().getState();
   let point = state.postModal.point;
-  let postsList = state.postsList[point].postsIndices;
+  let postsList = state.postsList[point].posts;
   let positionPost = postsList.indexOf(index);
   return dispatch => {
     if (positionPost === postsList.length - 6) {
@@ -61,7 +61,7 @@ export function nextPostModal(index) {
 export function previousPostModal(index) {
   let state = getStore().getState();
   let point = state.postModal.point;
-  let postsList = state.postsList[point].postsIndices;
+  let postsList = state.postsList[point].posts;
   let positionPost = postsList.indexOf(index);
   if (positionPost === 0) {
     return {

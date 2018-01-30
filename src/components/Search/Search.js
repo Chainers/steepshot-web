@@ -1,29 +1,19 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import Constants from '../../common/constants';
-import TabsFilterComponent from '../Filters/TabsFilterComponent';
-import TabsWrapper from '../Wrappers/TabsWrapper';
 import PostsList from '../PostsList/PostsList';
 import {getUsersSearch} from '../../actions/posts';
 import {documentTitle} from '../DocumentTitle';
-import {
-  getIgnoredPostsList, insertCategory,
-  setActiveIndex,
-} from '../../actions/search';
-import TabWrapper from '../Wrappers/TabWrapper';
+import {insertCategory, setActiveIndex,} from '../../actions/search';
 import {debounce} from 'lodash';
 import UsersList from '../UsersList/UsersList';
+import Tabs from "./Tabs/Tabs";
+import {setUsersSearchValue} from "../../actions/usersList";
+import ShowIf from "../Common/ShowIf";
 
 class Search extends React.Component {
   constructor(props) {
     super(props);
-    this.props.getIgnoredPostsList(this.props.searchValue);
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.searchValue !== this.props.searchValue) {
-      this.props.getIgnoredPostsList(this.props.searchValue);
-    }
   }
 
   componentWillUpdate() {
@@ -46,47 +36,42 @@ class Search extends React.Component {
     return (
       <div className="g-main_i container">
         <div id="workspace" className="g-content clearfix">
-          <TabsFilterComponent
-            keys={this.props.keys}
-            activeItemIndex={this.props.activeIndex}
-            updateCallback={this.props.setActiveIndex}
-          />
-          <TabsWrapper
-            activeTab={this.props.activeIndex}
-          >
-            <TabWrapper>
-              <PostsList
-                point={insertCategory(Constants.POSTS_FILTERS.POSTS_HOT.point, this.props.searchValue)}
-                wrapperModifier="posts-list clearfix"
-                cancelPrevious={false}
-                options={this.props.hotSectionOptions}
-                maxPosts={4}
-                headerText={hotPost}
-              />
-              {
-                this.props.showResults
-                ?
-                  <PostsList
-                    point={insertCategory(Constants.POSTS_FILTERS.POSTS_NEW.point, this.props.searchValue)}
-                    wrapperModifier="posts-list clearfix"
-                    cancelPrevious={false}
-                    ignored={this.props.ignored}
-                    headerText={newPost}
-                  />
-                :
-                  null
-              }
-            </TabWrapper>
-            <UsersList
-              point={Constants.SEARCH_FILTERS.USERS.point}
-              getUsers={getUsersSearch}
-              options={{
-                query: this.props.searchValue,
-              }}
-              wrapperModifier="posts-list clearfix type-2"
-              headerText={userResult}
+          <Tabs/>
+          <ShowIf show={this.props.activeIndex === 0} removeFromDom={false}>
+            <PostsList
+              point={insertCategory(Constants.POSTS_FILTERS.POSTS_HOT.point, this.props.searchValue)}
+              wrapperModifier="posts-list clearfix"
+              cancelPrevious={false}
+              options={this.props.hotSectionOptions}
+              maxPosts={4}
+              headerText={hotPost}
+              isComponentVisible={this.props.activeIndex === 0}
             />
-          </TabsWrapper>
+
+            <PostsList
+              point={insertCategory(Constants.POSTS_FILTERS.POSTS_NEW.point, this.props.searchValue)}
+              wrapperModifier="posts-list clearfix"
+              cancelPrevious={false}
+              ignored={insertCategory(Constants.POSTS_FILTERS.POSTS_HOT.point, this.props.searchValue)}
+              headerText={newPost}
+              isComponentVisible={this.props.activeIndex === 0}
+            />
+
+          </ShowIf>
+          <ShowIf show={this.props.activeIndex === 1} removeFromDom={false}>
+            <ShowIf show={this.props.usersList && this.props.usersList.users.length} removeFromDom={false}>
+              <UsersList
+                point={Constants.SEARCH_FILTERS.USERS.point}
+                getUsers={getUsersSearch}
+                options={{
+                  query: this.props.searchValue,
+                }}
+                wrapperModifier="posts-list clearfix type-2"
+                headerText={userResult}
+                isComponentVisible={this.props.activeIndex === 1}
+              />
+            </ShowIf>
+          </ShowIf>
         </div>
       </div>
     );
@@ -94,22 +79,20 @@ class Search extends React.Component {
 }
 
 const mapStateToProps = (state, props) => {
+  let searchValue = props.match.params.searchValue;
   return {
+    hotPostsList: state.postsList[insertCategory(Constants.POSTS_FILTERS.POSTS_HOT.point, searchValue)],
+    newPostsList: state.postsList[insertCategory(Constants.POSTS_FILTERS.POSTS_NEW.point, searchValue)],
+    usersList: state.usersList[Constants.SEARCH_FILTERS.USERS.point],
     ...state.search,
-    ...state.postsList[insertCategory(
-      Constants.POSTS_FILTERS.POSTS_NEW.point,
-      props.match.params.searchValue)],
-    searchValue: props.match.params.searchValue,
+    searchValue,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    getIgnoredPostsList: (searchValue) => {
-      dispatch(getIgnoredPostsList(searchValue));
-    },
-    setActiveIndex: (options) => {
-      dispatch(setActiveIndex(options));
+    setActiveIndex: (index) => {
+      dispatch(setActiveIndex(index));
     },
   };
 };

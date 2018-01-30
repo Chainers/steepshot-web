@@ -13,7 +13,7 @@ import AboutComponent from './components/About/AboutComponent';
 import BrowseWrapper from './components/Wrappers/BrowseWrapper';
 import Constants from './common/constants';
 import Testing from './components/Common/Testing/Testing';
-import SinglePost from './components/PostsList/SinglePost/SinglePost';
+import SinglePost from './components/SinglePost/SinglePost';
 import Search from './components/Search/Search';
 
 export default function getRoutes(store) {
@@ -22,7 +22,7 @@ export default function getRoutes(store) {
       type: 'CLEAR_MESSAGES'
     });
   };
-  
+
   let isUserLogin = !!store.getState().auth.user && !!store.getState().auth.postingKey;
 
   function baseBrowseFilter() {

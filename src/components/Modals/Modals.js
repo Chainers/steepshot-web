@@ -12,7 +12,6 @@ class Modals extends React.Component {
 
   componentWillMount() {
     const {history} = this.props;
-    console.log(history);
     this.unsubscribeFromHistory = history.listen(this.handleLocationChange.bind(this));
     this.handleLocationChange();
   }

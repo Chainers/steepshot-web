@@ -112,7 +112,7 @@ export function addSinglePost(url) {
             cancelPrevious: false,
             maxPosts: 1,
             loading: false,
-            postsIndices: [result.url],
+            posts: [result.url],
             length: 0,
             hasMore: false,
           };
