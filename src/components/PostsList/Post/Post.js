@@ -49,8 +49,25 @@ class Post extends React.Component {
     this.props.openModal(this.props.point, this.props.index, modalOption);
   }
 
+  commentNumber() {
+    if (this.props.children) {
+      let text;
+      if (this.props.children == 1) {
+        text = 'comment';
+      } else {
+        text = 'comments';
+      }
+      return (
+        <p>{`${this.props.children} ${text}`}</p>
+      );
+    } else {
+      return (
+        <p style={{color: '#979b9e'}}>There are no comments yet</p>
+      );
+    }
+  }
+
   render() {
-    console.log(this.props);
     if (!this.props || !this.props.body) {
       return null;
     }
@@ -64,8 +81,10 @@ class Post extends React.Component {
     return (
       <div className="post-card" style={{width: '300px', position: 'relative'}}>
         <ShowIf show={this.props.postDeleting}>
-          <div className="delete-loader_post">
-            <LoadingSpinner show={true} deleting={true}/>
+          <div className="delete-loader_post"
+               style={{height: this.props.clearPostHeader ? '512px' : '552px'}}
+          >
+            <LoadingSpinner show={true} deleting={true} styles={'none'}/>
           </div>
         </ShowIf>
         <ShowIf show={!this.props.clearPostHeader}>
@@ -91,8 +110,7 @@ class Post extends React.Component {
           </div>
         </ShowIf>
         <div className="card-body">
-          <div className="card-pic"
-               onClick={this.openPostModal.bind(this)}>
+          <div className="card-pic" onClick={this.openPostModal.bind(this)}>
             <ShowIf show={this.props.is_nsfw}>
               <div className="forAdult">
                 <p>NSFW content</p>
@@ -109,7 +127,9 @@ class Post extends React.Component {
             <div className="card-controls clearfix">
               <div className="buttons-row">
                 <Vote postIndex={this.props.index}/>
-                <Flag postIndex={this.props.index}/>
+                <ShowIf show={this.props.authUser != this.props.author}>
+                  <Flag postIndex={this.props.index}/>
+                </ShowIf>
               </div>
               <div className="wrap-counts clearfix">
                 <LikesComponent likes={this.props.net_likes} url={this.props.url}/>
@@ -122,8 +142,8 @@ class Post extends React.Component {
               {UserLinkFunc(null, this.props.title)}
               <Tags tags={this.props.tags}/>
             </div>
-            <div className="number-of-comments_post">
-               <p>There are no comments yet</p>
+            <div className="number-of-comments_post" onClick={this.openPostModal.bind(this)}>
+               {this.commentNumber()}
             </div>
           </div>
         </div>
@@ -135,6 +155,7 @@ class Post extends React.Component {
 const mapStateToProps = (state, props) => {
   return {
     ...state.posts[props.index],
+    authUser: state.auth.user
   };
 };
 

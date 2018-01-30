@@ -1,6 +1,6 @@
 export default function posts(state = {}, action) {
   switch (action.type) {
-    
+
     case 'ADD_POSTS':
       return Object.assign({},
         state,

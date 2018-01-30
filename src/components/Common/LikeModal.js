@@ -16,10 +16,9 @@ class LikesModal extends React.Component {
     super();
     this.state = {
       ...this.getInitialData,
-      forWindowSize: false,
     };
   }
-  
+
   get getInitialData() {
     return {
       offset: null,
@@ -31,7 +30,7 @@ class LikesModal extends React.Component {
       initialLoading: true,
     };
   }
-  
+
   get permLink() {
     if (this.state.url == undefined) {
       console.warn('permLink is undefined');
@@ -41,26 +40,18 @@ class LikesModal extends React.Component {
         console.warn('Some troubles with permLink in LikesComponent');
         return '';
       }
-      return `${urlObject[urlObject.length - 2]}/${urlObject[urlObject.length -
-      1]}`;
+      return `${urlObject[urlObject.length - 2]}/${urlObject[urlObject.length - 1]}`;
     }
   }
-  
+
   selectVotesInfo(state) {
     return state.votes;
   }
-  
-  windowSizeFunc() {
-    if (document.documentElement.clientWidth <= 420) {
-      this.setState({forWindowSize: true});
-    }
-  }
-  
+
   componentDidMount() {
-    this.windowSizeFunc();
     getStore().subscribe(this.usersChanged.bind(this));
   }
-  
+
   fetchData() {
     if (this.state.offset == this.state.previousRequestOffset) return false;
     const options = {
@@ -72,7 +63,7 @@ class LikesModal extends React.Component {
     };
     getVoters(options, this.props.dispatch.bind(this));
   }
-  
+
   usersChanged() {
     let votersInfo = this.selectVotesInfo(getStore().getState());
     if (utils.isEmptyString(votersInfo.url)) {
@@ -92,13 +83,12 @@ class LikesModal extends React.Component {
         offset: votersInfo.voters.offset,
         voters: votersInfo.voters.results,
         count: votersInfo.voters.total_count,
-        hasMore: votersInfo.voters.total_count !=
-        votersInfo.voters.results.length,
+        hasMore: votersInfo.voters.total_count != votersInfo.voters.results.length,
         initialLoading: false,
       });
     }
   }
-  
+
   get votersData() {
     let items = this.state.voters.map((voter, index) =>
       <UserItem
@@ -112,7 +102,7 @@ class LikesModal extends React.Component {
     );
     return items;
   }
-  
+
   get voters() {
     if (this.state.initialLoading) {
       return (
@@ -120,8 +110,7 @@ class LikesModal extends React.Component {
       );
     }
     if (this.state.voters.length == 0) {
-      return <div
-        className="empty-query-message">{Constants.EMPTY_QUERY_VOTERS}</div>;
+      return <div className="empty-query-message">{Constants.EMPTY_QUERY_VOTERS}</div>;
     }
     return (
       <ScrollViewComponent
@@ -139,9 +128,7 @@ class LikesModal extends React.Component {
             Constants.ENDLESS_SCROLL.DEBOUNCE_TIMEOUT)}
           hasMore={this.state.hasMore}
           loader={
-            <div className="position--relative">
               <LoadingSpinner/>
-            </div>
           }
           threshold={Constants.ENDLESS_SCROLL.OFFSET}
           useWindow={false}
@@ -154,26 +141,25 @@ class LikesModal extends React.Component {
       </ScrollViewComponent>
     );
   }
-  
+
   controlClose(e) {
     if (!this.modalCont.contains(e.target)) {
       jqApp.closeLikesModal($(document));
     }
   }
-  
+
   render() {
     return (
-      <div id="likesModal" tabIndex="-1" role="dialog" aria-hidden="true"
-           className="modal modal-like">
+      <div id="likesModal" tabIndex="-1" role="dialog" aria-hidden="true" className="modal modal-like">
         <div className="modal-dialog" onClick={this.controlClose.bind(this)}>
           <div className="modal-content likes-modal__content"
                ref={ref => (this.modalCont = ref)}>
             <div className="modal-header">
               <div className="modal-title clearfix">
                 {Constants.POST_LIKED_BY}
-                <ShowIf show={this.state.forWindowSize}>
-                  <button className="close" data-dismiss="modal"/>
-                </ShowIf>
+                <div className="cont-close-btn_pos-mod" data-dismiss="modal">
+                  <i className="close-btn_pos-mod" style={{top: '19px'}}/>
+                </div>
               </div>
             </div>
             <div className="modal-like__body">

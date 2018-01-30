@@ -5,27 +5,35 @@ import {withRouter} from 'react-router-dom';
 import {closeAllModals} from '../../actions/modal';
 
 class Modals extends React.Component {
-  
+
   constructor(props) {
     super(props);
   }
-  
+
   componentWillMount() {
     const {history} = this.props;
     this.unsubscribeFromHistory = history.listen(this.handleLocationChange);
     this.handleLocationChange(history.location);
   }
-  
+
   componentWillUnmount() {
     if (this.unsubscribeFromHistory) this.unsubscribeFromHistory();
   }
-  
+
   handleLocationChange = () => {
     if (this.props.modals.length > 0) {
       this.props.closeAllModals();
     }
   };
-  
+
+  componentWillReceiveProps(newProps) {
+    if (Object.keys(newProps.modals).length) {
+      document.body.style.overflowY = 'hidden';
+    } else {
+      document.body.style.overflowY = 'auto';
+    }
+  }
+
   render() {
     let modals = [];
     for (let key in this.props.modals) {

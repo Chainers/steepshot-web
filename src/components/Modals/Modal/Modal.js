@@ -14,7 +14,6 @@ class Modal extends React.Component {
 
   componentDidMount() {
     window.addEventListener('resize', this.resizeWindow);
-    document.body.style.overflow = 'hidden';
     this.wrapper.classList.remove('before-load-back_modal');
     this.modalContainer.classList.remove('before-load_modal');
     this.resizeWindow();
@@ -22,7 +21,6 @@ class Modal extends React.Component {
 
   componentWillUnmount() {
     window.removeEventListener('resize', this.resizeWindow);
-    document.body.style.overflow = 'auto';
   }
 
   shouldComponentUpdate(props) {
