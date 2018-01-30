@@ -18,7 +18,7 @@ import LoadingSpinner from '../LoadingSpinner/index';
 import {sendComment} from '../../actions/comment';
 import {copyToClipboard} from '../../actions/clipboard';
 import ReactDOM from 'react-dom';
-import PostContextMenu from '../../PostContextMenu/PostContextMenu';
+import PostContextMenu from "../PostContextMenu/PostContextMenu";
 
 const START_TEXTAREA_HEIGHT = '42px';
 

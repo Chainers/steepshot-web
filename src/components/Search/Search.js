@@ -36,10 +36,7 @@ class Search extends React.Component {
     return (
       <div className="g-main_i container">
         <div id="workspace" className="g-content clearfix">
-          <ShowIf show={this.props.newPostsList && this.props.newPostsList.posts.length &&
-          this.props.usersList && this.props.usersList.users.length} removeFromDom={false}>
-            <Tabs/>
-          </ShowIf>
+          <Tabs/>
           <ShowIf show={this.props.activeIndex === 0} removeFromDom={false}>
             <PostsList
               point={insertCategory(Constants.POSTS_FILTERS.POSTS_HOT.point, this.props.searchValue)}
