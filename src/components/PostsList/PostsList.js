@@ -12,7 +12,6 @@ class PostsList extends React.Component {
   static defaultProps = {
     cancelPrevious: false,
     maxPosts: 9999,
-    ignored: [],
     clearPostHeader: false,
     isComponentVisible: true
   };
@@ -28,7 +27,6 @@ class PostsList extends React.Component {
       postsIndices: [],
       length: 0,
       hasMore: true,
-      ignored: this.props.ignored,
       loader: true
     };
     this.props.initPostsList(postsListOptions);
@@ -50,7 +48,6 @@ class PostsList extends React.Component {
         postsIndices: [],
         length: 0,
         hasMore: true,
-        ignored: nextProps.ignored
       };
       this.props.initPostsList(postsListOptions);
       this.getPostsList();
@@ -66,7 +63,7 @@ class PostsList extends React.Component {
       return (
         <span/>
       )
-    };
+    }
     if (!this.props.length) {
       return (
         <div className="empty-query-message">
@@ -76,7 +73,7 @@ class PostsList extends React.Component {
     }
     let posts = [];
     this.props.postsIndices.forEach((postIndex) => {
-      if (this.props.ignored.indexOf(postIndex) == -1) {
+      if (this.props.ignored.indexOf(postIndex) === -1) {
         posts.push(<Post key={this.props.point + "/" + postIndex}
                          index={postIndex}
                          point={this.props.point}
@@ -119,6 +116,7 @@ class PostsList extends React.Component {
 const mapStateToProps = (state, props) => {
   return {
     ...state.postsList[props.point],
+    ignored: state.postsList[props.ignored] ? state.postsList[props.ignored].postsIndices : []
   };
 };
 

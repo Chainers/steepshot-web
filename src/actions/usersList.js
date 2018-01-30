@@ -14,6 +14,14 @@ export function clearUsersList(point) {
   };
 }
 
+export function setUsersSearchValue(point, searchValue) {
+  return {
+    type: 'SET_USERS_SEARCH_VALUE',
+    point,
+    searchValue
+  };
+}
+
 function getUsersListRequest(point) {
   return {
     type: 'GET_USERS_LIST_REQUEST',
@@ -56,14 +64,14 @@ export function getUsersList(point, getUsers) {
         newUsers = newUsers.slice(1, newUsers.length);
       }
       let hasMore = statePoint.offset !== response.offset;
-      
+
       let pointOptions = {
         point,
         hasMore,
         users: newUsers,
         offset: response.offset,
       };
-      
+
       dispatch(getUsersListSuccess(pointOptions));
     });
   };

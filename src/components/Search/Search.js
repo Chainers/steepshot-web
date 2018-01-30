@@ -4,22 +4,22 @@ import Constants from '../../common/constants';
 import PostsList from '../PostsList/PostsList';
 import {getUsersSearch} from '../../actions/posts';
 import {documentTitle} from '../DocumentTitle';
-import {getIgnoredPostsList, insertCategory, setActiveIndex,} from '../../actions/search';
+import {insertCategory, setActiveIndex,} from '../../actions/search';
 import {debounce} from 'lodash';
 import UsersList from '../UsersList/UsersList';
 import Tabs from "./Tabs/Tabs";
-import ShowIf from "../Common/ShowIf";
+import {setUsersSearchValue} from "../../actions/usersList";
 
 class Search extends React.Component {
   constructor(props) {
     super(props);
-    this.props.getIgnoredPostsList(this.props.searchValue);
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.searchValue !== this.props.searchValue) {
-      this.props.getIgnoredPostsList(this.props.searchValue);
+      this.props.setUsersSearchValue(Constants.SEARCH_FILTERS.USERS.point, nextProps.searchValue);
     }
+    return true;
   }
 
   componentWillUpdate() {
@@ -58,7 +58,7 @@ class Search extends React.Component {
               point={insertCategory(Constants.POSTS_FILTERS.POSTS_NEW.point, this.props.searchValue)}
               wrapperModifier="posts-list clearfix"
               cancelPrevious={false}
-              ignored={this.props.ignored}
+              ignored={insertCategory(Constants.POSTS_FILTERS.POSTS_HOT.point, this.props.searchValue)}
               headerText={newPost}
               isComponentVisible={this.props.activeIndex === 0}
             />
@@ -94,11 +94,11 @@ const mapStateToProps = (state, props) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    getIgnoredPostsList: (searchValue) => {
-      dispatch(getIgnoredPostsList(searchValue));
-    },
     setActiveIndex: (options) => {
       dispatch(setActiveIndex(options));
+    },
+    setUsersSearchValue: (point, searchValue) => {
+      dispatch(setUsersSearchValue(point, searchValue));
     },
   };
 };

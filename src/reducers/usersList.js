@@ -10,6 +10,14 @@ export default function usersList(state = {}, action) {
           loading: true,
         }),
       });
+    case 'SET_USERS_SEARCH_VALUE':
+      return Object.assign({}, state, {
+        [action.point]: Object.assign({}, state[action.point], {
+          options: {
+            query: action.searchValue
+          },
+        }),
+      });
     case 'CLEAR_USERS':
       return Object.assign({}, state, {
         [action.point]: {}

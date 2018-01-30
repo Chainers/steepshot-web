@@ -34,6 +34,22 @@ class UsersList extends React.Component {
     this.getUsersList = this.getUsersList.bind(this);
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.options.query !== this.props.options.query) {
+      let usersListOptions = {
+        point: nextProps.point,
+        loading: false,
+        hasMore: true,
+        users: [],
+        offset: null,
+        options: nextProps.options,
+        loader: true
+      };
+      this.props.initUsersList(usersListOptions);
+      this.getUsersList();
+    }
+  }
+
   getUsersList() {
     this.props.getUsersList(this.props.point, this.props.getUsers);
   }
@@ -48,14 +64,14 @@ class UsersList extends React.Component {
       return (
         <span/>
       )
-    }; 
+    };
     if (!this.props.users || !this.props.users[0]) {
       return (
         <div className="empty-query-message">
           {Constants.EMPTY_QUERY}
         </div>
       );
-    } 
+    }
     let users = [];
     this.props.users.map((user, index) => {
       users.push(
