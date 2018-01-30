@@ -35,7 +35,7 @@ class UsersList extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.options.query !== this.props.options.query) {
+    if (nextProps.options && (nextProps.options.query !== this.props.options.query)) {
       let usersListOptions = {
         point: nextProps.point,
         loading: false,
@@ -120,6 +120,7 @@ class UsersList extends React.Component {
 const mapStateToProps = (state, props) => {
   return {
     ...state.usersList[props.point],
+    options: props.options
   };
 };
 

@@ -14,14 +14,6 @@ export function clearUsersList(point) {
   };
 }
 
-export function setUsersSearchValue(point, searchValue) {
-  return {
-    type: 'SET_USERS_SEARCH_VALUE',
-    point,
-    searchValue
-  };
-}
-
 function getUsersListRequest(point) {
   return {
     type: 'GET_USERS_LIST_REQUEST',

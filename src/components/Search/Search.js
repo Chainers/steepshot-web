@@ -15,13 +15,6 @@ class Search extends React.Component {
     super(props);
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.searchValue !== this.props.searchValue) {
-      this.props.setUsersSearchValue(Constants.SEARCH_FILTERS.USERS.point, nextProps.searchValue);
-    }
-    return true;
-  }
-
   componentWillUpdate() {
     documentTitle();
   }
@@ -85,9 +78,6 @@ class Search extends React.Component {
 const mapStateToProps = (state, props) => {
   return {
     ...state.search,
-    ...state.postsList[insertCategory(
-      Constants.POSTS_FILTERS.POSTS_NEW.point,
-      props.match.params.searchValue)],
     searchValue: props.match.params.searchValue,
   };
 };
@@ -96,9 +86,6 @@ const mapDispatchToProps = (dispatch) => {
   return {
     setActiveIndex: (options) => {
       dispatch(setActiveIndex(options));
-    },
-    setUsersSearchValue: (point, searchValue) => {
-      dispatch(setUsersSearchValue(point, searchValue));
     },
   };
 };

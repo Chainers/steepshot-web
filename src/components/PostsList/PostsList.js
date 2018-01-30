@@ -13,7 +13,8 @@ class PostsList extends React.Component {
     cancelPrevious: false,
     maxPosts: 9999,
     clearPostHeader: false,
-    isComponentVisible: true
+    isComponentVisible: true,
+    headerText: ''
   };
 
   constructor(props) {
@@ -30,11 +31,10 @@ class PostsList extends React.Component {
       loader: true
     };
     this.props.initPostsList(postsListOptions);
-    this.getPostsList = this.getPostsList.bind(this);
   }
 
   componentDidMount() {
-    this.getPostsList();
+    this.props.getPosts(this.props.point);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -50,12 +50,9 @@ class PostsList extends React.Component {
         hasMore: true,
       };
       this.props.initPostsList(postsListOptions);
-      this.getPostsList();
+      this.props.getPosts(nextProps.point);
     }
-  }
-
-  getPostsList() {
-    this.props.getPosts(this.props.point);
+    return true;
   }
 
   renderPosts() {
@@ -98,7 +95,7 @@ class PostsList extends React.Component {
         <InfiniteScroll
           pageStart={0}
           initialLoad={false}
-          loadMore={debounce(this.getPostsList,
+          loadMore={debounce(() => this.props.getPosts(this.props.point),
           Constants.ENDLESS_SCROLL.DEBOUNCE_TIMEOUT)}
           hasMore={this.props.isComponentVisible && this.props.hasMore}
           loader={<LoadingSpinner/>}
@@ -116,6 +113,7 @@ class PostsList extends React.Component {
 const mapStateToProps = (state, props) => {
   return {
     ...state.postsList[props.point],
+    point: props.point,
     ignored: state.postsList[props.ignored] ? state.postsList[props.ignored].postsIndices : []
   };
 };
