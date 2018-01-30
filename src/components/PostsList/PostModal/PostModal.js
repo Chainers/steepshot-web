@@ -18,6 +18,7 @@ import LoadingSpinner from '../../LoadingSpinner';
 import {sendComment} from '../../../actions/comment';
 import {copyToClipboard} from '../../../actions/clipboard';
 import ReactDOM from 'react-dom';
+import PostContextMenu from '../../PostContextMenu/PostContextMenu';
 
 const START_TEXTAREA_HEIGHT = '42px';
 
@@ -92,11 +93,10 @@ class PostModal extends React.Component {
             </button>
           </div>
         </ShowIf>
-        <ShowIf show={this.props.post.is_low_rated && !this.props.showAll}>
+        <ShowIf show={this.props.post.is_low_rated && !this.props.showAll && !this.props.post.is_nsfw}>
           <div className="curtain_pos-mod">
             <p className="title_pos-mod">Low rated content</p>
-            <p className="message_pos-mod">This content is hidden due to low
-              ratings.</p>
+            <p className="message_pos-mod">This content is hidden due to low ratings.</p>
             <button className="btn btn-index"
                     onClick={
                       () => this.props.setPostModalOptions({showAll: true})
@@ -138,7 +138,7 @@ class PostModal extends React.Component {
 
     return (
       <div className="text-description_pos-menu">
-        <p>{UserLinkFunc(null, this.props.post.title)}</p>
+        <p>{UserLinkFunc(true, this.props.post.title)}</p>
         <div
           className={(this.props.isDescriptionOpened || forceOpen)
             ? 'collapse-opened'
@@ -184,6 +184,7 @@ class PostModal extends React.Component {
     if (comment === '') return false;
     this.props.sendComment(this.props.currentIndex, comment);
     this.textArea.value = '';
+    this.changeText();
   }
 
   render() {
@@ -198,9 +199,13 @@ class PostModal extends React.Component {
             <TimeAgo datetime={this.props.post.created}
                      locale='en_US'
             />
+            <PostContextMenu style={{height: '22px', width: '22px', marginLeft: '5px'}}
+                             className="post-context-menu_post"
+                             item={this.props.post}
+                             index={this.props.currentIndex}
+            />
             <ShowIf show={this.props.showClose}>
-              <div className="cont-close-btn_pos-mod"
-                   onClick={() => this.props.closeModal(this.props.point)}>
+              <div className="cont-close-btn_pos-mod" onClick={() => this.props.closeModal(this.props.point)}>
                 <i className="close-btn_pos-mod"/>
               </div>
             </ShowIf>
@@ -227,9 +232,11 @@ class PostModal extends React.Component {
                   </div>
                 </ShowIf>
               </div>
-              <div className="button_pos-mod">
-                <Flag postIndex={this.props.currentIndex}/>
-              </div>
+              <ShowIf show={this.props.authUser != this.props.post.author}>
+                <div className="button_pos-mod">
+                  <Flag postIndex={this.props.currentIndex}/>
+                </div>
+              </ShowIf>
               <div className="button_pos-mod">
                 <Vote postIndex={this.props.currentIndex}/>
               </div>
@@ -276,19 +283,13 @@ class PostModal extends React.Component {
               <label
                 className={this.props.label + ' label_pos-mod'}>Comment</label>
               <ShowIf show={this.props.needsCommentFormLoader}>
-                <div className="comment-loader_pos-mod">
-                  <LoadingSpinner/>
-                </div>
+                  <LoadingSpinner styles={'0'}/>
               </ShowIf>
               <ShowIf show={!this.props.needsCommentFormLoader}>
                 <button type="submit"
-                        className={'btn-submit' + ' ' + 'btn_pos-mod' + ' ' +
-                        this.props.sendHover}
+                        className={'btn-submit' + ' ' + 'btn_pos-mod' + ' ' + this.props.sendHover}
                         onClick={this.sendComment.bind(this)}
-                        ref={ref => {
-                          this.sendButton = ref;
-                        }}>Send
-                </button>
+                >Send</button>
               </ShowIf>
             </div>
           </ShowIf>
@@ -388,6 +389,7 @@ const mapStateToProps = (state) => {
     ...state.postModal,
     post: state.posts[state.postModal.currentIndex],
     isUserAuth: state.auth.user && state.auth.postingKey,
+    authUser: state.auth.user
   };
 };
 

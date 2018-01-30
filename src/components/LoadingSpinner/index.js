@@ -1,16 +1,17 @@
-import React, { Component } from 'react';
+import React from 'react';
 import ShowIf from '../Common/ShowIf';
 
-class LoadingSpinner extends Component {
+class LoadingSpinner extends React.Component {
 
   constructor(props) {
     super(props);
   }
 
   render() {
+    let topOffset = this.props.styles || '15px';
     return (
       <ShowIf show={this.props.show}>
-        <div className="loader-blocker">
+        <div className="loader-blocker" style={{top: topOffset}}>
           <div className={this.props.deleting ? 'deleting-loader' : 'loader'}/>
         </div>
       </ShowIf>

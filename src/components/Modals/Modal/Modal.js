@@ -3,6 +3,8 @@ import {connect} from 'react-redux';
 import {closeModal, setModalOptions} from '../../../actions/modal';
 import ShowIf from '../../Common/ShowIf';
 
+const MOBILE_SCREEN = 815;
+
 class Modal extends React.Component {
 
   constructor(props) {
@@ -12,7 +14,6 @@ class Modal extends React.Component {
 
   componentDidMount() {
     window.addEventListener('resize', this.resizeWindow);
-    document.body.style.overflow = 'hidden';
     this.wrapper.classList.remove('before-load-back_modal');
     this.modalContainer.classList.remove('before-load_modal');
     this.resizeWindow();
@@ -20,9 +21,8 @@ class Modal extends React.Component {
 
   componentWillUnmount() {
     window.removeEventListener('resize', this.resizeWindow);
-    document.body.style.overflow = 'auto';
   }
-  
+
   shouldComponentUpdate(props) {
     if (props.willClose) {
       this.modalContainer.classList.add('before-load_modal');
@@ -30,7 +30,7 @@ class Modal extends React.Component {
     }
     return true;
   }
-  
+
   componentDidUpdate() {
      this.resizeWindow();
   }
@@ -40,6 +40,8 @@ class Modal extends React.Component {
 
     if (this.modalContainer.clientHeight > this.wrapper.clientHeight) {
       alignItems = 'flex-start';
+    } else if(document.documentElement.clientWidth < MOBILE_SCREEN) {
+      alignItems = 'right'
     }
     if (this.props.alignItems !== alignItems) {
       this.props.setModalOptions(this.props.index, {alignItems: alignItems});
@@ -70,7 +72,7 @@ class Modal extends React.Component {
              ref={ref => {this.wrapper = ref;}}
         >
           <ShowIf show={!this.props.fullScreen}>
-            <div className={this.props.styles + " body_modal before-load_modal"}
+            <div className=" body_modal before-load_modal"
                  ref={ref => {this.modalContainer = ref;}}>
               {this.props.body}
             </div>

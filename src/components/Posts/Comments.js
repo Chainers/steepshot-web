@@ -44,8 +44,7 @@ class Comments extends React.Component {
     const options = {
       point : `post/${nextProps.item.author}/${nextProps.item.url}/comments`,
       params : {}
-    }
-
+    };
     getComments(options, true).then((response) => {
       this.setState({
         comments: response.results,
@@ -60,9 +59,8 @@ class Comments extends React.Component {
     let comments = null;
 
     if (this.state.loading) {
-      comments = <div className='loading-block'><LoadingSpinner /></div>;
+      comments = <LoadingSpinner />;
     }
-
     if (this.state.comments && this.state.comments.length != 0) {
       comments = this.state.comments.map((item, index) => {
         return <Comment replyUser={this.props.replyUser} key={index} item={item} />

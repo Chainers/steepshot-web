@@ -23,7 +23,7 @@ export function UserLinkFunc(bool, fromState) {
         let replace4 = replace1.match(/\w\s([^@]+)/g);
         let replace5 = lowItem.match(/@[\w.]+[\W]/);
         let replaceDot = replace2[0].match(/@\w+\.\s/);
-        return <span key={index}>
+        return <span className="user-links_post" key={index}>
                    <span>
                      {
                        replace3
@@ -71,13 +71,13 @@ export function UserLinkFunc(bool, fromState) {
       }
     });
     return (
-      <span>
+      <span className="user-links_post">
         {arr}
       </span>
     )
   } else {
     return (
-      <span>
+      <span className="user-links_post">
         {state + ' '}
       </span>
     )

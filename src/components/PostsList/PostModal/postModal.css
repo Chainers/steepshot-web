@@ -61,6 +61,7 @@
 }
 
 .date_pos-mod {
+  display: flex;
   float: right;
   color: #979b9e;
   font-size: 12px;
@@ -92,7 +93,7 @@
   height: 12px;
   width: 12px;
   float: right;
-  margin-left: 20px;
+  margin-left: 14px;
   cursor: pointer;
 }
 
@@ -170,6 +171,10 @@
   padding-bottom: 15px;
 }
 
+.text-description_pos-menu p {
+  text-align: left;
+}
+
 .list-scroll-view_pos-mod .comment-text {
   position: relative;
   padding-right: 40px;
@@ -236,7 +241,7 @@
   height: 42px;
   width: 60px;
   border: none;
-  border-radius: 30px;
+  border-radius: 7px;
   background: 0 0;
   cursor: default;
   color: #979b9e;
@@ -245,10 +250,12 @@
   line-height: inherit;
 }
 
+.btn-hover_pos-mod {
+  color: #e74800;
+}
 .btn-hover_pos-mod:hover {
   cursor: pointer;
   border: 1px solid #ececee;
-  color: #e74800;
 }
 
 .label_pos-mod {
@@ -289,7 +296,7 @@ textarea:focus + .label_pos-mod {
   top: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(255, 255, 255, 0.955);
+  background-color: rgba(255, 255, 255, 0.96);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -303,6 +310,7 @@ textarea:focus + .label_pos-mod {
 }
 
 .message_pos-mod {
+  max-width: 80%;
   margin-bottom: 30px;
   color: #696969;
   font: 14px OpenSans-Regular;
@@ -327,4 +335,7 @@ textarea:focus + .label_pos-mod {
 
 .before-load-curtain_pos-mod .loader-blocker {
   top: 0;
+}
+.user-links_post {
+  word-wrap: break-word;
 }

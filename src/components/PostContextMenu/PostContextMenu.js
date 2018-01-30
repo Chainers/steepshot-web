@@ -1,11 +1,13 @@
 import * as React from 'react';
 import Menu from './Menu/Menu';
+import ConfirmDeleteModal from './ConfirmDeleteModal/ConfirmDeleteModal';
+import ConfirmFlagModal from './ConfirmFlagModal/ConfirmFlagModal';
 import {connect} from 'react-redux';
-import {debounce} from 'lodash';
 import {toggleFlag,} from '../../actions/flag';
 import {copyToClipboard} from '../../actions/clipboard';
-import {closeModal, openModal} from '../../actions/modal';
+import {closeModal, openModal, closeAllModals} from '../../actions/modal';
 import {deletePost} from '../../actions/post';
+
 
 class PostContextMenu extends React.Component {
 
@@ -25,9 +27,23 @@ class PostContextMenu extends React.Component {
   }
 
   deletePost() {
-    this.props.deletePost(this.props.index);
+    let modalOption = {
+      body: (<ConfirmDeleteModal buttonOption={this.state.BUTTONS_OPTIONS}
+                                 closeModal={() => {this.props.closeModal("ConfirmDeleteModal")}}
+                                 closeAllModals={() => {this.props.closeAllModals()}}
+                                 deleteCallback={this.deleteCallback.bind(this)}
+             />),
+    };
     this.props.closeModal("MenuModal");
-    this.props.closeModal(this.props.index);
+    this.props.openModal("ConfirmDeleteModal", modalOption);
+  }
+
+  deleteCallback(param) {
+    if(param) {
+      this.props.deletePost(this.props.index);
+    } else {
+      this.openFunc();
+    }
   }
 
   editPost() {
@@ -49,16 +65,30 @@ class PostContextMenu extends React.Component {
   }
 
   toggleFlag() {
-    this.props.toggleFlag(this.props.index);
+    let modalOption = {
+      body: (<ConfirmFlagModal buttonOption={this.state.BUTTONS_OPTIONS}
+                               closeModal={() => {this.props.closeModal("ConfirmFlagModal")}}
+                               flagCallback={this.flagCallback.bind(this)}
+      />),
+    };
     this.props.closeModal("MenuModal");
+    this.props.openModal("ConfirmFlagModal", modalOption);
   }
 
+  flagCallback(param) {
+    if(param) {
+      this.props.closeModal("ConfirmFlagModal");
+      this.props.toggleFlag(this.props.index);
+    } else {
+      this.openFunc();
+    }
+  }
 
   openFunc() {
     let modalOption = {
       body: (<Menu buttonOption={this.state.BUTTONS_OPTIONS}
                    closeModal={()=>{this.props.closeModal("MenuModal")}}
-            />),
+             />),
     };
     this.props.openModal("MenuModal", modalOption);
   }
@@ -67,9 +97,7 @@ class PostContextMenu extends React.Component {
     return (
       <div className="container_pos-con-men" style={this.props.style}>
         <div className="container_post-men-but" onClick={this.openFunc} style={this.props.style}>
-          <span className="shape_post-men-but"
-               alt="Post menu button"
-          />
+          <div className="shape_post-men-but" alt="Open post menu" title="Open post menu"/>
         </div>
       </div>
     );
@@ -166,6 +194,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     deletePost: (index) => {
       dispatch(deletePost(index));
+    },
+    closeAllModals: () => {
+      dispatch(closeAllModals());
     }
   }
 };
