@@ -10,7 +10,7 @@ import {UserLinkFunc} from '../../Common/UserLinkFunc';
 import constants from '../../../common/constants';
 import Tags from './Tags/Tags';
 import Vote from './Vote/Vote';
-import PostModal from '../PostModal/PostModal';
+import PostModal from '../../PostModal/PostModal';
 import {openPostModal} from '../../../actions/postModal';
 import LoadingSpinner from "../../LoadingSpinner/index";
 import Avatar from '../../Common/Avatar/Avatar';

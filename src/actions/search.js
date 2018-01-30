@@ -11,9 +11,6 @@ export function setActiveIndex(index) {
 
 export function getIgnoredPostsList(searchValue) {
   return dispatch => {
-    dispatch({
-      type: 'GET_IGNORED_POSTS_REQUEST'
-    });
     const options = {
       point: insertCategory(
         Constants.POSTS_FILTERS.POSTS_HOT.point,

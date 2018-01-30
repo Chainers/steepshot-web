@@ -42,17 +42,18 @@ class PostsList extends React.Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.point !== this.props.point) {
       let postsListOptions = {
-        point: this.props.point,
-        cancelPrevious: this.props.cancelPrevious,
-        options: this.props.options,
-        maxPosts: this.props.maxPosts,
+        point: nextProps.point,
+        cancelPrevious: nextProps.cancelPrevious,
+        options: nextProps.options,
+        maxPosts: nextProps.maxPosts,
         loading: false,
         postsIndices: [],
         length: 0,
         hasMore: true,
-        ignored: this.props.ignored
+        ignored: nextProps.ignored
       };
       this.props.initPostsList(postsListOptions);
+      this.getPostsList();
     }
   }
 
