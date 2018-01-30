@@ -9,6 +9,7 @@ import {debounce} from 'lodash';
 import UsersList from '../UsersList/UsersList';
 import Tabs from "./Tabs/Tabs";
 import {setUsersSearchValue} from "../../actions/usersList";
+import ShowIf from "../Common/ShowIf";
 
 class Search extends React.Component {
   constructor(props) {
@@ -35,8 +36,11 @@ class Search extends React.Component {
     return (
       <div className="g-main_i container">
         <div id="workspace" className="g-content clearfix">
-          <Tabs/>
-          <div style={this.props.activeIndex === 0 ? {} : {display: 'none'}}>
+          <ShowIf show={this.props.newPostsList && this.props.newPostsList.posts.length &&
+          this.props.usersList && this.props.usersList.users.length} removeFromDom={false}>
+            <Tabs/>
+          </ShowIf>
+          <ShowIf show={this.props.activeIndex === 0} removeFromDom={false}>
             <PostsList
               point={insertCategory(Constants.POSTS_FILTERS.POSTS_HOT.point, this.props.searchValue)}
               wrapperModifier="posts-list clearfix"
@@ -56,19 +60,21 @@ class Search extends React.Component {
               isComponentVisible={this.props.activeIndex === 0}
             />
 
-          </div>
-          <div style={this.props.activeIndex === 1 ? {} : {display: 'none'}}>
-            <UsersList
-              point={Constants.SEARCH_FILTERS.USERS.point}
-              getUsers={getUsersSearch}
-              options={{
-                query: this.props.searchValue,
-              }}
-              wrapperModifier="posts-list clearfix type-2"
-              headerText={userResult}
-              isComponentVisible={this.props.activeIndex === 1}
-            />
-          </div>
+          </ShowIf>
+          <ShowIf show={this.props.activeIndex === 1} removeFromDom={false}>
+            <ShowIf show={this.props.usersList && this.props.usersList.users.length} removeFromDom={false}>
+              <UsersList
+                point={Constants.SEARCH_FILTERS.USERS.point}
+                getUsers={getUsersSearch}
+                options={{
+                  query: this.props.searchValue,
+                }}
+                wrapperModifier="posts-list clearfix type-2"
+                headerText={userResult}
+                isComponentVisible={this.props.activeIndex === 1}
+              />
+            </ShowIf>
+          </ShowIf>
         </div>
       </div>
     );
@@ -76,16 +82,20 @@ class Search extends React.Component {
 }
 
 const mapStateToProps = (state, props) => {
+  let searchValue = props.match.params.searchValue;
   return {
+    hotPostsList: state.postsList[insertCategory(Constants.POSTS_FILTERS.POSTS_HOT.point, searchValue)],
+    newPostsList: state.postsList[insertCategory(Constants.POSTS_FILTERS.POSTS_NEW.point, searchValue)],
+    usersList: state.usersList[Constants.SEARCH_FILTERS.USERS.point],
     ...state.search,
-    searchValue: props.match.params.searchValue,
+    searchValue,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    setActiveIndex: (options) => {
-      dispatch(setActiveIndex(options));
+    setActiveIndex: (index) => {
+      dispatch(setActiveIndex(index));
     },
   };
 };

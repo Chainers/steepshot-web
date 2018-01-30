@@ -51,8 +51,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    setActiveIndex: (options) => {
-      dispatch(setActiveIndex(options));
+    setActiveIndex: (index) => {
+      dispatch(setActiveIndex(index));
     },
   };
 };

@@ -56,24 +56,24 @@ export function getPostsList(point) {
     getPosts(requestOptions, statePoint.cancelPrevious).then((response) => {
       let newPosts = response.results;
       newPosts = removeDuplicate(newPosts);
-      newPosts = removeOldDuplicate(statePoint.postsIndices, newPosts);
+      newPosts = removeOldDuplicate(statePoint.posts, newPosts);
 
-      let postsIndices = newPosts.map( (post, index) => {
+      let posts = newPosts.map( (post, index) => {
         return post.url
       });
-      let hasMore = statePoint.offset !== response.offset && postsIndices.length;
+      let hasMore = statePoint.offset !== response.offset && posts.length !== 0;
       if (statePoint.maxPosts <=
-        postsIndices.length + statePoint.postsIndices.length) {
-        postsIndices = postsIndices
-          .slice(0, statePoint.maxPosts - statePoint.postsIndices.length);
+        posts.length + statePoint.posts.length) {
+        posts = posts
+          .slice(0, statePoint.maxPosts - statePoint.posts.length);
         hasMore = false;
       }
       let pointOptions = {
         point,
-        postsIndices,
+        posts,
         offset: response.offset,
         hasMore: hasMore,
-        length: postsIndices.length,
+        length: posts.length,
       };
 
       let postsObject = {};

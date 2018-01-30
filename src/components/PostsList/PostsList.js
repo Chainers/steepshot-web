@@ -25,7 +25,7 @@ class PostsList extends React.Component {
       options: this.props.options,
       maxPosts: this.props.maxPosts,
       loading: false,
-      postsIndices: [],
+      posts: [],
       length: 0,
       hasMore: true,
       loader: true
@@ -45,14 +45,13 @@ class PostsList extends React.Component {
         options: nextProps.options,
         maxPosts: nextProps.maxPosts,
         loading: false,
-        postsIndices: [],
+        posts: [],
         length: 0,
         hasMore: true,
       };
       this.props.initPostsList(postsListOptions);
       this.props.getPosts(nextProps.point);
     }
-    return true;
   }
 
   renderPosts() {
@@ -69,9 +68,9 @@ class PostsList extends React.Component {
       );
     }
     let posts = [];
-    this.props.postsIndices.forEach((postIndex) => {
+    this.props.posts.forEach((postIndex, index) => {
       if (this.props.ignored.indexOf(postIndex) === -1) {
-        posts.push(<Post key={this.props.point + "/" + postIndex}
+        posts.push(<Post key={index}
                          index={postIndex}
                          point={this.props.point}
                          clearPostHeader={this.props.clearPostHeader}
@@ -114,7 +113,7 @@ const mapStateToProps = (state, props) => {
   return {
     ...state.postsList[props.point],
     point: props.point,
-    ignored: state.postsList[props.ignored] ? state.postsList[props.ignored].postsIndices : []
+    ignored: state.postsList[props.ignored] ? state.postsList[props.ignored].posts : []
   };
 };
 
