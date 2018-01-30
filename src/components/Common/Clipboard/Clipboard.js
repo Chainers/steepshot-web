@@ -1,5 +1,6 @@
 import React from 'react';
 import {connect} from "react-redux";
+import {CopyToClipboard} from "react-copy-to-clipboard";
 
 class  Clipboard extends React.Component {
   constructor(props){
@@ -7,33 +8,29 @@ class  Clipboard extends React.Component {
   }
 
   componentDidUpdate() {
-    $('#clipboard').select();
     try {
-      document.execCommand('copy');
+      this.button.click();
       jqApp.pushMessage.open("URL has been copied in your clipboard");
     } catch (e) {
-      console.error(e.message);
       jqApp.pushMessage.open("Oops, unable to copy");
     }
   }
 
   render() {
     return (
-      <textarea id="clipboard" className="clipboard" value={this.props.text} onChange={()=>{}}/>
+      <CopyToClipboard text={this.props.text}
+                       onCopy={() => {}}
+                       className="clipboard">
+        <span ref={ref => this.button = ref}>Copy to clipboard</span>
+      </CopyToClipboard>
     )
   }
 }
 
 const mapStateToProps = (state) => {
   return {
-    text: state.clipboard.text
+    ...state.clipboard
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-
-  }
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Clipboard);
+export default connect(mapStateToProps)(Clipboard);

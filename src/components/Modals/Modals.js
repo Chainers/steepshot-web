@@ -12,27 +12,20 @@ class Modals extends React.Component {
 
   componentWillMount() {
     const {history} = this.props;
-    this.unsubscribeFromHistory = history.listen(this.handleLocationChange);
-    this.handleLocationChange(history.location);
+    console.log(history);
+    this.unsubscribeFromHistory = history.listen(this.handleLocationChange.bind(this));
+    this.handleLocationChange();
   }
 
   componentWillUnmount() {
     if (this.unsubscribeFromHistory) this.unsubscribeFromHistory();
   }
 
-  handleLocationChange = () => {
-    if (this.props.modals.length > 0) {
+  handleLocationChange() {
+    if (Object.keys(this.props.modals).length > 0) {
       this.props.closeAllModals();
     }
   };
-
-  componentWillReceiveProps(newProps) {
-    if (Object.keys(newProps.modals).length) {
-      document.body.style.overflowY = 'hidden';
-    } else {
-      document.body.style.overflowY = 'auto';
-    }
-  }
 
   render() {
     let modals = [];

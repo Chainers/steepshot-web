@@ -1,8 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {
-  nextPostModal, previousPostModal, setPostModalOptions,
-} from '../../../actions/postModal';
+import {nextPostModal, previousPostModal, setPostModalOptions,} from '../../../actions/postModal';
 import constants from '../../../common/constants';
 import TimeAgo from 'timeago-react';
 import {Link} from 'react-router-dom';
@@ -47,13 +45,6 @@ class PostModal extends React.Component {
 
   componentDidUpdate() {
     this.scrollView.scrollBar.scrollToBottom();
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.currentIndex !== this.props.currentIndex) {
-      console.log('clear');
-      this.props.setPostModalOptions({imgLoaded: false});
-    }
   }
 
   openDescription() {
@@ -123,10 +114,16 @@ class PostModal extends React.Component {
              alt="Post picture."
              style={this.props.style.image}
              ref={ref => this.image = ref}
-             onLoad={this.imageLoaded.bind(this)}/>
-        <ShowIf show={!this.props.imgLoaded}>
+             onLoad={this.imageLoaded.bind(this)}
+             onError={this.loadImgError.bind(this)}/>
+        <ShowIf show={!this.image || !this.image.complete}>
           <div className="before-load-curtain_pos-mod">
             <LoadingSpinner/>
+          </div>
+        </ShowIf>
+        <ShowIf show={this.image && this.image.complete && !this.image.naturalWidth}>
+          <div className="before-load-curtain_pos-mod">
+            <p className="title_pos-mod">Not found.</p>
           </div>
         </ShowIf>
       </div>);
@@ -157,7 +154,10 @@ class PostModal extends React.Component {
   }
 
   imageLoaded() {
-    this.props.setPostModalOptions({imgLoaded: true});
+    this.setComponentSize();
+  }
+
+  loadImgError() {
     this.setComponentSize();
   }
 
@@ -267,7 +267,9 @@ class PostModal extends React.Component {
           <ShowIf show={this.props.isUserAuth}>
             <div className="add-comment_pos-mod">
               <div className="hidden-div_pos-mod"
-                   ref={ref => {this.hiddenDiv = ref;}}/>
+                   ref={ref => {
+                     this.hiddenDiv = ref;
+                   }}/>
               <textarea ref={ref => this.textArea = ref}
                         maxLength={2048}
                         className="form-control text-area_pos-mod"
