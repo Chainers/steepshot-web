@@ -163,7 +163,7 @@ class PostModal extends React.Component {
 
   changeText() {
     this.hiddenDiv.style.width = this.textArea.clientWidth;
-    this.hiddenDiv.textContent = this.textArea.value;
+    this.hiddenDiv.textContent = this.textArea.value + '\n';
 
     let label = '';
     let sendHover = '';
@@ -171,11 +171,14 @@ class PostModal extends React.Component {
       label = 'focused_pos-mod';
       sendHover = 'btn-hover_pos-mod';
     }
-    this.props.setPostModalOptions({
-      addCommentHeight: this.hiddenDiv.clientHeight,
-      label,
-      sendHover,
-    });
+    let delta = this.props.addCommentHeight - this.hiddenDiv.clientHeight;
+    if (!this.props.addCommentHeight || delta >= 5 || delta <= -5) {
+      this.props.setPostModalOptions({
+        addCommentHeight: this.hiddenDiv.clientHeight,
+        label,
+        sendHover,
+      });
+    }
   }
 
   sendComment(e) {
@@ -305,75 +308,71 @@ class PostModal extends React.Component {
     const CONT_MARGIN = 80;
     const MAX_WIDTH_FULL_SCREEN = 815;
 
-    let imgHeight = this.image.naturalHeight;
-    let imgWidth = this.image.naturalWidth;
     let docWidth = document.documentElement.clientWidth;
     let docHeight = document.documentElement.clientHeight;
-    let contHeight = '100%';
-    let contWidth = docWidth;
-    let imgContWidth = '100%';
 
-    let headerCont = {
-      order: 0,
-      backgroundColor: '#FFF',
-      width: '100%',
-    };
+    let container = {};
+    container.width = docWidth;
+    container.height = '100%';
+    let image = {};
+    image.width = this.image.naturalWidth;
+    image.height = this.image.naturalHeight;
+    let imgCont = {};
+    imgCont.width = '100%';
+    imgCont.order = 1;
+    let headerCont = {};
+    headerCont.order = 0;
+    headerCont.backgroundColor = '#FFF';
+    headerCont.width = '100%';
+    let description = {};
+
     if (docWidth > MAX_WIDTH_FULL_SCREEN) {
-      contHeight = docHeight * 0.9 > MIN_HEIGHT
+      container.height = docHeight * 0.9 > MIN_HEIGHT
         ? docHeight * 0.9
         : MIN_HEIGHT;
 
-      imgWidth = imgWidth < PREF_IMG_WIDTH ? imgWidth : PREF_IMG_WIDTH;
-      imgWidth = imgWidth < docWidth - DESC_WIDTH - CONT_MARGIN
-        ? imgWidth
+      image.width = image.width < PREF_IMG_WIDTH ? image.width : PREF_IMG_WIDTH;
+      image.width = image.width < docWidth - DESC_WIDTH - CONT_MARGIN
+        ? image.width
         : docWidth - DESC_WIDTH - CONT_MARGIN;
-      imgWidth = imgWidth ? imgWidth : this.image.clientWidth;
+      image.width = image.width ? image.width : this.image.clientWidth;
 
-      imgHeight = imgHeight * imgWidth / this.image.naturalWidth;
+      image.height = image.height * image.width / this.image.naturalWidth;
 
-      if (imgHeight > contHeight) {
-        imgWidth = imgWidth * contHeight / imgHeight;
-        imgHeight = contHeight;
+      if (image.height > container.height) {
+        image.width = image.width * container.height / image.height;
+        image.height = container.height;
       }
-      contHeight = imgHeight;
-      if (contHeight < MIN_HEIGHT) {
-        contHeight = MIN_HEIGHT;
+      container.height = image.height;
+      if (container.height < MIN_HEIGHT) {
+        container.height = MIN_HEIGHT;
       }
-      contWidth = imgWidth + DESC_WIDTH;
-      imgContWidth = imgWidth;
+      container.width = image.width + DESC_WIDTH;
+      imgCont.width = image.width;
 
       headerCont.order = 2;
       headerCont.width = DESC_WIDTH;
     } else {
-      imgWidth = imgWidth < document.documentElement.clientWidth
-        ? imgWidth
+      image.width = image.width < document.documentElement.clientWidth
+        ? image.width
         : document.documentElement.clientWidth;
-      imgHeight = imgHeight * imgWidth / this.image.naturalWidth;
-      imgContWidth = '100%';
+      image.height = image.height * image.width / this.image.naturalWidth;
+      imgCont.width = '100%';
       headerCont.backgroundColor = '#fafafa';
     }
+
+    description.width = headerCont.width;
     let style = {
-      container: {
-        width: contWidth,
-        height: contHeight,
-      },
-      image: {
-        width: imgWidth,
-        height: imgHeight,
-      },
-      imgCont: {
-        width: imgContWidth,
-        order: 1,
-      },
+      container,
+      image,
+      imgCont,
       headerCont,
-      description: {
-        width: headerCont.width,
-      },
+      description,
     };
     this.props.setPostModalOptions({style});
     if (this.props.point !== 'SinglePost') {
-      if (contHeight >=
-        document.documentElement.clientHeight || contHeight === '100%') {
+      if (container.height >=
+        document.documentElement.clientHeight || container.height === '100%') {
         this.props.setModalOptions(this.props.point,
           {alignItems: 'flex-start'});
       } else {
