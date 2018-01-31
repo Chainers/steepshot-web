@@ -5,7 +5,6 @@ import TimeAgo from 'timeago-react';
 import Flag from './Flag/Flag';
 import ShowIf from '../../Common/ShowIf';
 import PostContextMenu from '../../PostContextMenu/PostContextMenu';
-import LikesComponent from '../../Posts/LikesComponent';
 import {UserLinkFunc} from '../../Common/UserLinkFunc';
 import constants from '../../../common/constants';
 import Tags from './Tags/Tags';
@@ -14,6 +13,7 @@ import PostModal from '../../PostModal/PostModal';
 import {openPostModal} from '../../../actions/postModal';
 import LoadingSpinner from "../../LoadingSpinner/index";
 import Avatar from '../../Common/Avatar/Avatar';
+import Likes from "./Likes/Likes";
 
 class Post extends React.Component {
 
@@ -44,7 +44,7 @@ class Post extends React.Component {
 
   openPostModal() {
     let modalOption = {
-      body: (<PostModal />),
+      body: (<PostModal/>),
     };
     this.props.openModal(this.props.point, this.props.index, modalOption);
   }
@@ -132,7 +132,7 @@ class Post extends React.Component {
                 </ShowIf>
               </div>
               <div className="wrap-counts clearfix">
-                <LikesComponent likes={this.props.net_likes} url={this.props.url}/>
+                <Likes postIndex={this.props.index}/>
                 <ShowIf show={parseFloat(this.props.total_payout_reward).toFixed(2) != 0}>
                   <div className="amount">${this.props.total_payout_reward}</div>
                 </ShowIf>
@@ -143,7 +143,7 @@ class Post extends React.Component {
               <Tags tags={this.props.tags}/>
             </div>
             <div className="number-of-comments_post" onClick={this.openPostModal.bind(this)}>
-               {this.commentNumber()}
+              {this.commentNumber()}
             </div>
           </div>
         </div>

@@ -9,7 +9,6 @@ import {closeModal, setModalOptions} from '../../actions/modal';
 import ShowIf from '../Common/ShowIf';
 import Flag from '../PostsList/Post/Flag/Flag';
 import Vote from '../PostsList/Post/Vote/Vote';
-import LikesComponent from '../Posts/LikesComponent';
 import {UserLinkFunc} from '../Common/UserLinkFunc';
 import Tags from '../PostsList/Post/Tags/Tags';
 import ScrollViewComponent from '../Common/ScrollViewComponent';
@@ -19,6 +18,7 @@ import {sendComment} from '../../actions/comment';
 import {copyToClipboard} from '../../actions/clipboard';
 import ReactDOM from 'react-dom';
 import PostContextMenu from "../PostContextMenu/PostContextMenu";
+import Likes from "../PostsList/Post/Likes/Likes";
 
 const START_TEXTAREA_HEIGHT = '42px';
 
@@ -222,8 +222,7 @@ class PostModal extends React.Component {
           <div className="control-cont_pos-mod">
             <div className="post-control_pos-mod">
               <div className="likes_pos-mod">
-                <LikesComponent likes={this.props.post.net_votes}
-                                url={this.props.post.url}/>
+                <Likes postIndex={this.props.currentIndex}/>
               </div>
               <div className="amount_pos-mod">
                 <ShowIf show={parseFloat(this.props.post.total_payout_reward)}>
@@ -283,13 +282,14 @@ class PostModal extends React.Component {
               <label
                 className={this.props.label + ' label_pos-mod'}>Comment</label>
               <ShowIf show={this.props.needsCommentFormLoader}>
-                  <LoadingSpinner styles={'0'}/>
+                <LoadingSpinner styles={'0'}/>
               </ShowIf>
               <ShowIf show={!this.props.needsCommentFormLoader}>
                 <button type="submit"
                         className={'btn-submit' + ' ' + 'btn_pos-mod' + ' ' + this.props.sendHover}
                         onClick={this.sendComment.bind(this)}
-                >Send</button>
+                >Send
+                </button>
               </ShowIf>
             </div>
           </ShowIf>
