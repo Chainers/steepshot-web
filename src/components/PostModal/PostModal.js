@@ -314,6 +314,7 @@ class PostModal extends React.Component {
     let container = {};
     container.width = docWidth;
     container.height = '100%';
+    container.borderRadius = '4px';
     let image = {};
     image.width = this.image.naturalWidth;
     image.height = this.image.naturalHeight;
@@ -359,6 +360,7 @@ class PostModal extends React.Component {
       image.height = image.height * image.width / this.image.naturalWidth;
       imgCont.width = '100%';
       headerCont.backgroundColor = '#fafafa';
+      container.borderRadius = '0';
     }
 
     description.width = headerCont.width;

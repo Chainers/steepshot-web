@@ -16,10 +16,6 @@
   text-align: center;
 }
 
-@media (max-width: 768px) {
-
-}
-
 .image-container_pos-mod {
   background-color: #e7e7e7;
   position: relative;
@@ -314,12 +310,6 @@ textarea:focus + .label_pos-mod {
   margin-bottom: 30px;
   color: #696969;
   font: 14px OpenSans-Regular;
-}
-
-@media (max-width: 815px) {
-  .container_pos-mod {
-    border-radius: 0
-  }
 }
 
 .before-load-curtain_pos-mod {
