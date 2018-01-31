@@ -304,12 +304,13 @@ class PostModal extends React.Component {
   setComponentSize() {
     const DESC_WIDTH = 380;
     const MIN_HEIGHT = 440;
-    const PREF_IMG_WIDTH = 640;
     const CONT_MARGIN = 80;
     const MAX_WIDTH_FULL_SCREEN = 815;
 
     let docWidth = document.documentElement.clientWidth;
     let docHeight = document.documentElement.clientHeight;
+
+    const PREF_IMG_WIDTH = (docWidth - DESC_WIDTH) * 0.8;
 
     let container = {};
     container.width = docWidth;
@@ -320,7 +321,10 @@ class PostModal extends React.Component {
     image.height = this.image.naturalHeight;
     let imgCont = {};
     imgCont.width = '100%';
+    imgCont.maxHeight = '100%';
+
     imgCont.order = 1;
+    imgCont.alignItems = 'flex-start';
     let headerCont = {};
     headerCont.order = 0;
     headerCont.backgroundColor = '#FFF';
@@ -350,7 +354,6 @@ class PostModal extends React.Component {
       }
       container.width = image.width + DESC_WIDTH;
       imgCont.width = image.width;
-
       headerCont.order = 2;
       headerCont.width = DESC_WIDTH;
     } else {
@@ -358,9 +361,11 @@ class PostModal extends React.Component {
         ? image.width
         : document.documentElement.clientWidth;
       image.height = image.height * image.width / this.image.naturalWidth;
-      imgCont.width = '100%';
+      imgCont.alignItems = 'center';
+      imgCont.maxHeight = '80vh';
       headerCont.backgroundColor = '#fafafa';
       container.borderRadius = '0';
+      image.margin = 0;
     }
 
     description.width = headerCont.width;
