@@ -20,15 +20,11 @@ class Modal extends React.Component {
     window.removeEventListener('resize', this.resizeWindow);
   }
 
-  shouldComponentUpdate(props) {
-    if (props.willClose) {
+  shouldComponentUpdate(nextProps) {
+    if (nextProps.willClose) {
       this.modalContainer.classList.add('before-load_modal');
       this.wrapper.classList.add('before-load-back_modal');
     }
-    return true;
-  }
-
-  shouldComponentUpdate(nextProps) {
     if (this.props.alignItems === nextProps.alignItems) {
       this.resizeWindow();
     }
@@ -56,6 +52,7 @@ class Modal extends React.Component {
   }
 
   render() {
+    console.log('render');
     let styleBack = {
       backgroundColor: 'rgba(0,0,0, 0.7)',
     };
