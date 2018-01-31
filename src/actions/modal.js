@@ -24,7 +24,6 @@ export function closeModal(index) {
     }
   }
   return (dispatch) => {
-    modal.callBeforeClosed();
     dispatch({
       type: 'WILL_CLOSE_MODAL',
       index
@@ -33,7 +32,6 @@ export function closeModal(index) {
       type: 'CLOSE_MODAL',
       index
     });}, 250);
-    modal.callAfterClosed();
   }
 }
 

@@ -14,18 +14,6 @@
   transition: all .3s cubic-bezier(0.1, 0.23, 0.25, 1);
 }
 
-.container_mods {
-  background-color: #fff;
-  border-radius: 4px;
-}
-
-.container-full-screen_mods {
-  width: 100%;
-  position: absolute;
-  top: 0;
-  left: 0;
-}
-
 .close_mods {
   position: absolute;
   top: 30px;
@@ -38,27 +26,8 @@
   background: url('/static/images/sprite_svg1910.svg') no-repeat -.2em -5.49em;
 }
 
-@media screen and (max-width: 815px) {
-  .container_mod.mobile-modals {
-    max-width: 100vw;
-    min-width: 100vw;
-    min-height: 100%;
-    border-radius: 0 !important;
-  }
-  .post__description-containers {
-    min-width: 100vw;
-  }
-}
-@media screen and (min-width: 1024px) {
-  .close_mods {
-    top: 12px;
-    right: 12px;
-  }
-}
-
 .body_modal {
   transition: all .3s cubic-bezier(0.1, 0.23, 0.25, 1);
-  margin: auto;
 }
 
 .before-load_modal {

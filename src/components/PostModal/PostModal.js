@@ -5,7 +5,7 @@ import constants from '../../common/constants';
 import TimeAgo from 'timeago-react';
 import {Link} from 'react-router-dom';
 import Avatar from '../Common/Avatar/Avatar';
-import {closeModal, setModalOptions} from '../../actions/modal';
+import {closeModal} from '../../actions/modal';
 import ShowIf from '../Common/ShowIf';
 import Flag from '../PostsList/Post/Flag/Flag';
 import Vote from '../PostsList/Post/Vote/Vote';
@@ -377,15 +377,6 @@ class PostModal extends React.Component {
       description,
     };
     this.props.setPostModalOptions({style});
-    if (this.props.point !== 'SinglePost') {
-      if (container.height >=
-        document.documentElement.clientHeight || container.height === '100%') {
-        this.props.setModalOptions(this.props.point,
-          {alignItems: 'flex-start'});
-      } else {
-        this.props.setModalOptions(this.props.point, {alignItems: 'center'});
-      }
-    }
   }
 }
 
@@ -403,9 +394,6 @@ const mapDispatchToProps = (dispatch) => {
   return {
     setPostModalOptions: options => {
       dispatch(setPostModalOptions(options));
-    },
-    setModalOptions: (point, options) => {
-      dispatch(setModalOptions(point, options));
     },
     closeModal: (point) => {
       dispatch(closeModal(point));

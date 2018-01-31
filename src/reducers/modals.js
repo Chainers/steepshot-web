@@ -1,12 +1,7 @@
 const initialState = {};
 const defaultOption = {
-  alignSelf: 'center',
-  fullScreen: false,
-  closeButton: true,
+  alignItems: 'center',
   body: null,
-  callBeforeClosed: () => {},
-  callAfterClosed: () => {},
-  point: 'without',
   willClose: false
 };
 
