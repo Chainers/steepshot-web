@@ -1,6 +1,7 @@
 .container_pos-mod {
   background-color: #FFF;
   height: 90vh;
+  min-height: 440px;
   display: flex;
   flex-wrap: wrap;
   flex-direction: column;
@@ -22,6 +23,7 @@
   height: 100%;
   display: flex;
   width: 640px;
+  overflow: hidden;
 }
 
 .image-container_pos-mod > button {
