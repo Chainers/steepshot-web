@@ -10,6 +10,7 @@ import TabsWrapper from '../Wrappers/TabsWrapper';
 import Avatar from '../Common/Avatar/Avatar';
 import PostsList from '../PostsList/PostsList';
 import UsersList from '../UsersList/UsersList';
+import {UserLinkFunc} from '../Common/UserLinkFunc';
 
 class UserProfile extends React.Component {
   constructor(props) {
@@ -133,7 +134,9 @@ class UserProfile extends React.Component {
       name = this.state.profile.name;
       if (name == undefined || name == '') name = `@${this.state.profile.username}`;
       website = this.state.profile.website;
-      about = this.state.profile.about;
+      about = <div>
+                {UserLinkFunc(null, this.state.profile.about)}
+              </div>;
       location = this.state.profile.location;
       balance = this.state.profile.estimated_balance;
     }
@@ -146,8 +149,7 @@ class UserProfile extends React.Component {
               <div className="user-information">
                 <div className="pic-wrap clearfix">
                   <Avatar src={profileImageSrc}/>
-                  {this.state.showFollow ?
-                    <FollowComponent item={this.state.profile}/> : null}
+                  {this.state.showFollow ? <FollowComponent item={this.state.profile}/> : null}
                 </div>
                 <div className="name">{name}</div>
                 <div className="location">{location}</div>

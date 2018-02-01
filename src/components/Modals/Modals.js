@@ -26,6 +26,14 @@ class Modals extends React.Component {
     }
   };
 
+  componentWillReceiveProps(nextProps) {
+    if (Object.keys(nextProps.modals).length > 0) {
+      document.body.style.overflowY = 'hidden';
+    } else {
+      document.body.style.overflowY = 'auto';
+    }
+  }
+
   render() {
     let modals = [];
     for (let key in this.props.modals) {
