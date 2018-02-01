@@ -321,7 +321,8 @@ class PostModal extends React.Component {
     container.width = docWidth;
     container.height = '100%';
     container.borderRadius = '4px';
-    container.maxWidth =  userHeaderWidth;
+    let username = {};
+    username.maxWidth =  userHeaderWidth;
     let image = {};
     image.width = this.image.naturalWidth;
     image.height = this.image.naturalHeight;
