@@ -52,7 +52,6 @@ class Modal extends React.Component {
   }
 
   render() {
-    console.log('render');
     let styleBack = {
       backgroundColor: 'rgba(0,0,0, 0.7)',
     };

@@ -236,7 +236,7 @@ class PostModal extends React.Component {
                   </div>
                 </ShowIf>
               </div>
-              <ShowIf show={this.props.authUser != this.props.post.author}>
+              <ShowIf show={this.props.authUser !== this.props.post.author}>
                 <div className="button_pos-mod">
                   <Flag postIndex={this.props.currentIndex}/>
                 </div>
@@ -310,9 +310,6 @@ class PostModal extends React.Component {
 
     let docWidth = document.documentElement.clientWidth;
     let docHeight = document.documentElement.clientHeight;
-    let contHeight = '100%';
-    let contWidth = docWidth;
-    let imgContWidth = '100%';
     let userHeaderWidth = DESC_WIDTH - 200;
 
     const PREF_IMG_WIDTH = (docWidth - DESC_WIDTH) * 0.8;
@@ -321,6 +318,8 @@ class PostModal extends React.Component {
     container.width = docWidth;
     container.height = '100%';
     container.borderRadius = '4px';
+    container.minHeight = MIN_HEIGHT;
+
     let username = {};
     username.maxWidth =  userHeaderWidth;
     let image = {};
@@ -371,8 +370,10 @@ class PostModal extends React.Component {
       imgCont.alignItems = 'center';
       imgCont.maxHeight = '80vh';
       headerCont.backgroundColor = '#fafafa';
+      container.minHeight = '100vh';
       container.borderRadius = '0';
       image.margin = 0;
+
     }
 
     description.width = headerCont.width;
