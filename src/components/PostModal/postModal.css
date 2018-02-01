@@ -90,21 +90,37 @@
   color: #e74800;
 }
 
-.cont-close-btn_pos-mod {
-  height: 12px;
-  width: 12px;
-  float: right;
-  margin-left: 14px;
-  cursor: pointer;
-}
+/*.cont-close-btn_pos-mod {*/
+  /*height: 12px;*/
+  /*width: 12px;*/
+  /*float: right;*/
+  /*margin-left: 14px;*/
+  /*cursor: pointer;*/
+/*}*/
 
 .close-btn_pos-mod {
   position: absolute;
-  top: 25px;
-  right: 10px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   width: 12px;
   height: 12px;
-  background: url(/static/images/sprite_svg1910.svg) no-repeat 0 99.8%;
+  background: url(/static/images/sprite_svg1910.svg) no-repeat 3% 99.8%;
+}
+.cont-close-btn_pos-mod {
+  border: 1px solid #ececee;
+  cursor: pointer;
+  height: 22px;
+  width: 22px;
+  border-radius: 4px;
+  position: relative;
+}
+.cont-close-btn_pos-mod:hover {
+  border: 1px solid #89210b;
+}
+
+.time_pos-mod {
+  margin-right: 10px;
 }
 
 .control-cont_pos-mod {
@@ -127,6 +143,10 @@
 .post-control_pos-mod > div {
   display: flex;
   align-items: center;
+}
+
+.post-control_pos-mod .button_pos-mod:last-child {
+  padding-right: 10px;
 }
 
 .likes_pos-mod {
@@ -316,7 +336,9 @@ textarea:focus + .label_pos-mod {
   margin-bottom: 30px;
   color: #696969;
   font: 14px OpenSans-Regular;
+  text-align: center;
 }
+
 
 .before-load-curtain_pos-mod {
   position: absolute;

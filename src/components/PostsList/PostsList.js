@@ -100,9 +100,9 @@ class PostsList extends React.Component {
           loader={<LoadingSpinner/>}
           threshold={Constants.ENDLESS_SCROLL.OFFSET}
         >
-          <div className="posts-list container_pos-lis">
-            {this.renderPosts()}
-          </div>
+        <div className="posts-list container_pos-lis">
+          {this.renderPosts()}
+        </div>
         </InfiniteScroll>
       </div>
     );
