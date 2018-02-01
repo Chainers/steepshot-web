@@ -37,7 +37,7 @@ class Search extends React.Component {
       <TabsBar>
         <Tab name="Tag"
              loading={this.props.hotPostsList.loading || this.props.newPostsList.loading}
-             hide={!this.props.newPostsList.posts.length}>
+             empty={!this.props.newPostsList.posts.length}>
           <PostsList
             point={insertCategory(Constants.POSTS_FILTERS.POSTS_HOT.point, this.props.searchValue)}
             wrapperModifier="posts-list clearfix"
@@ -60,7 +60,7 @@ class Search extends React.Component {
         </Tab>
         <Tab name="Users"
              loading={this.props.usersList.loading}
-             hide={!this.props.usersList.users.length}>
+             empty={!this.props.usersList.users.length}>
           <UsersList
             point={Constants.SEARCH_FILTERS.USERS.point}
             getUsers={getUsersSearch}

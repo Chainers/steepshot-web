@@ -5,7 +5,7 @@ import ShowIf from "../../ShowIf";
 class Tab extends React.Component {
   static defaultProps = {
     loading: false,
-    hide: false
+    empty: false
   };
 
   constructor(props) {
@@ -14,7 +14,7 @@ class Tab extends React.Component {
 
   render() {
     return (
-      <ShowIf show={this.props.active && !this.props.hide} className="container_tab" removeFromDom={false}>
+      <ShowIf show={this.props.active && !this.props.empty} className="container_tab" removeFromDom={false}>
         {this.props.children}
       </ShowIf>
     );

@@ -13,7 +13,7 @@ class TabsBar extends React.Component {
   componentDidUpdate() {
     let navItems = [];
     this.props.children.map((item, index) => {
-      if (!item.props.loading && !item.props.hide) {
+      if (item.props.loading || !item.props.empty) {
         navItems.push(index);
       }
     });
@@ -32,7 +32,7 @@ class TabsBar extends React.Component {
       if (this.props.activeIndex === index) {
         styles = 'nav-item active';
       }
-      if (!item.props.loading && !item.props.hide) {
+      if (!item.props.loading && !item.props.empty) {
         navItems.push(
           <li role="presentation" key={index} className={styles}>
             <a onClick={() => this.props.setActiveIndex(index)}
@@ -56,7 +56,7 @@ class TabsBar extends React.Component {
     let allChildrenHide = true;
     let children = [];
     this.props.children.map((child, index) => {
-      if (!child.props.hide || child.props.loading) {
+      if (!child.props.empty || child.props.loading) {
         allChildrenHide = false;
       }
       children.push(
