@@ -68,17 +68,17 @@ class Browse extends React.Component {
             <PostsList
               point={Constants.POSTS_FILTERS.POSTS_HOT.point}
               cancelPrevious={false}
-              wrapper="posts-list clearfix"
+              wrapperModifier="posts-list clearfix"
             />
             <PostsList
               point={Constants.POSTS_FILTERS.POSTS_NEW.point}
               cancelPrevious={false}
-              wrapper="posts-list clearfix"
+              wrapperModifier="posts-list clearfix"
             />
             <PostsList
               point={Constants.POSTS_FILTERS.POSTS_TOP.point}
               cancelPrevious={false}
-              wrapper="posts-list clearfix"
+              wrapperModifier="posts-list clearfix"
             />
           </TabsWrapper>
         </div>

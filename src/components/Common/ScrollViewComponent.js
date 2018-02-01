@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom';
 import { Scrollbars } from 'react-custom-scrollbars';
 
 const MARGIN_COMMENTS_AUTH = '82px';
-const MARGIN_COMMENTS_NOT_AUTH = '0px'
+const MARGIN_COMMENTS_NOT_AUTH = '0px';
 
 class ScrollViewComponent extends React.Component {
     constructor(props) {

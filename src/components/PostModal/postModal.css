@@ -145,10 +145,6 @@
   align-items: center;
 }
 
-.post-control_pos-mod .button_pos-mod:last-child {
-  padding-right: 10px;
-}
-
 .likes_pos-mod {
   cursor: pointer;
   transition: color .15s ease;
@@ -166,7 +162,7 @@
 }
 
 .button_pos-mod {
-  width: 55px;
+  padding: 0 20px;
   border-left: 1px solid #f4f4f6;
   justify-content: center;
 }

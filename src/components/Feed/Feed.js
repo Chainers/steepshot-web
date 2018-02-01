@@ -26,7 +26,7 @@ class Feed extends React.Component {
           <PostsList
             point={this.state.point}
             cancelPrevious={false}
-            wrapper="posts-list clearfix"
+            wrapperModifier="posts-list clearfix"
           />
         </div>
       </div>
