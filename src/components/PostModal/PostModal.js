@@ -317,23 +317,16 @@ class PostModal extends React.Component {
     let container = {};
     container.width = docWidth;
     container.height = '100%';
-    container.borderRadius = '4px';
-    container.minHeight = MIN_HEIGHT;
 
     let username = {};
     username.maxWidth =  userHeaderWidth;
     let image = {};
     image.width = this.image.naturalWidth;
-    image.height = this.image.naturalHeight;
+    image.height = this.image.naturalHeight ? this.image.naturalHeight : docHeight * 0.4;
     let imgCont = {};
     imgCont.width = '100%';
-    imgCont.maxHeight = '100%';
 
-    imgCont.order = 1;
-    imgCont.alignItems = 'flex-start';
     let headerCont = {};
-    headerCont.order = 0;
-    headerCont.backgroundColor = '#FFF';
     headerCont.width = '100%';
     let description = {};
 
@@ -360,20 +353,13 @@ class PostModal extends React.Component {
       }
       container.width = image.width + DESC_WIDTH;
       imgCont.width = image.width;
-      headerCont.order = 2;
       headerCont.width = DESC_WIDTH;
     } else {
       image.width = image.width < document.documentElement.clientWidth
         ? image.width
         : document.documentElement.clientWidth;
+      image.width = image.width ? image.width : docWidth;
       image.height = image.height * image.width / this.image.naturalWidth;
-      imgCont.alignItems = 'center';
-      imgCont.maxHeight = '80vh';
-      headerCont.backgroundColor = '#fafafa';
-      container.minHeight = '100vh';
-      container.borderRadius = '0';
-      image.margin = 0;
-
     }
 
     description.width = headerCont.width;
@@ -385,7 +371,9 @@ class PostModal extends React.Component {
       description,
       username
     };
-    this.props.setPostModalOptions({style});
+    if (JSON.stringify(style) !== JSON.stringify(this.props.style)) {
+      this.props.setPostModalOptions({style});
+    }
   }
 }
 

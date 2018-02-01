@@ -19,8 +19,10 @@
   height: 100%;
   display: flex;
   justify-content: center;
+  align-items: center;
   width: 640px;
   overflow: hidden;
+  order: 1;
 }
 
 .image-container_pos-mod > button {
@@ -44,6 +46,7 @@
   padding: 20px;
   background-color: #FFF;
   width: 380px;
+  order: 2;
 }
 
 .description_pos-mod {
@@ -329,4 +332,21 @@ textarea:focus + .label_pos-mod {
 
 .before-load-curtain_pos-mod .loader-blocker {
   top: 0;
+}
+
+@media (max-width: 815px) {
+  .container_pos-mod {
+    min-height: 100vh;
+    border-radius: 0;
+  }
+
+  .header_pos-mod {
+    order: 0;
+    background-color: #fafafa;
+  }
+
+  .image-container_pos-mod {
+    margin: 0;
+    max-height: 80vh;
+  }
 }

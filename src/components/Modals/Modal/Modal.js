@@ -12,8 +12,8 @@ class Modal extends React.Component {
   componentDidMount() {
     window.addEventListener('resize', this.resizeWindow);
     this.resizeWindow();
-    this.wrapper.classList.remove('before-load-back_modal');
-    this.modalContainer.classList.remove('before-load_modal');
+    this.container.classList.remove('before-load-back_modal');
+    this.body.classList.remove('before-load_modal');
   }
 
   componentWillUnmount() {
@@ -22,8 +22,8 @@ class Modal extends React.Component {
 
   shouldComponentUpdate(nextProps) {
     if (nextProps.willClose) {
-      this.modalContainer.classList.add('before-load_modal');
-      this.wrapper.classList.add('before-load-back_modal');
+      this.body.classList.add('before-load_modal');
+      this.container.classList.add('before-load-back_modal');
     }
     if (this.props.alignItems === nextProps.alignItems) {
       this.resizeWindow();
@@ -36,7 +36,7 @@ class Modal extends React.Component {
 
   resizeWindow() {
     let alignItems = 'center';
-    if (this.modalContainer.clientHeight > this.wrapper.clientHeight) {
+    if (this.body.clientHeight >= this.container.clientHeight) {
       alignItems = 'flex-start';
     }
     if (this.props.alignItems !== alignItems) {
@@ -46,7 +46,7 @@ class Modal extends React.Component {
 
   clickOutside(event) {
     event.stopPropagation();
-    if (this.modalContainer && !this.modalContainer.contains(event.target)) {
+    if (this.body && !this.body.contains(event.target)) {
       this.props.closeModal(this.props.index);
     }
   }
@@ -62,12 +62,12 @@ class Modal extends React.Component {
            onClick={this.clickOutside.bind(this)}
            style={styleBack}
            ref={ref => {
-             this.wrapper = ref;
+             this.container = ref;
            }}
       >
         <div className=" body_modal before-load_modal"
              ref={ref => {
-               this.modalContainer = ref;
+               this.body = ref;
              }}>
           {this.props.body}
         </div>
