@@ -1,5 +1,4 @@
 import React from 'react';
-import ShowIf from '../Common/ShowIf';
 
 class LoadingSpinner extends React.Component {
 
@@ -8,22 +7,14 @@ class LoadingSpinner extends React.Component {
   }
 
   render() {
-    let topOffset = this.props.styles || '15px';
     return (
-      <ShowIf show={this.props.show}>
-        <div className="loader-blocker"
-             style={{top: topOffset, position: this.props.deleting ? 'absolute' : 'relative'}}
-        >
-          <div className={this.props.deleting ? 'deleting-loader' : 'loader'}/>
-        </div>
-      </ShowIf>
+      <div className="loader-blocker"
+           style={this.props.style}>
+        <div className={this.props.loaderClass ? this.props.loaderClass : 'loader'}/>
+      </div>
     )
   }
-
 }
 
-LoadingSpinner.defaultProps  = {
-  show: true
-};
 
 export default LoadingSpinner;

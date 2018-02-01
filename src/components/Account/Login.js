@@ -16,6 +16,7 @@ import Messages from '../Messages';
 import LoadingSpinner from '../LoadingSpinner';
 import Constants from '../../common/constants';
 import { documentTitle } from '../DocumentTitle';
+import ShowIf from "../Common/ShowIf";
 
 class Login extends React.Component {
   constructor(props) {
@@ -143,7 +144,9 @@ class Login extends React.Component {
         </div>
         <div className="container-fluid">
           <div className="row position--relative">
-            <LoadingSpinner show={this.state.needsLoader}/>
+            <ShowIf show={this.state.needsLoader}>
+              <LoadingSpinner />
+            </ShowIf>
             <div className={mainContainerClassName}>
               <form className="form-login form-horizontal">
                 <div className={this.state.userNameError ? "has-error" : null}>

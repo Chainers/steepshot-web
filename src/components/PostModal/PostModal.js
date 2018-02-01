@@ -287,7 +287,7 @@ class PostModal extends React.Component {
               <label
                 className={this.props.label + ' label_pos-mod'}>Comment</label>
               <ShowIf show={this.props.needsCommentFormLoader}>
-                <LoadingSpinner styles={'0'}/>
+                <LoadingSpinner styles={{top: 0}}/>
               </ShowIf>
               <ShowIf show={!this.props.needsCommentFormLoader}>
                 <button type="submit"

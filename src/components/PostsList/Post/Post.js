@@ -84,7 +84,7 @@ class Post extends React.Component {
           <div className="delete-loader_post"
                style={{height: this.props.clearPostHeader ? '512px' : '552px'}}
           >
-            <LoadingSpinner show={true} deleting={true} styles={'none'}/>
+            <LoadingSpinner style={{position: 'absolute'}} loaderClass='deleting-loader'/>
           </div>
         </ShowIf>
         <ShowIf show={!this.props.clearPostHeader}>
