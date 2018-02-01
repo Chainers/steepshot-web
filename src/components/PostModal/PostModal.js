@@ -73,6 +73,7 @@ class PostModal extends React.Component {
   clearTextArea() {
     this.textArea.value = '';
     this.hiddenDiv.textContent = '';
+    this.textArea.style.height = '42px';
     this.setComponentSize();
   }
 
@@ -123,7 +124,7 @@ class PostModal extends React.Component {
         </ShowIf>
         <ShowIf show={this.image && this.image.complete && !this.image.naturalWidth}>
           <div className="before-load-curtain_pos-mod">
-            <p className="title_pos-mod">Not found.</p>
+            <p className="title_pos-mod">Sorry, image isn't found.</p>
           </div>
         </ShowIf>
       </div>);
@@ -162,7 +163,6 @@ class PostModal extends React.Component {
   }
 
   changeText() {
-    this.hiddenDiv.style.width = this.textArea.clientWidth;
     this.hiddenDiv.textContent = this.textArea.value + '\n';
 
     let label = '';
@@ -201,15 +201,18 @@ class PostModal extends React.Component {
           <div className="date_pos-mod">
             <TimeAgo datetime={this.props.post.created}
                      locale='en_US'
+                     className="time_pos-mod"
             />
-            <PostContextMenu style={{height: '22px', width: '22px', marginLeft: '5px'}}
+            <PostContextMenu style={{height: '22px', width: '22px', marginRight: this.props.showClose ? '10px' : 0}}
                              className="post-context-menu_post"
                              item={this.props.post}
                              index={this.props.currentIndex}
             />
-            <div className="cont-close-btn_pos-mod" onClick={() => this.props.closeModal(this.props.point)}>
-              <i className="close-btn_pos-mod"/>
-            </div>
+            <ShowIf show={this.props.showClose}>
+              <div className="cont-close-btn_pos-mod" onClick={() => this.props.closeModal(this.props.point)}>
+                <i className="close-btn_pos-mod"/>
+              </div>
+            </ShowIf>
           </div>
           <Link to={authorLink} className="user_pos-mod">
             <Avatar src={this.props.post.avatar}/>
@@ -271,9 +274,9 @@ class PostModal extends React.Component {
           <ShowIf show={this.props.isUserAuth}>
             <div className="add-comment_pos-mod">
               <div className="hidden-div_pos-mod"
-                   ref={ref => {
-                     this.hiddenDiv = ref;
-                   }}/>
+                   ref={ref => {this.hiddenDiv = ref}}
+                   style={this.textArea ? {width: this.textArea.clientWidth, maxHeight: 480} : {}}
+              />
               <textarea ref={ref => this.textArea = ref}
                         maxLength={2048}
                         className="form-control text-area_pos-mod"
@@ -287,7 +290,7 @@ class PostModal extends React.Component {
               <label
                 className={this.props.label + ' label_pos-mod'}>Comment</label>
               <ShowIf show={this.props.needsCommentFormLoader}>
-                <LoadingSpinner styles={{top: 0}}/>
+                <LoadingSpinner style={{top: 0}}/>
               </ShowIf>
               <ShowIf show={!this.props.needsCommentFormLoader}>
                 <button type="submit"
@@ -318,8 +321,6 @@ class PostModal extends React.Component {
     container.width = docWidth;
     container.height = '100%';
 
-    let username = {};
-    username.maxWidth =  userHeaderWidth;
     let image = {};
     image.width = this.image.naturalWidth;
     image.height = this.image.naturalHeight ? this.image.naturalHeight : docHeight * 0.4;
@@ -329,7 +330,8 @@ class PostModal extends React.Component {
     let headerCont = {};
     headerCont.width = '100%';
     let description = {};
-
+    let username = {};
+    username.maxWidth =  userHeaderWidth;
     if (docWidth > MAX_WIDTH_FULL_SCREEN) {
       container.height = docHeight * 0.9 > MIN_HEIGHT
         ? docHeight * 0.9

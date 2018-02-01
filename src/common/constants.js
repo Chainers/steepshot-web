@@ -153,5 +153,5 @@ export default {
     VOTE_ACTION_WHEN_NOT_AUTH_DEBOUNCE : 500,
 
     POST_DESRIPTION_MAXLENGTH : 120,
-    POST_LIKED_BY : 'This post has been rated by these users'
+    POST_LIKED_BY : 'Post has been rated by these users'
 }

@@ -79,71 +79,73 @@ class Post extends React.Component {
       backgroundImage: 'url(' + itemImage + ')',
     };
     return (
-      <div className="post-card" style={{width: '300px', position: 'relative'}}>
-        <ShowIf show={this.props.postDeleting}>
-          <div className="delete-loader_post"
-               style={{height: this.props.clearPostHeader ? '512px' : '552px'}}
-          >
-            <LoadingSpinner style={{position: 'absolute'}} loaderClass='deleting-loader'/>
-          </div>
-        </ShowIf>
-        <ShowIf show={!this.props.clearPostHeader}>
-          <div className="card-head clearfix">
-            <div className="date">
-              <TimeAgo
-                datetime={this.props.created}
-                locale='en_US'
-                style={{float: 'left'}}
-              />
-              <PostContextMenu style={{float: 'right', height: '22px', width: '22px', marginLeft: '10px'}}
-                               className="post-context-menu_post"
-                               item={this.props}
-                               index={this.props.index}
-              />
+      <div className="item-wrap">
+        <div className="post-card" style={{position: 'relative'}}>
+          <ShowIf show={this.props.postDeleting}>
+            <div className="delete-loader_post"
+                 style={{height: this.props.clearPostHeader ? '512px' : '552px'}}
+            >
+              <LoadingSpinner style={{position: 'absolute'}} loaderClass='deleting-loader'/>
             </div>
-            <Link to={authorLink} className="user">
-              <div className="photo">
-                <Avatar src={authorImage}/>
+          </ShowIf>
+          <ShowIf show={!this.props.clearPostHeader}>
+            <div className="card-head clearfix">
+              <div className="date">
+                <TimeAgo
+                  datetime={this.props.created}
+                  locale='en_US'
+                  style={{float: 'left'}}
+                />
+                <PostContextMenu style={{float: 'right', height: '22px', width: '22px', marginLeft: '10px'}}
+                                 className="post-context-menu_post"
+                                 item={this.props}
+                                 index={this.props.index}
+                />
               </div>
-              <div className="name">{this.props.author}</div>
-            </Link>
-          </div>
-        </ShowIf>
-        <div className="card-body">
-          <div className="card-pic" onClick={this.openPostModal.bind(this)}>
-            <ShowIf show={this.props.is_nsfw}>
-              <div className="forAdult">
-                <p>NSFW content</p>
-              </div>
-            </ShowIf>
-            <ShowIf show={!this.props.is_nsfw && this.props.is_low_rated}>
-              <div className="forAdult">
-                <p>Low rated content</p>
-              </div>
-            </ShowIf>
-            <a style={cardPhotoStyles} className="img" alt="User"/>
-          </div>
-          <div className="card-wrap">
-            <div className="card-controls clearfix">
-              <div className="buttons-row">
-                <Vote postIndex={this.props.index}/>
-                <ShowIf show={this.props.authUser != this.props.author}>
-                  <Flag postIndex={this.props.index}/>
-                </ShowIf>
-              </div>
-              <div className="wrap-counts clearfix">
-                <Likes postIndex={this.props.index}/>
-                <ShowIf show={parseFloat(this.props.total_payout_reward).toFixed(2) != 0}>
-                  <div className="amount">${this.props.total_payout_reward}</div>
-                </ShowIf>
-              </div>
+              <Link to={authorLink} className="user">
+                <div className="photo">
+                  <Avatar src={authorImage}/>
+                </div>
+                <div className="name">{this.props.author}</div>
+              </Link>
             </div>
-            <div className="card-preview">
-              {UserLinkFunc(null, this.props.title)}
-              <Tags tags={this.props.tags}/>
+          </ShowIf>
+          <div className="card-body">
+            <div className="card-pic" onClick={this.openPostModal.bind(this)}>
+              <ShowIf show={this.props.is_nsfw}>
+                <div className="forAdult">
+                  <p>NSFW content</p>
+                </div>
+              </ShowIf>
+              <ShowIf show={!this.props.is_nsfw && this.props.is_low_rated}>
+                <div className="forAdult">
+                  <p>Low rated content</p>
+                </div>
+              </ShowIf>
+              <a style={cardPhotoStyles} className="img" alt="User"/>
             </div>
-            <div className="number-of-comments_post" onClick={this.openPostModal.bind(this)}>
-              {this.commentNumber()}
+            <div className="card-wrap">
+              <div className="card-controls clearfix">
+                <div className="buttons-row">
+                  <Vote postIndex={this.props.index}/>
+                  <ShowIf show={this.props.authUser != this.props.author}>
+                    <Flag postIndex={this.props.index}/>
+                  </ShowIf>
+                </div>
+                <div className="wrap-counts clearfix">
+                  <Likes postIndex={this.props.index}/>
+                  <ShowIf show={parseFloat(this.props.total_payout_reward).toFixed(2) != 0}>
+                    <div className="amount">${this.props.total_payout_reward}</div>
+                  </ShowIf>
+                </div>
+              </div>
+              <div className="card-preview">
+                {UserLinkFunc(null, this.props.title)}
+                <Tags tags={this.props.tags}/>
+              </div>
+              <div className="number-of-comments_post" onClick={this.openPostModal.bind(this)}>
+                {this.commentNumber()}
+              </div>
             </div>
           </div>
         </div>

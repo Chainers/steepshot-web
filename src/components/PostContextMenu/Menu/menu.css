@@ -18,24 +18,25 @@
 
 .cross-wrapper_menu {
   cursor: pointer;
-  height: 50px;
-  width: 31px;
-  top: -5px;
-  right: -10px;
-  border-radius: 0 4px 0 0;
+  height: 22px;
+  width: 22px;
+  top: 8px;
+  right: 0;
+  border-radius: 4px;
   position: absolute;
-  transition: .2s all ease;
+  border: 1px solid #ececee;
 }
 .cross-wrapper_menu:hover {
-  background: #89210b;
+  border: 1px solid #89210b;
 }
 .cross_menu {
   position: absolute;
-  top: 19px;
-  right: 10px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   width: 12px;
   height: 12px;
-  background: url(/static/images/sprite_svg1910.svg) no-repeat 0 99.8%;
+  background: url(/static/images/sprite_svg1910.svg) no-repeat 3% 99.8%;
 }
 
 .content_menu {
