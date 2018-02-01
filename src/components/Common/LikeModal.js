@@ -152,13 +152,13 @@ class LikesModal extends React.Component {
     return (
       <div id="likesModal" tabIndex="-1" role="dialog" aria-hidden="true" className="modal modal-like">
         <div className="modal-dialog" onClick={this.controlClose.bind(this)}>
-          <div className="modal-content likes-modal__content"
+          <div className="modal-content"
                ref={ref => (this.modalCont = ref)}>
             <div className="modal-header">
               <div className="modal-title clearfix">
-                {Constants.POST_LIKED_BY}
-                <div className="cont-close-btn_pos-mod" data-dismiss="modal">
-                  <i className="close-btn_pos-mod" style={{top: '19px'}}/>
+                <p>{Constants.POST_LIKED_BY}</p>
+                <div className="close-modal_likes-mod" data-dismiss="modal">
+                  <i className="cross_menu"/>
                 </div>
               </div>
             </div>

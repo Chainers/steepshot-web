@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import constants from '../../common/constants';
 import VouteComponent from './VouteComponent';
 import TimeAgo from 'timeago-react';
-import { UserLinkFunc } from '../Common/UserLinkFunc'
+import {UserLinkFunc} from '../Common/UserLinkFunc';
 import Avatar from '../Common/Avatar/Avatar';
 
 class Comment extends React.Component {
@@ -28,6 +28,12 @@ class Comment extends React.Component {
     });
   }
 
+  componentDidMount() {
+    if (this.state.item && /<[\w\W]+>/.test(this.state.item.body)) {
+      let customComment = this.state.item.body.replace(/([>\s\b])(@[\w-.]+)/g, `$1<a href=\"/$2\">$2</a>`);
+      this.commentText.innerHTML = customComment;
+    }
+  }
 
   openLikesModal() {
     let arr = this.state.item.url.split('');
@@ -105,7 +111,9 @@ class Comment extends React.Component {
           </div>
         </div>
         <div className="comment-text">
-          {UserLinkFunc(null, this.state.item.body)}
+          <div ref={ref => {this.commentText = ref}} className="comment-text_comment">
+            {UserLinkFunc(null, this.state.item.body)}
+          </div>
           <VouteComponent
             key="vote"
             item={this.props.item}

@@ -161,7 +161,6 @@ class CreatePost extends React.Component {
     reader.onloadend = () => {
       let image = new Image();
       image.src = reader.result;
-
       this.setState({
         file: file,
         imagePreviewUrl: reader.result,

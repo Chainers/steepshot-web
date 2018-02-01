@@ -207,15 +207,17 @@ class PostModal extends React.Component {
                              item={this.props.post}
                              index={this.props.currentIndex}
             />
-            <ShowIf show={this.props.showClose}>
-              <div className="cont-close-btn_pos-mod" onClick={() => this.props.closeModal(this.props.point)}>
-                <i className="close-btn_pos-mod"/>
-              </div>
-            </ShowIf>
+            <div className="cont-close-btn_pos-mod" onClick={() => this.props.closeModal(this.props.point)}>
+              <i className="close-btn_pos-mod"/>
+            </div>
           </div>
           <Link to={authorLink} className="user_pos-mod">
             <Avatar src={this.props.post.avatar}/>
-            <div className="name_pos-mod">{this.props.post.author}</div>
+            <div className="name_pos-mod"
+                 style={this.props.style.username}
+            >
+              {this.props.post.author}
+            </div>
           </Link>
         </div>
 
@@ -291,8 +293,7 @@ class PostModal extends React.Component {
                 <button type="submit"
                         className={'btn-submit' + ' ' + 'btn_pos-mod' + ' ' + this.props.sendHover}
                         onClick={this.sendComment.bind(this)}
-                >Send
-                </button>
+                >Send</button>
               </ShowIf>
             </div>
           </ShowIf>
@@ -309,6 +310,10 @@ class PostModal extends React.Component {
 
     let docWidth = document.documentElement.clientWidth;
     let docHeight = document.documentElement.clientHeight;
+    let contHeight = '100%';
+    let contWidth = docWidth;
+    let imgContWidth = '100%';
+    let userHeaderWidth = DESC_WIDTH - 200;
 
     const PREF_IMG_WIDTH = (docWidth - DESC_WIDTH) * 0.8;
 
@@ -316,6 +321,7 @@ class PostModal extends React.Component {
     container.width = docWidth;
     container.height = '100%';
     container.borderRadius = '4px';
+    container.maxWidth =  userHeaderWidth;
     let image = {};
     image.width = this.image.naturalWidth;
     image.height = this.image.naturalHeight;
@@ -375,6 +381,7 @@ class PostModal extends React.Component {
       imgCont,
       headerCont,
       description,
+      username
     };
     this.props.setPostModalOptions({style});
   }

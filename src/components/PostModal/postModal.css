@@ -13,10 +13,6 @@
   width: 1020px;
 }
 
-.container_pos-mod p {
-  text-align: center;
-}
-
 .image-container_pos-mod {
   background-color: #e7e7e7;
   position: relative;
@@ -85,6 +81,10 @@
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
+  transition: .2s all ease;
+}
+.name_pos-mod:hover {
+  color: #e74800;
 }
 
 .cont-close-btn_pos-mod {
@@ -97,9 +97,10 @@
 
 .close-btn_pos-mod {
   position: absolute;
+  top: 25px;
+  right: 10px;
   width: 12px;
   height: 12px;
-  top: 25px;
   background: url(/static/images/sprite_svg1910.svg) no-repeat 0 99.8%;
 }
 
@@ -239,7 +240,7 @@
   height: 42px;
   width: 60px;
   border: none;
-  border-radius: 7px;
+  border-radius: 25px;
   background: 0 0;
   cursor: default;
   color: #979b9e;
@@ -327,7 +328,4 @@ textarea:focus + .label_pos-mod {
 
 .before-load-curtain_pos-mod .loader-blocker {
   top: 0;
-}
-.user-links_post {
-  word-wrap: break-word;
 }

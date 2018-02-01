@@ -19,7 +19,7 @@ class UsersComponent extends React.Component {
       ...this.props,
     };
   }
-  
+
   fullRefresh(customProps) {
     this.setState({
       ...this.getInitialData(),
@@ -28,16 +28,16 @@ class UsersComponent extends React.Component {
       this.fetchData();
     });
   }
-  
+
   componentDidMount() {
     this.fetchData();
   }
-  
+
   componentWillMount() {
     document.body.classList.remove('modal-open');
     documentTitle();
   }
-  
+
   getInitialData() {
     return {
       loading: true,
@@ -51,7 +51,7 @@ class UsersComponent extends React.Component {
       },
     };
   }
-  
+
   componentWillReceiveProps(nextProps) {
     if (nextProps.forceRefresh) {
       this.fullRefresh(nextProps);
@@ -60,7 +60,7 @@ class UsersComponent extends React.Component {
         ...nextProps,
       });
   }
-  
+
   fetchData() {
     if (this.state.offset == this.state.previousRequestOffset) return false;
     if (!this.state.isComponentVisible &&
@@ -89,7 +89,7 @@ class UsersComponent extends React.Component {
       // }
     });
   }
-  
+
   renderItems() {
     if (this.state.loading) return null;
     if (this.state.items[0] == undefined) {
@@ -112,14 +112,14 @@ class UsersComponent extends React.Component {
       return items;
     }
   }
-  
+
   renderHeader() {
     if (this.state.headerText) return (
       <HeadingLeadComponent text={this.state.headerText}/>
     );
     return null;
   }
-  
+
   render() {
     return (
       <div>
