@@ -1136,7 +1136,7 @@ h2.card-field__heading {
 .collapse-closed  .lnk-more {
   background: white;
   position: absolute;
-  top: 36px;
+  top: 41px;
   right: 75px;
 }
 
@@ -1188,7 +1188,6 @@ h2.card-field__heading {
   color: #0f181e;
   margin-left: 10px;
   transition: .2s opacity ease;
-  font: 12px OpenSans-Regular;
 }
 .comment-controls a.likes:hover {
   opacity: .7;
@@ -1228,7 +1227,7 @@ h2.card-field__heading {
   }
 }
 .number-of-comments_post p {
-  font: 12px OpenSans-Regular;
+  font: 12px OpenSans;
   line-height: 50px;
 }
 
