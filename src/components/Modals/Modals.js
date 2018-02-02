@@ -8,6 +8,8 @@ class Modals extends React.Component {
 
   constructor(props) {
     super(props);
+
+    this.prevDefault = this.prevDefault.bind(this);
   }
 
   componentWillMount() {
@@ -29,9 +31,15 @@ class Modals extends React.Component {
   componentWillReceiveProps(nextProps) {
     if (Object.keys(nextProps.modals).length > 0) {
       document.body.style.overflowY = 'hidden';
+      document.addEventListener('touchstart', this.prevDefault);
     } else {
       document.body.style.overflowY = 'auto';
+      document.removeEventListener('touchstart', this.prevDefault);
     }
+  }
+
+  prevDefault(e) {
+    e.preventDefault(e);
   }
 
   render() {
