@@ -274,7 +274,9 @@ class PostModal extends React.Component {
           <ShowIf show={this.props.isUserAuth}>
             <div className="add-comment_pos-mod">
               <div className="hidden-div_pos-mod"
-                   ref={ref => {this.hiddenDiv = ref}}
+                   ref={ref => {
+                     this.hiddenDiv = ref
+                   }}
                    style={this.textArea ? {width: this.textArea.clientWidth, maxHeight: 480} : {}}
               />
               <textarea ref={ref => this.textArea = ref}
@@ -296,7 +298,8 @@ class PostModal extends React.Component {
                 <button type="submit"
                         className={'btn-submit' + ' ' + 'btn_pos-mod' + ' ' + this.props.sendHover}
                         onClick={this.sendComment.bind(this)}
-                >Send</button>
+                >Send
+                </button>
               </ShowIf>
             </div>
           </ShowIf>
@@ -331,7 +334,7 @@ class PostModal extends React.Component {
     headerCont.width = '100%';
     let description = {};
     let username = {};
-    username.maxWidth =  userHeaderWidth;
+    username.maxWidth = userHeaderWidth;
     if (docWidth > MAX_WIDTH_FULL_SCREEN) {
       container.height = docHeight * 0.9 > MIN_HEIGHT
         ? docHeight * 0.9
@@ -341,7 +344,6 @@ class PostModal extends React.Component {
       image.width = image.width < docWidth - DESC_WIDTH - CONT_MARGIN
         ? image.width
         : docWidth - DESC_WIDTH - CONT_MARGIN;
-      image.width = image.width ? image.width : this.image.clientWidth;
 
       image.height = image.height * image.width / this.image.naturalWidth;
 
@@ -349,10 +351,13 @@ class PostModal extends React.Component {
         image.width = image.width * container.height / image.height;
         image.height = container.height;
       }
-      container.height = image.height;
-      if (container.height < MIN_HEIGHT) {
-        container.height = MIN_HEIGHT;
-      }
+
+      image.width = image.width ? image.width :
+        ((docWidth - DESC_WIDTH) * 0.8 < 640 ? (docWidth - DESC_WIDTH) * 0.8 : 640);
+      image.height = image.height ? image.height :
+        (docHeight * 0.9 > MIN_HEIGHT ? docHeight * 0.9 : MIN_HEIGHT);
+
+      container.height = image.height > MIN_HEIGHT ? image.height : MIN_HEIGHT;
       container.width = image.width + DESC_WIDTH;
       imgCont.width = image.width;
       headerCont.width = DESC_WIDTH;
