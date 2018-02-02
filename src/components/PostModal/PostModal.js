@@ -171,8 +171,11 @@ class PostModal extends React.Component {
       label = 'focused_pos-mod';
       sendHover = 'btn-hover_pos-mod';
     }
-    let delta = this.props.addCommentHeight - this.hiddenDiv.clientHeight;
-    if (!this.props.addCommentHeight || delta >= 5 || delta <= -5) {
+    if (this.hiddenDiv.clientHeight >= this.props.style.textareaMarginTop) {
+      return;
+    }
+    let delta = this.props.addCommentHeight - this.hiddenDiv.clientHeight || 0;
+    if (!this.props.addCommentHeight || delta >= 5 || delta <= - 5  || this.textArea.value.length <= 1) {
       this.props.setPostModalOptions({
         addCommentHeight: this.hiddenDiv.clientHeight,
         label,
@@ -203,7 +206,7 @@ class PostModal extends React.Component {
                      locale='en_US'
                      className="time_pos-mod"
             />
-            <PostContextMenu style={{height: '22px', width: '22px', marginRight: this.props.showClose ? '10px' : 0}}
+            <PostContextMenu style={{height: '22px', width: '22px', marginRight: this.props.showClose ? '38px' : 0}}
                              className="post-context-menu_post"
                              item={this.props.post}
                              index={this.props.currentIndex}
@@ -226,6 +229,7 @@ class PostModal extends React.Component {
 
         <div className="description_pos-mod"
              style={this.props.style.description}
+             ref={(ref) => {this.descPosMod = ref}}
         >
           <div className="control-cont_pos-mod">
             <div className="post-control_pos-mod">
@@ -324,12 +328,13 @@ class PostModal extends React.Component {
     container.width = docWidth;
     container.height = '100%';
 
+    let textareaMarginTop = this.descPosMod.clientHeight - 220;
+
     let image = {};
     image.width = this.image.naturalWidth;
     image.height = this.image.naturalHeight ? this.image.naturalHeight : docHeight * 0.4;
     let imgCont = {};
     imgCont.width = '100%';
-
     let headerCont = {};
     headerCont.width = '100%';
     let description = {};
@@ -376,7 +381,8 @@ class PostModal extends React.Component {
       imgCont,
       headerCont,
       description,
-      username
+      username,
+      textareaMarginTop
     };
     if (JSON.stringify(style) !== JSON.stringify(this.props.style)) {
       this.props.setPostModalOptions({style});
