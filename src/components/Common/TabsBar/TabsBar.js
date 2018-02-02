@@ -36,7 +36,7 @@ class TabsBar extends React.Component {
       if (this.props.activeIndex === index) {
         styles = 'nav-item active';
       }
-      if (!item.props.loading && !item.props.empty) {
+      if (!item.props.loading && !item.props.empty || this.props.activeIndex === index) {
         navItems.push(
           <li role="presentation" key={index} className={styles}>
             <a onClick={() => this.props.setActiveIndex(this.props.point, index)}

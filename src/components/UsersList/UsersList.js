@@ -31,7 +31,6 @@ class UsersList extends React.Component {
       loader: true
     };
     this.props.initUsersList(usersListOptions);
-    this.getUsersList = this.getUsersList.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -46,16 +45,18 @@ class UsersList extends React.Component {
         loader: true
       };
       this.props.initUsersList(usersListOptions);
-      this.getUsersList();
+      this.props.getUsersList(this.props.point, this.props.getUsers);
     }
   }
 
   getUsersList() {
-    this.props.getUsersList(this.props.point, this.props.getUsers);
+    if (this.props.isComponentVisible) {
+      this.props.getUsersList(this.props.point, this.props.getUsers);
+    }
   }
 
   componentDidMount() {
-    this.getUsersList();
+    this.props.getUsersList(this.props.point, this.props.getUsers);
     documentTitle();
   }
 
@@ -64,7 +65,7 @@ class UsersList extends React.Component {
       return (
         <span/>
       )
-    };
+    }
     if (!this.props.users || !this.props.users[0]) {
       return (
         <div className="empty-query-message">
@@ -98,7 +99,7 @@ class UsersList extends React.Component {
         <InfiniteScroll
           pageStart={0}
           initialLoad={false}
-          loadMore={debounce(this.getUsersList,
+          loadMore={debounce(this.getUsersList.bind(this),
             Constants.ENDLESS_SCROLL.DEBOUNCE_TIMEOUT)}
           hasMore={this.props.isComponentVisible && this.props.hasMore}
           loader={<LoadingSpinner/>}

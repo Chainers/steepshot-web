@@ -60,7 +60,7 @@ export function getUsersList(point, getUsers) {
       let pointOptions = {
         point,
         hasMore,
-        users: newUsers,
+        users: newUsers ? newUsers : [],
         offset: newUsers[newUsers.length - 1] ? newUsers[newUsers.length - 1].author : statePoint.offset,
       };
 

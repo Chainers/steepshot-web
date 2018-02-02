@@ -87,6 +87,12 @@ class PostsList extends React.Component {
     return null;
   }
 
+  getPostsList() {
+    if (this.props.isComponentVisible) {
+      this.props.getPosts(this.props.point)
+    }
+  }
+
   render() {
     return (
       <div className={this.props.className}>
@@ -94,7 +100,7 @@ class PostsList extends React.Component {
         <InfiniteScroll
           pageStart={0}
           initialLoad={false}
-          loadMore={debounce(() => this.props.getPosts(this.props.point),
+          loadMore={debounce(this.getPostsList.bind(this) ,
             Constants.ENDLESS_SCROLL.DEBOUNCE_TIMEOUT)}
           hasMore={this.props.isComponentVisible && this.props.hasMore}
           loader={<LoadingSpinner/>}
