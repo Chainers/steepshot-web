@@ -97,15 +97,11 @@ class UsersList extends React.Component {
         {this.renderHeader()}
         <InfiniteScroll
           pageStart={0}
-          initialLoad={true}
+          initialLoad={false}
           loadMore={debounce(this.getUsersList,
             Constants.ENDLESS_SCROLL.DEBOUNCE_TIMEOUT)}
           hasMore={this.props.isComponentVisible && this.props.hasMore}
-          loader={
-            <div style={{marginTop: '-15px'}}>
-              <LoadingSpinner/>
-            </div>
-          }
+          loader={<LoadingSpinner/>}
           threshold={Constants.ENDLESS_SCROLL.OFFSET}
         >
           <div className={this.props.wrapperModifier}>

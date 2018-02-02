@@ -34,7 +34,7 @@ class Search extends React.Component {
         <u>{this.props.searchValue}</u>
       </span>;
     return <div className="g-main_i container">
-      <TabsBar>
+      <TabsBar point="search">
         <Tab name="Tag"
              loading={this.props.hotPostsList.loading || this.props.newPostsList.loading}
              empty={!this.props.newPostsList.posts.length}>
@@ -88,7 +88,7 @@ const mapStateToProps = (state, props) => {
     hotPostsList,
     newPostsList,
     usersList,
-    ...state.search,
+    ...state.tabsBar.search,
     searchValue,
   };
 };

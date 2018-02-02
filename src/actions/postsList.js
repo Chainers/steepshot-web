@@ -1,4 +1,4 @@
-import {getPosts, getComments} from './posts';
+import {getPosts} from './posts';
 import {getStore} from '../store/configureStore';
 import {addPosts} from './post';
 
@@ -38,7 +38,8 @@ export function getPostsList(point) {
   }
   if (!statePoint.hasMore) {
     return {
-      type: 'ALL_POSTS_LOADED'
+      type: 'ALL_POSTS_LOADED',
+      point
     }
   }
   return (dispatch) => {

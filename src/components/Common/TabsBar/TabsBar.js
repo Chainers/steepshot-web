@@ -1,8 +1,9 @@
 import React from 'react';
 import {connect} from "react-redux";
-import {setActiveIndex} from "../../../actions/tabsBar";
+import {pageLoaded, setActiveIndex} from "../../../actions/tabsBar";
 import LoadingSpinner from "../../LoadingSpinner";
 import Constants from "../../../common/constants";
+import ShowIf from "../ShowIf";
 
 class TabsBar extends React.Component {
 
@@ -12,22 +13,25 @@ class TabsBar extends React.Component {
 
   componentDidUpdate() {
     let navItems = [];
-    this.props.children.map((item, index) => {
+    this.props.children.forEach((item, index) => {
       if (item.props.loading || !item.props.empty) {
         navItems.push(index);
+      }
+      if (!this.props.pageLoaded && !item.props.loading && this.props.activeIndex === index) {
+        this.props.pageIsLoaded(this.props.point);
       }
     });
     if (navItems.length === 1) {
       let itemIndex = navItems[0];
       if (this.props.activeIndex !== itemIndex) {
-        this.props.setActiveIndex(itemIndex);
+        this.props.setActiveIndex(this.props.point, itemIndex);
       }
     }
   }
 
   renderNavigation() {
     let navItems = [];
-    this.props.children.map((item, index) => {
+    this.props.children.forEach((item, index) => {
       let styles = 'nav-item';
       if (this.props.activeIndex === index) {
         styles = 'nav-item active';
@@ -35,7 +39,7 @@ class TabsBar extends React.Component {
       if (!item.props.loading && !item.props.empty) {
         navItems.push(
           <li role="presentation" key={index} className={styles}>
-            <a onClick={() => this.props.setActiveIndex(index)}
+            <a onClick={() => this.props.setActiveIndex(this.props.point, index)}
                className="nav-link tab-head">
               {item.props.name}
             </a>
@@ -55,7 +59,7 @@ class TabsBar extends React.Component {
   renderChildren() {
     let allChildrenHide = true;
     let children = [];
-    this.props.children.map((child, index) => {
+    this.props.children.forEach((child, index) => {
       if (!child.props.empty || child.props.loading) {
         allChildrenHide = false;
       }
@@ -63,6 +67,7 @@ class TabsBar extends React.Component {
         React.cloneElement(child, {
           ...child.props,
           key: index,
+          point: this.props.point,
           index
         }));
     });
@@ -75,37 +80,33 @@ class TabsBar extends React.Component {
     return children;
   }
 
-  renderLoader() {
-    if (this.props.children[this.props.activeIndex].props.loading) {
-      return (
-        <LoadingSpinner style={{height: '100%', position: 'absolute'}}/>
-      )
-    }
-    return null;
-  }
-
   render() {
     return (
-      <div id="workspace" className="g-content clearfix">
+      <div className="g-content clearfix">
         {this.renderNavigation()}
         {this.renderChildren()}
-        {this.renderLoader()}
+        <ShowIf show={!this.props.pageLoaded}>
+          <LoadingSpinner style={{height: '100%', position: 'absolute'}}/>
+        </ShowIf>
       </div>
     );
   }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state, props) => {
   return {
-    activeIndex: state.tabsBar.activeIndex,
+    ...state.tabsBar[props.point],
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    setActiveIndex: (index) => {
-      dispatch(setActiveIndex(index));
+    setActiveIndex: (point, index) => {
+      dispatch(setActiveIndex(point, index));
     },
+    pageIsLoaded: (point) => {
+      dispatch(pageLoaded(point));
+    }
   };
 };
 

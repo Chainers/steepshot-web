@@ -6,25 +6,21 @@ import Clipboard from "./Common/Clipboard/Clipboard";
 import Modals from './Modals/Modals';
 import LikesModal from './Common/LikeModal';
 
-const App = ({ children }) => (
+const App = ({children}) => (
   <div className="g-wrap">
     <div className="outer-bg">
-      <div className="g-wrapper">
-        <div className="g-wrapper_i">
-          <Header />
-          <div className="g-main">
-            {children || 'Loading'}
-          </div>
-        </div>
+      <Header/>
+      <div className="g-main">
+        {children || 'Loading'}
       </div>
     </div>
-    <MobileNavigationComponent />
+    <MobileNavigationComponent/>
     <div className="pm"></div>
-    <FooterComponent />
-    
+    <FooterComponent/>
+
     <LikesModal/>
-    <Clipboard />
-    <Modals />
+    <Clipboard/>
+    <Modals/>
   </div>
 );
 
