@@ -4,7 +4,6 @@ import MobileNavigationComponent from './MobileNavigationComponent';
 import FooterComponent from './FooterComponent';
 import Clipboard from "./Common/Clipboard/Clipboard";
 import Modals from './Modals/Modals';
-import LikesModal from './Common/LikeModal';
 
 const App = ({children}) => (
   <div className="g-wrap">
@@ -18,7 +17,6 @@ const App = ({children}) => (
     <div className="pm"></div>
     <FooterComponent/>
 
-    <LikesModal/>
     <Clipboard/>
     <Modals/>
   </div>

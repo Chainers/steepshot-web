@@ -1,6 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import ShowIf from "../../../Common/ShowIf";
+import {closeAllModals, closeModal, openModal} from "../../../../actions/modal";
+import {deletePost} from "../../../../actions/post";
+import {toggleFlag} from "../../../../actions/flag";
+import {copyToClipboard} from "../../../../actions/clipboard";
+import LikesList from "../../../LikesList/LikesList";
 
 class Likes extends React.Component {
   constructor(props) {
@@ -8,8 +13,11 @@ class Likes extends React.Component {
   }
 
   openLikesModal() {
-    this.props.dispatch({ type : 'CLEAR_LIKES_INFO', url : this.props.url });
-    jqApp.openLikesModal($(document));
+    let modalOption = {
+      body: (<LikesList postIndex={this.props.postIndex}/>),
+    };
+    this.props.openModal('LikesModal', modalOption);
+
   }
 
   render() {
@@ -26,8 +34,15 @@ class Likes extends React.Component {
 const mapStateToProps = (state, props) => {
   return {
     likes: state.posts[props.postIndex].net_likes,
-    url: state.posts[props.postIndex].url
   };
 };
 
-export default connect(mapStateToProps)(Likes);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    openModal: (index, options) => {
+      dispatch(openModal(index, options));
+    }
+  }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Likes);

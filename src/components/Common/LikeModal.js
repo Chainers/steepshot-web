@@ -1,13 +1,11 @@
 import React from 'react';
 import {getStore} from '../../store/configureStore';
-import {getVoters} from '../../actions/voters';
 import UserItem from '../UserProfile/userItem';
 import Constants from '../../common/constants';
 import ScrollViewComponent from '../Common/ScrollViewComponent';
 import InfiniteScroll from 'react-infinite-scroller';
 import {debounce} from 'lodash';
 import LoadingSpinner from '../LoadingSpinner';
-import ShowIf from './ShowIf';
 import utils from '../../utils/utils';
 import {connect} from 'react-redux';
 
