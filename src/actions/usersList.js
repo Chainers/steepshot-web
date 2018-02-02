@@ -56,7 +56,6 @@ export function getUsersList(point, getUsers) {
         newUsers = newUsers.slice(1, newUsers.length);
       }
       let hasMore = statePoint.offset !== response.offset;
-
       let pointOptions = {
         point,
         hasMore,

@@ -88,6 +88,7 @@ class PostsList extends React.Component {
   }
 
   render() {
+    console.log(this.props.isComponentVisible);
     return (
       <div className={this.props.className}>
         {this.renderHeader()}
@@ -96,7 +97,7 @@ class PostsList extends React.Component {
           initialLoad={false}
           loadMore={debounce(() => this.props.getPosts(this.props.point),
           Constants.ENDLESS_SCROLL.DEBOUNCE_TIMEOUT)}
-          hasMore={this.props.isComponentVisible && this.props.hasMore}
+          hasMore={this.props.hasMore}
           loader={<LoadingSpinner/>}
           threshold={Constants.ENDLESS_SCROLL.OFFSET}
         >

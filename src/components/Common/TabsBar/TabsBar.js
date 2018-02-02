@@ -86,7 +86,7 @@ class TabsBar extends React.Component {
 
   render() {
     return (
-      <div id="workspace" className="g-content clearfix">
+      <div className="g-content clearfix">
         {this.renderNavigation()}
         {this.renderChildren()}
         {this.renderLoader()}
