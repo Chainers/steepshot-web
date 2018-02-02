@@ -293,7 +293,7 @@
   word-wrap: break-word;
 }
 
-textarea:focus + .label_pos-mod {
+.text-area_pos-mod:focus + .label_pos-mod {
   top: 10px;
 }
 
