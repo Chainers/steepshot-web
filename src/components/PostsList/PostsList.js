@@ -55,7 +55,7 @@ class PostsList extends React.Component {
   }
 
   renderPosts() {
-    if(this.props.loader) {
+    if (this.props.loader) {
       return (
         <span/>
       )
@@ -82,13 +82,12 @@ class PostsList extends React.Component {
 
   renderHeader() {
     if (this.props.headerText) return (
-      <HeadingLeadComponent text={this.props.headerText} />
+      <HeadingLeadComponent text={this.props.headerText}/>
     );
     return null;
   }
 
   render() {
-    console.log(this.props.isComponentVisible);
     return (
       <div className={this.props.className}>
         {this.renderHeader()}
@@ -96,14 +95,14 @@ class PostsList extends React.Component {
           pageStart={0}
           initialLoad={false}
           loadMore={debounce(() => this.props.getPosts(this.props.point),
-          Constants.ENDLESS_SCROLL.DEBOUNCE_TIMEOUT)}
-          hasMore={this.props.hasMore}
+            Constants.ENDLESS_SCROLL.DEBOUNCE_TIMEOUT)}
+          hasMore={this.props.isComponentVisible && this.props.hasMore}
           loader={<LoadingSpinner/>}
           threshold={Constants.ENDLESS_SCROLL.OFFSET}
         >
-        <div className={this.props.wrapperModifier}>
-          {this.renderPosts()}
-        </div>
+          <div className={this.props.wrapperModifier}>
+            {this.renderPosts()}
+          </div>
         </InfiniteScroll>
       </div>
     );

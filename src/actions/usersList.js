@@ -38,7 +38,8 @@ export function getUsersList(point, getUsers) {
   }
   if (!statePoint.hasMore) {
     return {
-      type: 'ALL_USERS_LOADED'
+      type: 'ALL_USERS_LOADED',
+      point
     }
   }
   return (dispatch) => {
@@ -55,12 +56,12 @@ export function getUsersList(point, getUsers) {
       if (statePoint.users.length !== 0) {
         newUsers = newUsers.slice(1, newUsers.length);
       }
-      let hasMore = statePoint.offset !== response.offset;
+      let hasMore = newUsers.length > 1;
       let pointOptions = {
         point,
         hasMore,
         users: newUsers,
-        offset: response.offset,
+        offset: newUsers[newUsers.length - 1] ? newUsers[newUsers.length - 1].author : statePoint.offset,
       };
 
       dispatch(getUsersListSuccess(pointOptions));

@@ -23,7 +23,7 @@ class Tab extends React.Component {
 
 const mapStateToProps = (state, props) => {
   return {
-    active: state.tabsBar.activeIndex === props.index
+    active: state.tabsBar[props.point].activeIndex === props.index
   };
 };
 

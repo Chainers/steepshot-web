@@ -33,44 +33,45 @@ class Search extends React.Component {
       <span>{Constants.SEARCH_HEADING_LABELS.USERS_RESULT}
         <u>{this.props.searchValue}</u>
       </span>;
-    return (
-      <div className="g-main_i container">
-        <TabsBar>
-          <Tab name="Tag"
-               loading={this.props.hotPostsList.loading || this.props.newPostsList.loading}
-               empty={!this.props.newPostsList.posts.length}>
+    return <div className="g-main_i container">
+      <TabsBar point="search">
+        <Tab name="Tag"
+             loading={this.props.hotPostsList.loading || this.props.newPostsList.loading}
+             empty={!this.props.newPostsList.posts.length}>
+          <PostsList
+            point={insertCategory(Constants.POSTS_FILTERS.POSTS_HOT.point, this.props.searchValue)}
+            wrapperModifier="posts-list clearfix"
+            cancelPrevious={false}
+            options={{limit: 4}}
+            maxPosts={4}
+            headerText={hotPost}
+            isComponentVisible={this.props.activeIndex === 0}
+          />
+          <ShowIf show={this.props.newPostsList.posts.length >= 4} removeFromDom={false}>
             <PostsList
-              point={insertCategory(Constants.POSTS_FILTERS.POSTS_HOT.point, this.props.searchValue)}
+              point={insertCategory(Constants.POSTS_FILTERS.POSTS_NEW.point, this.props.searchValue)}
               wrapperModifier="posts-list clearfix"
               cancelPrevious={false}
-              options={{limit: 4}}
-              maxPosts={4}
-              headerText={hotPost}
+              ignored={insertCategory(Constants.POSTS_FILTERS.POSTS_HOT.point, this.props.searchValue)}
+              headerText={newPost}
+              isComponentVisible={this.props.activeIndex === 0}
             />
-            <ShowIf show={this.props.newPostsList.posts.length >= 4} removeFromDom={false}>
-              <PostsList
-                point={insertCategory(Constants.POSTS_FILTERS.POSTS_NEW.point, this.props.searchValue)}
-                wrapperModifier="posts-list clearfix"
-                cancelPrevious={false}
-                ignored={insertCategory(Constants.POSTS_FILTERS.POSTS_HOT.point, this.props.searchValue)}
-                headerText={newPost}
-              />
-            </ShowIf>
-          </Tab>
-          <Tab name="Users"
-               loading={this.props.usersList.loading}
-               empty={!this.props.usersList.users.length}>
-            <UsersList
-              point={Constants.SEARCH_FILTERS.USERS.point}
-              getUsers={getUsersSearch}
-              options={{query: this.props.searchValue}}
-              wrapperModifier="posts-list clearfix type-2"
-              headerText={userResult}
-            />
-          </Tab>
-        </TabsBar>
-      </div>
-    );
+          </ShowIf>
+        </Tab>
+        <Tab name="Users"
+             loading={this.props.usersList.loading}
+             empty={!this.props.usersList.users.length}>
+          <UsersList
+            point={Constants.SEARCH_FILTERS.USERS.point}
+            getUsers={getUsersSearch}
+            options={{query: this.props.searchValue}}
+            wrapperModifier="posts-list clearfix type-2"
+            headerText={userResult}
+            isComponentVisible={this.props.activeIndex === 1}
+          />
+        </Tab>
+      </TabsBar>
+    </div>;
   }
 }
 
@@ -87,7 +88,7 @@ const mapStateToProps = (state, props) => {
     hotPostsList,
     newPostsList,
     usersList,
-    ...state.search,
+    ...state.tabsBar.search,
     searchValue,
   };
 };
