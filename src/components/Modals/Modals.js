@@ -30,11 +30,9 @@ class Modals extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     if (Object.keys(nextProps.modals).length > 0) {
-      document.body.style.overflowY = 'hidden';
-      document.addEventListener('touchstart', this.prevDefault);
+      document.body.classList.add('no-scroll-iphone');
     } else {
-      document.body.style.overflowY = 'auto';
-      document.removeEventListener('touchstart', this.prevDefault);
+      document.body.classList.remove('no-scroll-iphone');
     }
   }
 
