@@ -30,6 +30,7 @@ class SinglePost extends React.Component {
             'og:image': itemPost.body,
             'og:title': `${username.replace(/\//, '')}: «${arr.join('')}» | Steepshot`,
             'og:url': window.location.pathname,
+            'og:type': 'post.image',
             'og:description': itemPost.description,
             'site_name': 'https://alpha.steepshot.io'
           }
