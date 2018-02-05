@@ -1,33 +1,18 @@
 import React from 'react';
-import {
-    connect
-} from 'react-redux';
 import Constants from '../../../common/constants';
 
-class Avatar extends React.Component {
-    constructor(props) {
-        super(props);
-    }
-
-    render() {
-        const stylesPic = {
-            backgroundImage : 'url(' + this.props.src + ')'
-        };
-        const stylesError = {
-            backgroundImage : 'url(' + Constants.NO_AVATAR + ')'
-        };
-        return (
-            <div className="pic_ava-com" style={ stylesError }>
-                <div className="pic_ava-com" style={ stylesPic } />
-            </div>
-        )
-    }
-}
-
-const mapStateToProps = (state) => {
-  return {
-    localization: state.localization
-  };
+const Avatar = ({src, style = {}}) => {
+  const stylesPic = Object.assign({}, style, {
+    backgroundImage : 'url(' + src + ')'
+  });
+  const stylesError = Object.assign({}, style, {
+    backgroundImage : 'url(' + Constants.NO_AVATAR + ')'
+  });
+  return (
+    <div className="pic_ava-com" style={stylesError}>
+      <div className="pic_ava-com" style={stylesPic}/>
+    </div>
+  )
 };
 
-export default connect(mapStateToProps)(Avatar);
+export default Avatar;
