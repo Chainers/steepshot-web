@@ -14,6 +14,7 @@ class ConfirmFlagModal extends React.Component {
   }
 
   render() {
+    let flagButton = this.props.isFlag ? 'UNFLAG' : 'FLAG';
     return (
       <div className="wrapper_confirm-flag-mod">
         <div className="body_confirm-flag-mod">
@@ -27,7 +28,7 @@ class ConfirmFlagModal extends React.Component {
         </div>
         <div className="buttons_holder-flag-mod">
           <button className="btn btn-index" onClick={this.closeModal.bind(this)}>CANCEL</button>
-          <button className="btn btn-default" onClick={() => {this.props.flagCallback(true)}}>FLAG</button>
+          <button className="btn btn-default" onClick={() => {this.props.flagCallback(true)}}>{flagButton}</button>
         </div>
       </div>
     );
