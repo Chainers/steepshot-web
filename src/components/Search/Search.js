@@ -65,7 +65,7 @@ class Search extends React.Component {
             point={Constants.SEARCH_FILTERS.USERS.point}
             getUsers={getUsersSearch}
             options={{query: this.props.searchValue}}
-            wrapperModifier="posts-list clearfix type-2"
+            className="posts-list clearfix type-2"
             headerText={userResult}
             isComponentVisible={this.props.activeIndex === 1}
           />

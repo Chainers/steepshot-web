@@ -1,6 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {closeModal, setModalOptions} from '../../../actions/modal';
+import ReactResizeDetector from 'react-resize-detector';
 
 class Modal extends React.Component {
 
@@ -25,22 +26,15 @@ class Modal extends React.Component {
       this.body.classList.add('before-load_modal');
       this.container.classList.add('before-load-back_modal');
     }
-    if (this.props.alignItems === nextProps.alignItems) {
-      this.resizeWindow();
-    }
-    if (this.props.alignItems !== nextProps.alignItems) {
-      return true;
-    }
-    return false;
+    return true;
   }
 
   resizeWindow() {
-    let alignItems = 'center';
-    if (this.body.clientHeight >= this.container.clientHeight) {
-      alignItems = 'flex-start';
-    }
-    if (this.props.alignItems !== alignItems) {
-      this.props.setModalOptions(this.props.index, {alignItems: alignItems});
+    if (this.props.bodyHeight !== this.body.clientHeight || this.props.containerHeight !== this.container.clientHeight) {
+      this.props.setModalOptions(this.props.index, {
+        bodyHeight: this.body.clientHeight,
+        containerHeight: this.container.clientHeight
+      });
     }
   }
 
@@ -55,7 +49,7 @@ class Modal extends React.Component {
     let styleBack = {
       backgroundColor: 'rgba(0,0,0, 0.7)',
     };
-    styleBack.alignItems = this.props.alignItems;
+    styleBack.alignItems = this.props.bodyHeight >= this.props.containerHeight ? 'flex-start' : 'center';
     styleBack.zIndex = 1002;
     return (
       <div className="back_mods before-load-back_modal"
@@ -70,6 +64,7 @@ class Modal extends React.Component {
                this.body = ref;
              }}>
           {this.props.body}
+          <ReactResizeDetector handleWidth handleHeight onResize={this.resizeWindow} />
         </div>
       </div>
     );

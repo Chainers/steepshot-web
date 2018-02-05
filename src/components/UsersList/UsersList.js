@@ -90,7 +90,7 @@ class UsersList extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className="container_use-lis">
         {this.renderHeader()}
         <InfiniteScroll
           pageStart={0}
@@ -101,7 +101,7 @@ class UsersList extends React.Component {
           loader={<LoadingSpinner/>}
           threshold={Constants.ENDLESS_SCROLL.OFFSET}
         >
-          <div className={this.props.wrapperModifier}>
+          <div className={this.props.className}>
             {this.renderUsers()}
           </div>
         </InfiniteScroll>

@@ -33,7 +33,7 @@ export function getUsersList(point, getUsers) {
   const statePoint = getStore().getState().usersList[point];
   if (statePoint.loading) {
     return {
-      type: 'EMPTY_ACTION'
+      type: 'EMPTY_GET_USERS'
     }
   }
   if (!statePoint.hasMore) {
