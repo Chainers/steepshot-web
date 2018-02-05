@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {nextPostModal, previousPostModal, setPostModalOptions,} from '../../actions/postModal';
+import {nextPostModal, previousPostModal, setPostModalOptions} from '../../actions/postModal';
 import constants from '../../common/constants';
 import TimeAgo from 'timeago-react';
 import {Link} from 'react-router-dom';

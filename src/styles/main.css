@@ -1284,8 +1284,7 @@ h2.card-field__heading {
   transform: translate(-50%, -50%);
 }
 .no-scroll-iphone {
-  height: 100%;
-  width: 100%;
   overflow: hidden;
-  position: fixed;
+  width: 100%;
+  height: 100%;
 }
