@@ -7,7 +7,7 @@ import LoadingSpinner from '../LoadingSpinner';
 import HeadingLeadComponent from '../Atoms/HeadingLeadComponent';
 import {clearUsersList, getUsersList, initUsersList} from '../../actions/usersList';
 import {documentTitle} from '../DocumentTitle';
-import UserItem from '../UserProfile/userItem';
+import User from "./User/User";
 
 class UsersList extends React.Component {
   static defaultProps = {
@@ -51,6 +51,11 @@ class UsersList extends React.Component {
     }
   }
 
+  componentDidUpdate() {
+    console.log(this.container.clientHeight);
+    console.log(this.container.clientWidth);
+  }
+
   componentDidMount() {
     this.props.getUsersList(this.props.point, this.props.getUsers);
     documentTitle();
@@ -72,9 +77,9 @@ class UsersList extends React.Component {
     let users = [];
     this.props.users.map((user, index) => {
       users.push(
-        <UserItem
+        <User
           key={index}
-          item={user}
+          user={user}
         />,
       );
     });
@@ -90,7 +95,7 @@ class UsersList extends React.Component {
 
   render() {
     return (
-      <div className="container_use-lis">
+      <div className="container_use-lis" ref={ref => this.container = ref}>
         {this.renderHeader()}
         <InfiniteScroll
           pageStart={0}
