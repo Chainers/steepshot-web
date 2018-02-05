@@ -11,6 +11,16 @@ class SinglePost extends React.Component {
     this.props.addSinglePost(this.props.location.pathname);
   }
 
+  componentDidMount() {
+    const urlObject = this.props.location.pathname.split('/');
+    let permlink = urlObject[urlObject.length - 1];
+    let username = this.props.location.pathname.match(/\/@[\w-.]+\//)[0];
+    const data = JSON.stringify({
+      action : 'share_post'
+    });
+    logSharePost(username.replace(/\/@([\w-.]+)\//, '$1'), permlink, data);
+  }
+
   render() {
     let itemPost, meta;
     if (Object.keys(this.props.post).length != 0) {
@@ -21,24 +31,21 @@ class SinglePost extends React.Component {
       meta = {
         title: `${username.replace(/\//, '')}: «${arr.join('')}» | Steepshot`,
         description: itemPost.description,
+        canonical: `https://qa.alpha.steepshot.io${window.location.pathname}`,
         meta: {
-          charset: 'utf-8',
           name: {
             keywords: 'steepshot, post, share'
           },
           property: {
-            'og:image': itemPost.body,
             'og:title': `${username.replace(/\//, '')}: «${arr.join('')}» | Steepshot`,
-            'og:url': window.location.pathname,
-            'og:type': 'post.image',
             'og:description': itemPost.description,
-            'site_name': 'https://alpha.steepshot.io'
+            'og:url': `https://qa.alpha.steepshot.io${window.location.pathname}`,
+            'og:image': itemPost.body,
+            'og:type': 'post.image',
+            'og:site_name': 'Steepshot.io'
           }
         }
       };
-      // const urlObject = itemPost.url.split('/');
-      // let permlink = urlObject[urlObject.length - 1];
-      // logSharePost(username.replace(/@([\w-.]+)\//, '$1'), permlink);
     }
 
     if (!this.props.currentIndex) return null;

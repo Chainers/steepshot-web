@@ -3,7 +3,7 @@ import Menu from './Menu/Menu';
 import ConfirmDeleteModal from './ConfirmDeleteModal/ConfirmDeleteModal';
 import ConfirmFlagModal from './ConfirmFlagModal/ConfirmFlagModal';
 import {connect} from 'react-redux';
-import {toggleFlag,} from '../../actions/flag';
+import {toggleFlag} from '../../actions/flag';
 import {copyToClipboard} from '../../actions/clipboard';
 import {closeModal, openModal, closeAllModals} from '../../actions/modal';
 import {deletePost} from '../../actions/post';
@@ -28,8 +28,7 @@ class PostContextMenu extends React.Component {
 
   deletePost() {
     let modalOption = {
-      body: (<ConfirmDeleteModal buttonOption={this.state.BUTTONS_OPTIONS}
-                                 closeModal={() => {this.props.closeModal("ConfirmDeleteModal")}}
+      body: (<ConfirmDeleteModal closeModal={() => {this.props.closeModal("ConfirmDeleteModal")}}
                                  closeAllModals={() => {this.props.closeAllModals()}}
                                  deleteCallback={this.deleteCallback.bind(this)}
              />),
@@ -66,7 +65,7 @@ class PostContextMenu extends React.Component {
 
   toggleFlag() {
     let modalOption = {
-      body: (<ConfirmFlagModal buttonOption={this.state.BUTTONS_OPTIONS}
+      body: (<ConfirmFlagModal isFlag={this.props.item.flag}
                                closeModal={() => {this.props.closeModal("ConfirmFlagModal")}}
                                flagCallback={this.flagCallback.bind(this)}
       />),
@@ -154,7 +153,7 @@ class PostContextMenu extends React.Component {
         {
           img: '/static/images/flagTrue.svg',
           revertImg: '/static/images/flagFalse.svg',
-          alt: 'Flag this',
+          alt: this.props.item.flag ? 'Unflag this' : 'Flag this' ,
           callback: this.toggleFlag.bind(this),
           hasDelimiter: true,
         }, /* TODO uncomment when will be implemented delete
