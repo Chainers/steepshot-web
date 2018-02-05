@@ -1,5 +1,5 @@
 import React from 'react';
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
 import ShowIf from "../../../Common/ShowIf";
 import {openModal} from "../../../../actions/modal";
 import LikesList from "../../../LikesList/LikesList";
@@ -21,7 +21,7 @@ class Likes extends React.Component {
     return (
       <ShowIf show={this.props.likes !== 0}>
         <div className="container_likes" onClick={this.openLikesModal.bind(this)}>
-          {this.props.likes} {this.props.likes> 1 ? 'likes' : 'like'}
+          {this.props.likes} {this.props.likes > 1 ? 'likes' : 'like'}
         </div>
       </ShowIf>
     );

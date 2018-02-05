@@ -1,8 +1,9 @@
 const initialState = {};
 const defaultOption = {
-  alignItems: 'center',
   body: null,
-  willClose: false
+  willClose: false,
+  bodyHeight: 0,
+  containerHeight: 0
 };
 
 export default function modals(state = initialState, action) {

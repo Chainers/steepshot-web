@@ -4,6 +4,7 @@ import {connect} from 'react-redux';
 import {closeModal} from "../../actions/modal";
 import UsersList from "../UsersList/UsersList";
 import {getVoters} from "../../actions/posts";
+import CloseButton from "../Common/CloseButton/CloseButton";
 
 class LikesModal extends React.Component {
   constructor(props) {
@@ -19,12 +20,13 @@ class LikesModal extends React.Component {
     return (
       <div className="container_lik-lis">
         <div className="header_lik-lis">
-
+          <div className='title_lik-lis'>Post has been rated by these users</div>
+          <CloseButton className='close-button_lik-lis'/>
         </div>
         <UsersList
           point={`post/${this.permLink}/voters`}
           getUsers={getVoters}
-          wrapperModifier=" "
+          className="body_lik-lis"
         />
       </div>
     );

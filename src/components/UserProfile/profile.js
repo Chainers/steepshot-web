@@ -189,16 +189,17 @@ class UserProfile extends React.Component {
                     >
                       <PostsList
                         point={this.state.itemsPoint}
+                        className="posts-list clearfix type-2"
                         wrapperModifier="posts-list clearfix type-2"
                       />
                       <UsersList
                         point={this.state.followersPoint}
-                        wrapperModifier="posts-list clearfix type-2"
+                        className="posts-list clearfix type-2"
                         getUsers={getFollowers}
                       />
                       <UsersList
                         point={this.state.followingPoint}
-                        wrapperModifier="posts-list clearfix type-2"
+                        className="posts-list clearfix type-2"
                         getUsers={getFollowing}
                       />
                     </TabsWrapper>
