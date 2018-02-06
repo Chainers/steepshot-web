@@ -389,6 +389,7 @@ h2.card-field__heading {
   background-color: #ffffff;
   border: solid 1px #ececee;
   transition: .15s all ease;
+  font: 12px OpenSans-Regular;
 }
 .rectangle_comment span:hover {
   color: #e74800;
@@ -1135,7 +1136,7 @@ h2.card-field__heading {
 .collapse-closed  .lnk-more {
   background: white;
   position: absolute;
-  top: 41px;
+  top: 36px;
   right: 75px;
 }
 
@@ -1187,6 +1188,7 @@ h2.card-field__heading {
   color: #0f181e;
   margin-left: 10px;
   transition: .2s opacity ease;
+  font: 12px OpenSans-Regular;
 }
 .comment-controls a.likes:hover {
   opacity: .7;
@@ -1282,9 +1284,11 @@ h2.card-field__heading {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  z-index: 1000;
 }
 .no-scroll-iphone {
   overflow: hidden;
-  width: 100%;
-  height: 100%;
+}
+.comment-controls span {
+  font: 12px OpenSans-Regular;
 }

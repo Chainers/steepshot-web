@@ -1,5 +1,5 @@
 .container_pos-mod {
-  background-color: #FFF;
+  background-color: #ffffff;
   height: 90vh;
   min-height: 440px;
   display: flex;
@@ -43,7 +43,7 @@
 .header_pos-mod {
   position: relative;
   padding: 20px;
-  background-color: #FFF;
+  background-color: #ffffff;
   width: 380px;
   order: 2;
 }
@@ -53,7 +53,7 @@
   flex: 1;
   flex-direction: column;
   width: 380px;
-  background-color: #fff;
+  background-color: #ffffff;
   order: 3;
 }
 
@@ -160,8 +160,7 @@
   display: flex;
   overflow-x: hidden;
   flex-grow: 1;
-  font-size: 13px;
-  font-family: OpenSans-Light, Helvetica, Arial, sans-serif;
+  font: 13px OpenSans-Light, Helvetica, Arial, sans-serif;
 }
 
 .list-scroll_pos-mod {
@@ -196,13 +195,13 @@
 }
 
 .list-scroll-view_pos-mod .wrap-btn {
-  padding: 10px;
+  margin: 15px;
 }
 
 .list-scroll-view_pos-mod .date {
   float: right;
   color: #979b9e;
-  font-size: 12px;
+  font: 12px OpenSans-Regular;
   line-height: 22px;
 }
 
@@ -215,7 +214,7 @@
 }
 
 .list-scroll-view_pos-mod .user {
-  font-size: 14px;
+  font: 14px OpenSans-Regular;
   color: #0f181e;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -340,19 +339,49 @@
   top: 0;
 }
 
+.arrow-left-modal_post-mod {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  left: 1vw;
+  width: 35px;
+  height: 50px;
+  cursor: pointer;
+}
+.arrow-right-modal_post-mod {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 1vw;
+  width: 35px;
+  height: 50px;
+  cursor: pointer;
+}
+.fa-arrow-alt-circle-left, .fa-arrow-alt-circle-right {
+  margin-top: 11px;
+  margin-left: 4px;
+  color: #ffffff;
+  transition: .2s;
+}
+.arrow-right-modal_post-mod:hover .fa-arrow-alt-circle-right,
+.arrow-left-modal_post-mod:hover .fa-arrow-alt-circle-left {
+  color: #e74800;
+}
+
 @media (max-width: 815px) {
   .container_pos-mod {
     min-height: 100vh;
     border-radius: 0;
   }
-
   .header_pos-mod {
     order: 0;
     background-color: #fafafa;
   }
-
   .image-container_pos-mod {
     margin: 0;
     max-height: 80vh;
+  }
+  .fa-arrow-alt-circle-left, .fa-arrow-alt-circle-right {
+    display: none;
   }
 }

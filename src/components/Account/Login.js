@@ -132,22 +132,25 @@ class Login extends React.Component {
 
   render() {
     let mainContainerClassName = "col-xs-12 col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3";
+    let test = 'container-fluid';
     if (this.state.needsLoader) {
       mainContainerClassName = mainContainerClassName + " blur-blocker";
     }
     return (
       <div className="container-fluid">
-        <div className="container-fluid">
-          <div className="row">
-            <div className="col-xs-12 col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3 lead text--center">Sign in Steepshot</div>
+        <ShowIf show={this.state.needsLoader}>
+          <div className="like-modal-loader">
+            <LoadingSpinner />
           </div>
-        </div>
+        </ShowIf>
         <div className="container-fluid">
           <div className="row position--relative">
-            <ShowIf show={this.state.needsLoader}>
-              <LoadingSpinner />
-            </ShowIf>
             <div className={mainContainerClassName}>
+              <div className="container-fluid">
+                <div className="row">
+                  <div className="col-xs-12 col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3 lead text--center">Sign in Steepshot</div>
+                </div>
+              </div>
               <form className="form-login form-horizontal">
                 <div className={this.state.userNameError ? "has-error" : null}>
                   <div className="form-group">

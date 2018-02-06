@@ -10,13 +10,16 @@ class Flag extends React.Component {
   }
 
   toggleFlag() {
-    let modalOption = {
-      body: (<ConfirmFlagModal isFlag={this.props.flag}
-                               closeModal={() => {this.props.closeModal("ConfirmFlagModal")}}
-                               flagCallback={this.flagCallback.bind(this)}
-      />),
-    };
-    this.props.openModal("ConfirmFlagModal", modalOption);
+    if (!this.props.flag) {
+      let modalOption = {
+        body: (<ConfirmFlagModal closeModal={() => {this.props.closeModal("ConfirmFlagModal")}}
+                                 flagCallback={this.flagCallback.bind(this)}
+        />),
+      };
+      this.props.openModal("ConfirmFlagModal", modalOption);
+    } else {
+      this.props.toggleFlag(this.props.postIndex);
+    }
   }
 
   flagCallback(param) {
