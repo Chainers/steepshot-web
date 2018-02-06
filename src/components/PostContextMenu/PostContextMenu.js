@@ -64,20 +64,23 @@ class PostContextMenu extends React.Component {
   }
 
   toggleFlag() {
-    let modalOption = {
-      body: (<ConfirmFlagModal isFlag={this.props.item.flag}
-                               closeModal={() => {this.props.closeModal("ConfirmFlagModal")}}
-                               flagCallback={this.flagCallback.bind(this)}
-      />),
-    };
+    if (!this.props.item.flag) {
+      let modalOption = {
+        body: (<ConfirmFlagModal closeModal={() => {this.props.closeModal("ConfirmFlagModal")}}
+                                 flagCallback={this.flagCallback.bind(this)}
+        />),
+      };
+      this.props.openModal("ConfirmFlagModal", modalOption);
+    } else {
+      this.props.toggleFlag(this.props.index);
+    }
     this.props.closeModal("MenuModal");
-    this.props.openModal("ConfirmFlagModal", modalOption);
   }
 
   flagCallback(param) {
     if(param) {
-      this.props.closeModal("ConfirmFlagModal");
       this.props.toggleFlag(this.props.index);
+      this.props.closeModal("ConfirmFlagModal");
     } else {
       this.openFunc();
     }
