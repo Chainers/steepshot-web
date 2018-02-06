@@ -7,12 +7,15 @@
   background-clip: padding-box;
   outline: 0;
   padding: 0 20px;
+  max-height: 96vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex: 1;
 }
 
 .header_lik-lis {
-  display: flex;
   padding: 15px 0px;
-  justify-content: space-between;
   border-bottom: 1px solid #f4f4f6;
 }
 
@@ -24,22 +27,9 @@
   font-size: 14px;
   font-family: OpenSans-Bold,Helvetica,Arial,sans-serif;
   line-height: 32px;
+  float: left;
 }
 
 .body_lik-lis {
-  position: relative;
-  min-height: 150px;
-  display: flex;
-  flex-wrap: wrap;
-  align-content: space-around;
-  max-width: 620px;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 0;
-}
 
-@media (max-width: 620px) {
-  .body_lik-lis {
-    max-width: 320px;
-  }
 }

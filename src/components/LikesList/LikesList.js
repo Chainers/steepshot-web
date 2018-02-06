@@ -5,6 +5,7 @@ import {closeModal} from "../../actions/modal";
 import UsersList from "../UsersList/UsersList";
 import {getVoters} from "../../actions/posts";
 import CloseButton from "../Common/CloseButton/CloseButton";
+import ScrollViewComponent from "../Common/ScrollViewComponent";
 
 class LikesModal extends React.Component {
   constructor(props) {
@@ -23,11 +24,20 @@ class LikesModal extends React.Component {
           <div className='title_lik-lis'>Post has been rated by these users</div>
           <CloseButton className='close-button_lik-lis'/>
         </div>
-        <UsersList
-          point={`post/${this.permLink}/voters`}
-          getUsers={getVoters}
-          className="body_lik-lis"
-        />
+        <div className="body_lik-lis">
+          <ScrollViewComponent
+            ref={(ref) => this.scrollView = ref}
+            autoHeight={true}
+            autoHeightMax={window.innerHeight * 0.8}
+            autoHide={true}
+          >
+            <UsersList
+              point={`post/${this.permLink}/voters`}
+              getUsers={getVoters}
+              className=""
+            />
+          </ScrollViewComponent>
+        </div>
       </div>
     );
   }
