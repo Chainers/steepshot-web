@@ -3,3 +3,9 @@
   width: 100%;
 }
 
+.body_use-lis {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+

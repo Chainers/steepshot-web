@@ -10,6 +10,7 @@ import TabsBar from "../Common/TabsBar/TabsBar";
 import {connect} from "react-redux";
 import Tab from "../Common/TabsBar/Tab/Tab";
 import ShowIf from "../Common/ShowIf";
+import HeadingLeadComponent from "../Atoms/HeadingLeadComponent";
 
 class Search extends React.Component {
   constructor(props) {
@@ -61,12 +62,11 @@ class Search extends React.Component {
         <Tab name="Users"
              loading={this.props.usersList.loading}
              empty={!this.props.usersList.users.length}>
+          <HeadingLeadComponent text={userResult}/>
           <UsersList
             point={Constants.SEARCH_FILTERS.USERS.point}
             getUsers={getUsersSearch}
             options={{query: this.props.searchValue}}
-            className="posts-list clearfix type-2"
-            headerText={userResult}
             isComponentVisible={this.props.activeIndex === 1}
           />
         </Tab>

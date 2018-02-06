@@ -125,7 +125,7 @@ class LikesModal extends React.Component {
           pageStart={0}
           initialLoad={false}
           loadMore={debounce(this.fetchData.bind(this),
-            Constants.ENDLESS_SCROLL.DEBOUNCE_TIMEOUT)}
+            Constants.ENDLESS_SCROLL.DEBOUNCE)}
           hasMore={this.state.hasMore}
           loader={
               <LoadingSpinner/>
