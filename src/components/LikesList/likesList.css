@@ -3,18 +3,14 @@
   background-color: #fff;
   border: 1px solid rgba(0,0,0,.2);
   border-radius: 4px;
-  box-shadow: 0 3px 9px rgba(0,0,0,.5);
-  background-clip: padding-box;
-  outline: 0;
-  padding: 0 20px;
   max-height: 96vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  flex: 1;
+  min-height: 10px;
+  width: 660px;
+  padding: 0 20px 10px;
 }
 
 .header_lik-lis {
+  height: 62px;
   padding: 15px 0px;
   border-bottom: 1px solid #f4f4f6;
 }
@@ -30,6 +26,4 @@
   float: left;
 }
 
-.body_lik-lis {
 
-}

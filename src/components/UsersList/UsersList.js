@@ -96,6 +96,7 @@ class UsersList extends React.Component {
       >
         <div className={'body_use-lis ' + this.props.className}>
           {this.renderUsers()}
+          {this.props.children}
         </div>
       </InfiniteScroll>
     );
