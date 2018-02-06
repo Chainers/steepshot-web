@@ -9,6 +9,7 @@ import postsList from './postsList';
 import modals from './modals';
 import postModal from './postModal';
 import tabsBar from "./tabsBar";
+import likesList from "./likesList";
 
 export default combineReducers({
   clipboard,
@@ -20,5 +21,6 @@ export default combineReducers({
   postsList,
   usersList,
   modals,
-  postModal
+  postModal,
+  likesList
 });
