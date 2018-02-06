@@ -34,7 +34,7 @@ class LikesModal extends React.Component {
             <UsersList
               point={`post/${this.permLink}/voters`}
               getUsers={getVoters}
-              className=""
+              useScrollView={true}
             />
           </ScrollViewComponent>
         </div>

@@ -128,7 +128,7 @@ class UsersComponent extends React.Component {
           pageStart={0}
           initialLoad={true}
           loadMore={debounce(this.fetchData.bind(this),
-            Constants.ENDLESS_SCROLL.DEBOUNCE_TIMEOUT)}
+            Constants.ENDLESS_SCROLL.DEBOUNCE)}
           hasMore={this.state.hasMore}
           loader={
             <div className="position--relative" style={this.state.forOffset}>
