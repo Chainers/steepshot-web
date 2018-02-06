@@ -23,8 +23,8 @@ export default {
     NO_IMAGE: '/static/images/noimage.jpg',
 
     SETTINGS: {
-        show_low_rated : "show_low_rated",
-        show_nsfw : "show_nsfw"
+        show_low_rated : 'show_low_rated',
+        show_nsfw : 'show_nsfw',
     },
 
     SETTINGS_LABELS : {

@@ -43,7 +43,17 @@ class PostModal extends React.Component {
     window.removeEventListener('resize', this.setComponentSize);
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(nextProps) {
+    if (!this.props.needsCommentFormLoader && nextProps.needsCommentFormLoader) {
+      setTimeout(() => {
+        this.scrollAfterComment();
+      }, 250);
+    }
+  }
+
+  scrollAfterComment() {
+    this.textArea.value = '';
+    this.changeText();
     this.scrollView.scrollBar.scrollToBottom();
   }
 
@@ -51,17 +61,25 @@ class PostModal extends React.Component {
     this.props.setPostModalOptions({isDescriptionOpened: true});
   }
 
+  previousPost() {
+    this.props.previous(this.props.currentIndex);
+    this.clearTextArea();
+  }
+
+  nextPost() {
+    this.props.next(this.props.currentIndex);
+    this.clearTextArea();
+  }
+
   initKeyPress() {
     document.onkeydown = (e) => {
       if (document.activeElement !== ReactDOM.findDOMNode(this.textArea)) {
         switch (e.keyCode) {
           case 37:
-            this.props.previous(this.props.currentIndex);
-            this.clearTextArea();
+            this.previousPost();
             break;
           case 39:
-            this.props.next(this.props.currentIndex);
-            this.clearTextArea();
+            this.nextPost();
             break;
           default :
             break;
@@ -108,8 +126,7 @@ class PostModal extends React.Component {
         <button className="btn btn-default btn-xs"
                 onClick={() => this.props.copyToClipboard(
                   document.location.origin + '/post' + this.props.post.url,
-                )}>
-          Share post
+                )}>Copy link
         </button>
         <img src={this.props.post.body || constants.NO_IMAGE}
              alt="Post picture."
@@ -196,8 +213,17 @@ class PostModal extends React.Component {
   render() {
     const authorLink = `/@${this.props.post.author}`;
     return (
-      <div className="container_pos-mod"
-           style={this.props.style.container}>
+      <div className="container_pos-mod" style={this.props.style.container}>
+        <ShowIf show={this.props.postList.posts[0] != this.props.currentIndex}>
+          <div className="arrow-left-modal_post-mod" onClick={this.previousPost.bind(this)}>
+            <i className="far fa-arrow-alt-circle-left fa-2x"/>
+          </div>
+        </ShowIf>
+        <ShowIf show={this.props.post.url != this.props.postList.offset}>
+          <div className="arrow-right-modal_post-mod" onClick={this.nextPost.bind(this)}>
+            <i className="far fa-arrow-alt-circle-right fa-2x"/>
+          </div>
+        </ShowIf>
         {this.renderImage.bind(this)()}
         <div className="header_pos-mod"
              style={this.props.style.headerCont}>
@@ -293,8 +319,7 @@ class PostModal extends React.Component {
                             : START_TEXTAREA_HEIGHT,
                         }}
               />
-              <label
-                className={this.props.label + ' label_pos-mod'}>Comment</label>
+              <label className={this.props.label + ' label_pos-mod'}>Comment</label>
               <ShowIf show={this.props.needsCommentFormLoader}>
                 <LoadingSpinner style={{top: 0}}/>
               </ShowIf>

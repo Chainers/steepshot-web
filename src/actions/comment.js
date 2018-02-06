@@ -8,11 +8,11 @@ export function sendComment(postIndex, comment) {
   let post = state.posts[postIndex];
   return (dispatch) => {
     dispatch(setPostModalOptions({needsCommentFormLoader: true}));
-    
+
     const urlObject = post.url.split('/');
     const callback = (err, success) => {
       dispatch(setPostModalOptions({needsCommentFormLoader: false}));
-      
+
       if (err) {
         jqApp.pushMessage.open(err);
       } else if (success) {

@@ -190,7 +190,6 @@ class UserProfile extends React.Component {
                       <PostsList
                         point={this.state.itemsPoint}
                         wrapperModifier="posts-list clearfix type-2"
-                        clearPostHeader={true}
                       />
                       <UsersList
                         point={this.state.followersPoint}
