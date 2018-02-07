@@ -193,7 +193,7 @@ class PostModal extends React.Component {
       return;
     }
     let delta = this.props.addCommentHeight - this.hiddenDiv.clientHeight || 0;
-    if (!this.props.addCommentHeight || delta >= 5 || delta <= - 5  || this.textArea.value.length <= 1) {
+    if (!this.props.addCommentHeight || delta >= 5 || delta <= -5 || this.textArea.value.length <= 1) {
       this.props.setPostModalOptions({
         addCommentHeight: this.hiddenDiv.clientHeight,
         label,
@@ -348,7 +348,7 @@ class PostModal extends React.Component {
     const userHeaderWidth = DESC_WIDTH - 200;
 
     const MAX_IMG_WIDTH = (docWidth - DESC_WIDTH) * 0.8;
-
+    const PREFERRED_IMG_WIDTH = 640;
     const container = {};
     container.width = docWidth;
     container.height = '100%';
@@ -367,7 +367,7 @@ class PostModal extends React.Component {
     username.maxWidth = userHeaderWidth;
 
     if (docWidth > MAX_WIDTH_FULL_SCREEN) {
-
+      image.width = image.width ? image.width : utils.getLess((docWidth - DESC_WIDTH) * 0.8, PREFERRED_IMG_WIDTH);
       container.height = utils.getMore(docHeight * 0.9, MIN_HEIGHT);
 
       if (image.height > container.height) {
