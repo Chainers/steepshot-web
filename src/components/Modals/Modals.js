@@ -10,6 +10,7 @@ class Modals extends React.Component {
     super(props);
 
     this.prevDefault = this.prevDefault.bind(this);
+    this.removeFocus = this.removeFocus.bind(this);
   }
 
   componentWillMount() {
@@ -31,9 +32,15 @@ class Modals extends React.Component {
   componentWillReceiveProps(nextProps) {
     if (Object.keys(nextProps.modals).length > 0) {
       document.body.classList.add('no-scroll-iphone');
+      document.body.addEventListener('focus', this.removeFocus());
     } else {
       document.body.classList.remove('no-scroll-iphone');
+      document.body.removeEventListener('focus', this.removeFocus());
     }
+  }
+
+  removeFocus() {
+    document.body.blur();
   }
 
   prevDefault(e) {

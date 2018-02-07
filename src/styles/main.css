@@ -1286,9 +1286,9 @@ h2.card-field__heading {
   transform: translate(-50%, -50%);
   z-index: 1000;
 }
-.no-scroll-iphone {
-  overflow: hidden;
-}
 .comment-controls span {
   font: 12px OpenSans-Regular;
+}
+.no-scroll-iphone {
+  overflow: hidden;
 }
