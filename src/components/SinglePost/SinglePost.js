@@ -31,7 +31,7 @@ class SinglePost extends React.Component {
       meta = {
         title: `${username.replace(/\//, '')}: «${arr.join('')}» | Steepshot`,
         description: itemPost.description,
-        canonical: `https://qa.alpha.steepshot.io${window.location.pathname}`,
+        canonical: `${window.location.hostname}${window.location.pathname}`,
         meta: {
           name: {
             keywords: 'steepshot, post, share'
@@ -41,7 +41,7 @@ class SinglePost extends React.Component {
             'og:description': itemPost.description,
             'og:url': `${window.location.hostname}${window.location.pathname}`,
             'og:image': itemPost.body,
-            'og:type': 'article',
+            'og:type': 'website',
             'og:site_name': 'Steepshot.io'
           }
         }
