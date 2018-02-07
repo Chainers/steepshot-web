@@ -9335,9 +9335,9 @@ modal.modal-like .modal-header {
   z-index: 1000;
 }
 
-.no-scroll-iphone {
-  overflow: hidden;
-}
 .comment-controls span {
   font: 12px OpenSans-Regular;
+}
+.no-scroll-iphone {
+  overflow: hidden;
 }
