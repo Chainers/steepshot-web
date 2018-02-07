@@ -26,6 +26,10 @@
   float: left;
 }
 
+.has-one_lik-lis {
+  max-width: 360px;
+}
+
 @media (max-width: 670px) {
   .container_lik-lis {
     width: 360px;

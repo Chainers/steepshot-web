@@ -24,8 +24,8 @@ class LikesModal extends React.Component {
     this.props.clearBodyHeight();
   }
 
-  get permLink() {
-    let urlObject = this.props.url.split('/');
+  static permLink(url) {
+    let urlObject = url.split('/');
     return `${urlObject[urlObject.length - 2]}/${urlObject[urlObject.length - 1]}`;
   }
 
@@ -41,14 +41,14 @@ class LikesModal extends React.Component {
 
   render() {
     return (
-      <div className="container_lik-lis">
+      <div className={(this.props.hasOneUser ? 'has-one_lik-lis' : '') + ' container_lik-lis'}>
         <div className="header_lik-lis">
           <div className='title_lik-lis'>Post has been rated by these users</div>
           <CloseButton className='close-button_lik-lis' onClick={this.props.closeModal}/>
         </div>
         <Scrollbars style={{width: '100%', height: this.props.preferredBodyHeight}}>
           <UsersList
-            point={`post/${this.permLink}/voters`}
+            point={this.props.point}
             getUsers={getVoters}
             useScrollView={true}
           >
@@ -61,8 +61,10 @@ class LikesModal extends React.Component {
 }
 
 const mapStateToProps = (state, props) => {
+  let point = `post/${LikesModal.permLink(state.posts[props.postIndex].url)}/voters`;
   return {
-    url: state.posts[props.postIndex].url,
+    hasOneUser: state.usersList[point] && state.usersList[point].users.length === 1,
+    point,
     ...state.likesList
   };
 };
