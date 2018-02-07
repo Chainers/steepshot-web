@@ -55,10 +55,10 @@ export function getUsersList(point, getUsers) {
     };
     getUsers(requestOptions, true).then((response) => {
       let newUsers = response.results;
+      let hasMore = response.results.length === LIMIT;
       if (statePoint.users.length !== 0) {
         newUsers = newUsers.slice(1, newUsers.length);
       }
-      let hasMore = response.results.length + statePoint.users.length !== response.count;
       let pointOptions = {
         point,
         hasMore,
