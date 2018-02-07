@@ -26,4 +26,15 @@
   float: left;
 }
 
+@media (max-width: 670px) {
+  .container_lik-lis {
+    width: 360px;
+  }
+}
 
+@media (max-width: 370px) {
+  .container_lik-lis {
+    width: 100vw;
+    padding: 0 0 10px;
+  }
+}

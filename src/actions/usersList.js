@@ -30,6 +30,7 @@ function getUsersListSuccess(options) {
 
 
 export function getUsersList(point, getUsers) {
+  const LIMIT = 16;
   const statePoint = getStore().getState().usersList[point];
   if (statePoint.loading) {
     return {
@@ -48,6 +49,7 @@ export function getUsersList(point, getUsers) {
       point,
       params: Object.assign({}, {
           offset: statePoint.offset,
+          limit: LIMIT
       },
       statePoint.options)
     };
@@ -56,7 +58,7 @@ export function getUsersList(point, getUsers) {
       if (statePoint.users.length !== 0) {
         newUsers = newUsers.slice(1, newUsers.length);
       }
-      let hasMore = newUsers.length > 1;
+      let hasMore = response.results.length + statePoint.users.length !== response.count;
       let pointOptions = {
         point,
         hasMore,

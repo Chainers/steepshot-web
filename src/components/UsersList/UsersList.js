@@ -17,32 +17,28 @@ class UsersList extends React.Component {
   constructor(props) {
     super(props);
     this.props.clearUsersList(this.props.point);
-    let usersListOptions = {
-      point: this.props.point,
-      loading: false,
-      hasMore: true,
-      users: [],
-      offset: null,
-      options: this.props.options,
-      loader: true
-    };
+    let usersListOptions = this.userListOptions(this.props);
     this.props.initUsersList(usersListOptions);
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.options && (nextProps.options.query !== this.props.options.query)) {
-      let usersListOptions = {
-        point: nextProps.point,
-        loading: false,
-        hasMore: true,
-        users: [],
-        offset: null,
-        options: nextProps.options,
-        loader: true
-      };
+      let usersListOptions = this.userListOptions(nextProps);
       this.props.initUsersList(usersListOptions);
       this.props.getUsersList(this.props.point, this.props.getUsers);
     }
+  }
+
+  userListOptions(props) {
+    return {
+      point: props.point,
+      loading: false,
+      hasMore: true,
+      users: [],
+      offset: null,
+      options: props.options,
+      loader: true
+    };
   }
 
   getUsersList() {
@@ -89,7 +85,7 @@ class UsersList extends React.Component {
         loadMore={debounce(this.getUsersList.bind(this),
           Constants.ENDLESS_SCROLL.DEBOUNCE)}
         hasMore={this.props.isComponentVisible && this.props.hasMore}
-        loader={<LoadingSpinner/>}
+        loader={<div className='spinner_use-lis'><LoadingSpinner/></div>}
         threshold={Constants.ENDLESS_SCROLL.OFFSET}
         useWindow={!this.props.useScrollView}
         useCapture={this.props.useScrollView}
