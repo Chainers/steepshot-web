@@ -19,6 +19,7 @@ import {copyToClipboard} from '../../actions/clipboard';
 import ReactDOM from 'react-dom';
 import PostContextMenu from "../PostContextMenu/PostContextMenu";
 import Likes from "../PostsList/Post/Likes/Likes";
+import utils from '../../utils/utils';
 
 const START_TEXTAREA_HEIGHT = '42px';
 
@@ -340,61 +341,52 @@ class PostModal extends React.Component {
   setComponentSize() {
     const DESC_WIDTH = 380;
     const MIN_HEIGHT = 440;
-    const CONT_MARGIN = 80;
     const MAX_WIDTH_FULL_SCREEN = 815;
 
-    let docWidth = document.documentElement.clientWidth;
-    let docHeight = document.documentElement.clientHeight;
-    let userHeaderWidth = DESC_WIDTH - 200;
+    const docWidth = document.documentElement.clientWidth;
+    const docHeight = document.documentElement.clientHeight;
+    const userHeaderWidth = DESC_WIDTH - 200;
 
-    const PREF_IMG_WIDTH = (docWidth - DESC_WIDTH) * 0.8;
+    const MAX_IMG_WIDTH = (docWidth - DESC_WIDTH) * 0.8;
 
-    let container = {};
+    const container = {};
     container.width = docWidth;
     container.height = '100%';
 
-    let textareaMarginTop = this.descPosMod.clientHeight - 220;
+    const textareaMarginTop = this.descPosMod.clientHeight - 220;
 
-    let image = {};
+    const image = {};
     image.width = this.image.naturalWidth;
     image.height = this.image.naturalHeight ? this.image.naturalHeight : docHeight * 0.4;
-    let imgCont = {};
+    const imgCont = {};
     imgCont.width = '100%';
-    let headerCont = {};
+    const headerCont = {};
     headerCont.width = '100%';
-    let description = {};
-    let username = {};
+    const description = {};
+    const username = {};
     username.maxWidth = userHeaderWidth;
+
     if (docWidth > MAX_WIDTH_FULL_SCREEN) {
-      container.height = docHeight * 0.9 > MIN_HEIGHT
-        ? docHeight * 0.9
-        : MIN_HEIGHT;
 
-      image.width = image.width < PREF_IMG_WIDTH ? image.width : PREF_IMG_WIDTH;
-      image.width = image.width < docWidth - DESC_WIDTH - CONT_MARGIN
-        ? image.width
-        : docWidth - DESC_WIDTH - CONT_MARGIN;
-
-      image.height = image.height * image.width / this.image.naturalWidth;
+      container.height = utils.getMore(docHeight * 0.9, MIN_HEIGHT);
 
       if (image.height > container.height) {
         image.width = image.width * container.height / image.height;
         image.height = container.height;
       }
 
-      image.width = image.width ? image.width :
-        ((docWidth - DESC_WIDTH) * 0.8 < 640 ? (docWidth - DESC_WIDTH) * 0.8 : 640);
-      image.height = image.height ? image.height :
-        (docHeight * 0.9 > MIN_HEIGHT ? docHeight * 0.9 : MIN_HEIGHT);
+      if (image.width > MAX_IMG_WIDTH) {
+        image.height = image.height * MAX_IMG_WIDTH / image.width;
+        image.width = MAX_IMG_WIDTH;
+      }
 
-      container.height = image.height > MIN_HEIGHT ? image.height : MIN_HEIGHT;
       container.width = image.width + DESC_WIDTH;
       imgCont.width = image.width;
       headerCont.width = DESC_WIDTH;
+
+      container.height = utils.getMore(image.height, MIN_HEIGHT);
     } else {
-      image.width = image.width < document.documentElement.clientWidth
-        ? image.width
-        : document.documentElement.clientWidth;
+      image.width = utils.getLess(image.width, document.documentElement.clientWidth);
       image.width = image.width ? image.width : docWidth;
       image.height = image.height * image.width / this.image.naturalWidth;
     }

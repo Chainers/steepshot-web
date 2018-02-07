@@ -17,6 +17,10 @@ class utils {
     isNotEmptyString = str => str !== undefined && str.trim().length > 0;
 
     isEmptyString = str => !this.isNotEmptyString(str);
+
+    getLess = (first, second) => first < second ? first : second;
+
+    getMore = (first, second) => first > second ? first : second;
 }
 
 export default new utils();
