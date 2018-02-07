@@ -33,7 +33,7 @@ export function getPostsList(point) {
   const statePoint = getStore().getState().postsList[point];
   if (statePoint.loading) {
     return {
-      type: 'EMPTY_ACTION'
+      type: 'EMPTY_GET_POSTS'
     }
   }
   if (!statePoint.hasMore) {

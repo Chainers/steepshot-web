@@ -1,0 +1,23 @@
+.container_user {
+  width: 298px;
+  height: 98px;
+  padding: 20px;
+  margin: 5px;
+  border: 1px solid #e7e7e7;
+  border-radius: 4px;
+}
+
+.name_user a {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  text-decoration: none;
+  font-family: OpenSans-SemiBold,Helvetica,Arial,sans-serif;
+  color: #0f181e;
+  line-height: 1.4;
+  transition: all .2s ease;
+}
+
+.name_user a:hover {
+  color: #e74800;
+}

@@ -20,7 +20,7 @@ export function closeModal(index) {
   let modal = getStore().getState().modals[index];
   if (!modal) {
     return {
-      type: 'EMPTY_ACTION'
+      type: 'EMPTY_CLOSE_MODAL'
     }
   }
   return (dispatch) => {

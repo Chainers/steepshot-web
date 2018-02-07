@@ -25,7 +25,8 @@ let requestPromises = {
   [Constants.PROMISES.GET_POSTS] : Promise.resolve(),
   [Constants.PROMISES.GET_FOLLOWERS] : Promise.resolve(),
   [Constants.PROMISES.GET_FOLLOWING] : Promise.resolve(),
-  [Constants.PROMISES.GET_USERS_SEARCH] : Promise.resolve()
+  [Constants.PROMISES.GET_USERS_SEARCH] : Promise.resolve(),
+  [Constants.PROMISES.GET_USERS_VOTERS] : Promise.resolve()
 }
 
 async function getItems(url, promiseName, needsDestroyPrevious, where) {
@@ -72,6 +73,11 @@ export function getFollowing(options, needsDestroyPrevious) {
 export function getUsersSearch(options, needsDestroyPrevious) {
   const url = RequestService.handlev1_1BaseRequestPosts(options.point, options.params);
   return getItems(url, Constants.PROMISES.GET_USERS_SEARCH, needsDestroyPrevious, 'getUsersSearch');
+}
+
+export function getVoters(options) {
+  const url = RequestService.handlev1_1BaseRequestPosts(options.point, options.params);
+  return getItems(url, Constants.PROMISES.GET_USERS_VOTERS, false, 'getUserVoters');
 }
 
 export function getPostShaddow(urlPost) {

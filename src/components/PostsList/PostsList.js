@@ -101,7 +101,7 @@ class PostsList extends React.Component {
           pageStart={0}
           initialLoad={false}
           loadMore={debounce(this.getPostsList.bind(this) ,
-            Constants.ENDLESS_SCROLL.DEBOUNCE_TIMEOUT)}
+            Constants.ENDLESS_SCROLL.DEBOUNCE)}
           hasMore={this.props.isComponentVisible && this.props.hasMore}
           loader={<LoadingSpinner/>}
           threshold={Constants.ENDLESS_SCROLL.OFFSET}

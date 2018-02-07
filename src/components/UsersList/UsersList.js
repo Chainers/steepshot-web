@@ -4,45 +4,41 @@ import {debounce} from 'lodash';
 import Constants from '../../common/constants';
 import InfiniteScroll from 'react-infinite-scroller';
 import LoadingSpinner from '../LoadingSpinner';
-import HeadingLeadComponent from '../Atoms/HeadingLeadComponent';
 import {clearUsersList, getUsersList, initUsersList} from '../../actions/usersList';
 import {documentTitle} from '../DocumentTitle';
-import UserItem from '../UserProfile/userItem';
+import User from "./User/User";
 
 class UsersList extends React.Component {
   static defaultProps = {
     isComponentVisible: true,
+    useScrollView: false
   };
 
   constructor(props) {
     super(props);
     this.props.clearUsersList(this.props.point);
-    let usersListOptions = {
-      point: this.props.point,
-      loading: false,
-      hasMore: true,
-      users: [],
-      offset: null,
-      options: this.props.options,
-      loader: true
-    };
+    let usersListOptions = this.userListOptions(this.props);
     this.props.initUsersList(usersListOptions);
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.options && (nextProps.options.query !== this.props.options.query)) {
-      let usersListOptions = {
-        point: nextProps.point,
-        loading: false,
-        hasMore: true,
-        users: [],
-        offset: null,
-        options: nextProps.options,
-        loader: true
-      };
+      let usersListOptions = this.userListOptions(nextProps);
       this.props.initUsersList(usersListOptions);
       this.props.getUsersList(this.props.point, this.props.getUsers);
     }
+  }
+
+  userListOptions(props) {
+    return {
+      point: props.point,
+      loading: false,
+      hasMore: true,
+      users: [],
+      offset: null,
+      options: props.options,
+      loader: true
+    };
   }
 
   getUsersList() {
@@ -57,7 +53,7 @@ class UsersList extends React.Component {
   }
 
   renderUsers() {
-    if(this.props.loader) {
+    if (this.props.loader) {
       return (
         <span/>
       )
@@ -72,40 +68,33 @@ class UsersList extends React.Component {
     let users = [];
     this.props.users.map((user, index) => {
       users.push(
-        <UserItem
+        <User
           key={index}
-          item={user}
+          user={user}
         />,
       );
     });
     return users;
   }
 
-  renderHeader() {
-    if (this.props.headerText) return (
-      <HeadingLeadComponent text={this.props.headerText}/>
-    );
-    return null;
-  }
-
   render() {
     return (
-      <div>
-        {this.renderHeader()}
-        <InfiniteScroll
-          pageStart={0}
-          initialLoad={false}
-          loadMore={debounce(this.getUsersList.bind(this),
-            Constants.ENDLESS_SCROLL.DEBOUNCE_TIMEOUT)}
-          hasMore={this.props.isComponentVisible && this.props.hasMore}
-          loader={<LoadingSpinner/>}
-          threshold={Constants.ENDLESS_SCROLL.OFFSET}
-        >
-          <div className={this.props.wrapperModifier}>
-            {this.renderUsers()}
-          </div>
-        </InfiniteScroll>
-      </div>
+      <InfiniteScroll
+        pageStart={0}
+        initialLoad={false}
+        loadMore={debounce(this.getUsersList.bind(this),
+          Constants.ENDLESS_SCROLL.DEBOUNCE)}
+        hasMore={this.props.isComponentVisible && this.props.hasMore}
+        loader={<div className='spinner_use-lis'><LoadingSpinner/></div>}
+        threshold={Constants.ENDLESS_SCROLL.OFFSET}
+        useWindow={!this.props.useScrollView}
+        useCapture={this.props.useScrollView}
+      >
+        <div className={'body_use-lis ' + this.props.className}>
+          {this.renderUsers()}
+          {this.props.children}
+        </div>
+      </InfiniteScroll>
     );
   }
 }

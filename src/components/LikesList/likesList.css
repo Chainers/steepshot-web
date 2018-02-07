@@ -1,0 +1,44 @@
+.container_lik-lis {
+  position: relative;
+  background-color: #fff;
+  border: 1px solid rgba(0,0,0,.2);
+  border-radius: 4px;
+  max-height: 96vh;
+  min-height: 10px;
+  width: 660px;
+  padding: 0 20px 10px;
+}
+
+.header_lik-lis {
+  height: 62px;
+  padding: 15px 0px;
+  border-bottom: 1px solid #f4f4f6;
+}
+
+.close-button_lik-lis {
+  float: right;
+}
+
+.title_lik-lis {
+  font-size: 14px;
+  font-family: OpenSans-Bold,Helvetica,Arial,sans-serif;
+  line-height: 32px;
+  float: left;
+}
+
+.has-one_lik-lis {
+  max-width: 360px;
+}
+
+@media (max-width: 670px) {
+  .container_lik-lis {
+    width: 360px;
+  }
+}
+
+@media (max-width: 370px) {
+  .container_lik-lis {
+    width: 100vw;
+    padding: 0 0 10px;
+  }
+}
