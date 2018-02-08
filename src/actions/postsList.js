@@ -22,10 +22,11 @@ function getPostsListRequest(point) {
   };
 }
 
-function getPostsListSuccess(pointOptions) {
+function getPostsListSuccess(pointOptions, posts) {
   return {
     type: 'GET_POSTS_LIST_SUCCESS',
-    options: pointOptions
+    options: pointOptions,
+    posts
   };
 }
 
@@ -91,8 +92,7 @@ export function getPostsList(point) {
         postsObject[newPosts[i].url] = post;
       }
       newPosts = postsObject;
-      dispatch(addPosts(newPosts));
-      dispatch(getPostsListSuccess(pointOptions));
+      dispatch(getPostsListSuccess(pointOptions, newPosts));
     });
   };
 }

@@ -1,18 +1,25 @@
 export default function postsList(state = {}, action) {
   switch (action.type) {
     case 'INIT_POSTS_LIST':
-      return Object.assign({}, state, {
+      return {
+        ...state,
         [action.options.point]: action.options,
-      });
+      };
+
     case 'GET_POSTS_LIST_REQUEST':
-      return Object.assign({}, state, {
-        [action.point]: Object.assign({}, state[action.point], {
+      return {
+        ...state,
+        [action.point]: {
+          ...state[action.point],
           loading: true,
-        }),
-      });
+        },
+      };
+
     case 'GET_POSTS_LIST_SUCCESS':
-      return Object.assign({}, state, {
-        [action.options.point]: Object.assign({}, state[action.options.point], {
+      return {
+        ...state,
+        [action.options.point]: {
+          ...state[action.options.point],
           posts: [
             ...state[action.options.point].posts,
             ...action.options.posts],
@@ -21,8 +28,8 @@ export default function postsList(state = {}, action) {
           loading: false,
           length: state[action.options.point].length + action.options.length,
           loader: false
-        }),
-      });
+        },
+      };
 
     default:
       return state;

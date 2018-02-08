@@ -21,10 +21,11 @@ function getUsersListRequest(point) {
   };
 }
 
-function getUsersListSuccess(options) {
+function getUsersListSuccess(options, users) {
   return {
     type: 'GET_USERS_LIST_SUCCESS',
-    options
+    options,
+    users
   };
 }
 
@@ -59,14 +60,23 @@ export function getUsersList(point, getUsers) {
       if (statePoint.users.length !== 0) {
         newUsers = newUsers.slice(1, newUsers.length);
       }
+      let authors = newUsers.map((user) => {
+        return user.author;
+      });
+
+      let users = {};
+      newUsers.forEach( (user) => {
+        users[user.author] = user;
+      });
+
       let pointOptions = {
         point,
         hasMore,
-        users: newUsers ? newUsers : [],
+        users: authors,
         offset: newUsers[newUsers.length - 1] ? newUsers[newUsers.length - 1].author : statePoint.offset,
       };
 
-      dispatch(getUsersListSuccess(pointOptions));
+      dispatch(getUsersListSuccess(pointOptions, users));
     });
   };
 }

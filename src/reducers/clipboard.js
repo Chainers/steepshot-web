@@ -6,10 +6,12 @@ const initialState = {
 export default function clipboard(state = initialState, action) {
   switch (action.type) {
     case 'COPY_TO_CLIPBOARD':
-      return Object.assign({}, state, {
+      return {
+        ...state,
         text: action.text,
         count: ++state.count
-      });
+      };
+
     default:
       return state;
   }
