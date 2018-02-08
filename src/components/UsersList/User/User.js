@@ -2,8 +2,11 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 import Avatar from "../../Common/Avatar/Avatar";
 import {connect} from "react-redux";
+import {toggleFollow} from "../../../actions/follow";
+import ShowIf from "../../Common/ShowIf";
+import LoadingSpinner from "../../LoadingSpinner";
 
-const User = ({user}) => {
+const User = ({user, toggleFollow}) => {
 
   let amountMoney = '';
   if (user.amount_sbd) {
@@ -23,16 +26,25 @@ const User = ({user}) => {
           {amountMoney}
         </span>
       </div>
-      <div className="follow-btn_user">
+      <ShowIf show={!user.togglingFollow}>
+        <div className="follow-btn_user" onClick={() => toggleFollow(user.author)}>
+          <img src={user.has_followed ?
+            '/static/images/user/unfollow-button.svg' :
+            '/static/images/user/follow-button.svg'} alt="toggle follow"/>
+        </div>
+      </ShowIf>
+      <ShowIf show={user.togglingFollow}>
+        <div className="spinner_user">
+          <LoadingSpinner/>
+        </div>
+      </ShowIf>
 
-      </div>
     </div>
   );
 };
 
 const mapStateToProps = (state, props) => {
-  const user = state.usersList[props.point].users[props.index];
-
+  const user = state.users[props.index];
   return {
     user: user ? user : {},
   };
@@ -40,7 +52,9 @@ const mapStateToProps = (state, props) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-
+    toggleFollow: (author) => {
+      dispatch(toggleFollow(author));
+    }
   };
 };
 

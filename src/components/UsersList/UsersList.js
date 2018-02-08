@@ -17,19 +17,19 @@ class UsersList extends React.Component {
   constructor(props) {
     super(props);
     this.props.clearUsersList(this.props.point);
-    let usersListOptions = this.userListOptions(this.props);
+    let usersListOptions = UsersList.userListOptions(this.props);
     this.props.initUsersList(usersListOptions);
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.options && (nextProps.options.query !== this.props.options.query)) {
-      let usersListOptions = this.userListOptions(nextProps);
+      let usersListOptions = UsersList.userListOptions(nextProps);
       this.props.initUsersList(usersListOptions);
       this.props.getUsersList(this.props.point, this.props.getUsers);
     }
   }
 
-  userListOptions(props) {
+  static userListOptions(props) {
     return {
       point: props.point,
       loading: false,
@@ -70,8 +70,7 @@ class UsersList extends React.Component {
       users.push(
         <User
           key={index}
-          point={this.props.point}
-          index={index}
+          index={this.props.users[index]}
         />,
       );
     });
