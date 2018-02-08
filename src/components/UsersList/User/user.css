@@ -5,6 +5,7 @@
   margin: 5px;
   border: 1px solid #e7e7e7;
   border-radius: 4px;
+  position: relative;
 }
 
 .name_user a {
@@ -20,4 +21,20 @@
 
 .name_user a:hover {
   color: #e74800;
+}
+
+.money_user {
+  color: #979b9e;
+  font-size: 14px;
+  display: block;
+}
+
+.follow-btn_user {
+  width: 30px;
+  height: 30px;
+  background-image: url(/static/images/user/follow-button.svg);
+  position: absolute;
+  top: 34px;
+  right: 25px;
+  cursor: pointer;
 }

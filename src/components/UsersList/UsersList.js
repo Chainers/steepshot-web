@@ -70,7 +70,8 @@ class UsersList extends React.Component {
       users.push(
         <User
           key={index}
-          user={user}
+          point={this.props.point}
+          index={index}
         />,
       );
     });
