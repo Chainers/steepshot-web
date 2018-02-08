@@ -2,7 +2,6 @@ import {combineReducers} from 'redux';
 import messages from './messages';
 import auth from './auth';
 import posts from './posts';
-import votes from './votes';
 import clipboard from './clipboard';
 import usersList from './usersList';
 import postsList from './postsList';
@@ -10,6 +9,7 @@ import modals from './modals';
 import postModal from './postModal';
 import tabsBar from "./tabsBar";
 import likesList from "./likesList";
+import users from "./users";
 
 export default combineReducers({
   clipboard,
@@ -17,10 +17,10 @@ export default combineReducers({
   auth,
   posts,
   tabsBar,
-  votes,
   postsList,
   usersList,
   modals,
   postModal,
-  likesList
+  likesList,
+  users
 });

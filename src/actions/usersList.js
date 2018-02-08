@@ -1,4 +1,5 @@
 import {getStore} from '../store/configureStore';
+import {getUsersSearch} from "./posts";
 
 export function initUsersList(options) {
   return {
@@ -21,10 +22,11 @@ function getUsersListRequest(point) {
   };
 }
 
-function getUsersListSuccess(options) {
+function getUsersListSuccess(options, users) {
   return {
     type: 'GET_USERS_LIST_SUCCESS',
-    options
+    options,
+    users
   };
 }
 
@@ -59,14 +61,57 @@ export function getUsersList(point, getUsers) {
       if (statePoint.users.length !== 0) {
         newUsers = newUsers.slice(1, newUsers.length);
       }
+      let authors = newUsers.map((user) => {
+        return user.author;
+      });
+
+      let users = {};
+      newUsers.forEach( (user) => {
+        users[user.author] = {...user,
+          togglingFollow: false
+        };
+      });
+
       let pointOptions = {
         point,
         hasMore,
-        users: newUsers ? newUsers : [],
+        users: authors,
         offset: newUsers[newUsers.length - 1] ? newUsers[newUsers.length - 1].author : statePoint.offset,
       };
 
-      dispatch(getUsersListSuccess(pointOptions));
+      dispatch(getUsersListSuccess(pointOptions, users));
     });
   };
+}
+
+function updateUserSuccess(updatedUser) {
+  return {
+    type: 'UPDATE_USER_SUCCESS',
+    updatedUser
+  }
+}
+
+function updateUserRequest(author) {
+  return {
+    type: 'UPDATE_USER_REQUEST',
+    author
+  }
+}
+
+export function updateUser(author) {
+  return (dispatch) => {
+    dispatch(updateUserRequest(author));
+
+    const requestOptions = {
+      point: 'user/search',
+      params: Object.assign({}, {
+        limit: 1,
+        query: author
+      })
+    };
+    getUsersSearch(requestOptions, true).then((response) => {
+      let updatedUser = {[author]: {...response.results[0], togglingFollow: false}};
+      dispatch(updateUserSuccess(updatedUser));
+    });
+  }
 }
