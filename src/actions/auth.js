@@ -1,5 +1,3 @@
-import moment from 'moment';
-import cookie from 'react-cookie';
 import { browserHistory } from 'react-router';
 import fakeAuth from '../components/Routes/fakeAuth';
 import constants from '../common/constants';
@@ -19,6 +17,7 @@ function getUrl() {
 
 export function login(username, postingKey, history, dispatch, callback) {
   const account = null;
+
   steem.api.getAccounts([username], function(err, result) {
     if (err) {
       callback('Something went wrong, please, try again later');
@@ -87,7 +86,7 @@ export function login(username, postingKey, history, dispatch, callback) {
 }
 
 function baseBrowseFilter() {
-  const baseBrowseFilter = localStorage.getItem('browse') == undefined ? 
+  const baseBrowseFilter = localStorage.getItem('browse') == undefined ?
   Constants.BROWSE_ROUTES[0].NAME : localStorage.getItem('browse');
   return baseBrowseFilter;
 }

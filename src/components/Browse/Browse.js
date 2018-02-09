@@ -5,12 +5,11 @@ import {
 import {
   withRouter
 } from 'react-router-dom';
-import PropTypes from 'prop-types';
 import TabsFilterComponent from '../Filters/TabsFilterComponent';
-import ItemsComponent from '../UserProfile/itemsComponent';
 import Constants from '../../common/constants';
 import TabsWrapper from '../Wrappers/TabsWrapper';
-import { documentTitle } from '../DocumentTitle';
+import {documentTitle} from '../DocumentTitle';
+import PostsList from '../PostsList/PostsList';
 
 class Browse extends React.Component {
   constructor(props) {
@@ -28,10 +27,7 @@ class Browse extends React.Component {
 
   componentDidMount() {
     if (this.state.activeItemIndex == -1) this.props.history.replace('/*');
-    if (localStorage.getItem('browse') != undefined) this.props.history.replace('/browse/' + localStorage.getItem('browse'));
-  }
-
-  componentWillMount() {
+    localStorage.setItem('browse', Constants.BROWSE_ROUTES[this.state.activeItemIndex].NAME);
     documentTitle();
   }
 
@@ -68,20 +64,20 @@ class Browse extends React.Component {
           <TabsWrapper
             activeTab={this.state.activeItemIndex}
           >
-            <ItemsComponent
+            <PostsList
               point={Constants.POSTS_FILTERS.POSTS_HOT.point}
               cancelPrevious={false}
-              wrapperModifier="posts-list clearfix"
+              wrapperModifier="posts-list offset-should-replace_browse clearfix"
             />
-            <ItemsComponent
+            <PostsList
               point={Constants.POSTS_FILTERS.POSTS_NEW.point}
               cancelPrevious={false}
-              wrapperModifier="posts-list clearfix"
+              wrapperModifier="posts-list offset-should-replace_browse clearfix"
             />
-            <ItemsComponent
+            <PostsList
               point={Constants.POSTS_FILTERS.POSTS_TOP.point}
               cancelPrevious={false}
-              wrapperModifier="posts-list clearfix"
+              wrapperModifier="posts-list offset-should-replace_browse clearfix"
             />
           </TabsWrapper>
         </div>

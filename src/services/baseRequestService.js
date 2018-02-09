@@ -16,7 +16,7 @@ class BaseRequestService {
     getDefaultSettingsOptions() {
         const settings = JSON.parse(localStorage.getItem("settings"));
 
-        if (settings == undefined) return {}
+        if (settings == undefined) return {};
 
         let nsfw = false;
         let low_rated = false;
@@ -30,7 +30,7 @@ class BaseRequestService {
         }
         return {
             [constants.SETTINGS.show_nsfw]: nsfw,
-            [constants.SETTINGS.show_low_rated]: low_rated
+            [constants.SETTINGS.show_low_rated]: low_rated,
         };
     }
 

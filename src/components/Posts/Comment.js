@@ -1,14 +1,12 @@
 import React from 'react';
-import {
-  Link
-} from 'react-router-dom';
-import {
-  connect
-} from 'react-redux';
+import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import constants from '../../common/constants';
 import VouteComponent from './VouteComponent';
 import TimeAgo from 'timeago-react';
+import {UserLinkFunc} from '../Common/UserLinkFunc';
+import Avatar from '../Common/Avatar/Avatar';
 
 class Comment extends React.Component {
   constructor(props) {
@@ -23,14 +21,18 @@ class Comment extends React.Component {
   updateVoteInComponent(vote) {
     let newItem = this.state.item;
     vote ? newItem.net_votes++ : newItem.net_votes--;
+    vote ? newItem.net_likes++ : newItem.net_likes--;
     newItem.vote = vote;
     this.setState({
       item: newItem
     });
   }
 
-  setDefaultAvatar() {
-    this.setState({ avatar: constants.NO_AVATAR });
+  componentDidMount() {
+    if (this.state.item && /<[\w\W]+>/.test(this.state.item.body)) {
+      let customComment = this.state.item.body.replace(/([>\s\b])(@[\w-.]+)/g, `$1<a href=\"/$2\">$2</a>`);
+      this.commentText.innerHTML = customComment;
+    }
   }
 
   openLikesModal() {
@@ -44,90 +46,22 @@ class Comment extends React.Component {
     jqApp.openLikesModal($(document));
   }
 
-  userLinkFunc() {
-    if (this.state.item.body.match(/@\w+/)) {
-      let arr = this.state.item.body.split(' ').map( (item, index) => {
-        if (/@\w+\S/.test(item)) {
-          let lowItem = item.toLowerCase();
-          let replace1 = lowItem.replace(/(@[\w-.]+\w)/g, ' $1 ');
-          let replace2 = replace1.match(/\s(@[\w-.]+)\s/g);
-          let replace3 = replace1.match(/([\w\W]+)\s@/g);
-          let replace4 = replace1.match(/\w\s([^@]+)/g);
-          let replace5 = lowItem.match(/@[\w.]+[\W]/);
-          let replaceDot = replace2[0].match(/@\w+\.\s/);
-          return <span key={index}>
-                   <span>
-                     {
-                       replace3
-                       ?
-                         replace3[0].replace(/\s@/g, '')
-                       :
-                         null
-                     }
-                   </span>
-                   <Link to={`/${
-                              replaceDot
-                              ?
-                                replace2[0].replace(/\s(@\w+)\.\s+/g, '$1')
-                              :
-                                replace2[0].replace(/\s+/g, '')}`
-                            }>
-                     {
-                       replaceDot
-                       ?
-                         replace2[0].replace(/\.\s+/g, '')
-                       :
-                         replace5
-                       ?
-                         replace2[0].replace(/\s+/g, '')
-                       :
-                         replace2[0].replace(/\s+/g, '') + ' '
-                     }
-                   </Link>
-                   <span>
-                     {
-                       replace4
-                       ?
-                         replace4[0].replace(/\w\s/, '') + ' '
-                       :
-                         replaceDot
-                       ?
-                         '. '
-                       :
-                         ' '
-                     }
-                   </span>
-                 </span>
-        } else {
-          return item + ' '
-        }
-      });
-      return (
-        <span>
-          {arr}
-        </span>
-      )
+  replyAuthor() {
+    if (this.props.replyUser) {
+      this.props.replyUser.value = `@${this.state.item.author}, `;
+      this.props.replyUser.focus();
     } else {
-      return (
-        <span>
-          {this.state.item.body + ' '}
-        </span>
-      )
+      jqApp.pushMessage.open(constants.VOTE_ACTION_WHEN_NOT_AUTH);
     }
   }
 
-  replyAuthor() {
-    this.props.replyUser.value = `@${this.state.item.author}, `;
-    this.props.replyUser.focus();
-  }
-
   likeFunc() {
-    let like = this.state.item.net_votes;
+    let like = this.state.item.net_likes;
     let text = null;
     let money = null;
     let reply = <span className="rectangle_comment text--center">
                   <span onClick={this.replyAuthor.bind(this)}>Reply</span>
-                </span>
+                </span>;
     if (like) {
       if (like == 1 || like == -1) {
         text = `${like} like`
@@ -135,12 +69,15 @@ class Comment extends React.Component {
         text = `${like} likes`
       }
       if (this.state.item.total_payout_value > 0) {
-        money = `+ $ ${this.state.item.total_payout_value}`;
+        money = `+ $${this.state.item.total_payout_value.toFixed(3)}`;
       }
       return (
         <div className="comment-controls clearfix">
           {reply}
-          <a className="likes" data-toggle="modal" onClick={this.openLikesModal.bind(this)}>{text}</a>
+          <a
+            className="likes"
+            onClick={this.openLikesModal.bind(this)}
+          >{text}</a>
           <span className="pull-right">{money}</span>
         </div>
       )
@@ -167,15 +104,15 @@ class Comment extends React.Component {
               />
             </div>
             <Link to={authorLink} className="user">
-              <div className="photo">
-                <img src={avatar} alt="Image" onError={this.setDefaultAvatar.bind(this)} />
-              </div>
+              <Avatar src={avatar}/>
               <div className="name">{this.props.item.author}</div>
             </Link>
           </div>
         </div>
         <div className="comment-text">
-          {this.userLinkFunc()}
+          <div ref={ref => {this.commentText = ref}} className="comment-text_comment">
+            {UserLinkFunc(null, this.state.item.body)}
+          </div>
           <VouteComponent
             key="vote"
             item={this.props.item}

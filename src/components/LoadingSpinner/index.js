@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
+import React from 'react';
 
-class LoadingSpinner extends Component {
+class LoadingSpinner extends React.Component {
 
   constructor(props) {
     super(props);
@@ -8,19 +8,13 @@ class LoadingSpinner extends Component {
 
   render() {
     return (
-      this.props.show ?
-        <div className="loader-blocker">
-          <div className="loader"></div>
-        </div>
-        :
-        null
+      <div className="loader-blocker"
+           style={this.props.style}>
+        <div className={this.props.loaderClass ? this.props.loaderClass : 'loader'}/>
+      </div>
     )
   }
-
 }
 
-LoadingSpinner.defaultProps  = {
-  show: true
-};
 
 export default LoadingSpinner;

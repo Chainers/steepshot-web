@@ -104,3 +104,21 @@ export function logFollow(isFollowed, user, data) {
 
     logCORS(url, options, fType);
 }
+
+export function logDeletedPost(author, permlink, data) {
+    const url = `${baseUrl}/log/post/${makePostId(author, permlink)}/delete`;
+
+    let options = baseCORSOptions;
+    options.body = data;
+
+    logCORS(url, options, 'delete');
+}
+
+export function logSharePost(author, permlink, data) {
+    const url = `${baseUrl}/log/post/${makePostId(author, permlink)}/info`;
+
+    let options = baseCORSOptions;
+    options.body = data;
+
+    logCORS(url, options, 'share_post');
+}

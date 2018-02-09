@@ -1,20 +1,29 @@
-import { combineReducers } from 'redux';
+import {combineReducers} from 'redux';
 import messages from './messages';
 import auth from './auth';
-import post from './post';
-import admin from './admin';
-import localization from './localization';
-import search from './search';
-import comment from './comment';
-import votes from './votes';
+import posts from './posts';
+import clipboard from './clipboard';
+import usersList from './usersList';
+import postsList from './postsList';
+import modals from './modals';
+import postModal from './postModal';
+import tabsBar from './tabsBar';
+
+import likesFlagsList from './likesFlagsList';
+import users from './users';
+import bodyParams from './bodyParams';
 
 export default combineReducers({
-    messages,
-    auth,
-    admin,
-    localization,
-    post,
-    search,
-    comment,
-    votes
+  clipboard,
+  messages,
+  auth,
+  posts,
+  tabsBar,
+  postsList,
+  usersList,
+  modals,
+  postModal,
+  users,
+  bodyParams,
+  likesFlagsList
 });

@@ -1,0 +1,11 @@
+.body_use-lis {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.spinner_use-lis {
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

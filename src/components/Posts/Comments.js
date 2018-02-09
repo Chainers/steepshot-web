@@ -1,12 +1,9 @@
 import React from 'react';
-import {
-  getComments
-} from '../../actions/posts';
+import { getComments } from '../../actions/posts';
 import Comment from './Comment';
-import {
-  connect
-} from 'react-redux';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import constants from '../../common/constants';
 import LoadingSpinner from '../LoadingSpinner';
 
 class Comments extends React.Component {
@@ -47,8 +44,7 @@ class Comments extends React.Component {
     const options = {
       point : `post/${nextProps.item.author}/${nextProps.item.url}/comments`,
       params : {}
-    }
-
+    };
     getComments(options, true).then((response) => {
       this.setState({
         comments: response.results,
@@ -58,13 +54,13 @@ class Comments extends React.Component {
     });
   }
 
+
   render() {
-    let comments = <div>No comments</div>;
+    let comments = null;
 
     if (this.state.loading) {
-      comments = <div className='loading-block'><LoadingSpinner /></div>;
+      comments = <LoadingSpinner />;
     }
-
     if (this.state.comments && this.state.comments.length != 0) {
       comments = this.state.comments.map((item, index) => {
         return <Comment replyUser={this.props.replyUser} key={index} item={item} />

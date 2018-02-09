@@ -1,19 +1,31 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
 class ShowIf extends React.Component {
+  static defaultProps = {
+    removeFromDom: true,
+  };
 
   constructor(props) {
     super(props);
   }
 
   render() {
-    return (this.props.show ? this.props.children : null)
+    if (this.props.removeFromDom && !this.props.show) {
+      return null;
+    }
+    let children = this.props.children.length > 1
+      ? <div className="container_show-if">{this.props.children}</div>
+      : this.props.children;
+
+    if (this.props.removeFromDom) {
+      return children;
+    }
+
+    children = (<div style={this.props.show ? {} : {display: 'none'}}
+                     className={this.props.className}>{children}</div>)
+
+    return children;
   }
 }
-
-ShowIf.propTypes = {
-  show: PropTypes.bool.isRequired
-};
 
 export default ShowIf;

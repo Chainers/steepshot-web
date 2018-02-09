@@ -3,7 +3,8 @@ import constants from '../common/constants';
 import Promise from 'bluebird';
 import { getStore } from '../store/configureStore';
 import { preparePost, prepareComment } from '../actions/steemPayout';
-import { logComment, logVoute, logFlag, logPost, logFollow } from '../actions/logging';
+import { logComment, logVoute, logFlag, logPost, logFollow, logDeletedPost } from '../actions/logging';
+import FormData from 'form-data';
 
 import _ from 'underscore';
 
@@ -12,11 +13,11 @@ const getUserName = () => {
 }
 
 class Steem {
-  
+
     constructor(){
         steem.api.setOptions({ url: 'https://api.steemit.com' });
     }
-  
+
     comment(wif, parentAuthor, parentPermlink, author, body, tags, callback) {
         const permlink = this._getPermLink();
         const commentObject = {
@@ -41,7 +42,6 @@ class Steem {
                 });
                 logComment(parentAuthor, parentPermlink, data);
                 callback(null, success);
-                console.log(success);
             }
         };
         this.handleBroadcastMessagesComment(commentOperation, [], wif, callbackBc);
@@ -55,7 +55,6 @@ class Steem {
                 let beneficiaries = self._getCommentBenificiaries(message[1].permlink);
 
                 const operations = [message, beneficiaries];
-                console.log(operations);
 
                 steem.broadcast.sendAsync(
                     { operations, extensions: [] },
@@ -122,7 +121,6 @@ class Steem {
             if (success) {
                 logVoute(voteStatus, author, url, data);
                 callback(null, success);
-                console.log(success);
             }
         };
 
@@ -144,7 +142,6 @@ class Steem {
                 });
                 logFlag(author, url, data);
                 callback(null, success);
-                console.log(success)
             }
         };
 
@@ -201,11 +198,10 @@ class Steem {
             } else
             if (result) {
                 const data = JSON.stringify({
-                    username : follower
+                    username: follower
                 });
-                logFollow(status, following, data)
+                logFollow(status, following, data);
                 callback(null, result);
-                console.log(result);
             }
         }
 
@@ -220,6 +216,26 @@ class Steem {
     }
 
     /** Broadcast a post */
+
+    deletePost(wif, author, permlink, callback) {
+      const callbackBc = (err, success) => {
+        if (err) {
+          // const data = JSON.stringify({
+          //   error: err.cause.name
+          // });
+          // logDeletedPost(author, permlink, data);
+          callback(err, null);
+        } else if (success) {
+          const data = JSON.stringify({
+            username: author
+          });
+          logDeletedPost(author, permlink, data);
+          callback(null, success);
+        }
+      };
+      steem.broadcast.deleteComment(wif, author, permlink, callbackBc);
+    }
+
     createPost(wif, tags, author, title, description, file, callback) {
         const permlink = this._getPermLink();
         const operation = [constants.OPERATIONS.COMMENT, {
@@ -243,7 +259,6 @@ class Steem {
                 });
                 logPost(data);
                 callback(null, success);
-                console.log(success);
             }
         };
         this.handleBroadcastMessages(operation, [], wif, callbackBc);

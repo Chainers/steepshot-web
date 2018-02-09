@@ -23,8 +23,8 @@ export default {
     NO_IMAGE: '/static/images/noimage.jpg',
 
     SETTINGS: {
-        show_low_rated : "show_low_rated",
-        show_nsfw : "show_nsfw"
+        show_low_rated : 'show_low_rated',
+        show_nsfw : 'show_nsfw',
     },
 
     SETTINGS_LABELS : {
@@ -58,7 +58,7 @@ export default {
         },
         POSTS_USER_FEED : {
             label : 'Feed',
-            point : 'recent/posts'
+            point : 'recent'
         },
         POSTS_USER : {
             label : 'Posts',
@@ -108,7 +108,8 @@ export default {
         GET_POSTS : 'GET_POSTS_PROMISE',
         GET_FOLLOWERS : 'GET_FOLLOWERS_PROMISE',
         GET_FOLLOWING : 'GET_FOLLOWING_PROMISE',
-        GET_USERS_SEARCH : 'GET_USERS_SEARCH'
+        GET_USERS_SEARCH : 'GET_USERS_SEARCH',
+        GET_USERS_VOTERS : 'GET_USERS_VOTERS'
     },
 
     DISPLAY : {
@@ -149,9 +150,9 @@ export default {
     SETTINGS_CHANGED_MESSAGE : 'Setting has been successfully changed',
     SETTINGS_NOTCHANGED_MESSAGE : 'Setting hasn\'t been changed',
 
-    VOTE_ACTION_WHEN_NOT_AUTH : 'This action is only available to logged-in users',
+    VOTE_ACTION_WHEN_NOT_AUTH : 'This action is only available for logged-in users',
     VOTE_ACTION_WHEN_NOT_AUTH_DEBOUNCE : 500,
 
     POST_DESRIPTION_MAXLENGTH : 120,
-    POST_LIKED_BY : 'This post has been rated by these users'
+    POST_LIKED_BY : 'Post has been rated by these users'
 }

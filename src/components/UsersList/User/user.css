@@ -1,0 +1,54 @@
+.container_user {
+  width: 298px;
+  height: 98px;
+  padding: 20px;
+  margin: 5px;
+  border: 1px solid #e7e7e7;
+  border-radius: 4px;
+  position: relative;
+}
+
+.name_user a {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  text-decoration: none;
+  font-family: OpenSans-SemiBold,Helvetica,Arial,sans-serif;
+  color: #0f181e;
+  line-height: 1.4;
+  transition: all .2s ease;
+}
+
+.name_user a:hover {
+  color: #e74800;
+}
+
+.money_user {
+  color: #979b9e;
+  font-size: 14px;
+  display: block;
+}
+
+.spinner_user {
+  position: absolute;
+  right: 25px;
+  top: 29px;
+}
+
+.follow-btn_user {
+  cursor: pointer;
+}
+
+.following_user, .follow-btn_user {
+  position: absolute;
+  top: 34px;
+  right: 25px;
+  width: 30px;
+  height: 30px;
+  box-shadow: 0 10px 20px 0 rgba(231,72,0,.3);
+  border-radius: 50%;
+}
+
+.follow-btn_user:hover {
+  box-shadow: 0 5px 12px 0 rgba(231,72,0,.3)
+}

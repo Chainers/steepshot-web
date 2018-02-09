@@ -1,10 +1,6 @@
 import React from 'react';
-import {
-  Link
-} from 'react-router-dom';
-import {
-  connect
-} from 'react-redux';
+import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Steem from '../../libs/steem';
 import utils from '../../utils/utils';
@@ -20,11 +16,19 @@ class VouteComponent extends React.Component {
       index: this.props.index,
       item: this.props.item,
       vote: this.props.item.vote,
-      parent: this.props.parent || 'post'
+      parent: this.props.parent || 'post',
+      enterLike: false
     }
   }
 
   componentWillReceiveProps(nextProps) {
+    if (nextProps.enterLike) {
+      this.setState({enterLike : nextProps.enterLike}, () => {
+        if (this.state.enterLike) {
+          this.ratingVotes();
+        }
+      });
+    }
     this.setState({
       index: nextProps.index,
       item: nextProps.item,
@@ -32,20 +36,10 @@ class VouteComponent extends React.Component {
     });
   }
 
-  updateVoteInComponent(vote, index) {
-    let newItem = this.state.item;
-    if (vote && newItem.flag) {
-      newItem.flag = false;
-    }
-    vote ? newItem.net_votes++ : newItem.net_votes--;
-    newItem.vote = vote;
-    this.setState({
-      item: newItem
-    });
-  }
-
   ratingVotes(e) {
-    e.preventDefault();
+    if (e) {
+      e.preventDefault();
+    }
 
     if (!(this.props.username || this.props.postingKey)) {
       debounce(jqApp.pushMessage.open(Constants.VOTE_ACTION_WHEN_NOT_AUTH), Constants.VOTE_ACTION_WHEN_NOT_AUTH_DEBOUNCE);
@@ -57,10 +51,10 @@ class VouteComponent extends React.Component {
       return false;
     }
 
-    sessionStorage.setItem('voteQueue', "true");
+    sessionStorage.setItem('voteQueue', 'true');
 
     if (!(this.props.username || this.props.postingKey)) {
-      return;
+      return false;
     }
     const newVoteState = !this.state.vote;
     const urlObject = this.state.item.url.split('/');
@@ -72,25 +66,24 @@ class VouteComponent extends React.Component {
       const callback = (err, success) => {
         this.setState({
           isVoteLoading : false
-        })
-        sessionStorage.setItem('voteQueue', "false");
+        });
+        sessionStorage.setItem('voteQueue', 'false');
         if (err) {
           this.setState({
             vote: !newVoteState
           }, () => {
               let text = 'Something went wrong when you voted, please, try again later';
-              if (err.payload.error.data.code == 10) {
+              if (err.data.code == 10) {
                 text = `Sorry, you had used the maximum number of vote changes on this ${this.state.parent}`;
               }
               jqApp.pushMessage.open(text);
             }
           );
-        } else
-        if (success) {
+        } else if (success) {
             let text = `${utils.capitalize(this.state.parent)} has been successfully liked. If you don't see your like, please give it a few minutes to sync from the blockchain`;
             if (!newVoteState) text = `${utils.capitalize(this.state.parent)} has been successfully disliked. If you don't see your dislike, please give it a few minutes to sync from the blockchain`;
             jqApp.pushMessage.open(text);
-            this.updateVoteInComponent(newVoteState, this.state.index);
+            this.props.updateVoteInComponent(newVoteState, this.state.index);
         }
       }
 
@@ -112,7 +105,7 @@ class VouteComponent extends React.Component {
     if (this.state.isVoteLoading) {
       buttonClasses = buttonClasses + " loading";
     }
-    let button = <button type="button" className={buttonClasses}></button>
+    let button = <button type="button" className={buttonClasses} />;
     return (
         <div className="wrap-btn" onClick={this.ratingVotes.bind(this)}>
           {button}

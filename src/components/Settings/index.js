@@ -1,18 +1,17 @@
 import React from 'react';
 import {
-    getNSFW,
-    getLowRated,
-    updateLowRated,
-    updateNSFW,
-    getSettings,
-    updateSettings
+  getNSFW,
+  getLowRated,
+  updateLowRated,
+  updateNSFW,
+  getSettings,
+  updateSettings, updateSettingsInStore,
 } from '../../actions/settings';
 import {
     connect,
     store
 } from 'react-redux';
 import Constants from '../../common/constants';
-import PropTypes from 'prop-types';
 import { documentTitle } from '../DocumentTitle';
 
 class Settings extends React.Component {
@@ -34,7 +33,6 @@ class Settings extends React.Component {
 
     componentDidMount() {
         const userSettings = getSettings();
-
         this.setState({
             settings: userSettings
         });
@@ -89,6 +87,7 @@ class Settings extends React.Component {
         if (this.state.buttonDisabled) return false;
         if (JSON.stringify(this.state.saveSettings) != JSON.stringify(this.state.settings)) {
                 updateSettings(this.state.settings);
+                this.props.updateSettingsInStore(this.state.settings);
                 this.setState({
                     success: true,
                     saveSettings: getSettings()
@@ -173,4 +172,12 @@ const mapStateToProps = (state, props) => {
   };
 };
 
-export default connect(mapStateToProps)(Settings);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    updateSettingsInStore: (newSettings) => {
+      dispatch(updateSettingsInStore(newSettings));
+    },
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Settings);

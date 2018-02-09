@@ -1,0 +1,29 @@
+.container_pos-con-men {
+  border-radius: 3px;
+  height: 100%;
+  background-color: rgba(0,0,0,0);
+}
+
+.container_post-men-but {
+  width: 30px;
+  border-radius: 4px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  background: #ffffff;
+  border: 1px solid #ececee;
+}
+
+.container_post-men-but:hover {
+  cursor: pointer;
+}
+
+.shape_post-men-but {
+  width: 100%;
+  height: 4px;
+  vertical-align: initial;
+  background: url(/static/images/postContextMenu/post-menu-btns.svg) center no-repeat;
+}
+.container_post-men-but:hover .shape_post-men-but {
+  background: url(/static/images/postContextMenu/shape-copy-3.svg) center no-repeat;
+}

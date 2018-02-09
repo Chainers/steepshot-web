@@ -15,7 +15,7 @@ class FooterComponent extends React.Component {
                         <footer className="g-footer">
                             <div className="g-footer_i">
                                 <div className="container">
-                                    <div className="copyright">Steepshot 2017. All rights reserved</div>
+                                    <div className="copyright">Steepshot 2018. All rights reserved</div>
                                     <div className="menu-foot">
                                         <ul className="list_level_1 list-reset">
                                             {/* <li className="item_1"><a href="https://www.facebook.com/steepshot/" target="_blank">Facebook</a></li>
@@ -32,6 +32,7 @@ class FooterComponent extends React.Component {
                                                 </a>
                                             </li>
                                             <li className="item_1"><a href="https://t.me/steepshot_en" target="_blank">Telegram</a></li>
+                                            <li className="item_1" target="_blank"><a href="https://discord.gg/3sz6YQ">Discord</a></li>
                                         </ul>
                                     </div>
                                 </div>
@@ -39,7 +40,7 @@ class FooterComponent extends React.Component {
                         </footer>
                     </div>
                 </div>
-                <div className="js--page-bottom"></div>
+                <div className="js--page-bottom"/>
             </div>
         );
     }
