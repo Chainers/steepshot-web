@@ -11,7 +11,8 @@ import User from "./User/User";
 class UsersList extends React.Component {
   static defaultProps = {
     isComponentVisible: true,
-    useScrollView: false
+    useScrollView: false,
+    options: {}
   };
 
   constructor(props) {
@@ -100,8 +101,10 @@ class UsersList extends React.Component {
 }
 
 const mapStateToProps = (state, props) => {
+  const point = props.point + 'JSON_OPTIONS:' + JSON.stringify(props.options);
   return {
-    ...state.usersList[props.point],
+    point,
+    ...state.usersList[point],
     options: props.options
   };
 };

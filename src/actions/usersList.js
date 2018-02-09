@@ -48,12 +48,12 @@ export function getUsersList(point, getUsers) {
   return (dispatch) => {
     dispatch(getUsersListRequest(point));
     const requestOptions = {
-      point,
-      params: Object.assign({}, {
+      point: point.substr(0, point.indexOf('JSON_OPTIONS:')),
+      params: {
+        ...statePoint.options,
           offset: statePoint.offset,
           limit: LIMIT
-      },
-      statePoint.options)
+      }
     };
     getUsers(requestOptions, true).then((response) => {
       let newUsers = response.results;
@@ -66,8 +66,9 @@ export function getUsersList(point, getUsers) {
       });
 
       let users = {};
-      newUsers.forEach( (user) => {
-        users[user.author] = {...user,
+      newUsers.forEach((user) => {
+        users[user.author] = {
+          ...user,
           togglingFollow: false
         };
       });

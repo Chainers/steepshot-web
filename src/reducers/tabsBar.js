@@ -2,6 +2,10 @@ const initialState = {
   search: {
     activeIndex: 0,
     pageLoaded: false
+  },
+  likesFlags: {
+    activeIndex: 0,
+    pageLoaded: false
   }
 };
 

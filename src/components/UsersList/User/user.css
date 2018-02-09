@@ -36,10 +36,19 @@
 }
 
 .follow-btn_user {
+  cursor: pointer;
+}
+
+.following_user, .follow-btn_user {
   position: absolute;
   top: 34px;
   right: 25px;
   width: 30px;
   height: 30px;
-  cursor: pointer;
+  box-shadow: 0 10px 20px 0 rgba(231,72,0,.3);
+  border-radius: 50%;
+}
+
+.follow-btn_user:hover {
+  box-shadow: 0 5px 12px 0 rgba(231,72,0,.3)
 }

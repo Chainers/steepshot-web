@@ -6,17 +6,15 @@
   max-height: 96vh;
   min-height: 10px;
   width: 660px;
-  padding: 0 20px 10px;
-}
-
-.header_lik-lis {
-  height: 62px;
-  padding: 15px 0;
-  border-bottom: 1px solid #f4f4f6;
+  padding: 10px 20px;
+  overflow: hidden;
 }
 
 .close-button_lik-lis {
-  float: right;
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  z-index: 10;
 }
 
 .title_lik-lis {
@@ -39,6 +37,6 @@
 @media (max-width: 370px) {
   .container_lik-lis {
     width: 100vw;
-    padding: 0 0 10px;
+    padding: 10px 0;
   }
 }

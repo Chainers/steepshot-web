@@ -3,7 +3,7 @@ const initialState = {
   fullBodyHeight: 100
 };
 
-export default function likesList(state = initialState, action) {
+export default function likesFlagsList(state = initialState, action) {
   switch (action.type) {
     case 'SET_LIKES_LIST_BODY_HEIGHT':
       return {

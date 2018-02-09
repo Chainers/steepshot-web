@@ -6,6 +6,9 @@ import Constants from "../../../common/constants";
 import ShowIf from "../ShowIf";
 
 class TabsBar extends React.Component {
+  static defaultProps = {
+    className: ''
+  };
 
   constructor(props) {
     super(props);
@@ -24,9 +27,13 @@ class TabsBar extends React.Component {
     if (navItems.length === 1) {
       let itemIndex = navItems[0];
       if (this.props.activeIndex !== itemIndex) {
-        this.props.setActiveIndex(this.props.point, itemIndex);
+        this.setIndex(itemIndex);
       }
     }
+  }
+
+  setIndex(index) {
+    this.props.setActiveIndex(this.props.point, index);
   }
 
   renderNavigation() {
@@ -39,7 +46,7 @@ class TabsBar extends React.Component {
       if (!item.props.loading && !item.props.empty || this.props.activeIndex === index) {
         navItems.push(
           <li role="presentation" key={index} className={styles}>
-            <a onClick={() => this.props.setActiveIndex(this.props.point, index)}
+            <a onClick={() => this.setIndex(index)}
                className="nav-link tab-head">
               {item.props.name}
             </a>
@@ -82,10 +89,10 @@ class TabsBar extends React.Component {
 
   render() {
     return (
-      <div className="g-content clearfix">
+      <div className={"clearfix" + this.props.className}>
         {this.renderNavigation()}
         {this.renderChildren()}
-        <ShowIf show={!this.props.pageLoaded}>
+        <ShowIf show={!this.props.pageLoaded && this.props.showLoader}>
           <LoadingSpinner style={{height: '100%', position: 'absolute'}}/>
         </ShowIf>
       </div>
