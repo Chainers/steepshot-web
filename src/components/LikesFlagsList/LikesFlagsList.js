@@ -44,7 +44,9 @@ class LikesFlagsModal extends React.Component {
     let fullBodyHeight = height ? height : this.props.fullBodyHeight;
     let preferredBodyHeight = window.innerHeight * 0.95 - HEADER_HEIGHT - PADDING_BOTTOM;
     preferredBodyHeight = utils.getLess(preferredBodyHeight, fullBodyHeight);
-    this.props.setBodyHeight(preferredBodyHeight, fullBodyHeight);
+    if (this.props.preferredBodyHeight !== preferredBodyHeight) {
+      this.props.setBodyHeight(preferredBodyHeight, fullBodyHeight);
+    }
   }
 
   render() {
