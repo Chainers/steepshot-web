@@ -452,10 +452,6 @@ h2.card-field__heading {
     padding: 20px !important;
   }
 
-  .comment-head .user-wrap {
-    padding: 20px 0 !important;
-  }
-
   .list-scroll {
     max-height: 350px;
   }
@@ -9342,4 +9338,8 @@ modal.modal-like .modal-header {
 
 .offset-should-replace_browse {
   padding-top: 20px;
+}
+
+.comment-head .user-wrap {
+  padding: 15px 0;
 }
