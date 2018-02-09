@@ -29,6 +29,8 @@
 
 .body_modal {
   transition: all .3s cubic-bezier(0.1, 0.23, 0.25, 1);
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .before-load_modal {
@@ -38,4 +40,8 @@
 
 .before-load-back_modal {
   opacity: 0;
+}
+.ov-scroll_modal {
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }

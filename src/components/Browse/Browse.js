@@ -5,11 +5,10 @@ import {
 import {
   withRouter
 } from 'react-router-dom';
-import PropTypes from 'prop-types';
 import TabsFilterComponent from '../Filters/TabsFilterComponent';
 import Constants from '../../common/constants';
 import TabsWrapper from '../Wrappers/TabsWrapper';
-import { documentTitle } from '../DocumentTitle';
+import {documentTitle} from '../DocumentTitle';
 import PostsList from '../PostsList/PostsList';
 
 class Browse extends React.Component {
@@ -68,17 +67,17 @@ class Browse extends React.Component {
             <PostsList
               point={Constants.POSTS_FILTERS.POSTS_HOT.point}
               cancelPrevious={false}
-              wrapperModifier="posts-list clearfix"
+              wrapperModifier="posts-list offset-should-replace_browse clearfix"
             />
             <PostsList
               point={Constants.POSTS_FILTERS.POSTS_NEW.point}
               cancelPrevious={false}
-              wrapperModifier="posts-list clearfix"
+              wrapperModifier="posts-list offset-should-replace_browse clearfix"
             />
             <PostsList
               point={Constants.POSTS_FILTERS.POSTS_TOP.point}
               cancelPrevious={false}
-              wrapperModifier="posts-list clearfix"
+              wrapperModifier="posts-list offset-should-replace_browse clearfix"
             />
           </TabsWrapper>
         </div>

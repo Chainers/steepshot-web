@@ -1,5 +1,4 @@
 import React from 'react';
-import constants from '../../common/constants';
 import PropTypes from 'prop-types';
 
 class TabsFilterComponent extends React.Component {
@@ -33,23 +32,6 @@ class TabsFilterComponent extends React.Component {
     }
 
     switchFilter(index) {
-      // if (/\/search\/\w+/.test(document.location.pathname)) {
-      //   if (this.props.activeItemIndex == index) return false;
-      //   if (this.props.numberUsers && this.props.numberPosts) {
-      //     this.props.updateCallback(index);
-      //     this.setState({
-      //       activeItemIndex: index,
-      //     });
-      //   } else {
-      //     return false
-      //   }
-      // } else {
-      //   if (this.state.activeItemIndex == index) return false;
-      //   this.props.updateCallback(index);
-      //   this.setState({
-      //     activeItemIndex: index,
-      //   });
-      // }
       if (this.state.activeItemIndex == index) return false;
       this.props.updateCallback(index);
       this.setState({

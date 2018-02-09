@@ -46,26 +46,23 @@ class Modal extends React.Component {
   }
 
   render() {
-    let styleBack = {
-      backgroundColor: 'rgba(0,0,0, 0.7)',
-    };
+    let styleBack = {backgroundColor: 'rgba(0, 0, 0, .7)'};
     styleBack.alignItems = this.props.bodyHeight >= this.props.containerHeight ? 'flex-start' : 'center';
     styleBack.zIndex = 1002;
     return (
-      <div className="back_mods before-load-back_modal"
+      <div className="back_mods before-load-back_modal ov-scroll_modal"
            onClick={this.clickOutside.bind(this)}
            style={styleBack}
            ref={ref => {
              this.container = ref;
            }}
       >
-        <div className=" body_modal before-load_modal"
-             ref={ref => {
-               this.body = ref;
-             }}>
+        <div className="body_modal before-load_modal"
+             ref={ref => {this.body = ref;}}
+        >
           {this.props.body}
-          <ReactResizeDetector handleWidth handleHeight onResize={this.resizeWindow} />
         </div>
+        <ReactResizeDetector handleWidth handleHeight onResize={this.resizeWindow} />
       </div>
     );
   }

@@ -8,20 +8,20 @@ import Constants from '../common/constants';
 class Header extends React.Component {
   constructor(props) {
     super(props);
-    
+
     this.state = {
       searchValue: '',
       sizeParam: false,
     };
   }
-  
+
   baseBrowseFilter() {
     const baseBrowseFilter = localStorage.getItem('browse') == undefined
       ? Constants.BROWSE_ROUTES[0].NAME
       : localStorage.getItem('browse');
     return baseBrowseFilter;
   }
-  
+
   scrollTopAndReload() {
     if (window.location.pathname == '/feed') {
       window.location.reload();
@@ -29,7 +29,7 @@ class Header extends React.Component {
       window.location.reload();
     }
   }
-  
+
   componentDidMount() {
     if (this.refs[this.props.location.pathname]) $(
       this.refs[this.props.location.pathname]).addClass('active');
@@ -37,60 +37,60 @@ class Header extends React.Component {
     //   jqApp.search.init();
     // }, 0);
   }
-  
+
   componentWillMount() {
     this.forResize();
   }
-  
+
   shouldComponentUpdate(nextProps, nextState) {
     if (this.refs[this.props.location.pathname]) $(
       this.refs[this.props.location.pathname]).removeClass('active');
     if (this.refs[nextProps.location.pathname]) $(
       this.refs[nextProps.location.pathname]).addClass('active');
-    
+
     return true;
   }
-  
+
   handleLogout(event) {
     event.preventDefault();
     logout(this.props.history, this.props.dispatch);
   }
-  
+
   _changeLanguageEn() {
     event.preventDefault();
     LocalizedStrings.setNewLanguage('en');
     this.forceUpdate();
   }
-  
+
   _changeLanguageIt() {
     event.preventDefault();
     LocalizedStrings.setNewLanguage('ru');
     this.forceUpdate();
   }
-  
+
   searchKeyPress(e) {
     if (e.key === 'Enter') {
       e.preventDefault();
       this.props.history.push(`/search/${this.state.searchValue}`);
     }
   }
-  
+
   searchHandleChange(e) {
     let value = e.target.value.toLowerCase();
     this.setState({searchValue: value});
   }
-  
+
   forResize() {
     if (document.body.clientWidth < 420) {
       this.setState({sizeParam: true});
     }
   }
-  
+
   render() {
     const isUserAuth = this.props.user && this.props.postingKey;
     let browse;
     let authorLink = '';
-    
+
     let loginComponent = <div className="section login">
       <div className="wrap-login">
         <Link to="/signin" className="btn btn-default btn-xs">
@@ -98,7 +98,7 @@ class Header extends React.Component {
         </Link>
       </div>
     </div>;
-    
+
     if (isUserAuth) {
       authorLink = `/@${this.props.user}`;
       loginComponent = <div className="section controls">
@@ -109,7 +109,7 @@ class Header extends React.Component {
         </div>
       </div>;
     }
-    
+
     browse = <div className="section menu">
       <div className="wrap-menu">
         {
@@ -126,7 +126,7 @@ class Header extends React.Component {
         </div>
       </div>
     </div>;
-    
+
     return (
       <header className="g-header">
         <div className="container">

@@ -1,6 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import ConfirmFlagModal from '../../../PostContextMenu/ConfirmFlagModal/ConfirmFlagModal';
+import Constants from '../../../../common/constants';
 import {toggleFlag} from '../../../../actions/flag';
 import {closeModal, openModal} from '../../../../actions/modal';
 
@@ -10,6 +11,10 @@ class Flag extends React.Component {
   }
 
   toggleFlag() {
+    if (!this.props.isUserAuth) {
+      jqApp.pushMessage.open(Constants.VOTE_ACTION_WHEN_NOT_AUTH);
+      return;
+    }
     if (!this.props.flag) {
       let modalOption = {
         body: (<ConfirmFlagModal closeModal={() => {this.props.closeModal("ConfirmFlagModal")}}
@@ -51,6 +56,7 @@ class Flag extends React.Component {
 const mapStateToProps = (state, props) => {
   return {
     ...state.posts[props.postIndex],
+    isUserAuth: !!state.auth.user && !!state.auth.postingKey
   };
 };
 
