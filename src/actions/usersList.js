@@ -47,8 +47,6 @@ export function getUsersList(point, getUsers) {
   }
   return (dispatch) => {
     dispatch(getUsersListRequest(point));
-    console.log(point);
-    console.log(point.substr(0, point.indexOf('JSON_OPTIONS:')));
     const requestOptions = {
       point: point.substr(0, point.indexOf('JSON_OPTIONS:')),
       params: {

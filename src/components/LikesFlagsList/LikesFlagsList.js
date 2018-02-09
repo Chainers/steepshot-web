@@ -10,6 +10,7 @@ import {clearBodyHeight, setLikesFlagsListBodyHeight} from "../../actions/likesF
 import ReactResizeDetector from 'react-resize-detector';
 import TabsBar from "../Common/TabsBar/TabsBar";
 import Tab from "../Common/TabsBar/Tab/Tab";
+import utils from '../../utils/utils';
 
 class LikesFlagsModal extends React.Component {
   constructor(props) {
@@ -26,18 +27,23 @@ class LikesFlagsModal extends React.Component {
     this.props.clearBodyHeight();
   }
 
+  componentDidUpdate() {
+    let currentBody = this.props.activeIndex ? this.flags : this.likes;
+    this.updateBodyHeight(undefined, currentBody.state.expandChildHeight);
+  }
+
   static permLink(url) {
     let urlObject = url.split('/');
     return `${urlObject[urlObject.length - 2]}/${urlObject[urlObject.length - 1]}`;
   }
 
   updateBodyHeight(width, height) {
-    const HEADER_HEIGHT = 62;
+    const HEADER_HEIGHT = 60;
     const PADDING_BOTTOM = 10;
 
     let fullBodyHeight = height ? height : this.props.fullBodyHeight;
     let preferredBodyHeight = window.innerHeight * 0.95 - HEADER_HEIGHT - PADDING_BOTTOM;
-    preferredBodyHeight = fullBodyHeight > preferredBodyHeight ? preferredBodyHeight : fullBodyHeight;
+    preferredBodyHeight = utils.getLess(preferredBodyHeight, fullBodyHeight);
     this.props.setBodyHeight(preferredBodyHeight, fullBodyHeight);
   }
 
@@ -45,7 +51,9 @@ class LikesFlagsModal extends React.Component {
     return (
       <div className={(this.props.hasOneUser ? 'has-one_lik-lis' : '') + ' container_lik-lis'}>
         <CloseButton className='close-button_lik-lis' onClick={this.props.closeModal}/>
-        <TabsBar point="likesFlags">
+        <TabsBar point="likesFlags"
+                 showLoader={false}
+                 onSwitch={() => this.updateBodyHeight()}>
           <Tab name="Likes">
             <Scrollbars style={{width: '100%', height: this.props.preferredBodyHeight}}>
               <UsersList
@@ -54,7 +62,7 @@ class LikesFlagsModal extends React.Component {
                 useScrollView={true}
                 options={{likes: 1}}
               >
-                <ReactResizeDetector handleWidth handleHeight onResize={this.updateBodyHeight}/>
+                <ReactResizeDetector handleHeight onResize={this.updateBodyHeight} ref={ref => this.likes = ref}/>
               </UsersList>
             </Scrollbars>
           </Tab>
@@ -66,7 +74,7 @@ class LikesFlagsModal extends React.Component {
                 useScrollView={true}
                 options={{flags: 1}}
               >
-                <ReactResizeDetector handleWidth handleHeight onResize={this.updateBodyHeight}/>
+                <ReactResizeDetector handleHeight onResize={this.updateBodyHeight} ref={ref => this.flags = ref}/>
               </UsersList>
             </Scrollbars>
           </Tab>
