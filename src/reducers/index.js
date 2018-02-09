@@ -8,7 +8,11 @@ import postsList from './postsList';
 import modals from './modals';
 import postModal from './postModal';
 import tabsBar from './tabsBar';
+<<<<<<< HEAD
 import likesFlagsList from './likesFlagsList';
+=======
+import likesList from './likesList';
+>>>>>>> 20e10e861571a4e77518a61052585441186c32a1
 import users from './users';
 import bodyParams from './bodyParams';
 
@@ -22,7 +26,13 @@ export default combineReducers({
   usersList,
   modals,
   postModal,
+<<<<<<< HEAD
   users,
   bodyParams,
   likesFlagsList,
+=======
+  likesList,
+  users,
+  bodyParams
+>>>>>>> 20e10e861571a4e77518a61052585441186c32a1
 });
