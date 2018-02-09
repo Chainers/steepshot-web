@@ -6,7 +6,7 @@ import {toggleFollow} from "../../../actions/follow";
 import ShowIf from "../../Common/ShowIf";
 import LoadingSpinner from "../../LoadingSpinner";
 
-const User = ({user, toggleFollow}) => {
+const User = ({user, authUser, toggleFollow}) => {
 
   let amountMoney = '';
   if (user.amount_sbd) {
@@ -26,17 +26,24 @@ const User = ({user, toggleFollow}) => {
           {amountMoney}
         </span>
       </div>
-      <ShowIf show={!user.togglingFollow}>
-        <div className="follow-btn_user" onClick={() => toggleFollow(user.author)}>
-          <img src={user.has_followed ?
-            '/static/images/user/unfollow-button.svg' :
-            '/static/images/user/follow-button.svg'} alt="toggle follow"/>
-        </div>
-      </ShowIf>
-      <ShowIf show={user.togglingFollow}>
-        <div className="spinner_user">
-          <LoadingSpinner/>
-        </div>
+      <ShowIf show={user.author !== authUser}>
+        <ShowIf show={!user.togglingFollow}>
+          <ShowIf show={!user.has_followed}>
+            <div className="follow-btn_user" onClick={() => toggleFollow(user.author)}>
+              <img src="/static/images/user/follow-button.svg" alt="toggle follow"/>
+            </div>
+          </ShowIf>
+          <ShowIf show={user.has_followed}>
+            <div className="following_user">
+              <img src="/static/images/user/following.svg" alt="toggle follow"/>
+            </div>
+          </ShowIf>
+        </ShowIf>
+        <ShowIf show={user.togglingFollow}>
+          <div className="spinner_user">
+            <LoadingSpinner/>
+          </div>
+        </ShowIf>
       </ShowIf>
 
     </div>
@@ -47,6 +54,7 @@ const mapStateToProps = (state, props) => {
   const user = state.users[props.index];
   return {
     user: user ? user : {},
+    authUser: state.auth.user,
   };
 };
 
