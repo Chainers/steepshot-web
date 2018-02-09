@@ -106,8 +106,7 @@ export function logFollow(isFollowed, user, data) {
 }
 
 export function logDeletedPost(author, permlink, data) {
-
-    const url = `${baseUrl}/log/post/${makePostId(author, permlink)}/${data}`;
+    const url = `${baseUrl}/log/post/${makePostId(author, permlink)}/delete`;
 
     let options = baseCORSOptions;
     options.body = data;

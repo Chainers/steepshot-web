@@ -24,6 +24,10 @@ export function closeModal(index) {
     }
   }
   return (dispatch) => {
+    // let bodyParams = getStore().getState().bodyParams;
+    // if (getStore().getState().modals.length == 1 && bodyParams.offsetTop > 0) {
+    //   window.scrollTo(0, bodyParams.offsetTop);
+    // }
     dispatch({
       type: 'WILL_CLOSE_MODAL',
       index

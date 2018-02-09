@@ -32,7 +32,7 @@ class PostContextMenu extends React.Component {
       body: (<ConfirmDeleteModal closeModal={() => {this.props.closeModal("ConfirmDeleteModal")}}
                                  closeAllModals={() => {this.props.closeAllModals()}}
                                  deleteCallback={this.deleteCallback.bind(this)}
-             />),
+             />)
     };
     this.props.closeModal("MenuModal");
     this.props.openModal("ConfirmDeleteModal", modalOption);
@@ -73,7 +73,7 @@ class PostContextMenu extends React.Component {
       let modalOption = {
         body: (<ConfirmFlagModal closeModal={() => {this.props.closeModal("ConfirmFlagModal")}}
                                  flagCallback={this.flagCallback.bind(this)}
-        />),
+        />)
       };
       this.props.openModal("ConfirmFlagModal", modalOption);
     } else {
@@ -94,8 +94,8 @@ class PostContextMenu extends React.Component {
   openFunc() {
     let modalOption = {
       body: (<Menu buttonOption={this.state.BUTTONS_OPTIONS}
-                   closeModal={()=>{this.props.closeModal("MenuModal")}}
-             />),
+                   closeModal={() => {this.props.closeModal("MenuModal")}}
+             />)
     };
     this.props.openModal("MenuModal", modalOption);
   }
