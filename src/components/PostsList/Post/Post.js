@@ -11,9 +11,9 @@ import Tags from './Tags/Tags';
 import Vote from './Vote/Vote';
 import PostModal from '../../PostModal/PostModal';
 import {openPostModal} from '../../../actions/postModal';
-import LoadingSpinner from "../../LoadingSpinner/index";
+import LoadingSpinner from '../../LoadingSpinner/index';
 import Avatar from '../../Common/Avatar/Avatar';
-import Likes from "./Likes/Likes";
+import Likes from './Likes/Likes';
 
 class Post extends React.Component {
 
@@ -33,7 +33,6 @@ class Post extends React.Component {
   _getPostImageStyles(itemImage) {
     return {
       backgroundImage: `url(${itemImage})`,
-      backgroundPosition: 'fixed',
       backgroundRepeat: 'no-repeat',
       backgroundOrigin: 'center',
       backgroundClip: 'content-box',
@@ -44,7 +43,7 @@ class Post extends React.Component {
 
   openPostModal() {
     let modalOption = {
-      body: (<PostModal/>),
+      body: (<PostModal/>)
     };
     this.props.openModal(this.props.point, this.props.index, modalOption);
   }
@@ -107,7 +106,7 @@ class Post extends React.Component {
                 </div>
                 <div className="name">{this.props.author}</div>
               </Link>
-              
+
             </div>
           <div className="card-body">
             <div className="card-pic" onClick={this.openPostModal.bind(this)}>
