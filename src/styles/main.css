@@ -5170,7 +5170,7 @@ fieldset[disabled] input[type=checkbox] ~ .box, fieldset[disabled] input[type=ch
 .btn-default {
   border-color: transparent;
   background: #e74800;
-  box-shadow: 0 10px 20px 0 rgba(231, 72, 0, .3)
+  box-shadow: 0 10px 20px 0 rgba(231, 72, 0, .3);
 }
 
 .btn-default:focus, .btn-default:hover {
@@ -6855,7 +6855,7 @@ modal.modal-like .modal-header {
 .menu-foot .item_1 {
   display: inline-block;
   vertical-align: top;
-  margin-left: 40px
+  margin-left: 40px;
 }
 
 .menu-foot .item_1 > a, .menu-foot .item_1 > span {
@@ -7007,7 +7007,6 @@ modal.modal-like .modal-header {
 
 .modal .close:before {
   content: ' ';
-  display: inline-block;
   font-size: 10px;
   background-image: url(/static/images/sprite_svg1910.svg);
   background-repeat: no-repeat;

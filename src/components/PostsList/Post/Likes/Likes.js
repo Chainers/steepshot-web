@@ -11,10 +11,9 @@ class Likes extends React.Component {
 
   openLikesModal() {
     let modalOption = {
-      body: (<LikesList postIndex={this.props.postIndex}/>),
+      body: (<LikesList postIndex={this.props.postIndex}/>)
     };
     this.props.openModal('LikesModal', modalOption);
-
   }
 
   render() {

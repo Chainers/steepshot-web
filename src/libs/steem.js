@@ -4,6 +4,7 @@ import Promise from 'bluebird';
 import { getStore } from '../store/configureStore';
 import { preparePost, prepareComment } from '../actions/steemPayout';
 import { logComment, logVoute, logFlag, logPost, logFollow, logDeletedPost } from '../actions/logging';
+import FormData from 'form-data';
 
 import _ from 'underscore';
 
@@ -197,7 +198,7 @@ class Steem {
             } else
             if (result) {
                 const data = JSON.stringify({
-                    username : follower
+                    username: follower
                 });
                 logFollow(status, following, data);
                 callback(null, result);
@@ -219,9 +220,16 @@ class Steem {
     deletePost(wif, author, permlink, callback) {
       const callbackBc = (err, success) => {
         if (err) {
+          // const data = JSON.stringify({
+          //   error: err.cause.name
+          // });
+          // logDeletedPost(author, permlink, data);
           callback(err, null);
         } else if (success) {
-          logDeletedPost(author, permlink, 'deleted');
+          const data = JSON.stringify({
+            username: author
+          });
+          logDeletedPost(author, permlink, data);
           callback(null, success);
         }
       };

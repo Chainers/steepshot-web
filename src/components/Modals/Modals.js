@@ -29,10 +29,18 @@ class Modals extends React.Component {
   };
 
   componentWillReceiveProps(nextProps) {
+    // TODO should be removed after fixed body scroll on ios
+    // console.log(!!navigator.platform && /iPad|iPhone|iPod/.test(navigator.platform));
+    // if (Object.keys(this.props.modals).length == 0 && Object.keys(nextProps.modals).length > 0) {
+    //   this.props.getBodyParams(window.pageYOffset);
+    // }
     if (Object.keys(nextProps.modals).length > 0) {
       document.body.classList.add('no-scroll-iphone');
+      //document.body.style.top = -nextProps.bodyParams.offsetTop + 'px';
     } else {
       document.body.classList.remove('no-scroll-iphone');
+      //document.body.style.top = '';
+      //window.scrollTo(0, nextProps.bodyParams.offsetTop);
     }
   }
 
@@ -56,6 +64,7 @@ class Modals extends React.Component {
 const mapStateToProps = (state) => {
   return {
     modals: state.modals,
+    bodyParams: state.bodyParams
   };
 };
 
@@ -63,7 +72,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     closeAllModals: () => {
       dispatch(closeAllModals());
-    },
+    }
   };
 };
 
