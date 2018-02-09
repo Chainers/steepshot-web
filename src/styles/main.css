@@ -468,10 +468,6 @@ h2.card-field__heading {
     padding: 0 40px;
   }
 
-  .nav-tabs {
-    margin-top: -15px !important;
-  }
-
   .tab-head {
     padding: 10px 30px 16px 30px !important;
   }
@@ -564,10 +560,6 @@ h2.card-field__heading {
 
   .search-panel {
     padding: 0 30px;
-  }
-
-  .nav-tabs {
-    margin-top: -12.5px !important;
   }
 
   .tab-head {
