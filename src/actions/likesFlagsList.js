@@ -1,4 +1,4 @@
-export function setLikesListBodyHeight(preferredBodyHeight, fullBodyHeight) {
+export function setLikesFlagsListBodyHeight(preferredBodyHeight, fullBodyHeight) {
   return {
     type: 'SET_LIKES_LIST_BODY_HEIGHT',
     preferredBodyHeight,

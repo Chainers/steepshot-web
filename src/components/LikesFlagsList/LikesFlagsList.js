@@ -6,10 +6,10 @@ import UsersList from "../UsersList/UsersList";
 import {getVoters} from "../../actions/posts";
 import CloseButton from "../Common/CloseButton/CloseButton";
 import {Scrollbars} from 'react-custom-scrollbars';
-import {clearBodyHeight, setLikesListBodyHeight} from "../../actions/likesList";
+import {clearBodyHeight, setLikesFlagsListBodyHeight} from "../../actions/likesFlagsList";
 import ReactResizeDetector from 'react-resize-detector';
 
-class LikesModal extends React.Component {
+class LikesFlagsModal extends React.Component {
   constructor(props) {
     super(props);
     this.updateBodyHeight = this.updateBodyHeight.bind(this);
@@ -61,21 +61,21 @@ class LikesModal extends React.Component {
 }
 
 const mapStateToProps = (state, props) => {
-  let point = `post/${LikesModal.permLink(state.posts[props.postIndex].url)}/voters`;
+  let point = `post/${LikesFlagsModal.permLink(state.posts[props.postIndex].url)}/voters`;
   return {
     hasOneUser: state.usersList[point] && state.usersList[point].users.length === 1,
     point,
-    ...state.likesList
+    ...state.likesFlagsList
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
     closeModal: () => {
-      dispatch(closeModal('LikesModal'));
+      dispatch(closeModal('LikesFlagsModal'));
     },
     setBodyHeight: (preferredBodyHeight, fullBodyHeight) => {
-      dispatch(setLikesListBodyHeight(preferredBodyHeight, fullBodyHeight))
+      dispatch(setLikesFlagsListBodyHeight(preferredBodyHeight, fullBodyHeight))
     },
     clearBodyHeight: (preferredBodyHeight, fullBodyHeight) => {
       dispatch(clearBodyHeight(preferredBodyHeight, fullBodyHeight))
@@ -83,4 +83,4 @@ const mapDispatchToProps = (dispatch) => {
   }
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(LikesModal);
+export default connect(mapStateToProps, mapDispatchToProps)(LikesFlagsModal);
