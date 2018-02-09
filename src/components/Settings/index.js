@@ -33,7 +33,6 @@ class Settings extends React.Component {
 
     componentDidMount() {
         const userSettings = getSettings();
-
         this.setState({
             settings: userSettings
         });

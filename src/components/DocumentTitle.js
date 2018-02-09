@@ -5,6 +5,9 @@ export function documentTitle() {
    if (title == 'signin') {
      title = 'sign in';
    }
+   if (title == '*') {
+     title = '404 error';
+   }
    let titleArr = title.split('');
 
    let capitalLetter = title.search(/[A-Z]/g);

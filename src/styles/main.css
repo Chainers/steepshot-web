@@ -404,7 +404,7 @@ h2.card-field__heading {
 }
 
 .rectangle_comment span {
-  padding: 2px 20px 3.5px 20px;
+  padding: 3px 20px 3.5px 20px;
   border-radius: 15px;
   background-color: #ffffff;
   border: solid 1px #ececee;
@@ -450,10 +450,6 @@ h2.card-field__heading {
 @media screen and (min-width: 768px) {
   .post__description-container .user-wrap {
     padding: 20px !important;
-  }
-
-  .comment-head .user-wrap {
-    padding: 20px 0 !important;
   }
 
   .list-scroll {
@@ -599,6 +595,10 @@ h2.card-field__heading {
 
   .lead {
     margin-top: 4% !important;
+  }
+
+  .post-card {
+    max-width: 400px;
   }
 }
 
@@ -6104,7 +6104,8 @@ modal.modal-like .modal-header {
   font-size: 12px;
   font-family: OpenSans-Light, Helvetica, Arial, sans-serif;
   padding-right: 40px;
-  min-height: 3.2em
+  word-wrap: break-word;
+  min-height: 1.6em;
 }
 
 .post-single .comment-text .btn-like {
@@ -6347,10 +6348,6 @@ modal.modal-like .modal-header {
 
 .user-information .description {
   color: #979b9e
-}
-
-.user-tabs .tab-content {
-  padding-top: 12px
 }
 
 .user-panel {
@@ -8430,10 +8427,6 @@ modal.modal-like .modal-header {
     height: 100%
   }
 
-  .post-card {
-    max-width: 400px
-  }
-
   .form-group .buttons-container {
     padding-left: 5px;
     padding-right: 5px
@@ -8942,8 +8935,8 @@ modal.modal-like .modal-header {
   width: 18px;
 }
 
-.posts-list {
-  padding-top: 45px;
+.posts-list.type-2 {
+  padding-top: 20px;
 }
 
 .nav {
@@ -9051,10 +9044,6 @@ modal.modal-like .modal-header {
 .post-single .post-comment {
   position: relative;
   order: 1;
-}
-
-.post-single .comment-text {
-  word-wrap: break-word;
 }
 
 .display--none {
@@ -9169,7 +9158,7 @@ modal.modal-like .modal-header {
 .collapse-closed .lnk-more {
   background: white;
   position: absolute;
-  top: 41px;
+  top: 36px;
   right: 75px;
 }
 
@@ -9225,6 +9214,7 @@ modal.modal-like .modal-header {
   color: #0f181e;
   margin-left: 10px;
   transition: .2s opacity ease;
+  font: 12px OpenSans-Regular;
 }
 
 .comment-controls a.likes:hover {
@@ -9271,7 +9261,7 @@ modal.modal-like .modal-header {
 }
 
 .number-of-comments_post p {
-  font: 12px OpenSans;
+  font: 12px OpenSans-Regular;
   line-height: 50px;
 }
 
@@ -9341,3 +9331,16 @@ modal.modal-like .modal-header {
 .no-scroll-iphone {
   overflow: hidden;
 }
+.ov-scroll_modal {
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.offset-should-replace_browse {
+  padding-top: 20px;
+}
+
+.comment-head .user-wrap {
+  padding: 15px 0;
+}
+

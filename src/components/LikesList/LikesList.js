@@ -43,7 +43,7 @@ class LikesModal extends React.Component {
     return (
       <div className={(this.props.hasOneUser ? 'has-one_lik-lis' : '') + ' container_lik-lis'}>
         <div className="header_lik-lis">
-          <div className='title_lik-lis'>Post has been rated by these users</div>
+          <div className="title_lik-lis">Post has been rated by these users</div>
           <CloseButton className='close-button_lik-lis' onClick={this.props.closeModal}/>
         </div>
         <Scrollbars style={{width: '100%', height: this.props.preferredBodyHeight}}>

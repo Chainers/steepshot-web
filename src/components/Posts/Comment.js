@@ -69,7 +69,7 @@ class Comment extends React.Component {
         text = `${like} likes`
       }
       if (this.state.item.total_payout_value > 0) {
-        money = `+ $ ${this.state.item.total_payout_value.toFixed(2)}`;
+        money = `+ $${this.state.item.total_payout_value.toFixed(3)}`;
       }
       return (
         <div className="comment-controls clearfix">
