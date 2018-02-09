@@ -7,9 +7,10 @@ import usersList from './usersList';
 import postsList from './postsList';
 import modals from './modals';
 import postModal from './postModal';
-import tabsBar from "./tabsBar";
-import likesFlagsList from "./likesFlagsList";
-import users from "./users";
+import tabsBar from './tabsBar';
+import likesFlagsList from './likesFlagsList';
+import users from './users';
+import bodyParams from './bodyParams';
 
 export default combineReducers({
   clipboard,
@@ -21,6 +22,7 @@ export default combineReducers({
   usersList,
   modals,
   postModal,
+  users,
+  bodyParams,
   likesFlagsList,
-  users
 });
