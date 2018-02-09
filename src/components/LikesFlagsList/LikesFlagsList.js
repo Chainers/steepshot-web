@@ -52,6 +52,7 @@ class LikesFlagsModal extends React.Component {
                 point={this.props.point}
                 getUsers={getVoters}
                 useScrollView={true}
+                options={{likes: 1}}
               >
                 <ReactResizeDetector handleWidth handleHeight onResize={this.updateBodyHeight}/>
               </UsersList>
@@ -63,6 +64,7 @@ class LikesFlagsModal extends React.Component {
                 point={this.props.point}
                 getUsers={getVoters}
                 useScrollView={true}
+                options={{flags: 1}}
               >
                 <ReactResizeDetector handleWidth handleHeight onResize={this.updateBodyHeight}/>
               </UsersList>
