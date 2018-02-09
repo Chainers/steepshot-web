@@ -12,7 +12,8 @@ class UsersList extends React.Component {
   static defaultProps = {
     isComponentVisible: true,
     useScrollView: false,
-    options: {}
+    options: {},
+    className: ''
   };
 
   constructor(props) {

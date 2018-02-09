@@ -29,7 +29,7 @@ class LikesFlagsModal extends React.Component {
 
   componentDidUpdate() {
     let currentBody = this.props.activeIndex ? this.flags : this.likes;
-    this.updateBodyHeight(undefined, currentBody.state.expandChildHeight);
+    this.updateBodyHeight(undefined, currentBody.state.lastHeight);
   }
 
   static permLink(url) {
@@ -38,7 +38,7 @@ class LikesFlagsModal extends React.Component {
   }
 
   updateBodyHeight(width, height) {
-    const HEADER_HEIGHT = 60;
+    const HEADER_HEIGHT = 48;
     const PADDING_BOTTOM = 10;
 
     let fullBodyHeight = height ? height : this.props.fullBodyHeight;
@@ -54,8 +54,7 @@ class LikesFlagsModal extends React.Component {
       <div className={(this.props.hasOneUser ? 'has-one_lik-lis' : '') + ' container_lik-lis'}>
         <CloseButton className='close-button_lik-lis' onClick={this.props.closeModal}/>
         <TabsBar point="likesFlags"
-                 showLoader={false}
-                 onSwitch={() => this.updateBodyHeight()}>
+                 showLoader={false}>
           <Tab name="Likes">
             <Scrollbars style={{width: '100%', height: this.props.preferredBodyHeight}}>
               <UsersList
@@ -64,7 +63,7 @@ class LikesFlagsModal extends React.Component {
                 useScrollView={true}
                 options={{likes: 1}}
               >
-                <ReactResizeDetector handleHeight onResize={this.updateBodyHeight} ref={ref => this.likes = ref}/>
+                <ReactResizeDetector handleWidth handleHeight onResize={this.updateBodyHeight} ref={ref => this.likes = ref}/>
               </UsersList>
             </Scrollbars>
           </Tab>
@@ -76,7 +75,7 @@ class LikesFlagsModal extends React.Component {
                 useScrollView={true}
                 options={{flags: 1}}
               >
-                <ReactResizeDetector handleHeight onResize={this.updateBodyHeight} ref={ref => this.flags = ref}/>
+                <ReactResizeDetector handleWidth handleHeight onResize={this.updateBodyHeight} ref={ref => this.flags = ref}/>
               </UsersList>
             </Scrollbars>
           </Tab>

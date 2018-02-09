@@ -31,6 +31,7 @@
 @media (max-width: 670px) {
   .container_lik-lis {
     width: 360px;
+    justify-content: center;
   }
 }
 
@@ -38,5 +39,6 @@
   .container_lik-lis {
     width: 100vw;
     padding: 10px 0;
+    justify-content: center;
   }
 }
