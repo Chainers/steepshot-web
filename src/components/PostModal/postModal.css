@@ -184,7 +184,7 @@
 .list-scroll-view_pos-mod .comment-text {
   position: relative;
   padding-right: 40px;
-  min-height: 3.2em;
+  min-height: 1.6em;
 }
 
 .list-scroll-view_pos-mod .btn-like {
@@ -385,9 +385,4 @@
   .arrow-left-modal_post-mod, .arrow-right-modal_post-mod {
     display: none;
   }
-}
-
-.ov-scroll {
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
 }

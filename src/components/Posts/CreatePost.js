@@ -170,18 +170,15 @@ class CreatePost extends React.Component {
         let canvas = this.preview;
         let ctx = canvas.getContext('2d');
         image.onload = () => {
-          if (image.width >= this.state.minPhotoWidth &&
-            image.height >= this.state.minPhotoHeight) {
+          if (image.width >= this.state.minPhotoWidth && image.height >= this.state.minPhotoHeight) {
             canvas.width = this.previewContainer.clientWidth;
-            canvas.height = image.height *
-              (this.previewContainer.clientWidth / image.width);
+            canvas.height = image.height * (this.previewContainer.clientWidth / image.width);
             ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
           } else {
             this.setState({
               file: '',
               imagePreviewUrl: '',
-              imageError: 'Photo size should be more then ' +
-              this.state.minPhotoWidth + 'x' + this.state.minPhotoHeight,
+              imageError: 'Photo size should be more then ' + this.state.minPhotoWidth + 'x' + this.state.minPhotoHeight,
             });
           }
         };

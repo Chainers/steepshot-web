@@ -23,10 +23,7 @@ export default function getRoutes(store) {
     });
   };
 
-  let isUserLogin = !!store.getState().auth.user && !!store.getState().auth.postingKey;
   function baseBrowseFilter() {
-    console.log(isUserLogin);
-
     const baseBrowseFilter = localStorage.getItem('browse') == undefined ?
     Constants.BROWSE_ROUTES[0].NAME : localStorage.getItem('browse');
     return baseBrowseFilter;
@@ -36,14 +33,14 @@ export default function getRoutes(store) {
     <App>
       <Switch>
         <Route exact path="/" render={() => (
-          isUserLogin ? (
+          !!store.getState().auth.user && !!store.getState().auth.postingKey ? (
             <Redirect to="/feed"/>
           ) : (
             <Redirect to={`/browse/${baseBrowseFilter()}`} />
           )
         )}/>
         <Route exact path="/signin" render={() => (
-          isUserLogin ? (
+          !!store.getState().auth.user && !!store.getState().auth.postingKey ? (
             <Redirect push to="/feed"/>
           ) : (
             <Signin/>

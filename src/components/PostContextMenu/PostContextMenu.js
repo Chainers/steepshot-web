@@ -2,6 +2,7 @@ import * as React from 'react';
 import Menu from './Menu/Menu';
 import ConfirmDeleteModal from './ConfirmDeleteModal/ConfirmDeleteModal';
 import ConfirmFlagModal from './ConfirmFlagModal/ConfirmFlagModal';
+import Constants from '../../common/constants';
 import {connect} from 'react-redux';
 import {toggleFlag} from '../../actions/flag';
 import {copyToClipboard} from '../../actions/clipboard';
@@ -64,6 +65,10 @@ class PostContextMenu extends React.Component {
   }
 
   toggleFlag() {
+    if (!this.props.isUserAuth) {
+      jqApp.pushMessage.open(Constants.VOTE_ACTION_WHEN_NOT_AUTH);
+      return;
+    }
     if (!this.props.item.flag) {
       let modalOption = {
         body: (<ConfirmFlagModal closeModal={() => {this.props.closeModal("ConfirmFlagModal")}}
@@ -177,6 +182,7 @@ class PostContextMenu extends React.Component {
 const mapStateToProps = (state) => {
   return {
     username: state.auth.user,
+    isUserAuth: !!state.auth.user && !!state.auth.postingKey
   };
 };
 

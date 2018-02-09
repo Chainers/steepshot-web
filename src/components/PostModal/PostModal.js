@@ -214,15 +214,17 @@ class PostModal extends React.Component {
     const authorLink = `/@${this.props.post.author}`;
     return (
       <div className="container_pos-mod" style={this.props.style.container}>
-        <ShowIf show={this.props.postList.posts[0] != this.props.currentIndex}>
-          <div className="arrow-left-modal_post-mod" onClick={this.previousPost.bind(this)}>
-            <i className="far fa-arrow-alt-circle-left fa-2x"/>
-          </div>
-        </ShowIf>
-        <ShowIf show={this.props.post.url != this.props.postList.offset}>
-          <div className="arrow-right-modal_post-mod" onClick={this.nextPost.bind(this)}>
-            <i className="far fa-arrow-alt-circle-right fa-2x"/>
-          </div>
+        <ShowIf show={this.props.showClose}>
+          <ShowIf show={this.props.postList.posts[0] != this.props.currentIndex}>
+            <div className="arrow-left-modal_post-mod" onClick={this.previousPost.bind(this)}>
+              <i className="far fa-arrow-alt-circle-left fa-2x"/>
+            </div>
+          </ShowIf>
+          <ShowIf show={this.props.post.url != this.props.postList.offset}>
+            <div className="arrow-right-modal_post-mod" onClick={this.nextPost.bind(this)}>
+              <i className="far fa-arrow-alt-circle-right fa-2x"/>
+            </div>
+          </ShowIf>
         </ShowIf>
         {this.renderImage.bind(this)()}
         <div className="header_pos-mod"
