@@ -87,6 +87,7 @@ class Post extends React.Component {
               <LoadingSpinner style={{position: 'absolute'}} loaderClass='deleting-loader'/>
             </div>
           </ShowIf>
+          <ShowIf show={!this.props.clearPostHeader}>
             <div className="card-head clearfix">
               <div className="date">
                 <TimeAgo
@@ -106,8 +107,8 @@ class Post extends React.Component {
                 </div>
                 <div className="name">{this.props.author}</div>
               </Link>
-
             </div>
+          </ShowIf>
           <div className="card-body">
             <div className="card-pic" onClick={this.openPostModal.bind(this)}>
               <ShowIf show={this.props.is_nsfw}>

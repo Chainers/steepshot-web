@@ -229,7 +229,8 @@ class PostModal extends React.Component {
         </ShowIf>
         {this.renderImage.bind(this)()}
         <div className="header_pos-mod"
-             style={this.props.style.headerCont}>
+             style={this.props.style.headerCont}
+        >
           <div className="date_pos-mod">
             <TimeAgo datetime={this.props.post.created}
                      locale='en_US'
@@ -248,9 +249,7 @@ class PostModal extends React.Component {
           </div>
           <Link to={authorLink} className="user_pos-mod">
             <Avatar src={this.props.post.avatar}/>
-            <div className="name_pos-mod"
-                 style={this.props.style.username}
-            >
+            <div className="name_pos-mod">
               {this.props.post.author}
             </div>
           </Link>
@@ -347,8 +346,6 @@ class PostModal extends React.Component {
 
     const docWidth = document.documentElement.clientWidth;
     const docHeight = document.documentElement.clientHeight;
-    const userHeaderWidth = DESC_WIDTH - 200;
-
     const MAX_IMG_WIDTH = (docWidth - DESC_WIDTH) * 0.8;
     const PREFERRED_IMG_WIDTH = 640;
     const container = {};
@@ -365,8 +362,6 @@ class PostModal extends React.Component {
     const headerCont = {};
     headerCont.width = '100%';
     const description = {};
-    const username = {};
-    username.maxWidth = userHeaderWidth;
 
     if (docWidth > MAX_WIDTH_FULL_SCREEN) {
       image.width = image.width ? image.width : utils.getLess((docWidth - DESC_WIDTH) * 0.8, PREFERRED_IMG_WIDTH);
@@ -400,7 +395,6 @@ class PostModal extends React.Component {
       imgCont,
       headerCont,
       description,
-      username,
       textareaMarginTop
     };
     if (JSON.stringify(style) !== JSON.stringify(this.props.style)) {
