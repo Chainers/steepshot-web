@@ -28,6 +28,7 @@
   width: 55%;
   overflow: hidden;
   text-overflow: ellipsis;
+  vertical-align: top;
 }
 
 .money_user {
@@ -40,6 +41,7 @@
 .spinner_user {
   width: 40px;
   height: 40px;
+  margin: 8px 0 0 -5px;
 }
 
 .follow-btn_user {
@@ -51,10 +53,7 @@
   width: 30px;
   display: inline-block;
   margin-left: 10px;
-}
-
-.following-toggle-wrapper_user img {
-  vertical-align: baseline;
+  vertical-align: bottom;
 }
 
 .following_user, .follow-btn_user {
