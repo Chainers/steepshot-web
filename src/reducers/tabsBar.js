@@ -25,6 +25,13 @@ export default function tabsBar(state = initialState, action) {
         }
       };
 
+    case 'TAB_PAGE_LOADING':
+      return {
+        ...state, [action.point]: {
+          ...state[action.point], pageLoaded: false
+        }
+      };
+
     default:
       return state;
   }
