@@ -48,7 +48,7 @@ class Modal extends React.Component {
   render() {
     let styleBack = {backgroundColor: 'rgba(0, 0, 0, .7)'};
     styleBack.alignItems = this.props.bodyHeight >= this.props.containerHeight ? 'flex-start' : 'center';
-    styleBack.zIndex = 1002;
+    styleBack.zIndex = 1005;
     return (
       <div className="back_mods before-load-back_modal ov-scroll_modal"
            onClick={this.clickOutside.bind(this)}
