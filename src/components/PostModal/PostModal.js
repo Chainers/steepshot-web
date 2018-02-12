@@ -126,7 +126,7 @@ class PostModal extends React.Component {
         </ShowIf>
         <button className="btn btn-default btn-xs"
                 onClick={() => this.props.copyToClipboard(
-                  document.location.origin + '/post' + this.props.post.url,
+                  document.location.origin + '/post' + this.props.post.url.replace(/\/\w+/, ''),
                 )}>Copy link
         </button>
         <img src={this.props.post.body || constants.NO_IMAGE}

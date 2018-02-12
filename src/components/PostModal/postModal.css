@@ -220,7 +220,6 @@
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
-  font-weight: 700;
 }
 
 .list-scroll-view_pos-mod .user:hover {
