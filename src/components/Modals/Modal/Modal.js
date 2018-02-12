@@ -8,23 +8,16 @@ class Modal extends React.Component {
   constructor(props) {
     super(props);
     this.resizeWindow = this.resizeWindow.bind(this);
-    this.scrollPrevent = this.scrollPrevent.bind(this);
   }
 
   componentDidMount() {
     window.addEventListener('resize', this.resizeWindow);
-    this.container.addEventListener('touchmove', this.scrollPrevent);
     this.resizeWindow();
     this.container.classList.remove('before-load-back_modal');
     this.body.classList.remove('before-load_modal');
   }
 
-  scrollPrevent(e) {
-    e.stopPropagation();
-  }
-
   componentWillUnmount() {
-    this.container.removeEventListener('touchmove', this.scrollPrevent);
     window.removeEventListener('resize', this.resizeWindow);
   }
 

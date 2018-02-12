@@ -70,3 +70,8 @@
 .follow-btn_user:hover {
   box-shadow: 0 5px 12px 0 rgba(231, 72, 0, .3);
 }
+ @media (max-width: 350px) {
+   .name_user {
+     width: 50%;
+   }
+ }
