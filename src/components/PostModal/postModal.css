@@ -72,6 +72,7 @@
   overflow: hidden;
   line-height: 20px;
   float: left;
+  width: 45%;
 }
 
 .user_pos-mod:hover {
@@ -386,3 +387,4 @@
     display: none;
   }
 }
+

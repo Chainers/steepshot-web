@@ -9,3 +9,9 @@
   align-items: center;
   justify-content: center;
 }
+
+@media (max-width: 815px) {
+  .body_use-lis {
+    justify-content: center;
+  }
+}

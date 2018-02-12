@@ -81,9 +81,9 @@ const mapStateToProps = (state, props) => {
   hotPostsList = hotPostsList ? hotPostsList : {loading: true, posts: []};
   let newPostsList = state.postsList[insertCategory(Constants.POSTS_FILTERS.POSTS_NEW.point, searchValue)];
   newPostsList = newPostsList ? newPostsList : {loading: true, posts: []};
-  let usersList = state.usersList[Constants.SEARCH_FILTERS.USERS.point];
+  let usersList = state.usersList[
+    `${Constants.SEARCH_FILTERS.USERS.point}JSON_OPTIONS:${JSON.stringify({query: props.match.params.searchValue})}`];
   usersList = usersList ? usersList : {loading: true, users: []};
-
   return {
     hotPostsList,
     newPostsList,

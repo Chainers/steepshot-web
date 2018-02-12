@@ -37,11 +37,11 @@ export default {
         defaultLimit: 17
     },
 
-    EMPTY_QUERY : "It's very strange, but we do not have anything yet for this query. Try to look for something else ...",
-    EMPTY_QUERY_VOTERS : "Still no one has rated this post ...",
+    EMPTY_QUERY : 'It\'s very strange, but we do not have anything yet for this query. Try to look for something else ...',
+    EMPTY_QUERY_VOTERS : 'Still no one has rated this post ...',
 
-    SEARCH_PLACEHOLDER : "Type your search query and press \"Enter\"",
-    SEARCH_PLACEHOLDER_MIN : "To search, press \"Enter\"",
+    SEARCH_PLACEHOLDER : 'Type your search query and press \"Enter\"',
+    SEARCH_PLACEHOLDER_MIN : 'To search, press \"Enter\"',
 
     POSTS_FILTERS: {
         POSTS_TOP : {
@@ -152,6 +152,8 @@ export default {
 
     VOTE_ACTION_WHEN_NOT_AUTH : 'This action is only available for logged-in users',
     VOTE_ACTION_WHEN_NOT_AUTH_DEBOUNCE : 500,
+
+    FOLLOW_REQUEST_ERROR: 'Something went wrong, please, try again later',
 
     POST_DESRIPTION_MAXLENGTH : 120,
     POST_LIKED_BY : 'Post has been rated by these users'
