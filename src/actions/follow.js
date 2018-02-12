@@ -2,6 +2,7 @@ import Steem from "../libs/steem";
 import {debounce} from "lodash";
 import {updateUser} from "./usersList";
 import {getStore} from "../store/configureStore";
+import Constants from '../common/constants';
 
 
 function toggleFollowRequest(author) {
@@ -34,7 +35,7 @@ export function toggleFollow(author) {
     const newFollowState = user.has_followed;
 
     if (!username && !postingKey) {
-      debounce(jqApp.pushMessage.open('Something went wrong, please, try again later'), 1000);
+      debounce(jqApp.pushMessage.open(Constants.VOTE_ACTION_WHEN_NOT_AUTH), 1000);
       return;
     }
 
@@ -43,16 +44,17 @@ export function toggleFollow(author) {
     const callback = (err, success) => {
       if (err) {
         dispatch(toggleFollowFailure(author));
-        debounce(jqApp.pushMessage.open('Something went wrong, please, try again later'), 1000);
+        debounce(jqApp.pushMessage.open(Constants.FOLLOW_REQUEST_ERROR), 1000);
       } else if (success) {
         dispatch(updateUser(author));
-        let statusText = 'unfollowed';
-        if (newFollowState) statusText = 'followed';
+        let statusText = 'followed';
+        if (newFollowState) statusText = 'unfollowed';
         dispatch(toggleFollowSuccess(author));
-        jqApp.pushMessage.open(`User has been successfully ${statusText}`);
+        setTimeout(() => {
+          jqApp.pushMessage.open(`User has been successfully ${statusText}`);
+        }, 1000);
       }
     };
-
     Steem.followUnfollowUser(postingKey, username, author, newFollowState, callback);
   };
 }

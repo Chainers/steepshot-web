@@ -7,7 +7,9 @@ import ShowIf from "../ShowIf";
 
 class TabsBar extends React.Component {
   static defaultProps = {
-    className: ''
+    className: '',
+    alwaysShowNavigation: false,
+    showLoader: true
   };
 
   constructor(props) {
@@ -54,7 +56,7 @@ class TabsBar extends React.Component {
         );
       }
     });
-    if (navItems.length === 1) {
+    if (!this.props.alwaysShowNavigation && navItems.length === 1) {
       return null;
     }
     return (

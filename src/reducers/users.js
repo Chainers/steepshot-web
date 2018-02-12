@@ -19,8 +19,13 @@ export default function users(state = {}, action) {
         }
       };
     case 'UPDATE_USER_SUCCESS':
+      const updatedUsers = {};
+      for (const user in action.updatedUser) {
+        updatedUsers[user] = {...state[user], ...action.updatedUser[user]}
+      }
+
       return {
-        ...state, ...action.updatedUser
+        ...state, ...updatedUsers
       };
     default:
       return state;

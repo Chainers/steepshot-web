@@ -5,7 +5,6 @@
   margin: 5px;
   border: 1px solid #e7e7e7;
   border-radius: 4px;
-  position: relative;
 }
 
 .name_user a {
@@ -16,6 +15,7 @@
   font-family: OpenSans-SemiBold,Helvetica,Arial,sans-serif;
   color: #0f181e;
   line-height: 1.4;
+  width: inherit;
   transition: all .2s ease;
 }
 
@@ -23,32 +23,55 @@
   color: #e74800;
 }
 
+.name_user {
+  display: inline-block;
+  width: 55%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  vertical-align: top;
+}
+
 .money_user {
   color: #979b9e;
   font-size: 14px;
   display: block;
+  height: 22px;
 }
 
 .spinner_user {
-  position: absolute;
-  right: 25px;
-  top: 29px;
+  width: 40px;
+  height: 40px;
+  margin: 10px 0 0 -5px;
 }
 
 .follow-btn_user {
   cursor: pointer;
+  box-shadow: 0 10px 20px 0 rgba(231,72,0,.3);
+}
+
+.following-toggle-wrapper_user {
+  width: 30px;
+  display: inline-block;
+  margin-left: 10px;
+  vertical-align: bottom;
 }
 
 .following_user, .follow-btn_user {
-  position: absolute;
-  top: 34px;
-  right: 25px;
   width: 30px;
   height: 30px;
-  box-shadow: 0 10px 20px 0 rgba(231,72,0,.3);
   border-radius: 50%;
+  transition: .2s;
+}
+
+.following_user {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, .3);
 }
 
 .follow-btn_user:hover {
-  box-shadow: 0 5px 12px 0 rgba(231,72,0,.3)
+  box-shadow: 0 5px 12px 0 rgba(231, 72, 0, .3);
 }
+ @media (max-width: 350px) {
+   .name_user {
+     width: 50%;
+   }
+ }

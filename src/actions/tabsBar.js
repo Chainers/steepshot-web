@@ -12,3 +12,10 @@ export function pageLoaded(point) {
     point
   }
 }
+
+export function pageLoading(point) {
+  return {
+    type: 'TAB_PAGE_LOADING',
+    point
+  }
+}

@@ -11,10 +11,18 @@ import {connect} from "react-redux";
 import Tab from "../Common/TabsBar/Tab/Tab";
 import ShowIf from "../Common/ShowIf";
 import HeadingLeadComponent from "../Atoms/HeadingLeadComponent";
+import {pageLoading} from "../../actions/tabsBar";
 
 class Search extends React.Component {
   constructor(props) {
     super(props);
+  }
+
+  shouldComponentUpdate(nextProps) {
+    if (this.props.searchValue !== nextProps.searchValue) {
+      this.props.pageLoading('search');
+    }
+    return true;
   }
 
   componentWillUpdate() {
@@ -81,9 +89,9 @@ const mapStateToProps = (state, props) => {
   hotPostsList = hotPostsList ? hotPostsList : {loading: true, posts: []};
   let newPostsList = state.postsList[insertCategory(Constants.POSTS_FILTERS.POSTS_NEW.point, searchValue)];
   newPostsList = newPostsList ? newPostsList : {loading: true, posts: []};
-  let usersList = state.usersList[Constants.SEARCH_FILTERS.USERS.point];
+  let usersList = state.usersList[
+    `${Constants.SEARCH_FILTERS.USERS.point}JSON_OPTIONS:${JSON.stringify({query: props.match.params.searchValue})}`];
   usersList = usersList ? usersList : {loading: true, users: []};
-
   return {
     hotPostsList,
     newPostsList,
@@ -93,4 +101,12 @@ const mapStateToProps = (state, props) => {
   };
 };
 
-export default connect(mapStateToProps)(Search);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    pageLoading: (point) => {
+      dispatch(pageLoading(point))
+    }
+  }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Search);

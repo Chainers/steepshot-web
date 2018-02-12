@@ -42,6 +42,7 @@ class LikesFlagsModal extends React.Component {
     const PADDING_BOTTOM = 10;
 
     let fullBodyHeight = height ? height : this.props.fullBodyHeight;
+    fullBodyHeight = utils.getMore(fullBodyHeight, 120);
     let preferredBodyHeight = window.innerHeight * 0.95 - HEADER_HEIGHT - PADDING_BOTTOM;
     preferredBodyHeight = utils.getLess(preferredBodyHeight, fullBodyHeight);
     if (this.props.preferredBodyHeight !== preferredBodyHeight) {
@@ -51,10 +52,11 @@ class LikesFlagsModal extends React.Component {
 
   render() {
     return (
-      <div className={(this.props.hasOneUser ? 'has-one_lik-lis' : '') + ' container_lik-lis'}>
+      <div className={'container_lik-lis'}>
         <CloseButton className='close-button_lik-lis' onClick={this.props.closeModal}/>
         <TabsBar point="likesFlags"
-                 showLoader={false}>
+                 showLoader={false}
+                 alwaysShowNavigation={true}>
           <Tab name="Likes">
             <Scrollbars style={{width: '100%', height: this.props.preferredBodyHeight}}>
               <UsersList
@@ -67,7 +69,8 @@ class LikesFlagsModal extends React.Component {
               </UsersList>
             </Scrollbars>
           </Tab>
-          <Tab name="Flags">
+          <Tab name="Flags"
+               empty={!this.props.flags || !this.props.flags.users.length}>
             <Scrollbars style={{width: '100%', height: this.props.preferredBodyHeight}}>
               <UsersList
                 point={this.props.point}
@@ -87,8 +90,9 @@ class LikesFlagsModal extends React.Component {
 
 const mapStateToProps = (state, props) => {
   let point = `post/${LikesFlagsModal.permLink(state.posts[props.postIndex].url)}/voters`;
+  let  flags = state.usersList[point + 'JSON_OPTIONS:{"flags":1}'];
   return {
-    hasOneUser: state.usersList[point] && state.usersList[point].users.length === 1,
+    flags,
     point,
     ...state.likesFlagsList,
     ...state.tabsBar.likesFlags

@@ -72,6 +72,7 @@
   overflow: hidden;
   line-height: 20px;
   float: left;
+  width: 45%;
 }
 
 .user_pos-mod:hover {
@@ -219,7 +220,6 @@
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
-  font-weight: 700;
 }
 
 .list-scroll-view_pos-mod .user:hover {
@@ -386,3 +386,4 @@
     display: none;
   }
 }
+

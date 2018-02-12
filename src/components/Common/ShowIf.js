@@ -22,7 +22,8 @@ class ShowIf extends React.Component {
     }
 
     children = (<div style={this.props.show ? {} : {display: 'none'}}
-                     className={this.props.className}>{children}</div>)
+                     className={this.props.className}
+                >{children}</div>);
 
     return children;
   }

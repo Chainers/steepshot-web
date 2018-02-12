@@ -80,8 +80,8 @@ body {
 .sub-rotate-button {
   position: absolute;
   z-index: 5;
-  top: 22%;
-  right: 5%;
+  top: calc(50% - 21px);
+  right: calc(50% - 21px);
   transform: translate(-50%, -50%);
   width: 42px;
   height: 42px;
@@ -496,11 +496,6 @@ h2.card-field__heading {
 
   .post__description-container {
     max-width: none !important;
-  }
-
-  .sub-rotate-button {
-    top: 25%;
-    right: 6%;
   }
 }
 
@@ -2617,7 +2612,7 @@ html body {
 
 .g-header {
   position: relative;
-  background: #fff;
+  background: #ffffff;
   border-bottom: 1px solid #e7e7e7
 }
 
@@ -2630,7 +2625,7 @@ html body {
 }
 
 .g-footer {
-  background: #fff;
+  background: #ffffff;
   border-top: 1px solid #e7e7e7;
   padding: 22px 0 18px;
   line-height: 1.4
@@ -4006,7 +4001,7 @@ html body {
 }
 
 .post-card .name {
-  font-size: 14px;
+  font: 14px OpenSans-Regular;
   color: #0f181e;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -8939,7 +8934,7 @@ modal.modal-like .modal-header {
   position: fixed;
   width: 100vw;
   padding-right: 0;
-  z-index: 1001;
+  z-index: 1005;
   box-shadow: 0 0 3px 0 rgba(0, 0, 0, .1);
 }
 

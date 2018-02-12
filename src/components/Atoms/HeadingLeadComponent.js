@@ -4,6 +4,10 @@ import {
 } from 'react-redux';
 
 class HeadingLeadComponent extends React.Component {
+    static defaultProps = {
+      wrapperModifier: ''
+    };
+
     constructor(props) {
         super(props);
         this.state = {
