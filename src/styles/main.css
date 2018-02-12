@@ -80,8 +80,8 @@ body {
 .sub-rotate-button {
   position: absolute;
   z-index: 5;
-  top: 22%;
-  right: 5%;
+  top: calc(50% - 21px);
+  right: calc(50% - 21px);
   transform: translate(-50%, -50%);
   width: 42px;
   height: 42px;
@@ -496,11 +496,6 @@ h2.card-field__heading {
 
   .post__description-container {
     max-width: none !important;
-  }
-
-  .sub-rotate-button {
-    top: 25%;
-    right: 6%;
   }
 }
 

@@ -332,11 +332,10 @@ class CreatePost extends React.Component {
         </div>
       );
 
-      rotateButton = <div className="rotate-button">
+      rotateButton =
         <div className="sub-rotate-button" title="rotate"
              onClick={this.rotateImage.bind(this)}>
-        </div>
-      </div>;
+        </div>;
 
     } else {
       $imagePreview = (
@@ -356,7 +355,7 @@ class CreatePost extends React.Component {
         {this._renderLoader()}
         <div className={mainContainerClassName}>
           <form className="form-create form-horizontal">
-            <div className="form-group">
+            <div className="form-group" style={{position: 'relative'}}>
               <div className="input-container col-xs-12">
                 <div className="upload">
                   {$imagePreview}
