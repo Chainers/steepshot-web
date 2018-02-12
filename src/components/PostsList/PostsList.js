@@ -103,7 +103,7 @@ class PostsList extends React.Component {
           loadMore={debounce(this.getPostsList.bind(this) ,
             Constants.ENDLESS_SCROLL.DEBOUNCE)}
           hasMore={this.props.isComponentVisible && this.props.hasMore}
-          loader={<LoadingSpinner/>}
+          loader={<div className='spinner_pos-lis'><LoadingSpinner/></div>}
           threshold={Constants.ENDLESS_SCROLL.OFFSET}
         >
           <div className={this.props.wrapperModifier}>

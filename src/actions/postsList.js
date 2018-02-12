@@ -1,6 +1,5 @@
 import {getPosts} from './posts';
 import {getStore} from '../store/configureStore';
-import {addPosts} from './post';
 
 export function initPostsList(options) {
   return {
@@ -31,6 +30,7 @@ function getPostsListSuccess(pointOptions, posts) {
 }
 
 export function getPostsList(point) {
+  const LIMIT = 16;
   const statePoint = getStore().getState().postsList[point];
   if (statePoint.loading) {
     return {
@@ -48,22 +48,25 @@ export function getPostsList(point) {
     let userSettings = getStore().getState().auth.settings;
     const requestOptions = {
       point,
-      params: Object.assign({}, {
+      params: {
+        ...{
           offset: statePoint.offset,
           show_nsfw: userSettings ? userSettings.show_nsfw : false,
-          show_low_rated: userSettings ? userSettings.show_low_rated : false
+          show_low_rated: userSettings ? userSettings.show_low_rated : false,
+          limit: LIMIT
         },
-        statePoint.options)
+        ...statePoint.options
+      }
     };
     getPosts(requestOptions, statePoint.cancelPrevious).then((response) => {
       let newPosts = response.results;
+      let hasMore = newPosts === LIMIT;
       newPosts = removeDuplicate(newPosts);
       newPosts = removeOldDuplicate(statePoint.posts, newPosts);
 
-      let posts = newPosts.map( (post, index) => {
+      let posts = newPosts.map((post, index) => {
         return post.url
       });
-      let hasMore = statePoint.offset !== response.offset && posts.length !== 0;
       if (statePoint.maxPosts <=
         posts.length + statePoint.posts.length) {
         posts = posts

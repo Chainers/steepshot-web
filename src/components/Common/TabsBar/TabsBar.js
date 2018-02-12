@@ -8,7 +8,8 @@ import ShowIf from "../ShowIf";
 class TabsBar extends React.Component {
   static defaultProps = {
     className: '',
-    alwaysShowNavigation: false
+    alwaysShowNavigation: false,
+    showLoader: true
   };
 
   constructor(props) {
