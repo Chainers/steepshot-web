@@ -56,7 +56,6 @@ export function getUsersList(point, getUsers) {
       }
     };
     getUsers(requestOptions, true).then((response) => {
-      console.log();
       let newUsers = response.results;
       let hasMore = response.results.length === LIMIT;
       if (statePoint.users.length !== 0) {
