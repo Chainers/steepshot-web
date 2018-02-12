@@ -8,16 +8,23 @@ class Modal extends React.Component {
   constructor(props) {
     super(props);
     this.resizeWindow = this.resizeWindow.bind(this);
+    this.scrollPrevent = this.scrollPrevent.bind(this);
   }
 
   componentDidMount() {
     window.addEventListener('resize', this.resizeWindow);
+    this.container.addEventListener('touchmove', this.scrollPrevent);
     this.resizeWindow();
     this.container.classList.remove('before-load-back_modal');
     this.body.classList.remove('before-load_modal');
   }
 
+  scrollPrevent(e) {
+    e.stopPropagation();
+  }
+
   componentWillUnmount() {
+    this.container.removeEventListener('touchmove', this.scrollPrevent);
     window.removeEventListener('resize', this.resizeWindow);
   }
 
@@ -48,7 +55,7 @@ class Modal extends React.Component {
   render() {
     let styleBack = {backgroundColor: 'rgba(0, 0, 0, .7)'};
     styleBack.alignItems = this.props.bodyHeight >= this.props.containerHeight ? 'flex-start' : 'center';
-    styleBack.zIndex = 1002;
+    styleBack.zIndex = 1005;
     return (
       <div className="back_mods before-load-back_modal ov-scroll_modal"
            onClick={this.clickOutside.bind(this)}

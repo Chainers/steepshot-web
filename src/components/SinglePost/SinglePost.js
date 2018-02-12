@@ -22,36 +22,15 @@ class SinglePost extends React.Component {
   }
 
   render() {
-    let itemPost, meta;
+    let itemPost;
     if (Object.keys(this.props.post).length != 0) {
-      itemPost = this.props.post[this.props.location.pathname.replace(/\/post/, '')];
-      let arr = itemPost.title.split('');
-      arr[0] = arr[0].toUpperCase();
-      let username = this.props.location.pathname.match(/@[\w-.]+\//)[0];
-      meta = {
-        title: `${username.replace(/\//, '')}: «${arr.join('')}» | Steepshot`,
-        description: itemPost.description,
-        canonical: `${window.location.hostname}${window.location.pathname}`,
-        meta: {
-          name: {
-            keywords: 'steepshot, post, share'
-          },
-          property: {
-            'og:title': `${username.replace(/\//, '')}: «${arr.join('')}» | Steepshot`,
-            'og:description': itemPost.description,
-            'og:url': `${window.location.hostname}${window.location.pathname}`,
-            'og:image': itemPost.body,
-            'og:type': 'website',
-            'og:site_name': 'Steepshot.io'
-          }
-        }
-      };
+      itemPost = this.props.post[Object.keys(this.props.post)[0]];
+      document.title = `@${itemPost.author}: «${itemPost.title}» | Steepshot`;
     }
 
     if (!this.props.currentIndex) return null;
     return (
       <div className="container_sin-pos">
-        <DocumentMeta {...meta} />
         <div className="to-center_sin-pos">
           <PostModal showClose={false}/>
         </div>
