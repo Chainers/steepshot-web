@@ -52,7 +52,7 @@ export function toggleFollow(author) {
         dispatch(toggleFollowSuccess(author));
         setTimeout(() => {
           jqApp.pushMessage.open(`User has been successfully ${statusText}`);
-        }, 500);
+        }, 1000);
       }
     };
     Steem.followUnfollowUser(postingKey, username, author, newFollowState, callback);
