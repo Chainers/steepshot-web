@@ -60,7 +60,7 @@ export function getPostsList(point) {
     };
     getPosts(requestOptions, statePoint.cancelPrevious).then((response) => {
       let newPosts = response.results;
-      let hasMore = newPosts === LIMIT;
+      let hasMore = newPosts.length === LIMIT;
       newPosts = removeDuplicate(newPosts);
       newPosts = removeOldDuplicate(statePoint.posts, newPosts);
 
