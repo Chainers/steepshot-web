@@ -15,7 +15,7 @@ const User = ({user, authUser, toggleFollow}) => {
   return (
     <div className="container_user">
       <Link to={`/@${user.author}`}>
-        <Avatar src={user.avatar} style={{width: '60px', height: '60px', position: 'static'}}/>
+        <Avatar src={user.avatar} style={{width: '60px', height: '60px', position: 'static', marginTop: '-1px'}}/>
       </Link>
       <div className="name_user">
         <Link to={`/@${user.author}`}>
@@ -30,12 +30,16 @@ const User = ({user, authUser, toggleFollow}) => {
         <ShowIf show={!user.togglingFollow}>
           <ShowIf show={!user.has_followed}>
             <div className="follow-btn_user" onClick={() => toggleFollow(user.author)}>
-              <img src="/static/images/user/follow-button.svg" alt="toggle follow"/>
+              <img src="/static/images/user/follow-button.svg"
+                   alt="toggle follow"
+              />
             </div>
           </ShowIf>
           <ShowIf show={user.has_followed}>
             <div className="following_user">
-              <img src="/static/images/user/following.svg" alt="toggle follow"/>
+              <img src="/static/images/user/following.svg"
+                   alt="toggle follow"
+              />
             </div>
           </ShowIf>
         </ShowIf>
