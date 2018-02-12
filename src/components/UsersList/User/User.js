@@ -9,7 +9,7 @@ import LoadingSpinner from "../../LoadingSpinner";
 const User = ({user, authUser, toggleFollow}) => {
   let amountMoney = '';
   if (user.amount_sbd) {
-    amountMoney = '+ $' + user.amount_sbd.toFixed(3);
+    amountMoney = (user.amount_sbd < 0 ? '-' : '+') +'$' + Math.abs(user.amount_sbd.toFixed(3));
   }
 
   return (
