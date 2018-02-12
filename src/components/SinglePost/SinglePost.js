@@ -3,7 +3,6 @@ import {connect} from 'react-redux';
 import {addSinglePost} from '../../actions/post';
 import PostModal from '../PostModal/PostModal';
 import {logSharePost} from '../../actions/logging';
-import DocumentMeta from 'react-document-meta';
 
 class SinglePost extends React.Component {
   constructor(props) {
