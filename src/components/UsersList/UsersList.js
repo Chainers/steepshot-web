@@ -27,7 +27,7 @@ class UsersList extends React.Component {
     if (nextProps.options && (nextProps.options.query !== this.props.options.query)) {
       let usersListOptions = UsersList.userListOptions(nextProps);
       this.props.initUsersList(usersListOptions);
-      this.props.getUsersList(this.props.point, this.props.getUsers);
+      this.props.getUsersList(nextProps.point, this.props.getUsers);
     }
   }
 
