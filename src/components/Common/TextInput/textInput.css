@@ -1,0 +1,55 @@
+.container_tex-inp {
+  position: relative;
+  width: 100%;
+  padding: 0 10px 10px;
+}
+
+.title_tex-inp {
+  position: absolute;
+  top: 21px;
+  left: 10px;
+  margin: 0;
+  padding: 0;
+  color: #979b9e;
+  font-size: 14px;
+  transition: top .2s ease, font .2s ease;
+  cursor: text;
+  user-select: none;
+}
+
+.area_tex-inp {
+  margin-top: 21px;
+  width: 100%;
+  padding: 0;
+  resize: none;
+  overflow: hidden;
+  background: transparent none;
+  border: none;
+  border-bottom: 1px solid #e7e7e7;
+  border-radius: 0;
+  transition: height .2s ease;
+  color: #000;
+}
+
+.focused_tex-inp, .area_tex-inp:focus + .title_tex-inp {
+  top: 0;
+  font-size: 11px;
+}
+
+.hidden-div_tex-inp {
+  width: calc(100% - 20px);
+  position: absolute;
+  visibility: hidden;
+  display: block;
+}
+
+.input-text_tex-inp {
+  font-size: 14px;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  white-space: pre-wrap;
+}
+
+.required_tex-inp {
+  color: #d0011b;
+}
