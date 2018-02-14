@@ -33,7 +33,7 @@
 }
 
 .focused_tex-inp, .area_tex-inp:focus + .title_tex-inp {
-  top: 8px;
+  top: 19px;
   font-size: 11px;
   cursor: default;
 }
