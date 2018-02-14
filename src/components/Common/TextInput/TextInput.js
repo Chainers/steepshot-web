@@ -26,6 +26,13 @@ class TextInput extends React.Component {
     super(props);
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (utils.equalsObject(this.props, nextProps)) {
+      return false;
+    }
+    return true;
+  }
+
   onChange(event) {
     let newValue = event.target.value;
     let regExp = new RegExp(this.props.noValidCharacters);
@@ -46,7 +53,7 @@ class TextInput extends React.Component {
     let lineHeight = this.state.fontSize + this.state.fontPadding;
     let maxHeight = this.props.maxHeight - TextInput.MARGIN_TEXT;
     maxHeight = Math.round(maxHeight / lineHeight) * lineHeight;
-    let height = this.hiddenDiv ? this.hiddenDiv.clientHeight : lineHeight;
+    let height = this.hiddenDiv && this.hiddenDiv.clientHeight ? this.hiddenDiv.clientHeight : lineHeight;
     height = utils.getLess(height, maxHeight);
     return height;
   }

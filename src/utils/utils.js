@@ -21,6 +21,8 @@ class utils {
     getLess = (first, second) => first < second ? first : second;
 
     getMore = (first, second) => first > second ? first : second;
+
+    equalsObject = (first, second) => JSON.stringify(first) === JSON.stringify(second);
 }
 
 export default new utils();
