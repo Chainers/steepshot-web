@@ -17,8 +17,8 @@ import LoadingSpinner from '../LoadingSpinner/index';
 import {sendComment} from '../../actions/comment';
 import {copyToClipboard} from '../../actions/clipboard';
 import ReactDOM from 'react-dom';
-import PostContextMenu from "../PostContextMenu/PostContextMenu";
-import Likes from "../PostsList/Post/Likes/Likes";
+import PostContextMenu from '../PostContextMenu/PostContextMenu';
+import Likes from '../PostsList/Post/Likes/Likes';
 import utils from '../../utils/utils';
 
 const START_TEXTAREA_HEIGHT = '42px';
@@ -181,7 +181,7 @@ class PostModal extends React.Component {
   }
 
   changeText() {
-    this.hiddenDiv.textContent = this.textArea.value + '\n';
+    this.hiddenDiv.textContent = this.textArea ? this.textArea.value + '\n' : '';
 
     let label = '';
     let sendHover = '';
@@ -196,6 +196,7 @@ class PostModal extends React.Component {
     if (!this.props.addCommentHeight || delta >= 5 || delta <= -5 || this.textArea.value.length <= 1) {
       this.props.setPostModalOptions({
         addCommentHeight: this.hiddenDiv.clientHeight,
+        textareaWidth: this.textArea.clientWidth,
         label,
         sendHover,
       });
@@ -213,6 +214,37 @@ class PostModal extends React.Component {
 
   render() {
     const authorLink = `/@${this.props.post.author}`;
+    let commentInput = <ShowIf show={this.props.isUserAuth}>
+                          <div className="add-comment_pos-mod">
+                            <div className="hidden-div_pos-mod"
+                                 ref={ref => {
+                                   this.hiddenDiv = ref
+                                 }}
+                                 style={this.hiddenDiv ? {width: this.props.textareaWidth, maxHeight: 480} : {}}
+                            />
+                            <textarea ref={ref => this.textArea = ref}
+                                      maxLength={2048}
+                                      className="form-control text-area_pos-mod"
+                                      onChange={this.changeText.bind(this)}
+                                      style={{
+                                        height: this.hiddenDiv !== undefined
+                                          ? this.props.addCommentHeight + 'px'
+                                          : START_TEXTAREA_HEIGHT,
+                                      }}
+                            />
+                            <label className={this.props.label + ' label_pos-mod'}>Comment</label>
+                            <ShowIf show={this.props.needsCommentFormLoader}>
+                              <LoadingSpinner style={{top: 0}}/>
+                            </ShowIf>
+                            <ShowIf show={!this.props.needsCommentFormLoader}>
+                              <button type="submit"
+                                      className={'btn-submit' + ' ' + 'btn_pos-mod' + ' ' + this.props.sendHover}
+                                      onClick={this.sendComment.bind(this)}
+                              >Send
+                              </button>
+                            </ShowIf>
+                          </div>
+                        </ShowIf>;
     return (
       <div className="container_pos-mod" style={this.props.style.container}>
         <ShowIf show={this.props.showClose}>
@@ -287,13 +319,15 @@ class PostModal extends React.Component {
               ref={(ref) => this.scrollView = ref}
               wrapperModifier="list-scroll_pos-mod"
               scrollViewModifier="list-scroll-view_pos-mod"
-              autoHeight={window.innerWidth <
-              constants.DISPLAY.DESK_BREAKPOINT}
-              autoHeightMax={350}
+              autoHeight={window.innerWidth < constants.DISPLAY.DESK_BREAKPOINT}
+              autoHeightMax={10000}
               autoHeightMin={100}
               autoHide={true}
             >
-              {this.renderDescription.bind(this)()}
+              {this.renderDescription()}
+              <ShowIf show={this.props.style.isMobile}>
+                {commentInput}
+              </ShowIf>
               <Comments
                 key="comments"
                 item={this.props.post}
@@ -302,37 +336,8 @@ class PostModal extends React.Component {
               />
             </ScrollViewComponent>
           </div>
-
-          <ShowIf show={this.props.isUserAuth}>
-            <div className="add-comment_pos-mod">
-              <div className="hidden-div_pos-mod"
-                   ref={ref => {
-                     this.hiddenDiv = ref
-                   }}
-                   style={this.textArea ? {width: this.textArea.clientWidth, maxHeight: 480} : {}}
-              />
-              <textarea ref={ref => this.textArea = ref}
-                        maxLength={2048}
-                        className="form-control text-area_pos-mod"
-                        onChange={this.changeText.bind(this)}
-                        style={{
-                          height: this.hiddenDiv !== undefined
-                            ? this.props.addCommentHeight + 'px'
-                            : START_TEXTAREA_HEIGHT,
-                        }}
-              />
-              <label className={this.props.label + ' label_pos-mod'}>Comment</label>
-              <ShowIf show={this.props.needsCommentFormLoader}>
-                <LoadingSpinner style={{top: 0}}/>
-              </ShowIf>
-              <ShowIf show={!this.props.needsCommentFormLoader}>
-                <button type="submit"
-                        className={'btn-submit' + ' ' + 'btn_pos-mod' + ' ' + this.props.sendHover}
-                        onClick={this.sendComment.bind(this)}
-                >Send
-                </button>
-              </ShowIf>
-            </div>
+          <ShowIf show={!this.props.style.isMobile}>
+            {commentInput}
           </ShowIf>
         </div>
       </div>
@@ -348,6 +353,8 @@ class PostModal extends React.Component {
     const docHeight = document.documentElement.clientHeight;
     const MAX_IMG_WIDTH = (docWidth - DESC_WIDTH) * 0.8;
     const PREFERRED_IMG_WIDTH = 640;
+    const isMobile = docWidth < MAX_WIDTH_FULL_SCREEN;
+
     const container = {};
     container.width = docWidth;
     container.height = '100%';
@@ -395,7 +402,8 @@ class PostModal extends React.Component {
       imgCont,
       headerCont,
       description,
-      textareaMarginTop
+      textareaMarginTop,
+      isMobile
     };
     if (JSON.stringify(style) !== JSON.stringify(this.props.style)) {
       this.props.setPostModalOptions({style});

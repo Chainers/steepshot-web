@@ -29,21 +29,28 @@ class Comment extends React.Component {
   }
 
   componentDidMount() {
-    if (this.state.item && /<[\w\W]+>/.test(this.state.item.body)) {
-      let customComment = this.state.item.body.replace(/([>\s\b])(@[\w-.]+)/g, `$1<a href=\"/$2\">$2</a>`);
-      this.commentText.innerHTML = customComment;
+    if (this.state.item &&
+        /<[\w\W]+>/.test(this.state.item.body) ||
+        /\n/.test(this.state.item.body) ||
+        /http(s)?:\/\/[\w\W]+(.png|.gif|.jpg|.jpeg)/g.test(this.state.item.body)) {
+      let userLinks = this.state.item.body.replace(/([>\s\b])(@[\w-.]+)/g, `$1<a href="/$2">$2</a>`);
+      let newLine = userLinks.replace(/\n/g, '<br>');
+      let replaceBotsLayout = newLine.replace(/(!)?\[[^\]]+\]/g, '');
+      let changeBotsLink = replaceBotsLayout.replace(/\((http(s)?:\/\/[\w\W]+?)\)/g, '$1');
+      let linkToImg = changeBotsLink.replace(/(http(s)?:\/\/[\w\W]+(.png|.gif|.jpg|.jpeg))/g, '<img src="$1"/>');
+      this.commentText.innerHTML = linkToImg;
     }
   }
 
   openLikesModal() {
-    let arr = this.state.item.url.split('');
-    for (let i = 0; i < arr.length; i++) {
-      if (arr[i] == '#') {
-        arr.splice(0, i + 1);
-      }
-    }
-    this.props.dispatch({ type : 'CLEAR_LIKES_INFO', url : `/${arr.join('')}` });
-    jqApp.openLikesModal($(document));
+    // let arr = this.state.item.url.split('');
+    // for (let i = 0; i < arr.length; i++) {
+    //   if (arr[i] == '#') {
+    //     arr.splice(0, i + 1);
+    //   }
+    // }
+    // this.props.dispatch({ type : 'CLEAR_LIKES_INFO', url : `/${arr.join('')}` });
+    // jqApp.openLikesModal($(document));
   }
 
   replyAuthor() {

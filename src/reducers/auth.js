@@ -23,6 +23,7 @@ export default function auth(state = initialState, action) {
 
     case 'LOGOUT_SUCCESS':
       return {
+        ...state,
         user: JSON.parse(localStorage.getItem('user')) || null,
         postingKey: JSON.parse(localStorage.getItem('postingKey')) || null,
         settings: JSON.parse(localStorage.getItem('settings')) || null,

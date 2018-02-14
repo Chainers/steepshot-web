@@ -9091,7 +9091,7 @@ modal.modal-like .modal-header {
   content: " ";
   position: absolute;
   width: 100px;
-  height: 20px;
+  height: 22px;
   transform: translateX(-100px);
   background: linear-gradient(270deg, #fff 2%, transparent);
 }
@@ -9100,7 +9100,7 @@ modal.modal-like .modal-header {
   content: " ";
   position: absolute;
   width: 100px;
-  height: 20px;
+  height: 22px;
   background: white;
 }
 
@@ -9328,5 +9328,10 @@ modal.modal-like .modal-header {
 
 .comment-head .user-wrap {
   padding: 15px 0;
+}
+.user-wrap .name {
+  width: 50%;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
