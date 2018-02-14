@@ -33,9 +33,6 @@ class Header extends React.Component {
   componentDidMount() {
     if (this.refs[this.props.location.pathname]) $(
       this.refs[this.props.location.pathname]).addClass('active');
-    // setTimeout(() => {
-    //   jqApp.search.init();
-    // }, 0);
   }
 
   componentWillMount() {
@@ -53,7 +50,7 @@ class Header extends React.Component {
 
   handleLogout(event) {
     event.preventDefault();
-    logout(this.props.history, this.props.dispatch);
+    this.props.logout(this.props.history);
   }
 
   _changeLanguageEn() {
@@ -230,6 +227,14 @@ Header.propTypes = {
   history: PropTypes.object.isRequired,
 };
 
+const mapDispatchToProps = (dispatch) => {
+  return {
+    logout: (history) => {
+      dispatch(logout(history))
+    }
+  }
+};
+
 const mapStateToProps = (state) => {
   return {
     postingKey: state.auth.postingKey,
@@ -239,4 +244,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default withRouter(connect(mapStateToProps)(Header));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Header));
