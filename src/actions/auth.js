@@ -1,10 +1,10 @@
-import { browserHistory } from 'react-router';
+import {browserHistory} from 'react-router';
 import fakeAuth from '../components/Routes/fakeAuth';
 import constants from '../common/constants';
 import steem from 'steem';
-import { getStore } from '../store/configureStore';
+import {getStore} from '../store/configureStore';
 import Constants from '../common/constants';
-import { logLogin } from './logging';
+import {logLogin} from './logging';
 
 const baseUrl = constants.URLS.baseUrl_v1;
 
@@ -24,7 +24,7 @@ export function login(username, postingKey, history, dispatch, callback) {
       return false;
     }
     if (result.length == 0) {
-      callback("Such a user doesn't exist");
+      callback('Such a user doesn\'t exist');
       return false;
     }
     let pubWif = result[0].posting.key_auths[0][0];
@@ -39,7 +39,7 @@ export function login(username, postingKey, history, dispatch, callback) {
       callback('Invalid user name or posting key');
       return {
         type: 'LOGIN_FAILURE',
-        messages: "Not valid user name or posting key"
+        messages: 'Not valid user name or posting key'
       };
     } else {
 
@@ -70,7 +70,7 @@ export function login(username, postingKey, history, dispatch, callback) {
         welcomeName = metadata.profile.name;
       }
 
-      callback('Welcome to Steepshot, ' +  welcomeName + ' !');
+      callback('Welcome to Steepshot, ' +  welcomeName + '!');
 
       dispatch({
         type: 'LOGIN_SUCCESS',
@@ -91,15 +91,21 @@ function baseBrowseFilter() {
   return baseBrowseFilter;
 }
 
-export function logout(history, dispatch) {
-  localStorage.removeItem('user');
-  localStorage.removeItem('postingKey');
-  localStorage.removeItem('settings');
-  localStorage.removeItem('avatar');
-  dispatch({
+function logoutUser() {
+  return {
     type: 'LOGOUT_SUCCESS'
-  });
-  fakeAuth.signout(() => history.push(`/browse/${baseBrowseFilter()}`));
+  }
+}
+
+export function logout(history) {
+  return (dispatch) => {
+    localStorage.removeItem('user');
+    localStorage.removeItem('postingKey');
+    localStorage.removeItem('settings');
+    localStorage.removeItem('avatar');
+    dispatch(logoutUser());
+    fakeAuth.signout(() => history.push(`/browse/${baseBrowseFilter()}`));
+  }
 }
 
 export function updateProfile(state, token) {
