@@ -12,6 +12,7 @@ import tabsBar from './tabsBar';
 import likesFlagsList from './likesFlagsList';
 import users from './users';
 import bodyParams from './bodyParams';
+import editPost from "./editPost";
 
 export default combineReducers({
   clipboard,
@@ -25,5 +26,6 @@ export default combineReducers({
   postModal,
   users,
   bodyParams,
-  likesFlagsList
+  likesFlagsList,
+  editPost
 });

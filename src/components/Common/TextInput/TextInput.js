@@ -41,11 +41,16 @@ class TextInput extends React.Component {
       newValue = newValue.replace('\n', '');
       this.input.value = newValue;
     }
-    if (this.state.error && newValue === event.target.value) {
+    if (newValue !== event.target.value) {
+      this.input.value = newValue;
+      return;
+    }
+    if (this.state.error) {
       this.setState({error: undefined})
     }
     this.hiddenDiv.textContent = newValue + '\n';
     this.value = newValue;
+    console.log("tyt");
     this.props.onChange(newValue);
   }
 
