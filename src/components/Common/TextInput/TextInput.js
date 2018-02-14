@@ -3,9 +3,7 @@ import utils from '../../../utils/utils';
 import ShowIf from "../ShowIf";
 
 class TextInput extends React.Component {
-  static LINE_HEIGHT = 25;
-  static MARGIN_TOP = 21;
-  static FONT_PADDING = 5;
+  static MARGIN_TEXT = 21;
 
   static defaultProps = {
     label: '',
@@ -13,7 +11,13 @@ class TextInput extends React.Component {
     multiline: true,
     maxHeight: 1000,
     required: false,
-    style: {}
+    smallFont: false,
+    errorMsg: ''
+  };
+
+  state = {
+    fontSize: this.props.smallFont ? 11 : 14,
+    fontPadding: this.props.smallFont ? 7 : 9
   };
 
   constructor(props) {
@@ -28,32 +32,40 @@ class TextInput extends React.Component {
     }
     this.hiddenDiv.textContent = newValue + '\n';
     this.value = newValue;
-    this.props.onChange();
+    this.props.onChange(newValue);
   }
 
   get areaHeight() {
-    let lineHeight = this.props.style.fontSize + TextInput.FONT_PADDING || TextInput.LINE_HEIGHT;
-    let areaHeight = this.hiddenDiv ?
-      utils.getLess(this.hiddenDiv.clientHeight, this.props.maxHeight - TextInput.MARGIN_TOP) : lineHeight;
-    areaHeight = utils.getMore(areaHeight, lineHeight);
-    areaHeight = Math.round(areaHeight / lineHeight) * lineHeight;
-    return areaHeight;
+    let lineHeight = this.state.fontSize + this.state.fontPadding;
+    let maxHeight = this.props.maxHeight - TextInput.MARGIN_TEXT;
+    maxHeight = Math.round(maxHeight / lineHeight) * lineHeight;
+    let height = this.hiddenDiv ? this.hiddenDiv.clientHeight : lineHeight;
+    height = utils.getLess(height, maxHeight);
+    return height;
   }
 
   render() {
     let focused = this.props.value || (this.input && this.input.value) ? 'focused_tex-inp' : '';
+    let minAreaHeight = (this.state.fontSize + this.state.fontPadding) * 2;
+    let prefAreaHeight = this.areaHeight;
+    let paddingTop = prefAreaHeight < (minAreaHeight / 2 + 1) ? prefAreaHeight / 2 : 0;
     return (
       <div className="container_tex-inp" onClick={() => this.input.focus()}>
-        <textarea className="area_tex-inp input-text_tex-inp"
+        <textarea className={'area_tex-inp input-text_tex-inp '}
                   onChange={this.onChange.bind(this)}
                   value={this.props.value}
                   maxLength={this.props.maxLength}
                   ref={ref => this.input = ref}
-                  style={{...this.props.style,
-                    height: this.areaHeight,
-                    lineHeight: (this.props.style.fontSize + TextInput.FONT_PADDING || TextInput.LINE_HEIGHT) + 'px'
+                  style={{
+                    padding: paddingTop + 'px 0',
+                    fontSize: this.state.fontSize + 'px',
+                    height: prefAreaHeight,
+                    minHeight: minAreaHeight
                   }}
         />
+        <ShowIf show={utils.isNotEmptyString(this.props.errorMsg)}>
+          <span className="error-msg_tex-inp">{this.props.errorMsg}</span>
+        </ShowIf>
         <label className={'title_tex-inp ' + focused}>
           {this.props.title}
           <ShowIf show={this.props.required}>
@@ -61,11 +73,12 @@ class TextInput extends React.Component {
           </ShowIf>
         </label>
         <div className="hidden-div_tex-inp input-text_tex-inp"
-             style={{...this.props.style,
-               height: undefined,
-               lineHeight: (this.props.style.fontSize + TextInput.FONT_PADDING || TextInput.LINE_HEIGHT) + 'px'
+             ref={ref => this.hiddenDiv = ref}
+             style={{
+               fontSize: this.state.fontSize + 'px',
+               lineHeight: (this.state.fontSize + this.state.fontPadding) + 'px'
              }}
-             ref={ref => this.hiddenDiv = ref}>
+        >
           {this.props.value || ''}
         </div>
       </div>

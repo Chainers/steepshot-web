@@ -2,11 +2,12 @@
   position: relative;
   width: 100%;
   padding: 0 10px 10px;
+  overflow: hidden;
 }
 
 .title_tex-inp {
   position: absolute;
-  top: 21px;
+  top: 50%;
   left: 10px;
   margin: 0;
   padding: 0;
@@ -15,12 +16,12 @@
   transition: top .2s ease, font .2s ease;
   cursor: text;
   user-select: none;
+  line-height: 14px;
 }
 
 .area_tex-inp {
-  margin-top: 21px;
+  margin-top: 30px;
   width: 100%;
-  padding: 0;
   resize: none;
   overflow: hidden;
   background: transparent none;
@@ -32,8 +33,9 @@
 }
 
 .focused_tex-inp, .area_tex-inp:focus + .title_tex-inp {
-  top: 0;
+  top: 8px;
   font-size: 11px;
+  cursor: default;
 }
 
 .hidden-div_tex-inp {
@@ -52,4 +54,14 @@
 
 .required_tex-inp {
   color: #d0011b;
+}
+
+
+.hasError_tex-inp {
+  color: #d0011b;
+}
+
+.error-msg_tex-inp {
+  margin: 10px 0;
+  font-size: 12px;
 }
