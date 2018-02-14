@@ -181,7 +181,7 @@ class PostModal extends React.Component {
   }
 
   changeText() {
-    this.hiddenDiv.textContent = this.textArea.value + '\n';
+    this.hiddenDiv.textContent = this.textArea ? this.textArea.value + '\n' : '';
 
     let label = '';
     let sendHover = '';
@@ -196,6 +196,7 @@ class PostModal extends React.Component {
     if (!this.props.addCommentHeight || delta >= 5 || delta <= -5 || this.textArea.value.length <= 1) {
       this.props.setPostModalOptions({
         addCommentHeight: this.hiddenDiv.clientHeight,
+        textareaWidth: this.textArea.clientWidth,
         label,
         sendHover,
       });
@@ -219,7 +220,7 @@ class PostModal extends React.Component {
                                  ref={ref => {
                                    this.hiddenDiv = ref
                                  }}
-                                 style={this.textArea ? {width: this.textArea.clientWidth, maxHeight: 480} : {}}
+                                 style={this.hiddenDiv ? {width: this.props.textareaWidth, maxHeight: 480} : {}}
                             />
                             <textarea ref={ref => this.textArea = ref}
                                       maxLength={2048}
