@@ -1,14 +1,18 @@
 .container_tex-inp {
-  position: relative;
   width: 100%;
   padding: 0 10px 10px;
+}
+
+.input-container_tex-inp {
+  width: 100%;
+  position: relative;
   overflow: hidden;
 }
 
 .title_tex-inp {
   position: absolute;
-  top: 50%;
-  left: 10px;
+  top: calc(50% + 7px);
+  left: 0;
   margin: 0;
   padding: 0;
   color: #979b9e;
@@ -38,6 +42,10 @@
   cursor: default;
 }
 
+.area_tex-inp:focus:not(.has-error_tex-inp) {
+  border-color: #b8c0c3;
+}
+
 .hidden-div_tex-inp {
   width: calc(100% - 20px);
   position: absolute;
@@ -56,12 +64,30 @@
   color: #d0011b;
 }
 
-
-.hasError_tex-inp {
+.has-error_tex-inp {
+  border-color: #d0011b;
   color: #d0011b;
 }
 
 .error-msg_tex-inp {
   margin: 10px 0;
   font-size: 12px;
+}
+
+.description_tex-inp {
+  color: #979b9e;
+  font-size: 12px;
+  margin-top: 10px;
+}
+
+.error_tex-inp {
+  color: #d0011b;
+  font-size: 12px;
+}
+
+.children_tex-inp {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
 }
