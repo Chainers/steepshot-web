@@ -26,13 +26,6 @@ class TextInput extends React.Component {
     super(props);
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (utils.equalsObject(this.props, nextProps)) {
-      return false;
-    }
-    return true;
-  }
-
   onChange(event) {
     let newValue = utils.cloneObject(event.target.value);
     let regExp = new RegExp(this.props.noValidCharacters);
@@ -62,7 +55,8 @@ class TextInput extends React.Component {
   }
 
   render() {
-    let focused = this.props.value || (this.input && this.input.value) ? 'focused_tex-inp' : '';
+    let focused = this.props.value
+      || (this.props.value === undefined && this.input && this.input.value) ? 'focused_tex-inp' : '';
     let minAreaHeight = (this.state.fontSize + this.state.fontPadding) * 2;
     let prefAreaHeight = this.areaHeight;
     let paddingTop = prefAreaHeight < (minAreaHeight / 2 + 1) ? prefAreaHeight / 2 : 0;

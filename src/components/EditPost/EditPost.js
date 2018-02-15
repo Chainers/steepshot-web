@@ -2,6 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import TextInput from "../Common/TextInput/TextInput";
 import {changeDescription, changeTags, changeTitle} from "../../actions/editPost";
+import EditTags from "../Common/EditTags/EditTags";
 
 class CreatePost extends React.Component {
   static  TAG_NAME = 'tag';
@@ -39,11 +40,12 @@ class CreatePost extends React.Component {
                      error={this.props.tags.error}
                      noValidCharacters="[^\s\w]"
                      onChange={(value) => this.props.changeTags(value)}>
+            <EditTags value={this.props.tags.text}
+                      onChange={(value) => this.props.changeTags(value)}/>
           </TextInput>
           <TextInput title="Description"
                      multiline={true}
                      maxHeight={500}
-                     value={this.props.description}
                      description="Description is limited to 2048 characters"
                      noValidCharacters="[^\n\s\w]"
                      onChange={(value) => this.props.changeDescription(value)}/>
