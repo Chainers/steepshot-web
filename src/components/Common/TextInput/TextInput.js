@@ -34,7 +34,7 @@ class TextInput extends React.Component {
   }
 
   onChange(event) {
-    let newValue = event.target.value;
+    let newValue = utils.cloneObject(event.target.value);
     let regExp = new RegExp(this.props.noValidCharacters);
     newValue = newValue.replace(regExp, '');
     if (!this.props.multiline) {
@@ -49,8 +49,6 @@ class TextInput extends React.Component {
       this.setState({error: undefined})
     }
     this.hiddenDiv.textContent = newValue + '\n';
-    this.value = newValue;
-    console.log("tyt");
     this.props.onChange(newValue);
   }
 
@@ -68,28 +66,30 @@ class TextInput extends React.Component {
     let minAreaHeight = (this.state.fontSize + this.state.fontPadding) * 2;
     let prefAreaHeight = this.areaHeight;
     let paddingTop = prefAreaHeight < (minAreaHeight / 2 + 1) ? prefAreaHeight / 2 : 0;
+    let areaModifier = this.state.error ? ' has-error_tex-inp' : '';
+    areaModifier += this.props.multiline ? ' multiline_tex-inp' : '';
     return (
       <div className="container_tex-inp">
         <div className="input-container_tex-inp">
-        <textarea className={'area_tex-inp input-text_tex-inp ' + (this.state.error ? 'has-error_tex-inp' : '')}
-                  onChange={this.onChange.bind(this)}
-                  value={this.props.value}
-                  maxLength={this.props.maxLength}
-                  ref={ref => this.input = ref}
-                  style={{
-                    padding: paddingTop + 'px 0',
-                    fontSize: this.state.fontSize + 'px',
-                    height: prefAreaHeight,
-                    minHeight: minAreaHeight
-                  }}
-        />
+          <textarea className={'area_tex-inp input-text_tex-inp' + areaModifier}
+                    onChange={this.onChange.bind(this)}
+                    value={this.props.value}
+                    maxLength={this.props.maxLength}
+                    ref={ref => this.input = ref}
+                    style={{
+                      padding: paddingTop + 'px 0',
+                      fontSize: this.state.fontSize + 'px',
+                      height: prefAreaHeight,
+                      minHeight: minAreaHeight
+                    }}
+          />
           <label className={'title_tex-inp ' + focused} onClick={() => this.input.focus()}>
             {this.props.title}
             <ShowIf show={this.props.required}>
               <span className="required_tex-inp"> *</span>
             </ShowIf>
           </label>
-          <div className="hidden-div_tex-inp input-text_tex-inp"
+          <div className={'hidden-div_tex-inp' + areaModifier}
                ref={ref => this.hiddenDiv = ref}
                style={{
                  fontSize: this.state.fontSize + 'px',

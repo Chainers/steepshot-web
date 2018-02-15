@@ -1,6 +1,5 @@
 .container_tex-inp {
   width: 100%;
-  padding: 0 10px 10px;
 }
 
 .input-container_tex-inp {
@@ -11,7 +10,7 @@
 
 .title_tex-inp {
   position: absolute;
-  top: calc(50% + 7px);
+  top: calc(50% + 5px);
   left: 0;
   margin: 0;
   padding: 0;
@@ -24,7 +23,7 @@
 }
 
 .area_tex-inp {
-  margin-top: 30px;
+  margin-top: 25px;
   width: 100%;
   resize: none;
   overflow: hidden;
@@ -34,10 +33,11 @@
   border-radius: 0;
   transition: height .2s ease;
   color: #000;
+  white-space: pre;
 }
 
 .focused_tex-inp, .area_tex-inp:focus + .title_tex-inp {
-  top: 19px;
+  top: 14px;
   font-size: 11px;
   cursor: default;
 }
@@ -51,9 +51,10 @@
   position: absolute;
   visibility: hidden;
   display: block;
+  white-space: pre;
 }
 
-.input-text_tex-inp {
+.multiline_tex-inp {
   font-size: 14px;
   overflow-wrap: break-word;
   word-wrap: break-word;

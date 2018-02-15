@@ -23,6 +23,8 @@ class utils {
     getMore = (first, second) => first > second ? first : second;
 
     equalsObject = (first, second) => JSON.stringify(first) === JSON.stringify(second);
+
+    cloneObject = (object) => JSON.parse(JSON.stringify( object ));
 }
 
 export default new utils();

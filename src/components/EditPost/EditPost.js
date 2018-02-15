@@ -37,7 +37,7 @@ class CreatePost extends React.Component {
                      value={this.props.tags.text}
                      description="Enter tags with spaces, but not more than 20"
                      error={this.props.tags.error}
-                     noValidCharacters="[^\n\s\w]"
+                     noValidCharacters="[^\s\w]"
                      onChange={(value) => this.props.changeTags(value)}>
           </TextInput>
           <TextInput title="Description"
