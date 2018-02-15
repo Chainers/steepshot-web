@@ -1,8 +1,10 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import TextInput from "../Common/TextInput/TextInput";
-import {changeDescription, changeTags, changeTitle} from "../../actions/editPost";
+import {changeDescription, changeImage, addTag, changeTitle, removeTag} from "../../actions/editPost";
 import EditTags from "../Common/EditTags/EditTags";
+import ShowIf from "../Common/ShowIf";
+import utils from "../../utils/utils";
 
 class CreatePost extends React.Component {
   static  TAG_NAME = 'tag';
@@ -16,14 +18,34 @@ class CreatePost extends React.Component {
 
   }
 
+  imageChanged(event) {
+    event.preventDefault();
+    const reader = new FileReader();
+    const file = event.target.files[0];
+    reader.onloadend = () => {
+      this.props.changeImage(reader.result)
+    };
+    reader.readAsDataURL(file);
+  }
+
   render() {
     return (
       <div className='container_edi-pos'>
         <div className="image-container_edi-pos">
-          <div className="upload-icon_edi-pos"/>
-          <span className="upload-text_edi-pos">
-            Click to upload a picture
-          </span>
+          <ShowIf show={utils.isEmptyString(this.props.image.src)}>
+            <div className="choose-container_edi-pos">
+              <div className="upload-icon_edi-pos"/>
+              <span className="upload-text_edi-pos">
+                Click to upload a picture
+              </span>
+            </div>
+          </ShowIf>
+          <ShowIf show={utils.isNotEmptyString(this.props.image.src)}>
+            <img className="image_edi-pos" src={this.props.image.src} alt='image'/>
+          </ShowIf>
+          <input className="file-input_edi-pos"
+                 type="file"
+                 onChange={this.imageChanged.bind(this)}/>
         </div>
         <div className="title_edi-pos">
           <TextInput title="Title"
@@ -34,18 +56,18 @@ class CreatePost extends React.Component {
                      maxLength={255}
                      onChange={(value) => this.props.changeTitle(value)}/>
           <TextInput title="Tabs"
-                     multiline={false}
-                     value={this.props.tags.text}
+                     multiline={true}
+                     value={this.props.tags.current}
                      description="Enter tags with spaces, but not more than 20"
                      error={this.props.tags.error}
-                     noValidCharacters="[^\s\w]"
-                     onChange={(value) => this.props.changeTags(value)}>
+                     noValidCharacters="[^\n\s\w]"
+                     onChange={(value) => this.props.addTag(value)}>
             <EditTags value={this.props.tags.text}
-                      onChange={(value) => this.props.changeTags(value)}/>
+                      onChange={(value) => this.props.removeTag(value)}/>
           </TextInput>
           <TextInput title="Description"
                      multiline={true}
-                     maxHeight={500}
+                     maxHeight={50000}
                      description="Description is limited to 2048 characters"
                      noValidCharacters="[^\n\s\w]"
                      onChange={(value) => this.props.changeDescription(value)}/>
@@ -66,11 +88,17 @@ const mapDispatchToProps = (dispatch) => {
     changeTitle: (value) => {
       dispatch(changeTitle(value));
     },
-    changeTags: (value) => {
-      dispatch(changeTags(value))
+    addTag: (value) => {
+      dispatch(addTag(value))
     },
     changeDescription: (value) => {
       dispatch(changeDescription(value))
+    },
+    changeImage: (image) => {
+      dispatch(changeImage(image))
+    },
+    removeTag: (index) => {
+      dispatch(removeTag(index))
     }
   };
 };

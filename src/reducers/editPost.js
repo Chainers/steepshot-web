@@ -1,13 +1,14 @@
 const initialState = {
   image: {
     file: '',
-    url: '',
+    src: '',
     error: ''
   },
   tags: {
     text: '',
     list: [],
-    error: ''
+    error: '',
+    current: ''
   },
   title: {
     text: '',
@@ -28,12 +29,29 @@ export default function editPost(state = initialState, action) {
     case 'EDIT_POST_CHANGE_TAGS':
       return {
         ...state, tags: {
-          ...state.tags, text: action.value
+          ...state.tags,
+          text: action.value,
+          current: action.current
         }
       };
     case 'EDIT_POST_CHANGE_DESCRIPTION':
       return {
         ...state, description: action.value
+      };
+    case 'EDIT_POST_REMOVE_TAG':
+      return {
+        ...state, tags: {
+          ...state.tags,
+          text: action.value
+        }
+      };
+    case 'EDIT_POST_CHANGE_IMAGE':
+      return {
+        ...state,
+        image: {
+          ...state.image,
+          src: action.image
+        }
       };
 
     default:

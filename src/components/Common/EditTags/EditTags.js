@@ -14,9 +14,7 @@ class EditTags extends React.Component {
   }
 
   removeTag(index) {
-    let tagsList = this.props.value.toLowerCase().split(' ');
-    tagsList.splice(index, 1);
-    this.props.onChange(tagsList.join(' '));
+    this.props.onChange(index);
   }
 
   renderTags() {
