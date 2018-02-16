@@ -14,8 +14,8 @@
   position: relative;
   margin-top: 40px;
   overflow: hidden;
-  height: 100%;
-  width: 100%;
+  max-height: 100%;
+  max-width: 100%;
   min-height: 200px;
   border-radius: 10px;
   cursor: pointer;
@@ -61,8 +61,19 @@
 
 .image_edi-pos {
   display: block;
-  max-height: 100vh;
-  min-height: 400px;
+}
+
+.rotate-button_edi-pos {
+  position: absolute;
+  z-index: 5;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: url('/static/images/rotate_button.png') no-repeat 50%;
+  transition: all .2s ease;
 }
 
 @media (max-width: 750px) {

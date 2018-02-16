@@ -2,7 +2,8 @@ const initialState = {
   image: {
     file: '',
     src: '',
-    error: ''
+    error: '',
+    rotate: 0
   },
   tags: {
     text: '',
@@ -49,7 +50,25 @@ export default function editPost(state = initialState, action) {
         ...state,
         image: {
           ...state.image,
-          src: action.image
+          src: action.image,
+          rotate: 0
+        }
+      };
+    case 'EDIT_POST_ROTATE_IMAGE':
+      return {
+        ...state,
+        image: {
+          ...state.image,
+          rotate: action.rotate
+        }
+      };
+    case 'EDIT_POST_CHANGE_IMAGE_SIZE':
+      return {
+        ...state,
+        image: {
+          ...state.image,
+          height: action.height,
+          width: action.width
         }
       };
 

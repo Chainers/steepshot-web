@@ -50,11 +50,27 @@ function getValidTagsString(str) {
   return result;
 }
 
-
 export function changeImage(image) {
   return {
     type: 'EDIT_POST_CHANGE_IMAGE',
     image
+  }
+}
+
+export function imageRotate() {
+  let rotate = getStore().getState().editPost.image.rotate;
+  rotate = (rotate + 90) % 360;
+  return {
+    type: 'EDIT_POST_ROTATE_IMAGE',
+    rotate
+  }
+}
+
+export function setImageContainerSize(width, height) {
+  return {
+    type: 'EDIT_POST_CHANGE_IMAGE_SIZE',
+    width,
+    height
   }
 }
 
