@@ -1,10 +1,11 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import TextInput from "../Common/TextInput/TextInput";
-import {changeDescription, changeImage, addTag, changeTitle, removeTag} from "../../actions/editPost";
+import {changeImage, addTag, removeTag} from "../../actions/editPost";
 import EditTags from "../Common/EditTags/EditTags";
 import ShowIf from "../Common/ShowIf";
 import utils from "../../utils/utils";
+import constants from "../../common/constants";
 
 class CreatePost extends React.Component {
   static  TAG_NAME = 'tag';
@@ -49,28 +50,31 @@ class CreatePost extends React.Component {
         </div>
         <div className="title_edi-pos">
           <TextInput title="Title"
+                     point={constants.TEXT_INPUT_POINT.TITLE}
                      multiline={false}
                      required={true}
                      value={this.props.title.text}
                      error={this.props.title.error}
-                     maxLength={255}
-                     onChange={(value) => this.props.changeTitle(value)}/>
-          <TextInput title="Tabs"
-                     multiline={true}
-                     value={this.props.tags.current}
+                     maxLength={255}/>
+          <TextInput title="Tags"
+                     point={constants.TEXT_INPUT_POINT.TAGS}
+                     multiline={false}
                      description="Enter tags with spaces, but not more than 20"
                      error={this.props.tags.error}
-                     noValidCharacters="[^\n\s\w]"
-                     onChange={(value) => this.props.addTag(value)}>
-            <EditTags value={this.props.tags.text}
-                      onChange={(value) => this.props.removeTag(value)}/>
+                     noValidCharacters="[^\w]"
+                     keyPressEvents={[{
+                       keys: [constants.KEYS.SPACE, constants.KEYS.ENTER],
+                       func: () => this.props.addTag()
+                     }]}>
+            <EditTags value={this.props.tags.current}
+                      onChange={() => this.props.removeTag()}/>
           </TextInput>
           <TextInput title="Description"
+                     point={constants.TEXT_INPUT_POINT.DESCRIPTION}
                      multiline={true}
                      maxHeight={50000}
-                     description="Description is limited to 2048 characters"
-                     noValidCharacters="[^\n\s\w]"
-                     onChange={(value) => this.props.changeDescription(value)}/>
+                     value={this.props.description}
+                     description="Description is limited to 2048 characters"/>
         </div>
       </div>
     );
@@ -85,20 +89,14 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    changeTitle: (value) => {
-      dispatch(changeTitle(value));
-    },
-    addTag: (value) => {
-      dispatch(addTag(value))
-    },
-    changeDescription: (value) => {
-      dispatch(changeDescription(value))
-    },
-    changeImage: (image) => {
-      dispatch(changeImage(image))
+    addTag: () => {
+      dispatch(addTag())
     },
     removeTag: (index) => {
       dispatch(removeTag(index))
+    },
+    changeImage: (image) => {
+      dispatch(changeImage(image))
     }
   };
 };

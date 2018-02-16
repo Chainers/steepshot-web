@@ -1,26 +1,41 @@
 import {getStore} from "../store/configureStore";
+import constants from "../common/constants";
+import utils from "../utils/utils";
 
-export function changeTitle(value) {
-  return {
-    type: 'EDIT_POST_CHANGE_TITLE',
-    value
+export function addTag() {
+  return (dispatch) => {
+    const state = getStore().getState();
+    const tagsState = state.editPost.tags;
+    let newTag = state.textInput[constants.TEXT_INPUT_POINT.TAGS].text;
+    newTag = getValidTagsString(newTag);
+    if (utils.isEmptyString(newTag)) {
+      return {
+        type: 'EDIT_POST_ADD_EMPTY_TAG',
+      }
+    }
+    dispatch({
+      type: 'EDIT_POST_CHANGE_TAGS',
+      value: getValidTagsString(tagsState.current + ' ' + newTag.trim()),
+    });
+    dispatch({
+      type: 'TEXT_INPUT_SET_STATE',
+      point: constants.TEXT_INPUT_POINT.TAGS,
+      state: {
+        focused: '',
+        text: ''
+      }
+    })
+
   }
 }
 
-export function addTag(value) {
-  const tagsState = getStore().getState().editPost.tags;
-  value = getValidTagsString(value);
-  if (value.indexOf(' ') !== -1 || value.indexOf('\n') !== -1) {
-    return {
-      type: 'EDIT_POST_CHANGE_TAGS',
-      value: getValidTagsString(tagsState.text + ' ' + value.trim()),
-      current: ''
-    }
-  }
+export function removeTag(index) {
+  const tagsString = getStore().getState().editPost.tags.current;
+  let tagsList = tagsString.toLowerCase().split(' ');
+  tagsList.splice(index, 1);
   return {
-    type: 'EDIT_POST_CHANGE_TAGS',
-    value: tagsState.text,
-    current: value
+    type: 'EDIT_POST_REMOVE_TAG',
+    value: tagsList.join(' ')
   }
 }
 
@@ -35,27 +50,11 @@ function getValidTagsString(str) {
   return result;
 }
 
-export function changeDescription(value) {
-  return {
-    type: 'EDIT_POST_CHANGE_DESCRIPTION',
-    value
-  }
-}
 
 export function changeImage(image) {
   return {
     type: 'EDIT_POST_CHANGE_IMAGE',
     image
-  }
-}
-
-export function removeTag(index) {
-  const tagsString = getStore().getState().editPost.tags.text;
-  let tagsList = tagsString.toLowerCase().split(' ');
-  tagsList.splice(index, 1);
-  return {
-    type: 'EDIT_POST_REMOVE_TAG',
-    value: tagsList.join(' ')
   }
 }
 

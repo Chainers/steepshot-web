@@ -144,6 +144,17 @@ export default {
         }
     ],
 
+    TEXT_INPUT_POINT : {
+        TITLE: 'title',
+        TAGS: 'tags',
+        DESCRIPTION: 'description'
+    },
+
+    KEYS: {
+      SPACE: 32,
+      ENTER: 10
+    },
+
     COMMENT_ERROR_MESSAGE : 'You can only create comments once per 20 seconds',
     COMMENT_SUCCESS_MESSAGE : 'Comment has been successfully added',
 

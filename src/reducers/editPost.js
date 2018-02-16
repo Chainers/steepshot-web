@@ -30,8 +30,7 @@ export default function editPost(state = initialState, action) {
       return {
         ...state, tags: {
           ...state.tags,
-          text: action.value,
-          current: action.current
+          current: action.value
         }
       };
     case 'EDIT_POST_CHANGE_DESCRIPTION':
@@ -42,7 +41,7 @@ export default function editPost(state = initialState, action) {
       return {
         ...state, tags: {
           ...state.tags,
-          text: action.value
+          current: action.value
         }
       };
     case 'EDIT_POST_CHANGE_IMAGE':

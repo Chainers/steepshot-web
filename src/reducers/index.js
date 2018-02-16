@@ -13,6 +13,7 @@ import likesFlagsList from './likesFlagsList';
 import users from './users';
 import bodyParams from './bodyParams';
 import editPost from "./editPost";
+import textInput from "./textInput";
 
 export default combineReducers({
   clipboard,
@@ -27,5 +28,6 @@ export default combineReducers({
   users,
   bodyParams,
   likesFlagsList,
-  editPost
+  editPost,
+  textInput
 });
