@@ -1,10 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import TextInput from "../Common/TextInput/TextInput";
-import {
-  addTag, changeImage, imageRotate, removeTag,
-  setImageContainerSize
-} from "../../actions/editPost";
+import {addTag, changeImage, imageRotate, removeTag, setImageContainerSize} from "../../actions/editPost";
 import EditTags from "../Common/EditTags/EditTags";
 import ShowIf from "../Common/ShowIf";
 import utils from "../../utils/utils";
@@ -98,40 +95,45 @@ class CreatePost extends React.Component {
                  ref={ref => this.image = ref}
                  onLoad={() => this.setImageContainerSize(0)}
             />
-
+            <div className="rotate-button_edi-pos" onClick={this.props.imageRotate}/>
           </ShowIf>
-          <div className="rotate-button_edi-pos" onClick={this.props.imageRotate}/>
           <input className="file-input_edi-pos"
                  type="file"
                  onChange={this.imageChanged.bind(this)}/>
         </div>
-        <div className="title_edi-pos">
-          <TextInput title="Title"
-                     point={constants.TEXT_INPUT_POINT.TITLE}
-                     multiline={false}
-                     required={true}
-                     value={this.props.title.text}
-                     error={this.props.title.error}
-                     maxLength={255}/>
-          <TextInput title="Tags"
-                     point={constants.TEXT_INPUT_POINT.TAGS}
-                     multiline={false}
-                     description="Enter tags with spaces, but not more than 20"
-                     error={this.props.tags.error}
-                     noValidCharacters="[^\w]"
-                     keyPressEvents={[{
-                       keys: [constants.KEYS.SPACE, constants.KEYS.ENTER],
-                       func: () => this.props.addTag()
-                     }]}>
-            <EditTags value={this.props.tags.current}
-                      onChange={() => this.props.removeTag()}/>
-          </TextInput>
-          <TextInput title="Description"
-                     point={constants.TEXT_INPUT_POINT.DESCRIPTION}
-                     multiline={true}
-                     maxHeight={50000}
-                     value={this.props.description}
-                     description="Description is limited to 2048 characters"/>
+        <TextInput title="Title"
+                   point={constants.TEXT_INPUT_POINT.TITLE}
+                   multiline={false}
+                   required={true}
+                   value={this.props.title.text}
+                   error={this.props.title.error}
+                   maxLength={255}/>
+        <TextInput title="Tags"
+                   point={constants.TEXT_INPUT_POINT.TAGS}
+                   multiline={false}
+                   description="Enter tags with spaces, but not more than 20"
+                   error={this.props.tags.error}
+                   noValidCharacters="[^\w]"
+                   keyPressEvents={[{
+                     keys: [constants.KEYS.SPACE, constants.KEYS.ENTER],
+                     func: () => this.props.addTag()
+                   }]}>
+          <EditTags value={this.props.tags.current}
+                    onChange={() => this.props.removeTag()}/>
+        </TextInput>
+        <TextInput title="Description"
+                   point={constants.TEXT_INPUT_POINT.DESCRIPTION}
+                   multiline={true}
+                   maxHeight={50000}
+                   value={this.props.description}
+                   description="Description is limited to 2048 characters"/>
+        <div className="buttons-container_edi-pos">
+            <button
+                    className="btn btn-index">Clear
+            </button>
+            <button
+                    className="btn btn-default">Create new post
+            </button>
         </div>
       </div>
     );

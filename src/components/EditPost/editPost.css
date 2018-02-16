@@ -76,6 +76,16 @@
   transition: all .2s ease;
 }
 
+.buttons-container_edi-pos {
+  margin: 40px 0 20px;
+  text-align: right;
+}
+
+
+.buttons-container_edi-pos .btn-default {
+  margin-left: 15px;
+}
+
 @media (max-width: 750px) {
   .container_edi-pos {
     width: 90vw;
