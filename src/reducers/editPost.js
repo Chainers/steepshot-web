@@ -1,77 +1,65 @@
 const initialState = {
-  image: {
-    file: '',
+
+  errors: {
+    image: '',
+    title: ''
+  },
+
+  initData: {
     src: '',
-    error: '',
-    rotate: 0
+    tags: '',
+    title: '',
+    description: ''
   },
-  tags: {
-    text: '',
-    list: [],
-    error: '',
-    current: ''
-  },
-  title: {
-    text: '',
-    error: ''
-  },
-  description: '',
-  loader: false
+
+  src: '',
+  rotate: 0,
+  tags: '',
 };
 
 export default function editPost(state = initialState, action) {
   switch (action.type) {
-    case 'EDIT_POST_CHANGE_TITLE':
-      return {
-        ...state, title: {
-          ...state.title, text: action.value
-        }
-      };
+
     case 'EDIT_POST_CHANGE_TAGS':
       return {
-        ...state, tags: {
-          ...state.tags,
-          current: action.value
-        }
+        ...state,
+        tags: action.value
       };
-    case 'EDIT_POST_CHANGE_DESCRIPTION':
-      return {
-        ...state, description: action.value
-      };
-    case 'EDIT_POST_REMOVE_TAG':
-      return {
-        ...state, tags: {
-          ...state.tags,
-          current: action.value
-        }
-      };
+
     case 'EDIT_POST_CHANGE_IMAGE':
       return {
         ...state,
-        image: {
-          ...state.image,
-          src: action.image,
-          rotate: 0
-        }
+        src: action.image,
+        rotate: 0
       };
     case 'EDIT_POST_ROTATE_IMAGE':
       return {
         ...state,
-        image: {
-          ...state.image,
-          rotate: action.rotate
-        }
+        rotate: action.rotate
       };
     case 'EDIT_POST_CHANGE_IMAGE_SIZE':
       return {
         ...state,
-        image: {
-          ...state.image,
-          height: action.height,
-          width: action.width
-        }
+        height: action.height,
+        width: action.width
       };
-
+    case 'EDIT_POST_SET_INIT_DATA':
+      return {
+        ...initialState, initData: {
+          ...action.initData
+        },
+        src: action.initData.src,
+        tags: action.initData.tags,
+      };
+    case 'EDIT_POST_CLEAR':
+      return {
+        ...initialState, initData: {
+          ...state.initData
+        },
+        src: state.initData.src,
+        tags: state.initData.tags,
+        rotate: 0
+      };
     default:
       return state;
   }

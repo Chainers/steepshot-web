@@ -12,7 +12,7 @@ class Testing extends React.Component {
 
   render() {
     return (
-      <EditPost />
+      <EditPost url="/alcohol/@dmitryorelopt/20180115t114535125z-post"/>
 
     );
   }

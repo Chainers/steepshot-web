@@ -1,13 +1,16 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import TextInput from "../Common/TextInput/TextInput";
-import {addTag, changeImage, imageRotate, removeTag, setImageContainerSize} from "../../actions/editPost";
+import {
+  addTag, changeImage, editPostClear, imageRotate, removeTag, setImageContainerSize,
+  setInitDataForEditPost
+} from "../../actions/editPost";
 import EditTags from "../Common/EditTags/EditTags";
 import ShowIf from "../Common/ShowIf";
 import utils from "../../utils/utils";
 import constants from "../../common/constants";
 
-class CreatePost extends React.Component {
+class EditPost extends React.Component {
   static  TAG_NAME = 'tag';
   static  DESCRIPTION_NAME = 'description';
   static  DESCRIPTION_MAX_LENGTH = 2048;
@@ -17,11 +20,12 @@ class CreatePost extends React.Component {
   constructor(props) {
     super(props);
     this.setImageContainerSize = this.setImageContainerSize.bind(this);
+    this.props.setInitDataForEditPost(this.props.url);
   }
 
   componentWillReceiveProps(nextProps) {
-    if (this.props.image.rotate !== nextProps.image.rotate) {
-      this.setImageContainerSize(nextProps.image.rotate);
+    if (this.props.rotate !== nextProps.rotate) {
+      this.setImageContainerSize(nextProps.rotate);
     }
     return true;
   }
@@ -72,10 +76,10 @@ class CreatePost extends React.Component {
       <div className='container_edi-pos'>
         <div className="image-container_edi-pos"
              style={{
-               height: this.props.image.height,
+               height: this.props.height,
              }}
         >
-          <ShowIf show={utils.isEmptyString(this.props.image.src)}>
+          <ShowIf show={utils.isEmptyString(this.props.src)}>
             <div className="choose-container_edi-pos">
               <div className="upload-icon_edi-pos"/>
               <span className="upload-text_edi-pos">
@@ -83,13 +87,13 @@ class CreatePost extends React.Component {
               </span>
             </div>
           </ShowIf>
-          <ShowIf show={utils.isNotEmptyString(this.props.image.src)}>
+          <ShowIf show={utils.isNotEmptyString(this.props.src)}>
             <img className="image_edi-pos"
-                 src={this.props.image.src}
+                 src={this.props.src}
                  style={{
-                   transform: `rotate(${this.props.image.rotate}deg)`,
-                   maxHeight: this.props.image.rotate % 180 ? this.props.image.width : '100vh',
-                   maxWidth: this.props.image.rotate % 180 ? '100vh' : this.props.image.width,
+                   transform: `rotate(${this.props.rotate}deg)`,
+                   maxHeight: this.props.rotate % 180 ? this.props.width : '100vh',
+                   maxWidth: this.props.rotate % 180 ? '100vh' : this.props.width,
                  }}
                  alt='image'
                  ref={ref => this.image = ref}
@@ -105,30 +109,29 @@ class CreatePost extends React.Component {
                    point={constants.TEXT_INPUT_POINT.TITLE}
                    multiline={false}
                    required={true}
-                   value={this.props.title.text}
-                   error={this.props.title.error}
+                   value={this.props.initData.title}
+                   error={this.props.errors.title}
                    maxLength={255}/>
         <TextInput title="Tags"
                    point={constants.TEXT_INPUT_POINT.TAGS}
                    multiline={false}
                    description="Enter tags with spaces, but not more than 20"
-                   error={this.props.tags.error}
                    noValidCharacters="[^\w]"
                    keyPressEvents={[{
                      keys: [constants.KEYS.SPACE, constants.KEYS.ENTER],
                      func: () => this.props.addTag()
                    }]}>
-          <EditTags value={this.props.tags.current}
+          <EditTags value={this.props.tags}
                     onChange={() => this.props.removeTag()}/>
         </TextInput>
         <TextInput title="Description"
                    point={constants.TEXT_INPUT_POINT.DESCRIPTION}
                    multiline={true}
                    maxHeight={50000}
-                   value={this.props.description}
+                   value={this.props.initData.description}
                    description="Description is limited to 2048 characters"/>
         <div className="buttons-container_edi-pos">
-            <button
+            <button onClick={this.props.editPostClear}
                     className="btn btn-index">Clear
             </button>
             <button
@@ -162,8 +165,14 @@ const mapDispatchToProps = (dispatch) => {
     },
     setImageContainerSize: (width, height) => {
       dispatch(setImageContainerSize(width, height))
+    },
+    setInitDataForEditPost: (url) => {
+      dispatch(setInitDataForEditPost(url))
+    },
+    editPostClear: () => {
+      dispatch(editPostClear())
     }
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(CreatePost);
+export default connect(mapStateToProps, mapDispatchToProps)(EditPost);

@@ -43,7 +43,7 @@ class TextInput extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.value && (this.props.text != nextProps.value)) {
+    if (nextProps.value && (this.props.text !== nextProps.value)) {
       this._updateTextValue.call(this, nextProps.value);
     }
     return true;
