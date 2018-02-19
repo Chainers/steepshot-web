@@ -2,6 +2,8 @@ import {getStore} from "../store/configureStore";
 import constants from "../common/constants";
 import utils from "../utils/utils";
 import {getPostShaddow} from "./posts";
+import Steem from "../libs/steem";
+import {getHistory} from "../main";
 
 export function addTag() {
   return (dispatch) => {
@@ -51,19 +53,41 @@ function getValidTagsString(str) {
   return result;
 }
 
-export function changeImage(image) {
-  return {
-    type: 'EDIT_POST_CHANGE_IMAGE',
-    image
+export function changeImage(imageSrc, image) {
+  return dispatch => {
+    if (!isValidImageSize(dispatch, image)) {
+      return;
+    }
+
+    dispatch({
+      type: 'EDIT_POST_CHANGE_IMAGE',
+      image: imageSrc
+    })
   }
 }
 
-export function imageRotate() {
+export function imageRotate(image) {
   let rotate = getStore().getState().editPost.rotate;
   rotate = (rotate + 90) % 360;
-  return {
-    type: 'EDIT_POST_ROTATE_IMAGE',
-    rotate
+  const imageSize = {
+    width: image.naturalWidth,
+    height: image.naturalHeight
+  };
+  if (rotate % 180) {
+    const tmp = imageSize.width;
+    imageSize.width = imageSize.height;
+    imageSize.height = tmp;
+  }
+  return dispatch => {
+    if (!isValidImageSize(dispatch, imageSize)) {
+      return;
+    }
+
+
+    dispatch({
+      type: 'EDIT_POST_ROTATE_IMAGE',
+      rotate
+    })
   }
 }
 
@@ -86,7 +110,8 @@ export function editPostClear() {
         point: constants.TEXT_INPUT_POINT.TITLE,
         state: {
           text: initDataEditPost.title,
-          focused: initDataEditPost.title ? 'focused_tex-inp' : ''
+          focused: initDataEditPost.title ? 'focused_tex-inp' : '',
+          error: ''
         }
     });
     dispatch({
@@ -94,7 +119,8 @@ export function editPostClear() {
         point: constants.TEXT_INPUT_POINT.TAGS,
         state: {
           text: '',
-          focused: ''
+          focused: '',
+          error: ''
         }
     });
     dispatch({
@@ -102,7 +128,8 @@ export function editPostClear() {
         point: constants.TEXT_INPUT_POINT.DESCRIPTION,
         state: {
           text: initDataEditPost.description,
-          focused: initDataEditPost.description ? 'focused_tex-inp' : ''
+          focused: initDataEditPost.description ? 'focused_tex-inp' : '',
+          error: ''
         }
     });
 
@@ -110,11 +137,9 @@ export function editPostClear() {
   }
 }
 
-export function setInitDataForEditPost(url) {
+export function setInitDataForEditPost(username, postId) {
   return (dispatch) => {
-    const urlObject = url.split('/');
-    getPostShaddow(urlObject[urlObject.length - 2] + '/' +
-      urlObject[urlObject.length - 1]).then((result) => {
+    getPostShaddow(username + '/' + postId).then((result) => {
       dispatch({
         type: 'EDIT_POST_SET_INIT_DATA',
         initData: {
@@ -128,4 +153,94 @@ export function setInitDataForEditPost(url) {
   }
 }
 
+
+
+export function createPost() {
+  const state = getStore().getState();
+  const editPostState = state.editPost;
+  const textInputStates = state.textInput;
+  const title = textInputStates.title.text;
+  const description = textInputStates.description.text;
+  const tags = getValidTagsString(editPostState.tags);
+  const photoSrc = editPostState.src;
+  const rotate = editPostState.rotate;
+  const auth = state.auth;
+  return (dispatch) => {
+    if (!isValidField(dispatch, title, photoSrc)) {
+      return;
+    }
+
+    const callback = (err, success) => {
+      if (success) {
+        jqApp.pushMessage.open(
+          'Post has been successfully created. If you don\'t see the post in your profile, please give it a few minutes to sync from the blockchain');
+        setTimeout(() => {
+          getHistory().push(`/@${auth.user}`);
+        }, 1700);
+      } else {
+        jqApp.pushMessage.open(err);
+      }
+    };
+
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    const image = new Image();
+    image.src = photoSrc;
+
+    image.onload = () => {
+      if (rotate % 180) {
+        canvas.width = image.naturalHeight;
+        canvas.height = image.naturalWidth;
+        ctx.translate(canvas.width, 0);
+      } else {
+        canvas.width = image.naturalWidth;
+        canvas.height = image.naturalHeight;
+      }
+      if (!isValidImageSize(dispatch, canvas)) {
+        return;
+      }
+
+      ctx.rotate(rotate * Math.PI / 180);
+      ctx.drawImage(image, 0, 0, image.naturalWidth, image.naturalHeight);
+      fetch(canvas.toDataURL()).then(res => res.blob()).then(blob => {
+        Steem.createPost(auth.postingKey, tags.split(' '),
+          auth.user, title, description,
+          blob, callback)
+      });
+    }
+  }
+}
+
+function isValidImageSize(dispatch, imageSize) {
+  if (imageSize.width < constants.IMAGE.MIN_WIDTH
+    || imageSize.height < constants.IMAGE.MIN_HEIGHT) {
+    dispatch({
+      type: 'EDIT_POST_SET_IMAGE_ERROR',
+      message: 'Photo size should be more then ' + constants.IMAGE.MIN_WIDTH + 'x' + constants.IMAGE.MIN_HEIGHT
+        + '. Yours photo has ' + imageSize.width + 'x' + imageSize.height + '.'
+    });
+    return false;
+  }
+  return true;
+}
+
+function isValidField(dispatch, title, photoSrc) {
+  let isValid = true;
+  if (utils.isEmptyString(title)) {
+    dispatch({
+      type: 'TEXT_INPUT_SET_ERROR',
+      point: constants.TEXT_INPUT_POINT.TITLE,
+      message: 'Title is required'
+    });
+    isValid = false;
+  }
+  if (utils.isEmptyString(photoSrc)) {
+    dispatch({
+      type: 'EDIT_POST_SET_IMAGE_ERROR',
+      message: 'Photo is required'
+    });
+    isValid = false;
+  }
+  return isValid;
+}
 

@@ -1,17 +1,11 @@
 const initialState = {
-
-  errors: {
-    image: '',
-    title: ''
-  },
-
   initData: {
     src: '',
     tags: '',
     title: '',
     description: ''
   },
-
+  imageError: '',
   src: '',
   rotate: 0,
   tags: '',
@@ -30,12 +24,14 @@ export default function editPost(state = initialState, action) {
       return {
         ...state,
         src: action.image,
-        rotate: 0
+        rotate: 0,
+        imageError: ''
       };
     case 'EDIT_POST_ROTATE_IMAGE':
       return {
         ...state,
-        rotate: action.rotate
+        rotate: action.rotate,
+        imageError: ''
       };
     case 'EDIT_POST_CHANGE_IMAGE_SIZE':
       return {
@@ -53,12 +49,17 @@ export default function editPost(state = initialState, action) {
       };
     case 'EDIT_POST_CLEAR':
       return {
-        ...initialState, initData: {
+        ...initialState,
+        initData: {
           ...state.initData
         },
         src: state.initData.src,
         tags: state.initData.tags,
-        rotate: 0
+      };
+    case 'EDIT_POST_SET_IMAGE_ERROR':
+      return {
+        ...state,
+        imageError: action.message
       };
     default:
       return state;

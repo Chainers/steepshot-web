@@ -2,7 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import TextInput from "../Common/TextInput/TextInput";
 import {
-  addTag, changeImage, editPostClear, imageRotate, removeTag, setImageContainerSize,
+  addTag, changeImage, createPost, editPostClear, imageRotate, removeTag, setImageContainerSize,
   setInitDataForEditPost
 } from "../../actions/editPost";
 import EditTags from "../Common/EditTags/EditTags";
@@ -20,7 +20,9 @@ class EditPost extends React.Component {
   constructor(props) {
     super(props);
     this.setImageContainerSize = this.setImageContainerSize.bind(this);
-    this.props.setInitDataForEditPost(this.props.url);
+    if (this.props.username && this.props.postId) {
+      this.props.setInitDataForEditPost(this.props.username, this.props.postId);
+    }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -37,7 +39,9 @@ class EditPost extends React.Component {
     reader.onloadend = () => {
       let image = new Image();
       image.src = reader.result;
-      this.props.changeImage(reader.result);
+      image.onload = () => {
+        this.props.changeImage(reader.result, image);
+      }
     };
     reader.readAsDataURL(file);
   }
@@ -71,6 +75,14 @@ class EditPost extends React.Component {
     this.props.setImageContainerSize(prefWidth, prefHeight);
   }
 
+  submit() {
+    if (this.props.username && this.props.postId) {
+
+    } else {
+      this.props.createPost()
+    }
+  }
+
   render() {
     return (
       <div className='container_edi-pos'>
@@ -99,18 +111,23 @@ class EditPost extends React.Component {
                  ref={ref => this.image = ref}
                  onLoad={() => this.setImageContainerSize(0)}
             />
-            <div className="rotate-button_edi-pos" onClick={this.props.imageRotate}/>
+            <div className="rotate-button_edi-pos"
+                 onClick={() => this.props.imageRotate(this.image)}/>
           </ShowIf>
           <input className="file-input_edi-pos"
                  type="file"
                  onChange={this.imageChanged.bind(this)}/>
         </div>
+        <ShowIf show={this.props.imageError}>
+          <div className="image-error_edi-pos">
+            {this.props.imageError}
+          </div>
+        </ShowIf>
         <TextInput title="Title"
                    point={constants.TEXT_INPUT_POINT.TITLE}
                    multiline={false}
                    required={true}
                    value={this.props.initData.title}
-                   error={this.props.errors.title}
                    maxLength={255}/>
         <TextInput title="Tags"
                    point={constants.TEXT_INPUT_POINT.TAGS}
@@ -134,8 +151,8 @@ class EditPost extends React.Component {
             <button onClick={this.props.editPostClear}
                     className="btn btn-index">Clear
             </button>
-            <button
-                    className="btn btn-default">Create new post
+            <button onClick={this.submit.bind(this)}
+                    className="btn btn-default">{this.props.url ? 'Update post' : 'Create new post'}
             </button>
         </div>
       </div>
@@ -143,8 +160,9 @@ class EditPost extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state, props) => {
   return {
+    ...props.match.params,
     ...state.editPost
   };
 };
@@ -157,20 +175,23 @@ const mapDispatchToProps = (dispatch) => {
     removeTag: (index) => {
       dispatch(removeTag(index))
     },
-    changeImage: (image) => {
-      dispatch(changeImage(image))
+    changeImage: (imageSrc, image) => {
+      dispatch(changeImage(imageSrc, image))
     },
-    imageRotate: () => {
-      dispatch(imageRotate())
+    imageRotate: (image) => {
+      dispatch(imageRotate(image))
     },
     setImageContainerSize: (width, height) => {
       dispatch(setImageContainerSize(width, height))
     },
-    setInitDataForEditPost: (url) => {
-      dispatch(setInitDataForEditPost(url))
+    setInitDataForEditPost: (username, postId) => {
+      dispatch(setInitDataForEditPost(username, postId))
     },
     editPostClear: () => {
       dispatch(editPostClear())
+    },
+    createPost: () => {
+      dispatch(createPost())
     }
   };
 };

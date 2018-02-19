@@ -86,6 +86,12 @@
   margin-left: 15px;
 }
 
+.image-error_edi-pos {
+  margin-top: 10px;
+  color: #d0011b;
+  font-size: 12px;
+}
+
 @media (max-width: 750px) {
   .container_edi-pos {
     width: 90vw;

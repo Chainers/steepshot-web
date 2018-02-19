@@ -37,6 +37,11 @@ export default {
         defaultLimit: 17
     },
 
+    IMAGE: {
+      MIN_WIDTH: 480,
+      MIN_HEIGHT: 480
+    },
+
     EMPTY_QUERY : 'It\'s very strange, but we do not have anything yet for this query. Try to look for something else ...',
     EMPTY_QUERY_VOTERS : 'Still no one has rated this post ...',
 

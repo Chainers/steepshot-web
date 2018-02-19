@@ -17,6 +17,14 @@ export default function textInput(state = initialState, action) {
           ...action.state
         }
       };
+    case 'TEXT_INPUT_SET_ERROR':
+      return {
+        ...state,
+        [action.point]: {
+          ...state[action.point],
+          error: action.message
+        }
+      };
 
     default:
       return state;
