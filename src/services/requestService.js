@@ -12,13 +12,6 @@ class RequestService extends BaseRequestService{
         return this.convertOptionsToRequestString(newOptions);
     }
 
-    //region Deprecated
-    handlev1BaseRequestPosts(url, options) {
-        return this.getBasev1Url() + '/' + url +
-        this.optionsConverter(this.getDefaultPostsOptions(), this.getDefaultSettingsOptions(), options);
-    }
-    //endregion
-
     handlev1_1BaseRequestPosts(url, options) {
         return this.getBasev1_1Url() + '/' + url +
         this.optionsConverter(this.getDefaultPostsOptions(), this.getDefaultSettingsOptions(), this.getAuthUser(), options);

@@ -50,11 +50,6 @@ export function getPosts(options, needsDestroyPrevious) {
   return getItems(url, Constants.PROMISES.GET_POSTS, needsDestroyPrevious, 'getPosts');
 }
 
-export function getPostsBySearch(options, needsDestroyPrevious) {
-  const url = RequestService.handlev1BaseRequestPosts(options.point, options.params);
-  return getItems(url, Constants.PROMISES.GET_POSTS, needsDestroyPrevious, 'getPostsBySearch');
-}
-
 export function getComments(options, needsDestroyPrevious) {
   const url = RequestService.handlev1_1BaseRequestPosts(options.point, options.params);
   return getItems(url, Constants.PROMISES.GET_COMMENTS, needsDestroyPrevious, 'getComments');
