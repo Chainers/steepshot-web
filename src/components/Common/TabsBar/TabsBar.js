@@ -60,7 +60,7 @@ class TabsBar extends React.Component {
       return null;
     }
     return (
-      <ul role="tablist" className="nav nav-tabs list-reset">
+      <ul role="tablist" className="nav nav-tabs list-reset" style={this.props.style}>
         {navItems}
       </ul>);
   }

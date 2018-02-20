@@ -83,3 +83,12 @@ export function previousPostModal(index) {
     dispatch(swapPostModal(newIndex))
   }
 }
+
+export function setFullScreen(isOpen) {
+  return (dispatch) => {
+    dispatch({
+      type: 'SET_FULL_SCREEN',
+      isOpen
+    });
+  }
+}
