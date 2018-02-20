@@ -6,6 +6,7 @@ import {prepareComment, preparePost} from '../actions/steemPayout';
 import {logComment, logDeletedPost, logFlag, logFollow, logPost, logVoute} from '../actions/logging';
 
 import _ from 'underscore';
+import FormData from "form-data";
 
 const getUserName = () => {
   return getStore().getState().auth.user
@@ -228,9 +229,103 @@ class Steem {
     steem.broadcast.deleteComment(wif, author, permlink, callbackBc);
   }
 
+  createPostV1_1(tags, title, description, file, callback) {
+    const self = this;
+    const permlink = self._getPermLink();
+    tags = self._getValidTags(tags);
+
+    const operation = [constants.OPERATIONS.COMMENT, {
+      parent_author: "",
+      parent_permlink: tags[0],
+      author: getUserName(),
+      permlink: permlink + '-post',
+      title: title,
+      description: description,
+      body: file,
+      tags: tags,
+      json_metadata: JSON.stringify(self._createJsonMetadata(tags))
+    }];
+
+    return self._preCompileTransactionV1_1(operation)
+
+
+      .then(response => {
+        if (response.ok) {
+          const data = JSON.stringify({
+            username: getUserName()
+          });
+          logPost(data);
+        }
+        return response;
+    });
+  }
+
+  _getValidTags(tags) {
+    if (tags.indexOf('steepshot') === -1) {
+      tags = ['steepshot', ...tags]
+    }
+    let empty;
+    do {
+      empty = tags.indexOf('');
+      tags.splice(empty, 1);
+    } while (empty !== -1);
+    return tags;
+  }
+
+  _preCompileTransactionV1_1(message) {
+    const self = this;
+    return steem.broadcast._prepareTransaction({
+      extensions: [],
+      operations: [message],
+    }).then((transaction) => {
+      return Promise.join(
+        transaction,
+        steem.auth.signTransaction(transaction, [getUserPostingKey()]))
+    }).spread((transaction, signedTransaction) => {
+      return self._fileUpload(signedTransaction, message[1].body).then((response) => {
+        return response.json().then( response => {
+          const data = message[1];
+
+          const options = {
+            "username": data.author,
+            "media": [{...response}],
+            "description": data.description,
+            "post_permlink": '@' + data.author + '/' + data.permlink,
+            "tags": data.tags,
+            "show_footer": true
+          };
+          return self._preparePost(options).then(results => {
+            return results.json().then( results => results );
+          })
+        })
+      })
+    })
+  }
+
+  _fileUpload(trx, file) {
+    let form = new FormData();
+    form.append('file', file);
+    form.append('trx', JSON.stringify(trx));
+    return fetch(`${constants.URLS.baseUrl_v1_1}/media/upload`, {
+      method: 'POST',
+      body: form
+    });
+  }
+
+  _preparePost(options) {
+
+    return fetch(`${constants.URLS.baseUrl_v1_1}/post/prepare`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        ...options
+      })
+    });
+  }
+
   createPost(wif, tags, author, title, description, file, callback) {
     const permlink = this._getPermLink();
-    const operation = [constants.OPERATIONS.COMMENT, {
+    const operation = [constants.OPERATIONS.POST, {
       parent_author: "",
       parent_permlink: tags[0] || 'steepshot',
       author: author,
@@ -262,7 +357,7 @@ class Steem {
         if (response.ok) {
           response.json().then((result) => {
             let beneficiaries = self._getBeneficiaries(message[1].permlink, result.beneficiaries);
-            message[1].body = result.payload.body;
+              message[1].body = result.payload.body;
             result.meta.tags = [...JSON.parse(message[1].json_metadata).tags, ...result.meta.tags];
             message[1].json_metadata = JSON.stringify({...result.meta});
             const operations = [message, beneficiaries];

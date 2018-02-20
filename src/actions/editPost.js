@@ -165,50 +165,51 @@ export function createPost() {
   const photoSrc = editPostState.src;
   const rotate = editPostState.rotate;
   const auth = state.auth;
+
   return (dispatch) => {
     if (!isValidField(dispatch, title, photoSrc)) {
       return;
     }
 
-    const callback = (err, success) => {
-      if (success) {
-        jqApp.pushMessage.open(
-          'Post has been successfully created. If you don\'t see the post in your profile, please give it a few minutes to sync from the blockchain');
-        setTimeout(() => {
-          getHistory().push(`/@${auth.user}`);
-        }, 1700);
-      } else {
-        jqApp.pushMessage.open(err);
-      }
-    };
 
-    const canvas = document.createElement('canvas');
-    const ctx = canvas.getContext('2d');
     const image = new Image();
     image.src = photoSrc;
 
     image.onload = () => {
-      if (rotate % 180) {
-        canvas.width = image.naturalHeight;
-        canvas.height = image.naturalWidth;
-        ctx.translate(canvas.width, 0);
-      } else {
-        canvas.width = image.naturalWidth;
-        canvas.height = image.naturalHeight;
-      }
-      if (!isValidImageSize(dispatch, canvas)) {
-        return;
-      }
+      const canvas = getCanvasWithImage(image, rotate);
 
-      ctx.rotate(rotate * Math.PI / 180);
-      ctx.drawImage(image, 0, 0, image.naturalWidth, image.naturalHeight);
       fetch(canvas.toDataURL()).then(res => res.blob()).then(blob => {
-        Steem.createPost(auth.postingKey, tags.split(' '),
-          auth.user, title, description,
-          blob, callback)
+        Steem.createPostV1_1(tags.split(' '), title, description, blob).then(response => {
+          if (response.ok) {
+            jqApp.pushMessage.open(
+              'Post has been successfully created. If you don\'t see the post in your profile, please give it a few minutes to sync from the blockchain');
+            setTimeout(() => {
+              getHistory().push(`/@${auth.user}`);
+            }, 1700);
+          } else {
+            jqApp.pushMessage.open(response.error);
+          }
+        })
       });
     }
   }
+}
+
+function getCanvasWithImage(image, rotate) {
+  const canvas = document.createElement('canvas');
+  const ctx = canvas.getContext('2d');
+  if (rotate % 180) {
+    canvas.width = image.naturalHeight;
+    canvas.height = image.naturalWidth;
+    ctx.translate(canvas.width, 0);
+  } else {
+    canvas.width = image.naturalWidth;
+    canvas.height = image.naturalHeight;
+  }
+
+  ctx.rotate(rotate * Math.PI / 180);
+  ctx.drawImage(image, 0, 0, image.naturalWidth, image.naturalHeight);
+  return canvas;
 }
 
 function isValidImageSize(dispatch, imageSize) {
