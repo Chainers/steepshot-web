@@ -15,7 +15,8 @@ class SinglePost extends React.Component {
     let permlink = urlObject[urlObject.length - 1];
     let username = this.props.location.pathname.match(/\/@[\w-.]+\//)[0];
     const data = JSON.stringify({
-      action : 'share_post'
+      action : 'share_post',
+      error: ''
     });
     logSharePost(username.replace(/\/@([\w-.]+)\//, '$1'), permlink, data);
   }

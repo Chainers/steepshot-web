@@ -42,25 +42,32 @@ class Modal extends React.Component {
 
   clickOutside(event) {
     event.stopPropagation();
-    if (this.body && !this.body.contains(event.target)) {
+    if (this.body && !this.body.contains(event.target) && !this.props.fullScreenMode) {
       this.props.closeModal(this.props.index);
     }
   }
 
   render() {
-    let styleBack = {backgroundColor: 'rgba(0, 0, 0, .7)'};
+    let styleBack = {backgroundColor: 'rgba(0, 0, 0, .7)'}, crossFullScreen = null;
+    if (this.props.fullScreenMode) {
+        styleBack = {backgroundColor: '#000000'};
+        crossFullScreen = <div className="cross-wrapper_modal"
+                               onClick={() => {this.props.closeModal(this.props.index)}}
+                          >
+                              <div className="cross-full-screen_modal"/>
+                          </div>;
+    }
     styleBack.alignItems = this.props.bodyHeight >= this.props.containerHeight ? 'flex-start' : 'center';
     styleBack.zIndex = 1005;
     return (
       <div className="back_mods before-load-back_modal ov-scroll_modal"
            onClick={this.clickOutside.bind(this)}
            style={styleBack}
-           ref={ref => {
-             this.container = ref;
-           }}
+           ref={ref => {this.container = ref}}
       >
+        {crossFullScreen}
         <div className="body_modal before-load_modal"
-             ref={ref => {this.body = ref;}}
+             ref={ref => {this.body = ref}}
         >
           {this.props.body}
         </div>
@@ -75,7 +82,8 @@ class Modal extends React.Component {
 const mapStateToProps = (state, props) => {
   return {
     ...state.modals[props.index],
-    state: state
+    state: state,
+    fullScreenMode: state.postModal.fullScreenMode
   };
 };
 
