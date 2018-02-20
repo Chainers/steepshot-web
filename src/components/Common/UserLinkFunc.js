@@ -13,7 +13,7 @@ export function UserLinkFunc(bool, fromState) {
   } else {
     state = fromState;
   }
-  if (state.match(/@\w+/g)) {
+  if (state.match(/@[\w-.]+/g)) {
     let arr = state.split(' ').map( (item, index) => {
       if (/@\w+\S/.test(item)) {
         let lowItem = item.toLowerCase();

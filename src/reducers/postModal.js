@@ -1,6 +1,7 @@
 const initialState = {
   style: {},
   needsCommentFormLoader: false,
+  fullScreenMode: false
 };
 
 export default function postModal(state = initialState, action) {
@@ -16,7 +17,11 @@ export default function postModal(state = initialState, action) {
         ...initialState,
         point: state.point,
         currentIndex: action.index,
+        fullScreenMode: state.fullScreenMode
       };
+
+    case 'SET_FULL_SCREEN':
+      return {...state, fullScreenMode: action.isOpen};
 
     default:
       return state;
