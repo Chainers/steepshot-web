@@ -229,7 +229,7 @@ class Steem {
     steem.broadcast.deleteComment(wif, author, permlink, callbackBc);
   }
 
-  createPostV1_1(tags, title, description, file, callback) {
+  createPostV1_1(tags, title, description, file) {
     const self = this;
     const permlink = self._getPermLink();
     tags = self._getValidTags(tags);
@@ -247,8 +247,6 @@ class Steem {
     }];
 
     return self._preCompileTransactionV1_1(operation)
-
-
       .then(response => {
         if (response.ok) {
           const data = JSON.stringify({
@@ -264,11 +262,12 @@ class Steem {
     if (tags.indexOf('steepshot') === -1) {
       tags = ['steepshot', ...tags]
     }
-    let empty;
-    do {
-      empty = tags.indexOf('');
+    let empty = tags.indexOf('');
+    while (empty !== -1) {
       tags.splice(empty, 1);
-    } while (empty !== -1);
+      empty = tags.indexOf('');
+    }
+
     return tags;
   }
 
