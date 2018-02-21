@@ -302,18 +302,19 @@ function _sendToBlockChain(operation, prepareData) {
       if (success) {
         resolve(success);
       }
-      switch (err.data.code) {
-        case 10:
-          reject(new Error('You can only create posts 5 minutes after the previous one.'));
-          break;
-        case 4100000:
-          reject(new Error(`${_getUserName()} bandwidth limit exceeded. Please wait to transact or power up STEEM.`));
-          break;
-        default:
-          console.error(err.data);
-          reject(new Error('Somethings went wrong.'));
+      if (err) {
+        switch (err.data.code) {
+          case 10:
+            reject(new Error('You can only create posts 5 minutes after the previous one.'));
+            break;
+          case 4100000:
+            reject(new Error(`${_getUserName()} bandwidth limit exceeded. Please wait to transact or power up STEEM.`));
+            break;
+          default:
+            console.error(err.data);
+            reject(new Error('Somethings went wrong.'));
+        }
       }
-
     };
 
     steem.broadcast.sendAsync(

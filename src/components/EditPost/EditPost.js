@@ -21,9 +21,7 @@ class EditPost extends React.Component {
   constructor(props) {
     super(props);
     this.setImageContainerSize = this.setImageContainerSize.bind(this);
-    if (this.props.username && this.props.postId) {
-      this.props.setInitDataForEditPost(this.props.username, this.props.postId);
-    }
+    this.props.setInitDataForEditPost(this.props.username, this.props.postId);
   }
 
   componentWillReceiveProps(nextProps) {

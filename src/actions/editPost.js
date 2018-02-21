@@ -139,17 +139,23 @@ export function editPostClear() {
 
 export function setInitDataForEditPost(username, postId) {
   return (dispatch) => {
-    getPostShaddow(username + '/' + postId).then((result) => {
+    if (!username || !postId) {
       dispatch({
-        type: 'EDIT_POST_SET_INIT_DATA',
-        initData: {
-          src: result.media[0].url,
-          tags: result.tags.join(' '),
-          title: result.title,
-          description: result.description
-        }
+        type: 'EDIT_POST_CREATE_NEW'
       })
-    });
+    } else {
+      getPostShaddow(username + '/' + postId).then((result) => {
+        dispatch({
+          type: 'EDIT_POST_SET_INIT_DATA',
+          initData: {
+            src: result.media[0].url,
+            tags: result.tags.join(' '),
+            title: result.title,
+            description: result.description
+          }
+        })
+      });
+    }
   }
 }
 

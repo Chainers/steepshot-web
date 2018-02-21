@@ -53,6 +53,9 @@ export default function editPost(state = initialState, action) {
         loading: false
       };
 
+    case 'EDIT_POST_CREATE_NEW':
+      return initialState;
+
     case 'EDIT_POST_CREATE_POST_REQUEST':
       return {
         ...state,
