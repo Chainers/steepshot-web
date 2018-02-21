@@ -21,6 +21,11 @@ export function login(username, postingKey, history, dispatch, callback) {
   steem.api.getAccounts([username], function(err, result) {
     if (err) {
       callback('Something went wrong, please, try again later');
+      const data = JSON.stringify({
+          username : username,
+          error: err
+      });
+      logLogin(data);
       return false;
     }
     if (result.length == 0) {
@@ -42,8 +47,11 @@ export function login(username, postingKey, history, dispatch, callback) {
         messages: 'Not valid user name or posting key'
       };
     } else {
-
-      logLogin(JSON.stringify({ username : username }));
+      const data = JSON.stringify({
+          username : username,
+          error: ''
+      });
+      logLogin(data);
 
       let welcomeName = username;
       let metadata;

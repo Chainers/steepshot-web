@@ -32,12 +32,13 @@ class Comment extends React.Component {
     if (this.state.item &&
         /<[\w\W]+>/.test(this.state.item.body) ||
         /\n/.test(this.state.item.body) ||
-        /http(s)?:\/\/[\w\W]+(.png|.gif|.jpg|.jpeg)/g.test(this.state.item.body)) {
-      let userLinks = this.state.item.body.replace(/([>\s\b])(@[\w-.]+)/g, `$1<a href="/$2">$2</a>`);
+        /http(s)?:\/\/|www\.[\w\W]+/g.test(this.state.item.body)) {
+      let safetyScript = this.state.item.body.replace(/<script>|<\/script>/g, '');
+      let userLinks = safetyScript.replace(/([>\s\b])(@[\w-.]+)/g, `$1<a href="/$2">$2</a>`);
       let newLine = userLinks.replace(/\n/g, '<br>');
-      let replaceBotsLayout = newLine.replace(/(!)?\[[^\]]+\]/g, '');
-      let changeBotsLink = replaceBotsLayout.replace(/\((http(s)?:\/\/[\w\W]+?)\)/g, '$1');
-      let linkToImg = changeBotsLink.replace(/(http(s)?:\/\/[\w\W]+(.png|.gif|.jpg|.jpeg))/g, '<img src="$1"/>');
+      let replaceBotsLayout = newLine.replace(/(!)?\[([^\]]+)?\]/g, '');
+      let changeBotsLink = replaceBotsLayout.replace(/\((http(s)?:\/\/[\w\W]+?|www\.[\w\W]+?)\)/g, '$1');
+      let linkToImg = changeBotsLink.replace(/(http(s)?:\/\/[\w\W]+?(.png|.gif|.jpg|.jpeg)(?!"))/gi, '<img src="$1"/>');
       this.commentText.innerHTML = linkToImg;
     }
   }
