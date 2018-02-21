@@ -106,31 +106,31 @@ export function editPostClear() {
       type: 'EDIT_POST_CLEAR'
     });
     dispatch({
-        type: 'TEXT_INPUT_SET_STATE',
-        point: constants.TEXT_INPUT_POINT.TITLE,
-        state: {
-          text: initDataEditPost.title,
-          focused: initDataEditPost.title ? 'focused_tex-inp' : '',
-          error: ''
-        }
+      type: 'TEXT_INPUT_SET_STATE',
+      point: constants.TEXT_INPUT_POINT.TITLE,
+      state: {
+        text: initDataEditPost.title,
+        focused: initDataEditPost.title ? 'focused_tex-inp' : '',
+        error: ''
+      }
     });
     dispatch({
-        type: 'TEXT_INPUT_SET_STATE',
-        point: constants.TEXT_INPUT_POINT.TAGS,
-        state: {
-          text: '',
-          focused: '',
-          error: ''
-        }
+      type: 'TEXT_INPUT_SET_STATE',
+      point: constants.TEXT_INPUT_POINT.TAGS,
+      state: {
+        text: '',
+        focused: '',
+        error: ''
+      }
     });
     dispatch({
-        type: 'TEXT_INPUT_SET_STATE',
-        point: constants.TEXT_INPUT_POINT.DESCRIPTION,
-        state: {
-          text: initDataEditPost.description,
-          focused: initDataEditPost.description ? 'focused_tex-inp' : '',
-          error: ''
-        }
+      type: 'TEXT_INPUT_SET_STATE',
+      point: constants.TEXT_INPUT_POINT.DESCRIPTION,
+      state: {
+        text: initDataEditPost.description,
+        focused: initDataEditPost.description ? 'focused_tex-inp' : '',
+        error: ''
+      }
     });
 
 
@@ -152,7 +152,6 @@ export function setInitDataForEditPost(username, postId) {
     });
   }
 }
-
 
 
 export function createPost() {
@@ -179,17 +178,18 @@ export function createPost() {
       const canvas = getCanvasWithImage(image, rotate);
 
       fetch(canvas.toDataURL()).then(res => res.blob()).then(blob => {
-        Steem.createPostV1_1(tags.split(' '), title, description, blob).then(response => {
-          if (response.ok) {
+        Steem.createPost(tags.split(' '), title, description, blob)
+          .then(() => {
             jqApp.pushMessage.open(
               'Post has been successfully created. If you don\'t see the post in your profile, please give it a few minutes to sync from the blockchain');
             setTimeout(() => {
               getHistory().push(`/@${auth.user}`);
             }, 1700);
-          } else {
-            jqApp.pushMessage.open(response.error);
-          }
-        })
+          })
+          .catch(error => {
+            console.log(error);
+            jqApp.pushMessage.open(error.message);
+          })
       });
     }
   }
@@ -218,7 +218,7 @@ function isValidImageSize(dispatch, imageSize) {
     dispatch({
       type: 'EDIT_POST_SET_IMAGE_ERROR',
       message: 'Photo size should be more then ' + constants.IMAGE.MIN_WIDTH + 'x' + constants.IMAGE.MIN_HEIGHT
-        + '. Yours photo has ' + imageSize.width + 'x' + imageSize.height + '.'
+      + '. Yours photo has ' + imageSize.width + 'x' + imageSize.height + '.'
     });
     return false;
   }
