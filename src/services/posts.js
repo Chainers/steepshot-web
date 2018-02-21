@@ -1,4 +1,4 @@
-import RequestService from '../services/requestService';
+import RequestService from './requestService';
 import Constants from '../common/constants';
 import Promise from 'bluebird';
 

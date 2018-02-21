@@ -1,7 +1,7 @@
 import React from 'react';
 import {getUserProfile} from '../../actions/profile';
 import {withRouter} from 'react-router-dom';
-import {getFollowers, getFollowing} from '../../actions/posts';
+import {getFollowers, getFollowing} from '../../services/posts';
 import {connect} from 'react-redux';
 import FollowComponent from '../Posts/FollowComponent';
 import Constants from '../../common/constants';

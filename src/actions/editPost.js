@@ -1,7 +1,7 @@
 import {getStore} from "../store/configureStore";
 import constants from "../common/constants";
 import utils from "../utils/utils";
-import {getPostShaddow} from "./posts";
+import {getPosts, getPostShaddow} from "../services/posts";
 import Steem from "../libs/steem";
 import {getHistory} from "../main";
 
@@ -153,7 +153,7 @@ export function setInitDataForEditPost(username, postId) {
   }
 }
 
-
+const MIN_MINUTES_FOR_CREATING_NEW_POST = 5;
 export function createPost() {
   const state = getStore().getState();
   const editPostState = state.editPost;
@@ -169,30 +169,52 @@ export function createPost() {
     if (!isValidField(dispatch, title, photoSrc)) {
       return;
     }
+    getMinutesFromCreatingLastPost(auth.user).then( result => {
+      if (result < MIN_MINUTES_FOR_CREATING_NEW_POST) {
+        jqApp.pushMessage.open("You can only create posts 5 minutes after the previous one.");
+        return;
+      }
 
+      const image = new Image();
+      image.src = photoSrc;
 
-    const image = new Image();
-    image.src = photoSrc;
+      image.onload = () => {
+        const canvas = getCanvasWithImage(image, rotate);
 
-    image.onload = () => {
-      const canvas = getCanvasWithImage(image, rotate);
+        fetch(canvas.toDataURL()).then(res => res.blob()).then(blob => {
+          Steem.createPost(tags.split(' '), title, description, blob)
+            .then(() => {
+              jqApp.pushMessage.open(
+                'Post has been successfully created. If you don\'t see the post in your profile, please give it a few minutes to sync from the blockchain');
+              setTimeout(() => {
+                getHistory().push(`/@${auth.user}`);
+              }, 1700);
+            })
+            .catch(error => {
+              console.log(error);
+              jqApp.pushMessage.open(error.message);
+            })
+        });
+      }
 
-      fetch(canvas.toDataURL()).then(res => res.blob()).then(blob => {
-        Steem.createPost(tags.split(' '), title, description, blob)
-          .then(() => {
-            jqApp.pushMessage.open(
-              'Post has been successfully created. If you don\'t see the post in your profile, please give it a few minutes to sync from the blockchain');
-            setTimeout(() => {
-              getHistory().push(`/@${auth.user}`);
-            }, 1700);
-          })
-          .catch(error => {
-            console.log(error);
-            jqApp.pushMessage.open(error.message);
-          })
-      });
-    }
+    });
   }
+}
+
+function getMinutesFromCreatingLastPost(user) {
+  return new Promise((resolve, reject) => {
+    const requestOptions = {
+      point: `user/${user}/posts`,
+      params: {
+        show_nsfw: 1,
+        show_low_rated: 1,
+        limit: 1
+      }
+    };
+    getPosts(requestOptions, false).then((response) => {
+      resolve((new Date().getTime() - new Date(response.results[0].created).getTime()) / 1000 / 60);
+    });
+  })
 }
 
 function getCanvasWithImage(image, rotate) {

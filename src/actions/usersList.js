@@ -1,5 +1,5 @@
 import {getStore} from '../store/configureStore';
-import {getUsersSearch} from "./posts";
+import {getUsersSearch} from "../services/posts";
 
 export function initUsersList(options) {
   return {

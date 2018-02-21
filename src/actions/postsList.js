@@ -1,5 +1,5 @@
-import {getPosts} from './posts';
 import {getStore} from '../store/configureStore';
+import {getPosts} from "../services/posts";
 
 export function initPostsList(options) {
   return {

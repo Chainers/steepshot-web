@@ -52,20 +52,20 @@ class TextInput extends React.Component {
   onChange(event) {
     let newValue = utils.cloneObject(event.target.value);
     let lastCharCode = newValue.charCodeAt(newValue.length - 1);
-
-    this._removeInvalidCharacters.call(this, newValue);
+    newValue = this._removeInvalidCharacters(newValue);
     if (newValue !== this.props.text) {
-      this._updateTextValue.call(this, newValue);
+      this._updateTextValue(newValue);
     }
-    this._callFunctionsFromProps.call(this, lastCharCode);
+    this._callFunctionsFromProps(lastCharCode);
   }
 
   _removeInvalidCharacters(str) {
     let regExp = new RegExp(this.props.noValidCharacters);
-    str.replace(regExp, '');
+    str = str.replace(regExp, '');
     if (!this.props.multiline) {
-      str.replace('\n', '');
+      str = str.replace('\n', '');
     }
+    return str;
   }
 
   _updateTextValue(newValue) {
