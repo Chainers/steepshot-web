@@ -191,6 +191,16 @@ input.autofil--gray:-webkit-autofill {
   animation: spin 2s linear infinite;
 }
 
+.full-screen-loader {
+  width: 22px;
+  height: 22px;
+  border: 3px solid #f3f3f3;
+  border-top: 3px solid #d0021b;
+  border-radius: 50%;
+  -webkit-animation: spin 2s linear infinite;
+  animation: spin 2s linear infinite;
+}
+
 .loaderInComments {
   position: absolute;
   right: 14px;

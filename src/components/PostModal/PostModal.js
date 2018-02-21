@@ -19,7 +19,9 @@ import {copyToClipboard} from '../../actions/clipboard';
 import ReactDOM from 'react-dom';
 import PostContextMenu from '../PostContextMenu/PostContextMenu';
 import Likes from '../PostsList/Post/Likes/Likes';
+import FullScreenButtons from './FullScreenButtons/FullScreenButtons';
 import utils from '../../utils/utils';
+import {toggleVote} from '../../actions/vote';
 
 const START_TEXTAREA_HEIGHT = '42px';
 class PostModal extends React.Component {
@@ -83,10 +85,19 @@ class PostModal extends React.Component {
           case 39:
             this.nextPost();
             break;
-          default :
+          case 27:
+            if (this.props.fullScreenMode) {
+              this.props.setFullScreen(false);
+            }
+            break;
+          case 13:
+            this.props.toggleVote(this.props.currentIndex);
+            break;
+          default:
             break;
         }
       }
+
     };
   }
 
@@ -99,10 +110,9 @@ class PostModal extends React.Component {
     }
   }
 
-  renderImage() {
+  lowNSFWFilter() {
     return (
-      <div className="image-container_pos-mod"
-           style={this.props.style.imgCont}>
+      <div>
         <ShowIf show={this.props.post.is_nsfw && !this.props.showAll}>
           <div className="curtain_pos-mod">
             <p className="title_pos-mod">NSFW content</p>
@@ -125,12 +135,21 @@ class PostModal extends React.Component {
             </button>
           </div>
         </ShowIf>
+      </div>
+    )
+  }
+
+  renderImage() {
+    return (
+      <div className="image-container_pos-mod"
+           style={this.props.style.imgCont}>
+        {this.lowNSFWFilter()}
         <button className="btn btn-default btn-xs"
                 onClick={() => this.props.copyToClipboard(
-                  document.location.origin + '/post' + this.props.post.url.replace(/\/\w+/, ''),
+                    document.location.origin + '/post' + this.props.post.url.replace(/\/\w+/, ''),
                 )}>Copy link
         </button>
-        <ShowIf show={!this.props.style.isMobile && !this.props.fullScreenMode}>
+        <ShowIf show={!this.props.style.isFullScreen && !this.props.fullScreenMode}>
             <div className="full-screen-button_pos-mod"
                  onClick={this.props.setFullScreen.bind(this, true)}
             >
@@ -155,7 +174,55 @@ class PostModal extends React.Component {
             <p className="title_pos-mod">Sorry, image isn't found.</p>
           </div>
         </ShowIf>
-      </div>);
+      </div>
+    );
+  }
+
+  renderFullScreenImg() {
+    return (
+      <div>
+        <div>
+          <div className="arrow-left-full-screen_post-mod" onClick={this.previousPost.bind(this)}>
+            <i className="far fa-arrow-alt-circle-left fa-2x"/>
+          </div>
+          <div className="arrow-right-full-screen_post-mod" onClick={this.nextPost.bind(this)}>
+            <i className="far fa-arrow-alt-circle-right fa-2x"/>
+          </div>
+        </div>
+        <div className="close-full-screen_pos-mod"
+             onClick={this.props.setFullScreen.bind(this, false)}
+        >
+          <img className="img-full-screen" src="/static/images/shape-copy-6.svg"/>
+        </div>
+        <div className="full-image-wrap_pos-mod">
+          {this.lowNSFWFilter()}
+          <img src={this.props.post.body || constants.NO_IMAGE}
+               alt="Post picture."
+               className="full-screen-img"
+               ref={ref => this.fullImage = ref}
+               onLoad={this.imageLoaded.bind(this)}
+               onError={this.loadImgError.bind(this)}
+               onDoubleClick={this.props.setFullScreen.bind(this, !this.props.fullScreenMode)}
+          />
+          <button className="btn btn-default btn-xs full-screen-share_pos-mod"
+                  onClick={() => this.props.copyToClipboard(
+                    document.location.origin + '/post' + this.props.post.url.replace(/\/\w+/, ''),
+                  )}>Copy link
+          </button>
+        </div>
+        <ShowIf show={!this.fullImage || !this.fullImage.complete}>
+          <div className="before-load-full-screen_pos-mod">
+            <LoadingSpinner/>
+          </div>
+        </ShowIf>
+        <ShowIf show={this.fullImage && this.fullImage.complete && !this.fullImage.naturalWidth}>
+          <div className="before-load-full-screen_pos-mod">
+            <p className="title_pos-mod">Sorry, image isn't found.</p>
+          </div>
+        </ShowIf>
+        <FullScreenButtons />
+      </div>
+      )
   }
 
   renderDescription() {
@@ -221,16 +288,6 @@ class PostModal extends React.Component {
 
   render() {
     const authorLink = `/@${this.props.post.author}`;
-    let arrowLeft = 'arrow-left-modal_post-mod', arrowRight = 'arrow-right-modal_post-mod', closeFullScreen;
-    if (this.props.fullScreenMode) {
-      arrowLeft = 'arrow-left-full-screen_post-mod';
-      arrowRight = 'arrow-right-full-screen_post-mod';
-      closeFullScreen = <div className="close-full-screen_pos-mod"
-                             onClick={this.props.setFullScreen.bind(this, false)}
-                        >
-                          <img className="img-full-screen" src="/static/images/shape-copy-6.svg"/>
-                        </div>
-    }
     let commentInput = <ShowIf show={this.props.isUserAuth}>
                           <div className="add-comment_pos-mod">
                             <div className="hidden-div_pos-mod"
@@ -263,104 +320,104 @@ class PostModal extends React.Component {
                           </div>
                         </ShowIf>;
     return (
-      <div className="container_pos-mod" style={this.props.style.container}>
-        <ShowIf show={this.props.showClose}>
-          <ShowIf show={this.props.postList.posts[0] !== this.props.currentIndex}>
-            <div className={arrowLeft} onClick={this.previousPost.bind(this)}>
-              <i className="far fa-arrow-alt-circle-left fa-2x"/>
-            </div>
-          </ShowIf>
-          <ShowIf show={this.props.post.url !== this.props.postList.offset}>
-            <div className={arrowRight} onClick={this.nextPost.bind(this)}>
-              <i className="far fa-arrow-alt-circle-right fa-2x"/>
-            </div>
-          </ShowIf>
-          {closeFullScreen}
-        </ShowIf>
-        {this.renderImage()}
+      <div>
         { !this.props.fullScreenMode ?
-          <div className="header_pos-mod"
-               style={this.props.style.headerCont}
-          >
-            <div className="date_pos-mod">
-              <TimeAgo datetime={this.props.post.created}
-                       locale='en_US'
-                       className="time_pos-mod"
-              />
-              <PostContextMenu style={{height: '22px', width: '22px', marginRight: this.props.showClose ? '38px' : 0}}
-                               className="post-context-menu_post"
-                               item={this.props.post}
-                               index={this.props.currentIndex}
-              />
-              <ShowIf show={this.props.showClose}>
-                <div className="cont-close-btn_pos-mod" onClick={() => this.props.closeModal(this.props.point)}>
-                  <i className="close-btn_pos-mod"/>
-                </div>
-              </ShowIf>
-            </div>
-            <Link to={authorLink} className="user_pos-mod">
-              <Avatar src={this.props.post.avatar}/>
-              <div className="name_pos-mod">
-                {this.props.post.author}
+        <div className="container_pos-mod" style={this.props.style.container}>
+          <ShowIf show={this.props.showClose}>
+            <ShowIf show={this.props.postList.posts[0] !== this.props.currentIndex}>
+              <div className="arrow-left-modal_post-mod" onClick={this.previousPost.bind(this)}>
+                <i className="far fa-arrow-alt-circle-left fa-2x"/>
               </div>
-            </Link>
-          </div>
-        : null }
-        { !this.props.fullScreenMode ?
-          <div className="description_pos-mod"
-               style={this.props.style.description}
-               ref={(ref) => {this.descPosMod = ref}}
-          >
-            <div className="control-cont_pos-mod">
-              <div className="post-control_pos-mod">
-                <div className="likes_pos-mod">
-                  <Likes postIndex={this.props.currentIndex}/>
-                </div>
-                <div className="amount_pos-mod">
-                  <ShowIf show={parseFloat(this.props.post.total_payout_reward)}>
-                    <div>
-                      ${this.props.post.total_payout_reward}
-                    </div>
-                  </ShowIf>
-                </div>
-                <ShowIf show={this.props.authUser !== this.props.post.author}>
-                  <div className="button_pos-mod">
-                    <Flag postIndex={this.props.currentIndex}/>
+            </ShowIf>
+            <ShowIf show={this.props.post.url !== this.props.postList.offset}>
+              <div className="arrow-right-modal_post-mod" onClick={this.nextPost.bind(this)}>
+                <i className="far fa-arrow-alt-circle-right fa-2x"/>
+              </div>
+            </ShowIf>
+          </ShowIf>
+          {this.renderImage()}
+            <div className="header_pos-mod"
+                 style={this.props.style.headerCont}
+            >
+              <div className="date_pos-mod">
+                <TimeAgo datetime={this.props.post.created}
+                         locale='en_US'
+                         className="time_pos-mod"
+                />
+                <PostContextMenu style={{height: '22px', width: '22px', marginRight: this.props.showClose ? '38px' : 0}}
+                                 className="post-context-menu_post"
+                                 item={this.props.post}
+                                 index={this.props.currentIndex}
+                />
+                <ShowIf show={this.props.showClose}>
+                  <div className="cont-close-btn_pos-mod" onClick={() => this.props.closeModal(this.props.point)}>
+                    <i className="close-btn_pos-mod"/>
                   </div>
                 </ShowIf>
-                <div className="button_pos-mod">
-                  <Vote postIndex={this.props.currentIndex}/>
-                </div>
               </div>
+              <Link to={authorLink} className="user_pos-mod">
+                <Avatar src={this.props.post.avatar}/>
+                <div className="name_pos-mod">
+                  {this.props.post.author}
+                </div>
+              </Link>
             </div>
 
-            <div className="comment-container_pos-mod">
-              <ScrollViewComponent
-                ref={(ref) => this.scrollView = ref}
-                wrapperModifier="list-scroll_pos-mod"
-                scrollViewModifier="list-scroll-view_pos-mod"
-                autoHeight={window.innerWidth < constants.DISPLAY.DESK_BREAKPOINT}
-                autoHeightMax={10000}
-                autoHeightMin={100}
-                autoHide={true}
-              >
-                {this.renderDescription()}
-                <ShowIf show={this.props.style.isMobile}>
-                  {commentInput}
-                </ShowIf>
-                <Comments
-                  key="comments"
-                  item={this.props.post}
-                  newComment={this.props.newComment}
-                  replyUser={this.textArea}
-                />
-              </ScrollViewComponent>
+            <div className="description_pos-mod"
+                 style={this.props.style.description}
+                 ref={(ref) => {this.descPosMod = ref}}
+            >
+              <div className="control-cont_pos-mod">
+                <div className="post-control_pos-mod">
+                  <div className="likes_pos-mod">
+                    <Likes postIndex={this.props.currentIndex}/>
+                  </div>
+                  <div className="amount_pos-mod">
+                    <ShowIf show={parseFloat(this.props.post.total_payout_reward)}>
+                      <div>
+                        ${this.props.post.total_payout_reward}
+                      </div>
+                    </ShowIf>
+                  </div>
+                  <ShowIf show={this.props.authUser !== this.props.post.author}>
+                    <div className="button_pos-mod">
+                      <Flag postIndex={this.props.currentIndex}/>
+                    </div>
+                  </ShowIf>
+                  <div className="button_pos-mod">
+                    <Vote postIndex={this.props.currentIndex}/>
+                  </div>
+                </div>
+              </div>
+
+              <div className="comment-container_pos-mod">
+                <ScrollViewComponent
+                  ref={(ref) => this.scrollView = ref}
+                  wrapperModifier="list-scroll_pos-mod"
+                  scrollViewModifier="list-scroll-view_pos-mod"
+                  autoHeight={window.innerWidth < constants.DISPLAY.DESK_BREAKPOINT}
+                  autoHeightMax={10000}
+                  autoHeightMin={100}
+                  autoHide={true}
+                >
+                  {this.renderDescription()}
+                  <ShowIf show={this.props.style.isMobile}>
+                    {commentInput}
+                  </ShowIf>
+                  <Comments
+                    key="comments"
+                    item={this.props.post}
+                    newComment={this.props.newComment}
+                    replyUser={this.textArea}
+                  />
+                </ScrollViewComponent>
+              </div>
+              <ShowIf show={!this.props.style.isMobile}>
+                {commentInput}
+              </ShowIf>
             </div>
-            <ShowIf show={!this.props.style.isMobile}>
-              {commentInput}
-            </ShowIf>
-          </div>
-        : null}
+        </div>
+        : this.renderFullScreenImg() }
       </div>
     );
   }
@@ -375,24 +432,28 @@ class PostModal extends React.Component {
     const MAX_IMG_WIDTH = (docWidth - DESC_WIDTH) * 0.8;
     const PREFERRED_IMG_WIDTH = 640;
     const isMobile = docWidth < MAX_WIDTH_FULL_SCREEN;
+    const isFullScreen = docWidth < 1025;
 
     const container = {};
     container.width = docWidth;
     container.height = '100%';
-    container.backgroundColor = this.props.fullScreenMode ? '#000000' : '#ffffff';
 
     const textareaMarginTop = this.descPosMod ? this.descPosMod.clientHeight - 220 : null;
 
     const image = {};
-    console.log(this.image.naturalWidth);
-    image.width = this.image.naturalWidth;
-    image.height = this.image.naturalHeight ? this.image.naturalHeight : docHeight * 0.4;
+    if (this.image) {
+      image.width = this.image.naturalWidth;
+      image.height = this.image.naturalHeight ? this.image.naturalHeight : docHeight * 0.4;
+    }
     const imgCont = {};
     imgCont.width = '100%';
-    imgCont.backgroundColor = this.props.fullScreenMode ? '#000000' : '#e7e7e7';
     const headerCont = {};
-    headerCont.width = '100%';
+    if (isMobile) {
+      headerCont.width = '100%';
+    }
+
     const description = {};
+    description.width = headerCont.width;
 
     if (docWidth > MAX_WIDTH_FULL_SCREEN) {
       image.width = image.width ? image.width : utils.getLess((docWidth - DESC_WIDTH) * 0.8, PREFERRED_IMG_WIDTH);
@@ -419,7 +480,6 @@ class PostModal extends React.Component {
       image.height = image.height * image.width / this.image.naturalWidth;
     }
 
-    description.width = headerCont.width;
     let style = {
       container,
       image,
@@ -427,10 +487,14 @@ class PostModal extends React.Component {
       headerCont,
       description,
       textareaMarginTop,
-      isMobile
+      isMobile,
+      isFullScreen
     };
     if (JSON.stringify(style) !== JSON.stringify(this.props.style)) {
       this.props.setPostModalOptions({style});
+    }
+    if (isFullScreen && this.props.fullScreenMode) {
+      this.props.setFullScreen(false);
     }
   }
 }
@@ -467,6 +531,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     setFullScreen: (isOpen) => {
       dispatch(setFullScreen(isOpen));
+    },
+    toggleVote: (postIndex) => {
+      dispatch(toggleVote(postIndex));
     }
   };
 };
