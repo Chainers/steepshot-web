@@ -92,6 +92,19 @@
   font-size: 12px;
 }
 
+.blur-blocker_edi-pos {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  transform: 1s;
+  filter: blur(1.05px) grayscale(50%);
+  background-color: #fff;
+  opacity: 0.4;
+}
+
 @media (max-width: 750px) {
   .container_edi-pos {
     width: 90vw;

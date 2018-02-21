@@ -154,6 +154,7 @@ export function setInitDataForEditPost(username, postId) {
 }
 
 const MIN_MINUTES_FOR_CREATING_NEW_POST = 5;
+
 export function createPost() {
   const state = getStore().getState();
   const editPostState = state.editPost;
@@ -169,34 +170,46 @@ export function createPost() {
     if (!isValidField(dispatch, title, photoSrc)) {
       return;
     }
-    getMinutesFromCreatingLastPost(auth.user).then( result => {
+    getMinutesFromCreatingLastPost(auth.user).then(result => {
       if (result < MIN_MINUTES_FOR_CREATING_NEW_POST) {
         jqApp.pushMessage.open("You can only create posts 5 minutes after the previous one.");
         return;
       }
-
+      dispatch({
+        type: 'EDIT_POST_CREATE_POST_REQUEST'
+      });
       const image = new Image();
       image.src = photoSrc;
 
       image.onload = () => {
         const canvas = getCanvasWithImage(image, rotate);
 
-        fetch(canvas.toDataURL()).then(res => res.blob()).then(blob => {
-          Steem.createPost(tags.split(' '), title, description, blob)
-            .then(() => {
-              jqApp.pushMessage.open(
-                'Post has been successfully created. If you don\'t see the post in your profile, please give it a few minutes to sync from the blockchain');
-              setTimeout(() => {
-                getHistory().push(`/@${auth.user}`);
-              }, 1700);
-            })
-            .catch(error => {
-              console.log(error);
-              jqApp.pushMessage.open(error.message);
-            })
-        });
-      }
+        fetch(canvas.toDataURL()).then(res => res.blob())
+          .then(blob => {
+            return Steem.createPost(tags.split(' '), title, description, blob)
+          })
+          .then(() => {
+            jqApp.pushMessage.open(
+              'Post has been successfully created. If you don\'t see the post in your profile, '
+              + 'please give it a few minutes to sync from the blockchain');
+            setTimeout(() => {
+              dispatch({
+                type: 'EDIT_POST_CLEAR'
+              });
+              dispatch({
+                type: 'EDIT_POST_CREATE_POST_SUCCESS'
+              });
+              getHistory().push(`/@${auth.user}`);
+            }, 1700);
 
+          })
+          .catch(error => {
+            dispatch({
+              type: 'EDIT_POST_CREATE_POST_SUCCESS'
+            });
+            jqApp.pushMessage.open(error.message);
+          });
+      }
     });
   }
 }

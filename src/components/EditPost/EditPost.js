@@ -9,6 +9,7 @@ import EditTags from "../Common/EditTags/EditTags";
 import ShowIf from "../Common/ShowIf";
 import utils from "../../utils/utils";
 import constants from "../../common/constants";
+import LoadingSpinner from "../LoadingSpinner";
 
 class EditPost extends React.Component {
   static  TAG_NAME = 'tag';
@@ -84,8 +85,12 @@ class EditPost extends React.Component {
   }
 
   render() {
+
     return (
-      <div className='container_edi-pos'>
+      <div className={'container_edi-pos ' + (this.props.loading ? 'blur-blocker' : '')}>
+        <ShowIf show={this.props.loading}>
+          <LoadingSpinner style={{height: '100%', position: 'absolute'}}/>
+        </ShowIf>
         <div className="image-container_edi-pos"
              style={{
                height: this.props.height,
@@ -104,8 +109,8 @@ class EditPost extends React.Component {
                  src={this.props.src}
                  style={{
                    transform: `rotate(${this.props.rotate}deg)`,
-                   maxHeight: this.props.rotate % 180 ? this.props.width : '100vh',
-                   maxWidth: this.props.rotate % 180 ? '100vh' : this.props.width,
+                   maxHeight: this.props.rotate % 180 ? this.props.width : '100%',
+                   maxWidth: this.props.rotate % 180 ? '100%' : this.props.width,
                  }}
                  alt='image'
                  ref={ref => this.image = ref}
@@ -148,12 +153,12 @@ class EditPost extends React.Component {
                    value={this.props.initData.description}
                    description="Description is limited to 2048 characters"/>
         <div className="buttons-container_edi-pos">
-            <button onClick={this.props.editPostClear}
-                    className="btn btn-index">Clear
-            </button>
-            <button onClick={this.submit.bind(this)}
-                    className="btn btn-default">{this.props.url ? 'Update post' : 'Create new post'}
-            </button>
+          <button onClick={this.props.editPostClear}
+                  className="btn btn-index">Clear
+          </button>
+          <button onClick={this.submit.bind(this)}
+                  className="btn btn-default">{this.props.url ? 'Update post' : 'Create new post'}
+          </button>
         </div>
       </div>
     );
