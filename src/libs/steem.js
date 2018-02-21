@@ -3,7 +3,7 @@ import constants from '../common/constants';
 import Promise from 'bluebird';
 import {getStore} from '../store/configureStore';
 import {prepareComment} from '../actions/steemPayout';
-import {logComment, logDeletedPost, logFlag, logFollow, logPost, logVoute} from '../actions/logging';
+import {logComment, logDeletedPost, logFlag, logFollow, logPost, logVote, logVoute} from '../actions/logging';
 
 import _ from 'underscore';
 import FormData from "form-data";
@@ -42,10 +42,15 @@ class Steem {
     const callbackBc = (err, success) => {
       if (err) {
         callback(err, null);
-        console.log(err);
+        const data = JSON.stringify({
+          username : author,
+          error: err
+        });
+        logComment(parentAuthor, parentPermlink, data);
       } else if (success) {
         const data = JSON.stringify({
-          username: author
+          username : author,
+          error: ''
         });
         logComment(parentAuthor, parentPermlink, data);
         callback(null, success);
@@ -117,16 +122,21 @@ class Steem {
   }
 
   vote(wif, username, author, url, voteStatus, callback) {
-    const data = JSON.stringify({
-      username: username
-    });
-
     const callbackBc = (err, success) => {
-      if (err) {
+      if(err) {
         callback(err, null);
-        console.log(err);
-      } else if (success) {
-        logVoute(voteStatus, author, url, data);
+        const data = JSON.stringify({
+          username : username,
+          error: err
+        });
+        logVote(voteStatus, author, url, data);
+      } else
+      if (success) {
+        const data = JSON.stringify({
+          username : username,
+          error: ''
+        });
+        logVote(voteStatus, author, url, data);
         callback(null, success);
       }
     };
@@ -178,10 +188,15 @@ class Steem {
     const callbackBc = (err, result) => {
       if (err) {
         callback(err);
-        console.log(err);
+        const data = JSON.stringify({
+          username: follower,
+          error: err
+        });
+        logFollow(status, following, data);
       } else if (result) {
         const data = JSON.stringify({
-          username: follower
+          username: follower,
+          error: ''
         });
         logFollow(status, following, data);
         callback(null, result);
@@ -257,7 +272,8 @@ class Steem {
       })
       .then(response => {
         const data = JSON.stringify({
-          username: _getUserName()
+          username: _getUserName(),
+          error: ''
         });
         logPost(data);
         return response;
