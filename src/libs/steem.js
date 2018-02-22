@@ -43,13 +43,13 @@ class Steem {
       if (err) {
         callback(err, null);
         const data = JSON.stringify({
-          username : author,
+          username: author,
           error: err
         });
         logComment(parentAuthor, parentPermlink, data);
       } else if (success) {
         const data = JSON.stringify({
-          username : author,
+          username: author,
           error: ''
         });
         logComment(parentAuthor, parentPermlink, data);
@@ -123,17 +123,16 @@ class Steem {
 
   vote(wif, username, author, url, voteStatus, callback) {
     const callbackBc = (err, success) => {
-      if(err) {
+      if (err) {
         callback(err, null);
         const data = JSON.stringify({
-          username : username,
+          username: username,
           error: err
         });
         logVote(voteStatus, author, url, data);
-      } else
-      if (success) {
+      } else if (success) {
         const data = JSON.stringify({
-          username : username,
+          username: username,
           error: ''
         });
         logVote(voteStatus, author, url, data);
@@ -235,6 +234,7 @@ class Steem {
   }
 
   createPost(tags, title, description, file) {
+
     const permlink = _getPermLink();
     tags = _getValidTags(tags);
 
@@ -251,7 +251,7 @@ class Steem {
         app: 'steepshot'
       }
     }];
-
+    console.log(operation);
     return _preCompileTransaction(operation)
       .then(transaction => {
         return _fileUpload(transaction, file);
@@ -317,20 +317,20 @@ function _sendToBlockChain(operation, prepareData) {
     const callback = (err, success) => {
       if (success) {
         resolve(success);
+        return;
       }
-      if (err) {
+      if (err.data) {
         switch (err.data.code) {
           case 10:
             reject(new Error('You can only create posts 5 minutes after the previous one.'));
-            break;
+            return;
           case 4100000:
             reject(new Error(`${_getUserName()} bandwidth limit exceeded. Please wait to transact or power up STEEM.`));
-            break;
-          default:
-            console.error(err.data);
-            reject(new Error('Somethings went wrong.'));
+            return;
         }
       }
+      console.error(err);
+      reject(new Error('Somethings went wrong.'));
     };
 
     steem.broadcast.sendAsync(

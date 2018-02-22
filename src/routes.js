@@ -57,7 +57,7 @@ export default function getRoutes(store) {
         <Route path="/dev/test" component={Testing} onLeave={clearMessages} />
         <PrivateRoute path="/feed" component={Feed} onLeave={clearMessages} />
         <PrivateRoute path="/createPost" component={CreatePost} onLeave={clearMessages} />
-        <PrivateRoute path="/editPost/:title?/:username?/:postId?" component={EditPost} onLeave={clearMessages} />
+        <PrivateRoute path="/editPost/:postId?" component={EditPost} onLeave={clearMessages} />
         <PrivateRoute path="/profile" component={Profile} onLeave={clearMessages} />
         <PrivateRoute path="/settings" component={Settings} onLeave={clearMessages} />
         <Route path="*" component={NotFound} onLeave={clearMessages} />

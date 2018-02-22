@@ -62,6 +62,7 @@ export default function editPost(state = initialState, action) {
         loading: true
       };
 
+    case 'EDIT_POST_CREATE_POST_REJECT':
     case 'EDIT_POST_CREATE_POST_SUCCESS':
       return {
         ...state,

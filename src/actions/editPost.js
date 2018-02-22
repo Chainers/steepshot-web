@@ -4,6 +4,7 @@ import utils from "../utils/utils";
 import {getPosts, getPostShaddow} from "../services/posts";
 import Steem from "../libs/steem";
 import {getHistory} from "../main";
+import {clearTextInputState, setTextInputError, setTextInputState} from "./textInput";
 
 export function addTag() {
   return (dispatch) => {
@@ -12,22 +13,11 @@ export function addTag() {
     let newTag = state.textInput[constants.TEXT_INPUT_POINT.TAGS].text;
     newTag = getValidTagsString(newTag);
     if (utils.isEmptyString(newTag)) {
-      return {
-        type: 'EDIT_POST_ADD_EMPTY_TAG',
-      }
+      return emptyAction();
     }
-    dispatch({
-      type: 'EDIT_POST_CHANGE_TAGS',
-      value: getValidTagsString(editPostState.tags + ' ' + newTag.trim()),
-    });
-    dispatch({
-      type: 'TEXT_INPUT_SET_STATE',
-      point: constants.TEXT_INPUT_POINT.TAGS,
-      state: {
-        focused: '',
-        text: ''
-      }
-    })
+    dispatch(editPostChangeTags(getValidTagsString(editPostState.tags + ' ' + newTag.trim())));
+
+    dispatch(clearTextInputState(constants.TEXT_INPUT_POINT.TAGS));
 
   }
 }
@@ -36,21 +26,9 @@ export function removeTag(index) {
   const tagsString = getStore().getState().editPost.tags;
   let tagsList = tagsString.toLowerCase().split(' ');
   tagsList.splice(index, 1);
-  return {
-    type: 'EDIT_POST_CHANGE_TAGS',
-    value: tagsList.join(' ')
+  return dispatch => {
+    dispatch(editPostChangeTags(tagsList.join(' ')));
   }
-}
-
-const MAX_TAG_LENGTH = 30;
-const MAX_AMOUNT_TAGS = 20;
-
-function getValidTagsString(str) {
-  let result = str.replace(/^\s+/g, '');
-  result = result.replace(/\s\s/g, ' ');
-  result = result.replace(new RegExp(`((\\s[^\\s]+){${MAX_AMOUNT_TAGS - 1}}).*`), '$1');
-  result = result.replace(new RegExp(`(([^\\s]{${MAX_TAG_LENGTH}})[^\\s]+).*`), '$2');
-  return result;
 }
 
 export function changeImage(imageSrc, image) {
@@ -83,7 +61,6 @@ export function imageRotate(image) {
       return;
     }
 
-
     dispatch({
       type: 'EDIT_POST_ROTATE_IMAGE',
       rotate
@@ -102,58 +79,40 @@ export function setImageContainerSize(width, height) {
 export function editPostClear() {
   const initDataEditPost = getStore().getState().editPost.initData;
   return dispatch => {
-    dispatch({
-      type: 'EDIT_POST_CLEAR'
-    });
-    dispatch({
-      type: 'TEXT_INPUT_SET_STATE',
-      point: constants.TEXT_INPUT_POINT.TITLE,
-      state: {
-        text: initDataEditPost.title,
-        focused: initDataEditPost.title ? 'focused_tex-inp' : '',
-        error: ''
-      }
-    });
-    dispatch({
-      type: 'TEXT_INPUT_SET_STATE',
-      point: constants.TEXT_INPUT_POINT.TAGS,
-      state: {
-        text: '',
-        focused: '',
-        error: ''
-      }
-    });
-    dispatch({
-      type: 'TEXT_INPUT_SET_STATE',
-      point: constants.TEXT_INPUT_POINT.DESCRIPTION,
-      state: {
-        text: initDataEditPost.description,
-        focused: initDataEditPost.description ? 'focused_tex-inp' : '',
-        error: ''
-      }
-    });
-
-
+    dispatch(clearEditPost());
+    dispatch(setTextInputState(constants.TEXT_INPUT_POINT.TITLE, {
+      text: initDataEditPost.title,
+      focused: initDataEditPost.title ? 'focused_tex-inp' : '',
+      error: ''
+    }));
+    dispatch(clearTextInputState(constants.TEXT_INPUT_POINT.TAGS));
+    dispatch(setTextInputState(constants.TEXT_INPUT_POINT.DESCRIPTION, {
+      text: initDataEditPost.description,
+      focused: initDataEditPost.description ? 'focused_tex-inp' : '',
+      error: ''
+    }));
   }
 }
 
 export function setInitDataForEditPost(username, postId) {
   return (dispatch) => {
     if (!username || !postId) {
-      dispatch({
-        type: 'EDIT_POST_CREATE_NEW'
-      })
+      dispatch(createNewPost())
     } else {
-      getPostShaddow(username + '/' + postId).then((result) => {
-        dispatch({
-          type: 'EDIT_POST_SET_INIT_DATA',
-          initData: {
-            src: result.media[0].url,
-            tags: result.tags.join(' '),
-            title: result.title,
-            description: result.description
-          }
-        })
+      getPostShaddow(username + '/' + postId).then((response) => {
+        if (!response) {
+          dispatch(createNewPost())
+        } else {
+          dispatch({
+            type: 'EDIT_POST_SET_INIT_DATA',
+            initData: {
+              src: response.media[0].url,
+              tags: response.tags.join(' '),
+              title: response.title,
+              description: response.description
+            }
+          })
+        }
       });
     }
   }
@@ -176,8 +135,8 @@ export function createPost() {
     if (!isValidField(dispatch, title, photoSrc)) {
       return;
     }
-    getMinutesFromCreatingLastPost(auth.user).then(result => {
-      if (result < MIN_MINUTES_FOR_CREATING_NEW_POST) {
+    getMinutesFromCreatingLastPost(auth.user).then(response => {
+      if (response < MIN_MINUTES_FOR_CREATING_NEW_POST) {
         jqApp.pushMessage.open("You can only create posts 5 minutes after the previous one.");
         return;
       }
@@ -199,20 +158,14 @@ export function createPost() {
               'Post has been successfully created. If you don\'t see the post in your profile, '
               + 'please give it a few minutes to sync from the blockchain');
             setTimeout(() => {
-              dispatch({
-                type: 'EDIT_POST_CLEAR'
-              });
-              dispatch({
-                type: 'EDIT_POST_CREATE_POST_SUCCESS'
-              });
+              dispatch(clearEditPost());
+              dispatch(createPostSuccess());
               getHistory().push(`/@${auth.user}`);
             }, 1700);
 
           })
           .catch(error => {
-            dispatch({
-              type: 'EDIT_POST_CREATE_POST_SUCCESS'
-            });
+            dispatch(createPostReject(error));
             jqApp.pushMessage.open(error.message);
           });
       }
@@ -220,18 +173,72 @@ export function createPost() {
   }
 }
 
+
+const MAX_TAG_LENGTH = 30;
+const MAX_AMOUNT_TAGS = 19;
+
+function getValidTagsString(str) {
+  let result = str.replace(/^\s+/g, '');
+  result = result.replace(/\s\s/g, ' ');
+  result = result.replace(new RegExp(`((\\s[^\\s]+){${MAX_AMOUNT_TAGS - 1}}).*`), '$1');
+  result = result.replace(new RegExp(`(([^\\s]{${MAX_TAG_LENGTH}})[^\\s]+).*`), '$2');
+  return result;
+}
+
+
+function emptyAction() {
+  return {
+    type: 'EDIT_POST_EMPTY_ACTION',
+  }
+}
+
+function editPostChangeTags(tagsString) {
+  return {
+    type: 'EDIT_POST_CHANGE_TAGS',
+    value: tagsString,
+  }
+}
+
+function clearEditPost() {
+  return {
+    type: 'EDIT_POST_CLEAR'
+  };
+}
+
+function createNewPost() {
+  return {
+    type: 'EDIT_POST_CREATE_NEW'
+  };
+}
+
+function createPostSuccess() {
+  return {
+    type: 'EDIT_POST_CREATE_POST_SUCCESS'
+  };
+}
+function createPostReject(error) {
+  return {
+    type: 'EDIT_POST_CREATE_POST_REJECT',
+    error
+  };
+}
+
 function getMinutesFromCreatingLastPost(user) {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     const requestOptions = {
       point: `user/${user}/posts`,
       params: {
-        show_nsfw: 1,
-        show_low_rated: 1,
+        show_nsfw: 0,
+        show_low_rated: 0,
         limit: 1
       }
     };
     getPosts(requestOptions, false).then((response) => {
-      resolve((new Date().getTime() - new Date(response.results[0].created).getTime()) / 1000 / 60);
+      if (!response.count) {
+        resolve(MIN_MINUTES_FOR_CREATING_NEW_POST);
+      } else {
+        resolve((new Date().getTime() - new Date(response.results[0].created).getTime()) / 1000 / 60);
+      }
     });
   })
 }
@@ -256,11 +263,9 @@ function getCanvasWithImage(image, rotate) {
 function isValidImageSize(dispatch, imageSize) {
   if (imageSize.width < constants.IMAGE.MIN_WIDTH
     || imageSize.height < constants.IMAGE.MIN_HEIGHT) {
-    dispatch({
-      type: 'EDIT_POST_SET_IMAGE_ERROR',
-      message: 'Photo size should be more then ' + constants.IMAGE.MIN_WIDTH + 'x' + constants.IMAGE.MIN_HEIGHT
-      + '. Yours photo has ' + imageSize.width + 'x' + imageSize.height + '.'
-    });
+    const message = 'Photo size should be more then ' + constants.IMAGE.MIN_WIDTH + 'x' + constants.IMAGE.MIN_HEIGHT
+      + '. Yours photo has ' + imageSize.width + 'x' + imageSize.height + '.';
+    dispatch(setEditPostImageError(message));
     return false;
   }
   return true;
@@ -269,20 +274,19 @@ function isValidImageSize(dispatch, imageSize) {
 function isValidField(dispatch, title, photoSrc) {
   let isValid = true;
   if (utils.isEmptyString(title)) {
-    dispatch({
-      type: 'TEXT_INPUT_SET_ERROR',
-      point: constants.TEXT_INPUT_POINT.TITLE,
-      message: 'Title is required'
-    });
+    dispatch(setTextInputError(constants.TEXT_INPUT_POINT.TITLE, 'Title is required'));
     isValid = false;
   }
   if (utils.isEmptyString(photoSrc)) {
-    dispatch({
-      type: 'EDIT_POST_SET_IMAGE_ERROR',
-      message: 'Photo is required'
-    });
+    dispatch(setEditPostImageError('Photo is required'));
     isValid = false;
   }
   return isValid;
 }
 
+function setEditPostImageError(message) {
+  return {
+    type: 'EDIT_POST_SET_IMAGE_ERROR',
+    message
+  };
+}

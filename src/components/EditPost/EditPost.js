@@ -12,11 +12,6 @@ import constants from "../../common/constants";
 import LoadingSpinner from "../LoadingSpinner";
 
 class EditPost extends React.Component {
-  static  TAG_NAME = 'tag';
-  static  DESCRIPTION_NAME = 'description';
-  static  DESCRIPTION_MAX_LENGTH = 2048;
-  static  MIN_PHOTO_WIDTH = 640;
-  static  MIN_PHOTO_HEIGHT = 420;
 
   constructor(props) {
     super(props);
@@ -65,10 +60,8 @@ class EditPost extends React.Component {
     imgWidth = imgWidth * prefHeight / imgHeight;
     let prefWidth = imgWidth;
     if (prefWidth > MAX_WIDTH) {
-      console.log(prefHeight);
       prefHeight = prefHeight * MAX_WIDTH / prefWidth;
       prefWidth = MAX_WIDTH;
-      console.log(prefHeight);
     }
 
     this.props.setImageContainerSize(prefWidth, prefHeight);
@@ -142,7 +135,7 @@ class EditPost extends React.Component {
                      func: () => this.props.addTag()
                    }]}>
           <EditTags value={this.props.tags}
-                    onChange={() => this.props.removeTag()}/>
+                    onChange={this.props.removeTag}/>
         </TextInput>
         <TextInput title="Description"
                    point={constants.TEXT_INPUT_POINT.DESCRIPTION}
@@ -164,8 +157,10 @@ class EditPost extends React.Component {
 }
 
 const mapStateToProps = (state, props) => {
+  const {postId} = props.match.params;
   return {
-    ...props.match.params,
+    postId,
+    username: state.auth.user,
     ...state.editPost
   };
 };
