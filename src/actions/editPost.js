@@ -6,6 +6,10 @@ import Steem from "../libs/steem";
 import {getHistory} from "../main";
 import {clearTextInputState, setTextInputError, setTextInputState} from "./textInput";
 
+const getUserName = () => {
+  return getStore().getState().auth.user;
+};
+
 export function addTag() {
   return (dispatch) => {
     const state = getStore().getState();
@@ -31,12 +35,15 @@ export function removeTag(index) {
   }
 }
 
-export function changeImage(imageSrc, image) {
+export function changeImage(imageSrc, image, fileSize) {
   return dispatch => {
     if (!isValidImageSize(dispatch, image)) {
       return;
     }
-
+    if (fileSize / 1000 / 1000 > 10) {
+      dispatch(setEditPostImageError("Image should be less than 10 mb."));
+      return;
+    }
     dispatch({
       type: 'EDIT_POST_CHANGE_IMAGE',
       image: imageSrc
@@ -109,7 +116,8 @@ export function setInitDataForEditPost(username, postId) {
               src: response.media[0].url,
               tags: response.tags.join(' '),
               title: response.title,
-              description: response.description
+              description: response.description,
+              dataResponse: response
             }
           })
         }
@@ -120,29 +128,45 @@ export function setInitDataForEditPost(username, postId) {
 
 const MIN_MINUTES_FOR_CREATING_NEW_POST = 5;
 
-export function createPost() {
-  const state = getStore().getState();
-  const editPostState = state.editPost;
-  const textInputStates = state.textInput;
-  const title = textInputStates.title.text;
-  const description = textInputStates.description.text;
-  const tags = getValidTagsString(editPostState.tags);
-  const photoSrc = editPostState.src;
-  const rotate = editPostState.rotate;
-  const auth = state.auth;
+export function editPost() {
+  const postData = getStore().getState().editPost.initData.dataResponse;
+  let {title, tags, description} = prepareData();
 
-  return (dispatch) => {
+  return dispatch => {
+    if (!isValidField(dispatch, title, 'no empty string')) {
+      return;
+    }
+    checkTimeAfterUpdatedLastPost().then(() => {
+      dispatch(editPostRequest());
+      Steem.editPost(title, tags, description, postData.url.split('/')[3], postData.media[0])
+        .then(() => {
+          jqApp.pushMessage.open(
+            'Post has been successfully updated. If you don\'t see the updated post in your profile, '
+            + 'please give it a few minutes to sync from the blockchain');
+          setTimeout(() => {
+            dispatch(clearEditPost());
+            dispatch(editPostSuccess());
+            getHistory().push(`/@${getUserName()}`);
+          }, 1700);
+        }).catch(error => {
+        dispatch(editPostReject(error));
+        jqApp.pushMessage.open(error.message);
+      })
+    })
+  }
+}
+
+export function createPost() {
+  let {title, tags, description, photoSrc, rotate} = prepareData();
+
+  return dispatch => {
     if (!isValidField(dispatch, title, photoSrc)) {
       return;
     }
-    getMinutesFromCreatingLastPost(auth.user).then(response => {
-      if (response < MIN_MINUTES_FOR_CREATING_NEW_POST) {
-        jqApp.pushMessage.open("You can only create posts 5 minutes after the previous one.");
-        return;
-      }
-      dispatch({
-        type: 'EDIT_POST_CREATE_POST_REQUEST'
-      });
+    checkTimeAfterUpdatedLastPost().then( () => {
+
+      dispatch(editPostRequest());
+
       const image = new Image();
       image.src = photoSrc;
 
@@ -151,26 +175,37 @@ export function createPost() {
 
         fetch(canvas.toDataURL()).then(res => res.blob())
           .then(blob => {
-            return Steem.createPost(tags.split(' '), title, description, blob)
+            return Steem.createPost(tags, title, description, blob)
           })
           .then(() => {
             jqApp.pushMessage.open(
               'Post has been successfully created. If you don\'t see the post in your profile, '
               + 'please give it a few minutes to sync from the blockchain');
-            setTimeout(() => {
               dispatch(clearEditPost());
-              dispatch(createPostSuccess());
-              getHistory().push(`/@${auth.user}`);
-            }, 1700);
-
+              dispatch(editPostSuccess());
+              getHistory().push(`/@${getUserName()}`);
           })
           .catch(error => {
-            dispatch(createPostReject(error));
+            dispatch(editPostReject(error));
             jqApp.pushMessage.open(error.message);
           });
       }
     });
   }
+}
+
+function prepareData() {
+  const state = getStore().getState();
+  const editPostState = state.editPost;
+  const textInputStates = state.textInput;
+
+  const title = textInputStates.title.text;
+  const description = textInputStates.description.text;
+  const tags = getValidTagsString(editPostState.tags);
+  const photoSrc = editPostState.src;
+  const rotate = editPostState.rotate;
+
+  return {title, description, tags, photoSrc, rotate};
 }
 
 
@@ -211,22 +246,23 @@ function createNewPost() {
   };
 }
 
-function createPostSuccess() {
+function editPostSuccess() {
   return {
-    type: 'EDIT_POST_CREATE_POST_SUCCESS'
+    type: 'EDIT_POST_SUCCESS'
   };
 }
-function createPostReject(error) {
+
+function editPostReject(error) {
   return {
-    type: 'EDIT_POST_CREATE_POST_REJECT',
+    type: 'EDIT_POST_REJECT',
     error
   };
 }
 
-function getMinutesFromCreatingLastPost(user) {
+function checkTimeAfterUpdatedLastPost() {
   return new Promise((resolve) => {
     const requestOptions = {
-      point: `user/${user}/posts`,
+      point: `user/${getUserName()}/posts`,
       params: {
         show_nsfw: 0,
         show_low_rated: 0,
@@ -234,10 +270,15 @@ function getMinutesFromCreatingLastPost(user) {
       }
     };
     getPosts(requestOptions, false).then((response) => {
-      if (!response.count) {
-        resolve(MIN_MINUTES_FOR_CREATING_NEW_POST);
+      let deltaTime = MIN_MINUTES_FOR_CREATING_NEW_POST;
+      if (response.count) {
+        deltaTime = (new Date().getTime() - new Date(response.results[0].created).getTime()) / 1000 / 60;
+      }
+      if (deltaTime < MIN_MINUTES_FOR_CREATING_NEW_POST) {
+        jqApp.pushMessage.open("You can only create posts 5 minutes after the previous one.");
+        reject();
       } else {
-        resolve((new Date().getTime() - new Date(response.results[0].created).getTime()) / 1000 / 60);
+        resolve();
       }
     });
   })
@@ -289,4 +330,10 @@ function setEditPostImageError(message) {
     type: 'EDIT_POST_SET_IMAGE_ERROR',
     message
   };
+}
+
+function editPostRequest() {
+  return {
+    type: 'EDIT_POST_REQUEST'
+  }
 }

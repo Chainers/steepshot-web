@@ -9,7 +9,6 @@ class EditTags extends React.Component {
 
   onChange(event) {
     let newValue = utils.cloneObject(event.target.value);
-
     this.props.onChange(newValue);
   }
 
@@ -20,7 +19,7 @@ class EditTags extends React.Component {
   renderTags() {
     let tagsList = this.props.value.toLowerCase().split(' ');
     return tagsList.map((tag, index) => {
-      if (utils.isEmptyString(tag)) {
+      if (utils.isEmptyString(tag) || tag === 'steepshot') {
         return null;
       }
       return (

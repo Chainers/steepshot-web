@@ -27,12 +27,12 @@ class Steem {
   }
 
   comment(wif, parentAuthor, parentPermlink, author, body, tags, callback) {
-    const permlink = _getPermLink();
+    const permlink = _getPermLink('comment-' + parentPermlink);
     const commentObject = {
       parent_author: parentAuthor,
       parent_permlink: parentPermlink,
       author: author,
-      permlink: permlink + '-post',
+      permlink: permlink,
       title: "",
       body: body,
       json_metadata: JSON.stringify(_createJsonMetadata(tags))
@@ -233,6 +233,37 @@ class Steem {
     steem.broadcast.deleteComment(wif, author, permlink, callbackBc);
   }
 
+  editPost(title, tags, description, permlink, media) {
+
+    tags = _getValidTags(tags);
+
+    const operation = [constants.OPERATIONS.COMMENT, {
+      parent_author: '',
+      parent_permlink: tags[0],
+      author: _getUserName(),
+      permlink,
+      title,
+      description,
+      body: 'empty',
+      json_metadata: {
+        tags: tags,
+        app: 'steepshot'
+      }
+    }];
+    return _preparePost(media, description, tags, permlink)
+      .then(response => {
+        return _sendToBlockChain(operation, response)
+      })
+      .then(response => {
+        const data = JSON.stringify({
+          username: _getUserName(),
+          error: ''
+        });
+        logPost(data);
+        return response;
+      })
+  }
+
   createPost(tags, title, description, file) {
 
     const permlink = _getPermLink();
@@ -242,7 +273,7 @@ class Steem {
       parent_author: '',
       parent_permlink: tags[0],
       author: _getUserName(),
-      permlink: permlink + '-post',
+      permlink: permlink,
       title: title,
       description: description,
       body: 'empty',
@@ -251,24 +282,12 @@ class Steem {
         app: 'steepshot'
       }
     }];
-    console.log(operation);
-    return _preCompileTransaction(operation)
-      .then(transaction => {
-        return _fileUpload(transaction, file);
+    return _fileUpload(operation, file)
+      .then(response => {
+        return _preparePost(response, description, tags, permlink);
       })
       .then(response => {
-        const postOptions = {
-          "username": _getUserName(),
-          "media": [{...response}],
-          "description": description,
-          "post_permlink": '@' + _getUserName() + '/' + permlink + '-post',
-          "tags": tags,
-          "show_footer": true
-        };
-        return _preparePost(postOptions);
-      })
-      .then(response => {
-        return _sendToBlockChain(operation, response)
+        return _sendToBlockChain(operation, response, _getBeneficiaries(operation[1].permlink, response.beneficiaries))
       })
       .then(response => {
         const data = JSON.stringify({
@@ -291,25 +310,28 @@ function _preCompileTransaction(operation) {
       try {
         resolve(steem.auth.signTransaction(transaction, [_getUserPostingKey()]));
       } catch (error) {
+        console.log(error);
         reject(new Error("Invalidate posting key."));
       }
     })
   });
 }
 
-function _fileUpload(trx, file) {
-  let form = new FormData();
-  form.append('file', file);
-  form.append('trx', JSON.stringify(trx));
-  return fetch(`${_getBaseUrl()}/media/upload`, {
-    method: 'POST',
-    body: form
-  }).then(response => response.json())
+function _fileUpload(operation, file) {
+  return _preCompileTransaction(operation)
+    .then(transaction => {
+      let form = new FormData();
+      form.append('file', file);
+      form.append('trx', JSON.stringify(transaction));
+      return fetch(`${_getBaseUrl()}/media/upload`, {
+        method: 'POST',
+        body: form
+      }).then(response => response.json())
+    })
 }
 
-function _sendToBlockChain(operation, prepareData) {
+function _sendToBlockChain(operation, prepareData, beneficiaries) {
   return new Promise((resolve, reject) => {
-    const beneficiaries = _getBeneficiaries(operation[1].permlink, prepareData.beneficiaries);
     operation[1].body = prepareData.body;
     operation[1].json_metadata = JSON.stringify(prepareData.json_metadata);
     const operations = [operation, beneficiaries];
@@ -340,7 +362,16 @@ function _sendToBlockChain(operation, prepareData) {
   })
 }
 
-function _preparePost(options) {
+function _preparePost(media, description, tags, permlink) {
+  const options = {
+    "username": _getUserName(),
+    "media": [media],
+    "description": description,
+    "post_permlink": '@' + _getUserName() + '/' + permlink,
+    "tags": tags,
+    "show_footer": true
+  };
+
   return fetch(`${_getBaseUrl()}/post/prepare`, {
     method: 'POST',
     headers: {'Content-Type': 'application/json'},
@@ -351,10 +382,11 @@ function _preparePost(options) {
 }
 
 function _getPermLink() {
-  return new Date().toISOString().replace(/[^a-zA-Z0-9]+/g, '').toLowerCase();
+  return new Date().toISOString().replace(/[^a-zA-Z0-9]+/g, '').toLowerCase() + '-web';
 }
 
 function _getValidTags(tags) {
+  tags = tags.split(' ');
   if (tags.indexOf('steepshot') === -1) {
     tags = ['steepshot', ...tags]
   }

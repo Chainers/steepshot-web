@@ -2,7 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import TextInput from "../Common/TextInput/TextInput";
 import {
-  addTag, changeImage, createPost, editPostClear, imageRotate, removeTag, setImageContainerSize,
+  addTag, changeImage, createPost, editPost, editPostClear, imageRotate, removeTag, setImageContainerSize,
   setInitDataForEditPost
 } from "../../actions/editPost";
 import EditTags from "../Common/EditTags/EditTags";
@@ -34,7 +34,7 @@ class EditPost extends React.Component {
       let image = new Image();
       image.src = reader.result;
       image.onload = () => {
-        this.props.changeImage(reader.result, image);
+        this.props.changeImage(reader.result, image, file.size);
       }
     };
     reader.readAsDataURL(file);
@@ -68,10 +68,10 @@ class EditPost extends React.Component {
   }
 
   submit() {
-    if (this.props.username && this.props.postId) {
-
-    } else {
+    if (this.props.isNew) {
       this.props.createPost()
+    } else {
+      this.props.editPost()
     }
   }
 
@@ -85,6 +85,7 @@ class EditPost extends React.Component {
         <div className="image-container_edi-pos"
              style={{
                height: this.props.height,
+               cursor: this.props.isNew ? 'pointer' : 'default'
              }}
         >
           <ShowIf show={utils.isEmptyString(this.props.src)}>
@@ -107,12 +108,16 @@ class EditPost extends React.Component {
                  ref={ref => this.image = ref}
                  onLoad={() => this.setImageContainerSize(0)}
             />
-            <div className="rotate-button_edi-pos"
-                 onClick={() => this.props.imageRotate(this.image)}/>
+            <ShowIf show={this.props.isNew}>
+              <div className="rotate-button_edi-pos"
+                   onClick={() => this.props.imageRotate(this.image)}/>
+            </ShowIf>
           </ShowIf>
-          <input className="file-input_edi-pos"
-                 type="file"
-                 onChange={this.imageChanged.bind(this)}/>
+          <ShowIf show={this.props.isNew}>
+            <input className="file-input_edi-pos"
+                   type="file"
+                   onChange={this.imageChanged.bind(this)}/>
+          </ShowIf>
         </div>
         <ShowIf show={this.props.imageError}>
           <div className="image-error_edi-pos">
@@ -148,7 +153,7 @@ class EditPost extends React.Component {
                   className="btn btn-index">Clear
           </button>
           <button onClick={this.submit.bind(this)}
-                  className="btn btn-default">{this.props.url ? 'Update post' : 'Create new post'}
+                  className="btn btn-default">{this.props.isNew ? 'Create new post' : 'Update post'}
           </button>
         </div>
       </div>
@@ -173,8 +178,8 @@ const mapDispatchToProps = (dispatch) => {
     removeTag: (index) => {
       dispatch(removeTag(index))
     },
-    changeImage: (imageSrc, image) => {
-      dispatch(changeImage(imageSrc, image))
+    changeImage: (imageSrc, image, fileSize) => {
+      dispatch(changeImage(imageSrc, fileSize))
     },
     imageRotate: (image) => {
       dispatch(imageRotate(image))
@@ -190,6 +195,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     createPost: () => {
       dispatch(createPost())
+    },
+    editPost: () => {
+      dispatch(editPost())
     }
   };
 };

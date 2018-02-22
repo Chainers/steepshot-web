@@ -1,15 +1,12 @@
 const initialState = {
   initData: {
-    src: '',
-    tags: '',
-    title: '',
-    description: ''
   },
   imageError: '',
   src: '',
   rotate: 0,
   tags: '',
-  loading: false
+  loading: false,
+  isNew: true
 };
 
 export default function editPost(state = initialState, action) {
@@ -50,20 +47,21 @@ export default function editPost(state = initialState, action) {
         },
         src: action.initData.src,
         tags: action.initData.tags,
-        loading: false
+        loading: false,
+        isNew: false
       };
 
     case 'EDIT_POST_CREATE_NEW':
       return initialState;
 
-    case 'EDIT_POST_CREATE_POST_REQUEST':
+    case 'EDIT_POST_REQUEST':
       return {
         ...state,
         loading: true
       };
 
-    case 'EDIT_POST_CREATE_POST_REJECT':
-    case 'EDIT_POST_CREATE_POST_SUCCESS':
+    case 'EDIT_POST_REJECT':
+    case 'EDIT_POST_SUCCESS':
       return {
         ...state,
         loading: false
