@@ -37,6 +37,11 @@ export default {
         defaultLimit: 17
     },
 
+    IMAGE: {
+      MIN_WIDTH: 480,
+      MIN_HEIGHT: 480
+    },
+
     EMPTY_QUERY : 'It\'s very strange, but we do not have anything yet for this query. Try to look for something else ...',
     EMPTY_QUERY_VOTERS : 'Still no one has rated this post ...',
 
@@ -143,6 +148,17 @@ export default {
             INDEX : 2
         }
     ],
+
+    TEXT_INPUT_POINT : {
+        TITLE: 'title',
+        TAGS: 'tags',
+        DESCRIPTION: 'description'
+    },
+
+    KEYS: {
+      SPACE: 32,
+      ENTER: 10
+    },
 
     COMMENT_ERROR_MESSAGE : 'You can only create comments once per 20 seconds',
     COMMENT_SUCCESS_MESSAGE : 'Comment has been successfully added',

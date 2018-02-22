@@ -1,0 +1,94 @@
+.container_tex-inp {
+  width: 100%;
+}
+
+.input-container_tex-inp {
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+.title_tex-inp {
+  position: absolute;
+  top: calc(50% + 5px);
+  left: 0;
+  margin: 0;
+  padding: 0;
+  color: #979b9e;
+  font-size: 14px;
+  transition: top .2s ease, font .2s ease;
+  cursor: text;
+  user-select: none;
+  line-height: 14px;
+}
+
+.area_tex-inp {
+  margin-top: 25px;
+  width: 100%;
+  resize: none;
+  overflow: hidden;
+  background: transparent none;
+  border: none;
+  border-bottom: 1px solid #e7e7e7;
+  border-radius: 0;
+  transition: height .2s ease;
+  color: #000;
+  white-space: pre;
+}
+
+.focused_tex-inp, .area_tex-inp:focus + .title_tex-inp {
+  top: 14px;
+  font-size: 11px;
+  cursor: default;
+}
+
+.area_tex-inp:focus:not(.has-error_tex-inp) {
+  border-color: #b8c0c3;
+}
+
+.hidden-div_tex-inp {
+  width: calc(100% - 20px);
+  position: absolute;
+  visibility: hidden;
+  display: block;
+  white-space: pre;
+}
+
+.multiline_tex-inp {
+  font-size: 14px;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  white-space: pre-wrap;
+}
+
+.required_tex-inp {
+  color: #d0011b;
+}
+
+.has-error_tex-inp {
+  border-color: #d0011b;
+  color: #d0011b;
+}
+
+.error-msg_tex-inp {
+  margin: 10px 0;
+  font-size: 12px;
+}
+
+.description_tex-inp {
+  color: #979b9e;
+  font-size: 12px;
+  margin-top: 10px;
+}
+
+.error_tex-inp {
+  color: #d0011b;
+  font-size: 12px;
+}
+
+.children_tex-inp {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}

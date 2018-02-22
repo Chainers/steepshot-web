@@ -111,7 +111,7 @@ class Post extends React.Component {
           </ShowIf>
           <div className="card-body">
             <div className="card-pic" onClick={this.openPostModal.bind(this)}>
-              <ShowIf show={this.props.is_nsfw}>
+              <ShowIf show={this.props['is_nsfw']}>
                 <div className="forAdult">
                   <p>NSFW content</p>
                 </div>

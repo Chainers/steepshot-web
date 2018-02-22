@@ -227,6 +227,7 @@ class PostModal extends React.Component {
 
   renderDescription() {
     let forceOpen = false;
+    console.log(this.props.post.description);
     let descriptionStart = this.props.post.description.replace(/(<\w+>)+/, '');
     if (descriptionStart.replace(/\n[\w\W]+/, '').length < 140) {
       forceOpen = true;

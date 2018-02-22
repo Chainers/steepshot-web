@@ -1,4 +1,4 @@
-import {getPostShaddow} from './posts';
+import {getPostShaddow} from '../services/posts';
 import Steem from '../libs/steem';
 import {getStore} from '../store/configureStore';
 import {debounce} from 'lodash';

@@ -1,5 +1,5 @@
 import React from 'react';
-import { getComments } from '../../actions/posts';
+import { getComments } from '../../services/posts';
 import Comment from './Comment';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';

@@ -3,7 +3,7 @@ import {debounce} from 'lodash';
 import {connect} from 'react-redux';
 import {closeModal} from "../../actions/modal";
 import UsersList from "../UsersList/UsersList";
-import {getVoters} from "../../actions/posts";
+import {getVoters} from "../../services/posts";
 import CloseButton from "../Common/CloseButton/CloseButton";
 import {Scrollbars} from 'react-custom-scrollbars';
 import {clearBodyHeight, setLikesFlagsListBodyHeight} from "../../actions/likesFlagsList";

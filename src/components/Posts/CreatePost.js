@@ -133,6 +133,7 @@ class CreatePost extends React.Component {
           }, 1700);
         });
       } else {
+        console.log(err);
         jqApp.pushMessage.open(err);
         this.setState({
           renderLoader: false,
