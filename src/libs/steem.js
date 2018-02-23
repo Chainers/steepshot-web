@@ -3,7 +3,7 @@ import constants from '../common/constants';
 import Promise from 'bluebird';
 import {getStore} from '../store/configureStore';
 import {prepareComment} from '../actions/steemPayout';
-import {logComment, logDeletedPost, logFlag, logFollow, logPost, logVote, logVoute} from '../actions/logging';
+import {logComment, logDeletedPost, logFlag, logFollow, logPost, logVote} from '../actions/logging';
 
 import _ from 'underscore';
 import FormData from "form-data";
