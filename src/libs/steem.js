@@ -27,7 +27,7 @@ class Steem {
   }
 
   comment(wif, parentAuthor, parentPermlink, author, body, tags, callback) {
-    const permlink = _getPermLink('comment-' + parentPermlink);
+    const permlink = _getPermLink('comment');
     const commentObject = {
       parent_author: parentAuthor,
       parent_permlink: parentPermlink,
@@ -230,7 +230,7 @@ class Steem {
         callback(null, success);
       }
     };
-    steem.broadcast.deleteComment(wif, author, permlink,   callbackBc);
+    steem.broadcast.deleteComment(wif, author, permlink, callbackBc);
   }
 
   editPost(title, tags, description, permlink, parentPerm, media) {
@@ -265,15 +265,14 @@ class Steem {
   }
 
   createPost(tags, title, description, file) {
-
-    const permlink = _getPermLink();
     tags = _getValidTags(tags);
     const category = tags[0];
+    const permlink = _getPermLink(title);
     const operation = [constants.OPERATIONS.COMMENT, {
       parent_author: '',
-      parent_permlink: 'without',
+      parent_permlink: category,
       author: _getUserName(),
-      permlink: category,
+      permlink: permlink,
       title: title,
       description: description,
       body: 'empty',
@@ -382,8 +381,12 @@ function _preparePost(media, description, tags, permlink) {
   }).then(response => response.json());
 }
 
-function _getPermLink() {
-  return new Date().toISOString().replace(/[^a-zA-Z0-9]+/g, '').toLowerCase() + '-web';
+function _getPermLink(title) {
+  let today = new Date();
+  const permLink = 'web' + '-' + today.getFullYear() + '-' + today.getMonth() + '-' + today.getDay()
+    + '-' + today.getHours() + '-' + today.getMinutes() + '-' + today.getSeconds();
+  console.log(permLink);
+  return permLink;
 }
 
 function _getValidTags(tags) {

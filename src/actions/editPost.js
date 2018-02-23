@@ -282,7 +282,7 @@ function editPostReject(error) {
 }
 
 function checkTimeAfterUpdatedLastPost() {
-  return new Promise((resolve) => {
+  return new Promise((resolve, reject) => {
     const requestOptions = {
       point: `user/${getUserName()}/posts`,
       params: {
@@ -312,10 +312,17 @@ function getCanvasWithImage(image, rotate) {
   if (rotate % 180) {
     canvas.width = image.naturalHeight;
     canvas.height = image.naturalWidth;
-    ctx.translate(canvas.width, 0);
   } else {
     canvas.width = image.naturalWidth;
     canvas.height = image.naturalHeight;
+  }
+
+  if (rotate === 90) {
+    ctx.translate(canvas.width, 0);
+  } else if (rotate === 180) {
+    ctx.translate(canvas.width, canvas.height);
+  } else if (rotate === 270) {
+    ctx.translate(0, canvas.height);
   }
 
   ctx.rotate(rotate * Math.PI / 180);
