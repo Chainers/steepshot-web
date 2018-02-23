@@ -6,7 +6,8 @@ const initialState = {
   rotate: 0,
   tags: '',
   loading: false,
-  isNew: true
+  isNew: true,
+  canNotUpdate: true
 };
 
 export default function editPost(state = initialState, action) {
@@ -40,19 +41,37 @@ export default function editPost(state = initialState, action) {
         width: action.width
       };
 
+    case 'EDIT_POST_IMAGE_NOT_FOUND':
+      return {
+        ...state,
+        imageNotFound: true
+      };
+
+    case 'EDIT_POST_CREATE_NEW':
+    case 'EDIT_POST_CLEAR_ALL':
+      return initialState;
+
     case 'EDIT_POST_SET_INIT_DATA':
       return {
-        ...initialState, initData: {
+        ...initialState,
+        initData: {
           ...action.initData
         },
         src: action.initData.src,
         tags: action.initData.tags,
-        loading: false,
         isNew: false
       };
 
-    case 'EDIT_POST_CREATE_NEW':
-      return initialState;
+    case 'EDIT_POST_CLEAR':
+      return {
+        ...initialState,
+        initData: {
+          ...state.initData
+        },
+        src: state.initData.src,
+        tags: state.initData.tags,
+        isNew: !state.initData.src
+      };
 
     case 'EDIT_POST_REQUEST':
       return {
@@ -65,16 +84,6 @@ export default function editPost(state = initialState, action) {
       return {
         ...state,
         loading: false
-      };
-
-    case 'EDIT_POST_CLEAR':
-      return {
-        ...initialState,
-        initData: {
-          ...state.initData
-        },
-        src: state.initData.src,
-        tags: state.initData.tags,
       };
 
     case 'EDIT_POST_SET_IMAGE_ERROR':

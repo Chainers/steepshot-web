@@ -10,6 +10,17 @@ const getUserName = () => {
   return getStore().getState().auth.user;
 };
 
+function clearEditPost() {
+  return dispatch => {
+    dispatch({
+      type: 'EDIT_POST_CLEAR'
+    });
+    dispatch(clearTextInputState(constants.TEXT_INPUT_POINT.TITLE));
+    dispatch(clearTextInputState(constants.TEXT_INPUT_POINT.TAGS));
+    dispatch(clearTextInputState(constants.TEXT_INPUT_POINT.DESCRIPTION));
+  };
+}
+
 export function addTag() {
   return (dispatch) => {
     const state = getStore().getState();
@@ -83,18 +94,33 @@ export function setImageContainerSize(width, height) {
   }
 }
 
+export function editClearAll() {
+  return dispatch => {
+    dispatch({type: 'EDIT_POST_CLEAR_ALL'});
+    dispatch(clearTextInputState(constants.TEXT_INPUT_POINT.TITLE));
+    dispatch(clearTextInputState(constants.TEXT_INPUT_POINT.TAGS));
+    dispatch(clearTextInputState(constants.TEXT_INPUT_POINT.DESCRIPTION));
+  }
+}
+
+export function imageNotFound() {
+  return {
+    type: 'EDIT_POST_IMAGE_NOT_FOUND'
+  }
+}
+
 export function editPostClear() {
   const initDataEditPost = getStore().getState().editPost.initData;
   return dispatch => {
     dispatch(clearEditPost());
     dispatch(setTextInputState(constants.TEXT_INPUT_POINT.TITLE, {
-      text: initDataEditPost.title,
+      text: initDataEditPost.title || '',
       focused: initDataEditPost.title ? 'focused_tex-inp' : '',
       error: ''
     }));
     dispatch(clearTextInputState(constants.TEXT_INPUT_POINT.TAGS));
     dispatch(setTextInputState(constants.TEXT_INPUT_POINT.DESCRIPTION, {
-      text: initDataEditPost.description,
+      text: initDataEditPost.description || '',
       focused: initDataEditPost.description ? 'focused_tex-inp' : '',
       error: ''
     }));
@@ -117,7 +143,8 @@ export function setInitDataForEditPost(username, postId) {
               tags: response.tags.join(' '),
               title: response.title,
               description: response.description,
-              dataResponse: response
+              dataResponse: response,
+              canNotUpdate: new Date(response['cashout_time']) < new Date(),
             }
           })
         }
@@ -138,13 +165,12 @@ export function editPost() {
     }
     checkTimeAfterUpdatedLastPost().then(() => {
       dispatch(editPostRequest());
-      Steem.editPost(title, tags, description, postData.url.split('/')[3], postData.media[0])
+      Steem.editPost(title, tags, description, postData.url.split('/')[3], postData.category, postData.media[0])
         .then(() => {
           jqApp.pushMessage.open(
             'Post has been successfully updated. If you don\'t see the updated post in your profile, '
             + 'please give it a few minutes to sync from the blockchain');
           setTimeout(() => {
-            dispatch(clearEditPost());
             dispatch(editPostSuccess());
             getHistory().push(`/@${getUserName()}`);
           }, 1700);
@@ -181,7 +207,6 @@ export function createPost() {
             jqApp.pushMessage.open(
               'Post has been successfully created. If you don\'t see the post in your profile, '
               + 'please give it a few minutes to sync from the blockchain');
-              dispatch(clearEditPost());
               dispatch(editPostSuccess());
               getHistory().push(`/@${getUserName()}`);
           })
@@ -234,15 +259,12 @@ function editPostChangeTags(tagsString) {
   }
 }
 
-function clearEditPost() {
-  return {
-    type: 'EDIT_POST_CLEAR'
-  };
-}
-
 function createNewPost() {
-  return {
-    type: 'EDIT_POST_CREATE_NEW'
+  return dispatch => {
+    dispatch({type: 'EDIT_POST_CREATE_NEW'});
+    dispatch(clearTextInputState(constants.TEXT_INPUT_POINT.TITLE));
+    dispatch(clearTextInputState(constants.TEXT_INPUT_POINT.TAGS));
+    dispatch(clearTextInputState(constants.TEXT_INPUT_POINT.DESCRIPTION));
   };
 }
 

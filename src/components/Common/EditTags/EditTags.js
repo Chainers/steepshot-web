@@ -19,7 +19,7 @@ class EditTags extends React.Component {
   renderTags() {
     let tagsList = this.props.value.toLowerCase().split(' ');
     return tagsList.map((tag, index) => {
-      if (utils.isEmptyString(tag) || tag === 'steepshot') {
+      if (tag === 'steepshot') {
         return null;
       }
       return (
@@ -34,7 +34,9 @@ class EditTags extends React.Component {
   }
 
   render() {
-
+    if (utils.isEmptyString(this.props.value) || this.props.value === 'steepshot') {
+      return null;
+    }
     return (
       <div className="container_edi-tag">
         {this.renderTags.bind(this)()}

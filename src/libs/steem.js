@@ -230,16 +230,16 @@ class Steem {
         callback(null, success);
       }
     };
-    steem.broadcast.deleteComment(wif, author, permlink, callbackBc);
+    steem.broadcast.deleteComment(wif, author, permlink,   callbackBc);
   }
 
-  editPost(title, tags, description, permlink, media) {
+  editPost(title, tags, description, permlink, parentPerm, media) {
 
     tags = _getValidTags(tags);
 
     const operation = [constants.OPERATIONS.COMMENT, {
       parent_author: '',
-      parent_permlink: tags[0],
+      parent_permlink: parentPerm,
       author: _getUserName(),
       permlink,
       title,
@@ -268,12 +268,12 @@ class Steem {
 
     const permlink = _getPermLink();
     tags = _getValidTags(tags);
-
+    const category = tags[0];
     const operation = [constants.OPERATIONS.COMMENT, {
       parent_author: '',
-      parent_permlink: tags[0],
+      parent_permlink: 'without',
       author: _getUserName(),
-      permlink: permlink,
+      permlink: category,
       title: title,
       description: description,
       body: 'empty',
@@ -334,8 +334,12 @@ function _sendToBlockChain(operation, prepareData, beneficiaries) {
   return new Promise((resolve, reject) => {
     operation[1].body = prepareData.body;
     operation[1].json_metadata = JSON.stringify(prepareData.json_metadata);
-    const operations = [operation, beneficiaries];
-
+    let operations;
+    if (beneficiaries) {
+      operations = [operation, beneficiaries];
+    } else {
+      operations = [operation]
+    }
     const callback = (err, success) => {
       if (success) {
         resolve(success);
@@ -345,9 +349,6 @@ function _sendToBlockChain(operation, prepareData, beneficiaries) {
         switch (err.data.code) {
           case 10:
             reject(new Error('You can only create posts 5 minutes after the previous one.'));
-            return;
-          case 4100000:
-            reject(new Error(`${_getUserName()} bandwidth limit exceeded. Please wait to transact or power up STEEM.`));
             return;
         }
       }
@@ -367,7 +368,7 @@ function _preparePost(media, description, tags, permlink) {
     "username": _getUserName(),
     "media": [media],
     "description": description,
-    "post_permlink": '@' + _getUserName() + '/' + permlink,
+    "post_permlink": permlink,
     "tags": tags,
     "show_footer": true
   };
@@ -388,7 +389,7 @@ function _getPermLink() {
 function _getValidTags(tags) {
   tags = tags.split(' ');
   if (tags.indexOf('steepshot') === -1) {
-    tags = ['steepshot', ...tags]
+    tags = [...tags, 'steepshot']
   }
   let empty = tags.indexOf('');
   while (empty !== -1) {

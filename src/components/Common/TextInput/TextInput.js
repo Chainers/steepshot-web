@@ -51,12 +51,11 @@ class TextInput extends React.Component {
 
   onChange(event) {
     let newValue = utils.cloneObject(event.target.value);
-    let lastCharCode = newValue.charCodeAt(newValue.length - 1);
     newValue = this._removeInvalidCharacters(newValue);
     if (newValue !== this.props.text) {
       this._updateTextValue(newValue);
     }
-    this._callFunctionsFromProps(lastCharCode);
+
   }
 
   _removeInvalidCharacters(str) {
@@ -83,8 +82,8 @@ class TextInput extends React.Component {
   _callFunctionsFromProps(lastCharCode) {
     if (this.props.keyPressEvents) {
       this.props.keyPressEvents.forEach(actionObj => {
-        actionObj.keys.forEach(key => {
-          if (key === lastCharCode) {
+        actionObj.keys.forEach(charCode => {
+          if (charCode === lastCharCode) {
             actionObj.func();
           }
         })
@@ -107,6 +106,10 @@ class TextInput extends React.Component {
     return areaModifier + this.props.multiline ? ' multiline_tex-inp' : '';
   }
 
+  _keyPress(event) {
+    this._callFunctionsFromProps(event.charCode);
+  }
+
   render() {
     if (!this.props.fontSize) {
       return null;
@@ -117,6 +120,7 @@ class TextInput extends React.Component {
         <div className="input-container_tex-inp">
           <textarea className={'area_tex-inp input-text_tex-inp' + this.areaModifier}
                     onChange={this.onChange.bind(this)}
+                    onKeyPress={this._keyPress.bind(this)}
                     value={this.props.text}
                     maxLength={this.props.maxLength}
                     ref={ref => this.input = ref}
