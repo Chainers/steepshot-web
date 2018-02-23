@@ -208,7 +208,7 @@ class PostModal extends React.Component {
             <p className="title_pos-mod">Sorry, image isn't found.</p>
           </div>
         </ShowIf>
-        <ShowIf show={true}>
+        <ShowIf show={this.props.fullScreenNavigation}>
           <div>
             <div className="arrow-left-full-screen_post-mod" onClick={this.previousPost.bind(this)}>
               <i className="far fa-arrow-alt-circle-left fa-2x"/>
@@ -232,12 +232,7 @@ class PostModal extends React.Component {
   }
 
   showFSNavigation() {
-    // if (!this.props.timeoutID) {
-    //   let timeoutID = setTimeout( () => {
-    //     this.props.setFSNavigation(false);
-    //   }, 5000);
-    //   this.props.setFSNavigation(true, timeoutID);
-    // }
+    this.props.setFSNavigation(true);
   }
 
   setFullScreen(isOpen) {
@@ -258,7 +253,6 @@ class PostModal extends React.Component {
 
   renderDescription() {
     let forceOpen = false;
-    console.log(this.props.post.description);
     let descriptionStart = this.props.post.description.replace(/(<\w+>)+/, '');
     if (descriptionStart.replace(/\n[\w\W]+/, '').length < 140) {
       forceOpen = true;
@@ -428,9 +422,10 @@ class PostModal extends React.Component {
                   wrapperModifier="list-scroll_pos-mod"
                   scrollViewModifier="list-scroll-view_pos-mod"
                   autoHeight={window.innerWidth < constants.DISPLAY.DESK_BREAKPOINT}
-                  autoHeightMax={10000}
+                  autoHeightMax={15000}
                   autoHeightMin={100}
                   autoHide={true}
+                  isMobile={this.props.style.isMobile}
                 >
                   {this.renderDescription()}
                   <ShowIf show={this.props.style.isMobile}>

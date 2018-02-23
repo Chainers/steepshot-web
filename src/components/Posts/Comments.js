@@ -56,7 +56,7 @@ class Comments extends React.Component {
     let comments = null;
 
     if (this.state.loading) {
-      comments = <LoadingSpinner />;
+      comments = <LoadingSpinner style={{marginTop: 20}}/>;
     }
     if (this.state.comments && this.state.comments.length !== 0) {
       comments = this.state.comments.map((item, index) => {
