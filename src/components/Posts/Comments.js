@@ -56,18 +56,12 @@ class Comments extends React.Component {
     let comments = null;
 
     if (this.state.loading) {
-      comments = <LoadingSpinner />;
+      comments = <LoadingSpinner style={{marginTop: 20}}/>;
     }
     if (this.state.comments && this.state.comments.length !== 0) {
       comments = this.state.comments.map((item, index) => {
         return <Comment replyUser={this.props.replyUser} key={index} item={item} />
       });
-    }
-    if (this.state.comments && this.state.comments.length === 0 && !this.state.loading) {
-      comments = <div className="empty-comments">
-                   <div className="empty-comment-image"/>
-                   <p>Users have not left any comment yet.</p>
-                 </div>
     }
     return (
       <div className="list-comments">

@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {nextPostModal, previousPostModal, setPostModalOptions, setFullScreen} from '../../actions/postModal';
+import {nextPostModal, previousPostModal, setPostModalOptions, setFullScreen, setFSNavigation} from '../../actions/postModal';
 import constants from '../../common/constants';
 import TimeAgo from 'timeago-react';
 import {Link} from 'react-router-dom';
@@ -33,6 +33,7 @@ class PostModal extends React.Component {
   constructor(props) {
     super(props);
     this.setComponentSize = this.setComponentSize.bind(this);
+    this.showFSNavigation = this.showFSNavigation.bind(this);
     this.initKeyPress();
   }
 
@@ -87,7 +88,7 @@ class PostModal extends React.Component {
             break;
           case 27:
             if (this.props.fullScreenMode) {
-              this.props.setFullScreen(false);
+              this.setFullScreen(false);
             }
             break;
           case 13:
@@ -151,18 +152,18 @@ class PostModal extends React.Component {
         </button>
         <ShowIf show={!this.props.style.isFullScreen && !this.props.fullScreenMode}>
             <div className="full-screen-button_pos-mod"
-                 onClick={this.props.setFullScreen.bind(this, true)}
+                 onClick={this.setFullScreen.bind(this, true)}
             >
                 <img className="img-full-screen" src="/static/images/shape.svg"/>
             </div>
         </ShowIf>
-        <img src={this.props.post.body || constants.NO_IMAGE}
+        <img src={this.props.imgUrl || constants.NO_IMAGE}
              alt="Post picture."
              style={this.props.style.image}
              ref={ref => this.image = ref}
              onLoad={this.imageLoaded.bind(this)}
              onError={this.loadImgError.bind(this)}
-             onDoubleClick={this.props.setFullScreen.bind(this, !this.props.fullScreenMode)}
+             onDoubleClick={this.setFullScreen.bind(this, !this.props.fullScreenMode)}
         />
         <ShowIf show={!this.image || !this.image.complete}>
           <div className="before-load-curtain_pos-mod">
@@ -181,28 +182,15 @@ class PostModal extends React.Component {
   renderFullScreenImg() {
     return (
       <div>
-        <div>
-          <div className="arrow-left-full-screen_post-mod" onClick={this.previousPost.bind(this)}>
-            <i className="far fa-arrow-alt-circle-left fa-2x"/>
-          </div>
-          <div className="arrow-right-full-screen_post-mod" onClick={this.nextPost.bind(this)}>
-            <i className="far fa-arrow-alt-circle-right fa-2x"/>
-          </div>
-        </div>
-        <div className="close-full-screen_pos-mod"
-             onClick={this.props.setFullScreen.bind(this, false)}
-        >
-          <img className="img-full-screen" src="/static/images/shape-copy-6.svg"/>
-        </div>
         <div className="full-image-wrap_pos-mod">
           {this.lowNSFWFilter()}
-          <img src={this.props.post.body || constants.NO_IMAGE}
+          <img src={this.props.imgUrl || constants.NO_IMAGE}
                alt="Post picture."
                className="full-screen-img"
                ref={ref => this.fullImage = ref}
                onLoad={this.imageLoaded.bind(this)}
                onError={this.loadImgError.bind(this)}
-               onDoubleClick={this.props.setFullScreen.bind(this, !this.props.fullScreenMode)}
+               onDoubleClick={this.setFullScreen.bind(this, !this.props.fullScreenMode)}
           />
           <button className="btn btn-default btn-xs full-screen-share_pos-mod"
                   onClick={() => this.props.copyToClipboard(
@@ -220,14 +208,51 @@ class PostModal extends React.Component {
             <p className="title_pos-mod">Sorry, image isn't found.</p>
           </div>
         </ShowIf>
-        <FullScreenButtons />
+        <ShowIf show={this.props.fullScreenNavigation}>
+          <div>
+            <div className="arrow-left-full-screen_post-mod" onClick={this.previousPost.bind(this)}>
+              <i className="far fa-arrow-alt-circle-left fa-2x"/>
+            </div>
+            <div className="arrow-right-full-screen_post-mod" onClick={this.nextPost.bind(this)}>
+              <i className="far fa-arrow-alt-circle-right fa-2x"/>
+            </div>
+          </div>
+          <div className="close-full-screen_pos-mod"
+               onClick={this.setFullScreen.bind(this, false)}
+          >
+            <img className="img-full-screen" src="/static/images/shape-copy-6.svg"/>
+          </div>
+          <div className="fs-post-amount_pos-mod">
+            ${this.props.post.total_payout_reward}
+          </div>
+          <FullScreenButtons />
+        </ShowIf>
       </div>
       )
   }
 
+  showFSNavigation() {
+    this.props.setFSNavigation(true);
+  }
+
+  setFullScreen(isOpen) {
+    let timeoutID = null;
+    if (isOpen) {
+      window.addEventListener('mousemove', this.showFSNavigation);
+      timeoutID = setTimeout( () => {
+        this.props.setFSNavigation(false);
+      }, 5000);
+    }
+    if (!isOpen) {
+      window.removeEventListener('mousemove', this.showFSNavigation);
+      clearTimeout(this.props.timeoutID);
+      this.props.setFSNavigation(true);
+    }
+    this.props.setFullScreen(isOpen, timeoutID);
+  }
+
   renderDescription() {
     let forceOpen = false;
-    console.log(this.props.post.description);
     let descriptionStart = this.props.post.description.replace(/(<\w+>)+/, '');
     if (descriptionStart.replace(/\n[\w\W]+/, '').length < 140) {
       forceOpen = true;
@@ -397,9 +422,10 @@ class PostModal extends React.Component {
                   wrapperModifier="list-scroll_pos-mod"
                   scrollViewModifier="list-scroll-view_pos-mod"
                   autoHeight={window.innerWidth < constants.DISPLAY.DESK_BREAKPOINT}
-                  autoHeightMax={10000}
+                  autoHeightMax={15000}
                   autoHeightMin={100}
                   autoHide={true}
+                  isMobile={this.props.style.isMobile}
                 >
                   {this.renderDescription()}
                   <ShowIf show={this.props.style.isMobile}>
@@ -501,12 +527,19 @@ class PostModal extends React.Component {
 }
 
 const mapStateToProps = (state) => {
+  let post = state.posts[state.postModal.currentIndex];
+  let media = post.media[0];
+  let imgUrl = media.url;
+  if (document.documentElement.clientWidth <= 1024 && media['thumbnails'] && media['thumbnails'][1024]) {
+      imgUrl = media['thumbnails'][1024];
+  }
   return {
     postList: state.postsList[state.postModal.point],
     ...state.postModal,
     post: state.posts[state.postModal.currentIndex],
     isUserAuth: state.auth.user && state.auth.postingKey,
-    authUser: state.auth.user
+    authUser: state.auth.user,
+    imgUrl
   };
 };
 
@@ -530,11 +563,14 @@ const mapDispatchToProps = (dispatch) => {
     previous: (index) => {
       dispatch(previousPostModal(index));
     },
-    setFullScreen: (isOpen) => {
-      dispatch(setFullScreen(isOpen));
+    setFullScreen: (isOpen, timeoutID) => {
+      dispatch(setFullScreen(isOpen, timeoutID));
     },
     toggleVote: (postIndex) => {
       dispatch(toggleVote(postIndex));
+    },
+    setFSNavigation: (isVisible) => {
+      dispatch(setFSNavigation(isVisible));
     }
   };
 };

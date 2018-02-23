@@ -1,7 +1,9 @@
 const initialState = {
   style: {},
   needsCommentFormLoader: false,
-  fullScreenMode: false
+  fullScreenMode: false,
+  fullScreenNavigation: true,
+  timeoutID: null
 };
 
 export default function postModal(state = initialState, action) {
@@ -17,11 +19,16 @@ export default function postModal(state = initialState, action) {
         ...initialState,
         point: state.point,
         currentIndex: action.index,
-        fullScreenMode: state.fullScreenMode
+        fullScreenMode: state.fullScreenMode,
+        fullScreenNavigation: state.fullScreenNavigation,
+        timeoutID: state.timeoutID
       };
 
     case 'SET_FULL_SCREEN':
-      return {...state, fullScreenMode: action.isOpen};
+      return {...state, fullScreenMode: action.isOpen, timeoutID: action.timeoutID};
+
+    case 'SET_FULL_SCREEN_NAVIGATION':
+      return {...state, fullScreenNavigation: action.isVisible};
 
     default:
       return state;

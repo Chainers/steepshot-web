@@ -7,8 +7,8 @@ export function UserLinkFunc(bool, fromState) {
     if (bool) {
       state = fromState;
     } else {
-      let descriptionStart = fromState.replace(/(<\w+>)+/, '');
-      state = descriptionStart.replace(/\n[\w\W]+/, '');
+      let descriptionStart = fromState.replace(/(<[\/\w]+>)+/g, '');
+      state = descriptionStart
     }
   } else {
     state = fromState;
