@@ -1,5 +1,3 @@
-import constants from "../common/constants";
-
 export function initTextInput(point, state) {
   return {
     type: 'INIT_TEXT_INPUT',

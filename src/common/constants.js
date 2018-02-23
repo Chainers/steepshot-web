@@ -157,7 +157,7 @@ export default {
 
     KEYS: {
       SPACE: 32,
-      ENTER: 10
+      ENTER: 13
     },
 
     COMMENT_ERROR_MESSAGE : 'You can only create comments once per 20 seconds',

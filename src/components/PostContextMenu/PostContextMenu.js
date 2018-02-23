@@ -8,6 +8,7 @@ import {toggleFlag} from '../../actions/flag';
 import {copyToClipboard} from '../../actions/clipboard';
 import {closeModal, openModal, closeAllModals} from '../../actions/modal';
 import {deletePost} from '../../actions/post';
+import {getHistory} from "../../main";
 
 
 class PostContextMenu extends React.Component {
@@ -47,7 +48,8 @@ class PostContextMenu extends React.Component {
   }
 
   editPost() {
-
+    this.props.history.push('/editPost' + this.props.item.url);
+    this.props.closeModal("MenuModal");
   }
 
   share() {
@@ -147,15 +149,19 @@ class PostContextMenu extends React.Component {
           alt: 'Delete',
           callback: this.deletePost.bind(this),
           hasDelimiter: true,
-        }/* TODO uncomment when will be implemented edit post
-        {
-          img: '/static/images/postContextMenu/editTrue.svg',
-          revertImg: '/static/images/postContextMenu/editFalse.svg',
-          alt: 'Edit',
-          callback: this.editPost.bind(this),
-          hasDelimiter: true,
-        }*/
+        }
       ];
+
+      if (new Date(this.props.item['cashout_time']) > new Date()) {
+        tmp.push({
+            img: '/static/images/postContextMenu/editTrue.svg',
+            revertImg: '/static/images/postContextMenu/editFalse.svg',
+            alt: 'Edit',
+            callback: this.editPost.bind(this),
+            hasDelimiter: true,
+          })
+      }
+
     } else {
       tmp = [
         {
@@ -182,7 +188,8 @@ class PostContextMenu extends React.Component {
 const mapStateToProps = (state) => {
   return {
     username: state.auth.user,
-    isUserAuth: !!state.auth.user && !!state.auth.postingKey
+    isUserAuth: !!state.auth.user && !!state.auth.postingKey,
+    history: getHistory()
   };
 };
 

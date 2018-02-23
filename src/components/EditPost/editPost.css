@@ -104,6 +104,25 @@
   opacity: 0.4;
 }
 
+.img-not-found_edi-pos {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 15;
+  background-color: #e7e7e7;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.img-not-found-text_edi-pos {
+  margin-bottom: 20px;
+  color: #000;
+  font: 27px OpenSans-Light;
+}
+
 @media (max-width: 750px) {
   .container_edi-pos {
     width: 90vw;

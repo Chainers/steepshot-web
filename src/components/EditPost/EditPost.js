@@ -2,8 +2,8 @@ import React from 'react';
 import {connect} from 'react-redux';
 import TextInput from "../Common/TextInput/TextInput";
 import {
-  addTag, changeImage, createPost, editPost, editPostClear, imageRotate, removeTag, setImageContainerSize,
-  setInitDataForEditPost
+  addTag, changeImage, createPost, editClearAll, editPost, editPostClear, imageNotFound, imageRotate, removeTag,
+  setImageContainerSize, setInitDataForEditPost
 } from "../../actions/editPost";
 import EditTags from "../Common/EditTags/EditTags";
 import ShowIf from "../Common/ShowIf";
@@ -20,15 +20,23 @@ class EditPost extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    if (this.props.postId !== nextProps.postId) {
+      this.props.setInitDataForEditPost(nextProps.username, nextProps.postId);
+    }
     if (this.props.rotate !== nextProps.rotate) {
       this.setImageContainerSize(nextProps.rotate);
     }
     return true;
   }
 
+  componentWillUnmount() {
+    this.props.editClearAll();
+  }
+
   imageChanged(event) {
     event.preventDefault();
     const reader = new FileReader();
+    console.log(event);
     const file = event.target.files[0];
     reader.onloadend = () => {
       let image = new Image();
@@ -107,10 +115,16 @@ class EditPost extends React.Component {
                  alt='image'
                  ref={ref => this.image = ref}
                  onLoad={() => this.setImageContainerSize(0)}
+                 onError={this.props.setImageNotFound}
             />
             <ShowIf show={this.props.isNew}>
               <div className="rotate-button_edi-pos"
                    onClick={() => this.props.imageRotate(this.image)}/>
+            </ShowIf>
+            <ShowIf show={this.props.imageNotFound}>
+              <div className="img-not-found_edi-pos">
+                <p className="img-not-found-text_edi-pos">Sorry, image isn't found.</p>
+              </div>
             </ShowIf>
           </ShowIf>
           <ShowIf show={this.props.isNew}>
@@ -129,12 +143,14 @@ class EditPost extends React.Component {
                    multiline={false}
                    required={true}
                    value={this.props.initData.title}
+                   noValidCharacters="[А-Яа-я]"
                    maxLength={255}/>
         <TextInput title="Tags"
+                   maxLength={20}
                    point={constants.TEXT_INPUT_POINT.TAGS}
                    multiline={false}
                    description="Enter tags with spaces, but not more than 20"
-                   noValidCharacters="[^\w]"
+                   noValidCharacters="[^A-Za-z0-9]"
                    keyPressEvents={[{
                      keys: [constants.KEYS.SPACE, constants.KEYS.ENTER],
                      func: () => this.props.addTag()
@@ -153,7 +169,8 @@ class EditPost extends React.Component {
                   className="btn btn-index">Clear
           </button>
           <button onClick={this.submit.bind(this)}
-                  className="btn btn-default">{this.props.isNew ? 'Create new post' : 'Update post'}
+                  className="btn btn-default" disabled={this.props.canNotUpdate}>
+            {this.props.isNew ? 'Create new post' : 'Update post'}
           </button>
         </div>
       </div>
@@ -166,7 +183,8 @@ const mapStateToProps = (state, props) => {
   return {
     postId,
     username: state.auth.user,
-    ...state.editPost
+    ...state.editPost,
+    canNotUpdate: state.editPost.initData.canNotUpdate
   };
 };
 
@@ -193,11 +211,17 @@ const mapDispatchToProps = (dispatch) => {
     editPostClear: () => {
       dispatch(editPostClear())
     },
+    editClearAll: () => {
+      dispatch(editClearAll())
+    },
     createPost: () => {
       dispatch(createPost())
     },
     editPost: () => {
       dispatch(editPost())
+    },
+    setImageNotFound: () => {
+      dispatch(imageNotFound())
     }
   };
 };
