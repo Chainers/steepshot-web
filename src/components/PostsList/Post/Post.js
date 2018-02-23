@@ -25,22 +25,6 @@ class Post extends React.Component {
     super(props);
   }
 
-  callPreventDefault(e) {
-    e.stopPropagation();
-    e.preventDefault();
-  }
-
-  _getPostImageStyles(itemImage) {
-    return {
-      backgroundImage: `url(${itemImage})`,
-      backgroundRepeat: 'no-repeat',
-      backgroundOrigin: 'center',
-      backgroundClip: 'content-box',
-      backgroundSize: 'cover',
-      backgroundPosition: 'center',
-    };
-  }
-
   openPostModal() {
     let modalOption = {
       body: (<PostModal/>)
@@ -67,10 +51,10 @@ class Post extends React.Component {
   }
 
   render() {
-    if (!this.props || !this.props.body) {
+    if (!this.props || !this.props.imgUrl) {
       return null;
     }
-    let itemImage = this.props.body || constants.NO_IMAGE;
+    let itemImage = this.props.imgUrl || constants.NO_IMAGE;
     let authorImage = this.props.avatar || constants.NO_AVATAR;
 
     const authorLink = `/@${this.props.author}`;
@@ -127,13 +111,13 @@ class Post extends React.Component {
               <div className="card-controls clearfix">
                 <div className="buttons-row">
                   <Vote postIndex={this.props.index}/>
-                  <ShowIf show={this.props.authUser != this.props.author}>
+                  <ShowIf show={this.props.authUser !== this.props.author}>
                     <Flag postIndex={this.props.index}/>
                   </ShowIf>
                 </div>
                 <div className="wrap-counts clearfix">
                   <Likes postIndex={this.props.index}/>
-                  <ShowIf show={parseFloat(this.props.total_payout_reward).toFixed(2) != 0}>
+                  <ShowIf show={parseFloat(this.props.total_payout_reward).toFixed(2) !== 0}>
                     <div className="amount">${this.props.total_payout_reward}</div>
                   </ShowIf>
                 </div>
@@ -154,9 +138,12 @@ class Post extends React.Component {
 }
 
 const mapStateToProps = (state, props) => {
+  const media = state.posts[props.index].media[0];
+  let imgUrl = media['thumbnails'] ? media['thumbnails'][1024] : media.url;
   return {
     ...state.posts[props.index],
-    authUser: state.auth.user
+    authUser: state.auth.user,
+    imgUrl
   };
 };
 

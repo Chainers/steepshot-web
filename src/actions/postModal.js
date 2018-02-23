@@ -84,11 +84,21 @@ export function previousPostModal(index) {
   }
 }
 
-export function setFullScreen(isOpen) {
+export function setFullScreen(isOpen, timeoutID) {
   return (dispatch) => {
     dispatch({
       type: 'SET_FULL_SCREEN',
-      isOpen
+      isOpen,
+      timeoutID
     });
+  }
+}
+
+export function setFSNavigation(isVisible) {
+  return (dispatch) => {
+    dispatch({
+      type: 'SET_FULL_SCREEN_NAVIGATION',
+      isVisible,
+    })
   }
 }
