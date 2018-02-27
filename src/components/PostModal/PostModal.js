@@ -59,6 +59,10 @@ class PostModal extends React.Component {
     }
   }
 
+  componentWillReceiveProps(nextProps) {
+
+  }
+
   scrollAfterComment() {
     this.textArea.value = '';
     this.changeText();
@@ -70,13 +74,17 @@ class PostModal extends React.Component {
   }
 
   previousPost() {
-    this.props.previous(this.props.currentIndex);
-    this.clearTextArea();
+    if (!this.props.firstPost) {
+      this.props.previous(this.props.currentIndex);
+      this.clearTextArea();
+    }
   }
 
   nextPost() {
-    this.props.next(this.props.currentIndex);
-    this.clearTextArea();
+    if (!this.props.lastPost) {
+      this.props.next(this.props.currentIndex);
+      this.clearTextArea();
+    }
   }
 
   initKeyPress(e) {
@@ -211,7 +219,7 @@ class PostModal extends React.Component {
         </ShowIf>
         <ShowIf show={this.props.fullScreenNavigation}>
           <div>
-            <ShowIf show={this.props.firstPost}>
+            <ShowIf show={!this.props.firstPost}>
               <div className="arrow-left-full-screen_post-mod"
                    onClick={this.previousPost.bind(this)}
                    onMouseEnter={this.fsNavMouseEnter.bind(this)}
@@ -220,7 +228,7 @@ class PostModal extends React.Component {
                 <i className="far fa-arrow-alt-circle-left fa-2x"/>
               </div>
             </ShowIf>
-            <ShowIf show={this.props.lastPost}>
+            <ShowIf show={!this.props.lastPost}>
               <div className="arrow-right-full-screen_post-mod"
                    onClick={this.nextPost.bind(this)}
                    onMouseEnter={this.fsNavMouseEnter.bind(this)}
@@ -391,17 +399,24 @@ class PostModal extends React.Component {
                             </ShowIf>
                           </div>
                         </ShowIf>;
+    let hideModalFS = this.props.style.container;
+    if (this.props.fullScreenMode) {
+      hideModalFS = {
+        position: 'absolute',
+        top: '-5000px',
+        visibility: 'hidden'
+      }
+    }
     return (
       <div>
-        { !this.props.fullScreenMode ?
-        <div className="container_pos-mod" style={this.props.style.container}>
+        <div className="container_pos-mod" style={hideModalFS}>
           <ShowIf show={this.props.showClose}>
-            <ShowIf show={this.props.firstPost}>
+            <ShowIf show={!this.props.firstPost}>
               <div className="arrow-left-modal_post-mod" onClick={this.previousPost.bind(this)}>
                 <i className="far fa-arrow-alt-circle-left fa-2x"/>
               </div>
             </ShowIf>
-            <ShowIf show={this.props.lastPost}>
+            <ShowIf show={!this.props.lastPost}>
               <div className="arrow-right-modal_post-mod" onClick={this.nextPost.bind(this)}>
                 <i className="far fa-arrow-alt-circle-right fa-2x"/>
               </div>
@@ -490,7 +505,9 @@ class PostModal extends React.Component {
               </ShowIf>
             </div>
         </div>
-        : this.renderFullScreenImg() }
+        <ShowIf show={this.props.fullScreenMode}>
+          {this.renderFullScreenImg()}
+        </ShowIf>
       </div>
     );
   }
@@ -588,8 +605,8 @@ const mapStateToProps = (state) => {
     ...state.postModal,
     isUserAuth: state.auth.user && state.auth.postingKey,
     authUser: state.auth.user,
-    firstPost: postList.posts[0] !== currentIndex,
-    lastPost: post.url !== postList.offset
+    firstPost: postList.posts[0] === currentIndex,
+    lastPost: postList.offset === currentIndex
   };
 };
 

@@ -28,7 +28,7 @@ export default function postModal(state = initialState, action) {
       return {
         ...state,
         fullScreenMode: action.isOpen,
-        timeoutID: action.timeoutID
+        timeoutID: action.timeoutID,
       };
 
     case 'SET_FULL_SCREEN_NAVIGATION':
