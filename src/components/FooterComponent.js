@@ -32,7 +32,7 @@ class FooterComponent extends React.Component {
                                                 </a>
                                             </li>
                                             <li className="item_1"><a href="https://t.me/steepshot_en" target="_blank">Telegram</a></li>
-                                            <li className="item_1" target="_blank"><a href="https://discord.gg/3sz6YQ">Discord</a></li>
+                                            <li className="item_1"><a href="https://discordapp.com/invite/9QsYr9f" target="_blank">Discord</a></li>
                                         </ul>
                                     </div>
                                 </div>

@@ -1,5 +1,4 @@
 import React from 'react';
-import {Link} from 'react-router-dom';
 
 export function UserLinkFunc(bool, fromState) {
   let state = null;
@@ -33,13 +32,13 @@ export function UserLinkFunc(bool, fromState) {
                        null
                      }
                    </span>
-                   <Link to={`/${
+                   <a href={`/${
                      replaceDot
                      ?
                      replace2[0].replace(/\s(@\w+)\.\s+/g, '$1')
                      :
                      replace2[0].replace(/\s+/g, '')}`
-                   }>
+                   } target="_blank">
                      {
                        replaceDot
                        ?
@@ -51,7 +50,7 @@ export function UserLinkFunc(bool, fromState) {
                        :
                        replace2[0].replace(/\s+/g, '') + ' '
                      }
-                   </Link>
+                   </a>
                    <span>
                      {
                        replace4

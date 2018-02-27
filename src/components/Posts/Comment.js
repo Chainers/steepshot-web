@@ -34,7 +34,7 @@ class Comment extends React.Component {
         /\n/.test(this.state.item.body) ||
         /http(s)?:\/\/|www\.[\w\W]+/g.test(this.state.item.body)) {
       let safetyScript = this.state.item.body.replace(/<script>|<\/script>/g, '');
-      let userLinks = safetyScript.replace(/([>\s\b])(@[\w-.]+)/g, `$1<a href="/$2">$2</a>`);
+      let userLinks = safetyScript.replace(/([>\s\b])(@[\w-.]+)/g, `$1<a href="/$2" target="_blank">$2</a>`);
       let newLine = userLinks.replace(/\n/g, '<br>');
       let replaceBotsLayout = newLine.replace(/(!)?\[([^\]]+)?\]/g, '');
       let changeBotsLink = replaceBotsLayout.replace(/\((http(s)?:\/\/[\w\W]+?|www\.[\w\W]+?)\)/g, '$1');
@@ -82,8 +82,7 @@ class Comment extends React.Component {
       return (
         <div className="comment-controls clearfix">
           {reply}
-          <a
-            className="likes"
+          <a className="likes"
             onClick={this.openLikesModal.bind(this)}
           >{text}</a>
           <span className="pull-right">{money}</span>

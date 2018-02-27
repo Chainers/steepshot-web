@@ -62,9 +62,7 @@
   cursor: pointer;
   border-radius: 4px;
 }
-.cross-wrapper_modal:hover {
-  box-shadow: 0 0 3px 1px #ffffff;
-}
+
 .cross-wrapper_modal:hover .cross-full-screen_modal {
   background: url(/static/images/sprite_svg1910.svg) 6% 12.3% no-repeat;
 }
