@@ -33,7 +33,7 @@ function getUsersListSuccess(options, users) {
 
 export function getUsersList(point, getUsers) {
   const LIMIT = 16;
-  const statePoint = getStore().getState().usersList[point];
+  let statePoint = getStore().getState().usersList[point];
   if (statePoint.loading) {
     return {
       type: 'EMPTY_GET_USERS'
@@ -56,15 +56,22 @@ export function getUsersList(point, getUsers) {
       }
     };
     getUsers(requestOptions, true).then((response) => {
+      statePoint = getStore().getState().usersList[point];
       let newUsers = response.results;
       let hasMore = response.results.length === LIMIT;
       if (statePoint.users.length !== 0) {
         newUsers = newUsers.slice(1, newUsers.length);
       }
+      let uniqueUsers = [];
+      newUsers.forEach(user => {
+        if (statePoint.users.indexOf(user.author) === -1) {
+          uniqueUsers.push(user);
+        }
+      });
+      newUsers = uniqueUsers;
       let authors = newUsers.map((user) => {
         return user.author;
       });
-
       let users = {};
       newUsers.forEach((user) => {
         users[user.author] = {
