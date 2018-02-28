@@ -10,6 +10,21 @@ import {copyToClipboard} from '../../actions/clipboard';
 import {closeModal, openModal, closeAllModals} from '../../actions/modal';
 import {deletePost} from '../../actions/post';
 import {getHistory} from '../../main';
+import {
+  FacebookShareButton,
+  LinkedinShareButton,
+  TwitterShareButton,
+  VKShareButton,
+  RedditShareButton,
+  PinterestShareButton,
+  FacebookIcon,
+  TwitterIcon,
+  LinkedinIcon,
+  PinterestIcon,
+  VKIcon,
+  RedditIcon
+} from 'react-share';
+
 
 
 class PostContextMenu extends React.Component {
@@ -58,7 +73,6 @@ class PostContextMenu extends React.Component {
       body: (<ChooseSocialNetwork closeModal={() => {this.props.closeModal("ChooseSocialNetwork")}}
                                   url={this.props.index}
                                   item={this.props.item}
-                                  modalsCallback={this.modalsCallback.bind(this)}
       />)
     };
     this.props.closeModal("MenuModal");

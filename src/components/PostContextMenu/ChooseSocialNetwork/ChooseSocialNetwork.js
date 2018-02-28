@@ -5,34 +5,65 @@ import {
   TwitterShareButton,
   VKShareButton,
   RedditShareButton,
+  PinterestShareButton,
   FacebookIcon,
   TwitterIcon,
   LinkedinIcon,
+  PinterestIcon,
   VKIcon,
   RedditIcon
 } from 'react-share';
 
+const BUTTON_WIDTH = 120;
+const WRAPPER_PADDING = 10;
+
 class ChooseSocialNetwork extends React.Component {
   constructor(props) {
     super(props);
+    this.mobileOrientation = this.mobileOrientation.bind(this);
+  }
 
+  componentDidMount() {
+    this.mobileOrientation();
+    window.addEventListener('resize', this.mobileOrientation);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.mobileOrientation);
+  }
+
+  mobileOrientation() {
+    let documentWidth = document.documentElement.clientWidth;
+    let buttonsNumber = document.getElementsByClassName('soc-network-item_csn').length;
+    let wrapperWidth = buttonsNumber * BUTTON_WIDTH + (buttonsNumber - 1) + WRAPPER_PADDING * 2;
+    if (wrapperWidth > documentWidth) {
+      this.shareButtons.style.flexDirection = 'column';
+    } else {
+      this.shareButtons.style.flexDirection = '';
+    }
   }
 
   closeModal(e) {
     e.stopPropagation();
     this.props.closeModal();
-    this.props.modalsCallback(false);
   }
 
   render() {
     let shareAdress = `https://alpha.steepshot.io/post${this.props.url.replace(/\/\w+(\/@[\w-.]+)/, '$1')}`;
     let postTitle = this.props.item.title;
+    let crossOffset = {top: 8, right: 5};
     return (
       <div className="wrapper_csn-mod">
-        <div className="body_confirm-del-mod">
+        <div className="body_confirm-del-mod position--relative">
           <p className="title_csn-mod">Social networks we cooperate with</p>
-          <div className="share-buttons_csn">
-            <div className="soc-network-item_csn">
+          <div className="cross-wrapper_menu cross-wrapper_csn"
+               onClick={this.closeModal.bind(this)}
+               style={crossOffset}
+          >
+            <i className="cross_menu"/>
+          </div>
+          <div className="share-buttons_csn" ref={ref => {this.shareButtons = ref}}>
+            <div className="soc-network-item_csn" ref={ref => {this.button = ref}}>
               <FacebookShareButton url={shareAdress}
                                    hashtag="#steepshot"
               >
@@ -41,23 +72,31 @@ class ChooseSocialNetwork extends React.Component {
               </FacebookShareButton>
             </div>
             <div className="soc-network-item_csn">
-              <VKShareButton url={shareAdress}
-                             title={postTitle}
-                             image={this.props.item.body}
-              >
-                <VKIcon size={42} round={false}/>
-                <p>VKontakte</p>
-              </VKShareButton>
-            </div>
-            <div className="soc-network-item_csn">
               <TwitterShareButton url={shareAdress}
                                   title={postTitle}
                                   hashtags={this.props.item.tags}
-                                  image={this.props.item.body}
               >
                 <TwitterIcon size={42} round={false} />
                 <p>Twitter</p>
               </TwitterShareButton>
+            </div>
+            <div className="soc-network-item_csn">
+              <PinterestShareButton url={shareAdress}
+                               description={this.props.item.description}
+                               media={this.props.item.media[0].url}
+              >
+                <PinterestIcon size={42} round={false}/>
+                <p>Pinterest</p>
+              </PinterestShareButton>
+            </div>
+            <div className="soc-network-item_csn">
+              <VKShareButton url={shareAdress}
+                             title={postTitle}
+                             image={this.props.item.media[0].url}
+              >
+                <VKIcon size={42} round={false}/>
+                <p>VK</p>
+              </VKShareButton>
             </div>
             <div className="soc-network-item_csn">
               <LinkedinShareButton url={shareAdress}
