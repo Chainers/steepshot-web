@@ -36,11 +36,13 @@ class ChooseSocialNetwork extends React.Component {
     let documentWidth = document.documentElement.clientWidth;
     let buttonsNumber = document.getElementsByClassName('soc-network-item_csn').length;
     let wrapperWidth = buttonsNumber * BUTTON_WIDTH + (buttonsNumber - 1) + WRAPPER_PADDING * 2;
-    let SMSB = document.getElementsByClassName('SocialMediaShareButton');
+    let sbmb = document.getElementsByClassName('SocialMediaShareButton');
     if (wrapperWidth > documentWidth) {
       this.shareButtons.style.flexDirection = 'column';
+      //sbmb[0].style.display = 'flex';
     } else {
       this.shareButtons.style.flexDirection = '';
+      //sbmb[0].style.display = '';
     }
   }
 
