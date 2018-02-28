@@ -14,36 +14,9 @@ import {
   RedditIcon
 } from 'react-share';
 
-const BUTTON_WIDTH = 120;
-const WRAPPER_PADDING = 10;
-
 class ChooseSocialNetwork extends React.Component {
   constructor(props) {
     super(props);
-    this.mobileOrientation = this.mobileOrientation.bind(this);
-  }
-
-  componentDidMount() {
-    this.mobileOrientation();
-    window.addEventListener('resize', this.mobileOrientation);
-  }
-
-  componentWillUnmount() {
-    window.removeEventListener('resize', this.mobileOrientation);
-  }
-
-  mobileOrientation() {
-    let documentWidth = document.documentElement.clientWidth;
-    let buttonsNumber = document.getElementsByClassName('soc-network-item_csn').length;
-    let wrapperWidth = buttonsNumber * BUTTON_WIDTH + (buttonsNumber - 1) + WRAPPER_PADDING * 2;
-    let sbmb = document.getElementsByClassName('SocialMediaShareButton');
-    if (wrapperWidth > documentWidth) {
-      this.shareButtons.style.flexDirection = 'column';
-      //sbmb[0].style.display = 'flex';
-    } else {
-      this.shareButtons.style.flexDirection = '';
-      //sbmb[0].style.display = '';
-    }
   }
 
   closeModal(e) {
@@ -65,8 +38,8 @@ class ChooseSocialNetwork extends React.Component {
           >
             <i className="cross_menu"/>
           </div>
-          <div className="share-buttons_csn" ref={ref => {this.shareButtons = ref}}>
-            <div className="soc-network-item_csn" ref={ref => {this.button = ref}}>
+          <div className="share-buttons_csn">
+            <div className="soc-network-item_csn">
               <FacebookShareButton url={shareAdress}
                                    hashtag="#steepshot"
               >

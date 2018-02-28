@@ -179,7 +179,7 @@ class CreatePost extends React.Component {
             this.setState({
               file: '',
               imagePreviewUrl: '',
-              imageError: 'Photo size should be more then ' + this.state.minPhotoWidth + 'x' + this.state.minPhotoHeight,
+              imageError: 'Photo size should be more than ' + this.state.minPhotoWidth + 'x' + this.state.minPhotoHeight,
             });
           }
         };
@@ -222,7 +222,6 @@ class CreatePost extends React.Component {
   _getPostImageStyles(itemImage) {
     return {
       backgroundImage: `url(${itemImage})`,
-      backgroundPosition: 'fixed',
       backgroundRepeat: 'no-repeat',
       backgroundOrigin: 'center',
       backgroundClip: 'content-box',
@@ -252,8 +251,7 @@ class CreatePost extends React.Component {
   }
 
   _renderTags() {
-    if (this.state.tagList.length == 0) return null;
-    if (this.state.tagList[0] == '') return null;
+    if (this.state.tagList.length == 0 || this.state.tagList[0] == '') return null;
     let _this = this;
     let items = this.state.tagList.map((tag, index) => {
       return (
