@@ -385,7 +385,6 @@ function _getPermLink(title) {
   let today = new Date();
   const permLink = 'web' + '-' + today.getFullYear() + '-' + today.getMonth() + '-' + today.getDay()
     + '-' + today.getHours() + '-' + today.getMinutes() + '-' + today.getSeconds();
-  console.log(permLink);
   return permLink;
 }
 

@@ -13,6 +13,10 @@ body {
   overflow: hidden;
 }
 
+.text--center {
+  text-align: center;
+}
+
 .item.nav-item a:hover {
   border-bottom: none !important;
 }
@@ -289,10 +293,6 @@ h2.card-field__heading {
 .container-settings__content-wrapper {
   position: relative;
   padding-top: 80px;
-}
-
-.text--center {
-  text-align: center;
 }
 
 .settings-switcher {

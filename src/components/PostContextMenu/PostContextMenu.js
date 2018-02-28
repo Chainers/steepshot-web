@@ -1,6 +1,7 @@
 import * as React from 'react';
 import Menu from './Menu/Menu';
 import ConfirmDeleteModal from './ConfirmDeleteModal/ConfirmDeleteModal';
+import ChooseSocialNetwork from './ChooseSocialNetwork/ChooseSocialNetwork';
 import ConfirmFlagModal from './ConfirmFlagModal/ConfirmFlagModal';
 import Constants from '../../common/constants';
 import {connect} from 'react-redux';
@@ -8,7 +9,22 @@ import {toggleFlag} from '../../actions/flag';
 import {copyToClipboard} from '../../actions/clipboard';
 import {closeModal, openModal, closeAllModals} from '../../actions/modal';
 import {deletePost} from '../../actions/post';
-import {getHistory} from "../../main";
+import {getHistory} from '../../main';
+import {
+  FacebookShareButton,
+  LinkedinShareButton,
+  TwitterShareButton,
+  VKShareButton,
+  RedditShareButton,
+  PinterestShareButton,
+  FacebookIcon,
+  TwitterIcon,
+  LinkedinIcon,
+  PinterestIcon,
+  VKIcon,
+  RedditIcon
+} from 'react-share';
+
 
 
 class PostContextMenu extends React.Component {
@@ -32,15 +48,15 @@ class PostContextMenu extends React.Component {
     let modalOption = {
       body: (<ConfirmDeleteModal closeModal={() => {this.props.closeModal("ConfirmDeleteModal")}}
                                  closeAllModals={() => {this.props.closeAllModals()}}
-                                 deleteCallback={this.deleteCallback.bind(this)}
+                                 modalsCallback={this.modalsCallback.bind(this)}
              />)
     };
     this.props.closeModal("MenuModal");
     this.props.openModal("ConfirmDeleteModal", modalOption);
   }
 
-  deleteCallback(param) {
-    if(param) {
+  modalsCallback(param) {
+    if (param) {
       this.props.deletePost(this.props.index);
     } else {
       this.openFunc();
@@ -53,7 +69,14 @@ class PostContextMenu extends React.Component {
   }
 
   share() {
-
+    let modalOption = {
+      body: (<ChooseSocialNetwork closeModal={() => {this.props.closeModal("ChooseSocialNetwork")}}
+                                  url={this.props.index}
+                                  item={this.props.item}
+      />)
+    };
+    this.props.closeModal("MenuModal");
+    this.props.openModal("ChooseSocialNetwork", modalOption);
   }
 
   copyLink() {
@@ -114,14 +137,13 @@ class PostContextMenu extends React.Component {
 
   setButtonsOptions() {
     let BUTTONS_OPTIONS = [
-      /*TODO uncomment when will be implemented share
       {
         img: '/static/images/postContextMenu/shareTrue.svg',
         revertImg: '/static/images/postContextMenu/shareFalse.svg',
         alt: 'Share',
         callback: this.share.bind(this),
         hasDelimiter: true,
-      }, */{
+      }, {
         img: '/static/images/postContextMenu/copyTrue.svg',
         revertImg: '/static/images/postContextMenu/copyFalse.svg',
         alt: 'Copy link',

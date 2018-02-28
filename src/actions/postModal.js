@@ -94,11 +94,12 @@ export function setFullScreen(isOpen, timeoutID) {
   }
 }
 
-export function setFSNavigation(isVisible) {
+export function setFSNavigation(isVisible, timeoutID) {
   return (dispatch) => {
     dispatch({
       type: 'SET_FULL_SCREEN_NAVIGATION',
       isVisible,
+      timeoutID
     })
   }
 }

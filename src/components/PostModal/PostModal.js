@@ -34,16 +34,19 @@ class PostModal extends React.Component {
     super(props);
     this.setComponentSize = this.setComponentSize.bind(this);
     this.showFSNavigation = this.showFSNavigation.bind(this);
-    this.initKeyPress();
+    this.fsCheckButtons = this.fsCheckButtons.bind(this);
+    this.initKeyPress = this.initKeyPress.bind(this);
   }
 
   componentDidMount() {
     window.addEventListener('resize', this.setComponentSize);
+    window.addEventListener('keydown', this.initKeyPress);
     this.setComponentSize();
   }
 
   componentWillUnmount() {
     window.removeEventListener('resize', this.setComponentSize);
+    window.removeEventListener('keydown', this.initKeyPress);
   }
 
   componentDidUpdate(nextProps) {
@@ -54,6 +57,10 @@ class PostModal extends React.Component {
         this.scrollAfterComment();
       }, 250);
     }
+  }
+
+  componentWillReceiveProps(nextProps) {
+
   }
 
   scrollAfterComment() {
@@ -67,17 +74,20 @@ class PostModal extends React.Component {
   }
 
   previousPost() {
-    this.props.previous(this.props.currentIndex);
-    this.clearTextArea();
+    if (!this.props.firstPost) {
+      this.props.previous(this.props.currentIndex);
+      this.clearTextArea();
+    }
   }
 
   nextPost() {
-    this.props.next(this.props.currentIndex);
-    this.clearTextArea();
+    if (!this.props.lastPost) {
+      this.props.next(this.props.currentIndex);
+      this.clearTextArea();
+    }
   }
 
-  initKeyPress() {
-    document.onkeydown = (e) => {
+  initKeyPress(e) {
       if (document.activeElement !== ReactDOM.findDOMNode(this.textArea)) {
         switch (e.keyCode) {
           case 37:
@@ -98,8 +108,6 @@ class PostModal extends React.Component {
             break;
         }
       }
-
-    };
   }
 
   clearTextArea() {
@@ -143,7 +151,8 @@ class PostModal extends React.Component {
   renderImage() {
     return (
       <div className="image-container_pos-mod"
-           style={this.props.style.imgCont}>
+           style={this.props.style.imgCont}
+      >
         {this.lowNSFWFilter()}
         <button className="btn btn-default btn-xs"
                 onClick={() => this.props.copyToClipboard(
@@ -210,20 +219,36 @@ class PostModal extends React.Component {
         </ShowIf>
         <ShowIf show={this.props.fullScreenNavigation}>
           <div>
-            <div className="arrow-left-full-screen_post-mod" onClick={this.previousPost.bind(this)}>
-              <i className="far fa-arrow-alt-circle-left fa-2x"/>
-            </div>
-            <div className="arrow-right-full-screen_post-mod" onClick={this.nextPost.bind(this)}>
-              <i className="far fa-arrow-alt-circle-right fa-2x"/>
-            </div>
+            <ShowIf show={!this.props.firstPost}>
+              <div className="arrow-left-full-screen_post-mod"
+                   onClick={this.previousPost.bind(this)}
+                   onMouseEnter={this.fsNavMouseEnter.bind(this)}
+                   onMouseLeave={this.fsNavMouseLeave.bind(this)}
+              >
+                <i className="far fa-arrow-alt-circle-left fa-2x"/>
+              </div>
+            </ShowIf>
+            <ShowIf show={!this.props.lastPost}>
+              <div className="arrow-right-full-screen_post-mod"
+                   onClick={this.nextPost.bind(this)}
+                   onMouseEnter={this.fsNavMouseEnter.bind(this)}
+                   onMouseLeave={this.fsNavMouseLeave.bind(this)}
+              >
+                <i className="far fa-arrow-alt-circle-right fa-2x"/>
+              </div>
+            </ShowIf>
           </div>
           <div className="close-full-screen_pos-mod"
                onClick={this.setFullScreen.bind(this, false)}
+               onMouseEnter={this.fsNavMouseEnter.bind(this)}
+               onMouseLeave={this.fsNavMouseLeave.bind(this)}
           >
             <img className="img-full-screen" src="/static/images/shape-copy-6.svg"/>
           </div>
           <div className="fs-post-amount_pos-mod">
-            ${this.props.post.total_payout_reward}
+            <ShowIf show={parseFloat(this.props.post.total_payout_reward)}>
+              ${this.props.post.total_payout_reward}
+            </ShowIf>
           </div>
           <FullScreenButtons />
         </ShowIf>
@@ -232,23 +257,53 @@ class PostModal extends React.Component {
   }
 
   showFSNavigation() {
-    this.props.setFSNavigation(true);
+    clearTimeout(this.props.timeoutID);
+    let timeoutID = setTimeout( () => {
+      this.props.setFSNavigation(false, null);
+    }, 6000);
+    this.props.setFSNavigation(true, timeoutID);
+  }
+
+  fsRightLeft(isOpen) {
+    if (isOpen) {
+      window.addEventListener('keydown', this.fsCheckButtons);
+    } else {
+      window.removeEventListener('keydown', this.fsCheckButtons);
+    }
+  }
+
+  fsCheckButtons(e) {
+    if (e.keyCode !== 37 && e.keyCode !== 39) this.showFSNavigation();
   }
 
   setFullScreen(isOpen) {
     let timeoutID = null;
     if (isOpen) {
       window.addEventListener('mousemove', this.showFSNavigation);
+      this.fsRightLeft(isOpen);
       timeoutID = setTimeout( () => {
-        this.props.setFSNavigation(false);
-      }, 5000);
+        this.props.setFSNavigation(false, null);
+      }, 6000);
     }
     if (!isOpen) {
       window.removeEventListener('mousemove', this.showFSNavigation);
+      this.fsRightLeft(isOpen);
       clearTimeout(this.props.timeoutID);
-      this.props.setFSNavigation(true);
+      this.props.setFSNavigation(true, null);
     }
     this.props.setFullScreen(isOpen, timeoutID);
+  }
+
+  fsNavMouseEnter() {
+    clearTimeout(this.props.timeoutID);
+    window.removeEventListener('mousemove', this.showFSNavigation);
+    this.fsRightLeft();
+    this.props.setFSNavigation(true, null);
+  }
+
+  fsNavMouseLeave() {
+    window.addEventListener('mousemove', this.showFSNavigation);
+    this.fsRightLeft();
   }
 
   renderDescription() {
@@ -266,7 +321,6 @@ class PostModal extends React.Component {
             ? 'collapse-opened'
             : 'collapse-closed'}
         >
-
           {UserLinkFunc(false, this.props.post.description)}
           <Tags tags={this.props.post.tags}/>
           <a className="lnk-more" onClick={this.openDescription.bind(this)}>Show more</a>
@@ -345,17 +399,24 @@ class PostModal extends React.Component {
                             </ShowIf>
                           </div>
                         </ShowIf>;
+    let hideModalFS = this.props.style.container;
+    if (this.props.fullScreenMode) {
+      hideModalFS = {
+        position: 'absolute',
+        top: '-5000px',
+        visibility: 'hidden'
+      }
+    }
     return (
       <div>
-        { !this.props.fullScreenMode ?
-        <div className="container_pos-mod" style={this.props.style.container}>
+        <div className="container_pos-mod" style={hideModalFS}>
           <ShowIf show={this.props.showClose}>
-            <ShowIf show={this.props.postList.posts[0] !== this.props.currentIndex}>
+            <ShowIf show={!this.props.firstPost}>
               <div className="arrow-left-modal_post-mod" onClick={this.previousPost.bind(this)}>
                 <i className="far fa-arrow-alt-circle-left fa-2x"/>
               </div>
             </ShowIf>
-            <ShowIf show={this.props.post.url !== this.props.postList.offset}>
+            <ShowIf show={!this.props.lastPost}>
               <div className="arrow-right-modal_post-mod" onClick={this.nextPost.bind(this)}>
                 <i className="far fa-arrow-alt-circle-right fa-2x"/>
               </div>
@@ -444,7 +505,9 @@ class PostModal extends React.Component {
               </ShowIf>
             </div>
         </div>
-        : this.renderFullScreenImg() }
+        <ShowIf show={this.props.fullScreenMode}>
+          {this.renderFullScreenImg()}
+        </ShowIf>
       </div>
     );
   }
@@ -527,19 +590,23 @@ class PostModal extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-  let post = state.posts[state.postModal.currentIndex];
+  let currentIndex = state.postModal.currentIndex;
+  let post = state.posts[currentIndex];
   let media = post.media[0];
   let imgUrl = media.url;
   if (document.documentElement.clientWidth <= 1024 && media['thumbnails'] && media['thumbnails'][1024]) {
       imgUrl = media['thumbnails'][1024];
   }
+  let postList = state.postsList[state.postModal.point];
   return {
-    postList: state.postsList[state.postModal.point],
+    postList,
+    imgUrl,
+    post,
     ...state.postModal,
-    post: state.posts[state.postModal.currentIndex],
     isUserAuth: state.auth.user && state.auth.postingKey,
     authUser: state.auth.user,
-    imgUrl
+    firstPost: postList.posts[0] === currentIndex,
+    lastPost: postList.offset === currentIndex
   };
 };
 
@@ -563,14 +630,14 @@ const mapDispatchToProps = (dispatch) => {
     previous: (index) => {
       dispatch(previousPostModal(index));
     },
-    setFullScreen: (isOpen, timeoutID) => {
-      dispatch(setFullScreen(isOpen, timeoutID));
-    },
     toggleVote: (postIndex) => {
       dispatch(toggleVote(postIndex));
     },
-    setFSNavigation: (isVisible) => {
-      dispatch(setFSNavigation(isVisible));
+    setFullScreen: (isOpen, timeoutID) => {
+      dispatch(setFullScreen(isOpen, timeoutID));
+    },
+    setFSNavigation: (isVisible, timeoutID) => {
+      dispatch(setFSNavigation(isVisible, timeoutID));
     }
   };
 };

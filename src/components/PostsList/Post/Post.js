@@ -117,7 +117,7 @@ class Post extends React.Component {
                 </div>
                 <div className="wrap-counts clearfix">
                   <Likes postIndex={this.props.index}/>
-                  <ShowIf show={parseFloat(this.props.total_payout_reward).toFixed(2) !== 0}>
+                  <ShowIf show={parseFloat(this.props.total_payout_reward)}>
                     <div className="amount">${this.props.total_payout_reward}</div>
                   </ShowIf>
                 </div>
