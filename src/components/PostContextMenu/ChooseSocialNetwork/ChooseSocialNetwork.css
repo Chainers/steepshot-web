@@ -25,6 +25,7 @@
 .soc-network-item_csn .SocialMediaShareButton {
   outline: none;
   width: 90px;
+  align-items: center;
 }
 
 .share-buttons_csn p {
