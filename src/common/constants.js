@@ -38,7 +38,7 @@ export default {
     },
 
     IMAGE: {
-      MIN_WIDTH: 480,
+      MIN_WIDTH: 640,
       MIN_HEIGHT: 480
     },
 

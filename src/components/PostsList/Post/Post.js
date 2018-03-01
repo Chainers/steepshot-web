@@ -138,13 +138,15 @@ class Post extends React.Component {
 }
 
 const mapStateToProps = (state, props) => {
-  const media = state.posts[props.index].media[0];
-  let imgUrl = media['thumbnails'] ? media['thumbnails'][1024] : media.url;
-  return {
-    ...state.posts[props.index],
-    authUser: state.auth.user,
-    imgUrl
-  };
+  if (state.posts[props.index]) {
+    const media = state.posts[props.index].media[0];
+    let imgUrl = media['thumbnails'] ? media['thumbnails'][1024] : media.url;
+    return {
+      ...state.posts[props.index],
+      authUser: state.auth.user,
+      imgUrl
+    };
+  }
 };
 
 const mapDispatchToProps = (dispatch) => {

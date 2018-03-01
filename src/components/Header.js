@@ -150,7 +150,7 @@ class Header extends React.Component {
                               className="btn btn-default btn-xs btn-create">
                           Create post
                         </Link>
-                        <Link to="/createPost" type="button"
+                        <Link to="/editPost" type="button"
                               className="btn btn-default btn-create-mob"
                               onClick={() => {jqApp.mobileMenu._menuHide();}}
                         />

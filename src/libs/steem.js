@@ -77,7 +77,6 @@ class Steem {
             callback(result.username[0]);
           });
         }
-        ;
       });
   }
 
@@ -218,7 +217,8 @@ class Steem {
     const callbackBc = (err, success) => {
       if (err) {
         // const data = JSON.stringify({
-        //   error: err.cause.name
+        //   username: author
+        //   error: err
         // });
         // logDeletedPost(author, permlink, data);
         callback(err, null);

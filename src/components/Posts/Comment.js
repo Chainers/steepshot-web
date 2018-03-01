@@ -34,11 +34,11 @@ class Comment extends React.Component {
         /\n/.test(this.state.item.body) ||
         /http(s)?:\/\/|www\.[\w\W]+/g.test(this.state.item.body)) {
       let safetyScript = this.state.item.body.replace(/<script>|<\/script>/g, '');
-      let userLinks = safetyScript.replace(/([>\s\b])(@[\w-.]+)/g, `$1<a href="/$2" target="_blank">$2</a>`);
-      let newLine = userLinks.replace(/\n/g, '<br>');
+      let newLine = safetyScript.replace(/\n/g, '<br>');
       let replaceBotsLayout = newLine.replace(/(!)?\[([^\]]+)?\]/g, '');
       let changeBotsLink = replaceBotsLayout.replace(/\((http(s)?:\/\/[\w\W]+?|www\.[\w\W]+?)\)/g, '$1');
-      let linkToImg = changeBotsLink.replace(/(http(s)?:\/\/[\w\W]+?(.png|.gif|.jpg|.jpeg)(?!"))/gi, '<img src="$1"/>');
+      let linkToImg = changeBotsLink.replace(/(http(s)?:\/\/[\w\W]+?(\.png|\.gif|\.jpg|\.jpeg|\.tiff)(?!"))/gi, '<img src="$1"/>');
+      console.log(linkToImg);
       this.commentText.innerHTML = linkToImg;
     }
   }

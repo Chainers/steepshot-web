@@ -9328,7 +9328,10 @@ modal.modal-like .modal-header {
   font: 12px OpenSans-Regular;
 }
 .no-scroll-iphone {
+  position: fixed;
   overflow: hidden;
+  height: 100%;
+  width: 100%;
 }
 .ov-scroll_modal {
   overflow-y: auto;
