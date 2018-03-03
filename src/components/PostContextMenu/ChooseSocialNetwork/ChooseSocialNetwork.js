@@ -14,36 +14,9 @@ import {
   RedditIcon
 } from 'react-share';
 
-const BUTTON_WIDTH = 120;
-const WRAPPER_PADDING = 10;
-
 class ChooseSocialNetwork extends React.Component {
   constructor(props) {
     super(props);
-    this.mobileOrientation = this.mobileOrientation.bind(this);
-  }
-
-  componentDidMount() {
-    this.mobileOrientation();
-    window.addEventListener('resize', this.mobileOrientation);
-  }
-
-  componentWillUnmount() {
-    window.removeEventListener('resize', this.mobileOrientation);
-  }
-
-  mobileOrientation() {
-    let documentWidth = document.documentElement.clientWidth;
-    let buttonsNumber = document.getElementsByClassName('soc-network-item_csn').length;
-    let wrapperWidth = buttonsNumber * BUTTON_WIDTH + (buttonsNumber - 1) + WRAPPER_PADDING * 2;
-    let sbmb = document.getElementsByClassName('SocialMediaShareButton');
-    if (wrapperWidth > documentWidth) {
-      this.shareButtons.style.flexDirection = 'column';
-      //sbmb[0].style.display = 'flex';
-    } else {
-      this.shareButtons.style.flexDirection = '';
-      //sbmb[0].style.display = '';
-    }
   }
 
   closeModal(e) {
@@ -65,12 +38,12 @@ class ChooseSocialNetwork extends React.Component {
           >
             <i className="cross_menu"/>
           </div>
-          <div className="share-buttons_csn" ref={ref => {this.shareButtons = ref}}>
-            <div className="soc-network-item_csn" ref={ref => {this.button = ref}}>
+          <div className="share-buttons_csn">
+            <div className="soc-network-item_csn">
               <FacebookShareButton url={shareAdress}
                                    hashtag="#steepshot"
               >
-                <FacebookIcon size={42} round={false}/>
+                <FacebookIcon size={42} round={true}/>
                 <p>Facebook</p>
               </FacebookShareButton>
             </div>
@@ -79,43 +52,48 @@ class ChooseSocialNetwork extends React.Component {
                                   title={postTitle}
                                   hashtags={this.props.item.tags}
               >
-                <TwitterIcon size={42} round={false} />
+                <TwitterIcon size={42} round={true} />
                 <p>Twitter</p>
               </TwitterShareButton>
+              <div className="custom-border_csn" />
             </div>
             <div className="soc-network-item_csn">
               <PinterestShareButton url={shareAdress}
-                               description={this.props.item.description}
-                               media={this.props.item.media[0].url}
+                                    description={postTitle}
+                                    media={this.props.item.media[0].url}
               >
-                <PinterestIcon size={42} round={false}/>
+                <PinterestIcon size={42} round={true}/>
                 <p>Pinterest</p>
               </PinterestShareButton>
+              <div className="custom-border_csn" />
             </div>
             <div className="soc-network-item_csn">
               <VKShareButton url={shareAdress}
                              title={postTitle}
                              image={this.props.item.media[0].url}
               >
-                <VKIcon size={42} round={false}/>
+                <VKIcon size={42} round={true}/>
                 <p>VK</p>
               </VKShareButton>
+              <div className="custom-border_csn" />
             </div>
             <div className="soc-network-item_csn">
               <LinkedinShareButton url={shareAdress}
                                    title={postTitle}
               >
-                <LinkedinIcon size={42} round={false}/>
+                <LinkedinIcon size={42} round={true}/>
                 <p>Linkedin</p>
               </LinkedinShareButton>
+              <div className="custom-border_csn" />
             </div>
             <div className="soc-network-item_csn">
               <RedditShareButton url={shareAdress}
                                  title={postTitle}
               >
-                <RedditIcon size={42} round={false}/>
+                <RedditIcon size={42} round={true} iconBgStyle={{fill: 'ff3f18'}}/>
                 <p>Reddit</p>
               </RedditShareButton>
+              <div className="custom-border_csn" />
             </div>
           </div>
         </div>

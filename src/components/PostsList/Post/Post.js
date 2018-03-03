@@ -6,7 +6,7 @@ import Flag from './Flag/Flag';
 import ShowIf from '../../Common/ShowIf';
 import PostContextMenu from '../../PostContextMenu/PostContextMenu';
 import {UserLinkFunc} from '../../Common/UserLinkFunc';
-import constants from '../../../common/constants';
+import Constants from '../../../common/constants';
 import Tags from './Tags/Tags';
 import Vote from './Vote/Vote';
 import PostModal from '../../PostModal/PostModal';
@@ -51,16 +51,17 @@ class Post extends React.Component {
   }
 
   render() {
-    if (!this.props || !this.props.imgUrl) {
+    if (!this.props || !this.props.imgUrl || this.props.body === Constants.DELETE.PUTATIVE_DELETED_POST) {
       return null;
     }
-    let itemImage = this.props.imgUrl || constants.NO_IMAGE;
-    let authorImage = this.props.avatar || constants.NO_AVATAR;
+    let itemImage = this.props.imgUrl || Constants.NO_IMAGE;
+    let authorImage = this.props.avatar || Constants.NO_AVATAR;
 
     const authorLink = `/@${this.props.author}`;
     const cardPhotoStyles = {
       backgroundImage: 'url(' + itemImage + ')',
     };
+
     return (
       <div className="item-wrap">
         <div className="post-card" style={{position: 'relative'}}>
@@ -110,9 +111,9 @@ class Post extends React.Component {
             <div className="card-wrap">
               <div className="card-controls clearfix">
                 <div className="buttons-row">
-                  <Vote postIndex={this.props.index}/>
+                  <Vote postIndex={this.props.index} commentLoader={this.props.commentLoader}/>
                   <ShowIf show={this.props.authUser !== this.props.author}>
-                    <Flag postIndex={this.props.index}/>
+                    <Flag postIndex={this.props.index} commentLoader={this.props.commentLoader}/>
                   </ShowIf>
                 </div>
                 <div className="wrap-counts clearfix">
@@ -138,13 +139,16 @@ class Post extends React.Component {
 }
 
 const mapStateToProps = (state, props) => {
-  const media = state.posts[props.index].media[0];
-  let imgUrl = media['thumbnails'] ? media['thumbnails'][1024] : media.url;
-  return {
-    ...state.posts[props.index],
-    authUser: state.auth.user,
-    imgUrl
-  };
+  if (state.posts[props.index]) {
+    const media = state.posts[props.index].media[0];
+    let imgUrl = media['thumbnails'] ? media['thumbnails'][1024] : media.url;
+    return {
+      ...state.posts[props.index],
+      authUser: state.auth.user,
+      commentLoader: state.postModal.needsCommentFormLoader,
+      imgUrl
+    };
+  }
 };
 
 const mapDispatchToProps = (dispatch) => {

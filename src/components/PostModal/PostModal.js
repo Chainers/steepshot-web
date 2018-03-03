@@ -468,11 +468,11 @@ class PostModal extends React.Component {
                   </div>
                   <ShowIf show={this.props.authUser !== this.props.post.author}>
                     <div className="button_pos-mod">
-                      <Flag postIndex={this.props.currentIndex}/>
+                      <Flag postIndex={this.props.currentIndex} commentLoader={this.props.needsCommentFormLoader}/>
                     </div>
                   </ShowIf>
                   <div className="button_pos-mod">
-                    <Vote postIndex={this.props.currentIndex}/>
+                    <Vote postIndex={this.props.currentIndex} commentLoader={this.props.needsCommentFormLoader}/>
                   </div>
                 </div>
               </div>

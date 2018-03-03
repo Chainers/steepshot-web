@@ -78,7 +78,6 @@ export function imageRotate(image) {
     if (!isValidImageSize(dispatch, imageSize)) {
       return;
     }
-
     dispatch({
       type: 'EDIT_POST_ROTATE_IMAGE',
       rotate
@@ -240,6 +239,7 @@ const MAX_AMOUNT_TAGS = 19;
 function getValidTagsString(str) {
   let result = str.replace(/^\s+/g, '');
   result = result.replace(/\s\s/g, ' ');
+  result = result.replace(/[^\w\s]+/g, '');
   result = result.replace(new RegExp(`((\\s[^\\s]+){${MAX_AMOUNT_TAGS - 1}}).*`), '$1');
   result = result.replace(new RegExp(`(([^\\s]{${MAX_TAG_LENGTH}})[^\\s]+).*`), '$2');
   return result;
@@ -333,8 +333,8 @@ function getCanvasWithImage(image, rotate) {
 function isValidImageSize(dispatch, imageSize) {
   if (imageSize.width < constants.IMAGE.MIN_WIDTH
     || imageSize.height < constants.IMAGE.MIN_HEIGHT) {
-    const message = 'Photo size should be more then ' + constants.IMAGE.MIN_WIDTH + 'x' + constants.IMAGE.MIN_HEIGHT
-      + '. Yours photo has ' + imageSize.width + 'x' + imageSize.height + '.';
+    const message = 'Photo size should be more than ' + constants.IMAGE.MIN_WIDTH + 'x' + constants.IMAGE.MIN_HEIGHT
+      + '. Your photo has ' + imageSize.width + 'x' + imageSize.height + '.';
     dispatch(setEditPostImageError(message));
     return false;
   }

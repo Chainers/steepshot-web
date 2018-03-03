@@ -39,7 +39,7 @@ class Header extends React.Component {
     this.forResize();
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
+  shouldComponentUpdate(nextProps) {
     if (this.refs[this.props.location.pathname]) $(
       this.refs[this.props.location.pathname]).removeClass('active');
     if (this.refs[nextProps.location.pathname]) $(
@@ -74,7 +74,7 @@ class Header extends React.Component {
 
   searchHandleChange(e) {
     let value = e.target.value.toLowerCase();
-    this.setState({searchValue: value});
+    this.setState({searchValue: value.replace(/[^\w-.]+/g, '')});
   }
 
   forResize() {
@@ -150,7 +150,7 @@ class Header extends React.Component {
                               className="btn btn-default btn-xs btn-create">
                           Create post
                         </Link>
-                        <Link to="/createPost" type="button"
+                        <Link to="/editPost" type="button"
                               className="btn btn-default btn-create-mob"
                               onClick={() => {jqApp.mobileMenu._menuHide();}}
                         />

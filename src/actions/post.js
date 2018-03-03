@@ -59,16 +59,11 @@ export function deletePost(postIndex) {
       return false;
     }
     sessionStorage.setItem('voteQueue', 'true');
-
     dispatch(sendDeletePost(postIndex));
-
     const callback = (err, success) => {
       sessionStorage.setItem('voteQueue', 'false');
-
       if (success) {
-
         dispatch(successDeletePost(postIndex));
-
         let text = 'The post has been successfully deleted. If you still see your post, please give it a few minutes to sync from the blockchain';
         jqApp.pushMessage.open(text);
       } else if (err) {
@@ -87,7 +82,6 @@ export function deletePost(postIndex) {
         //     jqApp.pushMessage.open(text);
         //   }
         // };
-
         // Steem.createPost(postingKey, null, username, null, null, deletedFile, nullCreateDeleteCallback);
       }
     };

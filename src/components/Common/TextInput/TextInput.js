@@ -55,7 +55,6 @@ class TextInput extends React.Component {
     if (newValue !== this.props.text) {
       this._updateTextValue(newValue);
     }
-
   }
 
   _removeInvalidCharacters(str) {

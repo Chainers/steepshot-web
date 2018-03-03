@@ -3,13 +3,13 @@ import {connect} from 'react-redux';
 import Modal from './Modal/Modal';
 import {withRouter} from 'react-router-dom';
 import {closeAllModals} from '../../actions/modal';
+import {getBodyParams} from '../../actions/bodyParams';
 
 class Modals extends React.Component {
 
   constructor(props) {
     super(props);
 
-    this.prevDefault = this.prevDefault.bind(this);
   }
 
   componentWillMount() {
@@ -28,24 +28,29 @@ class Modals extends React.Component {
     }
   };
 
-  componentWillReceiveProps(nextProps) {
-    // TODO should be removed after fixed body scroll on ios
-    // console.log(!!navigator.platform && /iPad|iPhone|iPod/.test(navigator.platform));
-    // if (Object.keys(this.props.modals).length == 0 && Object.keys(nextProps.modals).length > 0) {
-    //   this.props.getBodyParams(window.pageYOffset);
-    // }
-    if (Object.keys(nextProps.modals).length > 0) {
-      document.body.classList.add('no-scroll-iphone');
-      //document.body.style.top = -nextProps.bodyParams.offsetTop + 'px';
-    } else {
-      document.body.classList.remove('no-scroll-iphone');
-      //document.body.style.top = '';
-      //window.scrollTo(0, nextProps.bodyParams.offsetTop);
+  checkOpSystem(nextProps) {
+    if (!!navigator.platform && /iPad|iPhone|iPod/.test(navigator.platform)) {
+      if (Object.keys(this.props.modals).length === 0 && Object.keys(nextProps.modals).length > 0) {
+        this.props.getBodyParams(window.pageYOffset);
+      }
+      if (Object.keys(nextProps.modals).length > 0) {
+        document.body.classList.add('no-scroll-iphone');
+        document.body.style.top = -nextProps.bodyParams.offsetTop + 'px';
+      } else {
+        document.body.classList.remove('no-scroll-iphone');
+        document.body.style.top = '';
+        window.scrollTo(0, nextProps.bodyParams.offsetTop);
+      }
     }
   }
 
-  prevDefault(e) {
-    e.preventDefault(e);
+  componentWillReceiveProps(nextProps) {
+    this.checkOpSystem(nextProps);
+    if (Object.keys(nextProps.modals).length > 0) {
+      document.body.classList.add('overflow--hidden');
+    } else {
+      document.body.classList.remove('overflow--hidden');
+    }
   }
 
   render() {
@@ -72,6 +77,9 @@ const mapDispatchToProps = (dispatch) => {
   return {
     closeAllModals: () => {
       dispatch(closeAllModals());
+    },
+    getBodyParams: (offsetTop) => {
+      dispatch(getBodyParams(offsetTop));
     }
   };
 };

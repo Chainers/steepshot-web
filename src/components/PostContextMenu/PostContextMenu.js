@@ -163,17 +163,7 @@ class PostContextMenu extends React.Component {
     let tmp;
     let author = this.props.index.match(/@[\w-.]+/)[0];
     if (author == `@${this.props.username}`) {
-      tmp = [
-        /*TODO uncomment when will be implemented delete*/
-        {
-          img: '/static/images/postContextMenu/deleteTrue.svg',
-          revertImg: '/static/images/postContextMenu/deleteFalse.svg',
-          alt: 'Delete',
-          callback: this.deletePost.bind(this),
-          hasDelimiter: true,
-        }
-      ];
-
+      tmp = [];
       if (new Date(this.props.item['cashout_time']) > new Date()) {
         tmp.push({
             img: '/static/images/postContextMenu/editTrue.svg',
@@ -181,9 +171,15 @@ class PostContextMenu extends React.Component {
             alt: 'Edit',
             callback: this.editPost.bind(this),
             hasDelimiter: true,
-          })
+          });
+        tmp.push({
+            img: '/static/images/postContextMenu/deleteTrue.svg',
+            revertImg: '/static/images/postContextMenu/deleteFalse.svg',
+            alt: 'Delete',
+            callback: this.deletePost.bind(this),
+            hasDelimiter: true,
+          });
       }
-
     } else {
       tmp = [
         {
@@ -192,7 +188,7 @@ class PostContextMenu extends React.Component {
           alt: this.props.item.flag ? 'Unflag this' : 'Flag this' ,
           callback: this.toggleFlag.bind(this),
           hasDelimiter: true,
-        }, /* TODO uncomment when will be implemented delete
+        }, /* TODO uncomment when will be implemented hide
         {
           img: '/static/images/postContextMenu/hideTrue.svg',
           revertImg: '/static/images/postContextMenu/hideFalse.svg',
