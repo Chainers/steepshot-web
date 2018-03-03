@@ -160,6 +160,10 @@ export default {
       ENTER: 13
     },
 
+    DELETE: {
+      PUTATIVE_DELETED_POST: 'https://steemitimages.com/DQmd4wyZvtAUifJDLZD9vaqek17S1cUhN3PyEbFMMMgLW8o/Steepshot_footer2.PNG'
+    },
+
     COMMENT_ERROR_MESSAGE : 'You can only create comments once per 20 seconds',
     COMMENT_SUCCESS_MESSAGE : 'Comment has been successfully added',
 
@@ -172,5 +176,7 @@ export default {
     FOLLOW_REQUEST_ERROR: 'Something went wrong, please, try again later',
 
     POST_DESRIPTION_MAXLENGTH : 120,
-    POST_LIKED_BY : 'Post has been rated by these users'
+    POST_LIKED_BY : 'Post has been rated by these users',
+
+    WAIT_FINISHING_TRANSACTION: 'There\'s unfinished transaction, please wait'
 }

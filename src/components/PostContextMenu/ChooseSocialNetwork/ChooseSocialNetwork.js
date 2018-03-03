@@ -59,8 +59,8 @@ class ChooseSocialNetwork extends React.Component {
             </div>
             <div className="soc-network-item_csn">
               <PinterestShareButton url={shareAdress}
-                               description={this.props.item.description}
-                               media={this.props.item.media[0].url}
+                                    description={postTitle}
+                                    media={this.props.item.media[0].url}
               >
                 <PinterestIcon size={42} round={true}/>
                 <p>Pinterest</p>

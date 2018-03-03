@@ -39,7 +39,7 @@ class Header extends React.Component {
     this.forResize();
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
+  shouldComponentUpdate(nextProps) {
     if (this.refs[this.props.location.pathname]) $(
       this.refs[this.props.location.pathname]).removeClass('active');
     if (this.refs[nextProps.location.pathname]) $(
@@ -74,7 +74,7 @@ class Header extends React.Component {
 
   searchHandleChange(e) {
     let value = e.target.value.toLowerCase();
-    this.setState({searchValue: value});
+    this.setState({searchValue: value.replace(/[^\w-.]+/g, '')});
   }
 
   forResize() {
