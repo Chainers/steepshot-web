@@ -74,7 +74,7 @@ class Header extends React.Component {
 
   searchHandleChange(e) {
     let value = e.target.value.toLowerCase();
-    this.setState({searchValue: value.replace(/[^\w-.]+/g, '')});
+    this.setState({searchValue: value.replace(/[^\w-.]/g, '')});
   }
 
   forResize() {

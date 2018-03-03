@@ -592,22 +592,24 @@ class PostModal extends React.Component {
 const mapStateToProps = (state) => {
   let currentIndex = state.postModal.currentIndex;
   let post = state.posts[currentIndex];
-  let media = post.media[0];
-  let imgUrl = media.url;
-  if (document.documentElement.clientWidth <= 1024 && media['thumbnails'] && media['thumbnails'][1024]) {
+  if (post) {
+    let media = post.media[0];
+    let imgUrl = media.url;
+    if (document.documentElement.clientWidth <= 1024 && media['thumbnails'] && media['thumbnails'][1024]) {
       imgUrl = media['thumbnails'][1024];
+    }
+    let postList = state.postsList[state.postModal.point];
+    return {
+      postList,
+      imgUrl,
+      post,
+      ...state.postModal,
+      isUserAuth: state.auth.user && state.auth.postingKey,
+      authUser: state.auth.user,
+      firstPost: postList.posts[0] === currentIndex,
+      lastPost: postList.offset === currentIndex
+    };
   }
-  let postList = state.postsList[state.postModal.point];
-  return {
-    postList,
-    imgUrl,
-    post,
-    ...state.postModal,
-    isUserAuth: state.auth.user && state.auth.postingKey,
-    authUser: state.auth.user,
-    firstPost: postList.posts[0] === currentIndex,
-    lastPost: postList.offset === currentIndex
-  };
 };
 
 const mapDispatchToProps = (dispatch) => {
