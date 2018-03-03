@@ -2,13 +2,19 @@ import React from 'react';
 
 export function documentTitle() {
    let title = location.pathname.replace('/', '');
-   if (title == 'signin') {
+   if (title === 'signin') {
      title = 'sign in';
    }
-   if (title == '*') {
+   if (title === '*') {
      title = '404 error';
    }
-   let titleArr = title.split('');
+   if (title.match(/editPost\/[\w\W]+/g)) {
+     title = 'Edit post';
+   }
+  if (title.match(/editPost/g)) {
+    title = 'Create post';
+  }
+  let titleArr = title.split('');
 
    let capitalLetter = title.search(/[A-Z]/g);
    if (capitalLetter != -1) {

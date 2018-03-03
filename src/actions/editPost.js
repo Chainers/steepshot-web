@@ -239,6 +239,7 @@ const MAX_AMOUNT_TAGS = 19;
 function getValidTagsString(str) {
   let result = str.replace(/^\s+/g, '');
   result = result.replace(/\s\s/g, ' ');
+  result = result.replace(/[^\w\s]+/g, '');
   result = result.replace(new RegExp(`((\\s[^\\s]+){${MAX_AMOUNT_TAGS - 1}}).*`), '$1');
   result = result.replace(new RegExp(`(([^\\s]{${MAX_TAG_LENGTH}})[^\\s]+).*`), '$2');
   return result;

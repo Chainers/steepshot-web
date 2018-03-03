@@ -8,6 +8,7 @@ import ShowIf from "../Common/ShowIf";
 import utils from "../../utils/utils";
 import constants from "../../common/constants";
 import LoadingSpinner from "../LoadingSpinner";
+import {documentTitle} from "../../components/DocumentTitle";
 
 class EditPost extends React.Component {
 
@@ -18,6 +19,7 @@ class EditPost extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    documentTitle();
     if (this.props.postId !== nextProps.postId) {
       this.props.setInitDataForEditPost(nextProps.username, nextProps.postId);
     }
@@ -29,6 +31,10 @@ class EditPost extends React.Component {
 
   componentWillUnmount() {
     this.props.editClearAll();
+  }
+
+  componentDidMount() {
+    documentTitle();
   }
 
   imageChanged(event) {
@@ -81,7 +87,6 @@ class EditPost extends React.Component {
   }
 
   render() {
-
     return (
       <div className="wrapper_edi-pos">
         <ShowIf show={this.props.loading}>
