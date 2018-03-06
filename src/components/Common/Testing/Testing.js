@@ -1,5 +1,5 @@
 import React from 'react';
-import EditPost from "../../EditPost/EditPost";
+import Timer from "../Timer/Timer";
 
 class Testing extends React.Component {
 
@@ -9,8 +9,9 @@ class Testing extends React.Component {
 
   render() {
     return (
-      <EditPost url="/alcohol/@dmitryorelopt/20180115t114535125z-post"/>
-
+      <div className="test">
+        <Timer waitingTime={100000000}/>
+      </div>
     );
   }
 }
