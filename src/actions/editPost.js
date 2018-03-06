@@ -297,7 +297,7 @@ function checkTimeAfterUpdatedLastPost() {
         deltaTime = (new Date().getTime() - new Date(response.results[0].created).getTime()) / 1000 / 60;
       }
       if (deltaTime < MIN_MINUTES_FOR_CREATING_NEW_POST) {
-        jqApp.pushMessage.open("You can only create posts 5 minutes after the previous one.");
+        jqApp.pushMessage.open('You can only create posts 5 minutes after the previous one.');
         reject();
       } else {
         resolve();

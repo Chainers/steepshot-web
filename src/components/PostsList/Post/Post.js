@@ -51,7 +51,7 @@ class Post extends React.Component {
   }
 
   render() {
-    if (!this.props || !this.props.imgUrl || this.props.body === Constants.DELETE.PUTATIVE_DELETED_POST) {
+    if (!this.props || !this.props.imgUrl) {
       return null;
     }
     let itemImage = this.props.imgUrl || Constants.NO_IMAGE;

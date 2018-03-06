@@ -297,8 +297,33 @@ class Steem {
         return response;
       })
   }
-}
 
+  editDelete(title, tags, description, permlink, parentPerm) {
+    let json_metadata = {
+      tags: tags,
+      app: 'steepshot',
+    };
+    const operation = [constants.OPERATIONS.COMMENT, {
+      parent_author: '',
+      parent_permlink: parentPerm,
+      author: _getUserName(),
+      permlink,
+      title,
+      description,
+      body: '*deleted*',
+      json_metadata: JSON.stringify(json_metadata)
+    }];
+    return _sendToBlockChain(operation, false, false)
+      .then(response => {
+        const data = JSON.stringify({
+          username: _getUserName(),
+          error: ''
+        });
+        logDeletedPost(_getUserName(), permlink, data);
+        return response;
+      })
+  }
+}
 
 function _preCompileTransaction(operation) {
   return steem.broadcast._prepareTransaction({
@@ -331,8 +356,10 @@ function _fileUpload(operation, file) {
 
 function _sendToBlockChain(operation, prepareData, beneficiaries) {
   return new Promise((resolve, reject) => {
-    operation[1].body = prepareData.body;
-    operation[1].json_metadata = JSON.stringify(prepareData.json_metadata);
+    if (prepareData) {
+      operation[1].body = prepareData.body;
+      operation[1].json_metadata = JSON.stringify(prepareData.json_metadata);
+    }
     let operations;
     if (beneficiaries) {
       operations = [operation, beneficiaries];
@@ -354,7 +381,7 @@ function _sendToBlockChain(operation, prepareData, beneficiaries) {
       console.error(err);
       reject(new Error('Somethings went wrong.'));
     };
-
+    console.log(operations);
     steem.broadcast.sendAsync(
       {operations, extensions: []},
       {posting: _getUserPostingKey()}, callback
@@ -381,7 +408,7 @@ function _preparePost(media, description, tags, permlink) {
   }).then(response => response.json());
 }
 
-function _getPermLink(title) {
+function _getPermLink() {
   let today = new Date();
   const permLink = 'web' + '-' + today.getFullYear() + '-' + today.getMonth() + '-' + today.getDay()
     + '-' + today.getHours() + '-' + today.getMinutes() + '-' + today.getSeconds();

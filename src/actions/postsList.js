@@ -1,5 +1,6 @@
 import {getStore} from '../store/configureStore';
-import {getPosts} from "../services/posts";
+import {getPosts} from '../services/posts';
+import Constants from '../common/constants';
 
 export function initPostsList(options) {
   return {
@@ -63,14 +64,14 @@ export function getPostsList(point) {
       let hasMore = newPosts.length === LIMIT;
       newPosts = removeDuplicate(newPosts);
       newPosts = removeOldDuplicate(statePoint.posts, newPosts);
-
-      let posts = newPosts.map((post, index) => {
+      newPosts = removeDeleted(response, newPosts);
+      let testPosts = newPosts[0];
+      response = newPosts[1];
+      let posts = testPosts.map((post) => {
         return post.url
       });
-      if (statePoint.maxPosts <=
-        posts.length + statePoint.posts.length) {
-        posts = posts
-          .slice(0, statePoint.maxPosts - statePoint.posts.length);
+      if (statePoint.maxPosts <= posts.length + statePoint.posts.length) {
+        posts = posts.slice(0, statePoint.maxPosts - statePoint.posts.length);
         hasMore = false;
       }
       let pointOptions = {
@@ -82,9 +83,9 @@ export function getPostsList(point) {
       };
 
       let postsObject = {};
-      let postsLength = newPosts.length;
+      let postsLength = testPosts.length;
       for (let i = 0; i < postsLength; i++) {
-        let post = Object.assign({}, newPosts[i], {
+        let post = Object.assign({}, testPosts[i], {
           flagLoading: false,
           voteLoading: false,
           postDeleting: false
@@ -92,10 +93,10 @@ export function getPostsList(point) {
         post.tags = (post.tags instanceof Array)
           ? post.tags
           : post.tags.split(',');
-        postsObject[newPosts[i].url] = post;
+        postsObject[testPosts[i].url] = post;
       }
-      newPosts = postsObject;
-      dispatch(getPostsListSuccess(pointOptions, newPosts));
+      testPosts = postsObject;
+      dispatch(getPostsListSuccess(pointOptions, testPosts));
     });
   };
 }
@@ -126,4 +127,16 @@ function removeDuplicate(posts) {
     }
   }
   return posts;
+}
+
+function removeDeleted(response, posts) {
+  if (posts.length) {
+    for (let i = 0; i < posts.length; i++) {
+      if (posts[i].body === Constants.DELETE.PUTATIVE_DELETED_POST) {
+        response.offset = posts[i - 1].url;
+        posts.splice(i, 1);
+      }
+    }
+  }
+  return [posts, response];
 }
