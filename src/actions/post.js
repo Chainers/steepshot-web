@@ -51,7 +51,7 @@ export function deletePost(postIndex) {
   return function(dispatch) {
     let state = getStore().getState();
     let post = state.posts[postIndex];
-    let title = post.title, tags = post.tags, description = post.description, parentPerm = post.category, media = post.media[0];
+    let title = post.title, tags = post.tags, description = post.description, parentPerm = post.category;
     let username = state.auth.user;
     let postingKey = state.auth.postingKey;
     const urlObject = postIndex.split('/');
@@ -68,7 +68,7 @@ export function deletePost(postIndex) {
         dispatch(successDeletePost(postIndex));
         jqApp.pushMessage.open(Constants.DELETE.DELETE_SUCCESS);
       } else if (err) {
-        Steem.testDelete(title, tags, description, permlink, parentPerm, media).then( () => {
+        Steem.editDelete(title, tags, description, permlink, parentPerm).then( () => {
           jqApp.pushMessage.open(Constants.DELETE.DELETE_SUCCESS);
           dispatch(successDeletePost(postIndex));
         }).catch( (err) => {

@@ -215,9 +215,11 @@ class UserProfile extends React.Component {
 }
 
 const mapStateToProps = (state) => {
+  let postsInfo = state.postsList[Object.keys(state.postsList)[5]];
   return {
     localization: state.localization,
     user: state.auth.user,
+    postsNumber: postsInfo ? postsInfo.length : 0
   };
 };
 

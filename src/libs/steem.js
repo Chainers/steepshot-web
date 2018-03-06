@@ -264,39 +264,6 @@ class Steem {
       })
   }
 
-
-
-  testDelete(title, tags, description, permlink, parentPerm, media) {
-    let json_metadata = {
-      tags: tags,
-      app: 'steepshot/0.1.2.10',
-      media,
-      ipfs_photo: media.ipfs_hash,
-      image: [media.url]
-    };
-    const operation = [constants.OPERATIONS.COMMENT, {
-      parent_author: '',
-      parent_permlink: parentPerm,
-      author: _getUserName(),
-      permlink,
-      title,
-      description,
-      body: '*deleted*',
-      json_metadata: JSON.stringify(json_metadata)
-    }];
-    return _testToBlockChain(operation)
-      .then(response => {
-        const data = JSON.stringify({
-          username: _getUserName(),
-          error: ''
-        });
-        logPost(data);
-        return response;
-      })
-  }
-
-
-
   createPost(tags, title, description, file) {
     tags = _getValidTags(tags);
     const category = tags[0];
@@ -330,33 +297,33 @@ class Steem {
         return response;
       })
   }
-}
 
-function _testToBlockChain(operation) {
-  return new Promise((resolve, reject) => {
-    let operations = [operation];
-    const callback = (err, success) => {
-      if (success) {
-        resolve(success);
-        return;
-      }
-      if (err.data) {
-        switch (err.data.code) {
-          case 10:
-            reject(new Error('You can only create posts 5 minutes after the previous one.'));
-            return;
-        }
-      }
-      console.error(err);
-      reject(new Error('Somethings went wrong.'));
+  editDelete(title, tags, description, permlink, parentPerm) {
+    let json_metadata = {
+      tags: tags,
+      app: 'steepshot',
     };
-    steem.broadcast.sendAsync(
-      {operations, extensions: []},
-      {posting: _getUserPostingKey()}, callback
-    );
-  })
+    const operation = [constants.OPERATIONS.COMMENT, {
+      parent_author: '',
+      parent_permlink: parentPerm,
+      author: _getUserName(),
+      permlink,
+      title,
+      description,
+      body: '*deleted*',
+      json_metadata: JSON.stringify(json_metadata)
+    }];
+    return _sendToBlockChain(operation, false, false)
+      .then(response => {
+        const data = JSON.stringify({
+          username: _getUserName(),
+          error: ''
+        });
+        logDeletedPost(_getUserName(), permlink, data);
+        return response;
+      })
+  }
 }
-
 
 function _preCompileTransaction(operation) {
   return steem.broadcast._prepareTransaction({
@@ -389,8 +356,10 @@ function _fileUpload(operation, file) {
 
 function _sendToBlockChain(operation, prepareData, beneficiaries) {
   return new Promise((resolve, reject) => {
-    operation[1].body = prepareData.body;
-    operation[1].json_metadata = JSON.stringify(prepareData.json_metadata);
+    if (prepareData) {
+      operation[1].body = prepareData.body;
+      operation[1].json_metadata = JSON.stringify(prepareData.json_metadata);
+    }
     let operations;
     if (beneficiaries) {
       operations = [operation, beneficiaries];
@@ -412,7 +381,7 @@ function _sendToBlockChain(operation, prepareData, beneficiaries) {
       console.error(err);
       reject(new Error('Somethings went wrong.'));
     };
-
+    console.log(operations);
     steem.broadcast.sendAsync(
       {operations, extensions: []},
       {posting: _getUserPostingKey()}, callback

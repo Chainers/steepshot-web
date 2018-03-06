@@ -156,10 +156,10 @@ class PostModal extends React.Component {
         {this.lowNSFWFilter()}
         <button className="btn btn-default btn-xs"
                 onClick={() => this.props.copyToClipboard(
-                    document.location.origin + '/post' + this.props.post.url.replace(/\/\w+/, ''),
+                    document.location.origin + '/post' + this.props.post.url.replace(/\/[\w-.]+/, ''),
                 )}>Copy link
         </button>
-        <ShowIf show={!this.props.style.isFullScreen && !this.props.fullScreenMode}>
+        <ShowIf show={!this.props.style.isFullScreen && !this.props.fullScreenMode && !this.props.singlePost}>
             <div className="full-screen-button_pos-mod"
                  onClick={this.setFullScreen.bind(this, true)}
             >
@@ -203,9 +203,9 @@ class PostModal extends React.Component {
           />
           <button className="btn btn-default btn-xs full-screen-share_pos-mod"
                   onClick={() => this.props.copyToClipboard(
-                    document.location.origin + '/post' + this.props.post.url.replace(/\/\w+/, ''),
-                  )}>Copy link
-          </button>
+                    document.location.origin + '/post' + this.props.post.url.replace(/\/[\w-.]+/, '')
+                  )}
+          >Copy link</button>
         </div>
         <ShowIf show={!this.fullImage || !this.fullImage.complete}>
           <div className="before-load-full-screen_pos-mod">
@@ -277,6 +277,9 @@ class PostModal extends React.Component {
   }
 
   setFullScreen(isOpen) {
+    if (this.props.singlePost || this.props.style.isFullScreen) {
+      return;
+    }
     let timeoutID = null;
     if (isOpen) {
       window.addEventListener('mousemove', this.showFSNavigation);

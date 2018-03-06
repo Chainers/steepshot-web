@@ -32,7 +32,7 @@ class SinglePost extends React.Component {
     return (
       <div className="container_sin-pos">
         <div className="to-center_sin-pos">
-          <PostModal showClose={false}/>
+          <PostModal showClose={false} singlePost={true}/>
         </div>
       </div>
     );
