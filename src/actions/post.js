@@ -1,10 +1,10 @@
-import {getPostShaddow} from './posts';
+import {getPostShaddow} from '../services/posts';
 import Steem from '../libs/steem';
 import {getStore} from '../store/configureStore';
-import {debounce} from 'lodash';
 import {browserHistory} from 'react-router';
 import {initPostsList} from './postsList';
 import {initPostModal} from './postModal';
+import Constants from '../common/constants';
 
 export function addPosts(posts) {
   return {
@@ -50,6 +50,8 @@ function failureDeletePost(postIndex) {
 export function deletePost(postIndex) {
   return function(dispatch) {
     let state = getStore().getState();
+    let post = state.posts[postIndex];
+    let title = post.title, tags = post.tags, description = post.description, parentPerm = post.category;
     let username = state.auth.user;
     let postingKey = state.auth.postingKey;
     const urlObject = postIndex.split('/');
@@ -59,36 +61,20 @@ export function deletePost(postIndex) {
       return false;
     }
     sessionStorage.setItem('voteQueue', 'true');
-
     dispatch(sendDeletePost(postIndex));
-
     const callback = (err, success) => {
       sessionStorage.setItem('voteQueue', 'false');
-
       if (success) {
-
         dispatch(successDeletePost(postIndex));
-
-        let text = 'The post has been successfully deleted. If you still see your post, please give it a few minutes to sync from the blockchain';
-        jqApp.pushMessage.open(text);
+        jqApp.pushMessage.open(Constants.DELETE.DELETE_SUCCESS);
       } else if (err) {
-        let text = 'We are sorry... it\'s impossible to delete this post';
-        jqApp.pushMessage.open(text);
-        dispatch(failureDeletePost(postIndex));
-        // const nullCreateDeleteCallback = () => {
-        //   if (success) {
-        //     dispatch(successDeleteResponse(postIndex));
-        //     let text = 'The post has been successfully deleted. If you still see your post, please give it a few minutes to sync from the blockchain';
-        //     jqApp.pushMessage.open(text);
-        //   } else if (err) {
-        //     dispatch(failureDeleteResponse(postIndex));
-        //     console.log(err);
-        //     let text = 'We are sooorry... The post can\'t be deleted';
-        //     jqApp.pushMessage.open(text);
-        //   }
-        // };
-
-        // Steem.createPost(postingKey, null, username, null, null, deletedFile, nullCreateDeleteCallback);
+        Steem.editDelete(title, tags, description, permlink, parentPerm).then( () => {
+          jqApp.pushMessage.open(Constants.DELETE.DELETE_SUCCESS);
+          dispatch(successDeletePost(postIndex));
+        }).catch( (err) => {
+          dispatch(failureDeletePost(postIndex));
+          jqApp.pushMessage.open(err.message)
+        });
       }
     };
     Steem.deletePost(postingKey, username, permlink, callback);

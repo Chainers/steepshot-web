@@ -45,3 +45,30 @@
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
 }
+.cross-full-screen_modal {
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  top: 11px;
+  left: 11px;
+  background: url(/static/images/sprite_svg1910.svg) 8% 16.7% no-repeat;
+}
+.cross-wrapper_modal {
+  position: absolute;
+  right: 3px;
+  top: 14px;
+  width: 38px;
+  height: 38px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.cross-wrapper_modal:hover .cross-full-screen_modal {
+  background: url(/static/images/sprite_svg1910.svg) 6% 12.3% no-repeat;
+}
+
+@media (min-width: 1224px) {
+  .cross-wrapper_modal {
+    right: 27px;
+  }
+}

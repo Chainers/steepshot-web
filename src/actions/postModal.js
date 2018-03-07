@@ -83,3 +83,32 @@ export function previousPostModal(index) {
     dispatch(swapPostModal(newIndex))
   }
 }
+
+export function setFullScreen(isOpen, timeoutID) {
+  return (dispatch) => {
+    dispatch({
+      type: 'SET_FULL_SCREEN',
+      isOpen,
+      timeoutID
+    });
+  }
+}
+
+export function setFSNavigation(isVisible, timeoutID) {
+  return (dispatch) => {
+    dispatch({
+      type: 'SET_FULL_SCREEN_NAVIGATION',
+      isVisible,
+      timeoutID
+    })
+  }
+}
+
+export function postOffset(offset) {
+  return (dispatch) => {
+    dispatch({
+      type: 'SET_POST_OFFSET',
+      postOffset: offset
+    })
+  }
+}

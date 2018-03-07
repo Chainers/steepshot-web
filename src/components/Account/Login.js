@@ -1,8 +1,5 @@
 import React from 'react';
-import {
-  Link,
-  withRouter
-} from 'react-router-dom';
+import {withRouter} from 'react-router-dom';
 import { connect } from 'react-redux'
 import { login } from '../../actions/auth';
 import {
@@ -12,7 +9,6 @@ import {
   vkLogin,
   githubLogin
 } from '../../actions/oauth';
-import Messages from '../Messages';
 import LoadingSpinner from '../LoadingSpinner';
 import Constants from '../../common/constants';
 import { documentTitle } from '../DocumentTitle';
@@ -76,7 +72,7 @@ class Login extends React.Component {
         }, () => {
           jqApp.pushMessage.open(message);
         });
-      }
+      };
       login(this.state.userName.toLowerCase(), this.state.postingKey, this.props.history, this.props.dispatch, callback);
     });
   }
@@ -132,7 +128,6 @@ class Login extends React.Component {
 
   render() {
     let mainContainerClassName = "col-xs-12 col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3";
-    let test = 'container-fluid';
     if (this.state.needsLoader) {
       mainContainerClassName = mainContainerClassName + " blur-blocker";
     }

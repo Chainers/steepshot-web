@@ -29,21 +29,23 @@ class Comment extends React.Component {
   }
 
   componentDidMount() {
-    if (this.state.item && /<[\w\W]+>/.test(this.state.item.body)) {
-      let customComment = this.state.item.body.replace(/([>\s\b])(@[\w-.]+)/g, `$1<a href=\"/$2\">$2</a>`);
-      this.commentText.innerHTML = customComment;
-    }
+    this.commentsLayout();
+  }
+
+  commentsLayout() {
+    let safetyScript = this.state.item.body.replace(/<script>|<\/script>/g, '');
+    let newLine = safetyScript.replace(/\n/g, '<br>');
+    let replaceBotsLayout = newLine.replace(/(!)?\[([^\]]+)?\]/g, '');
+    let changeBotsLink = replaceBotsLayout.replace(/\((http(s)?:\/\/[\w\W]+?|www\.[\w\W]+?)\)/g, '$1');
+    let linkToImg = changeBotsLink.replace(
+      /(http(s)?:\/\/[\w\W]+?(\.png|\.gif|\.jpg|\.jpeg|\.tiff)(\?[\w\W]+?)?(?!"))/gi, '<img src="$1"/>');
+    let anyLinks = linkToImg.replace(/<a[\w\W]+?>([\w\W]+?)<\/a>/g, '$1');
+    let userLink = anyLinks.replace(/(@[\w-.]+\w)/g, '<a href="/$1" target="_blank">$1</a>');
+    this.commentText.innerHTML = userLink;
   }
 
   openLikesModal() {
-    let arr = this.state.item.url.split('');
-    for (let i = 0; i < arr.length; i++) {
-      if (arr[i] == '#') {
-        arr.splice(0, i + 1);
-      }
-    }
-    this.props.dispatch({ type : 'CLEAR_LIKES_INFO', url : `/${arr.join('')}` });
-    jqApp.openLikesModal($(document));
+
   }
 
   replyAuthor() {
@@ -74,8 +76,7 @@ class Comment extends React.Component {
       return (
         <div className="comment-controls clearfix">
           {reply}
-          <a
-            className="likes"
+          <a className="likes"
             onClick={this.openLikesModal.bind(this)}
           >{text}</a>
           <span className="pull-right">{money}</span>
@@ -110,9 +111,7 @@ class Comment extends React.Component {
           </div>
         </div>
         <div className="comment-text">
-          <div ref={ref => {this.commentText = ref}} className="comment-text_comment">
-            {UserLinkFunc(null, this.state.item.body)}
-          </div>
+          <div ref={ref => {this.commentText = ref}} className="comment-text_comment"/>
           <VouteComponent
             key="vote"
             item={this.props.item}

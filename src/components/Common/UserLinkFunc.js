@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 
 export function UserLinkFunc(bool, fromState) {
   let state = null;
@@ -7,13 +6,14 @@ export function UserLinkFunc(bool, fromState) {
     if (bool) {
       state = fromState;
     } else {
-      let descriptionStart = fromState.replace(/(<\w+>)+/, '');
-      state = descriptionStart.replace(/\n[\w\W]+/, '');
+      let descriptionStart = fromState.replace(/(<[\/\w]+>)+/g, '');
+      let detectBot = descriptionStart.replace(/!\[[\w\W]+/g, '');
+      state = detectBot
     }
   } else {
     state = fromState;
   }
-  if (state.match(/@\w+/g)) {
+  if (state.match(/@[\w-.]+/g)) {
     let arr = state.split(' ').map( (item, index) => {
       if (/@\w+\S/.test(item)) {
         let lowItem = item.toLowerCase();
@@ -33,13 +33,13 @@ export function UserLinkFunc(bool, fromState) {
                        null
                      }
                    </span>
-                   <Link to={`/${
+                   <a href={`/${
                      replaceDot
                      ?
                      replace2[0].replace(/\s(@\w+)\.\s+/g, '$1')
                      :
                      replace2[0].replace(/\s+/g, '')}`
-                   }>
+                   } target="_blank">
                      {
                        replaceDot
                        ?
@@ -51,7 +51,7 @@ export function UserLinkFunc(bool, fromState) {
                        :
                        replace2[0].replace(/\s+/g, '') + ' '
                      }
-                   </Link>
+                   </a>
                    <span>
                      {
                        replace4

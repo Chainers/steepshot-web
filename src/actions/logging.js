@@ -71,8 +71,7 @@ export function logFlag(author, permlink, data) {
     logCORS(url, options, 'flag');
 }
 
-export function logVoute(isVouteUp, author, permlink, data) {
-
+export function logVote(isVouteUp, author, permlink, data) {
     let vType = (isVouteUp) ? 'upvote' : 'downvote';
 
     const url = `${baseUrl}/log/post/${makePostId(author, permlink)}/${vType}`;
@@ -84,7 +83,6 @@ export function logVoute(isVouteUp, author, permlink, data) {
 }
 
 export function logPost(data) {
-
     const url = `${baseUrl}/log/post`;
 
     let options = baseCORSOptions;
@@ -94,7 +92,6 @@ export function logPost(data) {
 }
 
 export function logFollow(isFollowed, user, data) {
-
     let fType = (isFollowed) ? 'unfollow' : 'follow';
 
     const url = `${baseUrl}/log/user/${user}/${fType}`;

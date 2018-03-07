@@ -15,6 +15,10 @@ window.$ = window.jQuery = jQuery;
 
 const history = createBrowserHistory();
 
+export function getHistory() {
+  return history;
+}
+
 const store = configureStore();
 
 ReactDOM.render(

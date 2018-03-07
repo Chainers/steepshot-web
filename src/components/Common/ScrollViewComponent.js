@@ -25,12 +25,16 @@ class ScrollViewComponent extends React.Component {
         $target.css('height', $target.height());
     }
 
-    renderScrollbarContainer({ style, ...props }) {
-        return  <div className={this.state.scrollViewModifier || null} style={{...style}} {...props} />
+    renderScrollbarContainer({style, ...props}) {
+        let styles;
+        if (this.props.isMobile) {
+          styles = {...style};
+        }
+        return  <div className={this.state.scrollViewModifier || null} style={styles} {...props} />
     }
 
     render() {
-        let marginControl = null;
+        let marginControl = null, autoHeight;
         if (this.state.wrapperModifier == 'list-scroll_pos-mod') {
           if (this.state.isUserAuth) {
             marginControl = {marginBottom : MARGIN_COMMENTS_AUTH}
@@ -39,12 +43,16 @@ class ScrollViewComponent extends React.Component {
           }
         }
 
+        if (this.props.isMobile) {
+          autoHeight = this.state.autoHeight;
+        }
+
         return (
             <div className={this.state.wrapperModifier || null} style={marginControl} ref={ ref => {this.scrollFrame = ref} }>
                 <Scrollbars
                     ref={(ref) => this.scrollBar = ref}
                     renderView={this.renderScrollbarContainer.bind(this)}
-                    autoHeight={this.state.autoHeight}
+                    autoHeight={autoHeight}
                     autoHeightMin={this.state.autoHeightMin}
                     autoHeightMax={this.state.autoHeightMax}
                     autoHide={this.state.autoHide}

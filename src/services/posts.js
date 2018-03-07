@@ -1,4 +1,4 @@
-import RequestService from '../services/requestService';
+import RequestService from './requestService';
 import Constants from '../common/constants';
 import Promise from 'bluebird';
 
@@ -48,11 +48,6 @@ async function getItems(url, promiseName, needsDestroyPrevious, where) {
 export function getPosts(options, needsDestroyPrevious) {
   const url = RequestService.handlev1_1BaseRequestPosts(options.point, options.params);
   return getItems(url, Constants.PROMISES.GET_POSTS, needsDestroyPrevious, 'getPosts');
-}
-
-export function getPostsBySearch(options, needsDestroyPrevious) {
-  const url = RequestService.handlev1BaseRequestPosts(options.point, options.params);
-  return getItems(url, Constants.PROMISES.GET_POSTS, needsDestroyPrevious, 'getPostsBySearch');
 }
 
 export function getComments(options, needsDestroyPrevious) {

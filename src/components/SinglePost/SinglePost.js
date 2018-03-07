@@ -15,7 +15,8 @@ class SinglePost extends React.Component {
     let permlink = urlObject[urlObject.length - 1];
     let username = this.props.location.pathname.match(/\/@[\w-.]+\//)[0];
     const data = JSON.stringify({
-      action : 'share_post'
+      action : 'share_post',
+      error: ''
     });
     logSharePost(username.replace(/\/@([\w-.]+)\//, '$1'), permlink, data);
   }
@@ -31,7 +32,7 @@ class SinglePost extends React.Component {
     return (
       <div className="container_sin-pos">
         <div className="to-center_sin-pos">
-          <PostModal showClose={false}/>
+          <PostModal showClose={false} singlePost={true}/>
         </div>
       </div>
     );

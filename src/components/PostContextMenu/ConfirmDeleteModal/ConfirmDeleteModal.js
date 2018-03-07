@@ -9,13 +9,13 @@ class ConfirmDeleteModal extends React.Component {
   closeModal(e) {
     e.stopPropagation();
     this.props.closeModal();
-    this.props.deleteCallback(false);
+    this.props.modalsCallback(false);
   }
 
   closeAllModals(e) {
     e.stopPropagation();
     this.props.closeAllModals();
-    this.props.deleteCallback(true);
+    this.props.modalsCallback(true);
   }
 
   render() {

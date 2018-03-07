@@ -1,7 +1,7 @@
 import React from 'react';
 import {getUserProfile} from '../../actions/profile';
 import {withRouter} from 'react-router-dom';
-import {getFollowers, getFollowing} from '../../actions/posts';
+import {getFollowers, getFollowing} from '../../services/posts';
 import {connect} from 'react-redux';
 import FollowComponent from '../Posts/FollowComponent';
 import Constants from '../../common/constants';
@@ -89,6 +89,7 @@ class UserProfile extends React.Component {
     if (nextProps.username === this.state.authorName) {
       return;
     }
+    console.log(nextProps);
     this.setState({
       avatar: Constants.NO_AVATAR,
       authorName: nextProps.username,
@@ -98,6 +99,11 @@ class UserProfile extends React.Component {
         Constants.USERS_FILTERS.FOLLOWING.point, nextProps.username),
       followersPoint: this.insertUsername(
         Constants.USERS_FILTERS.FOLLOWERS.point, nextProps.username),
+      keys: [
+        {label: `${this.props.postsNumber} ${Constants.POSTS_FILTERS.POSTS_USER.label}`},
+        this.state.keys[1],
+        this.state.keys[2],
+      ]
     });
 
     this.getUserProfile(nextProps.username);
@@ -215,9 +221,11 @@ class UserProfile extends React.Component {
 }
 
 const mapStateToProps = (state) => {
+  let postsInfo = state.postsList[Object.keys(state.postsList)[5]];
   return {
     localization: state.localization,
     user: state.auth.user,
+    postsNumber: postsInfo ? postsInfo.length : 0
   };
 };
 

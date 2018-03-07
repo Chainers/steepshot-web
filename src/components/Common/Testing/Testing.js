@@ -1,6 +1,5 @@
 import React from 'react';
-import PostsList from '../../PostsList/PostsList';
-import Constants from '../../../common/constants';
+import EditPost from "../../EditPost/EditPost";
 
 class Testing extends React.Component {
 
@@ -10,16 +9,8 @@ class Testing extends React.Component {
 
   render() {
     return (
-      <div className="container-fluid">
-        <div className="row">
-          <div
-            className="col-lg-6 col-lg-offset-3 col-md-8 col-md-offset-2 col-sm-10 col-lg-offset-1 col-xs-12">
-            <div className="main-container_test">
-              <PostsList point={Constants.POSTS_FILTERS.POSTS_HOT.point}/>
-            </div>
-          </div>
-        </div>
-      </div>
+      <EditPost url="/alcohol/@dmitryorelopt/20180115t114535125z-post"/>
+
     );
   }
 }

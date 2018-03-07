@@ -1,6 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {toggleVote} from '../../../../actions/vote';
+import Constants from '../../../../common/constants';
 
 class Vote extends React.Component {
   constructor(props) {
@@ -8,7 +9,11 @@ class Vote extends React.Component {
   }
 
   toggleVote() {
-    this.props.toggleVote(this.props.postIndex);
+    if (this.props.commentLoader) {
+      jqApp.pushMessage.open(Constants.WAIT_FINISHING_TRANSACTION);
+      return;
+    }
+      this.props.toggleVote(this.props.postIndex);
   }
 
   render() {
@@ -30,6 +35,7 @@ class Vote extends React.Component {
 const mapStateToProps = (state, props) => {
   return {
     ...state.posts[props.postIndex],
+    ...props
   };
 };
 

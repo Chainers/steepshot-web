@@ -3,7 +3,6 @@ import constants from '../common/constants';
 import { getStore } from '../store/configureStore';
 
 const basev1_1Url = constants.URLS.baseUrl_v1_1;
-const basev1Url = constants.URLS.baseUrl_v1;
 
 class BaseRequestService {
     getDefaultPostsOptions() {
@@ -69,18 +68,6 @@ class BaseRequestService {
         }
 
         return '?' + optionsArray.join('&');
-    }
-
-    getv1Url() {
-        if (getStore().getState().auth.user){
-            return basev1Url + '/' + getStore().getState().auth.user
-        }
-
-        return baseUrl;
-    }
-
-    getBasev1Url() {
-        return basev1Url;
     }
 
     getBasev1_1Url() {

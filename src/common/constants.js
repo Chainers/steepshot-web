@@ -37,6 +37,11 @@ export default {
         defaultLimit: 17
     },
 
+    IMAGE: {
+      MIN_WIDTH: 640,
+      MIN_HEIGHT: 480
+    },
+
     EMPTY_QUERY : 'It\'s very strange, but we do not have anything yet for this query. Try to look for something else ...',
     EMPTY_QUERY_VOTERS : 'Still no one has rated this post ...',
 
@@ -144,6 +149,22 @@ export default {
         }
     ],
 
+    TEXT_INPUT_POINT : {
+        TITLE: 'title',
+        TAGS: 'tags',
+        DESCRIPTION: 'description'
+    },
+
+    KEYS: {
+      SPACE: 32,
+      ENTER: 13
+    },
+
+    DELETE: {
+      PUTATIVE_DELETED_POST: 'https://steemitimages.com/DQmd4wyZvtAUifJDLZD9vaqek17S1cUhN3PyEbFMMMgLW8o/Steepshot_footer2.PNG',
+      DELETE_SUCCESS: 'The post has been successfully deleted. If you still see your post, please give it a few minutes to sync from the blockchain'
+    },
+
     COMMENT_ERROR_MESSAGE : 'You can only create comments once per 20 seconds',
     COMMENT_SUCCESS_MESSAGE : 'Comment has been successfully added',
 
@@ -156,5 +177,7 @@ export default {
     FOLLOW_REQUEST_ERROR: 'Something went wrong, please, try again later',
 
     POST_DESRIPTION_MAXLENGTH : 120,
-    POST_LIKED_BY : 'Post has been rated by these users'
+    POST_LIKED_BY : 'Post has been rated by these users',
+
+    WAIT_FINISHING_TRANSACTION: 'There\'s unfinished transaction, please wait'
 }

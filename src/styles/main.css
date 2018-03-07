@@ -13,6 +13,10 @@ body {
   overflow: hidden;
 }
 
+.text--center {
+  text-align: center;
+}
+
 .item.nav-item a:hover {
   border-bottom: none !important;
 }
@@ -191,6 +195,16 @@ input.autofil--gray:-webkit-autofill {
   animation: spin 2s linear infinite;
 }
 
+.full-screen-loader {
+  width: 22px;
+  height: 22px;
+  border: 3px solid #f3f3f3;
+  border-top: 3px solid #d0021b;
+  border-radius: 50%;
+  -webkit-animation: spin 2s linear infinite;
+  animation: spin 2s linear infinite;
+}
+
 .loaderInComments {
   position: absolute;
   right: 14px;
@@ -279,10 +293,6 @@ h2.card-field__heading {
 .container-settings__content-wrapper {
   position: relative;
   padding-top: 80px;
-}
-
-.text--center {
-  text-align: center;
 }
 
 .settings-switcher {
@@ -499,7 +509,7 @@ h2.card-field__heading {
   }
 }
 
-@media screen and (max-width: 815px) {
+@media (max-width: 815px) {
   .card-field.about {
     max-width: none !important;
     margin: 0 !important;
@@ -543,6 +553,9 @@ h2.card-field__heading {
     width: 45px;
     right: 0;
     top: 0;
+  }
+  .empty-comment-image {
+    margin-top: 10px;
   }
 }
 
@@ -9091,7 +9104,7 @@ modal.modal-like .modal-header {
   content: " ";
   position: absolute;
   width: 100px;
-  height: 20px;
+  height: 22px;
   transform: translateX(-100px);
   background: linear-gradient(270deg, #fff 2%, transparent);
 }
@@ -9100,7 +9113,7 @@ modal.modal-like .modal-header {
   content: " ";
   position: absolute;
   width: 100px;
-  height: 20px;
+  height: 22px;
   background: white;
 }
 
@@ -9315,7 +9328,10 @@ modal.modal-like .modal-header {
   font: 12px OpenSans-Regular;
 }
 .no-scroll-iphone {
+  position: fixed;
   overflow: hidden;
+  height: 100%;
+  width: 100%;
 }
 .ov-scroll_modal {
   overflow-y: auto;
@@ -9329,4 +9345,23 @@ modal.modal-like .modal-header {
 .comment-head .user-wrap {
   padding: 15px 0;
 }
+.user-wrap .name {
+  width: 50%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 
+.empty-comment-image {
+  background: url(/static/images/cc-13.svg) center no-repeat;
+  width: 100%;
+  height: 100%;
+  min-height: 200px;
+}
+.empty-comments {
+  height: 100%;
+  width: 100%;
+}
+.empty-comments p {
+  text-align: center;
+  font: 20px OpenSans-Light;
+}
