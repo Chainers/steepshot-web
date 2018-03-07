@@ -18,7 +18,7 @@ export function getUserProfile(userName) {
 export function getFollowers(userName, offset) {
   const options = {
     offset: offset
-  }
+  };
   const url = RequestService.handlev1_1BaseRequestPosts(`user/${userName}/followers`, options);
 
   return fetch(url, {

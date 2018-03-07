@@ -41,6 +41,10 @@ class EditPost extends React.Component {
     event.preventDefault();
     const reader = new FileReader();
     const file = event.target.files[0];
+    Object.defineProperty(file, 'name', {
+      writable: true
+    });
+    file.name = `${file.lastModified}-${file.size}-${file.type.replace(/\//, '.')}`;
     reader.onloadend = () => {
       let image = new Image();
       image.src = reader.result;
@@ -133,7 +137,8 @@ class EditPost extends React.Component {
             <ShowIf show={this.props.isNew}>
               <input className="file-input_edi-pos"
                      type="file"
-                     onChange={this.imageChanged.bind(this)}/>
+                     onChange={this.imageChanged.bind(this)}
+              />
             </ShowIf>
           </div>
           <ShowIf show={this.props.imageError}>
