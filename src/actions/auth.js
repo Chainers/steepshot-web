@@ -41,10 +41,10 @@ export function login(username, postingKey, history, dispatch, callback) {
       console.log('login failure: ', e);
     }
     if (!isValid){
-      callback('Invalid user name or posting key');
+      callback('Invalid username or posting key');
       return {
         type: 'LOGIN_FAILURE',
-        messages: 'Not valid user name or posting key'
+        messages: 'Not valid username or posting key'
       };
     } else {
       const data = JSON.stringify({
