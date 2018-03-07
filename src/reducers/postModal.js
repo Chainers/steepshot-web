@@ -38,6 +38,12 @@ export default function postModal(state = initialState, action) {
         timeoutID: action.timeoutID
       };
 
+    case 'SET_POST_OFFSET':
+      return {
+        ...state,
+        postOffset: action.postOffset
+      };
+
     default:
       return state;
   }

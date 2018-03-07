@@ -103,3 +103,12 @@ export function setFSNavigation(isVisible, timeoutID) {
     })
   }
 }
+
+export function postOffset(offset) {
+  return (dispatch) => {
+    dispatch({
+      type: 'SET_POST_OFFSET',
+      postOffset: offset
+    })
+  }
+}

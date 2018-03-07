@@ -89,6 +89,7 @@ class UserProfile extends React.Component {
     if (nextProps.username === this.state.authorName) {
       return;
     }
+    console.log(nextProps);
     this.setState({
       avatar: Constants.NO_AVATAR,
       authorName: nextProps.username,
@@ -98,6 +99,11 @@ class UserProfile extends React.Component {
         Constants.USERS_FILTERS.FOLLOWING.point, nextProps.username),
       followersPoint: this.insertUsername(
         Constants.USERS_FILTERS.FOLLOWERS.point, nextProps.username),
+      keys: [
+        {label: `${this.props.postsNumber} ${Constants.POSTS_FILTERS.POSTS_USER.label}`},
+        this.state.keys[1],
+        this.state.keys[2],
+      ]
     });
 
     this.getUserProfile(nextProps.username);
