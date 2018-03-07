@@ -65,9 +65,9 @@ export function getPostsList(point) {
       newPosts = removeDuplicate(newPosts);
       newPosts = removeOldDuplicate(statePoint.posts, newPosts);
       newPosts = removeDeleted(response, newPosts);
-      let testPosts = newPosts[0];
+      let notDeletedPosts = newPosts[0];
       response = newPosts[1];
-      let posts = testPosts.map((post) => {
+      let posts = notDeletedPosts.map((post) => {
         return post.url
       });
       if (statePoint.maxPosts <= posts.length + statePoint.posts.length) {
@@ -83,9 +83,9 @@ export function getPostsList(point) {
       };
 
       let postsObject = {};
-      let postsLength = testPosts.length;
+      let postsLength = notDeletedPosts.length;
       for (let i = 0; i < postsLength; i++) {
-        let post = Object.assign({}, testPosts[i], {
+        let post = Object.assign({}, notDeletedPosts[i], {
           flagLoading: false,
           voteLoading: false,
           postDeleting: false
@@ -93,10 +93,10 @@ export function getPostsList(point) {
         post.tags = (post.tags instanceof Array)
           ? post.tags
           : post.tags.split(',');
-        postsObject[testPosts[i].url] = post;
+        postsObject[notDeletedPosts[i].url] = post;
       }
-      testPosts = postsObject;
-      dispatch(getPostsListSuccess(pointOptions, testPosts));
+      notDeletedPosts = postsObject;
+      dispatch(getPostsListSuccess(pointOptions, notDeletedPosts));
     });
   };
 }

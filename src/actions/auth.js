@@ -79,7 +79,6 @@ export function login(username, postingKey, history, dispatch, callback) {
       }
 
       callback('Welcome to Steepshot, ' +  welcomeName + '!');
-
       dispatch({
         type: 'LOGIN_SUCCESS',
         postingKey: postingKey,
