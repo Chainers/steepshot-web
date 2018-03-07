@@ -11,20 +11,20 @@ class TabsFilterComponent extends React.Component {
         }
     }
     componentDidMount() {
-      let location = document.location.pathname.match(/\/@\w+/);
-      if (location != null) {
-        this.setState({whereIs : true});
-      }
+        let location = document.location.pathname.match(/\/@\w+/);
+        if (location != null) {
+          this.setState({whereIs : true});
+        }
     }
     componentWillReceiveProps(nextProps) {
         this.setState({
-            keys : nextProps.keys
+            keys: nextProps.keys
         });
         this.autoClick(nextProps.activeItemIndex);
     }
 
     autoClick(index) {
-      if (this.state.activeItemIndex == index) return false;
+      if (this.state.activeItemIndex == index) return;
       this.props.updateCallback(index);
       this.setState({
         activeItemIndex : index,
@@ -32,7 +32,7 @@ class TabsFilterComponent extends React.Component {
     }
 
     switchFilter(index) {
-      if (this.state.activeItemIndex == index) return false;
+      if (this.state.activeItemIndex == index) return;
       this.props.updateCallback(index);
       this.setState({
         activeItemIndex: index,

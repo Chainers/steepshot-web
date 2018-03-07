@@ -378,10 +378,8 @@ function _sendToBlockChain(operation, prepareData, beneficiaries) {
             return;
         }
       }
-      console.error(err);
       reject(new Error('Somethings went wrong.'));
     };
-    console.log(operations);
     steem.broadcast.sendAsync(
       {operations, extensions: []},
       {posting: _getUserPostingKey()}, callback
@@ -432,7 +430,7 @@ function _createJsonMetadata(tags) {
   if (tags.length == 0) tags.push('steepshot');
   return {
     tags: tags,
-    app: 'steepshot/0.0.6' //@TODO get metadata from Backend
+    app: 'steepshot/0.0.6'
   }
 }
 

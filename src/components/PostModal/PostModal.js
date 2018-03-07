@@ -1,6 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {nextPostModal, previousPostModal, setPostModalOptions, setFullScreen, setFSNavigation} from '../../actions/postModal';
+import {nextPostModal, previousPostModal, setPostModalOptions, setFullScreen,
+  setFSNavigation, postOffset} from '../../actions/postModal';
 import constants from '../../common/constants';
 import TimeAgo from 'timeago-react';
 import {Link} from 'react-router-dom';
@@ -24,6 +25,8 @@ import utils from '../../utils/utils';
 import {toggleVote} from '../../actions/vote';
 
 const START_TEXTAREA_HEIGHT = '42px';
+const HEADER_HEIGHT = 60;
+
 class PostModal extends React.Component {
 
   static defaultProps = {
@@ -59,8 +62,11 @@ class PostModal extends React.Component {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
-
+  componentWillReceiveProps() {
+    let postOffsetTop = document.getElementById(this.props.currentIndex).offsetTop;
+    if (postOffsetTop !== 0) {
+      this.props.postOffset(postOffsetTop - HEADER_HEIGHT);
+    }
   }
 
   scrollAfterComment() {
@@ -643,6 +649,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     setFSNavigation: (isVisible, timeoutID) => {
       dispatch(setFSNavigation(isVisible, timeoutID));
+    },
+    postOffset: (offset) => {
+      dispatch(postOffset(offset));
     }
   };
 };
