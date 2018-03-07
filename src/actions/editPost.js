@@ -1,10 +1,11 @@
 import {getStore} from "../store/configureStore";
 import constants from "../common/constants";
 import utils from "../utils/utils";
-import {getPosts, getPostShaddow} from "../services/posts";
+import {getPostShaddow} from "../services/posts";
 import Steem from "../libs/steem";
 import {getHistory} from "../main";
 import {clearTextInputState, setTextInputError, setTextInputState} from "./textInput";
+import {getCreateWaitingTime} from "../services/users";
 
 const getUserName = () => {
   return getStore().getState().auth.user;
@@ -108,6 +109,12 @@ export function imageNotFound() {
   }
 }
 
+export function closeTimer() {
+  return {
+    type: 'EDIT_POST_CLOSE_TIMER'
+  }
+}
+
 export function editPostClear() {
   const initDataEditPost = getStore().getState().editPost.initData;
   return dispatch => {
@@ -142,8 +149,7 @@ export function setInitDataForEditPost(username, postId) {
               tags: response.tags.join(' '),
               title: response.title,
               description: response.description,
-              dataResponse: response,
-              canNotUpdate: new Date(response['cashout_time']) < new Date(),
+              dataResponse: response
             }
           })
         }
@@ -151,8 +157,6 @@ export function setInitDataForEditPost(username, postId) {
     }
   }
 }
-
-const MIN_MINUTES_FOR_CREATING_NEW_POST = 5;
 
 export function editPost() {
   const postData = getStore().getState().editPost.initData.dataResponse;
@@ -162,21 +166,20 @@ export function editPost() {
     if (!isValidField(dispatch, title, 'no empty string')) {
       return;
     }
-    checkTimeAfterUpdatedLastPost().then(() => {
-      dispatch(editPostRequest());
-      Steem.editPost(title, tags, description, postData.url.split('/')[3], postData.category, postData.media[0])
-        .then(() => {
-          jqApp.pushMessage.open(
-            'Post has been successfully updated. If you don\'t see the updated post in your profile, '
-            + 'please give it a few minutes to sync from the blockchain');
-          setTimeout(() => {
-            dispatch(editPostSuccess());
-            getHistory().push(`/@${getUserName()}`);
-          }, 1700);
-        }).catch(error => {
-        dispatch(editPostReject(error));
-        jqApp.pushMessage.open(error.message);
-      })
+
+    dispatch(editPostRequest());
+    Steem.editPost(title, tags, description, postData.url.split('/')[3], postData.category, postData.media[0])
+      .then(() => {
+        jqApp.pushMessage.open(
+          'Post has been successfully updated. If you don\'t see the updated post in your profile, '
+          + 'please give it a few minutes to sync from the blockchain');
+        setTimeout(() => {
+          dispatch(editPostSuccess());
+          getHistory().push(`/@${getUserName()}`);
+        }, 1700);
+      }).catch(error => {
+      dispatch(editPostReject(error));
+      jqApp.pushMessage.open(error.message);
     })
   }
 }
@@ -188,33 +191,40 @@ export function createPost() {
     if (!isValidField(dispatch, title, photoSrc)) {
       return;
     }
-    checkTimeAfterUpdatedLastPost().then( () => {
+    checkTimeAfterUpdatedLastPost()
+      .then(() => {
 
-      dispatch(editPostRequest());
+        dispatch(editPostRequest());
 
-      const image = new Image();
-      image.src = photoSrc;
+        const image = new Image();
+        image.src = photoSrc;
 
-      image.onload = () => {
-        const canvas = getCanvasWithImage(image, rotate);
+        image.onload = () => {
+          const canvas = getCanvasWithImage(image, rotate);
 
-        fetch(canvas.toDataURL()).then(res => res.blob())
-          .then(blob => {
-            return Steem.createPost(tags, title, description, blob)
-          })
-          .then(() => {
-            jqApp.pushMessage.open(
-              'Post has been successfully created. If you don\'t see the post in your profile, '
-              + 'please give it a few minutes to sync from the blockchain');
+          fetch(canvas.toDataURL()).then(res => res.blob())
+            .then(blob => {
+              return Steem.createPost(tags, title, description, blob)
+            })
+            .then(() => {
+              jqApp.pushMessage.open(
+                'Post has been successfully created. If you don\'t see the post in your profile, '
+                + 'please give it a few minutes to sync from the blockchain');
               dispatch(editPostSuccess());
               getHistory().push(`/@${getUserName()}`);
-          })
-          .catch(error => {
-            dispatch(editPostReject(error));
-            jqApp.pushMessage.open(error.message);
-          });
-      }
-    });
+            })
+            .catch(error => {
+              dispatch(editPostReject(error));
+              jqApp.pushMessage.open(error.message);
+            });
+        }
+      })
+      .catch(error => {
+        dispatch({
+          type: 'EDIT_POST_SET_WAITING_TIME_SUCCESS',
+          waitingTime: error
+        })
+      });
   }
 }
 
@@ -261,6 +271,22 @@ function editPostChangeTags(tagsString) {
 
 function createNewPost() {
   return dispatch => {
+    getCreateWaitingTime(getUserName())
+      .then(response => {
+        dispatch({
+          type: 'EDIT_POST_SET_WAITING_TIME_SUCCESS',
+          waitingTime: response['waiting_time']
+        })
+      })
+      .catch(error => {
+        dispatch({
+          type: 'EDIT_POST_SET_WAITING_TIME_ERROR',
+          data: {
+            error
+          }
+        })
+      });
+
     dispatch({type: 'EDIT_POST_CREATE_NEW'});
     dispatch(clearTextInputState(constants.TEXT_INPUT_POINT.TITLE));
     dispatch(clearTextInputState(constants.TEXT_INPUT_POINT.TAGS));
@@ -283,26 +309,18 @@ function editPostReject(error) {
 
 function checkTimeAfterUpdatedLastPost() {
   return new Promise((resolve, reject) => {
-    const requestOptions = {
-      point: `user/${getUserName()}/posts`,
-      params: {
-        show_nsfw: 0,
-        show_low_rated: 0,
-        limit: 1
-      }
-    };
-    getPosts(requestOptions, false).then((response) => {
-      let deltaTime = MIN_MINUTES_FOR_CREATING_NEW_POST;
-      if (response.count) {
-        deltaTime = (new Date().getTime() - new Date(response.results[0].created).getTime()) / 1000 / 60;
-      }
-      if (deltaTime < MIN_MINUTES_FOR_CREATING_NEW_POST) {
-        jqApp.pushMessage.open('You can only create posts 5 minutes after the previous one.');
-        reject();
-      } else {
+    getCreateWaitingTime(getUserName())
+      .then(response => {
+        const waitingTime = response['waiting_time'];
+        if (waitingTime !== 0) {
+          reject(waitingTime);
+        } else {
+          resolve();
+        }
+      })
+      .catch(() => {
         resolve();
-      }
-    });
+      });
   })
 }
 

@@ -8,7 +8,8 @@ const MINUTES_IN_HOUR = 60;
 class Timer extends React.Component {
 
   static defaultProps = {
-    onTimeout: () => {},
+    onTimeout: () => {
+    },
     waitingTime: 0
   };
 
@@ -59,15 +60,13 @@ class Timer extends React.Component {
       minutes = '0' + minutes;
     }
     return (
-      <div className={'container_timer ' + this.props.className || ''} style={this.props.style}>
-        <ShowIf show={this.state.show}>
-          <ShowIf show={hours}>
-            <span>{hours}:</span>
-          </ShowIf>
-          <span>{minutes}:</span>
-          <span>{seconds}</span>
+      <span className={this.props.className} style={this.props.style}>
+        <ShowIf show={hours}>
+          <span>{hours}:</span>
         </ShowIf>
-      </div>
+        <span>{minutes}:</span>
+        <span>{seconds}</span>
+      </span>
     )
   }
 }

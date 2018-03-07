@@ -10,7 +10,9 @@ class Testing extends React.Component {
   render() {
     return (
       <div className="test">
-        <Timer waitingTime={100000000}/>
+        <button type="submit" disabled={true}
+                className="btn btn-default"><Timer waitingTime={100000000}/>
+        </button>
       </div>
     );
   }
