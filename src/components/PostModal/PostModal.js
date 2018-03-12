@@ -63,9 +63,12 @@ class PostModal extends React.Component {
   }
 
   componentWillReceiveProps() {
-    let postOffsetTop = document.getElementById(this.props.currentIndex).offsetTop;
-    if (postOffsetTop !== 0) {
-      this.props.postOffset(postOffsetTop - HEADER_HEIGHT);
+    let post = document.getElementById(this.props.currentIndex);
+    if (post) {
+      if (post.offsetTop == 0) {
+        return;
+      }
+      this.props.postOffset(post.offsetTop - HEADER_HEIGHT);
     }
   }
 

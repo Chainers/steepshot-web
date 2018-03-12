@@ -42,11 +42,13 @@ export default {
       MIN_HEIGHT: 480
     },
 
-    EMPTY_QUERY : 'It\'s very strange, but we do not have anything yet for this query. Try to look for something else ...',
-    EMPTY_QUERY_VOTERS : 'Still no one has rated this post ...',
+    EMPTY_QUERY : 'It\'s very strange, but we do not have anything yet for this query. Try to look for something else...',
+    EMPTY_QUERY_VOTERS : 'Still no one has rated this post...',
 
     SEARCH_PLACEHOLDER : 'Type your search query and press \"Enter\"',
     SEARCH_PLACEHOLDER_MIN : 'To search, press \"Enter\"',
+
+    WRONG_FILE_FORMAT: 'Unsupported file format. Please try another one.',
 
     POSTS_FILTERS: {
         POSTS_TOP : {
