@@ -5,7 +5,6 @@ import PropTypes from 'prop-types';
 import constants from '../../common/constants';
 import VouteComponent from './VouteComponent';
 import TimeAgo from 'timeago-react';
-import {UserLinkFunc} from '../Common/UserLinkFunc';
 import Avatar from '../Common/Avatar/Avatar';
 
 class Comment extends React.Component {
@@ -38,7 +37,7 @@ class Comment extends React.Component {
     let replaceBotsLayout = newLine.replace(/(!)?\[([^\]]+)?\]/g, '');
     let changeBotsLink = replaceBotsLayout.replace(/\((http(s)?:\/\/[\w\W]+?|www\.[\w\W]+?)\)/g, '$1');
     let linkToImg = changeBotsLink.replace(
-      /(http(s)?:\/\/[\w\W]+?(\.png|\.gif|\.jpg|\.jpeg|\.tiff)(\?[\w\W]+?)?(?!"))/gi, '<img src="$1"/>');
+      /(http(s)?:\/\/[\w\W]+?(\.png|\.gif|\.jpg|\.jpeg|\.tif|\.tiff)(\?[\w\W]+?)?(?!"))/gi, '<img src="$1"/>');
     let anyLinks = linkToImg.replace(/<a[\w\W]+?>([\w\W]+?)<\/a>/g, '$1');
     let userLink = anyLinks.replace(/(@[\w-.]+\w)/g, '<a href="/$1" target="_blank">$1</a>');
     this.commentText.innerHTML = userLink;
