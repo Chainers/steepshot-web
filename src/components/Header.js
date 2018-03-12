@@ -4,6 +4,7 @@ import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import {logout} from '../actions/auth';
 import Constants from '../common/constants';
+import Avatar from './Common/Avatar/Avatar';
 
 class Header extends React.Component {
   constructor(props) {
@@ -87,7 +88,7 @@ class Header extends React.Component {
     const isUserAuth = this.props.user && this.props.postingKey;
     let browse;
     let authorLink = '';
-
+    let authorImage = this.props.avatar || Constants.NO_AVATAR;
     let loginComponent = <div className="section login">
       <div className="wrap-login">
         <Link to="/signin" className="btn btn-default btn-xs">
@@ -165,11 +166,7 @@ class Header extends React.Component {
                     this.props.user
                       ? <Link to={authorLink} className="user-link clearfix">
                         <div className="photo">
-                          {
-                            this.props.avatar
-                              ? <img src={this.props.avatar} alt="user"/>
-                              : <img src="/static/images/person.png" alt="user"/>
-                          }
+                          <Avatar src={authorImage} powerIndicator={this.props.user} headerAvatar={true}/>
                         </div>
                         <div className="name">{this.props.user}</div>
                       </Link>

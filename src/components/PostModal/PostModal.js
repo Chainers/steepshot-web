@@ -63,9 +63,12 @@ class PostModal extends React.Component {
   }
 
   componentWillReceiveProps() {
-    let postOffsetTop = document.getElementById(this.props.currentIndex).offsetTop;
-    if (postOffsetTop !== 0) {
-      this.props.postOffset(postOffsetTop - HEADER_HEIGHT);
+    let post = document.getElementById(this.props.currentIndex);
+    if (post) {
+      if (post.offsetTop == 0) {
+        return;
+      }
+      this.props.postOffset(post.offsetTop - HEADER_HEIGHT);
     }
   }
 
@@ -234,13 +237,24 @@ class PostModal extends React.Component {
                 <i className="far fa-arrow-alt-circle-left fa-2x"/>
               </div>
             </ShowIf>
-            <ShowIf show={!this.props.lastPost}>
+            <ShowIf show={!this.props.lastPost && !this.props.newPostsLoading}>
               <div className="arrow-right-full-screen_post-mod"
                    onClick={this.nextPost.bind(this)}
                    onMouseEnter={this.fsNavMouseEnter.bind(this)}
                    onMouseLeave={this.fsNavMouseLeave.bind(this)}
               >
                 <i className="far fa-arrow-alt-circle-right fa-2x"/>
+              </div>
+            </ShowIf>
+            <ShowIf show={this.props.newPostsLoading}>
+              <div className="arrow-right-full-screen_post-mod"
+                   onClick={this.nextPost.bind(this)}
+                   onMouseEnter={this.fsNavMouseEnter.bind(this)}
+                   onMouseLeave={this.fsNavMouseLeave.bind(this)}
+              >
+                <LoadingSpinner style={{position: 'absolute', top: '50%', transform: 'translateY(-50%)'}}
+                                loaderClass="new-posts-spinner_post-mod"
+                />
               </div>
             </ShowIf>
           </div>
@@ -425,9 +439,16 @@ class PostModal extends React.Component {
                 <i className="far fa-arrow-alt-circle-left fa-2x"/>
               </div>
             </ShowIf>
-            <ShowIf show={!this.props.lastPost}>
+            <ShowIf show={!this.props.lastPost && !this.props.newPostsLoading}>
               <div className="arrow-right-modal_post-mod" onClick={this.nextPost.bind(this)}>
                 <i className="far fa-arrow-alt-circle-right fa-2x"/>
+              </div>
+            </ShowIf>
+            <ShowIf show={this.props.newPostsLoading}>
+              <div className="arrow-right-modal_post-mod" onClick={this.nextPost.bind(this)}>
+                <LoadingSpinner style={{position: 'absolute', top: '50%', transform: 'translateY(-50%)'}}
+                                loaderClass="new-posts-spinner_post-mod"
+                />
               </div>
             </ShowIf>
           </ShowIf>
@@ -607,16 +628,17 @@ const mapStateToProps = (state) => {
     if (document.documentElement.clientWidth <= 1024 && media['thumbnails'] && media['thumbnails'][1024]) {
       imgUrl = media['thumbnails'][1024];
     }
-    let postList = state.postsList[state.postModal.point];
+    let postsList = state.postsList[state.postModal.point];
     return {
-      postList,
+      postsList,
       imgUrl,
       post,
       ...state.postModal,
+      newPostsLoading: postsList.loading,
       isUserAuth: state.auth.user && state.auth.postingKey,
       authUser: state.auth.user,
-      firstPost: postList.posts[0] === currentIndex,
-      lastPost: postList.offset === currentIndex
+      firstPost: postsList.posts[0] === currentIndex,
+      lastPost: postsList.offset === currentIndex
     };
   }
 };
