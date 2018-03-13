@@ -508,6 +508,18 @@
   top: -500px;
 }
 
+.new-posts-spinner_post-mod {
+  position: absolute;
+  left: 0;
+  width: 35px;
+  height: 35px;
+  border: 4px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 4px solid #e74800;
+  -webkit-animation: spin 2s linear infinite;
+  animation: spin 2s linear infinite;
+}
+
 @media (max-width: 815px) {
   .container_pos-mod {
     min-height: 100vh;

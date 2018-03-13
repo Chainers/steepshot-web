@@ -53,7 +53,7 @@ export function changeImage(imageSrc, image, fileSize) {
       return;
     }
     if (fileSize / 1000 / 1000 > 10) {
-      dispatch(setEditPostImageError("Image should be less than 10 mb."));
+      dispatch(setEditPostImageError('Image should be less than 10 mb.'));
       return;
     }
     dispatch({
@@ -193,23 +193,19 @@ export function createPost() {
     }
     checkTimeAfterUpdatedLastPost()
       .then(() => {
-
-        dispatch(editPostRequest());
-
-        const image = new Image();
-        image.src = photoSrc;
-
-        image.onload = () => {
-          const canvas = getCanvasWithImage(image, rotate);
-
-          fetch(canvas.toDataURL()).then(res => res.blob())
-            .then(blob => {
-              return Steem.createPost(tags, title, description, blob)
-            })
-            .then(() => {
-              jqApp.pushMessage.open(
-                'Post has been successfully created. If you don\'t see the post in your profile, '
-                + 'please give it a few minutes to sync from the blockchain');
+      dispatch(editPostRequest());
+      const image = new Image();
+      image.src = photoSrc;
+      image.onload = () => {
+        const canvas = getCanvasWithImage(image, rotate);
+        fetch(canvas.toDataURL('image/jpeg', 0.94)).then(res => res.blob())
+          .then(blob => {
+            return Steem.createPost(tags, title, description, blob)
+          })
+          .then(() => {
+            jqApp.pushMessage.open(
+              'Post has been successfully created. If you don\'t see the post in your profile, '
+              + 'please give it a few minutes to sync from the blockchain');
               dispatch(editPostSuccess());
               getHistory().push(`/@${getUserName()}`);
             })
@@ -372,7 +368,7 @@ function isValidField(dispatch, title, photoSrc) {
   return isValid;
 }
 
-function setEditPostImageError(message) {
+export function setEditPostImageError(message) {
   return {
     type: 'EDIT_POST_SET_IMAGE_ERROR',
     message

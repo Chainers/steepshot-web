@@ -97,7 +97,7 @@ class UserProfile extends React.Component {
       followingPoint: this.insertUsername(
         Constants.USERS_FILTERS.FOLLOWING.point, nextProps.username),
       followersPoint: this.insertUsername(
-        Constants.USERS_FILTERS.FOLLOWERS.point, nextProps.username),
+        Constants.USERS_FILTERS.FOLLOWERS.point, nextProps.username)
     });
 
     this.getUserProfile(nextProps.username);
@@ -129,6 +129,7 @@ class UserProfile extends React.Component {
     let about = '';
     let location = '';
     let balance = 0;
+    let currentPage = document.location.pathname.replace(/\/@/, '');
 
     if (this.state.profile) {
       name = this.state.profile.name;
@@ -148,7 +149,7 @@ class UserProfile extends React.Component {
             <div className="col-xs-12 col-md-4 col-lg-3">
               <div className="user-information">
                 <div className="pic-wrap clearfix">
-                  <Avatar src={profileImageSrc}/>
+                  <Avatar src={profileImageSrc} powerIndicator={currentPage === this.props.user}/>
                   {this.state.showFollow ? <FollowComponent item={this.state.profile}/> : null}
                 </div>
                 <div className="name">{name}</div>

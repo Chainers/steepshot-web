@@ -2,11 +2,11 @@ import React from 'react';
 import {connect} from 'react-redux';
 import TextInput from "../Common/TextInput/TextInput";
 import {addTag, changeImage, createPost, editClearAll, editPost, editPostClear, imageNotFound, imageRotate, removeTag,
-  setImageContainerSize, setInitDataForEditPost, closeTimer} from "../../actions/editPost";
+  setImageContainerSize, setInitDataForEditPost, setEditPostImageError, closeTimer} from "../../actions/editPost";
 import EditTags from "../Common/EditTags/EditTags";
 import ShowIf from "../Common/ShowIf";
 import utils from "../../utils/utils";
-import constants from "../../common/constants";
+import Constants from "../../common/constants";
 import LoadingSpinner from "../LoadingSpinner";
 import {documentTitle} from "../../components/DocumentTitle";
 import Timer from "../Common/Timer/Timer";
@@ -42,11 +42,22 @@ class EditPost extends React.Component {
     event.preventDefault();
     const reader = new FileReader();
     const file = event.target.files[0];
+    if (typeof file === 'object') {
+      Object.defineProperty(file, 'name', {
+        writable: true
+      });
+      file.name = `${file.lastModified}-${file.size}-${file.type.replace(/\//, '.')}`;
+    } else {
+      return;
+    }
     reader.onloadend = () => {
       let image = new Image();
       image.src = reader.result;
       image.onload = () => {
         this.props.changeImage(reader.result, image, file.size);
+      };
+      image.onerror = () => {
+        this.props.setEditPostImageError(Constants.WRONG_FILE_FORMAT);
       }
     };
     reader.readAsDataURL(file);
@@ -134,7 +145,8 @@ class EditPost extends React.Component {
             <ShowIf show={this.props.isNew}>
               <input className="file-input_edi-pos"
                      type="file"
-                     onChange={this.imageChanged.bind(this)}/>
+                     onChange={this.imageChanged.bind(this)}
+              />
             </ShowIf>
           </div>
           <ShowIf show={this.props.imageError}>
@@ -143,7 +155,7 @@ class EditPost extends React.Component {
             </div>
           </ShowIf>
           <TextInput title="Title"
-                     point={constants.TEXT_INPUT_POINT.TITLE}
+                     point={Constants.TEXT_INPUT_POINT.TITLE}
                      multiline={false}
                      required={true}
                      value={this.props.initData.title}
@@ -151,19 +163,19 @@ class EditPost extends React.Component {
                      maxLength={255}/>
           <TextInput title="Tags"
                      maxLength={20}
-                     point={constants.TEXT_INPUT_POINT.TAGS}
+                     point={Constants.TEXT_INPUT_POINT.TAGS}
                      multiline={false}
                      description="Enter tags with spaces, but not more than 20"
                      noValidCharacters="[^A-Za-z0-9]"
                      keyPressEvents={[{
-                       keys: [constants.KEYS.SPACE, constants.KEYS.ENTER],
+                       keys: [Constants.KEYS.SPACE, Constants.KEYS.ENTER],
                        func: () => this.props.addTag()
                      }]}>
             <EditTags value={this.props.tags}
                       onChange={this.props.removeTag}/>
           </TextInput>
           <TextInput title="Description"
-                     point={constants.TEXT_INPUT_POINT.DESCRIPTION}
+                     point={Constants.TEXT_INPUT_POINT.DESCRIPTION}
                      multiline={true}
                      maxHeight={50000}
                      value={this.props.initData.description}
@@ -236,6 +248,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     closeTimer: () => {
       dispatch(closeTimer())
+    },
+    setEditPostImageError: (message) => {
+      dispatch(setEditPostImageError(message))
     }
   };
 };

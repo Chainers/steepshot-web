@@ -63,7 +63,7 @@ class Post extends React.Component {
     };
 
     return (
-      <div className="item-wrap">
+      <div className="item-wrap" id={this.props.index}>
         <div className="post-card" style={{position: 'relative'}}>
           <ShowIf show={this.props.postDeleting}>
             <div className="delete-loader_post"
