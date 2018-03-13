@@ -7,7 +7,8 @@ const initialState = {
   tags: '',
   loading: false,
   isNew: true,
-  canNotUpdate: true
+  waitingTime: 0,
+  canCreate: true
 };
 
 export default function editPost(state = initialState, action) {
@@ -45,6 +46,22 @@ export default function editPost(state = initialState, action) {
       return {
         ...state,
         imageNotFound: true
+      };
+
+    case 'EDIT_POST_SET_WAITING_TIME_SUCCESS':
+      const waitingTime = action.waitingTime;
+      return {
+        ...state,
+        canCreate: waitingTime === 0,
+        waitingTime
+      };
+
+    case 'EDIT_POST_CLOSE_TIMER':
+    case 'EDIT_POST_SET_WAITING_TIME_ERROR':
+      return {
+        ...state,
+        canCreate: true,
+        waitingTime: 0
       };
 
     case 'EDIT_POST_CREATE_NEW':
