@@ -62,13 +62,24 @@ class PostModal extends React.Component {
     }
   }
 
-  componentWillReceiveProps() {
+  componentWillReceiveProps(nextProps) {
     let post = document.getElementById(this.props.currentIndex);
     if (post) {
-      if (post.offsetTop == 0) {
+      if (post.offsetTop === 0) {
         return;
       }
       this.props.postOffset(post.offsetTop - HEADER_HEIGHT);
+    }
+    if (this.props.fullScreenMode && nextProps.fullScreenMode) {
+      this.firstLastPostAfterClickFS(nextProps);
+    }
+  }
+
+  firstLastPostAfterClickFS(nextProps) {
+    if ((!this.props.firstPost || !this.props.lastPost) && (nextProps.firstPost || nextProps.lastPost)
+      && this.props.fullScreenNavigation && this.props.timeoutID === null) {
+      this.fsNavMouseLeave();
+      this.showFSNavigation();
     }
   }
 
@@ -134,9 +145,7 @@ class PostModal extends React.Component {
         <ShowIf show={this.props.post.is_nsfw && !this.props.showAll}>
           <div className="curtain_pos-mod">
             <p className="title_pos-mod">NSFW content</p>
-            <p className="message_pos-mod">This content is for adults only.
-              Not
-              recommended for children or sensitive individuals.</p>
+            <p className="message_pos-mod">This content is for adults only. Not recommended for children or sensitive individuals.</p>
             <button className="btn btn-index"
                     onClick={() => this.props.setPostModalOptions({showAll: true})}
             >Show me
@@ -215,17 +224,17 @@ class PostModal extends React.Component {
                     document.location.origin + '/post' + this.props.post.url.replace(/\/[\w-.]+/, '')
                   )}
           >Copy link</button>
+          <ShowIf show={!this.fullImage || !this.fullImage.complete}>
+            <div className="before-load-full-screen_pos-mod">
+              <LoadingSpinner/>
+            </div>
+          </ShowIf>
+          <ShowIf show={this.fullImage && this.fullImage.complete && !this.fullImage.naturalWidth}>
+            <div className="before-load-full-screen_pos-mod" style={{backgroundColor: '#e7e7e7'}}>
+              <p className="title_pos-mod">Sorry, image isn't found.</p>
+            </div>
+          </ShowIf>
         </div>
-        <ShowIf show={!this.fullImage || !this.fullImage.complete}>
-          <div className="before-load-full-screen_pos-mod">
-            <LoadingSpinner/>
-          </div>
-        </ShowIf>
-        <ShowIf show={this.fullImage && this.fullImage.complete && !this.fullImage.naturalWidth}>
-          <div className="before-load-full-screen_pos-mod">
-            <p className="title_pos-mod">Sorry, image isn't found.</p>
-          </div>
-        </ShowIf>
         <ShowIf show={this.props.fullScreenNavigation}>
           <div>
             <ShowIf show={!this.props.firstPost}>
@@ -252,7 +261,7 @@ class PostModal extends React.Component {
                    onMouseEnter={this.fsNavMouseEnter.bind(this)}
                    onMouseLeave={this.fsNavMouseLeave.bind(this)}
               >
-                <LoadingSpinner style={{position: 'absolute', top: '50%', transform: 'translateY(-50%)'}}
+                <LoadingSpinner style={{position: 'absolute', top: '50%', transform: 'translateY(-50%)', height: 38}}
                                 loaderClass="new-posts-spinner_post-mod"
                 />
               </div>

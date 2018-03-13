@@ -185,7 +185,9 @@ class EditPost extends React.Component {
                     className="btn btn-index">Clear
             </button>
             <button onClick={this.submit.bind(this)}
-                    className="btn btn-default" disabled={this.props.isNew && !this.props.canCreate}>
+                    className="btn btn-default"
+                    disabled={this.props.isNew && !this.props.canCreate}
+            >
               {this.getButtonText()}
             </button>
           </div>

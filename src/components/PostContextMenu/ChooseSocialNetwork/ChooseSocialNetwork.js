@@ -31,7 +31,7 @@ class ChooseSocialNetwork extends React.Component {
     return (
       <div className="wrapper_csn-mod">
         <div className="body_confirm-del-mod position--relative">
-          <p className="title_csn-mod">Social networks we cooperate with</p>
+          <p className="title_csn-mod">Share post</p>
           <div className="cross-wrapper_menu cross-wrapper_csn"
                onClick={this.closeModal.bind(this)}
                style={crossOffset}
