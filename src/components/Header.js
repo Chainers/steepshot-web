@@ -191,8 +191,7 @@ class Header extends React.Component {
           <div className="search-panel closed">
             <div className="wrap-panel container clearfix">
               <div className="wrap-btn">
-                <button type="button" className="btn-close"
-                        onClick={() => {this.setState({searchValue: ''}); }}/>
+                <button type="button" className="btn-close" onClick={() => {this.setState({searchValue: ''}) }}/>
               </div>
               <div className="wrap-search">
                 <form className="form-search">

@@ -2,13 +2,14 @@ import React from 'react';
 import {connect} from 'react-redux';
 import TextInput from "../Common/TextInput/TextInput";
 import {addTag, changeImage, createPost, editClearAll, editPost, editPostClear, imageNotFound, imageRotate, removeTag,
-  setImageContainerSize, setInitDataForEditPost, setEditPostImageError} from "../../actions/editPost";
+  setImageContainerSize, setInitDataForEditPost, setEditPostImageError, closeTimer} from "../../actions/editPost";
 import EditTags from "../Common/EditTags/EditTags";
 import ShowIf from "../Common/ShowIf";
 import utils from "../../utils/utils";
 import Constants from "../../common/constants";
 import LoadingSpinner from "../LoadingSpinner";
 import {documentTitle} from "../../components/DocumentTitle";
+import Timer from "../Common/Timer/Timer";
 
 class EditPost extends React.Component {
 
@@ -184,13 +185,22 @@ class EditPost extends React.Component {
                     className="btn btn-index">Clear
             </button>
             <button onClick={this.submit.bind(this)}
-                    className="btn btn-default" disabled={this.props.canNotUpdate}>
-              {this.props.isNew ? 'Create new post' : 'Update post'}
+                    className="btn btn-default"
+                    disabled={this.props.isNew && !this.props.canCreate}
+            >
+              {this.getButtonText()}
             </button>
           </div>
         </div>
       </div>
     );
+  }
+
+  getButtonText() {
+    if (!this.props.canCreate) {
+      return (<Timer waitingTime={this.props.waitingTime} onTimeout={this.props.closeTimer}/>)
+    }
+    return this.props.isNew ? 'Create new post' : 'Update post'
   }
 }
 
@@ -199,8 +209,7 @@ const mapStateToProps = (state, props) => {
   return {
     postId,
     username: state.auth.user,
-    ...state.editPost,
-    canNotUpdate: state.editPost.initData.canNotUpdate
+    ...state.editPost
   };
 };
 
@@ -238,6 +247,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     setImageNotFound: () => {
       dispatch(imageNotFound())
+    },
+    closeTimer: () => {
+      dispatch(closeTimer())
     },
     setEditPostImageError: (message) => {
       dispatch(setEditPostImageError(message))

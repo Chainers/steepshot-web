@@ -7,7 +7,7 @@ export function UserLinkFunc(bool, fromState) {
       state = fromState;
     } else {
       let descriptionStart = fromState.replace(/(<[\/\w]+>)+/g, '');
-      let detectBot = descriptionStart.replace(/!\[[\w\W]+/g, '');
+      let detectBot = descriptionStart.replace(/(\[)?(!)?\[[\w\W]+/g, '');
       state = detectBot;
     }
   } else {
