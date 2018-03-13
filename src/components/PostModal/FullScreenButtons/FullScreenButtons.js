@@ -33,7 +33,7 @@ class FullScreenButtons extends React.Component {
         </div>
         <div className="button_fsf_esc">
           <div className="escape-img_fsf"/>
-          <p className="text_fsf">TURN</p>
+          <p className="text_fsf">BACK</p>
         </div>
       </div>
     )

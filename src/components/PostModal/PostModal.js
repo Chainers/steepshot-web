@@ -70,12 +70,14 @@ class PostModal extends React.Component {
       }
       this.props.postOffset(post.offsetTop - HEADER_HEIGHT);
     }
-    this.firstLastPostAfterClickFS(nextProps);
+    if (this.props.fullScreenMode && nextProps.fullScreenMode) {
+      this.firstLastPostAfterClickFS(nextProps);
+    }
   }
 
   firstLastPostAfterClickFS(nextProps) {
     if ((!this.props.firstPost || !this.props.lastPost) && (nextProps.firstPost || nextProps.lastPost)
-      && this.props.fullScreenMode && this.props.fullScreenNavigation && this.props.timeoutID === null) {
+      && this.props.fullScreenNavigation && this.props.timeoutID === null) {
       this.fsNavMouseLeave();
       this.showFSNavigation();
     }
@@ -259,7 +261,7 @@ class PostModal extends React.Component {
                    onMouseEnter={this.fsNavMouseEnter.bind(this)}
                    onMouseLeave={this.fsNavMouseLeave.bind(this)}
               >
-                <LoadingSpinner style={{position: 'absolute', top: '50%', transform: 'translateY(-50%)'}}
+                <LoadingSpinner style={{position: 'absolute', top: '50%', transform: 'translateY(-50%)', height: 38}}
                                 loaderClass="new-posts-spinner_post-mod"
                 />
               </div>
