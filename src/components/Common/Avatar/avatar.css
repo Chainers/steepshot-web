@@ -15,4 +15,6 @@
   top: -5px;
   left: -5px;
   transform: rotate(-90deg);
+  width: 110px;
+  height: 110px;
 }

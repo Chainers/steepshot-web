@@ -14,7 +14,7 @@ import Constants from './common/constants';
 import Testing from './components/Common/Testing/Testing';
 import SinglePost from './components/SinglePost/SinglePost';
 import Search from './components/Search/Search';
-import EditPost from "./components/EditPost/EditPost";
+import EditPost from './components/EditPost/EditPost';
 
 export default function getRoutes(store) {
   const clearMessages = () => {

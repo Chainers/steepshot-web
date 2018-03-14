@@ -75,7 +75,7 @@
   width: 42px;
   height: 42px;
   border-radius: 50%;
-  background: url('/static/images/rotate_button.png') no-repeat 50%;
+  background: rgba(0, 0, 0, .5) url('/static/images/rotate-button.svg') no-repeat 50%;
   transition: all .2s ease;
 }
 

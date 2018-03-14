@@ -181,5 +181,7 @@ export default {
     POST_DESRIPTION_MAXLENGTH : 120,
     POST_LIKED_BY : 'Post has been rated by these users',
 
-    WAIT_FINISHING_TRANSACTION: 'There\'s unfinished transaction, please wait'
+    WAIT_FINISHING_TRANSACTION: 'There\'s unfinished transaction, please wait',
+
+    MAX_TAGS_NUMBER: 'You have reached the max number of tags.'
 }
