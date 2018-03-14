@@ -1,6 +1,6 @@
 import React from 'react';
 import Constants from '../../../common/constants';
-import ShowIf from "../ShowIf";
+import ShowIf from '../ShowIf';
 
 const Avatar = ({src, style = {}}) => {
   const stylesPic = Object.assign({}, style, {
@@ -50,12 +50,15 @@ const Avatar = ({src, style = {}}) => {
 //   powerIndicator() {
 //     if (this.canvas) {
 //       let ctx = this.canvas.getContext('2d');
-//       this.canvas.width = 110;
-//       this.canvas.height = 110;
+//       let ratio = window.devicePixelRatio;
+//       this.canvas.width = 110 * ratio;
+//       this.canvas.height = 110 * ratio;
+//       ctx.scale(ratio, ratio);
 //       ctx.beginPath();
-//       ctx.arc(55, 55, 53, 1.7 * Math.PI, 0, true);
+//       ctx.lineCap = 'round';
+//       ctx.arc(55, 55, 53, (this.props.voting_power / 50) * Math.PI, 0, true);
 //       ctx.lineWidth = 3;
-//       let grad = ctx.createLinearGradient(50,50,150,150);
+//       let grad = ctx.createLinearGradient(50, 50, 150, 150);
 //       grad.addColorStop(0.0,'#ff7700');
 //       grad.addColorStop(0.5,'#ff1000');
 //       ctx.strokeStyle = grad;

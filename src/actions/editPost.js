@@ -28,13 +28,15 @@ export function addTag() {
     const editPostState = state.editPost;
     let newTag = state.textInput[constants.TEXT_INPUT_POINT.TAGS].text;
     newTag = getValidTagsString(newTag);
+    if (editPostState.tags.split(' ').length === 20) {
+      jqApp.pushMessage.open(constants.MAX_TAGS_NUMBER);
+    }
     if (utils.isEmptyString(newTag)) {
       return emptyAction();
     }
     dispatch(editPostChangeTags(getValidTagsString(editPostState.tags + ' ' + newTag.trim())));
 
     dispatch(clearTextInputState(constants.TEXT_INPUT_POINT.TAGS));
-
   }
 }
 
@@ -162,11 +164,10 @@ export function editPost() {
   const postData = getStore().getState().editPost.initData.dataResponse;
   let {title, tags, description} = prepareData();
 
-  return dispatch => {
+  return (dispatch) => {
     if (!isValidField(dispatch, title, 'no empty string')) {
       return;
     }
-
     dispatch(editPostRequest());
     Steem.editPost(title, tags, description, postData.url.split('/')[3], postData.category, postData.media[0])
       .then(() => {
@@ -240,7 +241,7 @@ function prepareData() {
 
 
 const MAX_TAG_LENGTH = 30;
-const MAX_AMOUNT_TAGS = 19;
+const MAX_AMOUNT_TAGS = 20;
 
 function getValidTagsString(str) {
   let result = str.replace(/^\s+/g, '');
@@ -248,9 +249,9 @@ function getValidTagsString(str) {
   result = result.replace(/[^\w\s]+/g, '');
   result = result.replace(new RegExp(`((\\s[^\\s]+){${MAX_AMOUNT_TAGS - 1}}).*`), '$1');
   result = result.replace(new RegExp(`(([^\\s]{${MAX_TAG_LENGTH}})[^\\s]+).*`), '$2');
+  result = result.replace(/\bsteepshot\b/g, '');
   return result;
 }
-
 
 function emptyAction() {
   return {

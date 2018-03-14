@@ -50,24 +50,22 @@ export function toggleVote(postIndex) {
     dispatch(toggleVoteRequest(postIndex));
 
     const callback = (err, success) => {
-      getUserProfile(username).then((result) => {
-        sessionStorage.setItem('voteQueue', 'false');
-        if (err) {
-          dispatch(toggleVoteFailure(postIndex));
-          let text = 'Something went wrong when you voted, please, try again later';
-          if (err.data.code == 10) {
-            text = `Sorry, you had used the maximum number of vote changes on this post`;
-          }
-          jqApp.pushMessage.open(text);
-        } else if (success) {
-          dispatch(toggleVoteSuccess(postIndex));
-          dispatch(updatePost(postIndex));
-          dispatch(updateVotingPower(result.voting_power));
-          let text = `The post has been successfully liked. If you don't see your like, please give it a few minutes to sync from the blockchain`;
-          if (!newVoteState) text = `The post has been successfully disliked. If you don't see your dislike, please give it a few minutes to sync from the blockchain`;
-          jqApp.pushMessage.open(text);
+      sessionStorage.setItem('voteQueue', 'false');
+      if (err) {
+        dispatch(toggleVoteFailure(postIndex));
+        let text = 'Something went wrong when you voted, please, try again later';
+        if (err.data.code == 10) {
+          text = `Sorry, you had used the maximum number of vote changes on this post`;
         }
-      });
+        jqApp.pushMessage.open(text);
+      } else if (success) {
+        dispatch(toggleVoteSuccess(postIndex));
+        dispatch(updatePost(postIndex));
+        dispatch(updateVotingPower(username));
+        let text = `The post has been successfully liked. If you don't see your like, please give it a few minutes to sync from the blockchain`;
+        if (!newVoteState) text = `The post has been successfully disliked. If you don't see your dislike, please give it a few minutes to sync from the blockchain`;
+        jqApp.pushMessage.open(text);
+      }
     };
 
     let urlObject = post.url.split('/');

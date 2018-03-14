@@ -333,8 +333,8 @@ function _preCompileTransaction(operation) {
     return new Promise((resolve, reject) => {
       try {
         resolve(steem.auth.signTransaction(transaction, [_getUserPostingKey()]));
-      } catch (error) {
-        console.log(error);
+      } catch (err) {
+        console.log(err);
         reject(new Error("Invalidate posting key."));
       }
     })
@@ -396,7 +396,6 @@ function _preparePost(media, description, tags, permlink) {
     "tags": tags,
     "show_footer": true
   };
-
   return fetch(`${_getBaseUrl()}/post/prepare`, {
     method: 'POST',
     headers: {'Content-Type': 'application/json'},
@@ -415,9 +414,6 @@ function _getPermLink() {
 
 function _getValidTags(tags) {
   tags = tags.split(' ');
-  if (tags.indexOf('steepshot') === -1) {
-    tags = [...tags, 'steepshot']
-  }
   let empty = tags.indexOf('');
   while (empty !== -1) {
     tags.splice(empty, 1);
@@ -427,7 +423,7 @@ function _getValidTags(tags) {
 }
 
 function _createJsonMetadata(tags) {
-  if (tags.length == 0) tags.push('steepshot');
+  if (tags.length === 0) tags.push('steepshot');
   return {
     tags: tags,
     app: 'steepshot/0.0.6'

@@ -134,7 +134,8 @@ class EditPost extends React.Component {
               />
               <ShowIf show={this.props.isNew}>
                 <div className="rotate-button_edi-pos"
-                     onClick={() => this.props.imageRotate(this.image)}/>
+                     onClick={() => this.props.imageRotate(this.image)}
+                />
               </ShowIf>
               <ShowIf show={this.props.imageNotFound}>
                 <div className="img-not-found_edi-pos">
@@ -197,9 +198,9 @@ class EditPost extends React.Component {
   }
 
   getButtonText() {
-    if (!this.props.canCreate) {
-      return (<Timer waitingTime={this.props.waitingTime} onTimeout={this.props.closeTimer}/>)
-    }
+    // if (!this.props.canCreate) {
+    //   return (<Timer waitingTime={this.props.waitingTime} onTimeout={this.props.closeTimer}/>)
+    // }
     return this.props.isNew ? 'Create new post' : 'Update post'
   }
 }

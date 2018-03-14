@@ -114,10 +114,14 @@ export function logout(history) {
   }
 }
 
-export function updateVotingPower(voting_power) {
-  return {
-    type: 'UPDATE_VOTING_POWER',
-    voting_power: voting_power
+export function updateVotingPower(username) {
+  return (dispatch) => {
+    getUserProfile(username).then((result) => {
+      dispatch({
+        type: 'UPDATE_VOTING_POWER',
+        voting_power: result.voting_power
+      })
+    });
   }
 }
 

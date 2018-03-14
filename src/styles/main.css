@@ -81,19 +81,6 @@ body {
   font: 14px OpenSans-Regular;
 }
 
-.sub-rotate-button {
-  position: absolute;
-  z-index: 5;
-  top: calc(50% - 21px);
-  right: calc(50% - 21px);
-  transform: translate(-50%, -50%);
-  width: 42px;
-  height: 42px;
-  border-radius: 50%;
-  background: url("../../static/images/rotate_button.png") no-repeat center;
-  transition: .2s all ease;
-}
-
 .likeMoneyPopup {
   display: flex;
   justify-content: space-between;
@@ -6561,7 +6548,6 @@ modal.modal-like .modal-header {
 
 .user-panel .create .btn-create-mob:before {
   content: ' ';
-  display: inline-block;
   font-size: 10px;
   background-image: url(/static/images/sprite_svg1910.svg);
   background-repeat: no-repeat;
