@@ -3,6 +3,8 @@ import {getStore} from '../store/configureStore';
 import Constants from '../common/constants';
 import {debounce} from 'lodash';
 import {updatePost} from './post';
+import {getUserProfile} from './profile';
+import {updateVotingPower} from './auth';
 
 function toggleFlagRequest(postIndex) {
   return {
@@ -38,7 +40,7 @@ export function toggleFlag(postIndex) {
       return;
     }
     let queue = sessionStorage.getItem('voteQueue');
-    if (queue === "true")  {
+    if (queue === 'true')  {
       return;
     }
     sessionStorage.setItem('voteQueue', 'true');
@@ -46,21 +48,24 @@ export function toggleFlag(postIndex) {
     dispatch(toggleFlagRequest(postIndex));
 
     const callback = (err, success) => {
-      sessionStorage.setItem('voteQueue', 'false');
-      if (err) {
-        dispatch(toggleFlagFailure(postIndex));
-        let text = 'Something went wrong when you clicked the flag, please, try again later';
-        if (err.data.code === 10) {
-          text = 'Sorry, you had used the maximum number of vote changes on this post';
+      getUserProfile(username).then((result) => {
+        sessionStorage.setItem('voteQueue', 'false');
+        if (err) {
+          dispatch(toggleFlagFailure(postIndex));
+          let text = 'Something went wrong when you clicked the flag, please, try again later';
+          if (err.data.code === 10) {
+            text = 'Sorry, you had used the maximum number of vote changes on this post';
+          }
+          jqApp.pushMessage.open(text);
+        } else if (success) {
+          dispatch(toggleFlagSuccess(postIndex));
+          dispatch(updatePost(postIndex));
+          dispatch(updateVotingPower(result.voting_power));
+          let text = `The post has been successfully flaged. If you don't see your flag, please give it a few minutes to sync from the blockchain`;
+          if (!newFlagState) text = `The post has been successfully unflaged. If you don't see your flag, please give it a few minutes to sync from the blockchain`;
+          jqApp.pushMessage.open(text);
         }
-        jqApp.pushMessage.open(text);
-      } else if (success) {
-        dispatch(toggleFlagSuccess(postIndex));
-        dispatch(updatePost(postIndex));
-        let text = `The post has been successfully flaged. If you don't see your flag, please give it a few minutes to sync from the blockchain`;
-        if (!newFlagState) text = `The post has been successfully unflaged. If you don't see your flag, please give it a few minutes to sync from the blockchain`;
-        jqApp.pushMessage.open(text);
-      }
+      });
     };
 
     let urlObject = post.url.split('/');

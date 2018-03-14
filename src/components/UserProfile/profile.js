@@ -11,6 +11,7 @@ import Avatar from '../Common/Avatar/Avatar';
 import PostsList from '../PostsList/PostsList';
 import UsersList from '../UsersList/UsersList';
 import {UserLinkFunc} from '../Common/UserLinkFunc';
+import {updateVotingPower} from '../../actions/auth';
 
 class UserProfile extends React.Component {
   constructor(props) {
@@ -59,7 +60,7 @@ class UserProfile extends React.Component {
       getUserProfile(userName).then((result) => {
         if (result.length == 0) {
           this.props.history.push('*');
-          return false;
+          return;
         }
         if (this.state.watcher == userName || this.state.watcher == undefined) {
           showFollow = false;

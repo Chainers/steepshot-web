@@ -335,7 +335,7 @@ class PostModal extends React.Component {
 
   fsNavMouseLeave() {
     window.addEventListener('mousemove', this.showFSNavigation);
-    this.fsRightLeft();
+    this.fsRightLeft(true);
   }
 
   renderDescription() {
