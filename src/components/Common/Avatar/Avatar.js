@@ -11,7 +11,7 @@ const Avatar = ({src, style = {}}) => {
   });
 
   return (
-    <div className="position--relative">
+    <div>
       <div className="pic_ava-com" style={stylesError}>
         <div className="pic_ava-com" style={stylesPic}/>
       </div>

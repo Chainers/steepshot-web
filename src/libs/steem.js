@@ -413,6 +413,9 @@ function _getPermLink() {
 }
 
 function _getValidTags(tags) {
+  if (!tags) {
+    tags = 'steepshot ';
+  }
   tags = tags.split(' ');
   let empty = tags.indexOf('');
   while (empty !== -1) {
