@@ -11,6 +11,7 @@ import Avatar from '../Common/Avatar/Avatar';
 import PostsList from '../PostsList/PostsList';
 import UsersList from '../UsersList/UsersList';
 import {UserLinkFunc} from '../Common/UserLinkFunc';
+import {updateVotingPower} from '../../actions/auth';
 
 class UserProfile extends React.Component {
   constructor(props) {
@@ -41,6 +42,7 @@ class UserProfile extends React.Component {
 
   componentDidMount() {
     this.getUserProfile();
+    this.props.updateVotingPower(this.props.user);
   }
 
   updateActiveTab(index) {
@@ -59,7 +61,7 @@ class UserProfile extends React.Component {
       getUserProfile(userName).then((result) => {
         if (result.length == 0) {
           this.props.history.push('*');
-          return false;
+          return;
         }
         if (this.state.watcher == userName || this.state.watcher == undefined) {
           showFollow = false;
@@ -110,8 +112,7 @@ class UserProfile extends React.Component {
   }
 
   correctText() {
-    if (window.localStorage.user == undefined ||
-      this.props.history.location.pathname == undefined) {
+    if (window.localStorage.user == undefined || this.props.history.location.pathname == undefined) {
       this.setState({yourOrNot: false});
     } else {
       if (window.localStorage.user.replace(/"/g, '') == this.props.history.location.pathname.replace('/@', '')) {
@@ -141,7 +142,6 @@ class UserProfile extends React.Component {
       location = this.state.profile.location;
       balance = this.state.profile.estimated_balance;
     }
-
     return (
       <div className="g-main_i container">
         <div className="g-content col-xs-12 clearfix" id="workspace">
@@ -149,14 +149,17 @@ class UserProfile extends React.Component {
             <div className="col-xs-12 col-md-4 col-lg-3">
               <div className="user-information">
                 <div className="pic-wrap clearfix">
-                  <Avatar src={profileImageSrc} powerIndicator={currentPage === this.props.user}/>
+                  <Avatar src={profileImageSrc}
+                          powerIndicator={currentPage === this.props.user}
+                          voting_power={this.props.voting_power}
+                  />
                   {this.state.showFollow ? <FollowComponent item={this.state.profile}/> : null}
                 </div>
                 <div className="name">{name}</div>
                 <div className="location">{location}</div>
                 <p>{about}</p>
                 <p className="break--word">
-                  <a href={website}>{website}</a>
+                  <a href={website} target="_blank">{website}</a>
                 </p>
                 <div className="amount">
                   <div className="count">$ {balance}</div>
@@ -220,8 +223,17 @@ const mapStateToProps = (state) => {
   return {
     localization: state.localization,
     user: state.auth.user,
-    postsNumber: postsInfo ? postsInfo.length : 0
+    postsNumber: postsInfo ? postsInfo.length : 0,
+    voting_power: state.auth.voting_power
   };
 };
 
-export default withRouter(connect(mapStateToProps)(UserProfile));
+const mapDispatchToProps = (dispatch) => {
+  return {
+    updateVotingPower: (username) => {
+      dispatch(updateVotingPower(username));
+    }
+  }
+};
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(UserProfile));

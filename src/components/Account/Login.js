@@ -1,7 +1,7 @@
 import React from 'react';
 import {withRouter} from 'react-router-dom';
-import { connect } from 'react-redux'
-import { login } from '../../actions/auth';
+import {connect} from 'react-redux'
+import {login} from '../../actions/auth';
 import {
   facebookLogin,
   twitterLogin,
@@ -182,7 +182,7 @@ class Login extends React.Component {
                         onChange={this.handleChange.bind(this)}
                         autoComplete="new-password"
                       />
-                      <label htmlFor="formPOSTKEY" className="name">Posting Key</label>
+                      <label htmlFor="formPOSTKEY" className="name">Private Posting Key</label>
                       <div className="help-block">
                         {
                           this.state.postingKeyError
