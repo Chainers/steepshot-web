@@ -151,7 +151,6 @@ class UserProfile extends React.Component {
                 <div className="pic-wrap clearfix">
                   <Avatar src={profileImageSrc}
                           powerIndicator={currentPage === this.props.user}
-                          voting_power={this.props.voting_power}
                   />
                   {this.state.showFollow ? <FollowComponent item={this.state.profile}/> : null}
                 </div>
@@ -223,8 +222,7 @@ const mapStateToProps = (state) => {
   return {
     localization: state.localization,
     user: state.auth.user,
-    postsNumber: postsInfo ? postsInfo.length : 0,
-    voting_power: state.auth.voting_power
+    postsNumber: postsInfo ? postsInfo.length : 0
   };
 };
 
