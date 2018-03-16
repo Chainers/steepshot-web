@@ -20,7 +20,7 @@ export function login(username, postingKey, history, dispatch, callback) {
       return false;
     }
     if (result.length == 0) {
-      callback('Such a user doesn\'t exist');
+      callback('Such user doesn\'t exist');
       return false;
     }
     let pubWif = result[0].posting.key_auths[0][0];
@@ -73,28 +73,42 @@ export function login(username, postingKey, history, dispatch, callback) {
         [Constants.SETTINGS.show_low_rated]: false,
         [Constants.SETTINGS.show_nsfw]: false
       };
-      getUserProfile(username).then((result) => {
-        callback('Welcome to Steepshot, ' + welcomeName + '!');
-        dispatch({
-          type: 'LOGIN_SUCCESS',
-          postingKey: postingKey,
-          user: username,
-          avatar: avatar,
-          settings: settings,
-          voting_power: result.voting_power
-        });
-        setTimeout(function () {
-          fakeAuth.authenticate(() => history.push('/feed'));
-        }, 1);
+      callback('Welcome to Steepshot, ' + welcomeName + '!');
+      dispatch({
+        type: 'LOGIN_SUCCESS',
+        postingKey: postingKey,
+        user: username,
+        avatar: avatar,
+        settings: settings
       });
+      let clearTimeout = setInterval(() => {
+        getUserProfile(username).then((result) => {
+          dispatch({
+            type: 'UPDATE_VOTING_POWER',
+            voting_power: result.voting_power
+          })
+        });
+      }, 30000);
+      getUserProfile(username).then((result) => {
+        dispatch({
+          type: 'UPDATE_VOTING_POWER',
+          voting_power: result.voting_power
+        })
+      });
+      dispatch({
+        type: 'VOTING_POWER_TIMEOUT',
+        vpTimeout: clearTimeout
+      });
+      setTimeout(function () {
+        fakeAuth.authenticate(() => history.push('/feed'));
+      }, 1);
     }
   });
 }
 
 function baseBrowseFilter() {
-  const baseBrowseFilter = localStorage.getItem('browse') == undefined ?
-  Constants.BROWSE_ROUTES[0].NAME : localStorage.getItem('browse');
-  return baseBrowseFilter;
+  return baseBrowseFilter = localStorage.getItem('browse') == undefined ?
+    Constants.BROWSE_ROUTES[0].NAME : localStorage.getItem('browse');
 }
 
 function logoutUser() {
@@ -122,6 +136,15 @@ export function updateVotingPower(username) {
         voting_power: result.voting_power
       })
     });
+  }
+}
+
+export function clearVPTimeout(vpTimeout) {
+  return (dispatch) => {
+    dispatch({
+      type: 'VOTING_POWER_TIMEOUT',
+      vpTimeout: vpTimeout
+    })
   }
 }
 
