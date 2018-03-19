@@ -22,7 +22,8 @@ export function UserLinkFunc(bool, fromState) {
         let replace3 = replace1.match(/([\w\W]+)\s@/g);
         let replace4 = replace1.match(/\w\s([^@]+)/g);
         let replace5 = lowItem.match(/@[\w.]+[\W]/);
-        let replaceDot = replace2[0].match(/@\w+\.\s/);
+        let repl = replace2 ? replace2[0] : '';
+        let replaceDot = repl.match(/@\w+\.\s/);
         return <span className="user-links_post" key={index}>
                    <span>
                      {
@@ -36,20 +37,20 @@ export function UserLinkFunc(bool, fromState) {
                    <a href={`/${
                      replaceDot
                      ?
-                     replace2[0].replace(/\s(@\w+)\.\s+/g, '$1')
+                     repl.replace(/\s(@\w+)\.\s+/g, '$1')
                      :
-                     replace2[0].replace(/\s+/g, '')}`
+                     repl.replace(/\s+/g, '')}`
                    } target="_blank">
                      {
                        replaceDot
                        ?
-                       replace2[0].replace(/\.\s+/g, '')
+                       repl.replace(/\.\s+/g, '')
                        :
                        replace5
                        ?
-                       replace2[0].replace(/\s+/g, '')
+                       repl.replace(/\s+/g, '')
                        :
-                       replace2[0].replace(/\s+/g, '') + ' '
+                       repl.replace(/\s+/g, '') + ' '
                      }
                    </a>
                    <span>
