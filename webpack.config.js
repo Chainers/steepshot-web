@@ -7,7 +7,8 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 const isDevelopment = !process.env.production;
 const isProduction = process.env.production;
-const distPath = path.join(__dirname, '/dist');
+const baseDir = path.join(__dirname);
+const distPath = path.join(baseDir, '/dist');
 
 const extractSass = new ExtractTextPlugin({
   filename: 'main.css',
@@ -16,7 +17,7 @@ const extractSass = new ExtractTextPlugin({
 
 const config = {
   entry: {
-    'bundle.js': './src/main'
+    'bundle.js': path.join(baseDir, '/src/main')
   },
   output: {
     path: distPath,
@@ -28,7 +29,6 @@ const config = {
       exclude: [/node_modules/],
       use: [{
         loader: 'babel-loader',
-        cacheDirectory: true
       }]
     }, {
       test: /\.s?css$/,
@@ -58,7 +58,7 @@ const config = {
       use: {
         loader: 'file-loader',
         options: {
-          name: 'static/fonts/' + (isDevelopment ? '[name]' : '[hash]') + '.[ext]'
+          name: 'static/fonts/' + (isDevelopment ? '[name]' : '[hash]')  + '.[ext]'
         }
       },
     }]
@@ -68,10 +68,9 @@ const config = {
     new CopyWebpackPlugin([{
       from: 'static',
       to: 'static'
-    }
-    ]),
+    }]),
     new HtmlWebpackPlugin({
-      template: './index.html',
+      template: path.join(baseDir,'/index.html')
     })
   ],
   devServer: {
