@@ -11,8 +11,8 @@ import {
 } from '../../actions/oauth';
 import LoadingSpinner from '../LoadingSpinner';
 import Constants from '../../common/constants';
-import { documentTitle } from '../DocumentTitle';
-import ShowIf from "../Common/ShowIf";
+import {documentTitle} from '../DocumentTitle';
+import ShowIf from '../Common/ShowIf';
 
 class Login extends React.Component {
   constructor(props) {
@@ -229,7 +229,9 @@ class Login extends React.Component {
 }
 const mapStateToProps = (state) => {
   return {
-    messages: state.messages
+    messages: state.messages,
+    user: state.auth.user
   };
 };
+
 export default withRouter(connect(mapStateToProps)(Login));

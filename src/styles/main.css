@@ -6496,7 +6496,6 @@ modal.modal-like .modal-header {
   position: relative;
   width: 20px;
   height: 20px;
-  overflow: hidden;
   border-radius: 50%;
   margin-right: 10px;
   float: left;

@@ -22,7 +22,7 @@ class FollowComponent extends React.Component {
   followUnfollowToUser(status) {
     this.setState({
       pendingStatus : true
-    })
+    });
     let callback = (err, result) => {
       this.setState({
         pendingStatus : false
@@ -58,7 +58,7 @@ class FollowComponent extends React.Component {
       componentName = <span className="saving">Pending<span> .</span><span> .</span><span> .</span></span>;
     } else {
       if (this.state.follow) {
-          componentClassNames = 'btn btn-primary';
+          componentClassNames = 'btn btn-index';
           componentName = 'Unfollow';
       } else {
           componentClassNames = 'btn btn-default';

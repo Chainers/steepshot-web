@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import {logout} from '../actions/auth';
 import Constants from '../common/constants';
 import Avatar from './Common/Avatar/Avatar';
+import {updateVotingPower, clearVPTimeout} from '../actions/auth';
 
 class Header extends React.Component {
   constructor(props) {
@@ -32,19 +33,27 @@ class Header extends React.Component {
   }
 
   componentDidMount() {
-    if (this.refs[this.props.location.pathname]) $(
-      this.refs[this.props.location.pathname]).addClass('active');
+    if (this.refs[this.props.location.pathname]) $(this.refs[this.props.location.pathname]).addClass('active');
+    this.votingPowerUpdater();
   }
 
   componentWillMount() {
     this.forResize();
   }
 
+  votingPowerUpdater() {
+    if (this.props.user && this.props.postingKey) {
+      let clearTimeout = setInterval(() => {
+        this.props.updateVotingPower(this.props.user);
+      }, 30000);
+      this.props.updateVotingPower(this.props.user);
+      this.props.clearVPTimeout(clearTimeout);
+    }
+  }
+
   shouldComponentUpdate(nextProps) {
-    if (this.refs[this.props.location.pathname]) $(
-      this.refs[this.props.location.pathname]).removeClass('active');
-    if (this.refs[nextProps.location.pathname]) $(
-      this.refs[nextProps.location.pathname]).addClass('active');
+    if (this.refs[this.props.location.pathname]) $(this.refs[this.props.location.pathname]).removeClass('active');
+    if (this.refs[nextProps.location.pathname]) $(this.refs[nextProps.location.pathname]).addClass('active');
 
     return true;
   }
@@ -52,6 +61,7 @@ class Header extends React.Component {
   handleLogout(event) {
     event.preventDefault();
     this.props.logout(this.props.history);
+    clearTimeout(this.props.vpTimeout);
   }
 
   _changeLanguageEn() {
@@ -161,18 +171,19 @@ class Header extends React.Component {
                 </div>
               </div>
               <div className="section user">
-                <div className="wrap-user">
-                  {
-                    this.props.user
-                      ? <Link to={authorLink} className="user-link clearfix">
-                        <div className="photo">
-                          <Avatar src={authorImage} powerIndicator={this.props.user} headerAvatar={true}/>
-                        </div>
-                        <div className="name">{this.props.user}</div>
-                      </Link>
-                      : null
-                  }
-                </div>
+                {
+                  this.props.user
+                    ? <Link to={authorLink} className="user-link clearfix">
+                      <div className="photo">
+                        <Avatar src={authorImage}
+                                powerIndicator={true}
+                                headerAvatar={true}
+                        />
+                      </div>
+                      <div className="name">{this.props.user}</div>
+                    </Link>
+                    : null
+                }
               </div>
               <div className="section logo">
                 <a href="/" className="wrap-logo">
@@ -227,6 +238,12 @@ const mapDispatchToProps = (dispatch) => {
   return {
     logout: (history) => {
       dispatch(logout(history))
+    },
+    updateVotingPower: (username) => {
+      dispatch(updateVotingPower(username));
+    },
+    clearVPTimeout: (vpTimeout) => {
+      dispatch(clearVPTimeout(vpTimeout));
     }
   }
 };
@@ -237,6 +254,7 @@ const mapStateToProps = (state) => {
     user: state.auth.user,
     avatar: state.auth.avatar,
     localization: state.localization,
+    vpTimeout: state.auth.vpTimeout
   };
 };
 
