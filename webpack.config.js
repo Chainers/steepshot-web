@@ -23,6 +23,11 @@ const config = {
     path: distPath,
     filename: "[name]"
   },
+  resolve: {
+    alias: {
+      '/static': path.resolve(__dirname, 'static/')
+    }
+  },
   module: {
     rules: [{
       test: /\.js$/,
