@@ -11,6 +11,7 @@ import ReactResizeDetector from 'react-resize-detector';
 import TabsBar from "../Common/TabsBar/TabsBar";
 import Tab from "../Common/TabsBar/Tab/Tab";
 import utils from '../../utils/utils';
+import './likesFlagsList.css';
 
 class LikesFlagsModal extends React.Component {
   constructor(props) {

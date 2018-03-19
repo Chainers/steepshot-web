@@ -1,5 +1,6 @@
 import React from 'react';
 import Timer from "../Timer/Timer";
+import './testing.css';
 
 class Testing extends React.Component {
 

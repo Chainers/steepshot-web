@@ -334,7 +334,7 @@ h2.card-field__heading {
 }
 
 .btn-flag::before {
-  content: url(/static/images/flagFalse.svg);
+  content: url('/static/images/flagFalse.svg');
 }
 
 .btn-default:active {
@@ -353,7 +353,7 @@ h2.card-field__heading {
 }
 
 .btn-flag.marked::before {
-  content: url(/static/images/flagTrue.svg);
+  content: url('/static/images/flagTrue.svg');
 }
 
 .post__image-container .full-screen_item-mod {
@@ -369,12 +369,12 @@ h2.card-field__heading {
 }
 
 .post__image-container .full-screen_item-mod1 {
-  background: url(/static/images/shape.svg) #000000 no-repeat center;
+  background: url('/static/images/shape.svg') #000000 no-repeat center;
   background-size: 16px;
 }
 
 .post__image-container .full-screen_item-mod2 {
-  background: url(/static/images/shape-copy-6.svg) #000000 no-repeat center;
+  background: url('/static/images/shape-copy-6.svg') #000000 no-repeat center;
   background-size: 20px;
 }
 
@@ -535,7 +535,7 @@ h2.card-field__heading {
     top: 23px;
     width: 23px;
     height: 23px;
-    background: url(/static/images/sprite_svg1910.svg) no-repeat 4% 102%;
+    background: url('/static/images/sprite_svg1910.svg') no-repeat 4% 102%;
   }
 
   .modalButtonWrapper {
@@ -752,7 +752,7 @@ h2.card-field__heading {
   font-family: OpenSans-Regular;
   font-style: normal;
   font-weight: 400;
-  src: local("OpenSans Regular"), local("OpenSans-Regular"), url(../static/fonts/OpenSans-Regular.woff) format("woff"), url(../static/fonts/OpenSans-Regular.woff2) format("woff2")
+  src: local("OpenSans Regular"), local("OpenSans-Regular"), url('/static/fonts/OpenSans-Regular.woff') format("woff"), url('/static/fonts/OpenSans-Regular.woff2') format("woff2")
 }
 
 .open-r {
@@ -763,7 +763,8 @@ h2.card-field__heading {
   font-family: OpenSans-Bold;
   font-style: normal;
   font-weight: 400;
-  src: local("OpenSans Bold"), local("OpenSans-Bold"), url(../static/fonts/OpenSans-Bold.woff) format("woff"), url(../static/fonts/OpenSans-Bold.woff2) format("woff2")
+  src: local("OpenSans Bold"), local("OpenSans-Bold"), url('/static/fonts/OpenSans-Bold.woff') format("woff"),
+    url('/static/fonts/OpenSans-Bold.woff2') format("woff2")
 }
 
 .open-b {
@@ -774,7 +775,7 @@ h2.card-field__heading {
   font-family: OpenSans-Italic;
   font-style: normal;
   font-weight: 400;
-  src: local("OpenSans Italic"), local("OpenSans-Italic"), url(../static/fonts/OpenSans-Italic.woff) format("woff"), url(../static/fonts/OpenSans-Italic.woff2) format("woff2")
+  src: local("OpenSans Italic"), local("OpenSans-Italic"), url('/static/fonts/OpenSans-Italic.woff') format("woff"), url('/static/fonts/OpenSans-Italic.woff2') format("woff2")
 }
 
 .open-i {
@@ -785,7 +786,7 @@ h2.card-field__heading {
   font-family: OpenSans-Light;
   font-style: normal;
   font-weight: 400;
-  src: local("OpenSans Light"), local("OpenSans-Light"), url(../static/fonts/OpenSans-Light.woff) format("woff"), url(../static/fonts/OpenSans-Light.woff2) format("woff2")
+  src: local("OpenSans Light"), local("OpenSans-Light"), url('/static/fonts/OpenSans-Light.woff') format("woff"), url('/static/fonts/OpenSans-Light.woff2') format("woff2")
 }
 
 .open-l {
@@ -796,7 +797,7 @@ h2.card-field__heading {
   font-family: OpenSans-SemiBold;
   font-style: normal;
   font-weight: 400;
-  src: local("OpenSans SemiBold"), local("OpenSans-SemiBold"), url(../static/fonts/OpenSans-SemiBold.woff) format("woff"), url(../static/fonts/OpenSans-SemiBold.woff2) format("woff2")
+  src: local("OpenSans SemiBold"), local("OpenSans-SemiBold"), url('/static/fonts/OpenSans-SemiBold.woff') format("woff"), url('/static/fonts/OpenSans-SemiBold.woff2') format("woff2")
 }
 
 .open-sb {
@@ -2371,7 +2372,7 @@ button.close {
 [class*=sp-]:before {
   content: '';
   display: inline-block;
-  background-image: url(/static/images/sprite.png)
+  background-image: url('/static/images/sprite.png')
 }
 
 .sp-breadcrumb:before {
@@ -2382,7 +2383,7 @@ button.close {
 
 @font-face {
   font-family: sprite;
-  src: url(../static/fonts/sprite.woff2) format("woff2"), url(../fonts/sprite.woff) format("woff")
+  src: url('/static/fonts/sprite.woff2') format("woff2"), url('/static/fonts/sprite.woff') format("woff")
 }
 
 .ic-arrow:before, .ic-facebook:before, .ic-google:before, .ic-instagram:before, .ic-loop:before, .ic-odnoklassniki:before, .ic-skype:before, .ic-twitter:before, .ic-vkontakte:before, .ic-youtube:before {
@@ -2444,13 +2445,13 @@ button.close {
   content: ' ';
   display: inline-block;
   font-size: 10px;
-  background-image: url(/static/images/sprite_svg1910.svg);
+  background-image: url('/static/images/sprite_svg1910.svg');
   background-repeat: no-repeat;
   background-size: 4.4em 47.2em
 }
 
 .no-svg [class*=ic2-]:before {
-  background-image: url(/static/images/sprite_svg1910.png)
+  background-image: url('/static/images/sprite_svg1910.png')
 }
 
 .ic2-arrow-check:before {
@@ -3018,7 +3019,6 @@ html body {
 }
 
 .mCSB_scrollTools .mCSB_buttonDown, .mCSB_scrollTools .mCSB_buttonLeft, .mCSB_scrollTools .mCSB_buttonRight, .mCSB_scrollTools .mCSB_buttonUp {
-  background-image: url(mCSB_buttons.png);
   background-repeat: no-repeat;
   opacity: .4;
   filter: "alpha(opacity=40)";
@@ -4676,7 +4676,7 @@ input[type=checkbox] ~ .box:before {
   content: ' ';
   display: inline-block;
   font-size: 10px;
-  background-image: url(/static/images/sprite_svg1910.svg);
+  background-image: url('/static/images/sprite_svg1910.svg');
   background-repeat: no-repeat;
   background-size: 4.4em 47.2em;
   background-position: -.2em -.2em;
@@ -4691,7 +4691,7 @@ input[type=checkbox] ~ .box:before {
 }
 
 .no-svg input[type=checkbox] ~ .box:before {
-  background-image: url(/static/images/sprite_svg1910.png)
+  background-image: url('/static/images/sprite_svg1910.png')
 }
 
 fieldset[disabled] input[type=checkbox], fieldset[disabled] input[type=radio], input[type=checkbox].disabled, input[type=checkbox][disabled], input[type=radio].disabled, input[type=radio][disabled] {
@@ -4997,7 +4997,7 @@ fieldset[disabled] input[type=checkbox] ~ .box, fieldset[disabled] input[type=ch
   content: ' ';
   display: inline-block;
   font-size: 10px;
-  background-image: url(/static/images/sprite_svg1910.svg);
+  background-image: url('/static/images/sprite_svg1910.svg');
   background-repeat: no-repeat;
   background-size: 4.4em 47.2em;
   background-position: -.2em -26.2em;
@@ -5008,7 +5008,7 @@ fieldset[disabled] input[type=checkbox] ~ .box, fieldset[disabled] input[type=ch
 }
 
 .no-svg .upload .uf-icon:before {
-  background-image: url(/static/images/sprite_svg1910.png)
+  background-image: url('/static/images/sprite_svg1910.png')
 }
 
 .upload .uf-text {
@@ -5299,7 +5299,7 @@ input[type=button].btn-block, input[type=reset].btn-block, input[type=submit].bt
   content: ' ';
   display: inline-block;
   font-size: 10px;
-  background-image: url(/static/images/sprite_svg1910.svg);
+  background-image: url('/static/images/sprite_svg1910.svg');
   background-repeat: no-repeat;
   background-size: 4.4em 47.2em;
   background-position: -.2em -42.6em;
@@ -5309,7 +5309,7 @@ input[type=button].btn-block, input[type=reset].btn-block, input[type=submit].bt
 }
 
 .no-svg .tags-list .tag .btn-close:before {
-  background-image: url(/static/images/sprite_svg1910.png)
+  background-image: url('/static/images/sprite_svg1910.png')
 }
 
 .tags-list .tag .btn-close:hover:before {
@@ -6223,7 +6223,7 @@ modal.modal-like .modal-header {
   content: ' ';
   display: inline-block;
   font-size: 10px;
-  background-image: url(/static/images/sprite_svg1910.svg);
+  background-image: url('/static/images/sprite_svg1910.svg');
   background-repeat: no-repeat;
   background-size: 4.4em 47.2em;
   background-position: -.2em -45em;
@@ -6236,7 +6236,7 @@ modal.modal-like .modal-header {
 }
 
 .no-svg .post-single .btn-next:before, .no-svg .post-single .btn-prev:before {
-  background-image: url(/static/images/sprite_svg1910.png)
+  background-image: url('/static/images/sprite_svg1910.png')
 }
 
 .post-single .btn-prev {
@@ -6400,7 +6400,7 @@ modal.modal-like .modal-header {
   content: ' ';
   display: inline-block;
   font-size: 10px;
-  background-image: url(/static/images/sprite_svg1910.svg);
+  background-image: url('/static/images/sprite_svg1910.svg');
   background-repeat: no-repeat;
   background-size: 4.4em 47.2em;
   background-position: -.2em -30.599999999999998em;
@@ -6410,7 +6410,7 @@ modal.modal-like .modal-header {
 }
 
 .no-svg .user-panel .search .lnk-search:before {
-  background-image: url(/static/images/sprite_svg1910.png)
+  background-image: url('/static/images/sprite_svg1910.png')
 }
 
 .user-panel .search .lnk-search-mob {
@@ -6432,7 +6432,7 @@ modal.modal-like .modal-header {
   content: ' ';
   display: inline-block;
   font-size: 10px;
-  background-image: url(/static/images/sprite_svg1910.svg);
+  background-image: url('/static/images/sprite_svg1910.svg');
   background-repeat: no-repeat;
   background-size: 4.4em 47.2em;
   background-position: -.2em -32em;
@@ -6441,7 +6441,7 @@ modal.modal-like .modal-header {
 }
 
 .no-svg .user-panel .search .lnk-search-mob:before {
-  background-image: url(/static/images/sprite_svg1910.png)
+  background-image: url('/static/images/sprite_svg1910.png')
 }
 
 .user-panel .menu {
@@ -6544,7 +6544,7 @@ modal.modal-like .modal-header {
 .user-panel .create .btn-create-mob:before {
   content: ' ';
   font-size: 10px;
-  background-image: url(/static/images/sprite_svg1910.svg);
+  background-image: url('/static/images/sprite_svg1910.svg');
   background-repeat: no-repeat;
   background-size: 4.4em 47.2em;
   background-position: -.2em -9.6em;
@@ -6559,7 +6559,7 @@ modal.modal-like .modal-header {
 }
 
 .no-svg .user-panel .create .btn-create-mob:before {
-  background-image: url(/static/images/sprite_svg1910.png)
+  background-image: url('/static/images/sprite_svg1910.png')
 }
 
 .user-panel .controls {
@@ -6585,7 +6585,7 @@ modal.modal-like .modal-header {
   content: ' ';
   display: inline-block;
   font-size: 10px;
-  background-image: url(/static/images/sprite_svg1910.svg);
+  background-image: url('/static/images/sprite_svg1910.svg');
   background-repeat: no-repeat;
   background-size: 4.4em 47.2em;
   display: block;
@@ -6597,7 +6597,7 @@ modal.modal-like .modal-header {
 }
 
 .no-svg .user-panel .controls .btn-control:before {
-  background-image: url(/static/images/sprite_svg1910.png)
+  background-image: url('/static/images/sprite_svg1910.png')
 }
 
 .user-panel .controls .btn-control.settings:before {
@@ -6727,7 +6727,7 @@ modal.modal-like .modal-header {
   content: ' ';
   display: inline-block;
   font-size: 10px;
-  background-image: url(/static/images/sprite_svg1910.svg);
+  background-image: url('/static/images/sprite_svg1910.svg');
   background-repeat: no-repeat;
   background-size: 4.4em 47.2em;
   background-position: -.2em -30.599999999999998em;
@@ -6742,7 +6742,7 @@ modal.modal-like .modal-header {
 }
 
 .no-svg .search-panel .wrap-panel:before {
-  background-image: url(/static/images/sprite_svg1910.png)
+  background-image: url('/static/images/sprite_svg1910.png')
 }
 
 .search-panel .wrap-btn {
@@ -6770,7 +6770,7 @@ modal.modal-like .modal-header {
 .search-panel .wrap-btn .btn-close:before {
   content: ' ';
   font-size: 10px;
-  background: url(/static/images/sprite_svg1910.svg) -.2em -3.6em no-repeat;
+  background: url('/static/images/sprite_svg1910.svg') -.2em -3.6em no-repeat;
   background-size: 4.4em 47.2em;
   width: 1.6em;
   height: 1.6em;
@@ -6778,7 +6778,7 @@ modal.modal-like .modal-header {
 }
 
 .no-svg .search-panel .wrap-btn .btn-close:before {
-  background-image: url(/static/images/sprite_svg1910.png)
+  background-image: url('/static/images/sprite_svg1910.png')
 }
 
 .search-panel .wrap-search {
@@ -6986,7 +6986,7 @@ modal.modal-like .modal-header {
 .modal .close:before {
   content: ' ';
   font-size: 10px;
-  background-image: url(/static/images/sprite_svg1910.svg);
+  background-image: url('/static/images/sprite_svg1910.svg');
   background-repeat: no-repeat;
   background-size: 4.4em 47.2em;
   background-position: -.2em -46em;
@@ -7001,7 +7001,7 @@ modal.modal-like .modal-header {
 }
 
 .no-svg .modal .close:before {
-  background-image: url(/static/images/sprite_svg1910.png)
+  background-image: url('/static/images/sprite_svg1910.png')
 }
 
 .g-content {
@@ -7066,7 +7066,7 @@ modal.modal-like .modal-header {
 .btn-like:after, .btn-like:before {
   content: ' ';
   font-size: 10px;
-  background: url(/static/images/sprite_svg1910.svg) no-repeat;
+  background: url('/static/images/sprite_svg1910.svg') no-repeat;
   background-size: 4.4em 47.2em;
   display: block;
   position: absolute;
@@ -7075,7 +7075,7 @@ modal.modal-like .modal-header {
 }
 
 .no-svg .btn-like:after, .no-svg .btn-like:before {
-  background-image: url(/static/images/sprite_svg1910.png)
+  background-image: url('/static/images/sprite_svg1910.png')
 }
 
 .btn-like:before {
@@ -9208,7 +9208,7 @@ modal.modal-like .modal-header {
   cursor: pointer;
   border-top: 1px solid #f4f4f6;
   height: 50px;
-  background: url(/static/images/comment_arrow.svg) 100% 50% no-repeat;
+  background: url('/static/images/comment_arrow.svg') 100% 50% no-repeat;
 }
 
 .number-of-comments_post:hover {
@@ -9328,7 +9328,7 @@ modal.modal-like .modal-header {
 }
 
 .empty-comment-image {
-  background: url(/static/images/cc-13.svg) center no-repeat;
+  background: url('/static/images/cc-13.svg') center no-repeat;
   width: 100%;
   height: 100%;
   min-height: 200px;

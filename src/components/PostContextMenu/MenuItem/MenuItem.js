@@ -1,5 +1,6 @@
 import * as React from 'react';
 import Delimiter from '../DelimitersWrapper/DelimitersWrapper';
+import './menuItem.css';
 
 class MenuItem extends React.Component {
   constructor(props) {
@@ -8,19 +9,19 @@ class MenuItem extends React.Component {
       mouseEnter: false
     }
   }
-  
+
   onMouseEnter() {
     this.setState({
       mouseEnter: true,
     })
   }
-  
+
   onMouseLeave() {
     this.setState({
       mouseEnter: false,
     })
   }
-  
+
   render() {
     const boxStyle = {
       flexDirection: this.props.fullScreen ? 'row' : 'column',

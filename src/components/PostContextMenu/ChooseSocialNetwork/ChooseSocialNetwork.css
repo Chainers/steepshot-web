@@ -21,7 +21,7 @@
 }
 
 .soc-network-item_csn:hover p {
-  color: rgba(235, 68, 61);
+  color: rgba(235, 68, 61, 1);
 }
 
 .soc-network-item_csn:hover .SocialMediaShareButton div {

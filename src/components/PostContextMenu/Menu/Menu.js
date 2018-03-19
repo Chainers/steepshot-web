@@ -2,6 +2,7 @@ import * as React from 'react';
 import MenuItem from '../MenuItem/MenuItem';
 import Delimiter from '../DelimitersWrapper/Delimiter/Delimiter';
 import ShowIf from '../../Common/ShowIf';
+import './menu.css';
 
 const BUTTON_SIZE = 100;
 const PADDING_CONTAINER = 10;

@@ -24,6 +24,7 @@ import {
   VKIcon,
   RedditIcon
 } from 'react-share';
+import './postContextMenu.css';
 
 
 

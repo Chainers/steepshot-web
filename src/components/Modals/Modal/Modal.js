@@ -3,6 +3,7 @@ import {connect} from 'react-redux';
 import {closeModal, setModalOptions} from '../../../actions/modal';
 import ReactResizeDetector from 'react-resize-detector';
 import ShowIf from '../../Common/ShowIf';
+import './modal.css';
 
 const mobileSize = document.documentElement.clientWidth < 815;
 

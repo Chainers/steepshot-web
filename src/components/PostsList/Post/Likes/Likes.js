@@ -3,6 +3,7 @@ import {connect} from 'react-redux';
 import ShowIf from "../../../Common/ShowIf";
 import {openModal} from "../../../../actions/modal";
 import LikesFlagsList from "../../../LikesFlagsList/LikesFlagsList";
+import './likes.css';
 
 class Likes extends React.Component {
   constructor(props) {

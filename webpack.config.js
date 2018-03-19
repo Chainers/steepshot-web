@@ -1,9 +1,9 @@
 'use strict';
 const path = require('path');
-const fs = require('fs');
 const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 const isDevelopment = !process.env.production;
 const isProduction = process.env.production;
@@ -16,11 +16,11 @@ const extractSass = new ExtractTextPlugin({
 
 const config = {
   entry: {
-    app: './src/main'
+    'bundle.js': './src/main'
   },
   output: {
-    filename: 'bundle.js',
-    path: distPath
+    path: distPath,
+    filename: "[name]"
   },
   module: {
     rules: [{
@@ -28,9 +28,10 @@ const config = {
       exclude: [/node_modules/],
       use: [{
         loader: 'babel-loader',
+        cacheDirectory: true
       }]
     }, {
-      test: /\.scss$/,
+      test: /\.s?css$/,
       exclude: [/node_modules/],
       use: extractSass.extract({
         fallback: 'style-loader',
@@ -40,8 +41,8 @@ const config = {
             minimize: isProduction
           }
         },
-          'sass-loader',
-          'resolve-url-loader'
+          'resolve-url-loader',
+          'sass-loader'
         ]
       })
     }, {
@@ -49,30 +50,26 @@ const config = {
       use: [{
         loader: 'file-loader',
         options: {
-          name: 'images/[name][hash].[ext]'
+          name: 'static/images/' + (isDevelopment ? '[name]' : '[hash]') + '.[ext]'
         }
-      }, {
-        loader: 'image-webpack-loader',
-        options: {
-          mozjpeg: {
-            progressive: true,
-            quality: 70
-          }
-        }
-      },
-      ],
+      }],
     }, {
-      test: /\.(eot|svg|ttf|woff|woff2)$/,
+      test: /\.(eot|ttf|woff|woff2)$/,
       use: {
         loader: 'file-loader',
         options: {
-          name: 'fonts/[name][hash].[ext]'
+          name: 'static/fonts/' + (isDevelopment ? '[name]' : '[hash]') + '.[ext]'
         }
       },
     }]
   },
   plugins: [
     extractSass,
+    new CopyWebpackPlugin([{
+      from: 'static',
+      to: 'static'
+    }
+    ]),
     new HtmlWebpackPlugin({
       template: './index.html',
     })
@@ -85,17 +82,6 @@ const config = {
     historyApiFallback: true
   }
 };
-
-if (isDevelopment) {
-  fs.readdirSync(distPath)
-    .map((fileName) => {
-      if (['.css', '.js'].includes(path.extname(fileName))) {
-        return fs.unlinkSync(`${distPath}/${fileName}`);
-      }
-
-      return '';
-    });
-}
 
 if (isProduction) {
   config.plugins.push(

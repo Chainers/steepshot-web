@@ -1,6 +1,7 @@
 import React from 'react';
 import {connect} from "react-redux";
 import {CopyToClipboard} from "react-copy-to-clipboard";
+import './clipboard.css';
 
 class  Clipboard extends React.Component {
   constructor(props){

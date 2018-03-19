@@ -7,6 +7,7 @@ import LoadingSpinner from '../LoadingSpinner';
 import {clearUsersList, getUsersList, initUsersList} from '../../actions/usersList';
 import {documentTitle} from '../DocumentTitle';
 import User from "./User/User";
+import './usersList.css';
 
 class UsersList extends React.Component {
   static defaultProps = {

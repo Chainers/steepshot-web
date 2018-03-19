@@ -10,6 +10,8 @@ import {Router} from 'react-router-dom';
 import createBrowserHistory from 'history/createBrowserHistory';
 import jQuery from 'jquery';
 import {jqApp} from '../static/libs/app.min.js';
+import './styles/main.css';
+import './styles/posts.css';
 
 window.$ = window.jQuery = jQuery;
 

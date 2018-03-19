@@ -2,12 +2,14 @@ import React from 'react';
 import {connect} from 'react-redux';
 import Constants from '../../../common/constants';
 import ShowIf from '../ShowIf';
+import './avatar.css';
 import {setAvatarTip, setAvatarTipTimeout} from '../../../actions/avatar';
 
 class Avatar extends React.Component {
   static defaultProps = {
     style: {}
   };
+
   constructor(props) {
     super(props);
   }
@@ -18,14 +20,14 @@ class Avatar extends React.Component {
 
   pic() {
     return Object.assign({}, this.props.style, {
-             backgroundImage : 'url(' + this.props.src + ')'
-           });
+      backgroundImage: 'url(' + this.props.src + ')'
+    });
   }
 
   picError() {
     return Object.assign({}, this.props.style, {
-             backgroundImage : 'url(' + Constants.NO_AVATAR + ')'
-           });
+      backgroundImage: 'url(' + Constants.NO_AVATAR + ')'
+    });
   }
 
   powerIndicator(votingPower) {
@@ -47,7 +49,11 @@ class Avatar extends React.Component {
         style.top = '-5px';
         this.canvas.width = 30 * ratio;
         this.canvas.height = 30 * ratio;
-        coords = 15; radius = 13; lineWidth = 2; gradStart = 10; gradEnd = 30;
+        coords = 15;
+        radius = 13;
+        lineWidth = 2;
+        gradStart = 10;
+        gradEnd = 30;
       }
       ctx.scale(ratio, ratio);
       if (!this.props.headerAvatar) {
@@ -63,8 +69,8 @@ class Avatar extends React.Component {
       ctx.arc(coords, coords, radius, (votingPower / 50) * Math.PI, 0, true);
       ctx.lineWidth = lineWidth;
       let grad = ctx.createLinearGradient(gradStart, gradStart, gradEnd, gradEnd);
-      grad.addColorStop(0.1,'#ff7700');
-      grad.addColorStop(0.5,'#ff1000');
+      grad.addColorStop(0.1, '#ff7700');
+      grad.addColorStop(0.5, '#ff1000');
       ctx.strokeStyle = grad;
       ctx.stroke();
     }
@@ -92,7 +98,9 @@ class Avatar extends React.Component {
     return (
       <div className={this.props.powerIndicator ? 'position--relative' : ''}>
         <ShowIf show={this.props.powerIndicator}>
-          <canvas ref={ref => {this.canvas = ref}}
+          <canvas ref={ref => {
+            this.canvas = ref
+          }}
                   className="border-indicator_ava-com"
                   onTouchStart={this.showTip.bind(this)}
                   onTouchEnd={this.hideTip.bind(this)}

@@ -5,6 +5,7 @@ import {connect} from "react-redux";
 import {toggleFollow} from "../../../actions/follow";
 import ShowIf from "../../Common/ShowIf";
 import LoadingSpinner from "../../LoadingSpinner";
+import './user.css';
 
 const User = ({user, authUser, toggleFollow}) => {
   let amountMoney = '';

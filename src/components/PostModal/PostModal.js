@@ -23,6 +23,7 @@ import Likes from '../PostsList/Post/Likes/Likes';
 import FullScreenButtons from './FullScreenButtons/FullScreenButtons';
 import utils from '../../utils/utils';
 import {toggleVote} from '../../actions/vote';
+import './postModal.css';
 import {setPowerLikeInd, setPowerLikeTimeout} from '../../actions/post';
 import VoteIndicator from '../PostsList/Post/Vote/VoteIndicator/VoteIndicator';
 

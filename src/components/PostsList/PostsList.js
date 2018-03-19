@@ -7,6 +7,7 @@ import InfiniteScroll from 'react-infinite-scroller';
 import LoadingSpinner from '../LoadingSpinner';
 import Post from './Post/Post';
 import HeadingLeadComponent from '../Atoms/HeadingLeadComponent';
+import './postsList.css';
 
 class PostsList extends React.Component {
   static defaultProps = {

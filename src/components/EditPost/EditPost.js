@@ -10,6 +10,7 @@ import Constants from "../../common/constants";
 import LoadingSpinner from "../LoadingSpinner";
 import {documentTitle} from "../../components/DocumentTitle";
 import Timer from "../Common/Timer/Timer";
+import './editPost.css';
 
 class EditPost extends React.Component {
 

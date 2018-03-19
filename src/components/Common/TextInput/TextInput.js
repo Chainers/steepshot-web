@@ -4,6 +4,7 @@ import ShowIf from "../ShowIf";
 import ReactResizeDetector from 'react-resize-detector';
 import {connect} from "react-redux";
 import {initTextInput, setTextInputState} from "../../../actions/textInput";
+import './textInput.css';
 
 class TextInput extends React.Component {
   static MARGIN_TEXT = 21;

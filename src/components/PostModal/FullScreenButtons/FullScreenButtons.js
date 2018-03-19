@@ -1,6 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import LoadingSpinner from '../../LoadingSpinner/index';
+import './fullScreenButtons.css';
 
 class FullScreenButtons extends React.Component {
   constructor(props) {
