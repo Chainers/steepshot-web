@@ -1,0 +1,135 @@
+.poweroflike-ind_vote-ind {
+  position: absolute;
+  height: 54px;
+  top: -54px;
+  left: -10px;
+  z-index: 2;
+  width: calc(100% + 20px);
+  background: #ffffff;
+  border: 1px solid #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 20px 40px 0 rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+  animation: fadeVoteIndicator .2s linear;
+}
+.hid-ind-anim_vote-ind {
+  top: 0;
+  animation: unfadeVoteIndicator .2s linear;
+}
+.poweroflike-ind_vote-ind p {
+  margin: 0;
+}
+
+.heart_vote-ind {
+  width: 36px;
+  height: 36px;
+  background: url(/static/images/poweroflike-heart.svg) center no-repeat;
+  cursor: pointer;
+  margin-right: -7px;
+}
+
+.ind-line_vote-ind {
+  position: relative;
+  right: -3px;
+  height: 2px;
+  background-color: #f4f4f6;
+  width: calc(100% - 90px);
+}
+.circle_vote-ind {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #e6e6e6;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1;
+}
+
+.circle-toggler_vote-ind {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 22px;
+  height: 22px;
+  border-radius: 11px;
+  background: linear-gradient(to right, #ff7700, #ff1000);
+  border: 1px solid #ffffff;
+  z-index: 2;
+}
+
+.toggler-wrapper_vote-ind {
+  position: relative;
+  top: -18px;
+  left: 10px;
+  width: 36px;
+  height: 36px;
+  cursor: pointer;
+}
+
+.poweroflike-amount_vote-ind {
+  width: 29px;
+  height: 19px;
+  font: 14px OpenSans-SemiBold;
+  color: #0f181e;
+}
+
+@keyframes fadeVoteIndicator {
+  from {
+    opacity: 0;
+    top: 0;
+  }
+  to {
+    opacity: 1;
+    top: -54px;
+  }
+}
+
+@keyframes unfadeVoteIndicator {
+  from {
+    opacity: 1;
+    top: -54px;
+  }
+  to {
+    opacity: 0;
+    top: 0;
+  }
+}
+
+
+.slider_vote-ind {
+  width: calc(100% - 86px);
+  position: relative;
+}
+.rangeslider__handle {
+  outline: none;
+}
+.rangeslider-horizontal .rangeslider__fill {
+  background-color: #ff7500;
+  height: 2px;
+}
+.rangeslider .rangeslider__fill {
+  box-shadow: none;
+}
+.rangeslider.rangeslider-horizontal {
+  height: 2px;
+  box-shadow: none;
+}
+.rangeslider-horizontal .rangeslider__handle-tooltip {
+  display: none;
+}
+.rangeslider-horizontal .rangeslider__handle {
+  background: linear-gradient(to right, #ff7700, #ff1000);
+  width: 22px;
+  height: 22px;
+  border: 1px solid #ffffff;
+  box-shadow: 0 5px 10px 0 rgba(231, 72, 0, 0.3);
+  z-index: 2;
+}
+.rangeslider-horizontal .rangeslider__handle:after {
+  display: none;
+}

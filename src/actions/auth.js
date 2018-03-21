@@ -1,7 +1,6 @@
 import {browserHistory} from 'react-router';
 import fakeAuth from '../components/Routes/fakeAuth';
 import steem from 'steem';
-import {getStore} from '../store/configureStore';
 import Constants from '../common/constants';
 import {logLogin} from './logging';
 import {getUserProfile} from './profile';
@@ -144,6 +143,15 @@ export function clearVPTimeout(vpTimeout) {
     dispatch({
       type: 'VOTING_POWER_TIMEOUT',
       vpTimeout: vpTimeout
+    })
+  }
+}
+
+export function setLikePower(likePower) {
+  return (dispatch) => {
+    dispatch({
+      type: 'SET_LIKE_POWER',
+      like_power: likePower
     })
   }
 }

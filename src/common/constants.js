@@ -133,7 +133,7 @@ export default {
     TUTORIAL : {
         PRE_TEXT : 'Also you can check ',
         TEXT : 'how to sign in to Steepshot',
-        LINK : "https://www.youtube.com/embed/XAVapBwbS1U?autoplay=1"
+        LINK : 'https://www.youtube.com/embed/XAVapBwbS1U?autoplay=1'
     },
 
     BROWSE_ROUTES : [

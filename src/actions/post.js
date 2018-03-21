@@ -26,6 +26,26 @@ export function updatePost(postIndex) {
   }
 }
 
+export function setPowerLikeInd(postIndex, isOpen) {
+  return (dispatch) => {
+    dispatch({
+      type: 'POWER_OF_LIKE_IND',
+      index: postIndex,
+      isPLOpen: isOpen
+    })
+  }
+}
+
+export function setPowerLikeTimeout(postIndex, timeout) {
+  return (dispatch) => {
+    dispatch({
+      type: 'POWER_OF_LIKE_TIMEOUT',
+      index: postIndex,
+      plTimeout: timeout
+    })
+  }
+}
+
 function sendDeletePost(postIndex) {
   return {
     type: 'SEND_DELETE_POST',
