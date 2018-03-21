@@ -11,9 +11,11 @@ import Tags from './Tags/Tags';
 import Vote from './Vote/Vote';
 import PostModal from '../../PostModal/PostModal';
 import {openPostModal} from '../../../actions/postModal';
+import {setPowerLikeInd, setPowerLikeTimeout} from '../../../actions/post';
 import LoadingSpinner from '../../LoadingSpinner/index';
 import Avatar from '../../Common/Avatar/Avatar';
 import Likes from './Likes/Likes';
+import VoteIndicator from './Vote/VoteIndicator/VoteIndicator';
 
 class Post extends React.Component {
 
@@ -48,6 +50,29 @@ class Post extends React.Component {
         <p style={{color: '#979b9e'}}>Post your comment</p>
       );
     }
+  }
+
+  longTapPLInd(e) {
+    e.preventDefault();
+    if (this.props.vote) {
+      return;
+    }
+    if (!this.props.authUser) {
+      jqApp.pushMessage.open(Constants.VOTE_ACTION_WHEN_NOT_AUTH);
+      return;
+    }
+    if (this.props.commentLoader) {
+      jqApp.pushMessage.open(Constants.WAIT_FINISHING_TRANSACTION);
+      return;
+    }
+    let plTimeout = setTimeout(() => {
+      this.props.setPowerLikeInd(this.props.index, true);
+    }, 700);
+    this.props.setPowerLikeTimeout(this.props.index, plTimeout);
+  }
+
+  breakLongTapPLInd() {
+    clearTimeout(this.props.plTimeout);
   }
 
   render() {
@@ -109,9 +134,21 @@ class Post extends React.Component {
               <a style={cardPhotoStyles} className="img" alt="User"/>
             </div>
             <div className="card-wrap">
+              <ShowIf show={this.props.isPLOpen}>
+                <VoteIndicator index={this.props.index}/>
+              </ShowIf>
               <div className="card-controls clearfix">
                 <div className="buttons-row">
-                  <Vote postIndex={this.props.index} commentLoader={this.props.commentLoader}/>
+                  <div
+                    onMouseDown={this.longTapPLInd.bind(this)}
+                    onMouseUp={this.breakLongTapPLInd.bind(this)}
+                    onTouchStart={this.longTapPLInd.bind(this)}
+                    onTouchEnd={this.breakLongTapPLInd.bind(this)}
+                    onTouchMove={this.breakLongTapPLInd.bind(this)}
+                    onContextMenu={this.breakLongTapPLInd.bind(this)}
+                  >
+                    <Vote postIndex={this.props.index} commentLoader={this.props.commentLoader}/>
+                  </div>
                   <ShowIf show={this.props.authUser !== this.props.author}>
                     <Flag postIndex={this.props.index} commentLoader={this.props.commentLoader}/>
                   </ShowIf>
@@ -139,14 +176,17 @@ class Post extends React.Component {
 }
 
 const mapStateToProps = (state, props) => {
-  if (state.posts[props.index]) {
-    const media = state.posts[props.index].media[0];
+  let post = state.posts[props.index];
+  if (post) {
+    const media = post.media[0];
     let imgUrl = media['thumbnails'] ? media['thumbnails'][1024] : media.url;
     return {
-      ...state.posts[props.index],
+      ...post,
+      imgUrl,
       authUser: state.auth.user,
       commentLoader: state.postModal.needsCommentFormLoader,
-      imgUrl
+      plTimeout: post.plTimeout,
+      isPLOpen: post.isPLOpen
     };
   }
 };
@@ -155,6 +195,12 @@ const mapDispatchToProps = (dispatch) => {
   return {
     openModal: (point, index, options) => {
       dispatch(openPostModal(point, index, options));
+    },
+    setPowerLikeInd: (index, isOpen) => {
+      dispatch(setPowerLikeInd(index, isOpen));
+    },
+    setPowerLikeTimeout: (index, plTimeout) => {
+      dispatch(setPowerLikeTimeout(index, plTimeout));
     }
   };
 };

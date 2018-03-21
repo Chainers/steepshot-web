@@ -13,7 +13,10 @@ class Vote extends React.Component {
       jqApp.pushMessage.open(Constants.WAIT_FINISHING_TRANSACTION);
       return;
     }
-      this.props.toggleVote(this.props.postIndex);
+    if (this.props.isPLOpen) {
+      return;
+    }
+    this.props.toggleVote(this.props.postIndex);
   }
 
   render() {
@@ -33,9 +36,11 @@ class Vote extends React.Component {
 }
 
 const mapStateToProps = (state, props) => {
+  let post = state.posts[props.postIndex];
   return {
-    ...state.posts[props.postIndex],
-    ...props
+    ...post,
+    ...props,
+    isPLOpen: post.isPLOpen
   };
 };
 

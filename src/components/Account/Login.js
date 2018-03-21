@@ -101,8 +101,6 @@ class Login extends React.Component {
     window.open('https://steemit.com/pick_account');
   }
 
-
-
   renderTutorVideo() {
     return (
       <div className="youtube-embed">

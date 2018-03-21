@@ -94,6 +94,23 @@ export default function posts(state = {}, action) {
           postDeleting: false
         }
       };
+    case 'POWER_OF_LIKE_IND':
+      return {
+        ...state,
+        [action.index]: {
+          ...state[action.index],
+          isPLOpen: action.isPLOpen
+        }
+      };
+    case 'POWER_OF_LIKE_TIMEOUT':
+      return {
+        ...state,
+        [action.index]: {
+          ...state[action.index],
+          plTimeout: action.plTimeout
+        }
+      };
+
 
     default:
       return state;

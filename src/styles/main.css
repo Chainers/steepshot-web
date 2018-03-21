@@ -398,6 +398,7 @@ h2.card-field__heading {
 
 .card-wrap {
   min-width: 257px !important;
+  position: relative;
 }
 
 .rectangle_comment span {
@@ -6773,12 +6774,9 @@ modal.modal-like .modal-header {
 
 .search-panel .wrap-btn .btn-close:before {
   content: ' ';
-  display: inline-block;
   font-size: 10px;
-  background-image: url(/static/images/sprite_svg1910.svg);
-  background-repeat: no-repeat;
+  background: url(/static/images/sprite_svg1910.svg) -.2em -3.6em no-repeat;
   background-size: 4.4em 47.2em;
-  background-position: -.2em -3.6em;
   width: 1.6em;
   height: 1.6em;
   display: block

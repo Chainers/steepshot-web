@@ -3,7 +3,8 @@ const initialState = {
   postingKey: JSON.parse(localStorage.getItem('postingKey')) || null,
   settings: JSON.parse(localStorage.getItem('settings')) || null,
   avatar: JSON.parse(localStorage.getItem('avatar')) || null,
-  voting_power: null
+  voting_power: null,
+  like_power: 100
 };
 
 export default function auth(state = initialState, action) {
@@ -30,7 +31,8 @@ export default function auth(state = initialState, action) {
         postingKey: JSON.parse(localStorage.getItem('postingKey')) || null,
         settings: JSON.parse(localStorage.getItem('settings')) || null,
         avatar: JSON.parse(localStorage.getItem('avatar')) || null,
-        voting_power: null
+        voting_power: null,
+        like_power: null
       };
 
     case 'UPDATE_SETTINGS':
@@ -47,6 +49,11 @@ export default function auth(state = initialState, action) {
       return {
         ...state,
         vpTimeout: action.vpTimeout
+      };
+    case 'SET_LIKE_POWER':
+      return {
+        ...state,
+        like_power: action.like_power
       };
 
     default:

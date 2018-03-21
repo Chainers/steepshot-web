@@ -1,9 +1,6 @@
 import Steem from '../libs/steem';
 import {getStore} from '../store/configureStore';
-import Constants from '../common/constants';
-import {debounce} from 'lodash';
 import {updatePost} from './post';
-import {getUserProfile} from './profile';
 import {updateVotingPower} from './auth';
 
 function toggleVoteRequest(postIndex) {
@@ -36,8 +33,6 @@ export function toggleVote(postIndex) {
     const newVoteState = !post.vote;
 
     if (!username && !postingKey) {
-      debounce(jqApp.pushMessage.open(Constants.VOTE_ACTION_WHEN_NOT_AUTH),
-        Constants.VOTE_ACTION_WHEN_NOT_AUTH_DEBOUNCE);
       return;
     }
 
