@@ -3,19 +3,16 @@ import {Link} from 'react-router-dom';
 import utils from '../../../../utils/utils';
 
 class Tags extends React.Component {
-  constructor(props) {
-    super(props);
-  }
 
   checkFirst(str) {
-    if (str[0] == '#') return str.substring(1);
+    if (str[0] === '#') return str.substring(1);
     return str;
   }
 
   getTags() {
     if (!this.props.tags) return null;
     return this.props.tags.map((tag, index) => {
-      if (tag == 'steepshot' || tag == '#steepshot') {
+      if (tag === 'steepshot' || tag === '#steepshot') {
         return null;
       }
       return <Link key={index} to={`/search/${this.checkFirst(tag)}`}>

@@ -59,21 +59,21 @@ class UserProfile extends React.Component {
       let showFollow = true;
       userName = userName || this.state.authorName;
       getUserProfile(userName).then((result) => {
-        if (result.length == 0) {
+        if (result.length === 0) {
           this.props.history.push('*');
           return;
         }
-        if (this.state.watcher == userName || this.state.watcher == undefined) {
+        if (this.state.watcher === userName || this.state.watcher === undefined) {
           showFollow = false;
         }
         this.setState({
           showFollow: showFollow,
           profile: result,
-          avatar: result.profile_image,
+          avatar: result['profile_image'],
           keys: [
-            {label: `${result.post_count} ${Constants.POSTS_FILTERS.POSTS_USER.label}`},
-            {label: `${result.followers_count} ${Constants.USERS_FILTERS.FOLLOWERS.label}`},
-            {label: `${result.following_count} ${Constants.USERS_FILTERS.FOLLOWING.label}`},
+            {label: `${result['post_count']} ${Constants.POSTS_FILTERS.POSTS_USER.label}`},
+            {label: `${result['followers_count']} ${Constants.USERS_FILTERS.FOLLOWERS.label}`},
+            {label: `${result['following_count']} ${Constants.USERS_FILTERS.FOLLOWING.label}`},
           ],
           needsForceRefresh: true,
         }, () => {
@@ -106,16 +106,16 @@ class UserProfile extends React.Component {
   }
 
   insertUsername(point, userName) {
-    if (userName == undefined) return point;
+    if (userName === undefined) return point;
     let path = point.split('/');
     return `${path[0]}/${userName}/${path[1]}`;
   }
 
   correctText() {
-    if (window.localStorage.user == undefined || this.props.history.location.pathname == undefined) {
+    if (window.localStorage.user === undefined || this.props.history.location.pathname === undefined) {
       this.setState({yourOrNot: false});
     } else {
-      if (window.localStorage.user.replace(/"/g, '') == this.props.history.location.pathname.replace('/@', '')) {
+      if (window.localStorage.user.replace(/"/g, '') === this.props.history.location.pathname.replace('/@', '')) {
         this.setState({yourOrNot: true});
       } else {
         this.setState({yourOrNot: false});
@@ -134,13 +134,13 @@ class UserProfile extends React.Component {
 
     if (this.state.profile) {
       name = this.state.profile.name;
-      if (name == undefined || name == '') name = `@${this.state.profile.username}`;
-      website = this.state.profile.website;
+      if (name === undefined || name === '') name = `@${this.state.profile.username}`;
+      website = this.state.profile['website'];
       about = <div>
                 {UserLinkFunc(null, this.state.profile.about)}
               </div>;
       location = this.state.profile.location;
-      balance = this.state.profile.estimated_balance;
+      balance = this.state.profile['estimated_balance'];
     }
     return (
       <div className="g-main_i container">
@@ -185,7 +185,7 @@ class UserProfile extends React.Component {
                   updateCallback={this.updateActiveTab.bind(this)}
                 />
                 {
-                  this.state.profile == undefined
+                  this.state.profile === undefined
                     ? null
                     : <TabsWrapper
                       activeTab={this.state.activeItemIndex}

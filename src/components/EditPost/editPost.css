@@ -47,7 +47,7 @@
 
 .upload-icon_edi-pos {
   background-size: 4.4em 47.2em;
-  background: url(/static/images/sprite_svg1910.svg) no-repeat -.2em -18.75em;
+  background: url(/images/sprite_svg1910.svg) no-repeat -.2em -18.75em;
   width: 40px;
   height: 40px;
   display: block;
@@ -75,7 +75,7 @@
   width: 42px;
   height: 42px;
   border-radius: 50%;
-  background: rgba(0, 0, 0, .5) url('/static/images/rotate-button.svg') no-repeat 50%;
+  background: rgba(0, 0, 0, .5) url('/images/rotate-button.svg') no-repeat 50%;
   transition: all .2s ease;
 }
 

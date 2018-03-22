@@ -12,10 +12,6 @@ class TabsBar extends React.Component {
     showLoader: true
   };
 
-  constructor(props) {
-    super(props);
-  }
-
   componentDidUpdate() {
     let navItems = [];
     this.props.children.forEach((item, index) => {
@@ -45,7 +41,7 @@ class TabsBar extends React.Component {
       if (this.props.activeIndex === index) {
         styles = 'nav-item active';
       }
-      if (!item.props.loading && !item.props.empty || this.props.activeIndex === index) {
+      if ((!item.props.loading && !item.props.empty) || this.props.activeIndex === index) {
         navItems.push(
           <li role="presentation" key={index} className={styles}>
             <a onClick={() => this.setIndex(index)}

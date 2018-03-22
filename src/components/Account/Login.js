@@ -13,6 +13,8 @@ import LoadingSpinner from '../LoadingSpinner';
 import Constants from '../../common/constants';
 import {documentTitle} from '../DocumentTitle';
 import ShowIf from '../Common/ShowIf';
+import $ from 'jquery';
+import jqApp from "../../libs/app.min";
 
 class Login extends React.Component {
   constructor(props) {
@@ -45,13 +47,13 @@ class Login extends React.Component {
 
   validate() {
     let valid = true;
-    if (this.state.userName == '') {
+    if (this.state.userName === '') {
       this.setState({
         userNameError : true
       });
       valid = false;
     }
-    if (this.state.postingKey == '') {
+    if (this.state.postingKey === '') {
       this.setState({
         postingKeyError : true
       });
@@ -110,6 +112,7 @@ class Login extends React.Component {
           src={Constants.TUTORIAL.LINK}
           frameBorder="0"
           allowFullScreen
+          title='tutor video'
         >
         </iframe>
       </div>

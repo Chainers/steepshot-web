@@ -69,7 +69,7 @@ class UsersList extends React.Component {
       );
     }
     let users = [];
-    this.props.users.map((user, index) => {
+    this.props.users.forEach((user, index) => {
       users.push(
         <User
           key={index}

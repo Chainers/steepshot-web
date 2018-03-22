@@ -1,12 +1,9 @@
 import React from 'react';
 import HeadingLeadComponent from '../Atoms/HeadingLeadComponent';
 import { documentTitle } from '../DocumentTitle';
+import {connect} from "react-redux";
 
 class AboutComponent extends React.Component {
-
-  constructor(props) {
-    super(props);
-  }
 
   componentWillMount() {
     documentTitle();
@@ -51,4 +48,4 @@ class AboutComponent extends React.Component {
   }
 }
 
-export default AboutComponent;
+export default connect(AboutComponent);

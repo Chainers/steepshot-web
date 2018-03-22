@@ -7,11 +7,6 @@ import {getBodyParams} from '../../actions/bodyParams';
 
 class Modals extends React.Component {
 
-  constructor(props) {
-    super(props);
-
-  }
-
   componentWillMount() {
     const {history} = this.props;
     this.unsubscribeFromHistory = history.listen(this.handleLocationChange.bind(this));

@@ -5,6 +5,7 @@ import {
 } from 'react-router-dom';
 import constants from '../../common/constants';
 import Avatar from '../Common/Avatar/Avatar';
+import jqApp from "../../libs/app.min";
 
 class UserItem extends React.Component {
   constructor(props) {

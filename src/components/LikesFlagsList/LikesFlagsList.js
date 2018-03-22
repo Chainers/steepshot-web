@@ -1,5 +1,4 @@
 import React from 'react';
-import {debounce} from 'lodash';
 import {connect} from 'react-redux';
 import {closeModal} from "../../actions/modal";
 import UsersList from "../UsersList/UsersList";

@@ -1,12 +1,11 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
 import Steem from '../../libs/steem';
 import utils from '../../utils/utils';
 
 import Constants from '../../common/constants';
 import { debounce } from 'lodash';
+import jqApp from "../../libs/app.min";
 
 class VouteComponent extends React.Component {
   constructor(props) {
@@ -47,7 +46,7 @@ class VouteComponent extends React.Component {
     }
 
     let queue = sessionStorage.getItem('voteQueue');
-    if (queue == "true")  {
+    if (queue === "true")  {
       return false;
     }
 
@@ -73,7 +72,7 @@ class VouteComponent extends React.Component {
             vote: !newVoteState
           }, () => {
               let text = 'Something went wrong when you voted, please, try again later';
-              if (err.data.code == 10) {
+              if (err.data.code === 10) {
                 text = `Sorry, you had used the maximum number of vote changes on this ${this.state.parent}`;
               }
               jqApp.pushMessage.open(text);
@@ -113,10 +112,6 @@ class VouteComponent extends React.Component {
     );
   }
 }
-
-VouteComponent.propTypes = {
-  item: PropTypes.object
-};
 
 const mapStateToProps = (state) => {
   return {

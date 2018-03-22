@@ -2,6 +2,7 @@ import constants from '../common/constants';
 import {getStore} from '../store/configureStore';
 import {setPostModalOptions} from './postModal';
 import Steem from '../libs/steem';
+import jqApp from "../libs/app.min";
 
 export function sendComment(postIndex, comment) {
   let state = getStore().getState();

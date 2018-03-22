@@ -1,8 +1,7 @@
 import React from 'react';
-import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
-import PropTypes from 'prop-types';
 import Steem from '../../libs/steem';
+import jqApp from "../../libs/app.min";
 
 class FollowComponent extends React.Component {
   constructor(props) {
@@ -10,7 +9,7 @@ class FollowComponent extends React.Component {
 
     this.state = {
       item: this.props.item,
-      follow: this.props.item ? this.props.item.has_followed != 0 : false,
+      follow: this.props.item ? this.props.item['has_followed'] !== 0 : false,
       pendingStatus: false
     }
   }
@@ -38,7 +37,7 @@ class FollowComponent extends React.Component {
           follow: !this.state.follow
         })
       }
-    }
+    };
     Steem.followUnfollowUser(this.props.postingKey, this.props.username, this.state.item.username, status, callback);
   }
 
@@ -46,7 +45,7 @@ class FollowComponent extends React.Component {
     if (nextProps.item !== undefined && nextProps.item !== null)
     this.setState({
         item: nextProps.item,
-        follow: nextProps.item ? nextProps.item.has_followed != 0 : false
+        follow: nextProps.item ? nextProps.item['has_followed'] !== 0 : false
     });
   }
 
@@ -79,10 +78,6 @@ class FollowComponent extends React.Component {
     );
   }
 }
-
-FollowComponent.propTypes = {
-  item: PropTypes.object
-};
 
 const mapStateToProps = (state) => {
   return {

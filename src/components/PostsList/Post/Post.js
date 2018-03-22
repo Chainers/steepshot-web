@@ -23,10 +23,6 @@ class Post extends React.Component {
     clearPostHeader: false,
   };
 
-  constructor(props) {
-    super(props);
-  }
-
   openPostModal() {
     let modalOption = {
       body: (<PostModal/>)
@@ -37,7 +33,7 @@ class Post extends React.Component {
   commentNumber() {
     if (this.props.children) {
       let text;
-      if (this.props.children == 1) {
+      if (this.props.children === 1) {
         text = 'comment';
       } else {
         text = 'comments';

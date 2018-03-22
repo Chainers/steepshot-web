@@ -4,7 +4,6 @@ import PostsList from '../PostsList/PostsList';
 import {getUsersSearch} from '../../services/posts';
 import {documentTitle} from '../DocumentTitle';
 import {insertCategory} from '../../utils/search';
-import {debounce} from 'lodash';
 import UsersList from '../UsersList/UsersList';
 import TabsBar from "../Common/TabsBar/TabsBar";
 import {connect} from "react-redux";
@@ -14,9 +13,6 @@ import HeadingLeadComponent from "../Atoms/HeadingLeadComponent";
 import {pageLoading} from "../../actions/tabsBar";
 
 class Search extends React.Component {
-  constructor(props) {
-    super(props);
-  }
 
   shouldComponentUpdate(nextProps) {
     if (this.props.searchValue !== nextProps.searchValue) {

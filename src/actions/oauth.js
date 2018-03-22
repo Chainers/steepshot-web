@@ -2,7 +2,6 @@ import url from 'url';
 import qs from 'querystring';
 import moment from 'moment';
 import cookie from 'react-cookie';
-import { browserHistory } from 'react-router';
 
 
 // Sign in with Facebook
@@ -283,7 +282,7 @@ function signIn({ token, user, window, interval, dispatch }) {
       user: user
     });
     cookie.save('token', token, { expires: moment().add(1, 'hour').toDate() });
-    browserHistory.push('/');
+   // browserHistory.push('/');
     resolve({ window: window, interval: interval });
   });
 

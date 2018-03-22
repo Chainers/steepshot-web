@@ -1,7 +1,5 @@
 import React from 'react';
-import {
-    connect
-} from 'react-redux';
+
 
 class HeadingLeadComponent extends React.Component {
     static defaultProps = {
@@ -36,10 +34,4 @@ class HeadingLeadComponent extends React.Component {
     }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    localization: state.localization
-  };
-};
-
-export default connect(mapStateToProps)(HeadingLeadComponent);
+export default HeadingLeadComponent;

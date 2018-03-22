@@ -3,8 +3,8 @@ import {getStore} from '../store/configureStore';
 import Constants from '../common/constants';
 import {debounce} from 'lodash';
 import {updatePost} from './post';
-import {getUserProfile} from './profile';
 import {updateVotingPower} from './auth';
+import jqApp from "../libs/app.min";
 
 function toggleFlagRequest(postIndex) {
   return {

@@ -4,10 +4,6 @@ import LoadingSpinner from '../../LoadingSpinner/index';
 import './fullScreenButtons.css';
 
 class FullScreenButtons extends React.Component {
-  constructor(props) {
-    super(props);
-
-  }
 
   render() {
     let like;

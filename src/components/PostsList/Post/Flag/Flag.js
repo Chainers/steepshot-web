@@ -4,11 +4,9 @@ import ConfirmFlagModal from '../../../PostContextMenu/ConfirmFlagModal/ConfirmF
 import Constants from '../../../../common/constants';
 import {toggleFlag} from '../../../../actions/flag';
 import {closeModal, openModal} from '../../../../actions/modal';
+import jqApp from "../../../../libs/app.min";
 
 class Flag extends React.Component {
-  constructor(props) {
-    super(props);
-  }
 
   toggleFlag() {
     if (!this.props.isUserAuth) {

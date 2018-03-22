@@ -2,9 +2,6 @@ import React from 'react'
 import {documentTitle} from './DocumentTitle';
 
 class NotFound extends React.Component {
-  constructor(props) {
-    super(props);
-  }
 
   componentDidMount() {
     documentTitle();

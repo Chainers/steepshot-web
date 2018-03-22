@@ -6,9 +6,6 @@ import LikesFlagsList from "../../../LikesFlagsList/LikesFlagsList";
 import './likes.css';
 
 class Likes extends React.Component {
-  constructor(props) {
-    super(props);
-  }
 
   openLikesModal() {
     let modalOption = {

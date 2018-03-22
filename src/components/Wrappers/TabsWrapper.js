@@ -15,17 +15,17 @@ class TabsWrapper extends React.Component {
     }
 
     renderTabs() {
-        if (this.state.children == undefined) return null;
+        if (this.state.children === undefined) return null;
         let activeTab = this.state.activeTab;
         return this.state.children.map((child, index) => {
             let styles = 'tab-pane';
-            if (index == activeTab) {
+            if (index === activeTab) {
                 styles = 'tab-pane active';
             }
 
             return (
                 <div className={styles} key={index}>
-                    {React.cloneElement(child, { ...child.props, isComponentVisible : index == activeTab})}
+                    {React.cloneElement(child, { ...child.props, isComponentVisible : index === activeTab})}
                 </div>
             );
         });

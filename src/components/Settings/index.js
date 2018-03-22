@@ -1,18 +1,14 @@
 import React from 'react';
 import {
-  getNSFW,
-  getLowRated,
-  updateLowRated,
-  updateNSFW,
   getSettings,
   updateSettings, updateSettingsInStore,
 } from '../../actions/settings';
 import {
-    connect,
-    store
+    connect
 } from 'react-redux';
 import Constants from '../../common/constants';
 import { documentTitle } from '../DocumentTitle';
+import jqApp from "../../libs/app.min";
 
 class Settings extends React.Component {
     constructor(props) {
@@ -82,7 +78,7 @@ class Settings extends React.Component {
 
     upateSettings() {
         if (this.state.buttonDisabled) return false;
-        if (JSON.stringify(this.state.saveSettings) != JSON.stringify(this.state.settings)) {
+        if (JSON.stringify(this.state.saveSettings) !== JSON.stringify(this.state.settings)) {
                 updateSettings(this.state.settings);
                 this.props.updateSettingsInStore(this.state.settings);
                 this.setState({
@@ -102,7 +98,6 @@ class Settings extends React.Component {
     }
 
     render() {
-        const message = <div className='message'>{this.state.message}</div>;
         let buttonClassName = "btn";
         if (this.state.success) {
             buttonClassName += " btn-success"
@@ -131,7 +126,7 @@ class Settings extends React.Component {
                                                     type="checkbox"
                                                     checked={this.state.settings[Constants.SETTINGS.show_low_rated]}
                                                     onChange={this.handleInputChange.bind(this, Constants.SETTINGS.show_low_rated)} />
-                                                <div className="box"></div>
+                                                <div className="box"/>
                                             </label>
                                         </div>
                                     </div>
@@ -146,7 +141,7 @@ class Settings extends React.Component {
                                                     type="checkbox"
                                                     checked={this.state.settings[Constants.SETTINGS.show_nsfw]}
                                                     onChange={this.handleInputChange.bind(this, Constants.SETTINGS.show_nsfw)} />
-                                                    <div className="box"></div>
+                                                    <div className="box"/>
                                             </label>
                                         </div>
                                     </div>
@@ -163,7 +158,7 @@ class Settings extends React.Component {
     }
 }
 
-const mapStateToProps = (state, props) => {
+const mapStateToProps = (state) => {
   return {
     localization: state.localization
   };

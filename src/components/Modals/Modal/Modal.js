@@ -33,6 +33,9 @@ class Modal extends React.Component {
   }
 
   resizeWindow() {
+		if (!this.body || !this.container) {
+		  return;
+    }
     if (this.props.bodyHeight !== this.body.clientHeight || this.props.containerHeight !== this.container.clientHeight) {
       this.props.setModalOptions(this.props.index, {
         bodyHeight: this.body.clientHeight,

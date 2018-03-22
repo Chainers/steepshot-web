@@ -26,13 +26,13 @@ class Browse extends React.Component {
   }
 
   componentDidMount() {
-    if (this.state.activeItemIndex == -1) this.props.history.replace('/*');
+    if (this.state.activeItemIndex === -1) this.props.history.replace('/*');
     localStorage.setItem('browse', Constants.BROWSE_ROUTES[this.state.activeItemIndex].NAME);
     documentTitle();
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.activeItemIndex == -1) this.props.history.replace('/*');
+    if (nextProps.activeItemIndex === -1) this.props.history.replace('/*');
   }
 
   updateActiveTab(index) {
@@ -46,10 +46,7 @@ class Browse extends React.Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    if (nextState == this.state) {
-      return false;
-    }
-    return true;
+    return nextState !== this.state;
   }
 
   render() {
@@ -86,7 +83,7 @@ class Browse extends React.Component {
   }
 }
 
-const mapStateToProps = (state, props) => {
+const mapStateToProps = (state) => {
   return {
     localization: state.localization
   };
