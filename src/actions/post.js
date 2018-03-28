@@ -113,12 +113,12 @@ export function deletePost(postIndex) {
 }
 
 export function addSinglePost(url) {
-  return dispatch => {
+  return async dispatch => {
     const urlObject = url.split('/');
     if (urlObject.length < 3) {
       error();
     } else {
-      getPostShaddow(getPostIdentifier(urlObject[urlObject.length - 2],
+      await getPostShaddow(getPostIdentifier(urlObject[urlObject.length - 2],
         urlObject[urlObject.length - 1]))
       .then((result) => {
         if (result) {

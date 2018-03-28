@@ -7,6 +7,7 @@ try {
 	if (!process.env.NODE_ENV) process.env.NODE_ENV = 'production';
 
 	require('babel-register');
+	require('isomorphic-fetch');
 
 	var path = require('path');
 	var fs = require('fs');

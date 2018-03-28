@@ -23,6 +23,8 @@ class utils {
     equalsObject = (first, second) => JSON.stringify(first) === JSON.stringify(second);
 
     cloneObject = (object) => JSON.parse(JSON.stringify( object ));
+
+    getFirstObjectField = (obj) => obj[Object.keys(obj)[0]];
 }
 
 export default new utils();

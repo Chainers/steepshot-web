@@ -4,11 +4,20 @@ import {addSinglePost} from '../../actions/post';
 import PostModal from '../PostModal/PostModal';
 import {logSharePost} from '../../actions/logging';
 import './singlePost.css';
+import {withWrapper} from "create-react-server/wrapper";
+import utils from '../../utils/utils';
+import {addMetaTags} from "../../actions/metaTags";
 
 class SinglePost extends React.Component {
-	constructor(props) {
-		super(props);
-		this.props.addSinglePost(this.props.location.pathname);
+
+	static async getInitialProps({location, query, params, store}) {
+		await store.dispatch(addSinglePost(location.pathname));
+		const post = utils.getFirstObjectField(store.getState().posts);
+		store.dispatch(addMetaTags([{property: 'og:title', content: post.title}]));
+		store.dispatch(addMetaTags([{property: 'og:type', content: 'website'}]));
+		store.dispatch(addMetaTags([{property: 'og:url', content: location.pathname}]));
+		await store.dispatch(addMetaTags([{property: 'og:image', content: post.media[0].url}]));
+		return {};
 	}
 
 	componentDidMount() {
@@ -58,4 +67,4 @@ const mapDispatchToProps = (dispatch) => {
 	};
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(SinglePost);
+export default withWrapper(connect(mapStateToProps, mapDispatchToProps)(SinglePost));

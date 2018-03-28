@@ -24,10 +24,9 @@ export default function getRoutes(store) {
 	};
 
 	function baseBrowseFilter() {
-		const baseBrowseFilter = localStorage.getItem('browse') === undefined ?
-			Constants.BROWSE_ROUTES[0].NAME : localStorage.getItem('browse');
-		return baseBrowseFilter;
+		return localStorage.getItem('browse') || Constants.BROWSE_ROUTES[0].NAME;
 	}
+
 	const auth = store.getState().auth;
 	const isAuth = !!auth.user && !!auth.postingKey && auth.isSetAuth;
 

@@ -15,13 +15,6 @@ import {addMetaTags} from "../../actions/metaTags";
 
 class Browse extends React.Component {
 
-	static async getInitialProps({location, query, params, store}) {
-		await store.dispatch(addMetaTags([{property: 'props', content: 'content'}]));
-		await store.dispatch(addMetaTags([{property: 'props2', content: 'content2'}]));
-		await store.dispatch(addMetaTags([{property: 'props1', content: 'content1'}]));
-	  return {};
-	}
-
   constructor(props) {
     super();
 
@@ -102,4 +95,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default withWrapper(withRouter(connect(mapStateToProps)(Browse)));
+export default withRouter(connect(mapStateToProps)(Browse));
