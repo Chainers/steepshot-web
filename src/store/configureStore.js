@@ -8,10 +8,17 @@ let storeBase;
 
 export default function configureStore(initialState) {
   const logger = createLogger();
+  let middleware;
+	if (process.env.NODE_ENV === 'production') {
+		middleware = applyMiddleware(thunk, promise);
+	} else {
+		middleware = applyMiddleware(thunk, promise, logger);
+  }
+
   const store = createStore(
     rootReducer,
     initialState,
-    applyMiddleware(thunk, promise, logger)
+		middleware
   );
   setStoreBase(store);
   return store;

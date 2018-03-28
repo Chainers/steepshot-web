@@ -26,6 +26,9 @@ class Search extends React.Component {
   }
 
   render() {
+		if (global.isServerSide) {
+			return null;
+		}
     let hotPost =
       <span>{Constants.SEARCH_HEADING_LABELS.HOT_POSTS_RESULT}
         <u>{this.props.searchValue}</u>

@@ -13,3 +13,4 @@ for (let key in window) {
 		global[key] = window[key]
 	}
 }
+global.isServerSide = true;

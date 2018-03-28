@@ -10,10 +10,20 @@ import Constants from '../../common/constants';
 import TabsWrapper from '../Wrappers/TabsWrapper';
 import {documentTitle} from '../DocumentTitle';
 import PostsList from '../PostsList/PostsList';
+import {withWrapper} from "create-react-server/wrapper";
+import {addMetaTags} from "../../actions/metaTags";
 
 class Browse extends React.Component {
+
+	static async getInitialProps({location, query, params, store}) {
+		await store.dispatch(addMetaTags([{property: 'props', content: 'content'}]));
+		await store.dispatch(addMetaTags([{property: 'props2', content: 'content2'}]));
+		await store.dispatch(addMetaTags([{property: 'props1', content: 'content1'}]));
+	  return {};
+	}
+
   constructor(props) {
-    super(props);
+    super();
 
     this.state = {
       keys : [
@@ -21,7 +31,7 @@ class Browse extends React.Component {
         { label : Constants.POSTS_FILTERS.POSTS_NEW.label },
         { label : Constants.POSTS_FILTERS.POSTS_TOP.label }
       ],
-      activeItemIndex : this.props.activeItemIndex
+      activeItemIndex : props.activeItemIndex
     };
   }
 
@@ -50,6 +60,9 @@ class Browse extends React.Component {
   }
 
   render() {
+		if (global.isServerSide) {
+			return null;
+		}
     return (
       <div className="g-main_i container">
         <div id="workspace" className="g-content clearfix">
@@ -89,4 +102,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default withRouter(connect(mapStateToProps)(Browse));
+export default withWrapper(withRouter(connect(mapStateToProps)(Browse)));

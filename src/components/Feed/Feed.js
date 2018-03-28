@@ -20,6 +20,9 @@ class Feed extends React.Component {
   }
 
   render() {
+		if (global.isServerSide) {
+			return null;
+		}
     return (
       <div className="g-main_i container">
         <div id="workspace" className="g-content clearfix">

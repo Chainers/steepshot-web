@@ -1,44 +1,27 @@
 import React from 'react';
 import {Link, withRouter} from 'react-router-dom';
 import {connect} from 'react-redux';
-import {logout} from '../actions/auth';
+import {logout, setUserAuth} from '../actions/auth';
 import Constants from '../common/constants';
 import Avatar from './Common/Avatar/Avatar';
 import {updateVotingPower, clearVPTimeout} from '../actions/auth';
-import $ from 'jquery';
 import jqApp from "../libs/app.min";
+import {setSearchValue} from "../actions/search";
 
 class Header extends React.Component {
-	constructor() {
+	constructor(props) {
 		super();
-		this.state = {
-			searchValue: '',
-			sizeParam: false,
-		};
-	}
-
-	baseBrowseFilter() {
-		const baseBrowseFilter = localStorage.getItem('browse') === undefined
-			? Constants.BROWSE_ROUTES[0].NAME
-			: localStorage.getItem('browse');
-		return baseBrowseFilter;
-	}
-
-	scrollTopAndReload() {
-		if (window.location.pathname === '/feed') {
-			window.location.reload();
-		} else if (/\/browse\/\w+/.test(window.location.pathname)) {
-			window.location.reload();
+		if (!global.isServerSide) {
+			props.setUserAuth();
 		}
 	}
 
-	componentDidMount() {
-		if (this.refs[this.props.location.pathname]) $(this.refs[this.props.location.pathname]).addClass('active');
-		this.votingPowerUpdater();
+	static baseBrowseFilter() {
+		return localStorage.getItem('browse') || Constants.BROWSE_ROUTES[0].NAME;
 	}
 
-	componentWillMount() {
-		this.forResize();
+	componentDidMount() {
+		this.votingPowerUpdater();
 	}
 
 	votingPowerUpdater() {
@@ -51,13 +34,6 @@ class Header extends React.Component {
 		}
 	}
 
-	shouldComponentUpdate(nextProps) {
-		if (this.refs[this.props.location.pathname]) $(this.refs[this.props.location.pathname]).removeClass('active');
-		if (this.refs[nextProps.location.pathname]) $(this.refs[nextProps.location.pathname]).addClass('active');
-
-		return true;
-	}
-
 	handleLogout(event) {
 		event.preventDefault();
 		this.props.logout(this.props.history);
@@ -67,22 +43,19 @@ class Header extends React.Component {
 	searchKeyPress(e) {
 		if (e.key === 'Enter') {
 			e.preventDefault();
-			this.props.history.push(`/search/${this.state.searchValue}`);
+			this.props.history.push(`/search/${this.props.searchValue}`);
 		}
 	}
 
 	searchHandleChange(e) {
 		let value = e.target.value.toLowerCase();
-		this.setState({searchValue: value.replace(/[^\w-.]/g, '')});
-	}
-
-	forResize() {
-		if (document.body.clientWidth < 420) {
-			this.setState({sizeParam: true});
-		}
+		this.props.setSearchValue(value.replace(/[^\w-.]/g, ''));
 	}
 
 	render() {
+		if (global.isServerSide) {
+			return null;
+		}
 		const isUserAuth = this.props.user && this.props.postingKey;
 		let browse;
 		let authorLink = '';
@@ -110,15 +83,13 @@ class Header extends React.Component {
 			<div className="wrap-menu">
 				{
 					(isUserAuth) ? (
-						<div className="item nav-item"
-								 onClick={this.scrollTopAndReload.bind(this)}>
+						<div className="item nav-item">
 							<Link to="/feed">Feed</Link>
 						</div>
 					) : null
 				}
-				<div className="item nav-item"
-						 onClick={this.scrollTopAndReload.bind(this)}>
-					<Link to={`/browse/${this.baseBrowseFilter()}`}>Browse</Link>
+				<div className="item nav-item">
+					<Link to={`/browse/${Header.baseBrowseFilter()}`}>Browse</Link>
 				</div>
 			</div>
 		</div>;
@@ -190,18 +161,18 @@ class Header extends React.Component {
 					<div className="search-panel closed">
 						<div className="wrap-panel container clearfix">
 							<div className="wrap-btn">
-								<button type="button" className="btn-close" onClick={() => {this.setState({searchValue: ''}) }}/>
+								<button type="button" className="btn-close" onClick={() => {this.props.setSearchValue("")}}/>
 							</div>
 							<div className="wrap-search">
 								<form className="form-search">
 									<input
 										type="text"
 										name="search"
-										value={this.state.searchValue}
+										value={this.props.searchValue}
 										onChange={this.searchHandleChange.bind(this)}
 										required={true}
 										placeholder={
-											this.state.sizeParam
+											this.props.sizeParam
 												? Constants.SEARCH_PLACEHOLDER_MIN
 												: Constants.SEARCH_PLACEHOLDER
 										}
@@ -228,17 +199,25 @@ const mapDispatchToProps = (dispatch) => {
 		},
 		clearVPTimeout: (vpTimeout) => {
 			dispatch(clearVPTimeout(vpTimeout));
+		},
+		setUserAuth: () => {
+			dispatch(setUserAuth());
+		},
+		setSearchValue: (value) => {
+			dispatch(setSearchValue(value));
 		}
 	}
 };
 
 const mapStateToProps = (state) => {
 	return {
+		sizeParam: document.body.clientWidth < 420,
 		postingKey: state.auth.postingKey,
 		user: state.auth.user,
 		avatar: state.auth.avatar,
 		localization: state.localization,
-		vpTimeout: state.auth.vpTimeout
+		vpTimeout: state.auth.vpTimeout,
+		searchValue: state.search
 	};
 };
 

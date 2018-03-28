@@ -128,6 +128,9 @@ class Login extends React.Component {
   }
 
   render() {
+		if (global.isServerSide) {
+			return null;
+		}
     let mainContainerClassName = "col-xs-12 col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3";
     if (this.state.needsLoader) {
       mainContainerClassName = mainContainerClassName + " blur-blocker";

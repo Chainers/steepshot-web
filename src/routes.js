@@ -28,19 +28,21 @@ export default function getRoutes(store) {
 			Constants.BROWSE_ROUTES[0].NAME : localStorage.getItem('browse');
 		return baseBrowseFilter;
 	}
+	const auth = store.getState().auth;
+	const isAuth = !!auth.user && !!auth.postingKey && auth.isSetAuth;
 
 	return (
 		<App>
 			<Switch>
 				<Route exact path="/" render={() => (
-					!!store.getState().auth.user && !!store.getState().auth.postingKey ? (
+					isAuth ? (
 						<Redirect to="/feed"/>
 					) : (
 						<Redirect to={`/browse/${baseBrowseFilter()}`} />
 					)
 				)}/>
 				<Route exact path="/signin" render={() => (
-					!!store.getState().auth.user && !!store.getState().auth.postingKey ? (
+					isAuth ? (
 						<Redirect push to="/feed"/>
 					) : (
 						<Signin/>

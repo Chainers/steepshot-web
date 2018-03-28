@@ -1,8 +1,15 @@
-const initialState = {
-  user: JSON.parse(global.localStorage.getItem('user')) || null,
-  postingKey: JSON.parse(global.localStorage.getItem('postingKey')) || null,
-  settings: JSON.parse(global.localStorage.getItem('settings')) || null,
-  avatar: JSON.parse(global.localStorage.getItem('avatar')) || null,
+const initialState = global.isServerSide ? {
+  user: 'fake_user',
+  postingKey: 'fake_posting_key',
+  settings: null,
+  avatar: null,
+	like_power: 100,
+  voting_power: null
+} : {
+	user: JSON.parse(global.localStorage.getItem('user')) || null,
+	postingKey: JSON.parse(global.localStorage.getItem('postingKey')) || null,
+	settings: JSON.parse(global.localStorage.getItem('settings')) || null,
+	avatar: JSON.parse(global.localStorage.getItem('avatar')) || null,
 	like_power: JSON.parse(global.localStorage.getItem('like_power')) || 100,
 	voting_power: null
 };
@@ -12,6 +19,15 @@ export default function auth(state = initialState, action) {
     state = {...initialState, state, hydrated: true};
   }
   switch (action.type) {
+    case 'SET_USER_AUTH':
+      return {
+        ...initialState,
+				user: JSON.parse(localStorage.getItem('user')) || null,
+				postingKey: JSON.parse(localStorage.getItem('postingKey')) || null,
+				settings: JSON.parse(localStorage.getItem('settings')) || null,
+				avatar: JSON.parse(localStorage.getItem('avatar')) || null,
+				isSetAuth: true
+      };
     case 'LOGIN_SUCCESS':
     case 'SIGNUP_SUCCESS':
     case 'OAUTH_SUCCESS':

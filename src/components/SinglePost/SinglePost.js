@@ -23,6 +23,9 @@ class SinglePost extends React.Component {
 	}
 
 	render() {
+		if (global.isServerSide) {
+			return null;
+		}
 		let itemPost;
 		if (Object.keys(this.props.post).length !== 0) {
 			itemPost = this.props.post[Object.keys(this.props.post)[0]];
