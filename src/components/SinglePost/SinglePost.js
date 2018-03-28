@@ -10,12 +10,13 @@ import {addMetaTags} from "../../actions/metaTags";
 
 class SinglePost extends React.Component {
 
-	static async getInitialProps({location, query, params, store}) {
+	static async getInitialProps({location, req, res, store}) {
 		await store.dispatch(addSinglePost(location.pathname));
+		console.log(req);
 		const post = utils.getFirstObjectField(store.getState().posts);
 		store.dispatch(addMetaTags([{property: 'og:title', content: post.title}]));
 		store.dispatch(addMetaTags([{property: 'og:type', content: 'website'}]));
-		store.dispatch(addMetaTags([{property: 'og:url', content: location.pathname}]));
+		store.dispatch(addMetaTags([{property: 'og:url', content: req.hostname + location.pathname}]));
 		await store.dispatch(addMetaTags([{property: 'og:image', content: post.media[0].url}]));
 		return {};
 	}
