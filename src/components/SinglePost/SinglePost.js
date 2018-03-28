@@ -12,11 +12,11 @@ class SinglePost extends React.Component {
 
 	static async getInitialProps({location, req, res, store}) {
 		await store.dispatch(addSinglePost(location.pathname));
-		console.log(req);
+		console.log(location);
 		const post = utils.getFirstObjectField(store.getState().posts);
 		store.dispatch(addMetaTags([{property: 'og:title', content: post.title}]));
 		store.dispatch(addMetaTags([{property: 'og:type', content: 'website'}]));
-		store.dispatch(addMetaTags([{property: 'og:url', content: req.host + location.pathname}]));
+		store.dispatch(addMetaTags([{property: 'og:url', content: req.hostname + ':3000' + location.pathname}]));
 		await store.dispatch(addMetaTags([{property: 'og:image', content: post.media[0].url}]));
 		return {};
 	}
