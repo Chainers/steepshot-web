@@ -3,6 +3,7 @@ import steem from 'steem';
 import Constants from '../common/constants';
 import {logLogin} from './logging';
 import {getUserProfile} from './profile';
+import {baseBrowseFilter} from "../routes";
 
 export function login(username, postingKey, history, dispatch, callback) {
 
@@ -103,10 +104,6 @@ export function login(username, postingKey, history, dispatch, callback) {
 			}, 1);
 		}
 	});
-}
-
-function baseBrowseFilter() {
-	return localStorage.getItem('browse') || Constants.BROWSE_ROUTES[0].NAME;
 }
 
 function logoutUser() {

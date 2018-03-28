@@ -7,6 +7,7 @@ import Avatar from './Common/Avatar/Avatar';
 import {updateVotingPower, clearVPTimeout} from '../actions/auth';
 import jqApp from "../libs/app.min";
 import {setSearchValue} from "../actions/search";
+import {baseBrowseFilter} from "../routes";
 
 class Header extends React.Component {
 	constructor(props) {
@@ -14,10 +15,6 @@ class Header extends React.Component {
 		if (!global.isServerSide) {
 			props.setUserAuth();
 		}
-	}
-
-	static baseBrowseFilter() {
-		return localStorage.getItem('browse') || Constants.BROWSE_ROUTES[0].NAME;
 	}
 
 	componentDidMount() {
@@ -89,7 +86,7 @@ class Header extends React.Component {
 					) : null
 				}
 				<div className="item nav-item">
-					<Link to={`/browse/${Header.baseBrowseFilter()}`}>Browse</Link>
+					<Link to={`/browse/${baseBrowseFilter()}`}>Browse</Link>
 				</div>
 			</div>
 		</div>;

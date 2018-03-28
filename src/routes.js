@@ -16,6 +16,10 @@ import SinglePost from './components/SinglePost/SinglePost';
 import Search from './components/Search/Search';
 import EditPost from './components/EditPost/EditPost';
 
+export function baseBrowseFilter() {
+	return localStorage.getItem('browse') || Constants.BROWSE_ROUTES[0].NAME;
+}
+
 export default function getRoutes(store) {
 	const clearMessages = () => {
 		store.dispatch({
@@ -23,10 +27,11 @@ export default function getRoutes(store) {
 		});
 	};
 
+
+
 	const auth = store.getState().auth;
 	const isAuth = !!auth.user && !!auth.postingKey && auth.isSetAuth;
-	const filter = '/browse/' + (localStorage.getItem('browse') || Constants.BROWSE_ROUTES[0].NAME);
-	console.log(filter);
+
 	return (
 		<App>
 			<Switch>
@@ -34,7 +39,7 @@ export default function getRoutes(store) {
 					isAuth ? (
 						<Redirect to="/feed"/>
 					) : (
-						<Redirect to={filter} />
+						<Redirect to={`/browse/${baseBrowseFilter()}`} />
 					)
 				)}/>
 				<Route exact path="/signin" render={() => (
@@ -45,7 +50,7 @@ export default function getRoutes(store) {
 					)
 				)}/>
 				<Route path="/browse/:filter" component={BrowseWrapper} onLeave={clearMessages} />
-				<Redirect path="/browse" to={filter} />
+				<Redirect path="/browse" to={`/browse/${baseBrowseFilter()}`} />
 				<Route path="/@:username" component={UserProfile} onLeave={clearMessages} />
 				<Route path="/signin" component={Signin} onLeave={clearMessages} />
 				<Route path="/post" component={SinglePost} onLeave={clearMessages} />
