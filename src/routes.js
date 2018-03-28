@@ -25,7 +25,7 @@ export default function getRoutes(store) {
 
 	const auth = store.getState().auth;
 	const isAuth = !!auth.user && !!auth.postingKey && auth.isSetAuth;
-	const filter = localStorage.getItem('browse') || Constants.BROWSE_ROUTES[0].NAME;
+	const filter = '/browse/' + (localStorage.getItem('browse') || Constants.BROWSE_ROUTES[0].NAME);
 	console.log(filter);
 	return (
 		<App>
@@ -34,7 +34,7 @@ export default function getRoutes(store) {
 					isAuth ? (
 						<Redirect to="/feed"/>
 					) : (
-						<Redirect to={'/browse/' + filter} />
+						<Redirect to={filter} />
 					)
 				)}/>
 				<Route exact path="/signin" render={() => (
@@ -45,7 +45,7 @@ export default function getRoutes(store) {
 					)
 				)}/>
 				<Route path="/browse/:filter" component={BrowseWrapper} onLeave={clearMessages} />
-				<Redirect path="/browse" to={'/browse/' + filter} />
+				<Redirect path="/browse" to={filter} />
 				<Route path="/@:username" component={UserProfile} onLeave={clearMessages} />
 				<Route path="/signin" component={Signin} onLeave={clearMessages} />
 				<Route path="/post" component={SinglePost} onLeave={clearMessages} />
