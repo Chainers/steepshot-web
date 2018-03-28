@@ -39,7 +39,7 @@ export default function getRoutes(store) {
 					isAuth ? (
 						<Redirect to="/feed"/>
 					) : (
-						<Redirect to={`/browse/${baseBrowseFilter()}`} />
+						<Redirect to={`/browse/hot`} />
 					)
 				)}/>
 				<Route exact path="/signin" render={() => (
