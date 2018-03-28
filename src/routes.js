@@ -24,6 +24,9 @@ export default function getRoutes(store) {
 	};
 
 	function baseBrowseFilter() {
+		console.log(localStorage.getItem('browse'));
+		console.log(Constants.BROWSE_ROUTES[0].NAME);
+		console.log(localStorage.getItem('browse') || Constants.BROWSE_ROUTES[0].NAME);
 		return localStorage.getItem('browse') || Constants.BROWSE_ROUTES[0].NAME;
 	}
 
