@@ -16,7 +16,7 @@ class SinglePost extends React.Component {
 		const post = utils.getFirstObjectField(store.getState().posts);
 		store.dispatch(addMetaTags([{property: 'og:title', content: post.title}]));
 		store.dispatch(addMetaTags([{property: 'og:type', content: 'website'}]));
-		store.dispatch(addMetaTags([{property: 'og:url', content: req.hostname + location.pathname}]));
+		store.dispatch(addMetaTags([{property: 'og:url', content: req.host + location.pathname}]));
 		await store.dispatch(addMetaTags([{property: 'og:image', content: post.media[0].url}]));
 		return {};
 	}
