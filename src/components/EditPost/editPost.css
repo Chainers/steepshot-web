@@ -89,6 +89,10 @@
   margin-left: 15px;
 }
 
+.buttons-container_edi-pos .btn[disabled] {
+  opacity: .25;
+}
+
 .image-error_edi-pos {
   margin-top: 10px;
   color: #d0011b;
@@ -138,8 +142,5 @@
   .buttons-container_edi-pos {
     text-align: center;
     margin-bottom: 40px;
-  }
-  .buttons-container_edi-pos .btn-default {
-    margin: 10px 0 0 0;
   }
 }

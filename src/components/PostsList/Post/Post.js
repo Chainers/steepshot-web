@@ -52,8 +52,7 @@ class Post extends React.Component {
     }
   }
 
-  longTapPLInd(e) {
-    e.preventDefault();
+  longTapPLInd() {
     if (this.props.vote) {
       return;
     }
@@ -65,8 +64,11 @@ class Post extends React.Component {
       jqApp.pushMessage.open(Constants.WAIT_FINISHING_TRANSACTION);
       return;
     }
+    if (this.props.isPLOpen) {
+      return;
+    }
     let plTimeout = setTimeout(() => {
-      this.props.setPowerLikeInd(this.props.index, true);
+      this.props.setPowerLikeInd(this.props.index, true, 'post');
     }, 700);
     this.props.setPowerLikeTimeout(this.props.index, plTimeout);
   }
@@ -89,7 +91,7 @@ class Post extends React.Component {
 
     return (
       <div className="item-wrap" id={this.props.index}>
-        <div className="post-card" style={{position: 'relative'}}>
+        <div className="post-card position--relative">
           <ShowIf show={this.props.postDeleting}>
             <div className="delete-loader_post"
                  style={{height: this.props.clearPostHeader ? '512px' : '552px'}}
@@ -134,30 +136,37 @@ class Post extends React.Component {
               <a style={cardPhotoStyles} className="img" alt="User"/>
             </div>
             <div className="card-wrap">
-              <ShowIf show={this.props.isPLOpen}>
-                <VoteIndicator index={this.props.index}/>
-              </ShowIf>
-              <div className="card-controls clearfix">
-                <div className="buttons-row">
-                  <div
-                    onMouseDown={this.longTapPLInd.bind(this)}
-                    onMouseUp={this.breakLongTapPLInd.bind(this)}
-                    onTouchStart={this.longTapPLInd.bind(this)}
-                    onTouchEnd={this.breakLongTapPLInd.bind(this)}
-                    onTouchMove={this.breakLongTapPLInd.bind(this)}
-                    onContextMenu={this.breakLongTapPLInd.bind(this)}
-                  >
-                    <Vote postIndex={this.props.index} commentLoader={this.props.commentLoader}/>
+              <div className="card-controls">
+                <ShowIf show={this.props.isPLOpen && this.props.powerLikeIndPlace === 'post'}>
+                  <VoteIndicator index={this.props.index}
+                                 voteButton={this.vote}
+                                 isPopup={false}
+                  />
+                </ShowIf>
+                <div>
+                  <Likes postIndex={this.props.index}/>
+                </div>
+                <div className="card-buttons_post">
+                  <div>
+                    <ShowIf show={parseFloat(this.props.total_payout_reward)}>
+                      <div className="amount">${this.props.total_payout_reward}</div>
+                    </ShowIf>
                   </div>
                   <ShowIf show={this.props.authUser !== this.props.author}>
                     <Flag postIndex={this.props.index} commentLoader={this.props.commentLoader}/>
                   </ShowIf>
-                </div>
-                <div className="wrap-counts clearfix">
-                  <Likes postIndex={this.props.index}/>
-                  <ShowIf show={parseFloat(this.props.total_payout_reward)}>
-                    <div className="amount">${this.props.total_payout_reward}</div>
-                  </ShowIf>
+                  <div className="position--relative"
+                       ref={ref => {this.vote = ref}}
+                       onMouseEnter={this.longTapPLInd.bind(this)}
+                       onMouseLeave={this.breakLongTapPLInd.bind(this)}
+                       onTouchStart={this.longTapPLInd.bind(this)}
+                       onTouchEnd={this.breakLongTapPLInd.bind(this)}
+                       onTouchMove={this.breakLongTapPLInd.bind(this)}
+                       onContextMenu={this.breakLongTapPLInd.bind(this)}
+                  >
+                    <div className="card-control-stop"/>
+                    <Vote postIndex={this.props.index} commentLoader={this.props.commentLoader}/>
+                  </div>
                 </div>
               </div>
               <div className="card-preview">
@@ -184,9 +193,7 @@ const mapStateToProps = (state, props) => {
       ...post,
       imgUrl,
       authUser: state.auth.user,
-      commentLoader: state.postModal.needsCommentFormLoader,
-      plTimeout: post.plTimeout,
-      isPLOpen: post.isPLOpen
+      commentLoader: state.postModal.needsCommentFormLoader
     };
   }
 };
@@ -196,8 +203,8 @@ const mapDispatchToProps = (dispatch) => {
     openModal: (point, index, options) => {
       dispatch(openPostModal(point, index, options));
     },
-    setPowerLikeInd: (index, isOpen) => {
-      dispatch(setPowerLikeInd(index, isOpen));
+    setPowerLikeInd: (index, isOpen, place) => {
+      dispatch(setPowerLikeInd(index, isOpen, place));
     },
     setPowerLikeTimeout: (index, plTimeout) => {
       dispatch(setPowerLikeTimeout(index, plTimeout));

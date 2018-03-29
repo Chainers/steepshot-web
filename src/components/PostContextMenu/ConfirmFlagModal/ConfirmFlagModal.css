@@ -39,15 +39,23 @@
 
 @media screen and (max-width: 815px) {
   .title_confirm-flag-mod {
-    font: 18px OpenSans-Semibold;
+    font: 20px OpenSans-Semibold;
   }
   .description_confirm-flag-mod {
-    font: 12px OpenSans-Light;
+    font: 14px OpenSans-Light;
   }
   .buttons_holder-flag-mod button {
-    font: 10px OpenSans-Regular;
+    font: 12px OpenSans-Regular;
   }
   .description-link_confirm-flag-mod {
-    font: 12px OpenSans-Regular;
+    font: 14px OpenSans-Regular;
+  }
+  .buttons_holder-flag-mod button {
+    padding: 10px 30px;
+  }
+}
+@media (max-width: 495px) {
+  .wrapper_confirm-flag-mod {
+    border-radius: 0;
   }
 }

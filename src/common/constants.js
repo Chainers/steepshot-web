@@ -167,6 +167,11 @@ export default {
       DELETE_SUCCESS: 'The post has been successfully deleted. If you still see your post, please give it a few minutes to sync from the blockchain'
     },
 
+    POST_SUCCESSFULLY_CREATED: 'Post has been successfully created. If you don\'t see the post in your profile, '
+    + 'please give it a few minutes to sync from the blockchain',
+    POST_SUCCESSFULLY_UPDATED: 'Post has been successfully updated. If you don\'t see the updated post in your profile, '
+    + 'please give it a few minutes to sync from the blockchain',
+
     COMMENT_ERROR_MESSAGE : 'You can only create comments once per 20 seconds',
     COMMENT_SUCCESS_MESSAGE : 'Comment has been successfully added',
 

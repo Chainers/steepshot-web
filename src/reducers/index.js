@@ -8,12 +8,12 @@ import postsList from './postsList';
 import modals from './modals';
 import postModal from './postModal';
 import tabsBar from './tabsBar';
-
 import likesFlagsList from './likesFlagsList';
 import users from './users';
 import bodyParams from './bodyParams';
-import editPost from "./editPost";
-import textInput from "./textInput";
+import editPost from './editPost';
+import textInput from './textInput';
+import avatar from './avatar';
 
 export default combineReducers({
   clipboard,
@@ -29,5 +29,6 @@ export default combineReducers({
   bodyParams,
   likesFlagsList,
   editPost,
-  textInput
+  textInput,
+  avatar
 });
