@@ -9,7 +9,7 @@ import {withWrapper} from "create-react-server/wrapper";
 class Feed extends React.Component {
 
 	static async getInitialProps({location, req, res, store}) {
-		if (!req || location || !store) {
+		if (!req || !location || !store) {
 			return {};
 		}
 		await store.dispatch(addMetaTags(getDefaultTags(req.hostname, location.pathname)));

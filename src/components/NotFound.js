@@ -6,7 +6,7 @@ import {addMetaTags, getDefaultTags} from "../actions/metaTags";
 class NotFound extends React.Component {
 
 	static async getInitialProps({location, req, res, store}) {
-		if (!req || location || !store) {
+		if (!req || !location || !store) {
 			return {};
 		}
 		await store.dispatch(addMetaTags(getDefaultTags(req.hostname, location.pathname)));
