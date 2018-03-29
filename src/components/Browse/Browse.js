@@ -1,10 +1,6 @@
 import React from 'react';
-import {
-  connect
-} from 'react-redux';
-import {
-  withRouter
-} from 'react-router-dom';
+import {connect} from 'react-redux';
+import {withRouter} from 'react-router-dom';
 import TabsFilterComponent from '../Filters/TabsFilterComponent';
 import Constants from '../../common/constants';
 import TabsWrapper from '../Wrappers/TabsWrapper';
@@ -14,6 +10,15 @@ import {withWrapper} from "create-react-server/wrapper";
 import {addMetaTags} from "../../actions/metaTags";
 
 class Browse extends React.Component {
+
+	static async getInitialProps({location, req, res, store}) {
+		store.dispatch(addMetaTags([{property: 'og:title', content: "steepshot.io"}]));
+		store.dispatch(addMetaTags([{property: 'og:type', content: 'website'}]));
+		store.dispatch(addMetaTags([{property: 'og:url', content: req.hostname + location.pathname}]));
+		await store.dispatch(addMetaTags([{property: 'og:image', content: req.hostname + '/images/steepshotLogo@2x.svg'}]));
+		return {};
+	}
+
 
   constructor(props) {
     super();
@@ -94,4 +99,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default withRouter(connect(mapStateToProps)(Browse));
+export default withWrapper(withRouter(connect(mapStateToProps)(Browse)));
