@@ -1,16 +1,14 @@
 import * as React from 'react';
 import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
-import {getHistory} from '../../../main';
 import {closeModal} from '../../../actions/modal';
 import{editPostRequest, editPostSuccess, editPostReject} from '../../../actions/editPost';
 import Steem from '../../../libs/steem';
 import constants from '../../../common/constants';
+import {getHistory} from "../../../app";
+import jqApp from "../../../libs/app.min";
 
 class PlagiarismTracking extends React.Component {
-  constructor(props) {
-    super(props);
-  }
 
   renderImage() {
     let image = {

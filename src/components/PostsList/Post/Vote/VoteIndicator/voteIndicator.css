@@ -47,7 +47,7 @@
 .heart_vote-ind {
   width: 36px;
   height: 36px;
-  background: url(/static/images/poweroflike-heart.svg) center no-repeat;
+  background: url('/images/poweroflike-heart.svg') center no-repeat;
   cursor: pointer;
   margin-right: -7px;
 }
