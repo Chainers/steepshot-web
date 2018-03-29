@@ -1,9 +1,6 @@
 import Steem from '../libs/steem';
 import {getStore} from '../store/configureStore';
-import Constants from '../common/constants';
-import {debounce} from 'lodash';
 import {updatePost} from './post';
-import {getUserProfile} from './profile';
 import {updateVotingPower} from './auth';
 
 function toggleVoteRequest(postIndex) {
@@ -27,17 +24,16 @@ function toggleVoteFailure(postIndex) {
   };
 }
 
-export function toggleVote(postIndex) {
+export function toggleVote(postIndex, power = 100) {
   return function(dispatch) {
     let state = getStore().getState();
     let username = state.auth.user;
     let postingKey = state.auth.postingKey;
     let post = state.posts[postIndex];
     const newVoteState = !post.vote;
+    power = power * 100;
 
     if (!username && !postingKey) {
-      debounce(jqApp.pushMessage.open(Constants.VOTE_ACTION_WHEN_NOT_AUTH),
-        Constants.VOTE_ACTION_WHEN_NOT_AUTH_DEBOUNCE);
       return;
     }
 
@@ -74,6 +70,7 @@ export function toggleVote(postIndex) {
       post.author,
       urlObject[urlObject.length - 1],
       newVoteState,
+      power,
       callback,
     );
   };

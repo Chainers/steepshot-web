@@ -60,8 +60,8 @@ class Login extends React.Component {
     return valid;
   }
 
-  handleLogin(event) {
-    event.preventDefault();
+  handleLogin(e) {
+    e.preventDefault();
     if (!this.validate()) return false;
     this.setState({
       needsLoader : true
@@ -101,8 +101,6 @@ class Login extends React.Component {
     window.open('https://steemit.com/pick_account');
   }
 
-
-
   renderTutorVideo() {
     return (
       <div className="youtube-embed">
@@ -118,11 +116,11 @@ class Login extends React.Component {
     )
   }
 
-  renderTutorial(e) {
+  renderTutorial() {
     this.setState({
       withTutorVideo : true
     }, () => {
-      $("html, body").delay(400).animate({ scrollTop: $('.js--page-bottom').offset().top }, 2000);
+      $("html, body").delay(400).animate({scrollTop: $('.js--page-bottom').offset().top }, 2000);
     })
   }
 
@@ -150,7 +148,8 @@ class Login extends React.Component {
                 <div className={this.state.userNameError ? "has-error" : null}>
                   <div className="form-group">
                     <div className="input-container col-xs-12 ">
-                      <input type="text"
+                      <input
+                        type="text"
                         name="userName"
                         id="formNAME"
                         className="form-control autofil--gray"

@@ -17,6 +17,14 @@ body {
   text-align: center;
 }
 
+.prevent--selection {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
 .item.nav-item a:hover {
   border-bottom: none !important;
 }
@@ -293,7 +301,7 @@ h2.card-field__heading {
   height: 21px;
   border: none;
   display: block;
-  padding: 0;
+  padding: 2px 0 0 0;
   background: 0 0;
 }
 
@@ -346,10 +354,6 @@ h2.card-field__heading {
 
 .btn-flag.marked::before {
   content: url(/static/images/flagTrue.svg);
-}
-
-.btn-like:hover::before {
-  -webkit-transform: scale(1.15);
 }
 
 .post__image-container .full-screen_item-mod {
@@ -1016,7 +1020,7 @@ a {
   cursor: pointer
 }
 
-a:focus, a:hover {
+a:hover {
   color: #eb443d;
   text-decoration: none;
   outline: 0
@@ -4075,17 +4079,14 @@ html body {
   border-top: none;
   border-bottom-left-radius: 4px;
   border-bottom-right-radius: 4px;
-  padding: 0 20px
+  padding: 0 20px;
 }
 
-.post-card .card-controls {
-  border-bottom: 1px solid #f4f4f6;
-  padding: 20px 0
-}
-
-.post-card .card-controls .wrap-btn {
-  float: right;
-  border-left: 1px solid #f4f4f6
+.card-controls {
+  padding: 10px 0;
+  display: flex;
+  justify-content: space-between;
+  position: relative;
 }
 
 .post-card .card-controls .wrap-counts {
@@ -4098,6 +4099,10 @@ html body {
   line-height: 21px
 }
 
+.amount {
+  font-size: 12px;
+}
+
 .post-card .card-controls .likes {
   float: left;
   cursor: pointer;
@@ -4108,16 +4113,11 @@ html body {
   color: #979b9e
 }
 
-.post-card .card-controls .amount {
-  float: right
-}
-
 .post-card .card-preview {
-  line-height: 1.6;
-  font-size: 13px;
+  line-height: 1.48;
+  font-size: 14px;
   font-family: OpenSans-Light, Helvetica, Arial, sans-serif;
   overflow: hidden;
-  margin-top: 15px
 }
 
 .post-card .card-tags {
@@ -5984,10 +5984,6 @@ modal.modal-like .modal-header {
   color: #979b9e
 }
 
-.post-single .post-controls .amount {
-  float: right
-}
-
 .post-single .post-description {
   padding: 15px 0;
   font-size: 13px;
@@ -6082,7 +6078,7 @@ modal.modal-like .modal-header {
 
 .post-single .comment .btn-like:before {
   background-position: -.2em -14.7em;
-  width: 2.1em;
+  width: 2.25em;
   height: 2.1em
 }
 
@@ -6773,12 +6769,9 @@ modal.modal-like .modal-header {
 
 .search-panel .wrap-btn .btn-close:before {
   content: ' ';
-  display: inline-block;
   font-size: 10px;
-  background-image: url(/static/images/sprite_svg1910.svg);
-  background-repeat: no-repeat;
+  background: url(/static/images/sprite_svg1910.svg) -.2em -3.6em no-repeat;
   background-size: 4.4em 47.2em;
-  background-position: -.2em -3.6em;
   width: 1.6em;
   height: 1.6em;
   display: block
@@ -7072,10 +7065,8 @@ modal.modal-like .modal-header {
 
 .btn-like:after, .btn-like:before {
   content: ' ';
-  display: inline-block;
   font-size: 10px;
-  background-image: url(/static/images/sprite_svg1910.svg);
-  background-repeat: no-repeat;
+  background: url(/static/images/sprite_svg1910.svg) no-repeat;
   background-size: 4.4em 47.2em;
   display: block;
   position: absolute;
@@ -9089,7 +9080,7 @@ modal.modal-like .modal-header {
   content: " ";
   position: absolute;
   width: 100px;
-  height: 22px;
+  height: 19px;
   transform: translateX(-100px);
   background: linear-gradient(270deg, #fff 2%, transparent);
 }
@@ -9098,7 +9089,7 @@ modal.modal-like .modal-header {
   content: " ";
   position: absolute;
   width: 100px;
-  height: 22px;
+  height: 19px;
   background: white;
 }
 
@@ -9142,7 +9133,7 @@ modal.modal-like .modal-header {
 .collapse-closed .lnk-more {
   background: white;
   position: absolute;
-  top: 36px;
+  top: 38px;
   right: 75px;
 }
 

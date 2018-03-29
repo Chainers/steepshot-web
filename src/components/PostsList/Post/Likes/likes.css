@@ -1,9 +1,8 @@
 .container_likes {
-  float: left;
   cursor: pointer;
   transition: color .15s ease;
   font-size: 12px;
-  line-height: 21px;
+  padding: 10px 10px 10px 0;
 }
 
 .container_likes:hover {
