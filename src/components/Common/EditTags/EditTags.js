@@ -1,11 +1,8 @@
 import React from 'react';
 import utils from '../../../utils/utils';
+import './editTags.css';
 
 class EditTags extends React.Component {
-
-  constructor(props) {
-    super(props);
-  }
 
   onChange(event) {
     let newValue = utils.cloneObject(event.target.value);

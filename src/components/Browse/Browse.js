@@ -1,19 +1,27 @@
 import React from 'react';
-import {
-  connect
-} from 'react-redux';
-import {
-  withRouter
-} from 'react-router-dom';
+import {connect} from 'react-redux';
+import {withRouter} from 'react-router-dom';
 import TabsFilterComponent from '../Filters/TabsFilterComponent';
 import Constants from '../../common/constants';
 import TabsWrapper from '../Wrappers/TabsWrapper';
 import {documentTitle} from '../DocumentTitle';
 import PostsList from '../PostsList/PostsList';
+import {withWrapper} from "create-react-server/wrapper";
+import {addMetaTags, getDefaultTags} from "../../actions/metaTags";
 
 class Browse extends React.Component {
+
+	static async getInitialProps({location, req, res, store}) {
+		if (!req || !location || !store) {
+			return {};
+		}
+		await store.dispatch(addMetaTags(getDefaultTags(req.hostname, location.pathname)));
+		return {};
+	}
+
+
   constructor(props) {
-    super(props);
+    super();
 
     this.state = {
       keys : [
@@ -21,18 +29,17 @@ class Browse extends React.Component {
         { label : Constants.POSTS_FILTERS.POSTS_NEW.label },
         { label : Constants.POSTS_FILTERS.POSTS_TOP.label }
       ],
-      activeItemIndex : this.props.activeItemIndex
+      activeItemIndex : props.activeItemIndex
     };
   }
 
   componentDidMount() {
-    if (this.state.activeItemIndex == -1) this.props.history.replace('/*');
     localStorage.setItem('browse', Constants.BROWSE_ROUTES[this.state.activeItemIndex].NAME);
     documentTitle();
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.activeItemIndex == -1) this.props.history.replace('/*');
+    if (nextProps.activeItemIndex === -1) this.props.history.replace('/*');
   }
 
   updateActiveTab(index) {
@@ -46,13 +53,13 @@ class Browse extends React.Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    if (nextState == this.state) {
-      return false;
-    }
-    return true;
+    return nextState !== this.state;
   }
 
   render() {
+		if (global.isServerSide) {
+			return null;
+		}
     return (
       <div className="g-main_i container">
         <div id="workspace" className="g-content clearfix">
@@ -86,10 +93,10 @@ class Browse extends React.Component {
   }
 }
 
-const mapStateToProps = (state, props) => {
+const mapStateToProps = (state) => {
   return {
     localization: state.localization
   };
 };
 
-export default withRouter(connect(mapStateToProps)(Browse));
+export default withWrapper(withRouter(connect(mapStateToProps)(Browse)));

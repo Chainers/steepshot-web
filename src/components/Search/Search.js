@@ -4,7 +4,6 @@ import PostsList from '../PostsList/PostsList';
 import {getUsersSearch} from '../../services/posts';
 import {documentTitle} from '../DocumentTitle';
 import {insertCategory} from '../../utils/search';
-import {debounce} from 'lodash';
 import UsersList from '../UsersList/UsersList';
 import TabsBar from "../Common/TabsBar/TabsBar";
 import {connect} from "react-redux";
@@ -12,11 +11,18 @@ import Tab from "../Common/TabsBar/Tab/Tab";
 import ShowIf from "../Common/ShowIf";
 import HeadingLeadComponent from "../Atoms/HeadingLeadComponent";
 import {pageLoading} from "../../actions/tabsBar";
+import {withWrapper} from "create-react-server/wrapper";
+import {addMetaTags, getDefaultTags} from "../../actions/metaTags";
 
 class Search extends React.Component {
-  constructor(props) {
-    super(props);
-  }
+
+	static async getInitialProps({location, req, res, store}) {
+		if (!req || !location || !store) {
+			return {};
+		}
+		await store.dispatch(addMetaTags(getDefaultTags(req.hostname, location.pathname)));
+		return {};
+	}
 
   shouldComponentUpdate(nextProps) {
     if (this.props.searchValue !== nextProps.searchValue) {
@@ -30,6 +36,9 @@ class Search extends React.Component {
   }
 
   render() {
+		if (global.isServerSide) {
+			return null;
+		}
     let hotPost =
       <span>{Constants.SEARCH_HEADING_LABELS.HOT_POSTS_RESULT}
         <u>{this.props.searchValue}</u>
@@ -109,4 +118,4 @@ const mapDispatchToProps = (dispatch) => {
   }
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Search);
+export default withWrapper(connect(mapStateToProps, mapDispatchToProps)(Search));

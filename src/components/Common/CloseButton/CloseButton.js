@@ -1,4 +1,6 @@
 import React from "react";
+import './closeButton.css';
+
 const emptyFunc = () => {};
 
 const CloseButton = ({onClick = emptyFunc, className = '', style = {}}) =>

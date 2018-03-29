@@ -12,7 +12,7 @@ class UsersComponent extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      isComponentVisible: this.props.isComponentVisible == undefined
+      isComponentVisible: this.props.isComponentVisible === undefined
         ? true
         : this.props.isComponentVisible,
       ...this.getInitialData(),
@@ -62,9 +62,9 @@ class UsersComponent extends React.Component {
   }
 
   fetchData() {
-    if (this.state.offset == this.state.previousRequestOffset) return false;
+    if (this.state.offset === this.state.previousRequestOffset) return false;
     if (!this.state.isComponentVisible &&
-      this.state.offset != undefined) return false;
+      this.state.offset !== undefined) return false;
     const options = {
       point: this.state.point,
       params: Object.assign({}, {
@@ -92,7 +92,7 @@ class UsersComponent extends React.Component {
 
   renderItems() {
     if (this.state.loading) return null;
-    if (this.state.items[0] == undefined) {
+    if (this.state.items[0] === undefined) {
       return (
         <div className="empty-query-message">
           {Constants.EMPTY_QUERY}

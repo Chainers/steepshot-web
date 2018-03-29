@@ -1,11 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
 import constants from '../../common/constants';
 import VouteComponent from './VouteComponent';
 import TimeAgo from 'timeago-react';
 import Avatar from '../Common/Avatar/Avatar';
+import jqApp from "../../libs/app.min";
 
 class Comment extends React.Component {
   constructor(props) {
@@ -64,7 +64,7 @@ class Comment extends React.Component {
                   <span onClick={this.replyAuthor.bind(this)}>Reply</span>
                 </span>;
     if (like) {
-      if (like == 1 || like == -1) {
+      if (like === 1 || like === -1) {
         text = `${like} like`
       } else {
         text = `${like} likes`
@@ -123,10 +123,6 @@ class Comment extends React.Component {
     );
   }
 }
-
-Comment.propTypes = {
-  item: PropTypes.object
-};
 
 const mapStateToProps = (state) => {
   return {

@@ -1,10 +1,10 @@
 import {getPostShaddow} from '../services/posts';
 import Steem from '../libs/steem';
 import {getStore} from '../store/configureStore';
-import {browserHistory} from 'react-router';
 import {initPostsList} from './postsList';
 import {initPostModal} from './postModal';
 import Constants from '../common/constants';
+import jqApp from "../libs/app.min";
 
 export function addPosts(posts) {
   return {
@@ -88,7 +88,7 @@ export function deletePost(postIndex) {
     const urlObject = postIndex.split('/');
     let permlink = urlObject[urlObject.length - 1];
     let queue = sessionStorage.getItem('voteQueue');
-    if (queue == 'true')  {
+    if (queue === 'true')  {
       return false;
     }
     sessionStorage.setItem('voteQueue', 'true');
@@ -113,12 +113,12 @@ export function deletePost(postIndex) {
 }
 
 export function addSinglePost(url) {
-  return dispatch => {
+  return async dispatch => {
     const urlObject = url.split('/');
     if (urlObject.length < 3) {
       error();
     } else {
-      getPostShaddow(getPostIdentifier(urlObject[urlObject.length - 2],
+      await getPostShaddow(getPostIdentifier(urlObject[urlObject.length - 2],
         urlObject[urlObject.length - 1]))
       .then((result) => {
         if (result) {
@@ -152,9 +152,9 @@ function error() {
     'Something went wrong, please, check the URL or try again later');
   setTimeout(() => {
     if (state.auth.name && state.auth.postingKey) {
-      browserHistory.push('/feed');
+      //browserHistory.push('/feed');
     } else {
-      browserHistory.push('/browse');
+      //browserHistory.push('/browse');
     }
   }, 3000);
 }

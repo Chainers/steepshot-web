@@ -7,6 +7,7 @@ import LoadingSpinner from '../LoadingSpinner';
 import {clearUsersList, getUsersList, initUsersList} from '../../actions/usersList';
 import {documentTitle} from '../DocumentTitle';
 import User from "./User/User";
+import './usersList.css';
 
 class UsersList extends React.Component {
   static defaultProps = {
@@ -68,7 +69,7 @@ class UsersList extends React.Component {
       );
     }
     let users = [];
-    this.props.users.map((user, index) => {
+    this.props.users.forEach((user, index) => {
       users.push(
         <User
           key={index}

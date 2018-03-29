@@ -2,11 +2,9 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {toggleVote} from '../../../../actions/vote';
 import Constants from '../../../../common/constants';
+import jqApp from "../../../../libs/app.min";
 
 class Vote extends React.Component {
-  constructor(props) {
-    super(props);
-  }
 
   toggleVote() {
     if (this.props.commentLoader) {

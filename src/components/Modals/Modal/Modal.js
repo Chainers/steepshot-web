@@ -3,6 +3,7 @@ import {connect} from 'react-redux';
 import {closeModal, setModalOptions} from '../../../actions/modal';
 import ReactResizeDetector from 'react-resize-detector';
 import ShowIf from '../../Common/ShowIf';
+import './modal.css';
 
 const mobileSize = document.documentElement.clientWidth < 815;
 
@@ -32,6 +33,9 @@ class Modal extends React.Component {
   }
 
   resizeWindow() {
+		if (!this.body || !this.container) {
+		  return;
+    }
     if (this.props.bodyHeight !== this.body.clientHeight || this.props.containerHeight !== this.container.clientHeight) {
       this.props.setModalOptions(this.props.index, {
         bodyHeight: this.body.clientHeight,

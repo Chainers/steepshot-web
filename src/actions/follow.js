@@ -3,6 +3,7 @@ import {debounce} from "lodash";
 import {updateUser} from "./usersList";
 import {getStore} from "../store/configureStore";
 import Constants from '../common/constants';
+import jqApp from "../libs/app.min";
 
 
 function toggleFollowRequest(author) {

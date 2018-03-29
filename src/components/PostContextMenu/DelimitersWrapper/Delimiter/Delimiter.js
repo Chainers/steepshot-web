@@ -1,14 +1,11 @@
 import * as React from 'react';
+import './delimiter.css';
 
 class Delimiter extends React.Component {
   static defaultProps = {
     scale: '100%'
   };
-  
-  constructor(props) {
-    super(props);
-  }
-  
+
   render() {
     let wrapperStyle;
     let delimiterStyle;
@@ -29,7 +26,7 @@ class Delimiter extends React.Component {
         width: '1px',
       };
     }
-    
+
     return (
       <div className="center_del" style={wrapperStyle}>
         <div className="delimiter_del " style={delimiterStyle}></div>

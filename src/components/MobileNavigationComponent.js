@@ -1,13 +1,11 @@
 import React from 'react';
 import {Link, withRouter} from 'react-router-dom';
 import {connect} from 'react-redux';
-import PropTypes from 'prop-types';
 import {logout} from '../actions/auth';
+import $ from 'jquery';
+import jqApp from "../libs/app.min";
 
 class MobileNavigationComponent extends React.Component {
-    constructor(props) {
-        super(props);
-    }
 
     componentDidMount() {
         setTimeout(() => {
@@ -17,7 +15,7 @@ class MobileNavigationComponent extends React.Component {
     }
 
     shouldComponentUpdate(nextProps) {
-        if (this.props.location.pathname == nextProps.location.pathname) return false;
+        if (this.props.location.pathname === nextProps.location.pathname) return false;
         if (this.refs[this.props.location.pathname]) $(this.refs[this.props.location.pathname]).removeClass('active');
         if (this.refs[nextProps.location.pathname]) $(this.refs[nextProps.location.pathname]).addClass('active');
         return true;
@@ -110,10 +108,6 @@ MobileNavigationComponent.defaultProps = {
         login : "/signin",
         browse : "/browse"
     }
-};
-
-MobileNavigationComponent.propTypes = {
-    history: PropTypes.object.isRequired
 };
 
 const mapStateToProps = (state) => {

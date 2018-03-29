@@ -1,10 +1,6 @@
-'use strict';
 import BaseRequestService from './baseRequestService';
 
 class RequestService extends BaseRequestService{
-    constructor(props) {
-        super(props);
-    }
 
     optionsConverter() {
         let newOptions = {};

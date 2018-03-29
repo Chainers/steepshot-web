@@ -2,7 +2,6 @@ import React from 'react';
 import { getComments } from '../../services/posts';
 import Comment from './Comment';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
 import LoadingSpinner from '../LoadingSpinner';
 
 class Comments extends React.Component {
@@ -21,7 +20,7 @@ class Comments extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.newComment != undefined) {
+    if (nextProps.newComment !== undefined) {
       this.state.comments.push(nextProps.newComment);
       this.setState({
         comments: this.state.comments,
@@ -70,10 +69,6 @@ class Comments extends React.Component {
     );
   }
 }
-
-Comments.propTypes = {
-  item: PropTypes.object
-};
 
 const mapStateToProps = (state) => {
   return {

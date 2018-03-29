@@ -1,18 +1,15 @@
 import React from 'react';
-import Timer from "../Timer/Timer";
+import './testing.css';
 
 class Testing extends React.Component {
 
-  constructor(props) {
-    super(props);
-  }
-
   render() {
+		if (global.isServerSide) {
+			return null;
+		}
     return (
       <div className="test">
-        <button type="submit" disabled={true}
-                className="btn btn-default"><Timer waitingTime={100000000}/>
-        </button>
+        test23
       </div>
     );
   }

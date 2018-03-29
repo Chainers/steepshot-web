@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
 class TabsFilterComponent extends React.Component {
 
@@ -12,7 +11,7 @@ class TabsFilterComponent extends React.Component {
     }
     componentDidMount() {
         let location = document.location.pathname.match(/\/@\w+/);
-        if (location != null) {
+        if (location !== null) {
           this.setState({whereIs : true});
         }
     }
@@ -24,7 +23,7 @@ class TabsFilterComponent extends React.Component {
     }
 
     autoClick(index) {
-      if (this.state.activeItemIndex == index) return;
+      if (this.state.activeItemIndex === index) return;
       this.props.updateCallback(index);
       this.setState({
         activeItemIndex : index,
@@ -32,7 +31,7 @@ class TabsFilterComponent extends React.Component {
     }
 
     switchFilter(index) {
-      if (this.state.activeItemIndex == index) return;
+      if (this.state.activeItemIndex === index) return;
       this.props.updateCallback(index);
       this.setState({
         activeItemIndex: index,
@@ -41,9 +40,9 @@ class TabsFilterComponent extends React.Component {
 
     renderNavigation() {
         let navItems = [];
-        this.state.keys.map((item, index) => {
+        this.state.keys.forEach((item, index) => {
             let styles = 'nav-item';
-            if (this.state.activeItemIndex == index) {
+            if (this.state.activeItemIndex === index) {
                 styles = 'nav-item active';
             }
 
@@ -77,11 +76,5 @@ class TabsFilterComponent extends React.Component {
         );
     }
 }
-
-TabsFilterComponent.propTypes = {
-  activeItemIndex : PropTypes.number.isRequired,
-  keys : PropTypes.array.isRequired,
-  updateCallback : PropTypes.func.isRequired
-};
 
 export default TabsFilterComponent;

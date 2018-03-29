@@ -1,15 +1,12 @@
 import * as React from 'react';
 import ShowIf from '../../Common/ShowIf';
 import Delimiter from './Delimiter/Delimiter';
+import './delimitersWrapper.css';
 
 class DelimitersWrapper extends React.Component {
   static defaultProps = {
     hasDelimiter: true,
   };
-  
-  constructor(props) {
-    super(props);
-  }
   
   render() {
     let wrapperStyle = {

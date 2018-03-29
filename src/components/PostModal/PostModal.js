@@ -23,8 +23,10 @@ import Likes from '../PostsList/Post/Likes/Likes';
 import FullScreenButtons from './FullScreenButtons/FullScreenButtons';
 import utils from '../../utils/utils';
 import {toggleVote} from '../../actions/vote';
+import './postModal.css';
 import {setPowerLikeInd, setPowerLikeTimeout} from '../../actions/post';
 import VoteIndicator from '../PostsList/Post/Vote/VoteIndicator/VoteIndicator';
+import jqApp from "../../libs/app.min";
 
 const START_TEXTAREA_HEIGHT = '42px';
 const HEADER_HEIGHT = 60;
@@ -144,7 +146,7 @@ class PostModal extends React.Component {
   lowNSFWFilter() {
     return (
       <div>
-        <ShowIf show={this.props.post.is_nsfw && !this.props.showAll}>
+        <ShowIf show={this.props.post['is_nsfw'] && !this.props.showAll}>
           <div className="curtain_pos-mod">
             <p className="title_pos-mod">NSFW content</p>
             <p className="message_pos-mod">This content is for adults only. Not recommended for children or sensitive individuals.</p>
@@ -154,7 +156,7 @@ class PostModal extends React.Component {
             </button>
           </div>
         </ShowIf>
-        <ShowIf show={this.props.post.is_low_rated && !this.props.showAll && !this.props.post.is_nsfw}>
+        <ShowIf show={this.props.post['is_low_rated'] && !this.props.showAll && !this.props.post['is_nsfw']}>
           <div className="curtain_pos-mod">
             <p className="title_pos-mod">Low rated content</p>
             <p className="message_pos-mod">This content is hidden due to low ratings.</p>
@@ -183,11 +185,11 @@ class PostModal extends React.Component {
             <div className="full-screen-button_pos-mod"
                  onClick={this.setFullScreen.bind(this, true)}
             >
-                <img className="img-full-screen" src="/static/images/shape.svg"/>
+                <img className="img-full-screen" src="/images/shape.svg" alt="open full screen"/>
             </div>
         </ShowIf>
         <img src={this.props.imgUrl || Constants.NO_IMAGE}
-             alt="Post picture."
+             alt={this.props.post.title}
              style={this.props.style.image}
              ref={ref => this.image = ref}
              onLoad={this.imageLoaded.bind(this)}
@@ -214,7 +216,7 @@ class PostModal extends React.Component {
         <div className="full-image-wrap_pos-mod">
           {this.lowNSFWFilter()}
           <img src={this.props.imgUrl || Constants.NO_IMAGE}
-               alt="Post picture."
+							 alt={this.props.post.title}
                className="full-screen-img"
                ref={ref => this.fullImage = ref}
                onLoad={this.imageLoaded.bind(this)}
@@ -274,7 +276,7 @@ class PostModal extends React.Component {
                onMouseEnter={this.fsNavMouseEnter.bind(this)}
                onMouseLeave={this.fsNavMouseLeave.bind(this)}
           >
-            <img className="img-full-screen" src="/static/images/shape-copy-6.svg"/>
+            <img className="img-full-screen" src="/images/shape-copy-6.svg" alt="close full screen"/>
           </div>
           <div className="fs-post-amount_pos-mod">
             <ShowIf show={parseFloat(this.props.post.total_payout_reward)}>
@@ -451,7 +453,7 @@ class PostModal extends React.Component {
                             </ShowIf>
                             <ShowIf show={!this.props.needsCommentFormLoader}>
                               <button type="submit"
-                                      className={'btn-submit' + ' ' + 'btn_pos-mod' + ' ' + this.props.sendHover}
+                                      className={'btn-submit btn_pos-mod ' + this.props.sendHover}
                                       onClick={this.sendComment.bind(this)}
                               >Send
                               </button>

@@ -23,7 +23,7 @@
   cursor: pointer;
   border: 0;
   background-size: 4.4em 47.2em;
-  background: url('/static/images/sprite_svg1910.svg') no-repeat -.2em -5.49em;
+  background: url('/images/sprite_svg1910.svg') no-repeat -.2em -5.49em;
 }
 
 .body_modal {
@@ -50,7 +50,7 @@
   height: 18px;
   top: 11px;
   left: 11px;
-  background: url(/static/images/sprite_svg1910.svg) 8% 16.7% no-repeat;
+  background: url(/images/sprite_svg1910.svg) 8% 16.7% no-repeat;
 }
 .cross-wrapper_modal {
   position: absolute;
@@ -63,7 +63,7 @@
 }
 
 .cross-wrapper_modal:hover .cross-full-screen_modal {
-  background: url(/static/images/sprite_svg1910.svg) 6% 12.3% no-repeat;
+  background: url(/images/sprite_svg1910.svg) 6% 12.3% no-repeat;
 }
 
 @media (min-width: 1224px) {

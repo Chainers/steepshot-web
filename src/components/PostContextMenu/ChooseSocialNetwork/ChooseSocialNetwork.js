@@ -13,11 +13,9 @@ import {
   VKIcon,
   RedditIcon
 } from 'react-share';
+import './ChooseSocialNetwork.css';
 
 class ChooseSocialNetwork extends React.Component {
-  constructor(props) {
-    super(props);
-  }
 
   closeModal(e) {
     e.stopPropagation();
@@ -25,7 +23,8 @@ class ChooseSocialNetwork extends React.Component {
   }
 
   render() {
-    let shareAdress = `https://alpha.steepshot.io/post${this.props.url.replace(/\/\w+(\/@[\w-.]+)/, '$1')}`;
+		console.log(document.location);
+    let shareAdress = document.location.origin + '/post' + this.props.item.url;
     let postTitle = this.props.item.title;
     let crossOffset = {top: 8, right: 5};
     return (
@@ -52,10 +51,10 @@ class ChooseSocialNetwork extends React.Component {
                                   title={postTitle}
                                   hashtags={this.props.item.tags}
               >
-                <TwitterIcon size={42} round={true} />
+                <TwitterIcon size={42} round={true}/>
                 <p>Twitter</p>
               </TwitterShareButton>
-              <div className="custom-border_csn" />
+              <div className="custom-border_csn"/>
             </div>
             <div className="soc-network-item_csn">
               <PinterestShareButton url={shareAdress}
@@ -65,7 +64,7 @@ class ChooseSocialNetwork extends React.Component {
                 <PinterestIcon size={42} round={true}/>
                 <p>Pinterest</p>
               </PinterestShareButton>
-              <div className="custom-border_csn" />
+              <div className="custom-border_csn"/>
             </div>
             <div className="soc-network-item_csn">
               <VKShareButton url={shareAdress}
@@ -75,7 +74,7 @@ class ChooseSocialNetwork extends React.Component {
                 <VKIcon size={42} round={true}/>
                 <p>VK</p>
               </VKShareButton>
-              <div className="custom-border_csn" />
+              <div className="custom-border_csn"/>
             </div>
             <div className="soc-network-item_csn">
               <LinkedinShareButton url={shareAdress}
@@ -84,7 +83,7 @@ class ChooseSocialNetwork extends React.Component {
                 <LinkedinIcon size={42} round={true}/>
                 <p>Linkedin</p>
               </LinkedinShareButton>
-              <div className="custom-border_csn" />
+              <div className="custom-border_csn"/>
             </div>
             <div className="soc-network-item_csn">
               <RedditShareButton url={shareAdress}
@@ -93,7 +92,7 @@ class ChooseSocialNetwork extends React.Component {
                 <RedditIcon size={42} round={true} iconBgStyle={{fill: 'ff3f18'}}/>
                 <p>Reddit</p>
               </RedditShareButton>
-              <div className="custom-border_csn" />
+              <div className="custom-border_csn"/>
             </div>
           </div>
         </div>

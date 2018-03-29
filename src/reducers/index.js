@@ -11,8 +11,10 @@ import tabsBar from './tabsBar';
 import likesFlagsList from './likesFlagsList';
 import users from './users';
 import bodyParams from './bodyParams';
+import textInput from "./textInput";
+import metaTags from "./metaTags";
+import search from "./search";
 import editPost from './editPost';
-import textInput from './textInput';
 import avatar from './avatar';
 
 export default combineReducers({
@@ -30,5 +32,7 @@ export default combineReducers({
   likesFlagsList,
   editPost,
   textInput,
-  avatar
+  avatar,
+	metaTags,
+	search
 });

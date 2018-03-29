@@ -22,7 +22,8 @@ export default function postsList(state = {}, action) {
           ...state[action.options.point],
           posts: [
             ...state[action.options.point].posts,
-            ...action.options.posts],
+            ...action.options.posts
+          ],
           offset: action.options.offset,
           hasMore: action.options.hasMore,
           loading: false,

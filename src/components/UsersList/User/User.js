@@ -5,6 +5,7 @@ import {connect} from "react-redux";
 import {toggleFollow} from "../../../actions/follow";
 import ShowIf from "../../Common/ShowIf";
 import LoadingSpinner from "../../LoadingSpinner";
+import './user.css';
 
 const User = ({user, authUser, toggleFollow}) => {
   let amountMoney = '';
@@ -30,14 +31,14 @@ const User = ({user, authUser, toggleFollow}) => {
         <ShowIf show={!user.togglingFollow}>
           <ShowIf show={!user.has_followed}>
             <div className="follow-btn_user" onClick={() => toggleFollow(user.author)}>
-              <img src="/static/images/user/follow-button.svg"
+              <img src="/images/user/follow-button.svg"
                    alt="toggle follow"
               />
             </div>
           </ShowIf>
           <ShowIf show={user.has_followed}>
             <div className="following_user">
-              <img src="/static/images/user/following.svg"
+              <img src="/images/user/following.svg"
                    alt="toggle follow"
               />
             </div>

@@ -1,5 +1,5 @@
 import React from 'react';
-import {debounce} from 'lodash';
+import ReactDOM from 'react-dom';
 import {connect} from 'react-redux';
 import {closeModal} from "../../actions/modal";
 import UsersList from "../UsersList/UsersList";
@@ -11,10 +11,11 @@ import ReactResizeDetector from 'react-resize-detector';
 import TabsBar from "../Common/TabsBar/TabsBar";
 import Tab from "../Common/TabsBar/Tab/Tab";
 import utils from '../../utils/utils';
+import './likesFlagsList.css';
 
 class LikesFlagsModal extends React.Component {
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
     this.updateBodyHeight = this.updateBodyHeight.bind(this);
   }
 
@@ -29,7 +30,7 @@ class LikesFlagsModal extends React.Component {
 
   componentDidUpdate() {
     let currentBody = this.props.activeIndex ? this.flags : this.likes;
-    this.updateBodyHeight(undefined, currentBody.state.lastHeight);
+    this.updateBodyHeight(undefined, ReactDOM.findDOMNode(currentBody).clientHeight);
   }
 
   static permLink(url) {

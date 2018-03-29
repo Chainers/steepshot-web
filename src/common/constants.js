@@ -19,8 +19,8 @@ export default {
         MAX_ACCEPTED_PAYOUT: '1000000.000 SBD',
         PERCENT_STEMM_DOLLARS: 10000
     },
-    NO_AVATAR: '/static/images/person.png',
-    NO_IMAGE: '/static/images/noimage.jpg',
+    NO_AVATAR: '/images/person.png',
+    NO_IMAGE: '/images/noimage.jpg',
 
     SETTINGS: {
         show_low_rated : 'show_low_rated',
@@ -45,8 +45,8 @@ export default {
     EMPTY_QUERY : 'It\'s very strange, but we do not have anything yet for this query. Try to look for something else...',
     EMPTY_QUERY_VOTERS : 'Still no one has rated this post...',
 
-    SEARCH_PLACEHOLDER : 'Type your search query and press \"Enter\"',
-    SEARCH_PLACEHOLDER_MIN : 'To search, press \"Enter\"',
+    SEARCH_PLACEHOLDER : 'Type your search query and press "Enter"',
+    SEARCH_PLACEHOLDER_MIN : 'To search, press "Enter"',
 
     WRONG_FILE_FORMAT: 'Unsupported file format. Please try another one.',
 

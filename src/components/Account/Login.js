@@ -13,10 +13,23 @@ import LoadingSpinner from '../LoadingSpinner';
 import Constants from '../../common/constants';
 import {documentTitle} from '../DocumentTitle';
 import ShowIf from '../Common/ShowIf';
+import $ from 'jquery';
+import jqApp from "../../libs/app.min";
+import {addMetaTags, getDefaultTags} from "../../actions/metaTags";
+import {withWrapper} from "create-react-server/wrapper";
 
 class Login extends React.Component {
-  constructor(props) {
-    super(props);
+
+	static async getInitialProps({location, req, res, store}) {
+		if (!req || !location || !store) {
+			return {};
+		}
+		await store.dispatch(addMetaTags(getDefaultTags(req.hostname, location.pathname)));
+		return {};
+	}
+
+  constructor() {
+    super();
     this.state = {
       userName: '',
       postingKey: '',
@@ -45,13 +58,13 @@ class Login extends React.Component {
 
   validate() {
     let valid = true;
-    if (this.state.userName == '') {
+    if (this.state.userName === '') {
       this.setState({
         userNameError : true
       });
       valid = false;
     }
-    if (this.state.postingKey == '') {
+    if (this.state.postingKey === '') {
       this.setState({
         postingKeyError : true
       });
@@ -110,6 +123,7 @@ class Login extends React.Component {
           src={Constants.TUTORIAL.LINK}
           frameBorder="0"
           allowFullScreen
+          title='tutor video'
         >
         </iframe>
       </div>
@@ -125,6 +139,9 @@ class Login extends React.Component {
   }
 
   render() {
+		if (global.isServerSide) {
+			return null;
+		}
     let mainContainerClassName = "col-xs-12 col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3";
     if (this.state.needsLoader) {
       mainContainerClassName = mainContainerClassName + " blur-blocker";
@@ -233,4 +250,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default withRouter(connect(mapStateToProps)(Login));
+export default withWrapper(withRouter(connect(mapStateToProps)(Login)));
