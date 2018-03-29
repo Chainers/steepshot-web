@@ -11,6 +11,9 @@ import {addMetaTags} from "../../actions/metaTags";
 class SinglePost extends React.Component {
 
 	static async getInitialProps({location, req, res, store}) {
+		if (!req || !store || !location) {
+			return {};
+		}
 		await store.dispatch(addSinglePost(location.pathname));
 		const post = utils.getFirstObjectField(store.getState().posts);
 		store.dispatch(addMetaTags([{property: 'og:title', content: post.title}]));
