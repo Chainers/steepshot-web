@@ -133,7 +133,7 @@ export default {
     TUTORIAL : {
         PRE_TEXT : 'Also you can check ',
         TEXT : 'how to sign in to Steepshot',
-        LINK : "https://www.youtube.com/embed/XAVapBwbS1U?autoplay=1"
+        LINK : 'https://www.youtube.com/embed/XAVapBwbS1U?autoplay=1'
     },
 
     BROWSE_ROUTES : [
@@ -166,6 +166,11 @@ export default {
       PUTATIVE_DELETED_POST: 'https://steemitimages.com/DQmd4wyZvtAUifJDLZD9vaqek17S1cUhN3PyEbFMMMgLW8o/Steepshot_footer2.PNG',
       DELETE_SUCCESS: 'The post has been successfully deleted. If you still see your post, please give it a few minutes to sync from the blockchain'
     },
+
+    POST_SUCCESSFULLY_CREATED: 'Post has been successfully created. If you don\'t see the post in your profile, '
+    + 'please give it a few minutes to sync from the blockchain',
+    POST_SUCCESSFULLY_UPDATED: 'Post has been successfully updated. If you don\'t see the updated post in your profile, '
+    + 'please give it a few minutes to sync from the blockchain',
 
     COMMENT_ERROR_MESSAGE : 'You can only create comments once per 20 seconds',
     COMMENT_SUCCESS_MESSAGE : 'Comment has been successfully added',

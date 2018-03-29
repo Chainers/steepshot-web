@@ -28,12 +28,20 @@
 
 @media screen and (max-width: 815px) {
   .title_confirm-del-mod {
-    font: 18px OpenSans-Semibold;
+    font: 20px OpenSans-Semibold;
   }
   .description_confirm-del-mod {
-    font: 12px OpenSans-Light;
+    font: 14px OpenSans-Light;
   }
   .buttons_holder-del-mod button {
-    font: 10px OpenSans-Regular;
+    font: 12px OpenSans-Regular;
+  }
+  .buttons_holder-flag-mod button {
+    padding: 10px 30px;
+  }
+}
+@media (max-width: 495px) {
+  .wrapper_confirm-del-mod {
+    border-radius: 0;
   }
 }

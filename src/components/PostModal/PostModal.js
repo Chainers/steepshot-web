@@ -2,7 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {nextPostModal, previousPostModal, setPostModalOptions, setFullScreen,
   setFSNavigation, postOffset} from '../../actions/postModal';
-import constants from '../../common/constants';
+import Constants from '../../common/constants';
 import TimeAgo from 'timeago-react';
 import {Link} from 'react-router-dom';
 import Avatar from '../Common/Avatar/Avatar';
@@ -23,6 +23,8 @@ import Likes from '../PostsList/Post/Likes/Likes';
 import FullScreenButtons from './FullScreenButtons/FullScreenButtons';
 import utils from '../../utils/utils';
 import {toggleVote} from '../../actions/vote';
+import {setPowerLikeInd, setPowerLikeTimeout} from '../../actions/post';
+import VoteIndicator from '../PostsList/Post/Vote/VoteIndicator/VoteIndicator';
 
 const START_TEXTAREA_HEIGHT = '42px';
 const HEADER_HEIGHT = 60;
@@ -184,7 +186,7 @@ class PostModal extends React.Component {
                 <img className="img-full-screen" src="/static/images/shape.svg"/>
             </div>
         </ShowIf>
-        <img src={this.props.imgUrl || constants.NO_IMAGE}
+        <img src={this.props.imgUrl || Constants.NO_IMAGE}
              alt="Post picture."
              style={this.props.style.image}
              ref={ref => this.image = ref}
@@ -211,7 +213,7 @@ class PostModal extends React.Component {
       <div>
         <div className="full-image-wrap_pos-mod">
           {this.lowNSFWFilter()}
-          <img src={this.props.imgUrl || constants.NO_IMAGE}
+          <img src={this.props.imgUrl || Constants.NO_IMAGE}
                alt="Post picture."
                className="full-screen-img"
                ref={ref => this.fullImage = ref}
@@ -398,6 +400,31 @@ class PostModal extends React.Component {
     this.props.sendComment(this.props.currentIndex, comment);
   }
 
+  longTapPLInd() {
+    if (this.props.post.vote) {
+      return;
+    }
+    if (!this.props.authUser) {
+      jqApp.pushMessage.open(Constants.VOTE_ACTION_WHEN_NOT_AUTH);
+      return;
+    }
+    if (this.props.needsCommentFormLoader) {
+      jqApp.pushMessage.open(Constants.WAIT_FINISHING_TRANSACTION);
+      return;
+    }
+    if (this.props.post.isPLOpen) {
+      return;
+    }
+    let plTimeout = setTimeout(() => {
+      this.props.setPowerLikeInd(this.props.currentIndex, true, 'modal');
+    }, 700);
+    this.props.setPowerLikeTimeout(this.props.currentIndex, plTimeout);
+  }
+
+  breakLongTapPLInd() {
+    clearTimeout(this.props.post.plTimeout);
+  }
+
   render() {
     const authorLink = `/@${this.props.post.author}`;
     let commentInput = <ShowIf show={this.props.isUserAuth}>
@@ -455,7 +482,7 @@ class PostModal extends React.Component {
             </ShowIf>
             <ShowIf show={this.props.newPostsLoading}>
               <div className="arrow-right-modal_post-mod" onClick={this.nextPost.bind(this)}>
-                <LoadingSpinner style={{position: 'absolute', top: '50%', transform: 'translateY(-50%)'}}
+                <LoadingSpinner style={{position: 'absolute', top: '50%', transform: 'translateY(-50%)', width: 35, height: 35}}
                                 loaderClass="new-posts-spinner_post-mod"
                 />
               </div>
@@ -488,30 +515,43 @@ class PostModal extends React.Component {
                 </div>
               </Link>
             </div>
-
             <div className="description_pos-mod"
                  style={this.props.style.description}
                  ref={(ref) => {this.descPosMod = ref}}
             >
-              <div className="control-cont_pos-mod">
-                <div className="post-control_pos-mod">
-                  <div className="likes_pos-mod">
-                    <Likes postIndex={this.props.currentIndex}/>
-                  </div>
-                  <div className="amount_pos-mod">
+              <div className="card-controls">
+                <ShowIf show={this.props.post.isPLOpen && this.props.post.powerLikeIndPlace === 'modal'}>
+                  <VoteIndicator index={this.props.currentIndex}
+                                 voteButton={this.votePosMod}
+                                 isPopup={true}
+                  />
+                </ShowIf>
+                <div>
+                  <Likes postIndex={this.props.currentIndex} style={{paddingLeft: 20}}/>
+                </div>
+                <div className="card-buttons_post">
+                  <div>
                     <ShowIf show={parseFloat(this.props.post.total_payout_reward)}>
-                      <div>
-                        ${this.props.post.total_payout_reward}
-                      </div>
+                      <div className="amount">${this.props.post.total_payout_reward}</div>
                     </ShowIf>
                   </div>
                   <ShowIf show={this.props.authUser !== this.props.post.author}>
-                    <div className="button_pos-mod">
-                      <Flag postIndex={this.props.currentIndex} commentLoader={this.props.needsCommentFormLoader}/>
-                    </div>
+                    <Flag postIndex={this.props.currentIndex} commentLoader={this.props.needsCommentFormLoader}/>
                   </ShowIf>
-                  <div className="button_pos-mod">
-                    <Vote postIndex={this.props.currentIndex} commentLoader={this.props.needsCommentFormLoader}/>
+                  <div className="position--relative"
+                       ref={ref => {this.votePosMod = ref}}
+                       onMouseEnter={this.longTapPLInd.bind(this)}
+                       onMouseLeave={this.breakLongTapPLInd.bind(this)}
+                       onTouchStart={this.longTapPLInd.bind(this)}
+                       onTouchEnd={this.breakLongTapPLInd.bind(this)}
+                       onTouchMove={this.breakLongTapPLInd.bind(this)}
+                       onContextMenu={this.breakLongTapPLInd.bind(this)}
+                  >
+                    <div className="card-control-stop"/>
+                    <Vote postIndex={this.props.currentIndex}
+                          commentLoader={this.props.needsCommentFormLoader}
+                          style={{paddingRight: 20}}
+                    />
                   </div>
                 </div>
               </div>
@@ -521,7 +561,7 @@ class PostModal extends React.Component {
                   ref={(ref) => this.scrollView = ref}
                   wrapperModifier="list-scroll_pos-mod"
                   scrollViewModifier="list-scroll-view_pos-mod"
-                  autoHeight={window.innerWidth < constants.DISPLAY.DESK_BREAKPOINT}
+                  autoHeight={window.innerWidth < Constants.DISPLAY.DESK_BREAKPOINT}
                   autoHeightMax={15000}
                   autoHeightMin={100}
                   autoHide={true}
@@ -683,6 +723,12 @@ const mapDispatchToProps = (dispatch) => {
     },
     postOffset: (offset) => {
       dispatch(postOffset(offset));
+    },
+    setPowerLikeInd: (index, isOpen, place) => {
+      dispatch(setPowerLikeInd(index, isOpen, place));
+    },
+    setPowerLikeTimeout: (index, plTimeout) => {
+      dispatch(setPowerLikeTimeout(index, plTimeout));
     }
   };
 };

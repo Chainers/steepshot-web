@@ -1,7 +1,6 @@
 import {browserHistory} from 'react-router';
 import fakeAuth from '../components/Routes/fakeAuth';
 import steem from 'steem';
-import {getStore} from '../store/configureStore';
 import Constants from '../common/constants';
 import {logLogin} from './logging';
 import {getUserProfile} from './profile';
@@ -52,6 +51,7 @@ export function login(username, postingKey, history, dispatch, callback) {
         [Constants.SETTINGS.show_low_rated]: false,
         [Constants.SETTINGS.show_nsfw]: false
       }));
+      localStorage.setItem('like_power', '100');
       let avatar = null;
       if (result[0])
       if (result[0].json_metadata != "" && result[0].json_metadata != undefined) {
@@ -79,7 +79,8 @@ export function login(username, postingKey, history, dispatch, callback) {
         postingKey: postingKey,
         user: username,
         avatar: avatar,
-        settings: settings
+        settings: settings,
+        like_power: 100
       });
       let clearTimeout = setInterval(() => {
         getUserProfile(username).then((result) => {
@@ -107,8 +108,7 @@ export function login(username, postingKey, history, dispatch, callback) {
 }
 
 function baseBrowseFilter() {
-  return baseBrowseFilter = localStorage.getItem('browse') == undefined ?
-    Constants.BROWSE_ROUTES[0].NAME : localStorage.getItem('browse');
+  return localStorage.getItem('browse') || Constants.BROWSE_ROUTES[0].NAME;
 }
 
 function logoutUser() {
@@ -123,6 +123,7 @@ export function logout(history) {
     localStorage.removeItem('postingKey');
     localStorage.removeItem('settings');
     localStorage.removeItem('avatar');
+    localStorage.removeItem('like_power');
     dispatch(logoutUser());
     fakeAuth.signout(() => history.push(`/browse/${baseBrowseFilter()}`));
   }
@@ -144,6 +145,16 @@ export function clearVPTimeout(vpTimeout) {
     dispatch({
       type: 'VOTING_POWER_TIMEOUT',
       vpTimeout: vpTimeout
+    })
+  }
+}
+
+export function setLikePower(likePower) {
+  return (dispatch) => {
+    localStorage.setItem('like_power', JSON.stringify(likePower));
+    dispatch({
+      type: 'SET_LIKE_POWER',
+      like_power: likePower
     })
   }
 }

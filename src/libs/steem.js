@@ -6,7 +6,7 @@ import {prepareComment} from '../actions/steemPayout';
 import {logComment, logDeletedPost, logFlag, logFollow, logPost, logVote} from '../actions/logging';
 
 import _ from 'underscore';
-import FormData from "form-data";
+import FormData from 'form-data';
 
 const _getUserName = () => {
   return getStore().getState().auth.user
@@ -120,7 +120,7 @@ class Steem {
     return [constants.OPERATIONS.COMMENT_OPTIONS, beneficiariesObject];
   }
 
-  vote(wif, username, author, url, voteStatus, callback) {
+  vote(wif, username, author, url, voteStatus, power, callback) {
     const callbackBc = (err, success) => {
       if (err) {
         callback(err, null);
@@ -140,7 +140,7 @@ class Steem {
     };
 
     steem.api.getContentAsync(author, url).then((response) => {
-      steem.broadcast.vote(wif, username, response.author, response.permlink, voteStatus ? 10000 : 0, callbackBc);
+      steem.broadcast.vote(wif, username, response.author, response.permlink, voteStatus ? power : 0, callbackBc);
     });
   }
 
@@ -234,9 +234,7 @@ class Steem {
   }
 
   editPost(title, tags, description, permlink, parentPerm, media) {
-
     tags = _getValidTags(tags);
-
     const operation = [constants.OPERATIONS.COMMENT, {
       parent_author: '',
       parent_permlink: parentPerm,
@@ -286,8 +284,26 @@ class Steem {
         return _preparePost(response, description, tags, permlink);
       })
       .then(response => {
-        return _sendToBlockChain(operation, response, _getBeneficiaries(operation[1].permlink, response.beneficiaries))
+        let beneficiaries = _getBeneficiaries(operation[1].permlink, response.beneficiaries);
+        if (response.is_plagiarism) {
+          let data = {
+            ipfs: response.json_metadata.ipfs_photo,
+            plagiarism_author: response.plagiarism_author,
+            plagiarism_permlink: response.plagiarism_permlink,
+            operation: operation,
+            prepareData: response,
+            beneficiaries: beneficiaries
+          };
+          let error = new Error();
+          error.data = data;
+          return Promise.reject(error);
+        }
+        return this.afterCheckingPlagiarism(operation, response, beneficiaries);
       })
+  }
+
+  afterCheckingPlagiarism(operation, prepareData, beneficiaries) {
+    return _sendToBlockChain(operation, prepareData, beneficiaries)
       .then(response => {
         const data = JSON.stringify({
           username: _getUserName(),
@@ -375,6 +391,14 @@ function _sendToBlockChain(operation, prepareData, beneficiaries) {
         switch (err.data.code) {
           case 10:
             reject(new Error('You can only create posts 5 minutes after the previous one.'));
+            return;
+          case 4100000:
+            if (err.data.name === 'plugin_exception' && err.data.stack[0].format === 'steem bandwidth limit exceeded: ' +
+              'Steem bandwidth limit exceeded. Please wait to transact or power up STEEM.' || err.data.stack[0].format
+              === 'Account: ${account} bandwidth limit exceeded: Bandwidth limit exceeded. Please wait to transact or power up STEEM.') {
+              reject(new Error('Bandwidth limit exceeded.'));
+              return;
+            }
             return;
         }
       }

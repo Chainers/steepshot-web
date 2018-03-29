@@ -48,11 +48,11 @@ class Flag extends React.Component {
     if (this.props.flagLoading) {
       buttonClasses = buttonClasses + " loading";
     }
-
     return (
-        <div className="wrap-btn" onClick={this.toggleFlag.bind(this)}>
-          <button type="button" className={buttonClasses}/>
-        </div>
+      <div className="position--relative" onClick={this.toggleFlag.bind(this)}>
+        <button type="button" className={buttonClasses}/>
+        <div className="card-control-stop"/>
+      </div>
     );
   }
 }

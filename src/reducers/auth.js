@@ -3,7 +3,8 @@ const initialState = {
   postingKey: JSON.parse(localStorage.getItem('postingKey')) || null,
   settings: JSON.parse(localStorage.getItem('settings')) || null,
   avatar: JSON.parse(localStorage.getItem('avatar')) || null,
-  voting_power: null
+  like_power: JSON.parse(localStorage.getItem('like_power')) || 100,
+  voting_power: null,
 };
 
 export default function auth(state = initialState, action) {
@@ -20,7 +21,8 @@ export default function auth(state = initialState, action) {
         postingKey: action.postingKey,
         settings: action.settings,
         avatar: action.avatar,
-        voting_power: action.voting_power
+        voting_power: action.voting_power,
+        like_power: action.like_power
       };
 
     case 'LOGOUT_SUCCESS':
@@ -30,7 +32,8 @@ export default function auth(state = initialState, action) {
         postingKey: JSON.parse(localStorage.getItem('postingKey')) || null,
         settings: JSON.parse(localStorage.getItem('settings')) || null,
         avatar: JSON.parse(localStorage.getItem('avatar')) || null,
-        voting_power: null
+        voting_power: JSON.parse(localStorage.getItem('like_power')) || null,
+        like_power: null
       };
 
     case 'UPDATE_SETTINGS':
@@ -47,6 +50,11 @@ export default function auth(state = initialState, action) {
       return {
         ...state,
         vpTimeout: action.vpTimeout
+      };
+    case 'SET_LIKE_POWER':
+      return {
+        ...state,
+        like_power: action.like_power
       };
 
     default:

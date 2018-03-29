@@ -1,29 +1,28 @@
 import React from 'react';
-import ShowIf from "../ShowIf";
+import ShowIf from '../ShowIf';
 
-const MILLISECONDS_IN_SECOND = 1000;
+const MILISECONDS_IN_SECOND = 1000;
 const SECONDS_IN_MINUTE = 60;
 const MINUTES_IN_HOUR = 60;
 
 class Timer extends React.Component {
 
   static defaultProps = {
-    onTimeout: () => {
-    },
+    onTimeout: () => {},
     waitingTime: 0
   };
 
   constructor(props) {
     super(props);
     this.state = {
-      waitingTime: this.props.waitingTime,
-      targetTime: new Date(new Date().getTime() + this.props.waitingTime),
+      waitingTime: this.props.waitingTime * MILISECONDS_IN_SECOND,
+      targetTime: new Date().getTime() + this.props.waitingTime * MILISECONDS_IN_SECOND,
       show: false
     };
   }
 
   componentDidMount() {
-    this.timer = setInterval(this.tick.bind(this), 1000);
+    this.timer = setInterval(() => {this.tick()}, 1000);
   }
 
   componentWillUnmount() {
@@ -31,8 +30,8 @@ class Timer extends React.Component {
   }
 
   tick() {
-    const waitingTime = this.state.targetTime - new Date();
-    if (waitingTime < 0.5 * MILLISECONDS_IN_SECOND) {
+    const waitingTime = this.state.targetTime - new Date().getTime();
+    if (waitingTime < 0.5 * MILISECONDS_IN_SECOND) {
       clearInterval(this.timer);
       this.setState({
         waitingTime: 0,
@@ -48,9 +47,9 @@ class Timer extends React.Component {
   }
 
   render() {
-    let seconds = Math.round(this.state.waitingTime / MILLISECONDS_IN_SECOND);
-    let minutes = Math.round(seconds / SECONDS_IN_MINUTE);
-    let hours = Math.round(minutes / MINUTES_IN_HOUR);
+    let seconds = Math.floor(this.state.waitingTime / MILISECONDS_IN_SECOND);
+    let minutes = Math.floor(seconds / SECONDS_IN_MINUTE);
+    let hours = Math.floor(minutes / MINUTES_IN_HOUR);
     seconds %= SECONDS_IN_MINUTE;
     minutes %= MINUTES_IN_HOUR;
     if (seconds < 10) {

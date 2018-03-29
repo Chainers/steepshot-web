@@ -26,6 +26,37 @@ export function updatePost(postIndex) {
   }
 }
 
+export function setPowerLikeInd(postIndex, isOpen, place) {
+  return (dispatch) => {
+    dispatch({
+      type: 'POWER_OF_LIKE_IND',
+      index: postIndex,
+      isPLOpen: isOpen,
+      powerLikeIndPlace: place
+    })
+  }
+}
+
+export function setPowerLikeTimeout(postIndex, timeout) {
+  return (dispatch) => {
+    dispatch({
+      type: 'POWER_OF_LIKE_TIMEOUT',
+      index: postIndex,
+      plTimeout: timeout
+    })
+  }
+}
+
+export function setHidePowerLikeTimeout(postIndex, timeout) {
+  return (dispatch) => {
+    dispatch({
+      type: 'HIDE_POWER_OF_LIKE_TIMEOUT',
+      index: postIndex,
+      hplTimeout: timeout
+    })
+  }
+}
+
 function sendDeletePost(postIndex) {
   return {
     type: 'SEND_DELETE_POST',
@@ -84,7 +115,6 @@ export function deletePost(postIndex) {
 export function addSinglePost(url) {
   return dispatch => {
     const urlObject = url.split('/');
-
     if (urlObject.length < 3) {
       error();
     } else {

@@ -13,7 +13,11 @@ class Vote extends React.Component {
       jqApp.pushMessage.open(Constants.WAIT_FINISHING_TRANSACTION);
       return;
     }
-      this.props.toggleVote(this.props.postIndex);
+    if (this.props.isPLOpen) {
+      return;
+    }
+    this.props.toggleVote(this.props.postIndex);
+    clearTimeout(this.props.plTimeout);
   }
 
   render() {
@@ -24,8 +28,9 @@ class Vote extends React.Component {
     if (this.props.voteLoading) {
       buttonClasses = buttonClasses + ' loading';
     }
+    let style = this.props.style ? this.props.style : null;
     return (
-      <div className="wrap-btn" onClick={this.toggleVote.bind(this)}>
+      <div className="btn-like-wrapper_vote" onClick={this.toggleVote.bind(this)} style={style}>
         <button type="button" className={buttonClasses}/>
       </div>
     );
@@ -33,9 +38,12 @@ class Vote extends React.Component {
 }
 
 const mapStateToProps = (state, props) => {
+  let post = state.posts[props.postIndex];
   return {
-    ...state.posts[props.postIndex],
-    ...props
+    ...post,
+    ...props,
+    isPLOpen: post.isPLOpen,
+    plTimeout: post.plTimeout,
   };
 };
 
