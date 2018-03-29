@@ -12,6 +12,11 @@ import {addMetaTags} from "../../actions/metaTags";
 class Browse extends React.Component {
 
 	static async getInitialProps({location, req, res, store}) {
+		console.log(location);
+		console.log(req);
+		console.log(res);
+		console.log(arguments);
+		console.log("_____________");
 		store.dispatch(addMetaTags([{property: 'og:title', content: "steepshot.io"}]));
 		store.dispatch(addMetaTags([{property: 'og:type', content: 'website'}]));
 		store.dispatch(addMetaTags([{property: 'og:url', content: req.hostname + location.pathname}]));
