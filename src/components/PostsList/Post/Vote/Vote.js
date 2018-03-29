@@ -17,6 +17,7 @@ class Vote extends React.Component {
       return;
     }
     this.props.toggleVote(this.props.postIndex);
+    clearTimeout(this.props.plTimeout);
   }
 
   render() {
@@ -27,8 +28,9 @@ class Vote extends React.Component {
     if (this.props.voteLoading) {
       buttonClasses = buttonClasses + ' loading';
     }
+    let style = this.props.style ? this.props.style : null;
     return (
-      <div className="wrap-btn" onClick={this.toggleVote.bind(this)}>
+      <div className="btn-like-wrapper_vote" onClick={this.toggleVote.bind(this)} style={style}>
         <button type="button" className={buttonClasses}/>
       </div>
     );
@@ -40,7 +42,8 @@ const mapStateToProps = (state, props) => {
   return {
     ...post,
     ...props,
-    isPLOpen: post.isPLOpen
+    isPLOpen: post.isPLOpen,
+    plTimeout: post.plTimeout,
   };
 };
 

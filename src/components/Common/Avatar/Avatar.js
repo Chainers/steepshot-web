@@ -2,6 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import Constants from '../../../common/constants';
 import ShowIf from '../ShowIf';
+import {setAvatarTip, setAvatarTipTimeout} from '../../../actions/avatar';
 
 class Avatar extends React.Component {
   static defaultProps = {
@@ -70,11 +71,21 @@ class Avatar extends React.Component {
   }
 
   showTip() {
-    this.tipHolder.style.display = 'block';
-    this.tipHolder.style.zIndex = '4';
-    setTimeout(() => {
-      this.tipHolder.style.display = 'none';
+    if (!this.props.headerAvatar) {
+      this.props.setAvatarTip(true);
+    }
+  }
+
+  hideTip() {
+    if (this.props.tipTimeout) {
+      return;
+    }
+    this.tipVotingPower.classList.add('tip-hide_ava-com');
+    let tipTimeout = setTimeout(() => {
+      this.props.setAvatarTip(false);
+      this.props.setAvatarTipTimeout(null);
     }, 4000);
+    this.props.setAvatarTipTimeout(tipTimeout);
   }
 
   render() {
@@ -83,12 +94,16 @@ class Avatar extends React.Component {
         <ShowIf show={this.props.powerIndicator}>
           <canvas ref={ref => {this.canvas = ref}}
                   className="border-indicator_ava-com"
-                  onClick={this.showTip.bind(this)}
+                  onTouchStart={this.showTip.bind(this)}
+                  onTouchEnd={this.hideTip.bind(this)}
+                  onMouseEnter={this.showTip.bind(this)}
           />
-          <ShowIf show={!this.props.headerAvatar}>
-            <div ref={ref => {this.tipHolder = ref}}
-                 className="tip-voting-power_ava-com"
-                 onClick={() => {return;}}
+          <ShowIf show={!this.props.headerAvatar && this.props.isTip}>
+            <div ref={ref => {this.tipVotingPower = ref}}
+                 className="tip-voting-power_ava-com prevent--selection"
+                 onTouchStart={() => {return;}}
+                 onMouseEnter={() => {return;}}
+                 onMouseLeave={this.hideTip.bind(this)}
             >
               <p>Power of like: {this.props.votingPower}%</p>
             </div>
@@ -104,8 +119,21 @@ class Avatar extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    votingPower: state.auth.voting_power
+    votingPower: state.auth.voting_power,
+    isTip: state.avatar.isTip,
+    tipTimeout: state.avatar.tipTimeout
   }
 };
 
-export default connect(mapStateToProps)(Avatar);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setAvatarTip: (param) => {
+      dispatch(setAvatarTip(param));
+    },
+    setAvatarTipTimeout: (timeout) => {
+      dispatch(setAvatarTipTimeout(timeout));
+    }
+  }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Avatar);

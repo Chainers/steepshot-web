@@ -6,6 +6,9 @@ import Steem from "../libs/steem";
 import {getHistory} from "../main";
 import {clearTextInputState, setTextInputError, setTextInputState} from "./textInput";
 import {getCreateWaitingTime} from "../services/users";
+import * as React from "react";
+import PlagiarismTracking from "../components/Modals/PlagiarismTracking/PlagiarismTracking";
+import {openModal} from "./modal";
 
 const getUserName = () => {
   return getStore().getState().auth.user;
@@ -171,9 +174,7 @@ export function editPost() {
     dispatch(editPostRequest());
     Steem.editPost(title, tags, description, postData.url.split('/')[3], postData.category, postData.media[0])
       .then(() => {
-        jqApp.pushMessage.open(
-          'Post has been successfully updated. If you don\'t see the updated post in your profile, '
-          + 'please give it a few minutes to sync from the blockchain');
+        jqApp.pushMessage.open(constants.POST_SUCCESSFULLY_UPDATED);
         setTimeout(() => {
           dispatch(editPostSuccess());
           getHistory().push(`/@${getUserName()}`);
@@ -204,11 +205,19 @@ export function createPost() {
             return Steem.createPost(tags, title, description, blob)
           })
           .then(() => {
-            jqApp.pushMessage.open(
-              'Post has been successfully created. If you don\'t see the post in your profile, '
-              + 'please give it a few minutes to sync from the blockchain');
+            jqApp.pushMessage.open(constants.POST_SUCCESSFULLY_CREATED);
               dispatch(editPostSuccess());
               getHistory().push(`/@${getUserName()}`);
+            })
+            .catch(error => {
+              if (error.data) {
+                dispatch(editPostReject(error.data));
+                dispatch(openModal("PlagiarismTrackingModal", {
+                  body: (<PlagiarismTracking data={error.data}/>)
+                }))
+              } else {
+                throw error;
+              }
             })
             .catch(error => {
               dispatch(editPostReject(error));
@@ -293,13 +302,13 @@ function createNewPost() {
   };
 }
 
-function editPostSuccess() {
+export function editPostSuccess() {
   return {
     type: 'EDIT_POST_SUCCESS'
   };
 }
 
-function editPostReject(error) {
+export function editPostReject(error) {
   return {
     type: 'EDIT_POST_REJECT',
     error
@@ -320,6 +329,7 @@ function checkTimeAfterUpdatedLastPost() {
       .catch(() => {
         resolve();
       });
+    resolve();
   })
 }
 
@@ -378,7 +388,7 @@ export function setEditPostImageError(message) {
   };
 }
 
-function editPostRequest() {
+export function editPostRequest() {
   return {
     type: 'EDIT_POST_REQUEST'
   }

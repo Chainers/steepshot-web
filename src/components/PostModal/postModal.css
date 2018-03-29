@@ -61,6 +61,11 @@
   order: 3;
 }
 
+.description_pos-mod .card-controls {
+  border-top: 1px solid #f4f4f6;
+  border-bottom: 1px solid #f4f4f6;
+}
+
 .date_pos-mod {
   display: flex;
   float: right;
@@ -187,6 +192,7 @@
 
 .text-description_pos-menu {
   padding-bottom: 15px;
+  font: 14px OpenSans-Light
 }
 
 .text-description_pos-menu p {

@@ -99,7 +99,8 @@ export default function posts(state = {}, action) {
         ...state,
         [action.index]: {
           ...state[action.index],
-          isPLOpen: action.isPLOpen
+          isPLOpen: action.isPLOpen,
+          powerLikeIndPlace: action.powerLikeIndPlace
         }
       };
     case 'POWER_OF_LIKE_TIMEOUT':
@@ -110,7 +111,14 @@ export default function posts(state = {}, action) {
           plTimeout: action.plTimeout
         }
       };
-
+    case 'HIDE_POWER_OF_LIKE_TIMEOUT':
+      return {
+        ...state,
+        [action.index]: {
+          ...state[action.index],
+          hplTimeout: action.hplTimeout
+        }
+      };
 
     default:
       return state;
