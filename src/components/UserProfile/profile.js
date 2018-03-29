@@ -12,24 +12,33 @@ import PostsList from '../PostsList/PostsList';
 import UsersList from '../UsersList/UsersList';
 import {UserLinkFunc} from '../Common/UserLinkFunc';
 import {updateVotingPower} from '../../actions/auth';
+import {withWrapper} from "create-react-server/wrapper";
+import {addMetaTags, getDefaultTags} from "../../actions/metaTags";
 
 class UserProfile extends React.Component {
+
+	static async getInitialProps({location, req, res, store}) {
+		if (!req || location || !store) {
+			return {};
+		}
+		await store.dispatch(addMetaTags(getDefaultTags(req.hostname, location.pathname)));
+		return {};
+	}
+
   constructor(props) {
-    super(props);
+    super();
 
     this.state = {
-      watcher: this.props.user,
-      authorName: this.props.username,
+      watcher: props.user,
+      authorName: props.username,
       profile: null,
-      showFollow: this.props.showFollow !== undefined
-        ? this.props.showFollow
-        : true,
+      showFollow: props.showFollow || true,
       itemsPoint: this.insertUsername(Constants.POSTS_FILTERS.POSTS_USER.point,
-        this.props.username),
+        props.username),
       followingPoint: this.insertUsername(
-        Constants.USERS_FILTERS.FOLLOWING.point, this.props.username),
+        Constants.USERS_FILTERS.FOLLOWING.point, props.username),
       followersPoint: this.insertUsername(
-        Constants.USERS_FILTERS.FOLLOWERS.point, this.props.username),
+        Constants.USERS_FILTERS.FOLLOWERS.point, props.username),
       yourOrNot: false,
       keys: [
         {label: Constants.POSTS_FILTERS.POSTS_USER.label},
@@ -234,4 +243,4 @@ const mapDispatchToProps = (dispatch) => {
   }
 };
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(UserProfile));
+export default withWrapper(withRouter(connect(mapStateToProps, mapDispatchToProps)(UserProfile)));

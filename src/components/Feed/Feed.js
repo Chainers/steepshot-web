@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import Constants from '../../common/constants';
 import {documentTitle} from '../DocumentTitle';
 import PostsList from '../PostsList/PostsList';
-import {addMetaTags} from "../../actions/metaTags";
+import {addMetaTags, getDefaultTags} from "../../actions/metaTags";
 import {withWrapper} from "create-react-server/wrapper";
 
 class Feed extends React.Component {
@@ -12,10 +12,7 @@ class Feed extends React.Component {
 		if (!req || location || !store) {
 			return {};
 		}
-		store.dispatch(addMetaTags([{property: 'og:title', content: "steepshot.io"}]));
-		store.dispatch(addMetaTags([{property: 'og:type', content: 'website'}]));
-		store.dispatch(addMetaTags([{property: 'og:url', content: req.hostname + location.pathname}]));
-		await store.dispatch(addMetaTags([{property: 'og:image', content: req.hostname + '/images/steepshotLogo@2x.svg'}]));
+		await store.dispatch(addMetaTags(getDefaultTags(req.hostname, location.pathname)));
 		return {};
 	}
 

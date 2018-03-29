@@ -2,8 +2,18 @@ import React from 'react';
 import HeadingLeadComponent from '../Atoms/HeadingLeadComponent';
 import {documentTitle} from '../DocumentTitle';
 import {connect} from "react-redux";
+import {addMetaTags, getDefaultTags} from "../../actions/metaTags";
+import {withWrapper} from "create-react-server/wrapper";
 
 class AboutComponent extends React.Component {
+
+	static async getInitialProps({location, req, res, store}) {
+		if (!req || location || !store) {
+			return {};
+		}
+		await store.dispatch(addMetaTags(getDefaultTags(req.hostname, location.pathname)));
+		return {};
+	}
 
 	componentWillMount() {
 		documentTitle();
@@ -60,4 +70,4 @@ class AboutComponent extends React.Component {
 	}
 }
 
-export default connect(AboutComponent);
+export default withWrapper(connect(AboutComponent));

@@ -6,7 +6,7 @@ import {logSharePost} from '../../actions/logging';
 import './singlePost.css';
 import {withWrapper} from "create-react-server/wrapper";
 import utils from '../../utils/utils';
-import {addMetaTags} from "../../actions/metaTags";
+import {addMetaTags, getTags} from "../../actions/metaTags";
 
 class SinglePost extends React.Component {
 
@@ -16,10 +16,7 @@ class SinglePost extends React.Component {
 		}
 		await store.dispatch(addSinglePost(location.pathname));
 		const post = utils.getFirstObjectField(store.getState().posts);
-		store.dispatch(addMetaTags([{property: 'og:title', content: post.title}]));
-		store.dispatch(addMetaTags([{property: 'og:type', content: 'website'}]));
-		store.dispatch(addMetaTags([{property: 'og:url', content: req.hostname + location.pathname}]));
-		await store.dispatch(addMetaTags([{property: 'og:image', content: post.media[0].url}]));
+		await store.dispatch(addMetaTags(getTags(post.title, req.hostname + location.pathname, post.media[0].url)));
 		return {};
 	}
 

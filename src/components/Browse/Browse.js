@@ -7,7 +7,7 @@ import TabsWrapper from '../Wrappers/TabsWrapper';
 import {documentTitle} from '../DocumentTitle';
 import PostsList from '../PostsList/PostsList';
 import {withWrapper} from "create-react-server/wrapper";
-import {addMetaTags} from "../../actions/metaTags";
+import {addMetaTags, getDefaultTags} from "../../actions/metaTags";
 
 class Browse extends React.Component {
 
@@ -15,10 +15,7 @@ class Browse extends React.Component {
 		if (!req || location || !store) {
 			return {};
 		}
-		store.dispatch(addMetaTags([{property: 'og:title', content: "steepshot.io"}]));
-		store.dispatch(addMetaTags([{property: 'og:type', content: 'website'}]));
-		store.dispatch(addMetaTags([{property: 'og:url', content: req.hostname + location.pathname}]));
-		await store.dispatch(addMetaTags([{property: 'og:image', content: req.hostname + '/images/steepshotLogo@2x.svg'}]));
+		await store.dispatch(addMetaTags(getDefaultTags(req.hostname, location.pathname)));
 		return {};
 	}
 

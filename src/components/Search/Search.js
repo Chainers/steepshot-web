@@ -11,8 +11,18 @@ import Tab from "../Common/TabsBar/Tab/Tab";
 import ShowIf from "../Common/ShowIf";
 import HeadingLeadComponent from "../Atoms/HeadingLeadComponent";
 import {pageLoading} from "../../actions/tabsBar";
+import {withWrapper} from "create-react-server/wrapper";
+import {addMetaTags, getDefaultTags} from "../../actions/metaTags";
 
 class Search extends React.Component {
+
+	static async getInitialProps({location, req, res, store}) {
+		if (!req || location || !store) {
+			return {};
+		}
+		await store.dispatch(addMetaTags(getDefaultTags(req.hostname, location.pathname)));
+		return {};
+	}
 
   shouldComponentUpdate(nextProps) {
     if (this.props.searchValue !== nextProps.searchValue) {
@@ -108,4 +118,4 @@ const mapDispatchToProps = (dispatch) => {
   }
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Search);
+export default withWrapper(connect(mapStateToProps, mapDispatchToProps)(Search));

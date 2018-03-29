@@ -15,10 +15,21 @@ import {documentTitle} from '../DocumentTitle';
 import ShowIf from '../Common/ShowIf';
 import $ from 'jquery';
 import jqApp from "../../libs/app.min";
+import {addMetaTags, getDefaultTags} from "../../actions/metaTags";
+import {withWrapper} from "create-react-server/wrapper";
 
 class Login extends React.Component {
-  constructor(props) {
-    super(props);
+
+	static async getInitialProps({location, req, res, store}) {
+		if (!req || location || !store) {
+			return {};
+		}
+		await store.dispatch(addMetaTags(getDefaultTags(req.hostname, location.pathname)));
+		return {};
+	}
+
+  constructor() {
+    super();
     this.state = {
       userName: '',
       postingKey: '',
@@ -239,4 +250,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default withRouter(connect(mapStateToProps)(Login));
+export default withWrapper(withRouter(connect(mapStateToProps)(Login)));

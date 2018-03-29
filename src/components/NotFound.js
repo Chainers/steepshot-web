@@ -1,7 +1,17 @@
 import React from 'react'
 import {documentTitle} from './DocumentTitle';
+import {withWrapper} from "create-react-server/wrapper";
+import {addMetaTags, getDefaultTags} from "../actions/metaTags";
 
 class NotFound extends React.Component {
+
+	static async getInitialProps({location, req, res, store}) {
+		if (!req || location || !store) {
+			return {};
+		}
+		await store.dispatch(addMetaTags(getDefaultTags(req.hostname, location.pathname)));
+		return {};
+	}
 
 	componentDidMount() {
 		documentTitle();
@@ -29,4 +39,4 @@ class NotFound extends React.Component {
 	}
 }
 
-export default NotFound;
+export default withWrapper(NotFound);

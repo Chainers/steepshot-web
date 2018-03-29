@@ -13,8 +13,18 @@ import LoadingSpinner from "../LoadingSpinner";
 import {documentTitle} from "../../components/DocumentTitle";
 import './editPost.css';
 import Timer from "../Common/Timer/Timer";
+import {withWrapper} from "create-react-server/wrapper";
+import {addMetaTags, getDefaultTags} from "../../actions/metaTags";
 
 class EditPost extends React.Component {
+
+	static async getInitialProps({location, req, res, store}) {
+		if (!req || location || !store) {
+			return {};
+		}
+		await store.dispatch(addMetaTags(getDefaultTags(req.hostname, location.pathname)));
+		return {};
+	}
 
 	constructor(props) {
 		super();
@@ -264,4 +274,4 @@ const mapDispatchToProps = (dispatch) => {
 	};
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(EditPost);
+export default withWrapper(connect(mapStateToProps, mapDispatchToProps)(EditPost));
