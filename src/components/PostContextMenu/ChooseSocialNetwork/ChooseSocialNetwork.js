@@ -23,7 +23,8 @@ class ChooseSocialNetwork extends React.Component {
   }
 
   render() {
-    let shareAdress = `https://alpha.steepshot.io/post${this.props.url.replace(/\/\w+(\/@[\w-.]+)/, '$1')}`;
+		console.log(document.location);
+    let shareAdress = document.location.origin + '/post' + this.props.item.url;
     let postTitle = this.props.item.title;
     let crossOffset = {top: 8, right: 5};
     return (
