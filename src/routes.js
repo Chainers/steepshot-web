@@ -39,7 +39,7 @@ export default function getRoutes(store) {
 					isAuth ? (
 						<Redirect to="/feed"/>
 					) : (
-						<Redirect to={`/browse/hot`} />
+						<Redirect to={`/browse/${baseBrowseFilter()}`} />
 					)
 				)}/>
 				<Route exact path="/signin" render={() => (
@@ -50,7 +50,7 @@ export default function getRoutes(store) {
 					)
 				)}/>
 				<Route path="/browse/:filter" component={BrowseWrapper} onLeave={clearMessages} />
-				<Redirect path="/browse" to={`/browse2/${baseBrowseFilter()}`} />
+				<Redirect path="/browse" to={`/browse/${baseBrowseFilter()}`} />
 				<Route path="/@:username" component={UserProfile} onLeave={clearMessages} />
 				<Route path="/signin" component={Signin} onLeave={clearMessages} />
 				<Route path="/post" component={SinglePost} onLeave={clearMessages} />

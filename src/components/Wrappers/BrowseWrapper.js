@@ -4,7 +4,7 @@ import Constants from '../../common/constants';
 
 const BrowseWrapper = (props) => {
 
-	let activeItemIndex = -1;
+	let activeItemIndex = 1;
 	let urlObject = props.location.pathname.split('/');
 
 	if (urlObject.length < 4) {
