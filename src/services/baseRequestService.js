@@ -10,13 +10,20 @@ class BaseRequestService {
 		};
 	}
 
-    getDefaultSettingsOptions() {
-        const settings = JSON.parse(localStorage.getItem("settings"));
-        if (settings === undefined) return {};
+	getDefaultSettingsOptions() {
+		const settings = JSON.parse(localStorage.getItem("settings"));
+		if (settings === undefined) return {};
 
 		let nsfw = false;
 		let low_rated = false;
 
+		if (typeof settings[constants.SETTINGS.show_nsfw] === 'boolean') {
+			nsfw = settings[constants.SETTINGS.show_nsfw];
+		}
+
+		if (typeof settings[constants.SETTINGS.show_low_rated] === 'boolean') {
+			low_rated = settings[constants.SETTINGS.show_low_rated];
+		}
 		return {
 			[constants.SETTINGS.show_nsfw]: nsfw,
 			[constants.SETTINGS.show_low_rated]: low_rated,
