@@ -1,18 +1,18 @@
 .body_use-lis {
-  display: flex;
-  flex-wrap: wrap;
-  padding-bottom: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    padding-bottom: 10px;
 }
 
 .spinner_use-lis {
-  height: 100px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 @media (max-width: 815px) {
-  .body_use-lis {
-    justify-content: center;
-  }
+    .body_use-lis {
+        justify-content: center;
+    }
 }

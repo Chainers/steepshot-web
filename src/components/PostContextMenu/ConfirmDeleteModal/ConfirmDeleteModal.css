@@ -1,47 +1,55 @@
 .wrapper_confirm-del-mod {
-  display: block;
-  background: #ffffff;
-  border-radius: 4px;
-  padding: 24px 30px;
+    display: block;
+    background: #ffffff;
+    border-radius: 4px;
+    padding: 24px 30px;
 }
 
 .title_confirm-del-mod {
-  max-width: 440px;
-  font: 22px OpenSans-Semibold;
+    max-width: 440px;
+    font: 22px OpenSans-Semibold;
 }
+
 .description_confirm-del-mod {
-  max-width: 440px;
-  font: 16px OpenSans-Light;
-  padding-bottom: 24px;
-  border-bottom: 1px solid #f4f4f6;
+    max-width: 440px;
+    font: 16px OpenSans-Light;
+    padding-bottom: 24px;
+    border-bottom: 1px solid #f4f4f6;
 }
+
 .buttons_holder-del-mod {
-  text-align: right;
-  padding-top: 10px;
+    text-align: right;
+    padding-top: 10px;
 }
+
 .buttons_holder-del-mod button {
-  font: 14px OpenSans-Regular;
+    font: 14px OpenSans-Regular;
 }
+
 .buttons_holder-del-mod button:first-child {
-  margin-right: 15px;
+    margin-right: 15px;
 }
 
 @media screen and (max-width: 815px) {
-  .title_confirm-del-mod {
-    font: 20px OpenSans-Semibold;
-  }
-  .description_confirm-del-mod {
-    font: 14px OpenSans-Light;
-  }
-  .buttons_holder-del-mod button {
-    font: 12px OpenSans-Regular;
-  }
-  .buttons_holder-flag-mod button {
-    padding: 10px 30px;
-  }
+    .title_confirm-del-mod {
+        font: 20px OpenSans-Semibold;
+    }
+
+    .description_confirm-del-mod {
+        font: 14px OpenSans-Light;
+    }
+
+    .buttons_holder-del-mod button {
+        font: 12px OpenSans-Regular;
+    }
+
+    .buttons_holder-flag-mod button {
+        padding: 10px 30px;
+    }
 }
+
 @media (max-width: 495px) {
-  .wrapper_confirm-del-mod {
-    border-radius: 0;
-  }
+    .wrapper_confirm-del-mod {
+        border-radius: 0;
+    }
 }

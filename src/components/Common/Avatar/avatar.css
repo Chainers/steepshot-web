@@ -1,49 +1,49 @@
 .pic_ava-com {
-  position: relative;
-  width: 20px;
-  height: 20px;
-  overflow: hidden;
-  border-radius: 50%;
-  float: left;
-  background-size: cover;
-  background-position: 50%;
-  margin-right: 10px;
+    position: relative;
+    width: 20px;
+    height: 20px;
+    overflow: hidden;
+    border-radius: 50%;
+    float: left;
+    background-size: cover;
+    background-position: 50%;
+    margin-right: 10px;
 }
 
 .border-indicator_ava-com {
-  position: absolute;
-  transform: rotate(-90deg);
-  border-radius: 50%;
-  z-index: 3;
-  cursor: pointer;
+    position: absolute;
+    transform: rotate(-90deg);
+    border-radius: 50%;
+    z-index: 3;
+    cursor: pointer;
 }
 
 .tip-voting-power_ava-com {
-  position: absolute;
-  width: 114px;
-  height: 114px;
-  top: -7px;
-  left: -7px;
-  border-radius: 50%;
-  z-index: 4;
-  text-align: center;
-  background: #f7f7f7;
+    position: absolute;
+    width: 114px;
+    height: 114px;
+    top: -7px;
+    left: -7px;
+    border-radius: 50%;
+    z-index: 4;
+    text-align: center;
+    background: #f7f7f7;
 }
 
 .tip-hide_ava-com {
-  animation: hideTip 3s linear;
-  animation-delay: 1s;
+    animation: hideTip 3s linear;
+    animation-delay: 1s;
 }
 
 .tip-voting-power_ava-com p {
-  margin-top: 36px;
+    margin-top: 36px;
 }
 
 @keyframes hideTip {
-  from {
-    opacity: 1
-  }
-  to {
-    opacity: 0
-  }
+    from {
+        opacity: 1
+    }
+    to {
+        opacity: 0
+    }
 }

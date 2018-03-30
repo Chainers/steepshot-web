@@ -16,23 +16,25 @@ import metaTags from "./metaTags";
 import search from "./search";
 import editPost from './editPost';
 import avatar from './avatar';
+import {routerReducer} from "react-router-redux";
 
 export default combineReducers({
-  clipboard,
-  messages,
-  auth,
-  posts,
-  tabsBar,
-  postsList,
-  usersList,
-  modals,
-  postModal,
-  users,
-  bodyParams,
-  likesFlagsList,
-  editPost,
-  textInput,
-  avatar,
+	clipboard,
+	messages,
+	auth,
+	posts,
+	tabsBar,
+	postsList,
+	usersList,
+	modals,
+	postModal,
+	users,
+	bodyParams,
+	likesFlagsList,
+	editPost,
+	textInput,
+	avatar,
 	metaTags,
-	search
+	search,
+	router: routerReducer
 });

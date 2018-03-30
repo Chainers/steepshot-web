@@ -1,43 +1,43 @@
 .container_edi-tag {
-  padding: 10px 0 0;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  flex-wrap: wrap;
-  width: 100%;
+    padding: 10px 0 0;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    width: 100%;
 }
 
 .tag_edi-tag {
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  margin: 0 5px 5px;
-  font-family: OpenSans-SemiBold,Helvetica,Arial,sans-serif;
-  font-size: 12px;
-  border: 1px solid #e7e7e7;
-  background: #fff;
-  height: 28px;
-  line-height: 26px;
-  padding: 0 10px;
-  border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    margin: 0 5px 5px;
+    font-family: OpenSans-SemiBold, Helvetica, Arial, sans-serif;
+    font-size: 12px;
+    border: 1px solid #e7e7e7;
+    background: #fff;
+    height: 28px;
+    line-height: 26px;
+    padding: 0 10px;
+    border-radius: 15px;
 }
 
 .text_edi-tag {
-  margin-right: 10px;
+    margin-right: 10px;
 }
 
 .remove-btn_edi-tag {
-  font-size: 10px;
-  background-size: 4.4em 47.2em;
-  background: url(/images/sprite_svg1910.svg) no-repeat -.2em -42.6em;
-  width: .8em;
-  height: .8em;
-  display: block;
-  cursor: pointer;
+    font-size: 10px;
+    background-size: 4.4em 47.2em;
+    background: url(/images/sprite_svg1910.svg) no-repeat -.2em -42.6em;
+    width: .8em;
+    height: .8em;
+    display: block;
+    cursor: pointer;
 }
 
 .remove-btn_edi-tag:hover {
-  background-position: -.2em -43.800000000000004em;
-  width: .8em;
-  height: .8em;
+    background-position: -.2em -43.800000000000004em;
+    width: .8em;
+    height: .8em;
 }

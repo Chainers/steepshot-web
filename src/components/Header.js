@@ -1,13 +1,13 @@
 import React from 'react';
-import {Link, withRouter} from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
-import {logout, setUserAuth} from '../actions/auth';
+import {clearVPTimeout, logout, setUserAuth, updateVotingPower} from '../actions/auth';
 import Constants from '../common/constants';
 import Avatar from './Common/Avatar/Avatar';
-import {updateVotingPower, clearVPTimeout} from '../actions/auth';
 import jqApp from "../libs/app.min";
 import {setSearchValue} from "../actions/search";
 import {baseBrowseFilter} from "../routes";
+import {push} from "react-router-redux";
 
 class Header extends React.Component {
 	constructor(props) {
@@ -33,14 +33,14 @@ class Header extends React.Component {
 
 	handleLogout(event) {
 		event.preventDefault();
-		this.props.logout(this.props.history);
+		this.props.logout();
 		clearTimeout(this.props.vpTimeout);
 	}
 
 	searchKeyPress(e) {
 		if (e.key === 'Enter') {
 			e.preventDefault();
-			this.props.history.push(`/search/${this.props.searchValue}`);
+			this.props.historyPush(`/search/${this.props.searchValue}`);
 		}
 	}
 
@@ -119,7 +119,9 @@ class Header extends React.Component {
 												</Link>
 												<Link to="/editPost" type="button"
 															className="btn btn-default btn-create-mob"
-															onClick={() => {jqApp.mobileMenu._menuHide();}}
+															onClick={() => {
+																jqApp.mobileMenu._menuHide();
+															}}
 												/>
 											</div>
 											: null
@@ -158,7 +160,9 @@ class Header extends React.Component {
 					<div className="search-panel closed">
 						<div className="wrap-panel container clearfix">
 							<div className="wrap-btn">
-								<button type="button" className="btn-close" onClick={() => {this.props.setSearchValue("")}}/>
+								<button type="button" className="btn-close" onClick={() => {
+									this.props.setSearchValue("")
+								}}/>
 							</div>
 							<div className="wrap-search">
 								<form className="form-search">
@@ -188,8 +192,8 @@ class Header extends React.Component {
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		logout: (history) => {
-			dispatch(logout(history))
+		logout: () => {
+			dispatch(logout())
 		},
 		updateVotingPower: (username) => {
 			dispatch(updateVotingPower(username));
@@ -202,6 +206,9 @@ const mapDispatchToProps = (dispatch) => {
 		},
 		setSearchValue: (value) => {
 			dispatch(setSearchValue(value));
+		},
+		historyPush: (path) => {
+			dispatch(push(path))
 		}
 	}
 };
@@ -218,4 +225,4 @@ const mapStateToProps = (state) => {
 	};
 };
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Header));
+export default connect(mapStateToProps, mapDispatchToProps)(Header);

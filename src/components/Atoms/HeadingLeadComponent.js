@@ -2,36 +2,36 @@ import React from 'react';
 
 
 class HeadingLeadComponent extends React.Component {
-    static defaultProps = {
-      wrapperModifier: ''
-    };
+	static defaultProps = {
+		wrapperModifier: ''
+	};
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            ...this.props
-        };
-    }
+	constructor(props) {
+		super();
+		this.state = {
+			...props
+		};
+	}
 
-    componentWillReceiveProps(nextProps) {
-        this.setState({
-            ...nextProps
-        })
-    }
+	componentWillReceiveProps(nextProps) {
+		this.setState({
+			...nextProps
+		})
+	}
 
-    render() {
-        const {
-            wrapperModifier,
-            text
-        } = { ...this.state };
+	render() {
+		const {
+			wrapperModifier,
+			text
+		} = {...this.state};
 
-        return (
-            <div className={"heading-lead " + wrapperModifier}>
-                <p>{text}</p>
-                <hr />
-            </div>
-        )
-    }
+		return (
+			<div className={"heading-lead " + wrapperModifier}>
+				<p>{text}</p>
+				<hr/>
+			</div>
+		)
+	}
 }
 
 export default HeadingLeadComponent;

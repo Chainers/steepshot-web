@@ -5,11 +5,11 @@ const UserProfile = (props) => {
 	if (global.isServerSide) {
 		return null;
 	}
-  return (
-    <Profile 
-      username={props.match.params.username} 
-      history={props.history}/>
-  );
+	return (
+		<Profile
+			username={props.match.params.username}
+		/>
+	);
 };
 
 export default UserProfile;

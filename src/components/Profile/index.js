@@ -8,7 +8,7 @@ class Profile extends React.Component {
 			return null;
 		}
 		return (
-			<UserProfile username={this.props.user} showFollow={false} history={this.props.history}/>
+			<UserProfile username={this.props.user} showFollow={false}/>
 		);
 	}
 }

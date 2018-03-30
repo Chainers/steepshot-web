@@ -4,14 +4,15 @@ import Constants from '../common/constants';
 import {logLogin} from './logging';
 import {getUserProfile} from './profile';
 import {baseBrowseFilter} from "../routes";
+import {push} from 'react-router-redux';
 
-export function login(username, postingKey, history, dispatch, callback) {
+export function login(username, postingKey, dispatch, callback) {
 
-	steem.api.getAccounts([username], function(err, result) {
+	steem.api.getAccounts([username], function (err, result) {
 		if (err) {
 			callback('Something went wrong, please, try again later');
 			const data = JSON.stringify({
-				username : username,
+				username: username,
 				error: err
 			});
 			logLogin(data);
@@ -26,10 +27,10 @@ export function login(username, postingKey, history, dispatch, callback) {
 		try {
 			isValid = steem.auth.wifIsValid(postingKey, pubWif);
 		}
-		catch(e) {
+		catch (e) {
 			console.log('login failure: ', e);
 		}
-		if (!isValid){
+		if (!isValid) {
 			callback('Invalid username or posting key');
 			return {
 				type: 'LOGIN_FAILURE',
@@ -37,7 +38,7 @@ export function login(username, postingKey, history, dispatch, callback) {
 			};
 		} else {
 			const data = JSON.stringify({
-				username : username,
+				username: username,
 				error: ''
 			});
 			logLogin(data);
@@ -100,7 +101,7 @@ export function login(username, postingKey, history, dispatch, callback) {
 				vpTimeout: clearTimeout
 			});
 			setTimeout(function () {
-				fakeAuth.authenticate(() => history.push('/feed'));
+				fakeAuth.authenticate(() => dispatch(push('/feed')));
 			}, 1);
 		}
 	});
@@ -112,7 +113,7 @@ function logoutUser() {
 	}
 }
 
-export function logout(history) {
+export function logout() {
 	return (dispatch) => {
 		localStorage.removeItem('user');
 		localStorage.removeItem('postingKey');
@@ -120,7 +121,7 @@ export function logout(history) {
 		localStorage.removeItem('avatar');
 		localStorage.removeItem('like_power');
 		dispatch(logoutUser());
-		fakeAuth.signout(() => history.push(`/browse/${baseBrowseFilter()}`));
+		fakeAuth.signout(() => dispatch(push(`/browse/${baseBrowseFilter()}`)));
 	}
 }
 
@@ -155,7 +156,7 @@ export function setLikePower(likePower) {
 }
 
 export function setUserAuth() {
-  return {
-    type: 'SET_USER_AUTH'
-  }
+	return {
+		type: 'SET_USER_AUTH'
+	}
 }

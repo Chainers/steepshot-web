@@ -7,48 +7,49 @@ var express = require('express');
 var utils = require('./utils');
 
 var roots = [
-    '/',
-    '/index.html'
+	'/',
+	'/index.html'
 ];
 
 var skippedExtensions = [
-    '.coffee',
-    '.css',
-    '.eot',
-    '.gif',
-    '.jpg',
-    '.jpeg',
-    '.less',
-    '.png',
-    '.sass',
-    '.scss',
-    '.svg',
-    '.ts',
-    '.ttf',
-    '.woff',
-    '.woff2'
+	'.coffee',
+	'.css',
+	'.eot',
+	'.gif',
+	'.jpg',
+	'.jpeg',
+	'.less',
+	'.png',
+	'.sass',
+	'.scss',
+	'.svg',
+	'.ts',
+	'.ttf',
+	'.woff',
+	'.woff2'
 ];
 
 function skipRequireExtensions(additional) {
 
-    skippedExtensions
-        .concat(additional || [])
-        .forEach(function(ext) {
-            require.extensions[ext] = function() {};
-        });
+	skippedExtensions
+		.concat(additional || [])
+		.forEach(function (ext) {
+			require.extensions[ext] = function () {
+			};
+		});
 
 }
 
 function createWebpackMiddleware(compiler, config) {
 
-    if (!compiler.outputFileSystem) {
-        throw new Error('Compiler has no file system yet, use inside config.devServer.setup(cb) callback');
-    }
+	if (!compiler.outputFileSystem) {
+		throw new Error('Compiler has no file system yet, use inside config.devServer.setup(cb) callback');
+	}
 
-    return function(options) {
-        options.fs = compiler.outputFileSystem;
-        return createExpressMiddleware(options);
-    };
+	return function (options) {
+		options.fs = compiler.outputFileSystem;
+		return createExpressMiddleware(options);
+	};
 
 }
 
@@ -65,36 +66,36 @@ function createWebpackMiddleware(compiler, config) {
  */
 function createExpressMiddleware(options) {
 
-    options = options || {};
+	options = options || {};
 
-    options.fs = options.fs || fs;
-    options.outputPath = options.outputPath || path.join(process.cwd(), 'build');
-    options.templatePath = options.templatePath || path.join(options.outputPath, 'index.html');
-    options.initialStateKey = options.initialStateKey || '__INITIAL__STATE__';
-    options.initialPropsKey = options.initialPropsKey || '__INITIAL__PROPS__';
-    options.template = options.template || utils.defaultTemplate;
+	options.fs = options.fs || fs;
+	options.outputPath = options.outputPath || path.join(process.cwd(), 'build');
+	options.templatePath = options.templatePath || path.join(options.outputPath, 'index.html');
+	options.initialStateKey = options.initialStateKey || '__INITIAL__STATE__';
+	options.initialPropsKey = options.initialPropsKey || '__INITIAL__PROPS__';
+	options.template = options.template || utils.defaultTemplate;
 
-    return function(req, res, next) {
+	return function (req, res, next) {
 
-        utils.waitForTemplate(options).then(function(template) {
+		utils.waitForTemplate(options).then(function (template) {
 
-            var location = url.parse(req.url, true);
+			var location = url.parse(req.url, true);
 
-            if (
-                options.fs.existsSync(path.join(options.outputPath, location.pathname)) &&
-                !~roots.indexOf(location.pathname)
-            ) {
-                if (options.debug) console.log('Static', location.pathname);
-                next();
-                return;
-            }
+			if (
+				options.fs.existsSync(path.join(options.outputPath, location.pathname)) &&
+				!~roots.indexOf(location.pathname)
+			) {
+				if (options.debug) console.log('Static', location.pathname);
+				next();
+				return;
+			}
 
-            if (options.debug) console.log('Rendering', location.pathname + location.search);
+			if (options.debug) console.log('Rendering', location.pathname + location.search);
 
-            return utils.middleware(options, template, req, res, next);
+			return utils.middleware(options, template, req, res, next);
 
-        });
-    }
+		});
+	}
 
 }
 
@@ -114,21 +115,21 @@ function createExpressMiddleware(options) {
  */
 function createExpressServer(options) {
 
-    skipRequireExtensions(options.skipExtensions || null);
+	skipRequireExtensions(options.skipExtensions || null);
 
-    var app = express();
-    var port = options.port || 3000;
+	var app = express();
+	var port = options.port || 3000;
 
-    app.use(createExpressMiddleware(options));
+	app.use(createExpressMiddleware(options));
 
-    app.use(express.static(options.outputPath));
+	app.use(express.static(options.outputPath));
 
-    app.listen(port, options.listen || function(err) {
-            if (err) throw err;
-            console.log('Listening', port);
-        });
+	app.listen(port, options.listen || function (err) {
+		if (err) throw err;
+		console.log('Listening', port);
+	});
 
-    return app;
+	return app;
 
 }
 
