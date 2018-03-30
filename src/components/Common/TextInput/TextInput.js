@@ -92,6 +92,9 @@ class TextInput extends React.Component {
   }
 
   resizeHiddenDiv() {
+    if (!this.hiddenDiv) {
+			return;
+    }
     let prefAreaHeight = this.hiddenDiv.clientHeight;
     let areaPadding = prefAreaHeight === this.props.lineHeight ? this.props.lineHeight / 2 : 0;
     const state = {
