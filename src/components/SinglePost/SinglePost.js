@@ -11,10 +11,10 @@ import {addMetaTags, getTags} from "../../actions/metaTags";
 class SinglePost extends React.Component {
 
 	static async getInitialProps({location, req, res, store}) {
+		await store.dispatch(addSinglePost(location.pathname));
 		if (!req || !store || !location) {
 			return {};
 		}
-		await store.dispatch(addSinglePost(location.pathname));
 		const post = utils.getFirstObjectField(store.getState().posts);
 		await store.dispatch(addMetaTags(getTags(post.title, req.hostname + location.pathname, post.media[0].url)));
 		return {};
