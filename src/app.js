@@ -1,0 +1,24 @@
+import React from "react";
+import {Provider} from "react-redux";
+import {WrapperProvider} from "create-react-server/wrapper";
+import configureStore from "./store/configureStore";
+import getRoutes from './routes';
+import './styles/main.css';
+import './styles/posts.css';
+import createMemoryHistory from "history/createMemoryHistory";
+import createBrowserHistory from "history/createBrowserHistory";
+import {ConnectedRouter} from "react-router-redux";
+
+export default ({state, props}) => {
+	const history = global.isServerSide ? createMemoryHistory() : createBrowserHistory();
+	const store = configureStore(state, history);
+	return (
+		<Provider store={store}>
+			<ConnectedRouter history={history}>
+				<WrapperProvider initialProps={props}>
+					{getRoutes(store)}
+				</WrapperProvider>
+			</ConnectedRouter>
+		</Provider>
+	);
+};

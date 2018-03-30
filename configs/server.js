@@ -110,6 +110,7 @@ try {
 } catch (e) {
 
 	console.error(e.stack && debug ? e.stack : e.toString());
+	console.log(e);
 	console.error('Use "create-react-server --help"');
 	process.exit(1);
 
