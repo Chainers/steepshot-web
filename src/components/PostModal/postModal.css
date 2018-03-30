@@ -395,6 +395,7 @@
     transform: translateY(-50%);
     cursor: pointer;
     border-radius: 50%;
+    z-index: 5;
 }
 
 .arrow-right-full-screen_post-mod {
@@ -407,6 +408,7 @@
     transform: translateY(-50%);
     cursor: pointer;
     border-radius: 50%;
+    z-index: 5;
 }
 
 .arrow-left-full-screen_post-mod:hover {
@@ -494,6 +496,18 @@
     top: -500px;
 }
 
+.loader-right-full-screen_post-mod {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    width: 70px;
+    height: 70px;
+    transform: translateY(-50%);
+    cursor: pointer;
+    border-radius: 50%;
+    z-index: 5;
+}
+
 .new-posts-spinner_post-mod {
     position: absolute;
     left: 0;
@@ -521,10 +535,6 @@
     .image-container_pos-mod {
         margin: 0;
         max-height: 80vh;
-    }
-
-    .arrow-left-modal_post-mod, .arrow-right-modal_post-mod {
-        display: none;
     }
 
     .list-scroll-view_pos-mod {

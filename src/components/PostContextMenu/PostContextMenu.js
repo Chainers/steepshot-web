@@ -16,7 +16,7 @@ import {push} from 'react-router-redux';
 class PostContextMenu extends React.Component {
 
 	constructor(props) {
-		super();
+		super(props);
 		let buttonsOptions = this.setButtonsOptions(props);
 		this.state = {
 			showModal: false,
@@ -35,10 +35,10 @@ class PostContextMenu extends React.Component {
 			body: (<ConfirmDeleteModal closeModal={() => {
 				this.props.closeModal("ConfirmDeleteModal")
 			}}
-																 closeAllModals={() => {
-																	 this.props.closeAllModals()
-																 }}
-																 modalsCallback={this.modalsCallback.bind(this)}
+				 closeAllModals={() => {
+					 this.props.closeAllModals()
+				 }}
+				 modalsCallback={this.modalsCallback.bind(this)}
 			/>)
 		};
 		this.props.closeModal("MenuModal");
@@ -63,8 +63,8 @@ class PostContextMenu extends React.Component {
 			body: (<ChooseSocialNetwork closeModal={() => {
 				this.props.closeModal("ChooseSocialNetwork")
 			}}
-																	url={this.props.index}
-																	item={this.props.item}
+				url={this.props.index}
+				item={this.props.item}
 			/>)
 		};
 		this.props.closeModal("MenuModal");
