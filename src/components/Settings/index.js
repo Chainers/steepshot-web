@@ -3,7 +3,7 @@ import {getSettings, updateSettings, updateSettingsInStore} from '../../actions/
 import {connect} from 'react-redux';
 import Constants from '../../common/constants';
 import {documentTitle} from '../DocumentTitle';
-import jqApp from "../../libs/app.min";
+import jqApp from '../../libs/app.min';
 
 class Settings extends React.Component {
 	constructor() {

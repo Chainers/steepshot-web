@@ -216,7 +216,7 @@ class PostModal extends React.Component {
         <div className="full-image-wrap_pos-mod">
           {this.lowNSFWFilter()}
           <img src={this.props.imgUrl || Constants.NO_IMAGE}
-							 alt={this.props.post.title}
+               alt={this.props.post.title}
                className="full-screen-img"
                ref={ref => this.fullImage = ref}
                onLoad={this.imageLoaded.bind(this)}
@@ -239,25 +239,21 @@ class PostModal extends React.Component {
             </div>
           </ShowIf>
         </div>
-        <ShowIf show={this.props.fullScreenNavigation}>
+        <ShowIf show={true}>
           <div>
             <ShowIf show={!this.props.firstPost}>
               <div className="arrow-left-full-screen_post-mod"
                    onClick={this.previousPost.bind(this)}
                    onMouseEnter={this.fsNavMouseEnter.bind(this)}
                    onMouseLeave={this.fsNavMouseLeave.bind(this)}
-              >
-                <i className="far fa-arrow-alt-circle-left fa-2x"/>
-              </div>
+              />
             </ShowIf>
             <ShowIf show={!this.props.lastPost && !this.props.newPostsLoading}>
               <div className="arrow-right-full-screen_post-mod"
                    onClick={this.nextPost.bind(this)}
                    onMouseEnter={this.fsNavMouseEnter.bind(this)}
                    onMouseLeave={this.fsNavMouseLeave.bind(this)}
-              >
-                <i className="far fa-arrow-alt-circle-right fa-2x"/>
-              </div>
+              />
             </ShowIf>
             <ShowIf show={this.props.newPostsLoading}>
               <div className="arrow-right-full-screen_post-mod"
@@ -277,6 +273,13 @@ class PostModal extends React.Component {
                onMouseLeave={this.fsNavMouseLeave.bind(this)}
           >
             <img className="img-full-screen" src="/images/shape-copy-6.svg" alt="close full screen"/>
+          </div>
+          <div className="cross-wrapper_modal"
+               onClick={this.closeFromFullScreen.bind(this, false)}
+               onMouseEnter={this.fsNavMouseEnter.bind(this)}
+               onMouseLeave={this.fsNavMouseLeave.bind(this)}
+          >
+             <div className="cross-full-screen_modal"/>
           </div>
           <div className="fs-post-amount_pos-mod">
             <ShowIf show={parseFloat(this.props.post.total_payout_reward)}>
@@ -307,6 +310,11 @@ class PostModal extends React.Component {
 
   fsCheckButtons(e) {
     if (e.keyCode !== 37 && e.keyCode !== 39) this.showFSNavigation();
+  }
+
+  closeFromFullScreen(isOpen) {
+    this.setFullScreen(isOpen);
+    this.props.closeModal(this.props.point);
   }
 
   setFullScreen(isOpen) {
@@ -473,17 +481,13 @@ class PostModal extends React.Component {
         <div className="container_pos-mod" style={hideModalFS}>
           <ShowIf show={this.props.showClose}>
             <ShowIf show={!this.props.firstPost}>
-              <div className="arrow-left-modal_post-mod" onClick={this.previousPost.bind(this)}>
-                <i className="far fa-arrow-alt-circle-left fa-2x"/>
-              </div>
+              <div className="arrow-left-full-screen_post-mod" onClick={this.previousPost.bind(this)}/>
             </ShowIf>
             <ShowIf show={!this.props.lastPost && !this.props.newPostsLoading}>
-              <div className="arrow-right-modal_post-mod" onClick={this.nextPost.bind(this)}>
-                <i className="far fa-arrow-alt-circle-right fa-2x"/>
-              </div>
+              <div className="arrow-right-full-screen_post-mod" onClick={this.nextPost.bind(this)}/>
             </ShowIf>
             <ShowIf show={this.props.newPostsLoading}>
-              <div className="arrow-right-modal_post-mod" onClick={this.nextPost.bind(this)}>
+              <div className="arrow-right-full-screen_post-mod" onClick={this.nextPost.bind(this)}>
                 <LoadingSpinner style={{position: 'absolute', top: '50%', transform: 'translateY(-50%)', width: 35, height: 35}}
                                 loaderClass="new-posts-spinner_post-mod"
                 />
@@ -599,8 +603,9 @@ class PostModal extends React.Component {
     const MAX_WIDTH_FULL_SCREEN = 815;
 
     const docWidth = document.documentElement.clientWidth;
+    console.log(docWidth);
     const docHeight = document.documentElement.clientHeight;
-    const MAX_IMG_WIDTH = (docWidth - DESC_WIDTH) * 0.8;
+    const MAX_IMG_WIDTH = (docWidth - DESC_WIDTH) * 0.75;
     const PREFERRED_IMG_WIDTH = 640;
     const isMobile = docWidth < MAX_WIDTH_FULL_SCREEN;
     const isFullScreen = docWidth < 1025;
@@ -627,7 +632,7 @@ class PostModal extends React.Component {
     description.width = headerCont.width;
 
     if (docWidth > MAX_WIDTH_FULL_SCREEN) {
-      image.width = image.width ? image.width : utils.getLess((docWidth - DESC_WIDTH) * 0.8, PREFERRED_IMG_WIDTH);
+      image.width = image.width ? image.width : utils.getLess((docWidth - DESC_WIDTH) * 0.75, PREFERRED_IMG_WIDTH);
       container.height = utils.getMore(docHeight * 0.9, MIN_HEIGHT);
 
       if (image.height > container.height) {

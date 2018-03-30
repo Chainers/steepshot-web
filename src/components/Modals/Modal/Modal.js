@@ -52,14 +52,9 @@ class Modal extends React.Component {
   }
 
   render() {
-    let styleBack = {backgroundColor: 'rgba(0, 0, 0, .7)'}, crossFullScreen = null;
+    let styleBack = {backgroundColor: 'rgba(0, 0, 0, .7)'};
     if (this.props.fullScreenMode) {
         styleBack = {backgroundColor: '#000000'};
-        crossFullScreen = <div className="cross-wrapper_modal"
-                               onClick={() => {this.props.closeModal(this.props.index)}}
-                          >
-                              <div className="cross-full-screen_modal"/>
-                          </div>;
     }
     styleBack.alignItems = this.props.bodyHeight >= this.props.containerHeight ? 'flex-start' : 'center';
     styleBack.zIndex = 1005;
@@ -69,7 +64,6 @@ class Modal extends React.Component {
            style={styleBack}
            ref={ref => {this.container = ref}}
       >
-        {crossFullScreen}
         <div className="body_modal before-load_modal"
              ref={ref => {this.body = ref}}
         >

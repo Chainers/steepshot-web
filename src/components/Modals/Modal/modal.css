@@ -54,7 +54,7 @@
 }
 .cross-wrapper_modal {
   position: absolute;
-  right: 3px;
+  right: 23px;
   top: 14px;
   width: 38px;
   height: 38px;
@@ -64,10 +64,4 @@
 
 .cross-wrapper_modal:hover .cross-full-screen_modal {
   background: url(/images/sprite_svg1910.svg) 6% 12.3% no-repeat;
-}
-
-@media (min-width: 1224px) {
-  .cross-wrapper_modal {
-    right: 27px;
-  }
 }
