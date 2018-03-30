@@ -123,8 +123,7 @@ class UserProfile extends React.Component {
 		if (window.localStorage.user === undefined || this.props.pathname === undefined) {
 			this.setState({yourOrNot: false});
 		} else {
-			if (window.localStorage.user.replace(/"/g, '') ===
-				this.props.pathname.replace('/@', '')) {
+			if (window.localStorage.user.replace(/"/g, '') === this.props.pathname.replace('/@', '')) {
 				this.setState({yourOrNot: true});
 			} else {
 				this.setState({yourOrNot: false});
@@ -173,14 +172,14 @@ class UserProfile extends React.Component {
 									<div className="count">$ {balance}</div>
 									{
 										this.state.yourOrNot
-											?
-											<div className="description">This is the current amount of
-												funds in your account in the
-												application.</div>
-											:
-											<div className="description">This is the current amount of
-												funds in user account in the
-												application.</div>
+										?
+										<div className="description">This is the current amount of
+											funds in your account in the
+											application.</div>
+										:
+										<div className="description">This is the current amount of
+											funds in user account in the
+											application.</div>
 									}
 								</div>
 							</div>
@@ -228,6 +227,7 @@ class UserProfile extends React.Component {
 
 const mapStateToProps = (state) => {
 	let postsInfo = state.postsList[Object.keys(state.postsList)[5]];
+	console.log(state.auth.settings);
 	return {
 		pathname: state.router.location.pathname,
 		user: state.auth.user,

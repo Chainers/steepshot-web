@@ -50,11 +50,9 @@ class BaseRequestService {
 
 	convertOptionsToRequestString(options) {
 		let optionsArray = [];
-
 		for (let key in options) {
 			if (options[key] !== undefined && options[key] !== null) optionsArray.push(key + '=' + this.convertIfBool(options[key]));
 		}
-
 		return '?' + optionsArray.join('&');
 	}
 
