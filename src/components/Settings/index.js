@@ -4,6 +4,7 @@ import {connect} from 'react-redux';
 import Constants from '../../common/constants';
 import {documentTitle} from '../DocumentTitle';
 import jqApp from "../../libs/app.min";
+import {goBack} from "react-router-redux";
 
 class Settings extends React.Component {
 	constructor() {
@@ -81,12 +82,12 @@ class Settings extends React.Component {
 			}, () => this.needsNotice());
 			setTimeout(() => {
 				jqApp.pushMessage.open(Constants.SETTINGS_CHANGED_MESSAGE);
-				this.props.history.goBack();
+				this.props.historyGoBack();
 			}, 1700);
 		} else {
 			this.setState({uptodate: true}, () => this.needsNotice());
 			setTimeout(() => {
-				this.props.history.goBack();
+				this.props.historyGoBack();
 			}, 1700);
 		}
 	}
@@ -165,6 +166,9 @@ const mapDispatchToProps = (dispatch) => {
 		updateSettingsInStore: (newSettings) => {
 			dispatch(updateSettingsInStore(newSettings));
 		},
+		historyGoBack: () => {
+			dispatch(goBack());
+		}
 	};
 };
 

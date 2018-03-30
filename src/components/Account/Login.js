@@ -1,14 +1,7 @@
 import React from 'react';
-import {withRouter} from 'react-router-dom';
 import {connect} from 'react-redux'
 import {login} from '../../actions/auth';
-import {
-  facebookLogin,
-  twitterLogin,
-  googleLogin,
-  vkLogin,
-  githubLogin
-} from '../../actions/oauth';
+import {facebookLogin, githubLogin, googleLogin, twitterLogin, vkLogin} from '../../actions/oauth';
 import LoadingSpinner from '../LoadingSpinner';
 import Constants from '../../common/constants';
 import {documentTitle} from '../DocumentTitle';
@@ -28,226 +21,233 @@ class Login extends React.Component {
 		return {};
 	}
 
-  constructor() {
-    super();
-    this.state = {
-      userName: '',
-      postingKey: '',
-      userNameError: false,
-      postingKeyError: false,
-      needsLoader: false,
-      withTutorVideo : false
-    };
-  }
+	constructor() {
+		super();
+		this.state = {
+			userName: '',
+			postingKey: '',
+			userNameError: false,
+			postingKeyError: false,
+			needsLoader: false,
+			withTutorVideo: false
+		};
+	}
 
-  componentDidUpdate() {
-    setTimeout(() => { jqApp.forms.init() }, 0);
-  }
+	componentDidUpdate() {
+		setTimeout(() => {
+			jqApp.forms.init()
+		}, 0);
+	}
 
-  componentWillMount() {
-    documentTitle();
-  }
+	componentWillMount() {
+		documentTitle();
+	}
 
-  handleChange(event) {
-    this.setState({
-      [event.target.name]: event.target.value,
-      userNameError: false,
-      postingKeyError: false
-    });
-  }
+	handleChange(event) {
+		this.setState({
+			[event.target.name]: event.target.value,
+			userNameError: false,
+			postingKeyError: false
+		});
+	}
 
-  validate() {
-    let valid = true;
-    if (this.state.userName === '') {
-      this.setState({
-        userNameError : true
-      });
-      valid = false;
-    }
-    if (this.state.postingKey === '') {
-      this.setState({
-        postingKeyError : true
-      });
-      valid = false;
-    }
-    return valid;
-  }
+	validate() {
+		let valid = true;
+		if (this.state.userName === '') {
+			this.setState({
+				userNameError: true
+			});
+			valid = false;
+		}
+		if (this.state.postingKey === '') {
+			this.setState({
+				postingKeyError: true
+			});
+			valid = false;
+		}
+		return valid;
+	}
 
-  handleLogin(e) {
-    e.preventDefault();
-    if (!this.validate()) return false;
-    this.setState({
-      needsLoader : true
-    }, () => {
-      const callback = (message) => {
-        this.setState({
-          needsLoader : false
-        }, () => {
-          jqApp.pushMessage.open(message);
-        });
-      };
-      login(this.state.userName.toLowerCase(), this.state.postingKey, this.props.history, this.props.dispatch, callback);
-    });
-  }
+	handleLogin(e) {
+		e.preventDefault();
+		if (!this.validate()) return false;
+		this.setState({
+			needsLoader: true
+		}, () => {
+			const callback = (message) => {
+				this.setState({
+					needsLoader: false
+				}, () => {
+					jqApp.pushMessage.open(message);
+				});
+			};
+			login(this.state.userName.toLowerCase(), this.state.postingKey, this.props.dispatch, callback);
+		});
+	}
 
-  handleFacebook() {
-    this.props.dispatch(facebookLogin())
-  }
+	handleFacebook() {
+		this.props.dispatch(facebookLogin())
+	}
 
-  handleTwitter() {
-    this.props.dispatch(twitterLogin())
-  }
+	handleTwitter() {
+		this.props.dispatch(twitterLogin())
+	}
 
-  handleGoogle() {
-    this.props.dispatch(googleLogin())
-  }
+	handleGoogle() {
+		this.props.dispatch(googleLogin())
+	}
 
-  handleVk() {
-    this.props.dispatch(vkLogin())
-  }
+	handleVk() {
+		this.props.dispatch(vkLogin())
+	}
 
-  handleGithub() {
-    this.props.dispatch(githubLogin())
-  }
+	handleGithub() {
+		this.props.dispatch(githubLogin())
+	}
 
-  openRegisterSite() {
-    window.open('https://steemit.com/pick_account');
-  }
+	openRegisterSite() {
+		window.open('https://steemit.com/pick_account');
+	}
 
-  renderTutorVideo() {
-    return (
-      <div className="youtube-embed">
-        <iframe
-          width="550"
-          height="315"
-          src={Constants.TUTORIAL.LINK}
-          frameBorder="0"
-          allowFullScreen
-          title='tutor video'
-        >
-        </iframe>
-      </div>
-    )
-  }
+	renderTutorVideo() {
+		return (
+			<div className="youtube-embed">
+				<iframe
+					width="550"
+					height="315"
+					src={Constants.TUTORIAL.LINK}
+					frameBorder="0"
+					allowFullScreen
+					title='tutor video'
+				>
+				</iframe>
+			</div>
+		)
+	}
 
-  renderTutorial() {
-    this.setState({
-      withTutorVideo : true
-    }, () => {
-      $("html, body").delay(400).animate({scrollTop: $('.js--page-bottom').offset().top }, 2000);
-    })
-  }
+	renderTutorial() {
+		this.setState({
+			withTutorVideo: true
+		}, () => {
+			$("html, body").delay(400).animate({scrollTop: $('.js--page-bottom').offset().top}, 2000);
+		})
+	}
 
-  render() {
+	render() {
 		if (global.isServerSide) {
 			return null;
 		}
-    let mainContainerClassName = "col-xs-12 col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3";
-    if (this.state.needsLoader) {
-      mainContainerClassName = mainContainerClassName + " blur-blocker";
-    }
-    return (
-      <div className="container-fluid">
-        <ShowIf show={this.state.needsLoader}>
-          <div className="like-modal-loader">
-            <LoadingSpinner />
-          </div>
-        </ShowIf>
-        <div className="container-fluid">
-          <div className="row position--relative">
-            <div className={mainContainerClassName}>
-              <div className="container-fluid">
-                <div className="row">
-                  <div className="col-xs-12 col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3 lead text--center">Sign in Steepshot</div>
-                </div>
-              </div>
-              <form className="form-login form-horizontal">
-                <div className={this.state.userNameError ? "has-error" : null}>
-                  <div className="form-group">
-                    <div className="input-container col-xs-12 ">
-                      <input
-                        type="text"
-                        name="userName"
-                        id="formNAME"
-                        className="form-control autofil--gray"
-                        value={this.state.userName.toLowerCase()}
-                        onChange={this.handleChange.bind(this)}
-                      />
-                      <label htmlFor="formNAME" className="name">Name</label>
-                      <div className="help-block">
-                        {
-                          this.state.userNameError
-                          ?
-                            <div className="help-block__notice">Username is required</div>
-                          :
-                            null
-                        }
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className={this.state.postingKeyError ? "has-error" : null}>
-                  <div className="form-group">
-                    <div className="input-container col-xs-12">
-                      <input
-                        type="password"
-                        name="postingKey"
-                        id="formPOSTKEY"
-                        className="form-control autofil--gray"
-                        value={this.state.postingKey}
-                        onChange={this.handleChange.bind(this)}
-                        autoComplete="new-password"
-                      />
-                      <label htmlFor="formPOSTKEY" className="name">Private Posting Key</label>
-                      <div className="help-block">
-                        {
-                          this.state.postingKeyError
-                          ?
-                            <div className="help-block__notice">Posting key is required</div>
-                          :
-                            null
-                        }
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="form-group">
-                  <div className="buttons-container col-xs-12">
-                    <a onClick={this.openRegisterSite} className="btn btn-index">Create new Steem account</a>
-                    <button onClick={this.handleLogin.bind(this)} type="submit" className="btn btn-default">Log In with Steem</button>
-                  </div>
-                </div>
-              </form>
-              <div className="container-fluid">
-                <div className="row">
-                  <div className="col-xs-12 text--center paddingNo">
-                    {
-                      this.state.withTutorVideo
-                      ?
-                        this.renderTutorVideo()
-                      :
-                        <p>
-                          {Constants.TUTORIAL.PRE_TEXT}
-                          <a onClick={this.renderTutorial.bind(this)}>
-                            {Constants.TUTORIAL.TEXT}
-                          </a>
-                        </p>
-                    }
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
+		let mainContainerClassName = "col-xs-12 col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3";
+		if (this.state.needsLoader) {
+			mainContainerClassName = mainContainerClassName + " blur-blocker";
+		}
+		return (
+			<div className="container-fluid">
+				<ShowIf show={this.state.needsLoader}>
+					<div className="like-modal-loader">
+						<LoadingSpinner/>
+					</div>
+				</ShowIf>
+				<div className="container-fluid">
+					<div className="row position--relative">
+						<div className={mainContainerClassName}>
+							<div className="container-fluid">
+								<div className="row">
+									<div className="col-xs-12 col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3 lead text--center">Sign in
+										Steepshot
+									</div>
+								</div>
+							</div>
+							<form className="form-login form-horizontal">
+								<div className={this.state.userNameError ? "has-error" : null}>
+									<div className="form-group">
+										<div className="input-container col-xs-12 ">
+											<input
+												type="text"
+												name="userName"
+												id="formNAME"
+												className="form-control autofil--gray"
+												value={this.state.userName.toLowerCase()}
+												onChange={this.handleChange.bind(this)}
+											/>
+											<label htmlFor="formNAME" className="name">Name</label>
+											<div className="help-block">
+												{
+													this.state.userNameError
+														?
+														<div className="help-block__notice">Username is required</div>
+														:
+														null
+												}
+											</div>
+										</div>
+									</div>
+								</div>
+								<div className={this.state.postingKeyError ? "has-error" : null}>
+									<div className="form-group">
+										<div className="input-container col-xs-12">
+											<input
+												type="password"
+												name="postingKey"
+												id="formPOSTKEY"
+												className="form-control autofil--gray"
+												value={this.state.postingKey}
+												onChange={this.handleChange.bind(this)}
+												autoComplete="new-password"
+											/>
+											<label htmlFor="formPOSTKEY" className="name">Private Posting Key</label>
+											<div className="help-block">
+												{
+													this.state.postingKeyError
+														?
+														<div className="help-block__notice">Posting key is required</div>
+														:
+														null
+												}
+											</div>
+										</div>
+									</div>
+								</div>
+								<div className="form-group">
+									<div className="buttons-container col-xs-12">
+										<a onClick={this.openRegisterSite} className="btn btn-index">Create new Steem account</a>
+										<button onClick={this.handleLogin.bind(this)} type="submit" className="btn btn-default">Log In with
+											Steem
+										</button>
+									</div>
+								</div>
+							</form>
+							<div className="container-fluid">
+								<div className="row">
+									<div className="col-xs-12 text--center paddingNo">
+										{
+											this.state.withTutorVideo
+												?
+												this.renderTutorVideo()
+												:
+												<p>
+													{Constants.TUTORIAL.PRE_TEXT}
+													<a onClick={this.renderTutorial.bind(this)}>
+														{Constants.TUTORIAL.TEXT}
+													</a>
+												</p>
+										}
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		);
+	}
 }
+
 const mapStateToProps = (state) => {
-  return {
-    messages: state.messages,
-    user: state.auth.user
-  };
+	return {
+		messages: state.messages,
+		user: state.auth.user
+	};
 };
 
-export default withWrapper(withRouter(connect(mapStateToProps)(Login)));
+export default withWrapper(connect(mapStateToProps)(Login));

@@ -1,61 +1,73 @@
 .wrapper_confirm-flag-mod {
-  display: block;
-  background: #ffffff;
-  border-radius: 4px;
-  padding: 24px 30px;
+    display: block;
+    background: #ffffff;
+    border-radius: 4px;
+    padding: 24px 30px;
 }
 
 .title_confirm-flag-mod {
-  max-width: 440px;
-  font: 22px OpenSans-Semibold;
+    max-width: 440px;
+    font: 22px OpenSans-Semibold;
 }
+
 .description_confirm-flag-mod {
-  max-width: 440px;
-  font: 16px OpenSans-Light;
+    max-width: 440px;
+    font: 16px OpenSans-Light;
 }
+
 .description-link_confirm-flag-mod {
-  transition: .2s all ease;
-  max-width: 440px;
-  font: 16px OpenSans-Light;
-  padding-bottom: 24px;
-  border-bottom: 1px solid #f4f4f6;
+    transition: .2s all ease;
+    max-width: 440px;
+    font: 16px OpenSans-Light;
+    padding-bottom: 24px;
+    border-bottom: 1px solid #f4f4f6;
 }
+
 .description-link_confirm-flag-mod a {
-  opacity: 1;
+    opacity: 1;
 }
+
 .description-link_confirm-flag-mod a:hover {
-  opacity: .6;
+    opacity: .6;
 }
+
 .buttons_holder-flag-mod {
-  text-align: right;
-  padding-top: 10px;
+    text-align: right;
+    padding-top: 10px;
 }
+
 .buttons_holder-flag-mod button {
-  font: 14px OpenSans-Regular;
+    font: 14px OpenSans-Regular;
 }
+
 .buttons_holder-flag-mod button:first-child {
-  margin-right: 15px;
+    margin-right: 15px;
 }
 
 @media screen and (max-width: 815px) {
-  .title_confirm-flag-mod {
-    font: 20px OpenSans-Semibold;
-  }
-  .description_confirm-flag-mod {
-    font: 14px OpenSans-Light;
-  }
-  .buttons_holder-flag-mod button {
-    font: 12px OpenSans-Regular;
-  }
-  .description-link_confirm-flag-mod {
-    font: 14px OpenSans-Regular;
-  }
-  .buttons_holder-flag-mod button {
-    padding: 10px 30px;
-  }
+    .title_confirm-flag-mod {
+        font: 20px OpenSans-Semibold;
+    }
+
+    .description_confirm-flag-mod {
+        font: 14px OpenSans-Light;
+    }
+
+    .buttons_holder-flag-mod button {
+        font: 12px OpenSans-Regular;
+    }
+
+    .description-link_confirm-flag-mod {
+        font: 14px OpenSans-Regular;
+    }
+
+    .buttons_holder-flag-mod button {
+        padding: 10px 30px;
+    }
 }
+
 @media (max-width: 495px) {
-  .wrapper_confirm-flag-mod {
-    border-radius: 0;
-  }
+    .wrapper_confirm-flag-mod {
+        border-radius: 0;
+    }
 }

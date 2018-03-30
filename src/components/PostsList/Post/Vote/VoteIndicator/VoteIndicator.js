@@ -9,8 +9,8 @@ import './voteIndicator.css';
 const CIRCLE_OFFSET = 0;
 
 class VoteIndicator extends React.Component {
-	constructor(props) {
-		super(props);
+	constructor() {
+		super();
 		this.hideVoteIndicator = this.hideVoteIndicator.bind(this);
 		this.hideWithDelay = this.hideWithDelay.bind(this);
 		this.clearDelayTimeout = this.clearDelayTimeout.bind(this);

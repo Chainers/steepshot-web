@@ -6,20 +6,20 @@ import Clipboard from "./Common/Clipboard/Clipboard";
 import Modals from './Modals/Modals';
 
 const App = ({children}) => (
-  <div className="g-wrap">
-    <div className="outer-bg">
-      <Header/>
-      <div className="g-main">
-        {children || 'Loading'}
-      </div>
-    </div>
-    <MobileNavigationComponent/>
-    <div className="pm"></div>
-    <FooterComponent/>
+	<div className="g-wrap">
+		<div className="outer-bg">
+			<Header/>
+			<div className="g-main">
+				{children || 'Loading'}
+			</div>
+		</div>
+		<MobileNavigationComponent/>
+		<div className="pm"></div>
+		<FooterComponent/>
 
-    <Clipboard/>
-    <Modals/>
-  </div>
+		<Clipboard/>
+		<Modals/>
+	</div>
 );
 
 export default App;

@@ -1,44 +1,44 @@
 .container_lik-lis {
-  position: relative;
-  background-color: #ffffff;
-  border: 1px solid rgba(0,0,0,.2);
-  border-radius: 4px;
-  max-height: 96vh;
-  min-height: 10px;
-  width: 660px;
-  padding: 10px 20px;
-  overflow: hidden;
+    position: relative;
+    background-color: #ffffff;
+    border: 1px solid rgba(0, 0, 0, .2);
+    border-radius: 4px;
+    max-height: 96vh;
+    min-height: 10px;
+    width: 660px;
+    padding: 10px 20px;
+    overflow: hidden;
 }
 
 .close-button_lik-lis {
-  position: absolute;
-  top: 15px;
-  right: 20px;
-  z-index: 10;
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    z-index: 10;
 }
 
 .title_lik-lis {
-  font: 14px OpenSans-SemiBold,Helvetica,Arial,sans-serif;
-  line-height: 32px;
-  float: left;
-  margin-left: 10px;
+    font: 14px OpenSans-SemiBold, Helvetica, Arial, sans-serif;
+    line-height: 32px;
+    float: left;
+    margin-left: 10px;
 }
 
 .has-one_lik-lis {
-  max-width: 360px;
+    max-width: 360px;
 }
 
 @media (max-width: 670px) {
-  .container_lik-lis {
-    width: 360px;
-    justify-content: center;
-  }
+    .container_lik-lis {
+        width: 360px;
+        justify-content: center;
+    }
 }
 
 @media (max-width: 370px) {
-  .container_lik-lis {
-    width: 100vw;
-    padding: 10px 0;
-    justify-content: center;
-  }
+    .container_lik-lis {
+        width: 100vw;
+        padding: 10px 0;
+        justify-content: center;
+    }
 }

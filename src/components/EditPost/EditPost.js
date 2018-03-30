@@ -213,12 +213,12 @@ class EditPost extends React.Component {
 		);
 	}
 
-  getButtonText() {
-    if (!this.props.canCreate) {
-      return (<Timer waitingTime={this.props.waitingTime} onTimeout={this.props.closeTimer}/>)
-    }
-    return this.props.isNew ? 'Create new post' : 'Update post'
-  }
+	getButtonText() {
+		if (!this.props.canCreate) {
+			return (<Timer waitingTime={this.props.waitingTime} onTimeout={this.props.closeTimer}/>)
+		}
+		return this.props.isNew ? 'Create new post' : 'Update post'
+	}
 }
 
 const mapStateToProps = (state, props) => {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Switch, Redirect } from 'react-router-dom';
+import {Route, Switch, Redirect} from 'react-router-dom';
 import App from './components/App';
 import NotFound from './components/NotFound';
 import Signin from './components/Account/Login';
@@ -28,7 +28,6 @@ export default function getRoutes(store) {
 	};
 
 
-
 	const auth = store.getState().auth;
 	const isAuth = !!auth.user && !!auth.postingKey && auth.isSetAuth;
 
@@ -39,7 +38,7 @@ export default function getRoutes(store) {
 					isAuth ? (
 						<Redirect to="/feed"/>
 					) : (
-						<Redirect to={`/browse/${baseBrowseFilter()}`} />
+						<Redirect to={`/browse/${baseBrowseFilter()}`}/>
 					)
 				)}/>
 				<Route exact path="/signin" render={() => (
@@ -49,20 +48,20 @@ export default function getRoutes(store) {
 						<Signin/>
 					)
 				)}/>
-				<Route path="/browse/:filter" component={BrowseWrapper} onLeave={clearMessages} />
-				<Redirect path="/browse" to={`/browse/${baseBrowseFilter()}`} />
-				<Route path="/@:username" component={UserProfile} onLeave={clearMessages} />
-				<Route path="/signin" component={Signin} onLeave={clearMessages} />
-				<Route path="/post" component={SinglePost} onLeave={clearMessages} />
-				<Route path="/search/:searchValue" component={Search} onLeave={clearMessages} />
-				<Route path="/guide" component={AboutComponent} onLeave={clearMessages} />
-				<Route path="/dev/test" component={Testing} onLeave={clearMessages} />
-				<PrivateRoute path="/feed" component={Feed} onLeave={clearMessages} />
-				<Redirect path="/createPost"  to={'/editPost'} />
-				<PrivateRoute path="/editPost/:category?/:username?/:postId?" component={EditPost} onLeave={clearMessages} />
-				<PrivateRoute path="/profile" component={Profile} onLeave={clearMessages} />
-				<PrivateRoute path="/settings" component={Settings} onLeave={clearMessages} />
-				<Route path="*" component={NotFound} onLeave={clearMessages} />
+				<Route path="/browse/:filter" component={BrowseWrapper} onLeave={clearMessages}/>
+				<Redirect path="/browse" to={`/browse/${baseBrowseFilter()}`}/>
+				<Route path="/@:username" component={UserProfile} onLeave={clearMessages}/>
+				<Route path="/signin" component={Signin} onLeave={clearMessages}/>
+				<Route path="/post" component={SinglePost} onLeave={clearMessages}/>
+				<Route path="/search/:searchValue" component={Search} onLeave={clearMessages}/>
+				<Route path="/guide" component={AboutComponent} onLeave={clearMessages}/>
+				<Route path="/dev/test" component={Testing} onLeave={clearMessages}/>
+				<PrivateRoute path="/feed" component={Feed} onLeave={clearMessages}/>
+				<Redirect path="/createPost" to={'/editPost'}/>
+				<PrivateRoute path="/editPost/:category?/:username?/:postId?" component={EditPost} onLeave={clearMessages}/>
+				<PrivateRoute path="/profile" component={Profile} onLeave={clearMessages}/>
+				<PrivateRoute path="/settings" component={Settings} onLeave={clearMessages}/>
+				<Route path="*" component={NotFound} onLeave={clearMessages}/>
 			</Switch>
 		</App>
 	);

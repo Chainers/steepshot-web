@@ -29,8 +29,10 @@ class FooterComponent extends React.Component {
 													<img src="/images/GooglePlay.png" alt="GooglePlay" className="footer__google-play"/>
 												</a>
 											</li>
-											<li className="item_1"><a href="https://t.me/steepshot_en" target="_blank" rel="noopener noreferrer">Telegram</a></li>
-											<li className="item_1"><a href="https://discordapp.com/invite/9QsYr9f" target="_blank" rel="noopener noreferrer">Discord</a>
+											<li className="item_1"><a href="https://t.me/steepshot_en" target="_blank"
+																								rel="noopener noreferrer">Telegram</a></li>
+											<li className="item_1"><a href="https://discordapp.com/invite/9QsYr9f" target="_blank"
+																								rel="noopener noreferrer">Discord</a>
 											</li>
 										</ul>
 									</div>

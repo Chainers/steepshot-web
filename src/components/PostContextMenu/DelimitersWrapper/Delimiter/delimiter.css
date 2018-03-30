@@ -1,9 +1,9 @@
 .delimiter_del {
-  border-radius: 1px;
-  background-color: #f4f4f6;
-  margin: auto;
+    border-radius: 1px;
+    background-color: #f4f4f6;
+    margin: auto;
 }
 
 .center_del {
-  display: flex;
+    display: flex;
 }

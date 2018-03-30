@@ -1,15 +1,15 @@
 .container_clo-btn {
-  cursor: pointer;
-  height: 32px;
-  width: 32px;
-  display: flex;
-  position: relative;
+    cursor: pointer;
+    height: 32px;
+    width: 32px;
+    display: flex;
+    position: relative;
 }
 
 .button_clo-btn {
-  margin: auto;
-  display: block;
-  width: 12px;
-  height: 12px;
-  background: url(/images/sprite_svg1910.svg) no-repeat 3% 99.8%;
+    margin: auto;
+    display: block;
+    width: 12px;
+    height: 12px;
+    background: url(/images/sprite_svg1910.svg) no-repeat 3% 99.8%;
 }

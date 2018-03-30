@@ -3,16 +3,16 @@ import './testing.css';
 
 class Testing extends React.Component {
 
-  render() {
+	render() {
 		if (global.isServerSide) {
 			return null;
 		}
-    return (
-      <div className="test">
-        test23
-      </div>
-    );
-  }
+		return (
+			<div className="test">
+				test23
+			</div>
+		);
+	}
 }
 
 export default Testing;
