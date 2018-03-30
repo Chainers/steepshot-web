@@ -10,10 +10,9 @@ class BaseRequestService {
 		};
 	}
 
-	getDefaultSettingsOptions() {
-		const settings = JSON.parse(localStorage.getItem("settings"));
-
-		if (settings === undefined) return {};
+    getDefaultSettingsOptions() {
+        const settings = JSON.parse(localStorage.getItem("settings"));
+        if (settings === undefined) return {};
 
 		let nsfw = false;
 		let low_rated = false;
@@ -51,11 +50,9 @@ class BaseRequestService {
 
 	convertOptionsToRequestString(options) {
 		let optionsArray = [];
-
 		for (let key in options) {
 			if (options[key] !== undefined && options[key] !== null) optionsArray.push(key + '=' + this.convertIfBool(options[key]));
 		}
-
 		return '?' + optionsArray.join('&');
 	}
 

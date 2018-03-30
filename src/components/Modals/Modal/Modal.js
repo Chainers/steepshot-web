@@ -52,42 +52,30 @@ class Modal extends React.Component {
 		}
 	}
 
-	render() {
-		let styleBack = {backgroundColor: 'rgba(0, 0, 0, .7)'}, crossFullScreen = null;
-		if (this.props.fullScreenMode) {
-			styleBack = {backgroundColor: '#000000'};
-			crossFullScreen = <div className="cross-wrapper_modal"
-														 onClick={() => {
-															 this.props.closeModal(this.props.index)
-														 }}
-			>
-				<div className="cross-full-screen_modal"/>
-			</div>;
-		}
-		styleBack.alignItems = this.props.bodyHeight >= this.props.containerHeight ? 'flex-start' : 'center';
-		styleBack.zIndex = 1005;
-		return (
-			<div className="back_mods before-load-back_modal ov-scroll_modal"
-					 onClick={this.clickOutside.bind(this)}
-					 style={styleBack}
-					 ref={ref => {
-						 this.container = ref
-					 }}
-			>
-				{crossFullScreen}
-				<div className="body_modal before-load_modal"
-						 ref={ref => {
-							 this.body = ref
-						 }}
-				>
-					{this.props.body}
-				</div>
-				<ShowIf show={!mobileSize}>
-					<ReactResizeDetector handleWidth handleHeight onResize={this.resizeWindow}/>
-				</ShowIf>
-			</div>
-		);
-	}
+  render() {
+    let styleBack = {backgroundColor: 'rgba(0, 0, 0, .7)'};
+    if (this.props.fullScreenMode) {
+        styleBack = {backgroundColor: '#000000'};
+    }
+    styleBack.alignItems = this.props.bodyHeight >= this.props.containerHeight ? 'flex-start' : 'center';
+    styleBack.zIndex = 1005;
+    return (
+      <div className="back_mods before-load-back_modal ov-scroll_modal"
+           onClick={this.clickOutside.bind(this)}
+           style={styleBack}
+           ref={ref => {this.container = ref}}
+      >
+        <div className="body_modal before-load_modal"
+             ref={ref => {this.body = ref}}
+        >
+          {this.props.body}
+        </div>
+        <ShowIf show={!mobileSize}>
+           <ReactResizeDetector handleWidth handleHeight onResize={this.resizeWindow} />
+        </ShowIf>
+      </div>
+    );
+  }
 }
 
 const mapStateToProps = (state, props) => {

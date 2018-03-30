@@ -7067,8 +7067,7 @@ modal.modal-like .modal-header {
 .btn-like:after, .btn-like:before {
     content: ' ';
     font-size: 10px;
-    background-image: url('/images/sprite_svg1910.svg');
-    background-repeat: no-repeat;
+    background: url('/images/sprite_svg1910.svg') no-repeat;
     background-size: 4.4em 47.2em;
     display: block;
     position: absolute;
@@ -7082,7 +7081,7 @@ modal.modal-like .modal-header {
 
 .btn-like:before {
     background-position: -.2em -17.2em;
-    width: 2.1em;
+    width: 2.25em;
     height: 2.1em
 }
 
