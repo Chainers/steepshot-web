@@ -10,10 +10,9 @@ class BaseRequestService {
 		};
 	}
 
-	getDefaultSettingsOptions() {
-		const settings = JSON.parse(localStorage.getItem("settings"));
-
-		if (settings === undefined) return {};
+    getDefaultSettingsOptions() {
+        const settings = JSON.parse(localStorage.getItem("settings"));
+        if (settings === undefined) return {};
 
 		let nsfw = false;
 		let low_rated = false;

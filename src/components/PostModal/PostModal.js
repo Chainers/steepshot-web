@@ -1,7 +1,9 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {nextPostModal, previousPostModal, setPostModalOptions, setFullScreen,
-  setFSNavigation, postOffset} from '../../actions/postModal';
+import {
+	nextPostModal, previousPostModal, setPostModalOptions, setFullScreen,
+	setFSNavigation, postOffset
+} from '../../actions/postModal';
 import Constants from '../../common/constants';
 import TimeAgo from 'timeago-react';
 import {Link} from 'react-router-dom';
@@ -33,182 +35,183 @@ const HEADER_HEIGHT = 60;
 
 class PostModal extends React.Component {
 
-  static defaultProps = {
-    showClose: true,
-  };
+	static defaultProps = {
+		showClose: true,
+	};
 
-  constructor(props) {
-    super(props);
-    this.setComponentSize = this.setComponentSize.bind(this);
-    this.showFSNavigation = this.showFSNavigation.bind(this);
-    this.fsCheckButtons = this.fsCheckButtons.bind(this);
-    this.initKeyPress = this.initKeyPress.bind(this);
-  }
+	constructor() {
+		super();
+		this.setComponentSize = this.setComponentSize.bind(this);
+		this.showFSNavigation = this.showFSNavigation.bind(this);
+		this.fsCheckButtons = this.fsCheckButtons.bind(this);
+		this.initKeyPress = this.initKeyPress.bind(this);
+	}
 
-  componentDidMount() {
-    window.addEventListener('resize', this.setComponentSize);
-    window.addEventListener('keydown', this.initKeyPress);
-    this.setComponentSize();
-  }
+	componentDidMount() {
+		window.addEventListener('resize', this.setComponentSize);
+		window.addEventListener('keydown', this.initKeyPress);
+		this.setComponentSize();
+	}
 
-  componentWillUnmount() {
-    window.removeEventListener('resize', this.setComponentSize);
-    window.removeEventListener('keydown', this.initKeyPress);
-  }
+	componentWillUnmount() {
+		window.removeEventListener('resize', this.setComponentSize);
+		window.removeEventListener('keydown', this.initKeyPress);
+	}
 
-  componentDidUpdate(nextProps) {
-    if (!this.props.needsCommentFormLoader && nextProps.needsCommentFormLoader) {
-      setTimeout(() => {
-        this.textArea.value = '';
-        this.changeText();
-        this.scrollAfterComment();
-      }, 250);
-    }
-  }
+	componentDidUpdate(nextProps) {
+		if (!this.props.needsCommentFormLoader && nextProps.needsCommentFormLoader) {
+			setTimeout(() => {
+				this.textArea.value = '';
+				this.changeText();
+				this.scrollAfterComment();
+			}, 250);
+		}
+	}
 
-  componentWillReceiveProps(nextProps) {
-    let post = document.getElementById(this.props.currentIndex);
-    if (post) {
-      if (post.offsetTop === 0) {
-        return;
-      }
-      this.props.postOffset(post.offsetTop - HEADER_HEIGHT);
-    }
-    if (this.props.fullScreenMode && nextProps.fullScreenMode) {
-      this.firstLastPostAfterClickFS(nextProps);
-    }
-  }
+	componentWillReceiveProps(nextProps) {
+		let post = document.getElementById(this.props.currentIndex);
+		if (post) {
+			if (post.offsetTop === 0) {
+				return;
+			}
+			this.props.postOffset(post.offsetTop - HEADER_HEIGHT);
+		}
+		if (this.props.fullScreenMode && nextProps.fullScreenMode) {
+			this.firstLastPostAfterClickFS(nextProps);
+		}
+	}
 
-  firstLastPostAfterClickFS(nextProps) {
-    if ((!this.props.firstPost || !this.props.lastPost) && (nextProps.firstPost || nextProps.lastPost)
-      && this.props.fullScreenNavigation && this.props.timeoutID === null) {
-      this.fsNavMouseLeave();
-      this.showFSNavigation();
-    }
-  }
+	firstLastPostAfterClickFS(nextProps) {
+		if ((!this.props.firstPost || !this.props.lastPost) && (nextProps.firstPost || nextProps.lastPost)
+			&& this.props.fullScreenNavigation && this.props.timeoutID === null) {
+			this.fsNavMouseLeave();
+			this.showFSNavigation();
+		}
+	}
 
-  scrollAfterComment() {
-    this.textArea.value = '';
-    this.changeText();
-    this.scrollView.scrollBar.scrollToBottom();
-  }
+	scrollAfterComment() {
+		this.textArea.value = '';
+		this.changeText();
+		this.scrollView.scrollBar.scrollToBottom();
+	}
 
-  openDescription() {
-    this.props.setPostModalOptions({isDescriptionOpened: true});
-  }
+	openDescription() {
+		this.props.setPostModalOptions({isDescriptionOpened: true});
+	}
 
-  previousPost() {
-    if (!this.props.firstPost) {
-      this.props.previous(this.props.currentIndex);
-      this.clearTextArea();
-    }
-  }
+	previousPost() {
+		if (!this.props.firstPost) {
+			this.props.previous(this.props.currentIndex);
+			this.clearTextArea();
+		}
+	}
 
-  nextPost() {
-    if (!this.props.lastPost) {
-      this.props.next(this.props.currentIndex);
-      this.clearTextArea();
-    }
-  }
+	nextPost() {
+		if (!this.props.lastPost) {
+			this.props.next(this.props.currentIndex);
+			this.clearTextArea();
+		}
+	}
 
-  initKeyPress(e) {
-      if (document.activeElement !== ReactDOM.findDOMNode(this.textArea)) {
-        switch (e.keyCode) {
-          case 37:
-            this.previousPost();
-            break;
-          case 39:
-            this.nextPost();
-            break;
-          case 27:
-            if (this.props.fullScreenMode) {
-              this.setFullScreen(false);
-            }
-            break;
-          case 13:
-            this.props.toggleVote(this.props.currentIndex);
-            break;
-          default:
-            break;
-        }
-      }
-  }
+	initKeyPress(e) {
+		if (document.activeElement !== ReactDOM.findDOMNode(this.textArea)) {
+			switch (e.keyCode) {
+				case 37:
+					this.previousPost();
+					break;
+				case 39:
+					this.nextPost();
+					break;
+				case 27:
+					if (this.props.fullScreenMode) {
+						this.setFullScreen(false);
+					}
+					break;
+				case 13:
+					this.props.toggleVote(this.props.currentIndex);
+					break;
+				default:
+					break;
+			}
+		}
+	}
 
-  clearTextArea() {
-    if (this.textArea && this.hiddenDiv) {
-      this.textArea.value = '';
-      this.hiddenDiv.textContent = '';
-      this.textArea.style.height = '42px';
-      this.setComponentSize();
-    }
-  }
+	clearTextArea() {
+		if (this.textArea && this.hiddenDiv) {
+			this.textArea.value = '';
+			this.hiddenDiv.textContent = '';
+			this.textArea.style.height = '42px';
+			this.setComponentSize();
+		}
+	}
 
-  lowNSFWFilter() {
-    return (
-      <div>
-        <ShowIf show={this.props.post['is_nsfw'] && !this.props.showAll}>
-          <div className="curtain_pos-mod">
-            <p className="title_pos-mod">NSFW content</p>
-            <p className="message_pos-mod">This content is for adults only. Not recommended for children or sensitive individuals.</p>
-            <button className="btn btn-index"
-                    onClick={() => this.props.setPostModalOptions({showAll: true})}
-            >Show me
-            </button>
-          </div>
-        </ShowIf>
-        <ShowIf show={this.props.post['is_low_rated'] && !this.props.showAll && !this.props.post['is_nsfw']}>
-          <div className="curtain_pos-mod">
-            <p className="title_pos-mod">Low rated content</p>
-            <p className="message_pos-mod">This content is hidden due to low ratings.</p>
-            <button className="btn btn-index"
-                    onClick={() => this.props.setPostModalOptions({showAll: true})}
-            >Show me
-            </button>
-          </div>
-        </ShowIf>
-      </div>
-    )
-  }
+	lowNSFWFilter() {
+		return (
+			<div>
+				<ShowIf show={this.props.post['is_nsfw'] && !this.props.showAll}>
+					<div className="curtain_pos-mod">
+						<p className="title_pos-mod">NSFW content</p>
+						<p className="message_pos-mod">This content is for adults only. Not recommended for children or sensitive
+							individuals.</p>
+						<button className="btn btn-index"
+										onClick={() => this.props.setPostModalOptions({showAll: true})}
+						>Show me
+						</button>
+					</div>
+				</ShowIf>
+				<ShowIf show={this.props.post['is_low_rated'] && !this.props.showAll && !this.props.post['is_nsfw']}>
+					<div className="curtain_pos-mod">
+						<p className="title_pos-mod">Low rated content</p>
+						<p className="message_pos-mod">This content is hidden due to low ratings.</p>
+						<button className="btn btn-index"
+										onClick={() => this.props.setPostModalOptions({showAll: true})}
+						>Show me
+						</button>
+					</div>
+				</ShowIf>
+			</div>
+		)
+	}
 
-  renderImage() {
-    return (
-      <div className="image-container_pos-mod"
-           style={this.props.style.imgCont}
-      >
-        {this.lowNSFWFilter()}
-        <button className="btn btn-default btn-xs"
-                onClick={() => this.props.copyToClipboard(
-                    document.location.origin + '/post' + this.props.post.url.replace(/\/[\w-.]+/, ''),
-                )}>Copy link
-        </button>
-        <ShowIf show={!this.props.style.isFullScreen && !this.props.fullScreenMode && !this.props.singlePost}>
-            <div className="full-screen-button_pos-mod"
-                 onClick={this.setFullScreen.bind(this, true)}
-            >
-                <img className="img-full-screen" src="/images/shape.svg" alt="open full screen"/>
-            </div>
-        </ShowIf>
-        <img src={this.props.imgUrl || Constants.NO_IMAGE}
-             alt={this.props.post.title}
-             style={this.props.style.image}
-             ref={ref => this.image = ref}
-             onLoad={this.imageLoaded.bind(this)}
-             onError={this.loadImgError.bind(this)}
-             onDoubleClick={this.setFullScreen.bind(this, !this.props.fullScreenMode)}
-        />
-        <ShowIf show={!this.image || !this.image.complete}>
-          <div className="before-load-curtain_pos-mod">
-            <LoadingSpinner/>
-          </div>
-        </ShowIf>
-        <ShowIf show={this.image && this.image.complete && !this.image.naturalWidth}>
-          <div className="before-load-curtain_pos-mod">
-            <p className="title_pos-mod">Sorry, image isn't found.</p>
-          </div>
-        </ShowIf>
-      </div>
-    );
-  }
+	renderImage() {
+		return (
+			<div className="image-container_pos-mod"
+					 style={this.props.style.imgCont}
+			>
+				{this.lowNSFWFilter()}
+				<button className="btn btn-default btn-xs"
+								onClick={() => this.props.copyToClipboard(
+									document.location.origin + '/post' + this.props.post.url.replace(/\/[\w-.]+/, ''),
+								)}>Copy link
+				</button>
+				<ShowIf show={!this.props.style.isFullScreen && !this.props.fullScreenMode && !this.props.singlePost}>
+					<div className="full-screen-button_pos-mod"
+							 onClick={this.setFullScreen.bind(this, true)}
+					>
+						<img className="img-full-screen" src="/images/shape.svg" alt="open full screen"/>
+					</div>
+				</ShowIf>
+				<img src={this.props.imgUrl || Constants.NO_IMAGE}
+						 alt={this.props.post.title}
+						 style={this.props.style.image}
+						 ref={ref => this.image = ref}
+						 onLoad={this.imageLoaded.bind(this)}
+						 onError={this.loadImgError.bind(this)}
+						 onDoubleClick={this.setFullScreen.bind(this, !this.props.fullScreenMode)}
+				/>
+				<ShowIf show={!this.image || !this.image.complete}>
+					<div className="before-load-curtain_pos-mod">
+						<LoadingSpinner/>
+					</div>
+				</ShowIf>
+				<ShowIf show={this.image && this.image.complete && !this.image.naturalWidth}>
+					<div className="before-load-curtain_pos-mod">
+						<p className="title_pos-mod">Sorry, image isn't found.</p>
+					</div>
+				</ShowIf>
+			</div>
+		);
+	}
 
   renderFullScreenImg() {
     return (
@@ -292,25 +295,25 @@ class PostModal extends React.Component {
       )
   }
 
-  showFSNavigation() {
-    clearTimeout(this.props.timeoutID);
-    let timeoutID = setTimeout( () => {
-      this.props.setFSNavigation(false, null);
-    }, 6000);
-    this.props.setFSNavigation(true, timeoutID);
-  }
+	showFSNavigation() {
+		clearTimeout(this.props.timeoutID);
+		let timeoutID = setTimeout(() => {
+			this.props.setFSNavigation(false, null);
+		}, 6000);
+		this.props.setFSNavigation(true, timeoutID);
+	}
 
-  fsRightLeft(isOpen) {
-    if (isOpen) {
-      window.addEventListener('keydown', this.fsCheckButtons);
-    } else {
-      window.removeEventListener('keydown', this.fsCheckButtons);
-    }
-  }
+	fsRightLeft(isOpen) {
+		if (isOpen) {
+			window.addEventListener('keydown', this.fsCheckButtons);
+		} else {
+			window.removeEventListener('keydown', this.fsCheckButtons);
+		}
+	}
 
-  fsCheckButtons(e) {
-    if (e.keyCode !== 37 && e.keyCode !== 39) this.showFSNavigation();
-  }
+	fsCheckButtons(e) {
+		if (e.keyCode !== 37 && e.keyCode !== 39) this.showFSNavigation();
+	}
 
   closeFromFullScreen(isOpen) {
     this.setFullScreen(isOpen);
@@ -338,102 +341,102 @@ class PostModal extends React.Component {
     this.props.setFullScreen(isOpen, timeoutID);
   }
 
-  fsNavMouseEnter() {
-    clearTimeout(this.props.timeoutID);
-    window.removeEventListener('mousemove', this.showFSNavigation);
-    this.fsRightLeft();
-    this.props.setFSNavigation(true, null);
-  }
+	fsNavMouseEnter() {
+		clearTimeout(this.props.timeoutID);
+		window.removeEventListener('mousemove', this.showFSNavigation);
+		this.fsRightLeft();
+		this.props.setFSNavigation(true, null);
+	}
 
-  fsNavMouseLeave() {
-    window.addEventListener('mousemove', this.showFSNavigation);
-    this.fsRightLeft(true);
-  }
+	fsNavMouseLeave() {
+		window.addEventListener('mousemove', this.showFSNavigation);
+		this.fsRightLeft(true);
+	}
 
-  renderDescription() {
-    let forceOpen = false;
-    let descriptionStart = this.props.post.description.replace(/(<\w+>)+/, '');
-    if (descriptionStart.replace(/\n[\w\W]+/, '').length < 140) {
-      forceOpen = true;
-    }
+	renderDescription() {
+		let forceOpen = false;
+		let descriptionStart = this.props.post.description.replace(/(<\w+>)+/, '');
+		if (descriptionStart.replace(/\n[\w\W]+/, '').length < 140) {
+			forceOpen = true;
+		}
 
-    return (
-      <div className="text-description_pos-menu">
-        <p>{UserLinkFunc(true, this.props.post.title)}</p>
-        <div
-          className={(this.props.isDescriptionOpened || forceOpen)
-            ? 'collapse-opened'
-            : 'collapse-closed'}
-        >
-          {UserLinkFunc(false, this.props.post.description)}
-          <Tags tags={this.props.post.tags}/>
-          <a className="lnk-more" onClick={this.openDescription.bind(this)}>Show more</a>
-        </div>
-      </div>);
-  }
+		return (
+			<div className="text-description_pos-menu">
+				<p>{UserLinkFunc(true, this.props.post.title)}</p>
+				<div
+					className={(this.props.isDescriptionOpened || forceOpen)
+						? 'collapse-opened'
+						: 'collapse-closed'}
+				>
+					{UserLinkFunc(false, this.props.post.description)}
+					<Tags tags={this.props.post.tags}/>
+					<a className="lnk-more" onClick={this.openDescription.bind(this)}>Show more</a>
+				</div>
+			</div>);
+	}
 
-  imageLoaded() {
-    this.setComponentSize();
-  }
+	imageLoaded() {
+		this.setComponentSize();
+	}
 
-  loadImgError() {
-    this.setComponentSize();
-  }
+	loadImgError() {
+		this.setComponentSize();
+	}
 
-  changeText() {
-    this.hiddenDiv.textContent = this.textArea ? this.textArea.value + '\n' : '';
+	changeText() {
+		this.hiddenDiv.textContent = this.textArea ? this.textArea.value + '\n' : '';
 
-    let label = '';
-    let sendHover = '';
-    if (this.textArea.value) {
-      label = 'focused_pos-mod';
-      sendHover = 'btn-hover_pos-mod';
-    }
-    if (this.hiddenDiv.clientHeight >= this.props.style.textareaMarginTop) {
-      return;
-    }
-    let delta = this.props.addCommentHeight - this.hiddenDiv.clientHeight || 0;
-    if (!this.props.addCommentHeight || delta >= 5 || delta <= -5 || this.textArea.value.length <= 1) {
-      this.props.setPostModalOptions({
-        addCommentHeight: this.hiddenDiv.clientHeight,
-        textareaWidth: this.textArea.clientWidth,
-        label,
-        sendHover,
-      });
-    }
-  }
+		let label = '';
+		let sendHover = '';
+		if (this.textArea.value) {
+			label = 'focused_pos-mod';
+			sendHover = 'btn-hover_pos-mod';
+		}
+		if (this.hiddenDiv.clientHeight >= this.props.style.textareaMarginTop) {
+			return;
+		}
+		let delta = this.props.addCommentHeight - this.hiddenDiv.clientHeight || 0;
+		if (!this.props.addCommentHeight || delta >= 5 || delta <= -5 || this.textArea.value.length <= 1) {
+			this.props.setPostModalOptions({
+				addCommentHeight: this.hiddenDiv.clientHeight,
+				textareaWidth: this.textArea.clientWidth,
+				label,
+				sendHover,
+			});
+		}
+	}
 
-  sendComment(e) {
-    e.preventDefault();
-    let comment = this.textArea.value;
-    if (comment === '') return false;
-    this.props.sendComment(this.props.currentIndex, comment);
-  }
+	sendComment(e) {
+		e.preventDefault();
+		let comment = this.textArea.value;
+		if (comment === '') return false;
+		this.props.sendComment(this.props.currentIndex, comment);
+	}
 
-  longTapPLInd() {
-    if (this.props.post.vote) {
-      return;
-    }
-    if (!this.props.authUser) {
-      jqApp.pushMessage.open(Constants.VOTE_ACTION_WHEN_NOT_AUTH);
-      return;
-    }
-    if (this.props.needsCommentFormLoader) {
-      jqApp.pushMessage.open(Constants.WAIT_FINISHING_TRANSACTION);
-      return;
-    }
-    if (this.props.post.isPLOpen) {
-      return;
-    }
-    let plTimeout = setTimeout(() => {
-      this.props.setPowerLikeInd(this.props.currentIndex, true, 'modal');
-    }, 700);
-    this.props.setPowerLikeTimeout(this.props.currentIndex, plTimeout);
-  }
+	longTapPLInd() {
+		if (this.props.post.vote) {
+			return;
+		}
+		if (!this.props.authUser) {
+			jqApp.pushMessage.open(Constants.VOTE_ACTION_WHEN_NOT_AUTH);
+			return;
+		}
+		if (this.props.needsCommentFormLoader) {
+			jqApp.pushMessage.open(Constants.WAIT_FINISHING_TRANSACTION);
+			return;
+		}
+		if (this.props.post.isPLOpen) {
+			return;
+		}
+		let plTimeout = setTimeout(() => {
+			this.props.setPowerLikeInd(this.props.currentIndex, true, 'modal');
+		}, 700);
+		this.props.setPowerLikeTimeout(this.props.currentIndex, plTimeout);
+	}
 
-  breakLongTapPLInd() {
-    clearTimeout(this.props.post.plTimeout);
-  }
+	breakLongTapPLInd() {
+		clearTimeout(this.props.post.plTimeout);
+	}
 
   render() {
     const authorLink = `/@${this.props.post.author}`;
@@ -562,45 +565,45 @@ class PostModal extends React.Component {
                 </div>
               </div>
 
-              <div className="comment-container_pos-mod">
-                <ScrollViewComponent
-                  ref={(ref) => this.scrollView = ref}
-                  wrapperModifier="list-scroll_pos-mod"
-                  scrollViewModifier="list-scroll-view_pos-mod"
-                  autoHeight={window.innerWidth < Constants.DISPLAY.DESK_BREAKPOINT}
-                  autoHeightMax={15000}
-                  autoHeightMin={100}
-                  autoHide={true}
-                  isMobile={this.props.style.isMobile}
-                >
-                  {this.renderDescription()}
-                  <ShowIf show={this.props.style.isMobile}>
-                    {commentInput}
-                  </ShowIf>
-                  <Comments
-                    key="comments"
-                    item={this.props.post}
-                    newComment={this.props.newComment}
-                    replyUser={this.textArea}
-                  />
-                </ScrollViewComponent>
-              </div>
-              <ShowIf show={!this.props.style.isMobile}>
-                {commentInput}
-              </ShowIf>
-            </div>
-        </div>
-        <ShowIf show={this.props.fullScreenMode}>
-          {this.renderFullScreenImg()}
-        </ShowIf>
-      </div>
-    );
-  }
+						<div className="comment-container_pos-mod">
+							<ScrollViewComponent
+								ref={(ref) => this.scrollView = ref}
+								wrapperModifier="list-scroll_pos-mod"
+								scrollViewModifier="list-scroll-view_pos-mod"
+								autoHeight={window.innerWidth < Constants.DISPLAY.DESK_BREAKPOINT}
+								autoHeightMax={15000}
+								autoHeightMin={100}
+								autoHide={true}
+								isMobile={this.props.style.isMobile}
+							>
+								{this.renderDescription()}
+								<ShowIf show={this.props.style.isMobile}>
+									{commentInput}
+								</ShowIf>
+								<Comments
+									key="comments"
+									item={this.props.post}
+									newComment={this.props.newComment}
+									replyUser={this.textArea}
+								/>
+							</ScrollViewComponent>
+						</div>
+						<ShowIf show={!this.props.style.isMobile}>
+							{commentInput}
+						</ShowIf>
+					</div>
+				</div>
+				<ShowIf show={this.props.fullScreenMode}>
+					{this.renderFullScreenImg()}
+				</ShowIf>
+			</div>
+		);
+	}
 
-  setComponentSize() {
-    const DESC_WIDTH = 380;
-    const MIN_HEIGHT = 440;
-    const MAX_WIDTH_FULL_SCREEN = 815;
+	setComponentSize() {
+		const DESC_WIDTH = 380;
+		const MIN_HEIGHT = 440;
+		const MAX_WIDTH_FULL_SCREEN = 815;
 
     const docWidth = document.documentElement.clientWidth;
     console.log(docWidth);
@@ -610,134 +613,134 @@ class PostModal extends React.Component {
     const isMobile = docWidth < MAX_WIDTH_FULL_SCREEN;
     const isFullScreen = docWidth < 1025;
 
-    const container = {};
-    container.width = docWidth;
-    container.height = '100%';
+		const container = {};
+		container.width = docWidth;
+		container.height = '100%';
 
-    const textareaMarginTop = this.descPosMod ? this.descPosMod.clientHeight - 220 : null;
+		const textareaMarginTop = this.descPosMod ? this.descPosMod.clientHeight - 220 : null;
 
-    const image = {};
-    if (this.image) {
-      image.width = this.image.naturalWidth;
-      image.height = this.image.naturalHeight ? this.image.naturalHeight : docHeight * 0.4;
-    }
-    const imgCont = {};
-    imgCont.width = '100%';
-    const headerCont = {};
-    if (isMobile) {
-      headerCont.width = '100%';
-    }
+		const image = {};
+		if (this.image) {
+			image.width = this.image.naturalWidth;
+			image.height = this.image.naturalHeight ? this.image.naturalHeight : docHeight * 0.4;
+		}
+		const imgCont = {};
+		imgCont.width = '100%';
+		const headerCont = {};
+		if (isMobile) {
+			headerCont.width = '100%';
+		}
 
-    const description = {};
-    description.width = headerCont.width;
+		const description = {};
+		description.width = headerCont.width;
 
     if (docWidth > MAX_WIDTH_FULL_SCREEN) {
       image.width = image.width ? image.width : utils.getLess((docWidth - DESC_WIDTH) * 0.75, PREFERRED_IMG_WIDTH);
       container.height = utils.getMore(docHeight * 0.9, MIN_HEIGHT);
 
-      if (image.height > container.height) {
-        image.width = image.width * container.height / image.height;
-        image.height = container.height;
-      }
+			if (image.height > container.height) {
+				image.width = image.width * container.height / image.height;
+				image.height = container.height;
+			}
 
-      if (image.width > MAX_IMG_WIDTH) {
-        image.height = image.height * MAX_IMG_WIDTH / image.width;
-        image.width = MAX_IMG_WIDTH;
-      }
+			if (image.width > MAX_IMG_WIDTH) {
+				image.height = image.height * MAX_IMG_WIDTH / image.width;
+				image.width = MAX_IMG_WIDTH;
+			}
 
-      container.width = image.width + DESC_WIDTH;
-      imgCont.width = image.width;
-      headerCont.width = DESC_WIDTH;
+			container.width = image.width + DESC_WIDTH;
+			imgCont.width = image.width;
+			headerCont.width = DESC_WIDTH;
 
-      container.height = utils.getMore(image.height, MIN_HEIGHT);
-    } else {
-      image.width = utils.getLess(image.width, document.documentElement.clientWidth);
-      image.width = image.width ? image.width : docWidth;
-      image.height = image.height * image.width / this.image.naturalWidth;
-    }
+			container.height = utils.getMore(image.height, MIN_HEIGHT);
+		} else {
+			image.width = utils.getLess(image.width, document.documentElement.clientWidth);
+			image.width = image.width ? image.width : docWidth;
+			image.height = image.height * image.width / this.image.naturalWidth;
+		}
 
-    let style = {
-      container,
-      image,
-      imgCont,
-      headerCont,
-      description,
-      textareaMarginTop,
-      isMobile,
-      isFullScreen
-    };
-    if (JSON.stringify(style) !== JSON.stringify(this.props.style)) {
-      this.props.setPostModalOptions({style});
-    }
-    if (isFullScreen && this.props.fullScreenMode) {
-      this.props.setFullScreen(false);
-    }
-  }
+		let style = {
+			container,
+			image,
+			imgCont,
+			headerCont,
+			description,
+			textareaMarginTop,
+			isMobile,
+			isFullScreen
+		};
+		if (JSON.stringify(style) !== JSON.stringify(this.props.style)) {
+			this.props.setPostModalOptions({style});
+		}
+		if (isFullScreen && this.props.fullScreenMode) {
+			this.props.setFullScreen(false);
+		}
+	}
 }
 
 const mapStateToProps = (state) => {
-  let currentIndex = state.postModal.currentIndex;
-  let post = state.posts[currentIndex];
-  if (post) {
-    let media = post.media[0];
-    let imgUrl = media.url;
-    if (document.documentElement.clientWidth <= 1024 && media['thumbnails'] && media['thumbnails'][1024]) {
-      imgUrl = media['thumbnails'][1024];
-    }
-    let postsList = state.postsList[state.postModal.point];
-    return {
-      postsList,
-      imgUrl,
-      post,
-      ...state.postModal,
-      newPostsLoading: postsList.loading,
-      isUserAuth: state.auth.user && state.auth.postingKey,
-      authUser: state.auth.user,
-      firstPost: postsList.posts[0] === currentIndex,
-      lastPost: postsList.offset === currentIndex
-    };
-  }
+	let currentIndex = state.postModal.currentIndex;
+	let post = state.posts[currentIndex];
+	if (post) {
+		let media = post.media[0];
+		let imgUrl = media.url;
+		if (document.documentElement.clientWidth <= 1024 && media['thumbnails'] && media['thumbnails'][1024]) {
+			imgUrl = media['thumbnails'][1024];
+		}
+		let postsList = state.postsList[state.postModal.point];
+		return {
+			postsList,
+			imgUrl,
+			post,
+			...state.postModal,
+			newPostsLoading: postsList.loading,
+			isUserAuth: state.auth.user && state.auth.postingKey,
+			authUser: state.auth.user,
+			firstPost: postsList.posts[0] === currentIndex,
+			lastPost: postsList.offset === currentIndex
+		};
+	}
 };
 
 const mapDispatchToProps = (dispatch) => {
-  return {
-    setPostModalOptions: options => {
-      dispatch(setPostModalOptions(options));
-    },
-    closeModal: (point) => {
-      dispatch(closeModal(point));
-    },
-    sendComment: (index, comment) => {
-      dispatch(sendComment(index, comment));
-    },
-    copyToClipboard: (text) => {
-      dispatch(copyToClipboard(text));
-    },
-    next: (index) => {
-      dispatch(nextPostModal(index));
-    },
-    previous: (index) => {
-      dispatch(previousPostModal(index));
-    },
-    toggleVote: (postIndex) => {
-      dispatch(toggleVote(postIndex));
-    },
-    setFullScreen: (isOpen, timeoutID) => {
-      dispatch(setFullScreen(isOpen, timeoutID));
-    },
-    setFSNavigation: (isVisible, timeoutID) => {
-      dispatch(setFSNavigation(isVisible, timeoutID));
-    },
-    postOffset: (offset) => {
-      dispatch(postOffset(offset));
-    },
-    setPowerLikeInd: (index, isOpen, place) => {
-      dispatch(setPowerLikeInd(index, isOpen, place));
-    },
-    setPowerLikeTimeout: (index, plTimeout) => {
-      dispatch(setPowerLikeTimeout(index, plTimeout));
-    }
-  };
+	return {
+		setPostModalOptions: options => {
+			dispatch(setPostModalOptions(options));
+		},
+		closeModal: (point) => {
+			dispatch(closeModal(point));
+		},
+		sendComment: (index, comment) => {
+			dispatch(sendComment(index, comment));
+		},
+		copyToClipboard: (text) => {
+			dispatch(copyToClipboard(text));
+		},
+		next: (index) => {
+			dispatch(nextPostModal(index));
+		},
+		previous: (index) => {
+			dispatch(previousPostModal(index));
+		},
+		toggleVote: (postIndex) => {
+			dispatch(toggleVote(postIndex));
+		},
+		setFullScreen: (isOpen, timeoutID) => {
+			dispatch(setFullScreen(isOpen, timeoutID));
+		},
+		setFSNavigation: (isVisible, timeoutID) => {
+			dispatch(setFSNavigation(isVisible, timeoutID));
+		},
+		postOffset: (offset) => {
+			dispatch(postOffset(offset));
+		},
+		setPowerLikeInd: (index, isOpen, place) => {
+			dispatch(setPowerLikeInd(index, isOpen, place));
+		},
+		setPowerLikeTimeout: (index, plTimeout) => {
+			dispatch(setPowerLikeTimeout(index, plTimeout));
+		}
+	};
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(PostModal);
