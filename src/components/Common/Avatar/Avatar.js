@@ -10,6 +10,10 @@ class Avatar extends React.Component {
 		style: {}
 	};
 
+	constructor(props) {
+		super(props);
+	}
+
 	componentWillReceiveProps(nextProps) {
 		this.powerIndicator(nextProps.votingPower);
 	}

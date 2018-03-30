@@ -2,13 +2,14 @@ import React from 'react';
 import {getSettings, updateSettings, updateSettingsInStore} from '../../actions/settings';
 import {connect} from 'react-redux';
 import Constants from '../../common/constants';
-import {documentTitle} from '../DocumentTitle';
+import {documentTitle} from '../../utils/documentTitle';
 import jqApp from "../../libs/app.min";
 import {goBack} from "react-router-redux";
 
 class Settings extends React.Component {
-	constructor() {
-		super();
+
+	constructor(props) {
+		super(props);
 
 		this.state = {
 			settings: {

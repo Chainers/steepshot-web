@@ -14,7 +14,7 @@ class Timer extends React.Component {
 	};
 
 	constructor(props) {
-		super();
+		super(props);
 		this.state = {
 			waitingTime: props.waitingTime * MILISECONDS_IN_SECOND,
 			targetTime: new Date().getTime() + props.waitingTime * MILISECONDS_IN_SECOND,

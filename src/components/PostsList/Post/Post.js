@@ -25,6 +25,10 @@ class Post extends React.Component {
 		clearPostHeader: false,
 	};
 
+	constructor(props) {
+		super(props);
+	}
+
 	openPostModal() {
 		let modalOption = {
 			body: (<PostModal/>)

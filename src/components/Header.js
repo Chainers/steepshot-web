@@ -11,7 +11,7 @@ import {push} from "react-router-redux";
 
 class Header extends React.Component {
 	constructor(props) {
-		super();
+		super(props);
 		if (!global.isServerSide) {
 			props.setUserAuth();
 		}

@@ -12,6 +12,10 @@ class TabsBar extends React.Component {
 		showLoader: true
 	};
 
+	constructor(props) {
+		super(props);
+	}
+
 	componentDidUpdate() {
 		let navItems = [];
 		this.props.children.forEach((item, index) => {

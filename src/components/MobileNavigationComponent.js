@@ -6,6 +6,10 @@ import jqApp from "../libs/app.min";
 
 class MobileNavigationComponent extends React.Component {
 
+	constructor(props) {
+		super(props);
+	}
+
 	componentDidMount() {
 		setTimeout(() => {
 			jqApp.mobileMenu.init();

@@ -7,11 +7,15 @@ import './likes.css';
 
 class Likes extends React.Component {
 
+	constructor(props) {
+		super(props);
+	}
+
 	openLikesModal() {
 		let modalOption = {
 			body: (<LikesFlagsList postIndex={this.props.postIndex}/>),
 		};
-		this.props.openModal('LikesFlagsModal', modalOption);
+		this.props.openModal('LikesFlagsList', modalOption);
 	}
 
 	render() {

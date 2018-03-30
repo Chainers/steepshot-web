@@ -10,8 +10,9 @@ const MARGIN_CONTAINER = 20;
 const HOR_CONTAINER_WIDTH = 220;
 
 class Menu extends React.Component {
-	constructor() {
-		super();
+
+	constructor(props) {
+		super(props);
 		this.getItems = this.getItems.bind(this);
 		this.getScreenProperty = this.getScreenProperty.bind(this);
 		this.resizeWindow = this.resizeWindow.bind(this);
@@ -97,6 +98,5 @@ class Menu extends React.Component {
 		);
 	}
 }
-
 
 export default Menu;

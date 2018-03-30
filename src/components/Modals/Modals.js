@@ -5,6 +5,10 @@ import {getBodyParams} from '../../actions/bodyParams';
 
 class Modals extends React.Component {
 
+	constructor(props) {
+		super(props);
+	}
+
 	checkOpSystem(nextProps) {
 		if (!!navigator.platform && /iPad|iPhone|iPod/.test(navigator.platform)) {
 			if (Object.keys(this.props.modals).length === 0 && Object.keys(nextProps.modals).length > 0) {

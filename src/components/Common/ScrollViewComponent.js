@@ -8,7 +8,7 @@ const MARGIN_COMMENTS_NOT_AUTH = '0px';
 
 class ScrollViewComponent extends React.Component {
 	constructor(props) {
-		super();
+		super(props);
 		this.state = {
 			...props
 		}

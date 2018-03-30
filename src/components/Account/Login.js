@@ -4,7 +4,7 @@ import {login} from '../../actions/auth';
 import {facebookLogin, githubLogin, googleLogin, twitterLogin, vkLogin} from '../../actions/oauth';
 import LoadingSpinner from '../LoadingSpinner';
 import Constants from '../../common/constants';
-import {documentTitle} from '../DocumentTitle';
+import {documentTitle} from '../../utils/documentTitle';
 import ShowIf from '../Common/ShowIf';
 import $ from 'jquery';
 import jqApp from "../../libs/app.min";
@@ -21,8 +21,8 @@ class Login extends React.Component {
 		return {};
 	}
 
-	constructor() {
-		super();
+	constructor(props) {
+		super(props);
 		this.state = {
 			userName: '',
 			postingKey: '',

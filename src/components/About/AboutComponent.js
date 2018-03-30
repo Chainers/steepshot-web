@@ -1,6 +1,6 @@
 import React from 'react';
 import HeadingLeadComponent from '../Atoms/HeadingLeadComponent';
-import {documentTitle} from '../DocumentTitle';
+import {documentTitle} from '../../utils/documentTitle';
 import {connect} from "react-redux";
 import {addMetaTags, getDefaultTags} from "../../actions/metaTags";
 import {withWrapper} from "create-react-server/wrapper";
@@ -13,6 +13,10 @@ class AboutComponent extends React.Component {
 		}
 		await store.dispatch(addMetaTags(getDefaultTags(req.hostname, location.pathname)));
 		return {};
+	}
+
+	constructor(props) {
+		super(props);
 	}
 
 	componentWillMount() {

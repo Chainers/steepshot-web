@@ -9,8 +9,7 @@ import jqApp from "../../libs/app.min";
 
 class VouteComponent extends React.Component {
 	constructor(props) {
-		super();
-
+		super(props);
 		this.state = {
 			index: props.index,
 			item: props.item,

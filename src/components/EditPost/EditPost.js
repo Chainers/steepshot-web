@@ -10,7 +10,7 @@ import ShowIf from "../Common/ShowIf";
 import utils from "../../utils/utils";
 import Constants from "../../common/constants";
 import LoadingSpinner from "../LoadingSpinner";
-import {documentTitle} from "../../components/DocumentTitle";
+import {documentTitle} from "../../utils/documentTitle";
 import './editPost.css';
 import Timer from "../Common/Timer/Timer";
 import {withWrapper} from "create-react-server/wrapper";
@@ -27,7 +27,7 @@ class EditPost extends React.Component {
 	}
 
 	constructor(props) {
-		super();
+		super(props);
 		this.setImageContainerSize = this.setImageContainerSize.bind(this);
 		props.setInitDataForEditPost(props.username, props.postId);
 	}
