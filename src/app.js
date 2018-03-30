@@ -14,11 +14,16 @@ export default ({state, props}) => {
 	const store = configureStore(state, history);
 	return (
 		<Provider store={store}>
-			<ConnectedRouter history={history}>
-				<WrapperProvider initialProps={props}>
+			{global.isServerSide ?
+				(<WrapperProvider initialProps={props}>
 					{getRoutes(store)}
-				</WrapperProvider>
-			</ConnectedRouter>
+				</WrapperProvider>)
+				:
+				(<ConnectedRouter history={history}>
+					<WrapperProvider initialProps={props}>
+						{getRoutes(store)}
+					</WrapperProvider>
+				</ConnectedRouter>)}
 		</Provider>
 	);
 };
