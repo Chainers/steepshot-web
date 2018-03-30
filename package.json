@@ -41,7 +41,7 @@
     "react-resize-detector": "^2.2.0",
     "react-router-dom": "^4.2.2",
     "react-router-redux": "^5.0.0-alpha.9",
-    "react-share": "^2.0.0",
+    "react-share": "^2.1.0",
     "redux": "^3.7.2",
     "redux-logger": "^3.0.6",
     "redux-promise": "^0.5.3",
@@ -53,7 +53,7 @@
   },
   "devDependencies": {
     "babel-plugin-transform-ensure-ignore": "^0.1.0",
-    "babel-preset-env": "^1.6.0",
+    "babel-preset-env": "^ 1.6.0",
     "linklocal": "^2.8.1",
     "react-scripts": "^1.0.14"
   }

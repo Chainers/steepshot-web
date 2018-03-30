@@ -242,7 +242,7 @@ class PostModal extends React.Component {
             </div>
           </ShowIf>
         </div>
-        <ShowIf show={true}>
+        <ShowIf show={this.props.fullScreenNavigation}>
           <div>
             <ShowIf show={!this.props.firstPost}>
               <div className="arrow-left-full-screen_post-mod"
@@ -259,12 +259,13 @@ class PostModal extends React.Component {
               />
             </ShowIf>
             <ShowIf show={this.props.newPostsLoading}>
-              <div className="arrow-right-full-screen_post-mod"
+              <div className="loader-right-full-screen_post-mod"
                    onClick={this.nextPost.bind(this)}
                    onMouseEnter={this.fsNavMouseEnter.bind(this)}
                    onMouseLeave={this.fsNavMouseLeave.bind(this)}
               >
-                <LoadingSpinner style={{position: 'absolute', top: '50%', transform: 'translateY(-50%)', height: 38}}
+                <LoadingSpinner style={{position: 'absolute', top: '50%', left: '50%',
+                    transform: 'translate(-50%, -50%)', height: 38}}
                                 loaderClass="new-posts-spinner_post-mod"
                 />
               </div>
@@ -490,8 +491,9 @@ class PostModal extends React.Component {
               <div className="arrow-right-full-screen_post-mod" onClick={this.nextPost.bind(this)}/>
             </ShowIf>
             <ShowIf show={this.props.newPostsLoading}>
-              <div className="arrow-right-full-screen_post-mod" onClick={this.nextPost.bind(this)}>
-                <LoadingSpinner style={{position: 'absolute', top: '50%', transform: 'translateY(-50%)', width: 35, height: 35}}
+              <div className="loader-right-full-screen_post-mod" onClick={this.nextPost.bind(this)}>
+                <LoadingSpinner style={{position: 'absolute', top: '50%', left: '50%',
+                    transform: 'translate(-50%, -53%)', width: 35, height: 35}}
                                 loaderClass="new-posts-spinner_post-mod"
                 />
               </div>
@@ -601,14 +603,18 @@ class PostModal extends React.Component {
 	}
 
 	setComponentSize() {
-		const DESC_WIDTH = 380;
-		const MIN_HEIGHT = 440;
-		const MAX_WIDTH_FULL_SCREEN = 815;
+    const DESC_WIDTH = 380;
+    const MIN_HEIGHT = 440;
+    const MAX_WIDTH_FULL_SCREEN = 815;
+
+    let sideMargin = 0.75;
 
     const docWidth = document.documentElement.clientWidth;
-    console.log(docWidth);
+    if (docWidth < 1080) {
+        sideMargin = 0.6;
+    }
     const docHeight = document.documentElement.clientHeight;
-    const MAX_IMG_WIDTH = (docWidth - DESC_WIDTH) * 0.75;
+    const MAX_IMG_WIDTH = (docWidth - DESC_WIDTH) * sideMargin;
     const PREFERRED_IMG_WIDTH = 640;
     const isMobile = docWidth < MAX_WIDTH_FULL_SCREEN;
     const isFullScreen = docWidth < 1025;
@@ -635,7 +641,7 @@ class PostModal extends React.Component {
 		description.width = headerCont.width;
 
     if (docWidth > MAX_WIDTH_FULL_SCREEN) {
-      image.width = image.width ? image.width : utils.getLess((docWidth - DESC_WIDTH) * 0.75, PREFERRED_IMG_WIDTH);
+      image.width = image.width ? image.width : utils.getLess((docWidth - DESC_WIDTH) * sideMargin, PREFERRED_IMG_WIDTH);
       container.height = utils.getMore(docHeight * 0.9, MIN_HEIGHT);
 
 			if (image.height > container.height) {
