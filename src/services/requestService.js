@@ -7,7 +7,6 @@ class RequestService extends BaseRequestService {
 		Array.prototype.map.call(arguments, (optionsPart) => {
 			Object.assign(newOptions, optionsPart)
 		});
-		console.log(newOptions);
 		return this.convertOptionsToRequestString(newOptions);
 	}
 

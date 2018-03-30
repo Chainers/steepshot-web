@@ -227,7 +227,6 @@ class UserProfile extends React.Component {
 
 const mapStateToProps = (state) => {
 	let postsInfo = state.postsList[Object.keys(state.postsList)[5]];
-	console.log(state.auth.settings);
 	return {
 		pathname: state.router.location.pathname,
 		user: state.auth.user,
