@@ -2,11 +2,11 @@ import React from 'react';
 
 export function UserLinkFunc(bool, fromState) {
 	let state = null;
-	if (bool != undefined) {
+	if (bool !== undefined) {
 		if (bool) {
 			state = fromState;
 		} else {
-			let descriptionStart = fromState.replace(/(<[\/\w]+>)+/g, '');
+			let descriptionStart = fromState.replace(/(<[/\w]+>)+/g, '');
 			let detectBot = descriptionStart.replace(/(\[)?(!)?\[[\w\W]+/g, '');
 			state = detectBot;
 		}

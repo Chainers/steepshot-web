@@ -393,12 +393,13 @@ function _sendToBlockChain(operation, prepareData, beneficiaries) {
 						reject(new Error('You can only create posts 5 minutes after the previous one.'));
 						return;
 					case 4100000:
-						if (err.data.name === 'plugin_exception' && err.data.stack[0].format === 'steem bandwidth limit exceeded: ' +
-							'Steem bandwidth limit exceeded. Please wait to transact or power up STEEM.' || err.data.stack[0].format
+						if ((err.data.name === 'plugin_exception' && err.data.stack[0].format === 'steem bandwidth limit exceeded: ' +
+							'Steem bandwidth limit exceeded. Please wait to transact or power up STEEM.') || err.data.stack[0].format
 							=== 'Account: ${account} bandwidth limit exceeded: Bandwidth limit exceeded. Please wait to transact or power up STEEM.') {
 							reject(new Error('Bandwidth limit exceeded.'));
-							return;
 						}
+						return;
+					default:
 						return;
 				}
 			}
@@ -431,7 +432,7 @@ function _preparePost(media, description, tags, permlink) {
 
 function _getPermLink() {
 	let today = new Date();
-	const permLink = 'web' + '-' + today.getFullYear() + '-' + today.getMonth() + '-' + today.getDay()
+	const permLink = 'web-' + today.getFullYear() + '-' + today.getMonth() + '-' + today.getDay()
 		+ '-' + today.getHours() + '-' + today.getMinutes() + '-' + today.getSeconds();
 	return permLink;
 }

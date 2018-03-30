@@ -71,7 +71,7 @@ class Header extends React.Component {
 				<div className="wrap-controls">
 					<Link to="/settings" className="btn-control settings"/>
 					<a onClick={this.handleLogout.bind(this)}
-						 className="btn-control logout"/>
+						 className="btn-control logout"> </a>
 				</div>
 			</div>;
 		}
@@ -151,7 +151,7 @@ class Header extends React.Component {
 							<div className="section search">
 								<div className="wrap-search">
 									<a href="#" className="lnk-search">Search</a>
-									<a href="#" className="lnk-search-mob"/>
+									<a href="#" className="lnk-search-mob"> </a>
 								</div>
 							</div>
 							{browse}

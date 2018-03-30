@@ -6771,7 +6771,7 @@ modal.modal-like .modal-header {
 .search-panel .wrap-btn .btn-close:before {
     content: ' ';
     font-size: 10px;
-    background-image: url('/images/sprite_svg1910.svg') -.2em -3.6em no-repeat;
+    background: url('/images/sprite_svg1910.svg') no-repeat -.2em -3.6em;
     background-size: 4.4em 47.2em;
     width: 1.6em;
     height: 1.6em;

@@ -143,7 +143,7 @@ class EditPost extends React.Component {
 										 maxHeight: this.props.rotate % 180 ? this.props.width : '100%',
 										 maxWidth: this.props.rotate % 180 ? '100%' : this.props.width,
 									 }}
-									 alt='image'
+									 alt='current'
 									 ref={ref => this.image = ref}
 									 onLoad={() => this.setImageContainerSize(0)}
 									 onError={this.props.setImageNotFound}

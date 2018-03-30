@@ -135,7 +135,7 @@ class Post extends React.Component {
 									<p>Low rated content</p>
 								</div>
 							</ShowIf>
-							<a style={cardPhotoStyles} className="img" alt="User"/>
+							<a style={cardPhotoStyles} className="img" alt="User"> </a>
 						</div>
 						<div className="card-wrap">
 							<div className="card-controls">
