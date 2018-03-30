@@ -26,7 +26,7 @@ class UserProfile extends React.Component {
 	}
 
 	constructor(props) {
-		super();
+		super(props);
 
 		this.state = {
 			watcher: props.user,

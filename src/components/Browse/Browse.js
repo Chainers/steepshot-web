@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import TabsFilterComponent from '../Filters/TabsFilterComponent';
 import Constants from '../../common/constants';
 import TabsWrapper from '../Wrappers/TabsWrapper';
-import {documentTitle} from '../DocumentTitle';
+import {documentTitle} from '../../utils/documentTitle';
 import PostsList from '../PostsList/PostsList';
 import {withWrapper} from "create-react-server/wrapper";
 import {addMetaTags, getDefaultTags} from "../../actions/metaTags";
@@ -19,9 +19,8 @@ class Browse extends React.Component {
 		return {};
 	}
 
-
 	constructor(props) {
-		super();
+		super(props);
 
 		this.state = {
 			keys: [

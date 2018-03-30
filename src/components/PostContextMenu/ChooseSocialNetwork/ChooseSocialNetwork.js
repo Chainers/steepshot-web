@@ -17,6 +17,10 @@ import './ChooseSocialNetwork.css';
 
 class ChooseSocialNetwork extends React.Component {
 
+	constructor(props) {
+		super(props);
+	}
+
 	closeModal(e) {
 		e.stopPropagation();
 		this.props.closeModal();

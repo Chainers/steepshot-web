@@ -1,5 +1,5 @@
 import React from 'react'
-import {documentTitle} from './DocumentTitle';
+import {documentTitle} from '../utils/documentTitle';
 import {withWrapper} from "create-react-server/wrapper";
 import {addMetaTags, getDefaultTags} from "../actions/metaTags";
 
@@ -11,6 +11,10 @@ class NotFound extends React.Component {
 		}
 		await store.dispatch(addMetaTags(getDefaultTags(req.hostname, location.pathname)));
 		return {};
+	}
+
+	constructor(props) {
+		super(props);
 	}
 
 	componentDidMount() {

@@ -5,9 +5,9 @@ import {connect} from 'react-redux';
 import LoadingSpinner from '../LoadingSpinner';
 
 class Comments extends React.Component {
-	constructor(props) {
-		super();
 
+	constructor(props) {
+		super(props);
 		this.state = {
 			comments: [],
 			avatar: props.item.avatar,

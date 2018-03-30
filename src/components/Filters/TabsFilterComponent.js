@@ -3,7 +3,7 @@ import React from 'react';
 class TabsFilterComponent extends React.Component {
 
 	constructor(props) {
-		super();
+		super(props);
 		this.state = {
 			...props,
 			whereIs: false

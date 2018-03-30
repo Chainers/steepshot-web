@@ -4,6 +4,10 @@ import './editTags.css';
 
 class EditTags extends React.Component {
 
+	constructor(props) {
+		super(props);
+	}
+
 	onChange(event) {
 		let newValue = utils.cloneObject(event.target.value);
 		this.props.onChange(newValue);

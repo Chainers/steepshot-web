@@ -16,7 +16,7 @@ import {push} from 'react-router-redux';
 class PostContextMenu extends React.Component {
 
 	constructor(props) {
-		super();
+		super(props);
 		let buttonsOptions = this.setButtonsOptions(props);
 		this.state = {
 			showModal: false,

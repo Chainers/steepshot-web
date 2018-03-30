@@ -21,7 +21,7 @@ class TextInput extends React.Component {
 	};
 
 	constructor(props) {
-		super();
+		super(props);
 		const fontSize = props.smallFont ? 11 : 14;
 		const fontPadding = props.smallFont ? 7 : 9;
 		const lineHeight = fontSize + fontPadding;

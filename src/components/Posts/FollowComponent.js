@@ -5,8 +5,7 @@ import jqApp from "../../libs/app.min";
 
 class FollowComponent extends React.Component {
 	constructor(props) {
-		super();
-
+		super(props);
 		this.state = {
 			item: props.item,
 			follow: props.item ? props.item['has_followed'] !== 0 : false,

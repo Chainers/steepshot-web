@@ -8,6 +8,10 @@ class DelimitersWrapper extends React.Component {
 		hasDelimiter: true,
 	};
 
+	constructor(props) {
+		super(props);
+	}
+
 	render() {
 		let wrapperStyle = {
 			flexDirection: this.props.fullScreen ? 'column' : 'row',

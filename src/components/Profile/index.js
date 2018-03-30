@@ -3,6 +3,11 @@ import {connect} from 'react-redux';
 import UserProfile from '../UserProfile/profile';
 
 class Profile extends React.Component {
+
+	constructor(props) {
+		super(props);
+	}
+
 	render() {
 		if (global.isServerSide) {
 			return null;

@@ -3,8 +3,9 @@ import Delimiter from '../DelimitersWrapper/DelimitersWrapper';
 import './menuItem.css';
 
 class MenuItem extends React.Component {
-	constructor() {
-		super();
+
+	constructor(props) {
+		super(props);
 		this.state = {
 			mouseEnter: false
 		}

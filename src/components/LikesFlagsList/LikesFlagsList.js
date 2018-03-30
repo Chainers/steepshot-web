@@ -13,9 +13,10 @@ import Tab from "../Common/TabsBar/Tab/Tab";
 import utils from '../../utils/utils';
 import './likesFlagsList.css';
 
-class LikesFlagsModal extends React.Component {
-	constructor() {
-		super();
+class LikesFlagsList extends React.Component {
+
+	constructor(props) {
+		super(props);
 		this.updateBodyHeight = this.updateBodyHeight.bind(this);
 	}
 
@@ -92,7 +93,7 @@ class LikesFlagsModal extends React.Component {
 }
 
 const mapStateToProps = (state, props) => {
-	let point = `post/${LikesFlagsModal.permLink(state.posts[props.postIndex].url)}/voters`;
+	let point = `post/${LikesFlagsList.permLink(state.posts[props.postIndex].url)}/voters`;
 	let flags = state.usersList[point + 'JSON_OPTIONS:{"flags":1}'];
 	return {
 		flags,
@@ -105,7 +106,7 @@ const mapStateToProps = (state, props) => {
 const mapDispatchToProps = (dispatch) => {
 	return {
 		closeModal: () => {
-			dispatch(closeModal('LikesFlagsModal'));
+			dispatch(closeModal('LikesFlagsList'));
 		},
 		setBodyHeight: (preferredBodyHeight, fullBodyHeight) => {
 			dispatch(setLikesFlagsListBodyHeight(preferredBodyHeight, fullBodyHeight))
@@ -116,4 +117,4 @@ const mapDispatchToProps = (dispatch) => {
 	}
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(LikesFlagsModal);
+export default connect(mapStateToProps, mapDispatchToProps)(LikesFlagsList);

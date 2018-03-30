@@ -3,6 +3,10 @@ import './testing.css';
 
 class Testing extends React.Component {
 
+	constructor(props) {
+		super(props);
+	}
+	
 	render() {
 		if (global.isServerSide) {
 			return null;

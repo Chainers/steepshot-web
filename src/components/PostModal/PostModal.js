@@ -39,8 +39,8 @@ class PostModal extends React.Component {
 		showClose: true,
 	};
 
-	constructor() {
-		super();
+	constructor(props) {
+		super(props);
 		this.setComponentSize = this.setComponentSize.bind(this);
 		this.showFSNavigation = this.showFSNavigation.bind(this);
 		this.fsCheckButtons = this.fsCheckButtons.bind(this);

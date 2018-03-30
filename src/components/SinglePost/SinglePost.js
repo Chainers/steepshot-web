@@ -20,6 +20,10 @@ class SinglePost extends React.Component {
 		return {};
 	}
 
+	constructor(props) {
+		super(props);
+	}
+
 	componentDidMount() {
 		const urlObject = this.props.location.pathname.split('/');
 		let permlink = urlObject[urlObject.length - 1];

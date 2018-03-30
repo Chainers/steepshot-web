@@ -19,7 +19,7 @@ class PostsList extends React.Component {
 	};
 
 	constructor(props) {
-		super();
+		super(props);
 		let postsListOptions = {
 			point: props.point,
 			cancelPrevious: props.cancelPrevious,

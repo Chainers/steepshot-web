@@ -6,6 +6,10 @@ import jqApp from "../../../../libs/app.min";
 
 class Vote extends React.Component {
 
+	constructor(props) {
+		super(props);
+	}
+
 	toggleVote() {
 		if (this.props.commentLoader) {
 			jqApp.pushMessage.open(Constants.WAIT_FINISHING_TRANSACTION);

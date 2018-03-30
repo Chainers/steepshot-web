@@ -5,7 +5,7 @@ import Constants from '../../common/constants';
 import InfiniteScroll from 'react-infinite-scroller';
 import LoadingSpinner from '../LoadingSpinner';
 import {clearUsersList, getUsersList, initUsersList} from '../../actions/usersList';
-import {documentTitle} from '../DocumentTitle';
+import {documentTitle} from '../../utils/documentTitle';
 import User from "./User/User";
 import './usersList.css';
 
@@ -18,7 +18,7 @@ class UsersList extends React.Component {
 	};
 
 	constructor(props) {
-		super();
+		super(props);
 		props.clearUsersList(props.point);
 		let usersListOptions = UsersList.userListOptions(props);
 		props.initUsersList(usersListOptions);

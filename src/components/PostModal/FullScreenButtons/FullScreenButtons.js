@@ -5,6 +5,10 @@ import './fullScreenButtons.css';
 
 class FullScreenButtons extends React.Component {
 
+	constructor(props) {
+		super(props);
+	}
+
 	render() {
 		let like;
 		if (this.props.post.voteLoading) {

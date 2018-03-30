@@ -8,9 +8,9 @@ import Avatar from '../Common/Avatar/Avatar';
 import jqApp from "../../libs/app.min";
 
 class Comment extends React.Component {
-	constructor(props) {
-		super();
 
+	constructor(props) {
+		super(props);
 		this.state = {
 			item: props.item,
 			avatar: props.item.avatar

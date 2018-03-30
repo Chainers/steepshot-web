@@ -5,6 +5,10 @@ class ShowIf extends React.Component {
 		removeFromDom: true,
 	};
 
+	constructor(props) {
+		super(props);
+	}
+
 	render() {
 		if (this.props.removeFromDom && !this.props.show) {
 			return null;
