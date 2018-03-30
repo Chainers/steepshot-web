@@ -6,10 +6,6 @@ import jqApp from "../../../libs/app.min";
 
 class Clipboard extends React.Component {
 
-	constructor(props) {
-		super(props);
-	}
-
 	componentDidUpdate() {
 		try {
 			this.button.click();

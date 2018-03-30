@@ -8,10 +8,6 @@ import jqApp from "../../../../libs/app.min";
 
 class Flag extends React.Component {
 
-	constructor(props) {
-		super(props);
-	}
-	
 	toggleFlag() {
 		if (!this.props.isUserAuth) {
 			jqApp.pushMessage.open(Constants.VOTE_ACTION_WHEN_NOT_AUTH);

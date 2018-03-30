@@ -8,6 +8,7 @@ import {debounce} from 'lodash';
 import jqApp from "../../libs/app.min";
 
 class VouteComponent extends React.Component {
+
 	constructor(props) {
 		super(props);
 		this.state = {

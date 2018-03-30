@@ -11,10 +11,6 @@ import './plagiarismTracking.css';
 
 class PlagiarismTracking extends React.Component {
 
-	constructor(props) {
-		super(props);
-	}
-
 	renderImage() {
 		let image = {
 			background: `#f4f4f6 url('https://steepshot.org/ipfs/${this.props.data.ipfs}') center no-repeat`,

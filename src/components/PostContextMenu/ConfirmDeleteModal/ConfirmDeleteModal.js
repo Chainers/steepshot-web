@@ -3,10 +3,6 @@ import './ConfirmDeleteModal.css';
 
 class ConfirmDeleteModal extends React.Component {
 
-	constructor(props) {
-		super(props);
-	}
-
 	closeModal(e) {
 		e.stopPropagation();
 		this.props.closeModal();

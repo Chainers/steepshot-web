@@ -8,6 +8,7 @@ import './modal.css';
 const mobileSize = document.documentElement.clientWidth < 815;
 
 class Modal extends React.Component {
+
 	constructor(props) {
 		super(props);
 		this.resizeWindow = this.resizeWindow.bind(this);

@@ -10,7 +10,6 @@ class Settings extends React.Component {
 
 	constructor(props) {
 		super(props);
-
 		this.state = {
 			settings: {
 				[Constants.SETTINGS.show_low_rated]: false,

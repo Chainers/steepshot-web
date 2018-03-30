@@ -6,10 +6,6 @@ class Delimiter extends React.Component {
 		scale: '100%'
 	};
 	
-	constructor(props) {
-		super(props);
-	}
-
 	render() {
 		let wrapperStyle;
 		let delimiterStyle;

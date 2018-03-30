@@ -13,10 +13,6 @@ class NotFound extends React.Component {
 		return {};
 	}
 
-	constructor(props) {
-		super(props);
-	}
-
 	componentDidMount() {
 		documentTitle();
 	}

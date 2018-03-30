@@ -21,7 +21,6 @@ class Browse extends React.Component {
 
 	constructor(props) {
 		super(props);
-
 		this.state = {
 			keys: [
 				{label: Constants.POSTS_FILTERS.POSTS_HOT.label},

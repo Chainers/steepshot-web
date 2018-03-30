@@ -15,10 +15,6 @@ class AboutComponent extends React.Component {
 		return {};
 	}
 
-	constructor(props) {
-		super(props);
-	}
-
 	componentWillMount() {
 		documentTitle();
 	}

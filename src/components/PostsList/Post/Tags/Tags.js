@@ -4,10 +4,6 @@ import utils from '../../../../utils/utils';
 
 class Tags extends React.Component {
 
-	constructor(props) {
-		super(props);
-	}
-
 	checkFirst(str) {
 		if (str[0] === '#') return str.substring(1);
 		return str;

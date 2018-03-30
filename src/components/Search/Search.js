@@ -24,10 +24,6 @@ class Search extends React.Component {
 		return {};
 	}
 
-	constructor(props) {
-		super(props);
-	}
-
 	shouldComponentUpdate(nextProps) {
 		if (this.props.searchValue !== nextProps.searchValue) {
 			this.props.pageLoading('search');

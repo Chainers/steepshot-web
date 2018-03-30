@@ -4,6 +4,7 @@ import Steem from '../../libs/steem';
 import jqApp from "../../libs/app.min";
 
 class FollowComponent extends React.Component {
+
 	constructor(props) {
 		super(props);
 		this.state = {

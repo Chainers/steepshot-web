@@ -10,6 +10,7 @@ import {baseBrowseFilter} from "../routes";
 import {push} from "react-router-redux";
 
 class Header extends React.Component {
+
 	constructor(props) {
 		super(props);
 		if (!global.isServerSide) {
