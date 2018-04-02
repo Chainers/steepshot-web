@@ -5,7 +5,7 @@ import {clearVPTimeout, logout, setUserAuth, updateVotingPower} from '../actions
 import Constants from '../common/constants';
 import Avatar from './Common/Avatar/Avatar';
 import jqApp from "../libs/app.min";
-import {setSearchValue} from "../actions/search";
+import {setSearchPanelState, setSearchValue} from "../actions/search";
 import {baseBrowseFilter} from "../routes";
 import {push} from "react-router-redux";
 
@@ -95,7 +95,7 @@ class Header extends React.Component {
 		return (
 			<header className="g-header">
 				<div className="container">
-					<div className="user-panel">
+					<div className={'user-panel ' + (this.props.isOpened ? 'closed' : 'open')}>
 						<div className="wrap-panel clearfix">
 							{
 								isUserAuth
@@ -150,19 +150,20 @@ class Header extends React.Component {
 								</a>
 							</div>
 							<div className="section search">
-								<div className="wrap-search">
-									<a href="#" className="lnk-search">Search</a>
-									<a href="#" className="lnk-search-mob"> </a>
+								<div className="wrap-search" onClick={() => { this.props.setSearchPanelState(true)}}>
+									<span className="lnk-search">Search</span>
+									<span className="lnk-search-mob"> </span>
 								</div>
 							</div>
 							{browse}
 						</div>
 					</div>
-					<div className="search-panel closed">
+					<div className={'search-panel ' + (this.props.isOpened ? 'open' : 'closed')}>
 						<div className="wrap-panel container clearfix">
 							<div className="wrap-btn">
 								<button type="button" className="btn-close" onClick={() => {
-									this.props.setSearchValue("")
+									this.props.setSearchValue("");
+									this.props.setSearchPanelState(false);
 								}}/>
 							</div>
 							<div className="wrap-search">
@@ -209,20 +210,24 @@ const mapDispatchToProps = (dispatch) => {
 			dispatch(setSearchValue(value));
 		},
 		historyPush: (path) => {
-			dispatch(push(path))
+			dispatch(push(path));
+		},
+		setSearchPanelState: flag => {
+			dispatch(setSearchPanelState(flag));
 		}
 	}
 };
 
 const mapStateToProps = (state) => {
 	return {
+		pathname: state.router.location.pathname,
 		sizeParam: document.body.clientWidth < 420,
 		postingKey: state.auth.postingKey,
 		user: state.auth.user,
 		avatar: state.auth.avatar,
-		localization: state.localization,
 		vpTimeout: state.auth.vpTimeout,
-		searchValue: state.search
+		searchValue: state.search.value,
+		isOpened: state.search.isOpened
 	};
 };
 

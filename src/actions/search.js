@@ -4,3 +4,10 @@ export function setSearchValue(value) {
 		value
 	}
 }
+
+export function setSearchPanelState(flag) {
+	return {
+		type: 'SET_SEARCH_PANEL_STATE',
+		flag
+	}
+}
