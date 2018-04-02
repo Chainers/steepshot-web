@@ -28,7 +28,7 @@ import {toggleVote} from '../../actions/vote';
 import './postModal.css';
 import {setPowerLikeInd, setPowerLikeTimeout} from '../../actions/post';
 import VoteIndicator from '../PostsList/Post/Vote/VoteIndicator/VoteIndicator';
-import jqApp from "../../libs/app.min";
+import jqApp from '../../libs/app.min';
 
 const START_TEXTAREA_HEIGHT = '42px';
 const HEADER_HEIGHT = 60;
