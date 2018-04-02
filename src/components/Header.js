@@ -220,7 +220,6 @@ const mapDispatchToProps = (dispatch) => {
 
 const mapStateToProps = (state) => {
 	return {
-		pathname: state.router.location.pathname,
 		sizeParam: document.body.clientWidth < 420,
 		postingKey: state.auth.postingKey,
 		user: state.auth.user,

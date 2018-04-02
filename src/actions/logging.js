@@ -14,7 +14,6 @@ let baseCORSOptions = {
 function notify(message, response, warn) {
 	response.json().then((json) => {
 		warn ? console.warn(message) : console.log(message);
-		console.log(json);
 	});
 }
 
@@ -27,9 +26,7 @@ export async function logCORS(url, options, operation) {
 		await fetch(url, options)
 			.then((response) => {
 				if (response.ok) {
-					if (response.status === 200) {
-						notify(`logCORS, ${operation}. Successfully logged`, response, false);
-					} else {
+					if (response.status !== 200) {
 						notify(`logCORS, ${operation}. Response is OK but something went wrong`, response, true);
 					}
 				}
