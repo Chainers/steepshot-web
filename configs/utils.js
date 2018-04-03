@@ -67,7 +67,7 @@ function renderHTML(config, options) {
 	});
 
 	if (typeof parsedTemplate !== 'string') throw new Error('Return type of options.template() has to be a string');
-
+	console.log(parsedTemplate);
 	return parsedTemplate;
 
 }
