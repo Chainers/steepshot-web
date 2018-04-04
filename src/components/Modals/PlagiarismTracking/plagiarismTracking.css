@@ -42,13 +42,13 @@
     font: 12px OpenSans-Regular;
     color: #979b9e;
     padding-bottom: 20px;
-    border-bottom: 1px solid #f4f4f6;
 }
 
 .guidelines_plag-track {
     font: 14px OpenSans-Regular;
     margin-top: 20px;
     padding-bottom: 20px;
+    border-top: 1px solid #f4f4f6;
     border-bottom: 1px solid #f4f4f6;
 }
 

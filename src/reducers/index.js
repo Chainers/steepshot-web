@@ -17,6 +17,7 @@ import search from "./search";
 import editPost from './editPost';
 import avatar from './avatar';
 import {routerReducer} from "react-router-redux";
+import pushNotifications from "./pushNotifications";
 
 export default combineReducers({
 	clipboard,
@@ -36,5 +37,6 @@ export default combineReducers({
 	avatar,
 	metaTags,
 	search,
+	pushNotifications,
 	router: routerReducer
 });

@@ -1,0 +1,26 @@
+.wrapper_like-comment-not {
+    height: 130px;
+    background-color: #ffffff;
+    width: 340px;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px 0 rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    animation: show-notification .35s linear;
+}
+
+.sub-wrapper_like-comment-not {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.text-comment_like-comment-not {
+    font: 12px OpenSans-Light;
+    color: #979b9e;
+    padding-top: 19px;
+    max-height: 53px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+

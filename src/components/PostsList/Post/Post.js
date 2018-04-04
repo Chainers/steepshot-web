@@ -55,7 +55,6 @@ class Post extends React.Component {
 			return;
 		}
 		if (!this.props.authUser) {
-			jqApp.pushMessage.open(Constants.VOTE_ACTION_WHEN_NOT_AUTH);
 			return;
 		}
 		if (this.props.commentLoader) {

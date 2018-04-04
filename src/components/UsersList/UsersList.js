@@ -88,7 +88,7 @@ class UsersList extends React.Component {
 				loadMore={debounce(this.getUsersList.bind(this),
 					Constants.ENDLESS_SCROLL.DEBOUNCE)}
 				hasMore={this.props.isComponentVisible && this.props.hasMore}
-				loader={<div className='spinner_use-lis'><LoadingSpinner/></div>}
+				loader={<div className='spinner_use-lis' key={'usersListLoader'}><LoadingSpinner/></div>}
 				threshold={Constants.ENDLESS_SCROLL.OFFSET}
 				useWindow={!this.props.useScrollView}
 				useCapture={this.props.useScrollView}
