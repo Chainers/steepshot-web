@@ -1,3 +1,31 @@
 .wrapper_push-not {
-    position: absolute;
+    width: 340px;
+    position: fixed;
+    left: 20px;
+    bottom: 40px;
+    z-index: 10;
+}
+.wrapper_push-not > div {
+    margin-bottom: 10px;
+}
+
+.hide-not_push-not {
+    animation: hide-notification .35s linear;
+}
+
+@keyframes show-notification {
+    from {
+        margin-left: -365px;
+    }
+    to {
+        margin-left: 0;
+    }
+}
+@keyframes hide-notification {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
 }

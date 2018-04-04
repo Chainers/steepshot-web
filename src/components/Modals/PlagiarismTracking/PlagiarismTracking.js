@@ -32,17 +32,45 @@ class PlagiarismTracking extends React.Component {
 			this.props.editPostSuccess();
 			this.props.historyPush(`/@${this.props.authUser}`);
 		})
-			.catch(error => {
-				this.props.editPostReject(error);
-				jqApp.pushMessage.open(error.message);
-			});
+		.catch(error => {
+			this.props.editPostReject(error);
+			jqApp.pushMessage.open(error.message);
+		});
 		this.props.closeModal('PlagiarismTrackingModal');
 		this.props.editPostRequest();
 	}
 
+	plagiarismAuthor() {
+		let plagiator = this.props.data.plagiarism_author;
+		if (this.props.authUser === plagiator) {
+			return (
+				<span>you. We do not recommend you to re-upload photos
+					as it may result in low payouts and reputation loss.</span>
+			)
+		}
+    let linkToPlagUser = `/@${plagiator}`;
+		return (
+			<span>
+				<Link to={linkToPlagUser} target="_blank"> @{plagiator}</Link>. We do not recommend you to upload other
+				users' photos as it may result in low payouts and reputation loss.
+			</span>
+		)
+	}
+	plagiarismSubText() {
+    let plagiator = this.props.data.plagiarism_author;
+    let linkToPlagPhoto = `/${plagiator}/${this.props.data.plagiarism_permlink}`;
+		if (this.props.authUser === plagiator) {
+			return ''
+		}
+		return (
+		  <p className="sub-descrip_plag-track">If you're sure that you are the author of the photo, please flag and/or
+			  leave a comment under the
+			  <Link to={linkToPlagPhoto} target="_blank"> photo </Link>
+			  to let other people know they should flag this post.</p>
+		)
+	}
+
 	render() {
-		let linkToPlagPhoto = `/${this.props.data.plagiarism_author}/${this.props.data.plagiarism_permlink}`;
-		let linkToPlagUser = `/@${this.props.data.plagiarism_author}`;
 		return (
 			<div className="wrapper_plag-track">
 				<div className="title-wrapper_plag-track">
@@ -53,13 +81,9 @@ class PlagiarismTracking extends React.Component {
 				</div>
 				{this.renderImage()}
 				<p className="descrip_plag-track">We have found a
-					<Link to={linkToPlagPhoto} target="_blank"> similar photo</Link> in Steepshot, uploaded by
-					<Link to={linkToPlagUser} target="_blank"> @{this.props.data.plagiarism_author}</Link>.
-					We do not recommend you to upload other users' photos as it may result in low payouts and reputation loss.</p>
-				<p className="sub-descrip_plag-track">If you're sure that you are the author of the photo, please flag and/or
-					leave a comment under the
-					<Link to={linkToPlagPhoto} target="_blank"> photo </Link>
-					to let other people know they should flag this post.</p>
+					<Link to={`/${this.props.data.plagiarism_author}/${this.props.data.plagiarism_permlink}`} target="_blank"> similar photo</Link> in Steepshot, uploaded by {this.plagiarismAuthor()}
+				</p>
+				{this.plagiarismSubText()}
 				<p className="guidelines_plag-track">
 					<Link to="/guide" target="_blank">Posting guidelines</Link>
 				</p>

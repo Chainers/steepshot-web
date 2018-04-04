@@ -29,6 +29,9 @@ import './postModal.css';
 import {setPowerLikeInd, setPowerLikeTimeout} from '../../actions/post';
 import VoteIndicator from '../PostsList/Post/Vote/VoteIndicator/VoteIndicator';
 import jqApp from '../../libs/app.min';
+import LikePostNotification from "../PushNotifications/LikePostNotification/LikePostNotification";
+import {openPushNot} from "../../actions/pushNotification";
+import FollowUserNotification from "../PushNotifications/FollowUserNotification/FollowUserNotification";
 
 const START_TEXTAREA_HEIGHT = '42px';
 const HEADER_HEIGHT = 60;
@@ -51,6 +54,34 @@ class PostModal extends React.Component {
 		window.addEventListener('resize', this.setComponentSize);
 		window.addEventListener('keydown', this.initKeyPress);
 		this.setComponentSize();
+		setTimeout(() => {
+			this.testFunc();
+		}, 5000);
+    setTimeout(() => {
+      this.testFunc2();
+    }, 7000);
+	}
+
+	testFunc() {
+    let pushNotBody = {
+      pushNotBody: (<LikePostNotification avatar={'http://home.kpn.nl/bonge008/BLOG/profile/signature_square1.jpg'}
+																					username={'Isabel Gregory'}
+																					login={'joseph.kalu'}
+																					userMoney={0.35346}
+																					postPermlink={'test-2018-04-03-07-45-54'}/>)
+    };
+    // this.props.openPushNot(`LikePostNot-${this.props.login}-${new Date().getTime()}`, pushNotBody)
+    this.props.openPushNot(`LikePostNot-${'joseph.kalu'}-${new Date().getTime()}`, pushNotBody);
+	}
+
+	testFunc2() {
+    let pushNotBody = {
+      pushNotBody: (<FollowUserNotification avatar={'http://home.kpn.nl/bonge008/BLOG/profile/signature_square1.jpg'}
+																						username={'Leonard Henry'}
+																						login={'joseph.kalu'}/>)
+    };
+    // this.props.openPushNot(`FollowUserNot-${this.props.login}-${new Date().getTime()}`, pushNotBody)
+    this.props.openPushNot(`FollowUserNot-${'joseph.kalu'}-${new Date().getTime()}`, pushNotBody);
 	}
 
 	componentWillUnmount() {
@@ -419,7 +450,6 @@ class PostModal extends React.Component {
 			return;
 		}
 		if (!this.props.authUser) {
-			jqApp.pushMessage.open(Constants.VOTE_ACTION_WHEN_NOT_AUTH);
 			return;
 		}
 		if (this.props.needsCommentFormLoader) {
@@ -745,7 +775,10 @@ const mapDispatchToProps = (dispatch) => {
 		},
 		setPowerLikeTimeout: (index, plTimeout) => {
 			dispatch(setPowerLikeTimeout(index, plTimeout));
-		}
+		},
+    openPushNot: (index, pushNotBody) => {
+      dispatch(openPushNot(index, pushNotBody));
+    }
 	};
 };
 

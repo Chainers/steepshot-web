@@ -1,26 +1,34 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import './pushNotifications.css';
+import PushNotification from './PushNotification';
 
 class PushNotifications extends React.Component {
-    constructor(props) {
-        super(props);
-    }
-    render() {
-        return (
-            <div className="wrapper_push-not">
+  constructor(props) {
+    super(props);
+  }
 
-            </div>
-        );
+  componentWillReceiveProps(nextProps) {
+    
+  }
+
+  render() {
+    let notifications = [];
+    for (let key in this.props.notifications) {
+      notifications.push(<PushNotification key={key} index={key}/>);
     }
+    return (
+      <div className="wrapper_push-not">
+        {notifications}
+      </div>
+    );
+  }
 }
 
-const mapStateToProps = {
-
+const mapStateToProps = (state) => {
+  return {
+    notifications: state.pushNotifications
+  }
 };
 
-const mapDispatchToProps = {
-
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(PushNotifications);
+export default connect(mapStateToProps)(PushNotifications);

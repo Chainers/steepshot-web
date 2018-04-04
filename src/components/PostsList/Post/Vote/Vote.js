@@ -7,6 +7,11 @@ import jqApp from "../../../../libs/app.min";
 class Vote extends React.Component {
 
 	toggleVote() {
+		console.log(this.props.isUserAuth);
+    if (!this.props.isUserAuth) {
+      jqApp.pushMessage.open(Constants.VOTE_ACTION_WHEN_NOT_AUTH);
+      return;
+    }
 		if (this.props.commentLoader) {
 			jqApp.pushMessage.open(Constants.WAIT_FINISHING_TRANSACTION);
 			return;
@@ -42,6 +47,7 @@ const mapStateToProps = (state, props) => {
 		...props,
 		isPLOpen: post.isPLOpen,
 		plTimeout: post.plTimeout,
+    isUserAuth: !!state.auth.user && !!state.auth.postingKey
 	};
 };
 

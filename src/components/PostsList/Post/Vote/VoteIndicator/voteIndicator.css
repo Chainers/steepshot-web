@@ -35,12 +35,10 @@
 }
 
 .hid-ind-anim_vote-ind {
-    top: 0;
     animation: unfadeVoteIndicator .2s linear;
 }
 
 .hid-popup-ind-anim_vote-ind {
-    top: 0;
     animation: unfadePopupVoteIndicator .2s linear;
 }
 
