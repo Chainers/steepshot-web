@@ -397,18 +397,6 @@ function _sendToBlockChain(operation, prepareData, beneficiaries) {
 				resolve(success);
 				return;
 			}
-      // console.log(err);
-			// if (err.data) {
-			// 	switch (err.data.code) {
-			// 		case 10:
-			// 			reject(new Error('You can only create posts 5 minutes after the previous one.'));
-			// 			return;
-      //
-			// 		default:
-			// 			return;
-			// 	}
-			// }
-			// reject(new Error('Somethings went wrong.'));
 			let checkedError = blockchainErrorsList(err);
 			reject(new Error(checkedError));
 		};
