@@ -4,15 +4,35 @@ import LikePostNotification from './LikePostNotification/LikePostNotification';
 import LikeCommentNotification from './LikeCommentNotification/LikeCommentNotification';
 import FollowUserNotification from './FollowUserNotification/FollowUserNotification';
 import CommentPostNotification from './CommentPostNotification/CommentPostNotification';
-import {openPushNot} from '../../actions/pushNotification';
+import {openPushNot, closePushNot, setPushNotTimeout} from '../../actions/pushNotification';
 
 class PushNotifications extends React.Component {
   constructor(props) {
     super(props);
+    this.clearPNTimeout = this.clearPNTimeout.bind(this);
+    this.hidePushNotification = this.hidePushNotification.bind(this);
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentDidMount() {
+    this.hidePushNotification();
+    this.push.addEventListener('mouseenter', this.clearPNTimeout);
+    this.push.addEventListener('mouseleave', this.hidePushNotification);
+  }
 
+  hidePushNotification() {
+    let pnAnimationTimeout = setTimeout(() => {
+      this.push.classList.add('hide-not_push-not');
+      let pnDeleteTimeout = setTimeout(() => {
+        this.props.closePushNot(this.props.index);
+      }, 2000);
+      this.props.setPushNotTimeout(this.props.index, pnDeleteTimeout);
+    }, 3000);
+    this.props.setPushNotTimeout(this.props.index, pnAnimationTimeout);
+  }
+
+  clearPNTimeout() {
+    this.push.classList.remove('hide-not_push-not');
+    clearTimeout(this.props.pnTimeout);
   }
 
   openLikePostNotification() {
@@ -83,6 +103,12 @@ const mapDispatchToProps = (dispatch) => {
   return {
     openPushNot: (index, pushNotBody) => {
       dispatch(openPushNot(index, pushNotBody));
+    },
+    closePushNot: (index) => {
+      dispatch(closePushNot(index));
+    },
+    setPushNotTimeout: (index, pnTimeout) => {
+      dispatch(setPushNotTimeout(index, pnTimeout));
     }
   }
 };
