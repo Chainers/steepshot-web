@@ -10,7 +10,7 @@
 }
 
 .hide-not_push-not {
-    animation: hide-notification .35s linear;
+    animation: hide-notification 2s linear !important;
 }
 
 @keyframes show-notification {
