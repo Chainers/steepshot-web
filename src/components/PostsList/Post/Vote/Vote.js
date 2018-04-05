@@ -7,7 +7,6 @@ import jqApp from "../../../../libs/app.min";
 class Vote extends React.Component {
 
 	toggleVote() {
-		console.log(this.props.isUserAuth);
     if (!this.props.isUserAuth) {
       jqApp.pushMessage.open(Constants.VOTE_ACTION_WHEN_NOT_AUTH);
       return;

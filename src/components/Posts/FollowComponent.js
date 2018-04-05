@@ -27,7 +27,7 @@ class FollowComponent extends React.Component {
 				pendingStatus: false
 			});
 			if (err) {
-				jqApp.pushMessage.open('Something went wrong, please, try again later');
+				jqApp.pushMessage.open(err);
 			} else if (result) {
 				let statusText = 'unfollowed';
 				if (!status) statusText = 'followed';

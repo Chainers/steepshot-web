@@ -61,7 +61,6 @@ class VouteComponent extends React.Component {
 			vote: newVoteState,
 			isVoteLoading: true
 		}, () => {
-
 			const callback = (err, success) => {
 				this.setState({
 					isVoteLoading: false
@@ -71,11 +70,11 @@ class VouteComponent extends React.Component {
 					this.setState({
 							vote: !newVoteState
 						}, () => {
-							let text = 'Something went wrong when you voted, please, try again later';
-							if (err.data.code === 10) {
-								text = `Sorry, you had used the maximum number of vote changes on this ${this.state.parent}`;
-							}
-							jqApp.pushMessage.open(text);
+							// let text = 'Something went wrong when you voted, please, try again later';
+							// if (err.data.code === 10) {
+							// 	text = `Sorry, you had used the maximum number of vote changes on this ${this.state.parent}`;
+							// }
+							jqApp.pushMessage.open(err);
 						}
 					);
 				} else if (success) {
@@ -84,13 +83,14 @@ class VouteComponent extends React.Component {
 					jqApp.pushMessage.open(text);
 					this.props.updateVoteInComponent(newVoteState, this.state.index);
 				}
-			}
+			};
 
 			Steem.vote(this.props.postingKey,
 				this.props.username,
 				this.state.item.author,
 				urlObject[urlObject.length - 1],
 				newVoteState,
+				10000,
 				callback
 			);
 		});
@@ -104,7 +104,7 @@ class VouteComponent extends React.Component {
 		if (this.state.isVoteLoading) {
 			buttonClasses = buttonClasses + " loading";
 		}
-		let button = <button type="button" className={buttonClasses}/>;
+		let button = <button className={buttonClasses}/>;
 		return (
 			<div className="wrap-btn" onClick={this.ratingVotes.bind(this)}>
 				{button}

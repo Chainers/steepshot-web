@@ -51,11 +51,7 @@ export function toggleFlag(postIndex) {
 			sessionStorage.setItem('voteQueue', 'false');
 			if (err) {
 				dispatch(toggleFlagFailure(postIndex));
-				let text = 'Something went wrong when you clicked the flag, please, try again later';
-				if (err.data.code === 10) {
-					text = 'Sorry, you had used the maximum number of vote changes on this post';
-				}
-				jqApp.pushMessage.open(text);
+				jqApp.pushMessage.open(err);
 			} else if (success) {
 				dispatch(toggleFlagSuccess(postIndex));
 				dispatch(updatePost(postIndex));

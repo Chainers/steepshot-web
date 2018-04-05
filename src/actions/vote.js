@@ -49,12 +49,7 @@ export function toggleVote(postIndex, power = 100) {
 		const callback = (err, success) => {
 			sessionStorage.setItem('voteQueue', 'false');
 			if (err) {
-				dispatch(toggleVoteFailure(postIndex));
-				let text = 'Something went wrong when you voted, please, try again later';
-				if (err.data.code === 10) {
-					text = `Sorry, you had used the maximum number of vote changes on this post`;
-				}
-				jqApp.pushMessage.open(text);
+				jqApp.pushMessage.open(err);
 			} else if (success) {
 				dispatch(toggleVoteSuccess(postIndex));
 				dispatch(updatePost(postIndex));
