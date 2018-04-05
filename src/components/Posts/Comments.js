@@ -1,86 +1,81 @@
 import React from 'react';
-import { getComments } from '../../services/posts';
+import {getComments} from '../../services/posts';
 import Comment from './Comment';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
+import {connect} from 'react-redux';
 import LoadingSpinner from '../LoadingSpinner';
 
 class Comments extends React.Component {
-  constructor(props) {
-    super(props);
 
-    this.state = {
-      comments: [],
-      avatar: this.props.item.avatar,
-      loading: true
-    };
-  }
+	constructor(props) {
+		super(props);
+		this.state = {
+			comments: [],
+			avatar: props.item.avatar,
+			loading: true
+		};
+	}
 
-  componentDidMount() {
-    this.updatePostComments();
-  }
+	componentDidMount() {
+		this.updatePostComments();
+	}
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.newComment != undefined) {
-      this.state.comments.push(nextProps.newComment);
-      this.setState({
-        comments: this.state.comments,
-      });
-    } else {
-      this.setState({
-        comments: [],
-        loading: true
-      });
+	componentWillReceiveProps(nextProps) {
+		if (nextProps.newComment !== undefined) {
+			this.state.comments.push(nextProps.newComment);
+			this.setState({
+				comments: this.state.comments,
+			});
+		} else {
+			this.setState({
+				comments: [],
+				loading: true
+			});
 
-      this.updatePostComments(nextProps);
-    }
-  }
+			this.updatePostComments(nextProps);
+		}
+	}
 
-  updatePostComments(nextProps) {
-    nextProps = nextProps || this.props;
-    const options = {
-      point : `post/${nextProps.item.author}/${nextProps.item.url}/comments`,
-      params : {}
-    };
-    getComments(options, true).then((response) => {
-      this.setState({
-        comments: response.results,
-        loading: false,
-        avatar: nextProps.item.avatar
-      });
-    });
-  }
+	updatePostComments(nextProps) {
+		nextProps = nextProps || this.props;
+		const options = {
+			point: `post/${nextProps.item.author}/${nextProps.item.url}/comments`,
+			params: {}
+		};
+		getComments(options, true).then((response) => {
+			this.setState({
+				comments: response.results,
+				loading: false,
+				avatar: nextProps.item.avatar
+			});
+		});
+	}
 
 
-  render() {
-    let comments = null;
+	render() {
+		let comments = null;
 
-    if (this.state.loading) {
-      comments = <LoadingSpinner style={{marginTop: 20}}/>;
-    }
-    if (this.state.comments && this.state.comments.length !== 0) {
-      comments = this.state.comments.map((item, index) => {
-        return <Comment replyUser={this.props.replyUser} key={index} item={item} />
-      });
-    }
-    return (
-      <div className="list-comments">
-          {comments}
-      </div>
-    );
-  }
+		if (this.state.loading) {
+			comments = <LoadingSpinner style={{marginTop: 20}}/>;
+		}
+		if (this.state.comments && this.state.comments.length !== 0) {
+			comments = this.state.comments.map((item, index) => {
+				return <Comment replyUser={this.props.replyUser} key={index} item={item}/>
+			});
+		}
+		return (
+			<div className="list-comments">
+				{comments}
+			</div>
+		);
+	}
 }
 
-Comments.propTypes = {
-  item: PropTypes.object
-};
-
 const mapStateToProps = (state) => {
-  return {
-    localization: state.localization,
-    posts: state.post,
-    comment: state.comment
-  };
+	return {
+		localization: state.localization,
+		posts: state.post,
+		comment: state.comment
+	};
 };
 
 export default connect(mapStateToProps)(Comments);

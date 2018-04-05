@@ -11,24 +11,32 @@ import tabsBar from './tabsBar';
 import likesFlagsList from './likesFlagsList';
 import users from './users';
 import bodyParams from './bodyParams';
+import textInput from "./textInput";
+import metaTags from "./metaTags";
+import search from "./search";
 import editPost from './editPost';
-import textInput from './textInput';
 import avatar from './avatar';
+import {routerReducer} from "react-router-redux";
+import pushNotifications from "./pushNotifications";
 
 export default combineReducers({
-  clipboard,
-  messages,
-  auth,
-  posts,
-  tabsBar,
-  postsList,
-  usersList,
-  modals,
-  postModal,
-  users,
-  bodyParams,
-  likesFlagsList,
-  editPost,
-  textInput,
-  avatar
+	clipboard,
+	messages,
+	auth,
+	posts,
+	tabsBar,
+	postsList,
+	usersList,
+	modals,
+	postModal,
+	users,
+	bodyParams,
+	likesFlagsList,
+	editPost,
+	textInput,
+	avatar,
+	metaTags,
+	search,
+	pushNotifications,
+	router: routerReducer
 });

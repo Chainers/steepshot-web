@@ -3,28 +3,24 @@ import {connect} from "react-redux";
 import ShowIf from "../../ShowIf";
 
 class Tab extends React.Component {
-  static defaultProps = {
-    loading: false,
-    empty: false
-  };
+	static defaultProps = {
+		loading: false,
+		empty: false
+	};
 
-  constructor(props) {
-    super(props);
-  }
-
-  render() {
-    return (
-      <ShowIf show={this.props.active && !this.props.empty} className="container_tab" removeFromDom={false}>
-        {this.props.children}
-      </ShowIf>
-    );
-  }
+	render() {
+		return (
+			<ShowIf show={this.props.active && !this.props.empty} className="container_tab" removeFromDom={false}>
+				{this.props.children}
+			</ShowIf>
+		);
+	}
 }
 
 const mapStateToProps = (state, props) => {
-  return {
-    active: state.tabsBar[props.point].activeIndex === props.index
-  };
+	return {
+		active: state.tabsBar[props.point].activeIndex === props.index
+	};
 };
 
 

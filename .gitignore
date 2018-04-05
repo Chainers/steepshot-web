@@ -1,8 +1,9 @@
+build
+build-lib
 node_modules
 .tmp
 .idea
 dist
-public
 npm-debug.log
 
 package-lock.json

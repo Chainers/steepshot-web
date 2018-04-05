@@ -4,26 +4,23 @@ import MobileNavigationComponent from './MobileNavigationComponent';
 import FooterComponent from './FooterComponent';
 import Clipboard from "./Common/Clipboard/Clipboard";
 import Modals from './Modals/Modals';
+import PushNotifications from "./PushNotifications/PushNotifications";
 
 const App = ({children}) => (
-  <div className="g-wrap">
-    <div className="outer-bg">
-      <Header/>
-      <div className="g-main">
-        {children || 'Loading'}
-      </div>
-    </div>
-    <MobileNavigationComponent/>
-    <div className="pm"></div>
-    <FooterComponent/>
-
-    <Clipboard/>
-    <Modals/>
-  </div>
+	<div className="g-wrap">
+		<div className="outer-bg">
+			<Header/>
+			<div className="g-main">
+				{children || 'Loading'}
+			</div>
+		</div>
+		<MobileNavigationComponent/>
+		<div className="pm"></div>
+		<FooterComponent/>
+		<PushNotifications/>
+		<Clipboard/>
+		<Modals/>
+	</div>
 );
-
-App.propTypes = {
-  children: React.PropTypes.object
-};
 
 export default App;

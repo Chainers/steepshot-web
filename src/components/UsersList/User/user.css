@@ -1,69 +1,69 @@
 .container_user {
-  width: 298px;
-  height: 98px;
-  padding: 20px;
-  margin: 5px;
-  border: 1px solid #e7e7e7;
-  border-radius: 4px;
+    width: 298px;
+    height: 98px;
+    padding: 20px;
+    margin: 5px;
+    border: 1px solid #e7e7e7;
+    border-radius: 4px;
 }
 
 .name_user a {
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  text-decoration: none;
-  font-family: OpenSans-SemiBold,Helvetica,Arial,sans-serif;
-  color: #0f181e;
-  line-height: 1.4;
-  width: inherit;
-  transition: all .2s ease;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    text-decoration: none;
+    font-family: OpenSans-SemiBold, Helvetica, Arial, sans-serif;
+    color: #0f181e;
+    line-height: 1.4;
+    width: inherit;
+    transition: all .2s ease;
 }
 
 .name_user a:hover {
-  color: #e74800;
+    color: #e74800;
 }
 
 .name_user {
-  display: inline-block;
-  width: 55%;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  vertical-align: top;
+    display: inline-block;
+    width: 55%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    vertical-align: top;
 }
 
 .money_user {
-  color: #979b9e;
-  font-size: 14px;
-  display: block;
-  height: 22px;
+    color: #979b9e;
+    font-size: 14px;
+    display: block;
+    height: 22px;
 }
 
 .spinner_user {
-  width: 40px;
-  height: 40px;
-  margin: 10px 0 0 -5px;
+    width: 40px;
+    height: 40px;
+    margin: 10px 0 0 -5px;
 }
 
 .follow-btn_user {
-  cursor: pointer;
+    cursor: pointer;
 }
 
 .following-toggle-wrapper_user {
-  width: 30px;
-  display: inline-block;
-  margin-left: 10px;
-  vertical-align: bottom;
+    width: 30px;
+    display: inline-block;
+    margin-left: 10px;
+    vertical-align: bottom;
 }
 
 .following_user, .follow-btn_user {
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  transition: .2s;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    transition: .2s;
 }
 
- @media (max-width: 350px) {
-   .name_user {
-     width: 50%;
-   }
- }
+@media (max-width: 350px) {
+    .name_user {
+        width: 50%;
+    }
+}

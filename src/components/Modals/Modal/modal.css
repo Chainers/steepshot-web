@@ -1,60 +1,63 @@
 .back_mods {
-  min-width: 100%;
-  min-height: 100%;
-  height: 0;
-  position: fixed;
-  top: 0;
-  left: 0;
-  display: flex;
-  align-content: center;
-  justify-content: center;
-  overflow-y: auto;
-  overflow-x: hidden;
-  align-items: center;
-  transition: all .3s cubic-bezier(0.1, 0.23, 0.25, 1);
+    min-width: 100%;
+    min-height: 100%;
+    height: 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    overflow-y: auto;
+    overflow-x: hidden;
+    align-items: center;
+    transition: all .3s cubic-bezier(0.1, 0.23, 0.25, 1);
 }
 
 .close_mods {
-  position: absolute;
-  top: 30px;
-  right: 30px;
-  width: 16px;
-  height: 16px;
-  cursor: pointer;
-  border: 0;
-  background-size: 4.4em 47.2em;
-  background: url('/static/images/sprite_svg1910.svg') no-repeat -.2em -5.49em;
+    position: absolute;
+    top: 30px;
+    right: 30px;
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+    border: 0;
+    background-size: 4.4em 47.2em;
+    background: url('/images/sprite_svg1910.svg') no-repeat -.2em -5.49em;
 }
 
 .body_modal {
-  transition: all .3s cubic-bezier(0.1, 0.23, 0.25, 1);
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
+    transition: all .3s cubic-bezier(0.1, 0.23, 0.25, 1);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
 }
 
 .before-load_modal {
-  margin-top: -200vh;
-  opacity: 0;
+    margin-top: -200vh;
+    opacity: 0;
 }
 
 .before-load-back_modal {
-  opacity: 0;
+    opacity: 0;
 }
+
 .ov-scroll_modal {
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
 }
+
 .cross-full-screen_modal {
-  position: absolute;
-  width: 18px;
-  height: 18px;
-  top: 11px;
-  left: 11px;
-  background: url(/static/images/sprite_svg1910.svg) 8% 16.7% no-repeat;
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    top: 11px;
+    left: 11px;
+    background: url(/images/sprite_svg1910.svg) 8% 16.7% no-repeat;
 }
+
 .cross-wrapper_modal {
   position: absolute;
-  right: 3px;
+  right: 23px;
   top: 14px;
   width: 38px;
   height: 38px;
@@ -63,11 +66,5 @@
 }
 
 .cross-wrapper_modal:hover .cross-full-screen_modal {
-  background: url(/static/images/sprite_svg1910.svg) 6% 12.3% no-repeat;
-}
-
-@media (min-width: 1224px) {
-  .cross-wrapper_modal {
-    right: 27px;
-  }
+    background: url(/images/sprite_svg1910.svg) 6% 12.3% no-repeat;
 }

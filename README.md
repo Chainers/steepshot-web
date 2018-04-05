@@ -1,17 +1,21 @@
-# Steepshot web application
+# Development
 
-__Install the dependencies:__
+Runs Webpack Dev Server, **no Server Side Rendering**.
 
-`npm install`
+```bash
+$ npm start
+```
 
-__Development mode with livereload:__
+# Production + Server Side Rendering
 
-`npm run start`
+The redeploy sequence is as follows:
 
-__When you are done, create a production ready version of the JS bundle:__
+```bash
+$ npm run build
+$ npm run server
+```
 
-`npm run build`
+# Known issues
 
-## License
-
-[MIT License](http://opensource.org/licenses/MIT)
+- [ ] Dynamic `import()` won't work until `react-scripts@0.10.0`
+- [ ] Can't have skins because CSS is extracted in one file
