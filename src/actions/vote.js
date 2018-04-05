@@ -49,6 +49,7 @@ export function toggleVote(postIndex, power = 100) {
 		const callback = (err, success) => {
 			sessionStorage.setItem('voteQueue', 'false');
 			if (err) {
+        dispatch(toggleVoteFailure(postIndex));
 				jqApp.pushMessage.open(err);
 			} else if (success) {
 				dispatch(toggleVoteSuccess(postIndex));

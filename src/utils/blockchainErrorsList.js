@@ -26,6 +26,5 @@ export function blockchainErrorsList(error) {
       return errorsList[i].notificationText;
     }
   }
-  console.error(error);
   return constants.OOOPS_SOMETHING_WRONG;
 }
