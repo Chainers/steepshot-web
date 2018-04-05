@@ -104,7 +104,7 @@ export function deletePost(postIndex) {
 					dispatch(successDeletePost(postIndex));
 				}).catch((err) => {
 					dispatch(failureDeletePost(postIndex));
-					jqApp.pushMessage.open(err.message)
+					jqApp.pushMessage.open(err)
 				});
 			}
 		};

@@ -182,6 +182,7 @@ export default {
 	VOTE_ACTION_WHEN_NOT_AUTH_DEBOUNCE: 500,
 
 	FOLLOW_REQUEST_ERROR: 'Something went wrong, please, try again later',
+	OOOPS_SOMETHING_WRONG: 'Oooops, something went wrong :(',
 
 	POST_DESRIPTION_MAXLENGTH: 120,
 	POST_LIKED_BY: 'Post has been rated by these users',

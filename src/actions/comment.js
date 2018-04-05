@@ -13,9 +13,7 @@ export function sendComment(postIndex, comment) {
 		const callback = (err, success) => {
 			dispatch(setPostModalOptions({needsCommentFormLoader: false}));
 			if (err) {
-				let error = err.data.message;
-				error = error[0].toUpperCase() + error.substring(1) + ' error';
-				jqApp.pushMessage.open(error);
+				jqApp.pushMessage.open(err);
 			} else if (success) {
 				dispatch(setPostModalOptions({
 					newComment: {

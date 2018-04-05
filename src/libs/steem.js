@@ -7,6 +7,7 @@ import {logComment, logDeletedPost, logFlag, logFollow, logPost, logVote} from '
 
 import _ from 'underscore';
 import FormData from 'form-data';
+import {blockchainErrorsList} from "../utils/blockchainErrorsList";
 
 const _getUserName = () => {
 	return getStore().getState().auth.user
@@ -41,10 +42,11 @@ class Steem {
 
 		const callbackBc = (err, success) => {
 			if (err) {
-				callback(err, null);
+				let checkedError = blockchainErrorsList(err);
+				callback(checkedError, null);
 				const data = JSON.stringify({
 					username: author,
-					error: err
+					err
 				});
 				logComment(parentAuthor, parentPermlink, data);
 			} else if (success) {
@@ -123,10 +125,11 @@ class Steem {
 	vote(wif, username, author, url, voteStatus, power, callback) {
 		const callbackBc = (err, success) => {
 			if (err) {
-				callback(err, null);
+        let checkedError = blockchainErrorsList(err);
+				callback(checkedError, null);
 				const data = JSON.stringify({
 					username: username,
-					error: err
+					err
 				});
 				logVote(voteStatus, author, url, data);
 			} else if (success) {
@@ -148,8 +151,13 @@ class Steem {
 
 		const callbackBc = (err, success) => {
 			if (err) {
-				callback(err, null);
-				console.log(err);
+        let checkedError = blockchainErrorsList(err);
+				callback(checkedError, null);
+        const data = JSON.stringify({
+          username: username,
+          err
+        });
+        logVote(flagStatus, author, url, data);
 			} else if (success) {
 				const data = JSON.stringify({
 					username: username
@@ -185,10 +193,11 @@ class Steem {
 
 		const callbackBc = (err, result) => {
 			if (err) {
-				callback(err);
+				let checkedError = blockchainErrorsList(err);
+				callback(checkedError, null);
 				const data = JSON.stringify({
 					username: follower,
-					error: err
+					err
 				});
 				logFollow(status, following, data);
 			} else if (result) {
@@ -221,7 +230,8 @@ class Steem {
 				//   error: err
 				// });
 				// logDeletedPost(author, permlink, data);
-				callback(err, null);
+        let checkedError = blockchainErrorsList(err);
+				callback(checkedError, null);
 			} else if (success) {
 				const data = JSON.stringify({
 					username: author
@@ -387,23 +397,20 @@ function _sendToBlockChain(operation, prepareData, beneficiaries) {
 				resolve(success);
 				return;
 			}
-			if (err.data) {
-				switch (err.data.code) {
-					case 10:
-						reject(new Error('You can only create posts 5 minutes after the previous one.'));
-						return;
-					case 4100000:
-						if ((err.data.name === 'plugin_exception' && err.data.stack[0].format === 'steem bandwidth limit exceeded: ' +
-							'Steem bandwidth limit exceeded. Please wait to transact or power up STEEM.') || err.data.stack[0].format
-							=== 'Account: ${account} bandwidth limit exceeded: Bandwidth limit exceeded. Please wait to transact or power up STEEM.') {
-							reject(new Error('Bandwidth limit exceeded.'));
-						}
-						return;
-					default:
-						return;
-				}
-			}
-			reject(new Error('Somethings went wrong.'));
+      // console.log(err);
+			// if (err.data) {
+			// 	switch (err.data.code) {
+			// 		case 10:
+			// 			reject(new Error('You can only create posts 5 minutes after the previous one.'));
+			// 			return;
+      //
+			// 		default:
+			// 			return;
+			// 	}
+			// }
+			// reject(new Error('Somethings went wrong.'));
+			let checkedError = blockchainErrorsList(err);
+			reject(new Error(checkedError));
 		};
 		steem.broadcast.sendAsync(
 			{operations, extensions: []},

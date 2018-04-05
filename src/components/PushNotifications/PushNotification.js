@@ -12,7 +12,7 @@ class PushNotifications extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log(nextProps);
+
   }
 
   openLikePostNotification() {

@@ -45,7 +45,7 @@ export function toggleFollow(author) {
 		const callback = (err, success) => {
 			if (err) {
 				dispatch(toggleFollowFailure(author));
-				debounce(jqApp.pushMessage.open(Constants.FOLLOW_REQUEST_ERROR), 1000);
+				jqApp.pushMessage.open(err);
 			} else if (success) {
 				dispatch(updateUser(author));
 				let statusText = 'followed';
