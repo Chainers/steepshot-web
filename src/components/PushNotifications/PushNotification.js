@@ -7,9 +7,6 @@ import CommentPostNotification from './CommentPostNotification/CommentPostNotifi
 import {openPushNot} from '../../actions/pushNotification';
 
 class PushNotifications extends React.Component {
-  constructor(props) {
-    super(props);
-  }
 
   componentWillReceiveProps(nextProps) {
 
