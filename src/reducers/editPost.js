@@ -7,7 +7,8 @@ const initialState = {
 	loading: false,
 	isNew: true,
 	waitingTime: 0,
-	canCreate: true
+	canCreate: true,
+	isGif: false
 };
 
 export default function editPost(state = initialState, action) {
@@ -24,7 +25,8 @@ export default function editPost(state = initialState, action) {
 				...state,
 				src: action.image,
 				rotate: 0,
-				imageError: ''
+				imageError: '',
+				isGif: !!action.image.includes("image/gif")
 			};
 
 		case 'EDIT_POST_ROTATE_IMAGE':

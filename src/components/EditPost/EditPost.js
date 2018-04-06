@@ -148,7 +148,7 @@ class EditPost extends React.Component {
 									 onLoad={() => this.setImageContainerSize(0)}
 									 onError={this.props.setImageNotFound}
 							/>
-							<ShowIf show={this.props.isNew}>
+							<ShowIf show={this.props.isNew && !this.props.isGif}>
 								<div className="rotate-button_edi-pos"
 										 onClick={() => this.props.imageRotate(this.image)}
 								/>
