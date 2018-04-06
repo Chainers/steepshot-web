@@ -188,7 +188,7 @@ export function editPost() {
 }
 
 export function createPost() {
-	let {title, tags, description, photoSrc, rotate} = prepareData();
+	let {title, tags, description, photoSrc, rotate, isGif} = prepareData();
 
 	return dispatch => {
 		if (!isValidField(dispatch, title, photoSrc)) {
@@ -197,11 +197,17 @@ export function createPost() {
 		checkTimeAfterUpdatedLastPost()
 			.then(() => {
 				dispatch(editPostRequest());
+				const dataType = 'image/gif';
 				const image = new Image();
 				image.src = photoSrc;
 				image.onload = () => {
-					const canvas = getCanvasWithImage(image, rotate);
-					fetch(canvas.toDataURL('image/jpeg', 0.94)).then(res => res.blob())
+					let dataUrl = photoSrc;
+					if (!isGif && rotate) {
+						dataUrl = getCanvasWithImage(image, rotate).toDataURL(dataType, 0.94);
+					}
+					fetch(dataUrl).then(res => {
+						return res.blob()
+					})
 						.then(blob => {
 							return Steem.createPost(tags, title, description, blob)
 						})
@@ -245,8 +251,9 @@ function prepareData() {
 	const tags = getValidTagsString(editPostState.tags);
 	const photoSrc = editPostState.src;
 	const rotate = editPostState.rotate;
+	const isGif = editPostState.isGif;
 
-	return {title, description, tags, photoSrc, rotate};
+	return {title, description, tags, photoSrc, rotate, isGif};
 }
 
 
