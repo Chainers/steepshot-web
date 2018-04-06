@@ -5,9 +5,6 @@ import PushNotification from './PushNotification';
 import {openPushNot} from '../../actions/pushNotification';
 
 class PushNotifications extends React.Component {
-  constructor(props) {
-    super(props);
-  }
 
   componentWillReceiveProps(nextProps) {
     

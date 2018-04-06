@@ -4,9 +4,6 @@ import Avatar from '../../Common/Avatar/Avatar';
 import Link from 'react-router-dom/es/Link';
 
 class CommentPostNotification extends React.Component {
-  constructor(props) {
-    super(props);
-  }
 
   render() {
     let thumbnail = {
