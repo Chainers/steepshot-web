@@ -18,6 +18,7 @@ import Likes from './Likes/Likes';
 import VoteIndicator from './Vote/VoteIndicator/VoteIndicator';
 import jqApp from "../../../libs/app.min";
 import './post.css';
+import ReactPlayer from 'react-player'
 
 class Post extends React.Component {
 
@@ -74,17 +75,42 @@ class Post extends React.Component {
 		clearTimeout(this.props.plTimeout);
 	}
 
+	renderImage() {
+		if (this.props.imgUrl.match(/mp4$/i)) {
+			return (
+				<div className="card-pic" onClick={this.openPostModal.bind(this)}>
+					<ReactPlayer url={this.props.imgUrl} playing={false} controls={true}/>
+				</div>
+			)
+		}
+		let itemImage = this.props.imgUrl || Constants.NO_IMAGE;
+		const cardPhotoStyles = {
+			backgroundImage: 'url(' + itemImage + ')',
+		};
+		return (
+			<div className="card-pic" onClick={this.openPostModal.bind(this)}>
+				<ShowIf show={this.props['is_nsfw']}>
+					<div className="forAdult">
+						<p>NSFW content</p>
+					</div>
+				</ShowIf>
+				<ShowIf show={!this.props.is_nsfw && this.props.is_low_rated}>
+					<div className="forAdult">
+						<p>Low rated content</p>
+					</div>
+				</ShowIf>
+				<a style={cardPhotoStyles} className="img" alt="User"> </a>
+			</div>
+		)
+	}
+
 	render() {
 		if (!this.props || !this.props.imgUrl) {
 			return null;
 		}
-		let itemImage = this.props.imgUrl || Constants.NO_IMAGE;
 		let authorImage = this.props.avatar || Constants.NO_AVATAR;
 
 		const authorLink = `/@${this.props.author}`;
-		const cardPhotoStyles = {
-			backgroundImage: 'url(' + itemImage + ')',
-		};
 
 		return (
 			<div className="item-wrap" id={this.props.index}>
@@ -119,19 +145,7 @@ class Post extends React.Component {
 						</div>
 					</ShowIf>
 					<div className="card-body">
-						<div className="card-pic" onClick={this.openPostModal.bind(this)}>
-							<ShowIf show={this.props['is_nsfw']}>
-								<div className="forAdult">
-									<p>NSFW content</p>
-								</div>
-							</ShowIf>
-							<ShowIf show={!this.props.is_nsfw && this.props.is_low_rated}>
-								<div className="forAdult">
-									<p>Low rated content</p>
-								</div>
-							</ShowIf>
-							<a style={cardPhotoStyles} className="img" alt="User"> </a>
-						</div>
+						{this.renderImage()}
 						<div className="card-wrap">
 							<div className="card-controls">
 								<ShowIf show={this.props.isPLOpen && this.props.powerLikeIndPlace === 'post'}>
