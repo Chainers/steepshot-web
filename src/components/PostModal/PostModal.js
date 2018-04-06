@@ -54,12 +54,12 @@ class PostModal extends React.Component {
 		window.addEventListener('resize', this.setComponentSize);
 		window.addEventListener('keydown', this.initKeyPress);
 		this.setComponentSize();
-		setTimeout(() => {
-			this.testFunc();
-		}, 5000);
-    setTimeout(() => {
-      this.testFunc2();
-    }, 7000);
+    // setTimeout(() => {
+			// this.testFunc();
+    // }, 5000);
+    // setTimeout(() => {
+    //   this.testFunc2();
+    // }, 7000);
 	}
 
 	testFunc() {
