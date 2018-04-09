@@ -39,7 +39,10 @@ export default {
 
 	IMAGE: {
 		MIN_WIDTH: 640,
-		MIN_HEIGHT: 480
+		MIN_HEIGHT: 480,
+		MAX_WIDTH: 1920,
+		MAX_HEIGHT: 1200,
+		MAX_SIZE: 1000000
 	},
 
 	EMPTY_QUERY: 'It\'s very strange, but we do not have anything yet for this query. Try to look for something else...',
