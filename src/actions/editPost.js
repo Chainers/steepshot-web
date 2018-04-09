@@ -10,6 +10,7 @@ import * as React from "react";
 import PlagiarismTracking from "../components/Modals/PlagiarismTracking/PlagiarismTracking";
 import {openModal} from "./modal";
 import {push} from "react-router-redux";
+import {compressJPEG} from "../utils/compressor";
 
 const getUserName = () => {
 	return getStore().getState().auth.user;
@@ -53,13 +54,9 @@ export function removeTag(index) {
 	}
 }
 
-export function changeImage(imageSrc, image, fileSize) {
+export function changeImage(imageSrc, image) {
 	return dispatch => {
 		if (!isValidImageSize(dispatch, image)) {
-			return;
-		}
-		if (fileSize / 1000 / 1000 > 10) {
-			dispatch(setEditPostImageError('Image should be less than 10 mb.'));
 			return;
 		}
 		dispatch({
@@ -187,6 +184,7 @@ export function editPost() {
 	}
 }
 
+
 export function createPost() {
 	let {title, tags, description, photoSrc, rotate, isGif} = prepareData();
 
@@ -208,6 +206,16 @@ export function createPost() {
 					fetch(dataUrl).then(res => {
 						return res.blob()
 					})
+						.then(blob => {
+							if (!isGif && blob.size > constants.IMAGE.MAX_SIZE) {
+								console.log("compressing...");
+								return compressJPEG(blob);
+							}
+							return new Promise( resolve => {
+								resolve(blob);
+							});
+
+						})
 						.then(blob => {
 							return Steem.createPost(tags, title, description, blob)
 						})

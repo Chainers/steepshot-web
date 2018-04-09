@@ -67,7 +67,7 @@ class EditPost extends React.Component {
 			let image = new Image();
 			image.src = reader.result;
 			image.onload = () => {
-				this.props.changeImage(reader.result, image, file.size);
+				this.props.changeImage(reader.result, image);
 			};
 			image.onerror = () => {
 				this.props.setEditPostImageError(Constants.WRONG_FILE_FORMAT);
@@ -238,8 +238,8 @@ const mapDispatchToProps = (dispatch) => {
 		removeTag: (index) => {
 			dispatch(removeTag(index))
 		},
-		changeImage: (imageSrc, image, fileSize) => {
-			dispatch(changeImage(imageSrc, image, fileSize))
+		changeImage: (imageSrc, image) => {
+			dispatch(changeImage(imageSrc, image))
 		},
 		imageRotate: (image) => {
 			dispatch(imageRotate(image))
