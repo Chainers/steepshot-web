@@ -12,7 +12,12 @@ import {closeModal} from '../../actions/modal';
 import ShowIf from '../Common/ShowIf';
 import Flag from '../PostsList/Post/Flag/Flag';
 import Vote from '../PostsList/Post/Vote/Vote';
+import {UserLinkFunc} from '../Common/UserLinkFunc';
+import Tags from '../PostsList/Post/Tags/Tags';
+import ScrollViewComponent from '../Common/ScrollViewComponent';
+import Comments from '../Posts/Comments';
 import LoadingSpinner from '../LoadingSpinner/index';
+import {sendComment} from '../../actions/comment';
 import {copyToClipboard} from '../../actions/clipboard';
 import ReactDOM from 'react-dom';
 import PostContextMenu from '../PostContextMenu/PostContextMenu';
@@ -23,13 +28,14 @@ import {toggleVote} from '../../actions/vote';
 import './postModal.css';
 import {setPowerLikeInd, setPowerLikeTimeout} from '../../actions/post';
 import VoteIndicator from '../PostsList/Post/Vote/VoteIndicator/VoteIndicator';
+import jqApp from '../../libs/app.min';
 import LikePostNotification from "../PushNotifications/LikePostNotification/LikePostNotification";
 import {openPushNot} from "../../actions/pushNotification";
 import FollowUserNotification from "../PushNotifications/FollowUserNotification/FollowUserNotification";
 import ImagesGallery from "../ImagesGallery/ImagesGallery";
 import ReactPlayer from 'react-player'
-import Comments from "../Comments/Comments";
 
+const START_TEXTAREA_HEIGHT = '42px';
 const HEADER_HEIGHT = 60;
 
 class PostModal extends React.Component {
