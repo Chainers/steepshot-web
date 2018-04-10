@@ -11,7 +11,7 @@ import Tags from './Tags/Tags';
 import Vote from './Vote/Vote';
 import PostModal from '../../PostModal/PostModal';
 import {openPostModal} from '../../../actions/postModal';
-import {setPowerLikeInd, setPowerLikeTimeout} from '../../../actions/post';
+import {playVideo, setPowerLikeInd, setPowerLikeTimeout, stopVideo} from '../../../actions/post';
 import LoadingSpinner from '../../LoadingSpinner/index';
 import Avatar from '../../Common/Avatar/Avatar';
 import Likes from './Likes/Likes';
@@ -76,10 +76,26 @@ class Post extends React.Component {
 	}
 
 	renderImage() {
-		if (this.props.imgUrl.match(/mp4$/i)) {
+		if (this.props.isVideo) {
 			return (
-				<div className="card-pic" onClick={this.openPostModal.bind(this)}>
-					<ReactPlayer url={this.props.imgUrl} playing={false} controls={true}/>
+				<div className="card-pic post_vid-con" onClick={this.openPostModal.bind(this)}
+						 onMouseEnter={() => {
+							 this.props.playVideo(this.props.index)
+						 }}
+						 onMouseLeave={() => {
+							 this.props.stopVideo(this.props.index);
+							 this.player.seekTo(0);
+						 }}
+				>
+					<ReactPlayer
+						url={this.props.imgUrl}
+						height='100%'
+						loop={true}
+						playing={this.props.playing}
+						controls={false}
+						ref={ref => this.player = ref}
+					/>
+
 				</div>
 			)
 		}
@@ -221,6 +237,12 @@ const mapDispatchToProps = (dispatch) => {
 		},
 		setPowerLikeTimeout: (index, plTimeout) => {
 			dispatch(setPowerLikeTimeout(index, plTimeout));
+		},
+		playVideo: (index) => {
+			dispatch(playVideo(index))
+		},
+		stopVideo: (index) => {
+			dispatch(stopVideo(index))
 		}
 	};
 };

@@ -206,12 +206,17 @@ class PostModal extends React.Component {
 	}
 
 	renderImage() {
-		if (this.props.imgUrl.match(/mp4$/i)) {
+		if (this.props.post.isVideo) {
 			return (
-				<div className="image-container_pos-mod"
+				<div className="image-container_pos-mod image-container_vid-con"
 						 style={this.props.style.imgCont}
 				>
-					<ReactPlayer url={this.props.imgUrl} playing={false} controls={true}/>
+					<ReactPlayer
+						width='100%'
+						height='100%'
+						url={this.props.imgUrl}
+						playing={true}
+						loop={true}/>
 				</div>
 			)
 		}

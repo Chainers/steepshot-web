@@ -13,6 +13,10 @@
     background: #ffffff;
 }
 
+.image-container_pos-mod.image-container_vid-con {
+    background: black;
+}
+
 .image-container_pos-mod {
     position: relative;
     height: 100%;
