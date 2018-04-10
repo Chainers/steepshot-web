@@ -32,6 +32,7 @@ import jqApp from '../../libs/app.min';
 import LikePostNotification from "../PushNotifications/LikePostNotification/LikePostNotification";
 import {openPushNot} from "../../actions/pushNotification";
 import FollowUserNotification from "../PushNotifications/FollowUserNotification/FollowUserNotification";
+import ImagesGallery from "../ImagesGallery/ImagesGallery";
 import ReactPlayer from 'react-player'
 
 const START_TEXTAREA_HEIGHT = '42px';
@@ -487,145 +488,139 @@ class PostModal extends React.Component {
 		clearTimeout(this.props.post.plTimeout);
 	}
 
-	renderCommentInput() {
-		return (
-			<ShowIf show={this.props.isUserAuth}>
-				<div className="add-comment_pos-mod">
-					<div className="hidden-div_pos-mod"
-							 ref={ref => {
-								 this.hiddenDiv = ref
-							 }}
-							 style={this.hiddenDiv ? {width: this.props.textareaWidth, maxHeight: 480} : {}}
-					/>
-					<textarea ref={ref => this.textArea = ref}
-										maxLength={2048}
-										className="form-control text-area_pos-mod"
-										onChange={this.changeText.bind(this)}
-										style={{
-											height: this.hiddenDiv !== undefined
-												? this.props.addCommentHeight + 'px'
-												: START_TEXTAREA_HEIGHT,
-										}}
-					/>
-					<label className={this.props.label + ' label_pos-mod'}>Comment</label>
-					<ShowIf show={this.props.needsCommentFormLoader}>
-						<LoadingSpinner style={{top: 0}}/>
-					</ShowIf>
-					<ShowIf show={!this.props.needsCommentFormLoader}>
-						<button type="submit"
-										className={'btn-submit btn_pos-mod ' + this.props.sendHover}
-										onClick={this.sendComment.bind(this)}
-						>Send
-						</button>
-					</ShowIf>
-				</div>
-			</ShowIf>
-		)
-	}
+  renderCommentInput() {
+    return (
+      <ShowIf show={this.props.isUserAuth}>
+        <div className="add-comment_pos-mod">
+          <div className="hidden-div_pos-mod"
+               ref={ref => {
+                 this.hiddenDiv = ref
+               }}
+               style={this.hiddenDiv ? {width: this.props.textareaWidth, maxHeight: 480} : {}}
+          />
+          <textarea ref={ref => this.textArea = ref}
+                    maxLength={2048}
+                    className="form-control text-area_pos-mod"
+                    onChange={this.changeText.bind(this)}
+                    style={{
+                      height: this.hiddenDiv !== undefined
+                        ? this.props.addCommentHeight + 'px'
+                        : START_TEXTAREA_HEIGHT,
+                    }}
+          />
+          <label className={this.props.label + ' label_pos-mod'}>Comment</label>
+          <ShowIf show={this.props.needsCommentFormLoader}>
+            <LoadingSpinner style={{top: 0}}/>
+          </ShowIf>
+          <ShowIf show={!this.props.needsCommentFormLoader}>
+            <button type="submit"
+                    className={'btn-submit btn_pos-mod ' + this.props.sendHover}
+                    onClick={this.sendComment.bind(this)}
+            >Send
+            </button>
+          </ShowIf>
+        </div>
+      </ShowIf>
+    )
+  }
 
-	render() {
-		const authorLink = `/@${this.props.post.author}`;
-		let commentInput = this.renderCommentInput();
-		let hideModalFS = this.props.style.container;
-		if (this.props.fullScreenMode) {
-			hideModalFS = {
-				position: 'absolute',
-				top: '-5000px',
-				visibility: 'hidden'
-			}
-		}
-		return (
-			<div>
-				<div className="container_pos-mod" style={hideModalFS}>
-					<ShowIf show={this.props.showClose}>
-						<ShowIf show={!this.props.firstPost}>
-							<div className="arrow-left-full-screen_post-mod" onClick={this.previousPost.bind(this)}/>
-						</ShowIf>
-						<ShowIf show={!this.props.lastPost && !this.props.newPostsLoading}>
-							<div className="arrow-right-full-screen_post-mod" onClick={this.nextPost.bind(this)}/>
-						</ShowIf>
-						<ShowIf show={this.props.newPostsLoading}>
-							<div className="loader-right-full-screen_post-mod" onClick={this.nextPost.bind(this)}>
-								<LoadingSpinner style={{
-									position: 'absolute', top: '50%', left: '50%',
-									transform: 'translate(-50%, -53%)', width: 35, height: 35
-								}}
-																loaderClass="new-posts-spinner_post-mod"
-								/>
-							</div>
-						</ShowIf>
-					</ShowIf>
-					{this.renderImage()}
-					<div className="header_pos-mod"
-							 style={this.props.style.headerCont}
-					>
-						<div className="date_pos-mod">
-							<TimeAgo datetime={this.props.post.created}
-											 locale='en_US'
-											 className="time_pos-mod"
-							/>
-							<PostContextMenu style={{height: '22px', width: '22px', marginRight: this.props.showClose ? '38px' : 0}}
-															 className="post-context-menu_post"
-															 item={this.props.post}
-															 index={this.props.currentIndex}
-							/>
-							<ShowIf show={this.props.showClose}>
-								<div className="cont-close-btn_pos-mod" onClick={() => this.props.closeModal(this.props.point)}>
-									<i className="close-btn_pos-mod"/>
-								</div>
-							</ShowIf>
-						</div>
-						<Link to={authorLink} className="user_pos-mod">
-							<Avatar src={this.props.post.avatar}/>
-							<div className="name_pos-mod">
-								{this.props.post.author}
-							</div>
-						</Link>
-					</div>
-					<div className="description_pos-mod"
-							 style={this.props.style.description}
-							 ref={(ref) => {
-								 this.descPosMod = ref
-							 }}
-					>
-						<div className="card-controls">
-							<ShowIf show={this.props.post.isPLOpen && this.props.post.powerLikeIndPlace === 'modal'}>
-								<VoteIndicator index={this.props.currentIndex}
-															 voteButton={this.votePosMod}
-															 isPopup={true}
-								/>
-							</ShowIf>
-							<div>
-								<Likes postIndex={this.props.currentIndex} style={{paddingLeft: 20}}/>
-							</div>
-							<div className="card-buttons_post">
-								<div>
-									<ShowIf show={parseFloat(this.props.post.total_payout_reward)}>
-										<div className="amount">${this.props.post.total_payout_reward}</div>
-									</ShowIf>
-								</div>
-								<ShowIf show={this.props.authUser !== this.props.post.author}>
-									<Flag postIndex={this.props.currentIndex} commentLoader={this.props.needsCommentFormLoader}/>
-								</ShowIf>
-								<div className="position--relative"
-										 ref={ref => {
-											 this.votePosMod = ref
-										 }}
-										 onMouseEnter={this.longTapPLInd.bind(this)}
-										 onMouseLeave={this.breakLongTapPLInd.bind(this)}
-										 onTouchStart={this.longTapPLInd.bind(this)}
-										 onTouchEnd={this.breakLongTapPLInd.bind(this)}
-										 onTouchMove={this.breakLongTapPLInd.bind(this)}
-										 onContextMenu={this.breakLongTapPLInd.bind(this)}
-								>
-									<div className="card-control-stop"/>
-									<Vote postIndex={this.props.currentIndex}
-												commentLoader={this.props.needsCommentFormLoader}
-												style={{paddingRight: 20}}
-									/>
-								</div>
-							</div>
-						</div>
+  render() {
+    const authorLink = `/@${this.props.post.author}`;
+    let commentInput = this.renderCommentInput();
+    let hideModalFS = this.props.style.container;
+    if (this.props.fullScreenMode) {
+      hideModalFS = {
+        position: 'absolute',
+        top: '-5000px',
+        visibility: 'hidden'
+      }
+    }
+    return (
+      <div>
+        <div className="container_pos-mod" style={hideModalFS}>
+          <ShowIf show={this.props.showClose}>
+            <ShowIf show={!this.props.firstPost}>
+              <div className="arrow-left-full-screen_post-mod" onClick={this.previousPost.bind(this)}/>
+            </ShowIf>
+            <ShowIf show={!this.props.lastPost && !this.props.newPostsLoading}>
+              <div className="arrow-right-full-screen_post-mod" onClick={this.nextPost.bind(this)}/>
+            </ShowIf>
+            <ShowIf show={this.props.newPostsLoading}>
+              <div className="loader-right-full-screen_post-mod" onClick={this.nextPost.bind(this)}>
+                <LoadingSpinner style={{position: 'absolute', top: '50%', left: '50%',
+                    transform: 'translate(-50%, -53%)', width: 35, height: 35}}
+                                loaderClass="new-posts-spinner_post-mod"
+                />
+              </div>
+            </ShowIf>
+          </ShowIf>
+          {this.renderImage()}
+            <div className="header_pos-mod"
+                 style={this.props.style.headerCont}
+            >
+              <div className="date_pos-mod">
+                <TimeAgo datetime={this.props.post.created}
+                         locale='en_US'
+                         className="time_pos-mod"
+                />
+                <PostContextMenu style={{height: '22px', width: '22px', marginRight: this.props.showClose ? '38px' : 0}}
+                                 className="post-context-menu_post"
+                                 item={this.props.post}
+                                 index={this.props.currentIndex}
+                />
+                <ShowIf show={this.props.showClose}>
+                  <div className="cont-close-btn_pos-mod" onClick={() => this.props.closeModal(this.props.point)}>
+                    <i className="close-btn_pos-mod"/>
+                  </div>
+                </ShowIf>
+              </div>
+              <Link to={authorLink} className="user_pos-mod">
+                <Avatar src={this.props.post.avatar}/>
+                <div className="name_pos-mod">
+                  {this.props.post.author}
+                </div>
+              </Link>
+            </div>
+            <div className="description_pos-mod"
+                 style={this.props.style.description}
+                 ref={(ref) => {this.descPosMod = ref}}
+            >
+              <div className="card-controls">
+                <ShowIf show={this.props.post.isPLOpen && this.props.post.powerLikeIndPlace === 'modal'}>
+                  <VoteIndicator index={this.props.currentIndex}
+                                 voteButton={this.votePosMod}
+                                 isPopup={true}
+                  />
+                </ShowIf>
+                <div>
+                  <Likes postIndex={this.props.currentIndex} style={{paddingLeft: 20}}/>
+                </div>
+                <div className="card-buttons_post">
+                  <div>
+                    <ShowIf show={parseFloat(this.props.post.total_payout_reward)}>
+                      <div className="amount">${this.props.post.total_payout_reward}</div>
+                    </ShowIf>
+                  </div>
+                  <ShowIf show={this.props.authUser !== this.props.post.author}>
+                    <Flag postIndex={this.props.currentIndex} commentLoader={this.props.needsCommentFormLoader}/>
+                  </ShowIf>
+                  <div className="position--relative"
+                       ref={ref => {this.votePosMod = ref}}
+                       onMouseEnter={this.longTapPLInd.bind(this)}
+                       onMouseLeave={this.breakLongTapPLInd.bind(this)}
+                       onTouchStart={this.longTapPLInd.bind(this)}
+                       onTouchEnd={this.breakLongTapPLInd.bind(this)}
+                       onTouchMove={this.breakLongTapPLInd.bind(this)}
+                       onContextMenu={this.breakLongTapPLInd.bind(this)}
+                  >
+                    <div className="card-control-stop"/>
+                    <Vote postIndex={this.props.currentIndex}
+                          commentLoader={this.props.needsCommentFormLoader}
+                          style={{paddingRight: 20}}
+                    />
+                  </div>
+                </div>
+              </div>
 
 						<div className="comment-container_pos-mod">
 							<ScrollViewComponent

@@ -1,7 +1,7 @@
 import React from 'react';
 import './likePostNotification.css';
 import Avatar from '../../Common/Avatar/Avatar';
-import Link from 'react-router-dom/Link';
+import {Link} from 'react-router-dom';
 
 class LikePostNotification extends React.Component {
 
