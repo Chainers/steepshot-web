@@ -24,6 +24,24 @@ export default function posts(state = {}, action) {
 				}
 			};
 
+		case 'POST_PLAY_VIDEO':
+			return {
+				...state,
+				[action.index]: {
+					...state[action.index],
+					playing: true
+				}
+			};
+
+		case 'POST_STOP_VIDEO':
+			return {
+				...state,
+				[action.index]: {
+					...state[action.index],
+					playing: false
+				}
+			};
+
 		case 'TOGGLE_FLAG_FAILURE':
 			return {
 				...state,

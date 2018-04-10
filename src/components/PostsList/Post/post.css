@@ -33,3 +33,7 @@
 .btn-like-wrapper_vote:hover .btn-like::before {
     transform: scale(1.15);
 }
+
+.card-pic.post_vid-con {
+    margin-left: -160px;
+}

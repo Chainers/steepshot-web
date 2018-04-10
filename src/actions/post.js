@@ -160,5 +160,19 @@ function error() {
 }
 
 
+export function playVideo(index) {
+	return {
+		type: 'POST_PLAY_VIDEO',
+		index
+	}
+}
+
+export function stopVideo(index) {
+	return {
+		type: 'POST_STOP_VIDEO',
+		index
+	}
+}
+
 
 

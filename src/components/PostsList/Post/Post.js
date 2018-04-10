@@ -11,13 +11,14 @@ import Tags from './Tags/Tags';
 import Vote from './Vote/Vote';
 import PostModal from '../../PostModal/PostModal';
 import {openPostModal} from '../../../actions/postModal';
-import {setPowerLikeInd, setPowerLikeTimeout} from '../../../actions/post';
+import {playVideo, setPowerLikeInd, setPowerLikeTimeout, stopVideo} from '../../../actions/post';
 import LoadingSpinner from '../../LoadingSpinner/index';
 import Avatar from '../../Common/Avatar/Avatar';
 import Likes from './Likes/Likes';
 import VoteIndicator from './Vote/VoteIndicator/VoteIndicator';
 import jqApp from "../../../libs/app.min";
 import './post.css';
+import ReactPlayer from 'react-player'
 
 class Post extends React.Component {
 
@@ -74,17 +75,58 @@ class Post extends React.Component {
 		clearTimeout(this.props.plTimeout);
 	}
 
+	renderImage() {
+		if (this.props.isVideo) {
+			return (
+				<div className="card-pic post_vid-con" onClick={this.openPostModal.bind(this)}
+						 onMouseEnter={() => {
+							 this.props.playVideo(this.props.index)
+						 }}
+						 onMouseLeave={() => {
+							 this.props.stopVideo(this.props.index);
+							 this.player.seekTo(0);
+						 }}
+				>
+					<ReactPlayer
+						url={this.props.imgUrl}
+						height='100%'
+						loop={true}
+						playing={this.props.playing}
+						controls={false}
+						ref={ref => this.player = ref}
+					/>
+
+				</div>
+			)
+		}
+		let itemImage = this.props.imgUrl || Constants.NO_IMAGE;
+		const cardPhotoStyles = {
+			backgroundImage: 'url(' + itemImage + ')',
+		};
+		return (
+			<div className="card-pic" onClick={this.openPostModal.bind(this)}>
+				<ShowIf show={this.props['is_nsfw']}>
+					<div className="forAdult">
+						<p>NSFW content</p>
+					</div>
+				</ShowIf>
+				<ShowIf show={!this.props.is_nsfw && this.props.is_low_rated}>
+					<div className="forAdult">
+						<p>Low rated content</p>
+					</div>
+				</ShowIf>
+				<a style={cardPhotoStyles} className="img" alt="User"> </a>
+			</div>
+		)
+	}
+
 	render() {
 		if (!this.props || !this.props.imgUrl) {
 			return null;
 		}
-		let itemImage = this.props.imgUrl || Constants.NO_IMAGE;
 		let authorImage = this.props.avatar || Constants.NO_AVATAR;
 
 		const authorLink = `/@${this.props.author}`;
-		const cardPhotoStyles = {
-			backgroundImage: 'url(' + itemImage + ')',
-		};
 
 		return (
 			<div className="item-wrap" id={this.props.index}>
@@ -119,19 +161,7 @@ class Post extends React.Component {
 						</div>
 					</ShowIf>
 					<div className="card-body">
-						<div className="card-pic" onClick={this.openPostModal.bind(this)}>
-							<ShowIf show={this.props['is_nsfw']}>
-								<div className="forAdult">
-									<p>NSFW content</p>
-								</div>
-							</ShowIf>
-							<ShowIf show={!this.props.is_nsfw && this.props.is_low_rated}>
-								<div className="forAdult">
-									<p>Low rated content</p>
-								</div>
-							</ShowIf>
-							<a style={cardPhotoStyles} className="img" alt="User"> </a>
-						</div>
+						{this.renderImage()}
 						<div className="card-wrap">
 							<div className="card-controls">
 								<ShowIf show={this.props.isPLOpen && this.props.powerLikeIndPlace === 'post'}>
@@ -207,6 +237,12 @@ const mapDispatchToProps = (dispatch) => {
 		},
 		setPowerLikeTimeout: (index, plTimeout) => {
 			dispatch(setPowerLikeTimeout(index, plTimeout));
+		},
+		playVideo: (index) => {
+			dispatch(playVideo(index))
+		},
+		stopVideo: (index) => {
+			dispatch(stopVideo(index))
 		}
 	};
 };
