@@ -3,7 +3,10 @@ import utils from '../../../utils/utils';
 import ShowIf from '../ShowIf';
 import ReactResizeDetector from 'react-resize-detector';
 import {connect} from 'react-redux';
-import {blurredTextInput, focusedTextInput, initTextInput, setTextInputState, setTextInputError} from '../../../actions/textInput';
+import {
+	blurredTextInput, focusedTextInput, initTextInput, setTextInputState, setTextInputError,
+	clearTextInputState
+} from '../../../actions/textInput';
 import './textInput.css';
 import constants from '../../../common/constants';
 
@@ -24,11 +27,10 @@ class TextInput extends React.Component {
 	constructor(props) {
 		super(props);
 		const fontSize = props.smallFont ? 11 : 14;
-		const fontPadding = props.smallFont ? 7 : 9;
+		const fontPadding = props.smallFont ? 5 : 9;
 		const lineHeight = fontSize + fontPadding;
 		let maxHeight = props.maxHeight - TextInput.MARGIN_TEXT;
 		maxHeight = Math.round(maxHeight / lineHeight) * lineHeight;
-
 		const state = {
 			fontSize,
 			fontPadding,
@@ -50,6 +52,12 @@ class TextInput extends React.Component {
 			this._updateTextValue.call(this, nextProps.value);
 		}
 		return true;
+	}
+
+	componentWillUnmount() {
+		console.log('will unmount');
+		console.log(this.props);
+		this.props.clearTextInputState(this.props.point);
 	}
 
 	onChange(event) {
@@ -101,6 +109,7 @@ class TextInput extends React.Component {
 			return;
 		}
 		let prefAreaHeight = this.hiddenDiv.clientHeight;
+		prefAreaHeight = utils.getLess(prefAreaHeight, this.props.maxHeight);
 		let areaPadding = prefAreaHeight === this.props.lineHeight ? this.props.lineHeight / 2 : 0;
 		const state = {
 			prefAreaHeight,
@@ -204,6 +213,9 @@ const mapDispatchToProps = (dispatch) => {
 		},
 		blurredTextInput: (point) => {
 			dispatch(blurredTextInput(point));
+		},
+		clearTextInputState: (point) => {
+			dispatch(clearTextInputState(point))
 		}
 	};
 };
