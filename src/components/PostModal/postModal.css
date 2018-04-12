@@ -80,7 +80,6 @@
     display: flex;
     flex: 1;
     flex-direction: column;
-    justify-content: flex-end;
     width: 380px;
     background-color: #ffffff;
     order: 3;
@@ -196,6 +195,15 @@
 .text-area_pos-mod {
     font: 11px OpenSans-Regular;
     z-index: 1;
+}
+
+.btn-hover_pos-mod {
+    color: #e74800;
+}
+
+.btn-hover_pos-mod:hover {
+    cursor: pointer;
+    border: 1px solid #ececee;
 }
 
 .label_pos-mod {

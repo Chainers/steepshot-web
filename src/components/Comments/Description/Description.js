@@ -19,11 +19,17 @@ class Description extends React.Component {
 	}
 
 	render() {
+		let forceOpen = false;
+		let descriptionStart = this.props.description.replace(/(<\w+>)+/, '');
+		if (descriptionStart.replace(/\n[\w\W]+/, '').length < 140) {
+			forceOpen = true;
+		}
+
 		return (
 			<div className="container_description">
 				<p>{UserLinkFunc(true, this.props.title)}</p>
 				<div
-					className={(this.state.isDescriptionOpened || (this.props.description.length < 140))
+					className={(this.state.isDescriptionOpened || forceOpen)
 						? 'collapse-opened'
 						: 'collapse-closed'}
 				>

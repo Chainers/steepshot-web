@@ -2,22 +2,29 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
 import TimeAgo from 'timeago-react';
+import jqApp from "../../../libs/app.min";
+import constants from "../../../common/constants";
 import Avatar from "../../Common/Avatar/Avatar";
 import VouteComponent from "../../Posts/VouteComponent";
-import {replyAuthor} from "../../../actions/comments";
-import {addPosts} from "../../../actions/post";
-import Likes from "../../PostsList/Post/Likes/Likes";
-import './comment.css';
+
 
 class Comment extends React.Component {
 
+	constructor(props) {
+		super(props);
+		this.state = {
+			item: props.item,
+			avatar: props.item.avatar
+		};
+	}
+
 	updateVoteInComponent(vote) {
-		let newItem = this.props.item;
+		let newItem = this.state.item;
 		vote ? newItem.net_votes++ : newItem.net_votes--;
 		vote ? newItem.net_likes++ : newItem.net_likes--;
 		newItem.vote = vote;
-		this.props.updateComment({
-			[this.props.point]: newItem
+		this.setState({
+			item: newItem
 		});
 	}
 
@@ -26,10 +33,10 @@ class Comment extends React.Component {
 	}
 
 	commentsLayout() {
-		let safetyScript = this.props.item.body.replace(/<script>|<\/script>/g, '');
+		let safetyScript = this.state.item.body.replace(/<script>|<\/script>/g, '');
 		let newLine = safetyScript.replace(/\n/g, '<br>');
-		let deletedBotsLayout = newLine.replace(/(!)?\[([^\]]+)?\]/g, '');
-		let changeBotsLink = deletedBotsLayout.replace(/\((http(s)?:\/\/[\w\W]+?|www\.[\w\W]+?)\)/g, '$1');
+		let replaceBotsLayout = newLine.replace(/(!)?\[([^\]]+)?\]/g, '');
+		let changeBotsLink = replaceBotsLayout.replace(/\((http(s)?:\/\/[\w\W]+?|www\.[\w\W]+?)\)/g, '$1');
 		let linkToImg = changeBotsLink.replace(
 			/(http(s)?:\/\/[^\s<>]+?(\.png|\.gif|\.jpg|\.jpeg|\.tif|\.tiff)(\?[\w\W]+?)?(?!"))/gi, '<img src="$1"/>');
 		let anyLinks = linkToImg.replace(/<a[\w\W]+?>([\w\W]+?)<\/a>/g, '$1');
@@ -37,14 +44,60 @@ class Comment extends React.Component {
 		this.commentText.innerHTML = userLink;
 	}
 
-	render() {
-		if (!this.props.item) {
-			return null;
+	openLikesModal() {
+
+	}
+
+	replyAuthor() {
+		if (this.props.replyUser) {
+			this.props.replyUser.value = `@${this.state.item.author}, `;
+			this.props.replyUser.focus();
+		} else {
+			jqApp.pushMessage.open(constants.VOTE_ACTION_WHEN_NOT_AUTH);
 		}
+	}
+
+	likeFunc() {
+		let like = this.state.item.net_likes;
+		let text = null;
+		let money = null;
+		let reply = <span className="rectangle_comment text--center">
+                  <span onClick={this.replyAuthor.bind(this)}>Reply</span>
+                </span>;
+		if (like) {
+			if (like === 1 || like === -1) {
+				text = `${like} like`
+			} else {
+				text = `${like} likes`
+			}
+			if (this.state.item.total_payout_value > 0) {
+				money = `+ $${this.state.item.total_payout_value.toFixed(3)}`;
+			}
+			return (
+				<div className="comment-controls clearfix">
+					{reply}
+					<a className="likes"
+						 onClick={this.openLikesModal.bind(this)}
+					>{text}</a>
+					<span className="pull-right">{money}</span>
+				</div>
+			)
+		} else {
+			return (
+				<div className="comment-controls clearfix">
+					{reply}
+				</div>
+			)
+		}
+	}
+
+	render() {
+		let avatar = this.state.avatar || constants.NO_AVATAR;
 		const authorLink = `/@${this.props.item.author}`;
 		return (
-			<div className="container_comment">
-				<div className="head_comment">
+			<div className="comment">
+				<div className="comment-head">
+					<div className="user-wrap clearfix">
 						<div className="date">
 							<TimeAgo
 								datetime={this.props.item.created}
@@ -52,12 +105,15 @@ class Comment extends React.Component {
 							/>
 						</div>
 						<Link to={authorLink} className="user">
-							<Avatar src={this.props.item.avatar}/>
+							<Avatar src={avatar}/>
 							<div className="name">{this.props.item.author}</div>
 						</Link>
+					</div>
 				</div>
 				<div className="comment-text">
-					<div ref={ref => {this.commentText = ref}} className="comment-text_comment"/>
+					<div ref={ref => {
+						this.commentText = ref
+					}} className="comment-text_comment"/>
 					<VouteComponent
 						key="vote"
 						item={this.props.item}
@@ -65,32 +121,17 @@ class Comment extends React.Component {
 						parent='comment'
 					/>
 				</div>
-				<div className="cont-reply_com">
-					<span className="rectangle_comment">
-						<span onClick={() => this.props.replyAuthor(this.props.item.author)}>Reply</span>
-					</span>
-					<Likes postIndex={this.props.item.url} disabled={true}/>
-				</div>
+				{this.likeFunc()}
 			</div>
 		);
 	}
 }
 
-const mapStateToProps = (state, props) => {
+const mapStateToProps = (state) => {
 	return {
-		item: state.posts[props.point]
+		localization: state.localization,
+		replyUser: ''
 	};
 };
 
-const mapDispatchTOProps = dispatch => {
-	return {
-		replyAuthor: (name) => {
-			dispatch(replyAuthor(name));
-		},
-		updateComment: (newData) => {
-			dispatch(addPosts(newData))
-		}
-	}
-};
-
-export default connect(mapStateToProps, mapDispatchTOProps)(Comment);
+export default connect(mapStateToProps)(Comment);
