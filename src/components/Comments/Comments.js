@@ -10,8 +10,6 @@ import Description from "./Description/Description";
 import CommentInput from "./CommentInput/CommentInput";
 import './comments.css';
 
-const isMobile = document.documentElement.clientWidth < 815;
-
 class Comments extends React.Component {
 
 	constructor(props) {
@@ -31,6 +29,7 @@ class Comments extends React.Component {
 	}
 
 	render() {
+		const isMobile = document.documentElement.clientWidth < 815;
 		let comments = null;
 
 		if (this.props.loading || !this.props.comments) {

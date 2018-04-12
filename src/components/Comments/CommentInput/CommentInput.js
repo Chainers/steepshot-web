@@ -5,6 +5,7 @@ import TextInput from "../../Common/TextInput/TextInput";
 import Constants from "../../../common/constants";
 import {sendComment} from "../../../actions/comment";
 import './commentInput.css';
+import {clearTextInputState} from "../../../actions/textInput";
 
 class CommentInput extends React.Component {
 
@@ -23,7 +24,7 @@ class CommentInput extends React.Component {
 										 point={Constants.TEXT_INPUT_POINT.COMMENT}
 										 multiline={true}
 										 smallFont={true}
-										 maxHeight={100}/>
+										 maxHeight={150}/>
 
 					<button type="submit"
 									className='btn-submit btn_com-inp'
