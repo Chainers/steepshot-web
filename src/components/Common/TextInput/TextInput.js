@@ -3,7 +3,7 @@ import utils from '../../../utils/utils';
 import ShowIf from '../ShowIf';
 import ReactResizeDetector from 'react-resize-detector';
 import {connect} from 'react-redux';
-import {initTextInput, setTextInputState, setTextInputError} from '../../../actions/textInput';
+import {blurredTextInput, focusedTextInput, initTextInput, setTextInputState, setTextInputError} from '../../../actions/textInput';
 import './textInput.css';
 import constants from '../../../common/constants';
 
@@ -37,9 +37,10 @@ class TextInput extends React.Component {
 			minAreaHeight: lineHeight * 2,
 			prefAreaHeight: lineHeight,
 			error: '',
-			focused: props.value ? 'focused_tex-inp' : '',
+			focusedStyle: props.value ? 'focused_tex-inp' : '',
 			text: props.value,
-			maxHeight
+			maxHeight,
+			focused: false
 		};
 		props.initTextInput(this.props.point, state);
 	}
@@ -72,9 +73,9 @@ class TextInput extends React.Component {
 	}
 
 	_updateTextValue(newValue) {
-		const focused = utils.isNotEmptyString(newValue) ? 'focused_tex-inp' : '';
+		const focusedStyle = utils.isNotEmptyString(newValue) ? 'focused_tex-inp' : '';
 		const state = {
-			focused,
+			focusedStyle,
 			text: newValue
 		};
 		this.props.setTextInputState(this.props.point, state);
@@ -137,8 +138,12 @@ class TextInput extends React.Component {
 											height: this.props.prefAreaHeight,
 											minHeight: this.props.minAreaHeight
 										}}
+										onFocus={() => this.props.focusedTextInput(this.props.point)}
+										onBlur={() => this.props.blurredTextInput(this.props.point)}
 					/>
-					<label className={'title_tex-inp ' + this.props.focused} onClick={() => this.input.focus()}>
+					<label className={'title_tex-inp ' + this.props.focusedStyle}
+								 onClick={() => this.input.focus()}
+								 style={this.props.smallFont ? {fontSize: '12px'} : {}}>
 						{this.props.title}
 						<ShowIf show={this.props.required}>
 							<span className="required_tex-inp"> *</span>
@@ -193,6 +198,12 @@ const mapDispatchToProps = (dispatch) => {
 		},
     setTextInputError: (point, message) => {
 			dispatch(setTextInputError(point, message));
+		},
+		focusedTextInput: (point) => {
+			dispatch(focusedTextInput(point));
+		},
+		blurredTextInput: (point) => {
+			dispatch(blurredTextInput(point));
 		}
 	};
 };

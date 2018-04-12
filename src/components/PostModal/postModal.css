@@ -192,111 +192,9 @@
     justify-content: center;
 }
 
-.comment-container_pos-mod {
-    display: flex;
-    overflow-x: hidden;
-    flex-grow: 1;
-    font: 13px OpenSans-Light, Helvetica, Arial, sans-serif;
-}
-
-.list-scroll_pos-mod {
-    overflow: hidden;
-    flex-grow: 1;
-}
-
-.list-scroll-view_pos-mod {
-    overflow: scroll;
-    padding: 20px;
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    right: 0;
-    left: 0;
-    margin-right: -15px;
-    margin-bottom: -15px;
-}
-
-.text-description_pos-menu {
-    padding-bottom: 15px;
-    font: 14px OpenSans-Light
-}
-
-.text-description_pos-menu p {
-    text-align: left;
-}
-
-.list-scroll-view_pos-mod .comment-text {
-    position: relative;
-    padding-right: 40px;
-    min-height: 1.6em;
-}
-
-.list-scroll-view_pos-mod .btn-like {
-    position: absolute;
-    right: 0;
-    top: 50%;
-    margin-top: -11px;
-}
-
-.list-scroll-view_pos-mod .wrap-btn {
-    margin: 15px;
-}
-
-.list-scroll-view_pos-mod .date {
-    float: right;
-    color: #979b9e;
-    font: 12px OpenSans-Regular;
-    line-height: 22px;
-}
-
-.list-scroll-view_pos-mod .comment {
-    padding: 10px 0;
-}
-
-.list-scroll-view_pos-mod .comment-text {
-    word-break: break-all;
-}
-
-.list-scroll-view_pos-mod .user {
-    font: 14px OpenSans-Regular;
-    color: #0f181e;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    overflow: hidden;
-}
-
-.list-scroll-view_pos-mod .user:hover {
-    color: #eb443d;
-    outline: 0;
-}
-
-.add-comment_pos-mod {
-    transition: .2s all ease;
-    display: flex;
-    align-items: flex-end;
-    width: 100%;
-    box-shadow: 0 0 10px 0 rgba(204, 204, 204, .5);
-    padding: 20px;
-    position: relative;
-    min-height: 82px;
-}
-
 .text-area_pos-mod {
     font: 11px OpenSans-Regular;
     z-index: 1;
-}
-
-.btn_pos-mod {
-    height: 42px;
-    width: 60px;
-    border: none;
-    border-radius: 25px;
-    background: 0 0;
-    cursor: default;
-    color: #979b9e;
-    font-size: 12px;
-    font-family: inherit;
-    line-height: inherit;
 }
 
 .btn-hover_pos-mod {
@@ -574,24 +472,11 @@
         max-height: 80vh;
     }
 
-    .list-scroll-view_pos-mod {
+    .list-scroll-view_comments {
         overflow: hidden;
         padding: 20px 0;
     }
 
-    .add-comment_pos-mod {
-        box-shadow: none;
-        border-top: 1px solid #f4f4f6;
-        border-bottom: 1px solid #f4f4f6;
-    }
-
-    .text-description_pos-menu {
-        padding: 0 20px 15px 20px;
-    }
-
-    .list-comments {
-        padding: 0 20px;
-    }
 }
 
 @media (max-width: 350px) {

@@ -36,7 +36,7 @@ class ScrollViewComponent extends React.Component {
 
 	render() {
 		let marginControl = null, autoHeight;
-		if (this.state.wrapperModifier === 'list-scroll_pos-mod') {
+		if (this.state.wrapperModifier === 'list-scroll_comments') {
 			if (this.state.isUserAuth) {
 				marginControl = {marginBottom: MARGIN_COMMENTS_AUTH}
 			} else {

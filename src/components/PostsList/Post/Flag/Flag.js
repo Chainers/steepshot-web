@@ -13,10 +13,6 @@ class Flag extends React.Component {
 			jqApp.pushMessage.open(Constants.VOTE_ACTION_WHEN_NOT_AUTH);
 			return;
 		}
-		if (this.props.commentLoader) {
-			jqApp.pushMessage.open(Constants.WAIT_FINISHING_TRANSACTION);
-			return;
-		}
 		if (!this.props.flag) {
 			let modalOption = {
 				body: (<ConfirmFlagModal closeModal={() => {

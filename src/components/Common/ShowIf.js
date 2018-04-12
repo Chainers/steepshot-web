@@ -9,6 +9,7 @@ class ShowIf extends React.Component {
 		if (this.props.removeFromDom && !this.props.show) {
 			return null;
 		}
+		
 		let children = this.props.children.length > 1
 			? <div className="container_show-if">{this.props.children}</div>
 			: this.props.children;
@@ -17,11 +18,10 @@ class ShowIf extends React.Component {
 			return children;
 		}
 
-		children = (<div style={this.props.show ? {} : {display: 'none'}}
-										 className={this.props.className}
-		>{children}</div>);
-
-		return children;
+		return React.cloneElement(children, {
+			style: this.props.show ? {} : {display: 'none'},
+			className: (children.props.className || '') + ' ' + (this.props.className || '')
+		});
 	}
 }
 

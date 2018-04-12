@@ -6068,7 +6068,7 @@ modal.modal-like .modal-header {
     right: -16px
 }
 
-.post-single .list-comments {
+.post-single .list_comments {
     padding-bottom: 20px
 }
 
@@ -9116,27 +9116,6 @@ modal.modal-like .modal-header {
 .modal-like__body {
     position: relative;
     min-height: 150px;
-}
-
-.collapse-opened {
-    height: 100%;
-}
-
-.collapse-closed {
-    position: relative;
-    overflow: hidden;
-    max-height: 58px;
-}
-
-.collapse-closed .lnk-more {
-    background: white;
-    position: absolute;
-    top: 38px;
-    right: 75px;
-}
-
-.collapse-opened .lnk-more {
-    display: none;
 }
 
 .card-preview {

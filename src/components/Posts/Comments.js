@@ -63,7 +63,7 @@ class Comments extends React.Component {
 			});
 		}
 		return (
-			<div className="list-comments">
+			<div className="list_comments">
 				{comments}
 			</div>
 		);
