@@ -385,7 +385,7 @@ class PostModal extends React.Component {
 		this.setComponentSize();
 	}
 
-	longTapPLInd() {
+	longTapPLInd(timeDelay) {
 		if (this.props.post.vote) {
 			return;
 		}

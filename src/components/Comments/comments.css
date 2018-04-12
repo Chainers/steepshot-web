@@ -3,26 +3,27 @@
     flex-direction: column;
     justify-content: flex-end;
     overflow-x: hidden;
+    flex-shrink: 100;
     flex-grow: 1;
     font: 13px OpenSans-Light, Helvetica, Arial, sans-serif;
 }
 
 .list-scroll_comments {
-    overflow: hidden;
+    display: flex;
     flex-grow: 1;
 }
 
 
 .list-scroll-view_comments {
-    overflow: scroll;
+    overflow-y: scroll;
     padding: 20px;
+    margin-right: -15px;
+    margin-bottom: -15px;
     position: absolute;
     top: 0;
     bottom: 0;
-    right: 0;
     left: 0;
-    margin-right: -15px;
-    margin-bottom: -15px;
+    right: 0;
 }
 
 .list-scroll-view_comments .comment-text {
@@ -77,6 +78,13 @@
 
 .comment-input-big-screen {
     flex-grow: 0;
+}
+
+.test_comments {
+    overflow: hidden;
+    flex-grow: 1;
+    flex-shrink: 100;
+    display: flex;
 }
 
 @media (max-width: 815px) {

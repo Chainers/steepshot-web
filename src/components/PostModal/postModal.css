@@ -80,6 +80,7 @@
     display: flex;
     flex: 1;
     flex-direction: column;
+    justify-content: flex-end;
     width: 380px;
     background-color: #ffffff;
     order: 3;
