@@ -23,7 +23,7 @@ class CommentInput extends React.Component {
 										 point={Constants.TEXT_INPUT_POINT.COMMENT}
 										 multiline={true}
 										 smallFont={true}
-										 maxHeight={300}/>
+										 maxHeight={100}/>
 
 					<button type="submit"
 									className='btn-submit btn_com-inp'

@@ -471,9 +471,7 @@ class PostModal extends React.Component {
 															 isPopup={true}
 								/>
 							</ShowIf>
-							<div>
-								<Likes postIndex={this.props.currentIndex} style={{paddingLeft: 20}}/>
-							</div>
+							<Likes postIndex={this.props.currentIndex} style={{paddingLeft: 20}}/>
 							<div className="card-buttons_post">
 								<div>
 									<ShowIf show={parseFloat(this.props.post.total_payout_reward)}>
