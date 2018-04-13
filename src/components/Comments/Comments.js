@@ -5,7 +5,7 @@ import LoadingSpinner from '../LoadingSpinner';
 import Constants from "../../common/constants";
 import ScrollViewComponent from "../Common/ScrollViewComponent";
 import ShowIf from "../Common/ShowIf";
-import {getPostCommets} from "../../actions/comments";
+import {getPostComments} from "../../actions/comments";
 import Description from "./Description/Description";
 import CommentInput from "./CommentInput/CommentInput";
 import './comments.css';
@@ -24,6 +24,9 @@ class Comments extends React.Component {
 	componentWillReceiveProps(nextProps) {
 		if (nextProps.point !== this.props.point) {
 			this.props.getComments(nextProps.point);
+		}
+		if (nextProps.scrollToLastComment !== this.props.scrollToLastComment && this.scrollView) {
+			this.scrollView.scrollBar.scrollToBottom();
 		}
 		return true;
 	}
@@ -59,7 +62,7 @@ class Comments extends React.Component {
 							description={this.props.post.description}
 						/>
 						<ShowIf show={isMobile}>
-							<CommentInput/>
+							<CommentInput point={this.props.point}/>
 						</ShowIf>
 						<div className="list_comments">
 							{comments}
@@ -67,7 +70,7 @@ class Comments extends React.Component {
 					</ScrollViewComponent>
 				</div>
 				<ShowIf show={!isMobile} className='comment-input-big-screen'>
-					<CommentInput/>
+					<CommentInput point={this.props.point}/>
 				</ShowIf>
 			</div>
 		);
@@ -85,7 +88,7 @@ const mapStateToProps = (state, props) => {
 const mapDispatchToProps = (dispatch) => {
 	return {
 		getComments: (point) => {
-			dispatch(getPostCommets(point))
+			dispatch(getPostComments(point))
 		}
 	}
 };

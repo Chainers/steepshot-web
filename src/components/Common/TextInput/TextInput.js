@@ -21,7 +21,8 @@ class TextInput extends React.Component {
 		required: false,
 		smallFont: false,
 		errorMsg: '',
-		noValidCharacters: ''
+		noValidCharacters: '',
+		disabled: false
 	};
 
 	constructor(props) {
@@ -149,6 +150,7 @@ class TextInput extends React.Component {
 										}}
 										onFocus={() => this.props.focusedTextInput(this.props.point)}
 										onBlur={() => this.props.blurredTextInput(this.props.point)}
+										disabled={this.props.disabled}
 					/>
 					<label className={'title_tex-inp ' + this.props.focusedStyle}
 								 onClick={() => this.input.focus()}
