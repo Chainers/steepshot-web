@@ -19,7 +19,7 @@ class ShowIf extends React.Component {
 		}
 
 		return React.cloneElement(children, {
-			style: this.props.show ? {} : {display: 'none'},
+			style: {...children.props.style, ...(this.props.show ? {} : {display: 'none'})},
 			className: (children.props.className || '') + ' ' + (this.props.className || '')
 		});
 	}
