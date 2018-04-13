@@ -40,7 +40,7 @@ class Comments extends React.Component {
 		}
 		if (this.props.comments && this.props.comments.length > 0) {
 			comments = this.props.comments.map((item, index) => {
-				return <Comment key={index} item={item}/>
+				return <Comment key={index} point={item} />
 			});
 		}
 		return (

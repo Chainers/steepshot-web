@@ -6,6 +6,7 @@ import Constants from "../../../common/constants";
 import {sendComment} from "../../../actions/comments";
 import './commentInput.css';
 import LoadingSpinner from "../../LoadingSpinner";
+import utils from '../../../utils/utils';
 
 class CommentInput extends React.Component {
 
@@ -26,7 +27,7 @@ class CommentInput extends React.Component {
 					/>
 					<ShowIf show={!this.props.sendingNewComment}>
 						<button type="submit"
-										className='btn-submit btn_com-inp'
+										className={'btn-submit btn_com-inp ' + (this.props.canSent ? 'btn-act_com-inp' : '')}
 										onClick={this.sendComment.bind(this)}> Send
 						</button>
 					</ShowIf>
@@ -42,7 +43,9 @@ class CommentInput extends React.Component {
 const mapStateToProps = (state, props) => {
 	return {
 		isUserAuth: state.auth.user && state.auth.postingKey,
-		...state.comments[props.point]
+		...state.comments[props.point],
+		canSent: state.textInput[Constants.TEXT_INPUT_POINT.COMMENT] &&
+			utils.isNotEmptyString(state.textInput[Constants.TEXT_INPUT_POINT.COMMENT].text)
 	};
 };
 

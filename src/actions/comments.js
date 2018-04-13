@@ -30,10 +30,27 @@ export function getPostComments(point) {
 			params: {}
 		};
 		getComments(options, true).then((response) => {
+			const comments = response.results;
+			let commentsUrls = comments.map((comment) => {
+				return comment.url
+			});
+
+			let commentsObjects = {};
+			let commentsLength = comments.length;
+			for (let i = 0; i < commentsLength; i++) {
+				let comment = {
+					...comments[i],
+					flagLoading: false,
+					voteLoading: false
+				};
+				commentsObjects[comments[i].url] = comment;
+			}
+
 			dispatch({
 				type: 'GET_POST_COMMENTS_SUCCESS',
 				point,
-				comments: response.results
+				posts: commentsObjects,
+				commentsUrls
 			});
 		});
 	}
@@ -54,11 +71,14 @@ function scrollToLastComment(point) {
 	}
 }
 
-function addedNewComment(point, comment) {
-	return {
-		type: 'ADDED_NEW_COMMENT',
-		point,
-		comment
+function addedNewComment(point, posts, url) {
+	return dispatch => {
+		dispatch({
+			type: 'ADDED_NEW_COMMENT',
+			point,
+			posts,
+			url
+		})
 	}
 }
 
@@ -70,6 +90,7 @@ export function sendComment(postIndex, point) {
 		dispatch(sendingNewComment(postIndex, true));
 		const urlObject = post.url.split('/');
 		const callback = (err, success) => {
+			const url = postIndex + '#@' + state.auth.user + '/' + success.operations[0][1].permlink;
 			dispatch(sendingNewComment(postIndex, false));
 			if (err) {
 				jqApp.pushMessage.open(err);
@@ -78,12 +99,15 @@ export function sendComment(postIndex, point) {
 					net_votes: 0,
 					vote: false,
 					avatar: state.auth.avatar,
-					author: state.auth.name,
+					author: state.auth.user,
 					total_payout_value: 0,
 					body: comment,
 					created: Date.now(),
+					flagLoading: false,
+					voteLoading: false,
+					url
 				};
-				dispatch(addedNewComment(postIndex, newComment));
+				dispatch(addedNewComment(postIndex, { [url]: newComment}, url));
 				dispatch(clearTextInputState(point));
 				dispatch(scrollToLastComment(postIndex));
 				jqApp.pushMessage.open(Constants.COMMENT_SUCCESS_MESSAGE);

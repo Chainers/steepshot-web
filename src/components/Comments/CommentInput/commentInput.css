@@ -28,6 +28,10 @@
     border: 1px solid #ececee;
 }
 
+.btn-act_com-inp {
+    color: #e74800;
+}
+
 @media (max-width: 815px) {
 
     .container_com-inp {

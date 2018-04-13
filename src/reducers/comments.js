@@ -9,7 +9,7 @@ export default function getComments(state = {}, action) {
 			return {
 				...state,
 				[action.point]: {
-					comments: action.comments,
+					comments: action.commentsUrls,
 					loading: false
 				}
 			};
@@ -26,7 +26,7 @@ export default function getComments(state = {}, action) {
 				...state,
 				[action.point]: {
 					...state[action.point],
-					comments: [...state[action.point].comments, action.comment]
+					comments: [...state[action.point].comments, action.url]
 				}
 			};
 		case 'SCROLL_TO_LAST_COMMENT':

@@ -56,8 +56,6 @@ class TextInput extends React.Component {
 	}
 
 	componentWillUnmount() {
-		console.log('will unmount');
-		console.log(this.props);
 		this.props.clearTextInputState(this.props.point);
 	}
 
