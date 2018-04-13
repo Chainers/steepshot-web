@@ -5,13 +5,36 @@ export default function getComments(state = {}, action) {
 				...state,
 				[action.options.point]: action.options,
 			};
-
 		case 'GET_POST_COMMENTS_SUCCESS':
 			return {
 				...state,
 				[action.point]: {
-					comments: action.comments,
+					comments: action.commentsUrls,
 					loading: false
+				}
+			};
+		case 'SENDING_NEW_COMMENT':
+			return {
+				...state,
+				[action.point]: {
+					...state[action.point],
+					sendingNewComment: action.flag
+				}
+			};
+		case 'ADDED_NEW_COMMENT':
+			return {
+				...state,
+				[action.point]: {
+					...state[action.point],
+					comments: [...state[action.point].comments, action.url]
+				}
+			};
+		case 'SCROLL_TO_LAST_COMMENT':
+			return {
+				...state,
+				[action.point]: {
+					...state[action.point],
+					scrollToLastComment: state[action.point].scrollToLastComment + 1
 				}
 			};
 		default:

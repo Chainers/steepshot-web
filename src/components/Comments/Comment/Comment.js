@@ -12,6 +12,7 @@ class Comment extends React.Component {
 
 	constructor(props) {
 		super(props);
+		console.log(props);
 		this.state = {
 			item: props.item,
 			avatar: props.item.avatar
@@ -35,8 +36,8 @@ class Comment extends React.Component {
 	commentsLayout() {
 		let safetyScript = this.state.item.body.replace(/<script>|<\/script>/g, '');
 		let newLine = safetyScript.replace(/\n/g, '<br>');
-		let replaceBotsLayout = newLine.replace(/(!)?\[([^\]]+)?\]/g, '');
-		let changeBotsLink = replaceBotsLayout.replace(/\((http(s)?:\/\/[\w\W]+?|www\.[\w\W]+?)\)/g, '$1');
+		let deletedBotsLayout = newLine.replace(/(!)?\[([^\]]+)?\]/g, '');
+		let changeBotsLink = deletedBotsLayout.replace(/\((http(s)?:\/\/[\w\W]+?|www\.[\w\W]+?)\)/g, '$1');
 		let linkToImg = changeBotsLink.replace(
 			/(http(s)?:\/\/[^\s<>]+?(\.png|\.gif|\.jpg|\.jpeg|\.tif|\.tiff)(\?[\w\W]+?)?(?!"))/gi, '<img src="$1"/>');
 		let anyLinks = linkToImg.replace(/<a[\w\W]+?>([\w\W]+?)<\/a>/g, '$1');
@@ -92,6 +93,9 @@ class Comment extends React.Component {
 	}
 
 	render() {
+		if (!this.props.item) {
+			return null;
+		}
 		let avatar = this.state.avatar || constants.NO_AVATAR;
 		const authorLink = `/@${this.props.item.author}`;
 		return (
@@ -127,10 +131,9 @@ class Comment extends React.Component {
 	}
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state, props) => {
 	return {
-		localization: state.localization,
-		replyUser: ''
+		item: state.posts[props.point] || {}
 	};
 };
 

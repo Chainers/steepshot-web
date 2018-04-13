@@ -3,17 +3,15 @@ import {connect} from 'react-redux';
 import ShowIf from "../../Common/ShowIf";
 import TextInput from "../../Common/TextInput/TextInput";
 import Constants from "../../../common/constants";
-import {sendComment} from "../../../actions/comment";
+import {sendComment} from "../../../actions/comments";
 import './commentInput.css';
-import {clearTextInputState} from "../../../actions/textInput";
+import LoadingSpinner from "../../LoadingSpinner";
+import utils from '../../../utils/utils';
 
 class CommentInput extends React.Component {
 
-	sendComment(e) {
-		e.preventDefault();
-		let comment = this.textArea.value;
-		if (comment === '') return false;
-		this.props.sendComment(this.props.currentIndex, comment);
+	sendComment() {
+		this.props.sendComment(this.props.point, Constants.TEXT_INPUT_POINT.COMMENT);
 	}
 
 	render() {
@@ -24,12 +22,18 @@ class CommentInput extends React.Component {
 										 point={Constants.TEXT_INPUT_POINT.COMMENT}
 										 multiline={true}
 										 smallFont={true}
-										 maxHeight={150}/>
-
-					<button type="submit"
-									className='btn-submit btn_com-inp'
-									onClick={this.sendComment.bind(this)}> Send
-					</button>
+										 maxHeight={100}
+										 disabled={this.props.sendingNewComment}
+					/>
+					<ShowIf show={!this.props.sendingNewComment}>
+						<button type="submit"
+										className={'btn-submit btn_com-inp ' + (this.props.canSent ? 'btn-act_com-inp' : '')}
+										onClick={this.sendComment.bind(this)}> Send
+						</button>
+					</ShowIf>
+					<ShowIf show={this.props.sendingNewComment}>
+						<LoadingSpinner/>
+					</ShowIf>
 				</div>
 			</ShowIf>
 		)
@@ -39,16 +43,16 @@ class CommentInput extends React.Component {
 const mapStateToProps = (state, props) => {
 	return {
 		isUserAuth: state.auth.user && state.auth.postingKey,
-		post: state.posts[props.point],
-		isNotEmpty: state.comments[props.point] && state.comments[props.point].comments.length,
-		...state.comments[props.point]
+		...state.comments[props.point],
+		canSent: state.textInput[Constants.TEXT_INPUT_POINT.COMMENT] &&
+			utils.isNotEmptyString(state.textInput[Constants.TEXT_INPUT_POINT.COMMENT].text)
 	};
 };
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		sendComment: (index, comment) => {
-			dispatch(sendComment(index, comment));
+		sendComment: (index, point) => {
+			dispatch(sendComment(index, point));
 		}
 	}
 };
