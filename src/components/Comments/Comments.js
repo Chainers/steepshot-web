@@ -35,7 +35,7 @@ class Comments extends React.Component {
 		const isMobile = document.documentElement.clientWidth < 815;
 		let comments = null;
 
-		if (this.props.loading || !this.props.comments) {
+		if (this.props.loading && !this.props.comments) {
 			comments = <LoadingSpinner style={{marginTop: 20}}/>;
 		}
 		if (this.props.comments && this.props.comments.length > 0) {

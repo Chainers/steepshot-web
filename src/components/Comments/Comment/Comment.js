@@ -2,30 +2,22 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
 import TimeAgo from 'timeago-react';
-import jqApp from "../../../libs/app.min";
-import constants from "../../../common/constants";
 import Avatar from "../../Common/Avatar/Avatar";
 import VouteComponent from "../../Posts/VouteComponent";
-
+import {replyAuthor} from "../../../actions/comments";
+import {addPosts} from "../../../actions/post";
+import Likes from "../../PostsList/Post/Likes/Likes";
+import './comment.css';
 
 class Comment extends React.Component {
 
-	constructor(props) {
-		super(props);
-		console.log(props);
-		this.state = {
-			item: props.item,
-			avatar: props.item.avatar
-		};
-	}
-
 	updateVoteInComponent(vote) {
-		let newItem = this.state.item;
+		let newItem = this.props.item;
 		vote ? newItem.net_votes++ : newItem.net_votes--;
 		vote ? newItem.net_likes++ : newItem.net_likes--;
 		newItem.vote = vote;
-		this.setState({
-			item: newItem
+		this.props.updateComment({
+			[this.props.point]: newItem
 		});
 	}
 
@@ -34,7 +26,7 @@ class Comment extends React.Component {
 	}
 
 	commentsLayout() {
-		let safetyScript = this.state.item.body.replace(/<script>|<\/script>/g, '');
+		let safetyScript = this.props.item.body.replace(/<script>|<\/script>/g, '');
 		let newLine = safetyScript.replace(/\n/g, '<br>');
 		let deletedBotsLayout = newLine.replace(/(!)?\[([^\]]+)?\]/g, '');
 		let changeBotsLink = deletedBotsLayout.replace(/\((http(s)?:\/\/[\w\W]+?|www\.[\w\W]+?)\)/g, '$1');
@@ -45,58 +37,10 @@ class Comment extends React.Component {
 		this.commentText.innerHTML = userLink;
 	}
 
-	openLikesModal() {
-
-	}
-
-	replyAuthor() {
-		if (this.props.replyUser) {
-			this.props.replyUser.value = `@${this.state.item.author}, `;
-			this.props.replyUser.focus();
-		} else {
-			jqApp.pushMessage.open(constants.VOTE_ACTION_WHEN_NOT_AUTH);
-		}
-	}
-
-	likeFunc() {
-		let like = this.state.item.net_likes;
-		let text = null;
-		let money = null;
-		let reply = <span className="rectangle_comment text--center">
-                  <span onClick={this.replyAuthor.bind(this)}>Reply</span>
-                </span>;
-		if (like) {
-			if (like === 1 || like === -1) {
-				text = `${like} like`
-			} else {
-				text = `${like} likes`
-			}
-			if (this.state.item.total_payout_value > 0) {
-				money = `+ $${this.state.item.total_payout_value.toFixed(3)}`;
-			}
-			return (
-				<div className="comment-controls clearfix">
-					{reply}
-					<a className="likes"
-						 onClick={this.openLikesModal.bind(this)}
-					>{text}</a>
-					<span className="pull-right">{money}</span>
-				</div>
-			)
-		} else {
-			return (
-				<div className="comment-controls clearfix">
-					{reply}
-				</div>
-			)
-		}
-	}
-
 	render() {
 		if (!this.props.item) {
 			return null;
 		}
-		let avatar = this.state.avatar || constants.NO_AVATAR;
 		const authorLink = `/@${this.props.item.author}`;
 		return (
 			<div className="comment">
@@ -109,7 +53,7 @@ class Comment extends React.Component {
 							/>
 						</div>
 						<Link to={authorLink} className="user">
-							<Avatar src={avatar}/>
+							<Avatar src={this.props.item.avatar}/>
 							<div className="name">{this.props.item.author}</div>
 						</Link>
 					</div>
@@ -125,7 +69,12 @@ class Comment extends React.Component {
 						parent='comment'
 					/>
 				</div>
-				{this.likeFunc()}
+				<div className="temp_com comment-controls clearfix">
+					<span className="rectangle_comment text--center">
+						<span onClick={() => this.props.replyAuthor(this.props.item.author)}>Reply</span>
+					</span>
+					<Likes postIndex={this.props.item.url} disabled={true}/>
+				</div>
 			</div>
 		);
 	}
@@ -133,8 +82,19 @@ class Comment extends React.Component {
 
 const mapStateToProps = (state, props) => {
 	return {
-		item: state.posts[props.point] || {}
+		item: state.posts[props.point]
 	};
 };
 
-export default connect(mapStateToProps)(Comment);
+const mapDispatchTOProps = dispatch => {
+	return {
+		replyAuthor: (name) => {
+			dispatch(replyAuthor(name));
+		},
+		updateComment: (newData) => {
+			dispatch(addPosts(newData))
+		}
+	}
+};
+
+export default connect(mapStateToProps, mapDispatchTOProps)(Comment);

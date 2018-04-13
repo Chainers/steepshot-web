@@ -5,6 +5,7 @@ import {initPostsList} from './postsList';
 import {initPostModal} from './postModal';
 import Constants from '../common/constants';
 import jqApp from "../libs/app.min";
+import {getPostComments} from "./comments";
 
 export function addPosts(posts) {
 	return {
@@ -15,15 +16,29 @@ export function addPosts(posts) {
 
 export function updatePost(postIndex) {
 	return (dispatch) => {
-		const urlObject = postIndex.split('/');
-		getPostShaddow(urlObject[urlObject.length - 2] + '/' +
-			urlObject[urlObject.length - 1]).then((result) => {
-			dispatch({
-				type: 'UPDATE_POST',
-				post: result
-			})
-		});
+		if (postIndex.includes('#')) {
+			updatePostComments(dispatch, postIndex);
+		} else {
+			updatePostData(dispatch, postIndex);
+		}
 	}
+}
+
+function updatePostData(dispatch, postIndex) {
+	const urlObject = postIndex.split('/');
+	getPostShaddow(urlObject[urlObject.length - 2] + '/' +
+		urlObject[urlObject.length - 1]).then((result) => {
+		console.log(result);
+		dispatch({
+			type: 'UPDATE_POST',
+			post: result
+		})
+	});
+}
+
+function updatePostComments(dispatch, commentIndex) {
+	const postIndex = commentIndex.substring(0, commentIndex.indexOf('#'));
+	dispatch(getPostComments(postIndex));
 }
 
 export function setPowerLikeInd(postIndex, isOpen, place) {

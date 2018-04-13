@@ -1,0 +1,9 @@
+.temp_com {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.temp_com > span {
+    margin-right: 10px;
+}

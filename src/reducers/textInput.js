@@ -39,7 +39,14 @@ export default function textInput(state = initialState, action) {
 					focused: false
 				}
 			};
-
+		case 'SET_FOCUS_TEXT_INPUT':
+			return {
+				...state,
+				[action.point]: {
+					...state[action.point],
+					setFocus: !state[action.point].setFocus
+				}
+			}
 		default:
 			return state;
 	}

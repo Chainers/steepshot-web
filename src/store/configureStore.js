@@ -9,7 +9,9 @@ let storeBase;
 
 export default function configureStore(initialState, history) {
 	const router = routerMiddleware(history);
-	const logger = createLogger();
+	const logger = createLogger({
+		collapsed: true
+	});
 	let middleware;
 	if (process.env.NODE_ENV === 'production') {
 		middleware = applyMiddleware(thunk, promise, router);

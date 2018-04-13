@@ -43,7 +43,8 @@ class TextInput extends React.Component {
 			focusedStyle: props.value ? 'focused_tex-inp' : '',
 			text: props.value,
 			maxHeight,
-			focused: false
+			focused: false,
+			setFocus: false
 		};
 		props.initTextInput(this.props.point, state);
 	}
@@ -51,6 +52,9 @@ class TextInput extends React.Component {
 	componentWillReceiveProps(nextProps) {
 		if (nextProps.value && (this.props.value !== nextProps.value)) {
 			this._updateTextValue.call(this, nextProps.value);
+		}
+		if (this.input && (nextProps.setFocus !== this.props.setFocus)) {
+			this.input.focus();
 		}
 		return true;
 	}
