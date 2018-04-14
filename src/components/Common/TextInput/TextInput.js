@@ -134,7 +134,7 @@ class TextInput extends React.Component {
 		if (!this.props.fontSize) {
 			return null;
 		}
-		console.log(this.props);
+
 		return (
 			<div className="container_tex-inp">
 				<div className="input-container_tex-inp">
