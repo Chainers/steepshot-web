@@ -473,11 +473,9 @@ class PostModal extends React.Component {
 							</ShowIf>
 							<Likes postIndex={this.props.currentIndex} style={{paddingLeft: 20}}/>
 							<div className="card-buttons_post">
-								<div>
-									<ShowIf show={parseFloat(this.props.post.total_payout_reward)}>
-										<div className="amount">${this.props.post.total_payout_reward}</div>
-									</ShowIf>
-								</div>
+								<ShowIf show={parseFloat(this.props.post.total_payout_reward)}>
+									<div className="amount">${this.props.post.total_payout_reward}</div>
+								</ShowIf>
 								<ShowIf show={this.props.authUser !== this.props.post.author}>
 									<Flag postIndex={this.props.currentIndex}/>
 								</ShowIf>

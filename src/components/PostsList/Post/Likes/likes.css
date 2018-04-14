@@ -2,7 +2,9 @@
     cursor: pointer;
     transition: color .15s ease;
     font-size: 12px;
-    padding: 10px 10px 10px 0;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
 }
 
 .container_likes:hover {

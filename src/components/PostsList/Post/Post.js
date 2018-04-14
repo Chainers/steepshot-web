@@ -173,15 +173,11 @@ class Post extends React.Component {
 																 isPopup={false}
 									/>
 								</ShowIf>
-								<div>
-									<Likes postIndex={this.props.index}/>
-								</div>
+								<Likes postIndex={this.props.index}/>
 								<div className="card-buttons_post">
-									<div>
-										<ShowIf show={parseFloat(this.props.total_payout_reward)}>
-											<div className="amount">${this.props.total_payout_reward}</div>
-										</ShowIf>
-									</div>
+									<ShowIf show={parseFloat(this.props.total_payout_reward)}>
+										<div className="amount">${this.props.total_payout_reward}</div>
+									</ShowIf>
 									<ShowIf show={this.props.authUser !== this.props.author}>
 										<Flag postIndex={this.props.index} commentLoader={this.props.commentLoader}/>
 									</ShowIf>
