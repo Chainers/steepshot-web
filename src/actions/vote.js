@@ -25,14 +25,14 @@ function toggleVoteFailure(postIndex) {
 	};
 }
 
-export function toggleVote(postIndex, power = 100) {
+export function toggleVote(postIndex) {
 	return function (dispatch) {
 		let state = getStore().getState();
 		let username = state.auth.user;
 		let postingKey = state.auth.postingKey;
 		let post = state.posts[postIndex];
 		const newVoteState = !post.vote;
-		power = power * 100;
+		let power = state.auth.like_power * 100;
 
 		if (!username && !postingKey) {
 			return;

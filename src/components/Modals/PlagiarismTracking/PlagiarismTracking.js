@@ -58,7 +58,7 @@ class PlagiarismTracking extends React.Component {
 	}
 	plagiarismSubText() {
     let plagiator = this.props.data.plagiarism_author;
-    let linkToPlagPhoto = `/${plagiator}/${this.props.data.plagiarism_permlink}`;
+    let linkToPlagPhoto = `/post/@${plagiator}/${this.props.data.plagiarism_permlink}`;
 		if (this.props.authUser === plagiator) {
 			return ''
 		}
@@ -81,7 +81,7 @@ class PlagiarismTracking extends React.Component {
 				</div>
 				{this.renderImage()}
 				<p className="descrip_plag-track">We have found a
-					<Link to={`/${this.props.data.plagiarism_author}/${this.props.data.plagiarism_permlink}`} target="_blank"> similar photo</Link> in Steepshot, uploaded by {this.plagiarismAuthor()}
+					<Link to={`/post/@${this.props.data.plagiarism_author}/${this.props.data.plagiarism_permlink}`} target="_blank"> similar photo</Link> in Steepshot, uploaded by {this.plagiarismAuthor()}
 				</p>
 				{this.plagiarismSubText()}
 				<p className="guidelines_plag-track">

@@ -18,30 +18,37 @@ class Header extends React.Component {
 		}
 	}
 
-	componentDidMount() {
-		this.votingPowerUpdater();
-	}
-
-	votingPowerUpdater() {
-		if (this.props.user && this.props.postingKey) {
-			let clearTimeout = setInterval(() => {
-				this.props.updateVotingPower(this.props.user);
-			}, 30000);
-			this.props.updateVotingPower(this.props.user);
-			this.props.clearVPTimeout(clearTimeout);
+	componentWillReceiveProps(nextProps) {
+		if (nextProps.isOpened) {
+			this.searchInput.focus();
 		}
 	}
+
+	// componentDidMount() {
+	// 	this.votingPowerUpdater();
+	// }
+  //
+	// votingPowerUpdater() {
+	// 	if (this.props.user && this.props.postingKey) {
+	// 		let clearTimeout = setInterval(() => {
+	// 			this.props.updateVotingPower(this.props.user);
+	// 		}, 30000);
+	// 		this.props.updateVotingPower(this.props.user);
+	// 		this.props.clearVPTimeout(clearTimeout);
+	// 	}
+	// }
 
 	handleLogout(event) {
 		event.preventDefault();
 		this.props.logout();
-		clearTimeout(this.props.vpTimeout);
+		// clearTimeout(this.props.vpTimeout);
 	}
 
 	searchKeyPress(e) {
 		if (e.key === 'Enter') {
 			e.preventDefault();
 			this.props.historyPush(`/search/${this.props.searchValue}`);
+      jqApp.mobileMenu._menuHide();
 		}
 	}
 
@@ -150,7 +157,7 @@ class Header extends React.Component {
 								</a>
 							</div>
 							<div className="section search">
-								<div className="wrap-search" onClick={() => { this.props.setSearchPanelState(true)}}>
+								<div className="wrap-search" onClick={() => {this.props.setSearchPanelState(true)}}>
 									<span className="lnk-search">Search</span>
 									<span className="lnk-search-mob"> </span>
 								</div>
@@ -172,6 +179,7 @@ class Header extends React.Component {
 										type="text"
 										name="search"
 										value={this.props.searchValue}
+										ref={ref => this.searchInput = ref}
 										onChange={this.searchHandleChange.bind(this)}
 										required={true}
 										placeholder={
@@ -212,7 +220,7 @@ const mapDispatchToProps = (dispatch) => {
 		historyPush: (path) => {
 			dispatch(push(path));
 		},
-		setSearchPanelState: flag => {
+		setSearchPanelState: (flag) => {
 			dispatch(setSearchPanelState(flag));
 		}
 	}

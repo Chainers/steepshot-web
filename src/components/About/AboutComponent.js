@@ -70,4 +70,4 @@ class AboutComponent extends React.Component {
 	}
 }
 
-export default withWrapper(connect(AboutComponent));
+export default withWrapper(AboutComponent);

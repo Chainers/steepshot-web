@@ -34,6 +34,15 @@
     transform: scale(1.15);
 }
 
+.gallery-indicator_post {
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    top: 10px;
+    right: 10px;
+    background: url('/images/gallery-indicator.svg') center no-repeat;
+}
+
 .card-pic.post_vid-con {
     margin-left: -160px;
 }

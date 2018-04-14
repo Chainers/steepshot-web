@@ -47,7 +47,7 @@
 .guidelines_plag-track {
     font: 14px OpenSans-Regular;
     margin-top: 20px;
-    padding-bottom: 20px;
+    padding: 20px 0;
     border-top: 1px solid #f4f4f6;
     border-bottom: 1px solid #f4f4f6;
 }

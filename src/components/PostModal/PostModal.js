@@ -32,6 +32,7 @@ import jqApp from '../../libs/app.min';
 import LikePostNotification from "../PushNotifications/LikePostNotification/LikePostNotification";
 import {openPushNot} from "../../actions/pushNotification";
 import FollowUserNotification from "../PushNotifications/FollowUserNotification/FollowUserNotification";
+import ImagesGallery from "../ImagesGallery/ImagesGallery";
 import ReactPlayer from 'react-player'
 
 const START_TEXTAREA_HEIGHT = '42px';
@@ -205,26 +206,37 @@ class PostModal extends React.Component {
 		)
 	}
 
+	resizingFilter() {
+		return (
+			<ShowIf show={this.props.isResizeCover && this.props.isGallery}>
+				<div className="resizing-filter_pos-mod">
+					<p>Resizing...</p>
+				</div>
+			</ShowIf>
+		)
+	}
+
 	renderImage() {
-		if (this.props.post.isVideo) {
-			return (
+    if (this.props.post.isVideo) {
+      return (
 				<div className="image-container_pos-mod image-container_vid-con"
 						 style={this.props.style.imgCont}
 				>
 					<ReactPlayer
 						width='100%'
 						height='100%'
-						url={this.props.imgUrl}
+						url={this.props.urlVideo}
 						playing={true}
 						loop={true}/>
 				</div>
-			)
-		}
+      )
+    }
 		return (
-			<div className="image-container_pos-mod"
-					 style={this.props.style.imgCont}
-			>
+			<div className="image-container_pos-mod" style={this.props.style.imgCont}>
 				{this.lowNSFWFilter()}
+        {this.resizingFilter()}
+				<span className="open-fs-dblclick_pos-mod"
+							onDoubleClick={this.setFullScreen.bind(this, !this.props.fullScreenMode)}/>
 				<button className="btn btn-default btn-xs"
 								onClick={() => this.props.copyToClipboard(
 									document.location.origin + '/post' + this.props.post.url.replace(/\/[\w-.]+/, ''),
@@ -237,113 +249,104 @@ class PostModal extends React.Component {
 						<img className="img-full-screen" src="/images/shape.svg" alt="open full screen"/>
 					</div>
 				</ShowIf>
-				<img src={this.props.imgUrl || Constants.NO_IMAGE}
-						 alt={this.props.post.title}
-						 style={this.props.style.image}
-						 ref={ref => this.image = ref}
-						 onLoad={this.imageLoaded.bind(this)}
-						 onError={this.loadImgError.bind(this)}
-						 onDoubleClick={this.setFullScreen.bind(this, !this.props.fullScreenMode)}
-				/>
-				<ShowIf show={!this.image || !this.image.complete}>
-					<div className="before-load-curtain_pos-mod">
-						<LoadingSpinner/>
-					</div>
-				</ShowIf>
-				<ShowIf show={this.image && this.image.complete && !this.image.naturalWidth}>
-					<div className="before-load-curtain_pos-mod">
-						<p className="title_pos-mod">Sorry, image isn't found.</p>
-					</div>
-				</ShowIf>
+				<ImagesGallery index={this.props.currentIndex}
+											 styles={this.props.style.image}
+											 post={this.props.post}
+											 isFullScreen={false}
+											 setComponentSize={this.setComponentSize}/>
 			</div>
 		);
 	}
 
-	renderFullScreenImg() {
-		return (
-			<div>
-				<div className="full-image-wrap_pos-mod">
-					{this.lowNSFWFilter()}
-					<img src={this.props.imgUrl || Constants.NO_IMAGE}
-							 alt={this.props.post.title}
-							 className="full-screen-img"
-							 ref={ref => this.fullImage = ref}
-							 onLoad={this.imageLoaded.bind(this)}
-							 onError={this.loadImgError.bind(this)}
-							 onDoubleClick={this.setFullScreen.bind(this, !this.props.fullScreenMode)}
-					/>
-					<button className="btn btn-default btn-xs full-screen-share_pos-mod"
-									onClick={() => this.props.copyToClipboard(
-										document.location.origin + '/post' + this.props.post.url.replace(/\/[\w-.]+/, '')
-									)}
-					>Copy link
-					</button>
-					<ShowIf show={!this.fullImage || !this.fullImage.complete}>
-						<div className="before-load-full-screen_pos-mod">
-							<LoadingSpinner/>
-						</div>
-					</ShowIf>
-					<ShowIf show={this.fullImage && this.fullImage.complete && !this.fullImage.naturalWidth}>
-						<div className="before-load-full-screen_pos-mod" style={{backgroundColor: '#e7e7e7'}}>
-							<p className="title_pos-mod">Sorry, image isn't found.</p>
-						</div>
-					</ShowIf>
-				</div>
-				<ShowIf show={this.props.fullScreenNavigation}>
-					<div>
-						<ShowIf show={!this.props.firstPost}>
-							<div className="arrow-left-full-screen_post-mod"
-									 onClick={this.previousPost.bind(this)}
-									 onMouseEnter={this.fsNavMouseEnter.bind(this)}
-									 onMouseLeave={this.fsNavMouseLeave.bind(this)}
-							/>
-						</ShowIf>
-						<ShowIf show={!this.props.lastPost && !this.props.newPostsLoading}>
-							<div className="arrow-right-full-screen_post-mod"
-									 onClick={this.nextPost.bind(this)}
-									 onMouseEnter={this.fsNavMouseEnter.bind(this)}
-									 onMouseLeave={this.fsNavMouseLeave.bind(this)}
-							/>
-						</ShowIf>
-						<ShowIf show={this.props.newPostsLoading}>
-							<div className="loader-right-full-screen_post-mod"
-									 onClick={this.nextPost.bind(this)}
-									 onMouseEnter={this.fsNavMouseEnter.bind(this)}
-									 onMouseLeave={this.fsNavMouseLeave.bind(this)}
-							>
-								<LoadingSpinner style={{
-									position: 'absolute', top: '50%', left: '50%',
-									transform: 'translate(-50%, -50%)', height: 38
-								}}
-																loaderClass="new-posts-spinner_post-mod"
-								/>
-							</div>
-						</ShowIf>
-					</div>
-					<div className="close-full-screen_pos-mod"
-							 onClick={this.setFullScreen.bind(this, false)}
-							 onMouseEnter={this.fsNavMouseEnter.bind(this)}
-							 onMouseLeave={this.fsNavMouseLeave.bind(this)}
-					>
-						<img className="img-full-screen" src="/images/shape-copy-6.svg" alt="close full screen"/>
-					</div>
-					<div className="cross-wrapper_modal"
-							 onClick={this.closeFromFullScreen.bind(this, false)}
-							 onMouseEnter={this.fsNavMouseEnter.bind(this)}
-							 onMouseLeave={this.fsNavMouseLeave.bind(this)}
-					>
-						<div className="cross-full-screen_modal"/>
-					</div>
-					<div className="fs-post-amount_pos-mod">
-						<ShowIf show={parseFloat(this.props.post.total_payout_reward)}>
-							${this.props.post.total_payout_reward}
-						</ShowIf>
-					</div>
-					<FullScreenButtons/>
-				</ShowIf>
-			</div>
-		)
-	}
+  renderFullScreenImg() {
+    return (
+      <div>
+        <div className="full-image-wrap_pos-mod">
+          {this.lowNSFWFilter()}
+					{this.resizingFilter()}
+					<span className="open-fs-dblclick_pos-mod"
+								onDoubleClick={this.setFullScreen.bind(this, !this.props.fullScreenMode)}/>
+          <button className="btn btn-default btn-xs full-screen-share_pos-mod"
+                  onClick={() => this.props.copyToClipboard(
+                    document.location.origin + '/post' + this.props.post.url.replace(/\/[\w-.]+/, '')
+                  )}
+          >Copy link</button>
+          {/*<img src={this.props.imgUrl || Constants.NO_IMAGE}*/}
+							 {/*alt={this.props.post.title}*/}
+							 {/*className="full-screen-img"*/}
+							 {/*ref={ref => this.fullImage = ref}*/}
+							 {/*onLoad={this.imageLoaded.bind(this)}*/}
+							 {/*onError={this.loadImgError.bind(this)}*/}
+          {/*/>*/}
+          {/*<ShowIf show={!this.fullImage || !this.fullImage.complete}>*/}
+            {/*<div className="before-load-full-screen_pos-mod">*/}
+              {/*<LoadingSpinner/>*/}
+            {/*</div>*/}
+          {/*</ShowIf>*/}
+          {/*<ShowIf show={this.fullImage && this.fullImage.complete && !this.fullImage.naturalWidth}>*/}
+            {/*<div className="before-load-full-screen_pos-mod" style={{backgroundColor: '#e7e7e7'}}>*/}
+              {/*<p className="title_pos-mod">Sorry, image isn't found.</p>*/}
+            {/*</div>*/}
+          {/*</ShowIf>*/}
+					<ImagesGallery index={this.props.currentIndex}
+												 styles={{maxHeight: '90vh', maxWidth: '85vw'}}
+												 post={this.props.post}
+												 isFullScreen={true}
+												 setComponentSize={this.setComponentSize}/>
+        </div>
+        <ShowIf show={this.props.fullScreenNavigation}>
+          <div>
+            <ShowIf show={!this.props.firstPost}>
+              <div className="arrow-left-full-screen_post-mod"
+                   onClick={this.previousPost.bind(this)}
+                   onMouseEnter={this.fsNavMouseEnter.bind(this)}
+                   onMouseLeave={this.fsNavMouseLeave.bind(this)}
+              />
+            </ShowIf>
+            <ShowIf show={!this.props.lastPost && !this.props.newPostsLoading}>
+              <div className="arrow-right-full-screen_post-mod"
+                   onClick={this.nextPost.bind(this)}
+                   onMouseEnter={this.fsNavMouseEnter.bind(this)}
+                   onMouseLeave={this.fsNavMouseLeave.bind(this)}
+              />
+            </ShowIf>
+            <ShowIf show={this.props.newPostsLoading}>
+              <div className="loader-right-full-screen_post-mod"
+                   onClick={this.nextPost.bind(this)}
+                   onMouseEnter={this.fsNavMouseEnter.bind(this)}
+                   onMouseLeave={this.fsNavMouseLeave.bind(this)}
+              >
+                <LoadingSpinner style={{position: 'absolute', top: '50%', left: '50%',
+                    transform: 'translate(-50%, -50%)', height: 38}}
+                                loaderClass="new-posts-spinner_post-mod"
+                />
+              </div>
+            </ShowIf>
+          </div>
+          <div className="close-full-screen_pos-mod"
+               onClick={this.setFullScreen.bind(this, false)}
+               onMouseEnter={this.fsNavMouseEnter.bind(this)}
+               onMouseLeave={this.fsNavMouseLeave.bind(this)}
+          >
+            <img className="img-full-screen" src="/images/shape-copy-6.svg" alt="close full screen"/>
+          </div>
+          <div className="cross-wrapper_modal"
+               onClick={this.closeFromFullScreen.bind(this, false)}
+               onMouseEnter={this.fsNavMouseEnter.bind(this)}
+               onMouseLeave={this.fsNavMouseLeave.bind(this)}
+          >
+             <div className="cross-full-screen_modal"/>
+          </div>
+          <div className="fs-post-amount_pos-mod">
+            <ShowIf show={parseFloat(this.props.post.total_payout_reward)}>
+              ${this.props.post.total_payout_reward}
+            </ShowIf>
+          </div>
+          <FullScreenButtons />
+        </ShowIf>
+      </div>
+      )
+  }
 
 	showFSNavigation() {
 		clearTimeout(this.props.timeoutID);
@@ -463,7 +466,7 @@ class PostModal extends React.Component {
 		this.props.sendComment(this.props.currentIndex, comment);
 	}
 
-	longTapPLInd() {
+	longTapPLInd(timeDelay) {
 		if (this.props.post.vote) {
 			return;
 		}
@@ -479,7 +482,7 @@ class PostModal extends React.Component {
 		}
 		let plTimeout = setTimeout(() => {
 			this.props.setPowerLikeInd(this.props.currentIndex, true, 'modal');
-		}, 700);
+		}, timeDelay);
 		this.props.setPowerLikeTimeout(this.props.currentIndex, plTimeout);
 	}
 
@@ -487,145 +490,139 @@ class PostModal extends React.Component {
 		clearTimeout(this.props.post.plTimeout);
 	}
 
-	renderCommentInput() {
-		return (
-			<ShowIf show={this.props.isUserAuth}>
-				<div className="add-comment_pos-mod">
-					<div className="hidden-div_pos-mod"
-							 ref={ref => {
-								 this.hiddenDiv = ref
-							 }}
-							 style={this.hiddenDiv ? {width: this.props.textareaWidth, maxHeight: 480} : {}}
-					/>
-					<textarea ref={ref => this.textArea = ref}
-										maxLength={2048}
-										className="form-control text-area_pos-mod"
-										onChange={this.changeText.bind(this)}
-										style={{
-											height: this.hiddenDiv !== undefined
-												? this.props.addCommentHeight + 'px'
-												: START_TEXTAREA_HEIGHT,
-										}}
-					/>
-					<label className={this.props.label + ' label_pos-mod'}>Comment</label>
-					<ShowIf show={this.props.needsCommentFormLoader}>
-						<LoadingSpinner style={{top: 0}}/>
-					</ShowIf>
-					<ShowIf show={!this.props.needsCommentFormLoader}>
-						<button type="submit"
-										className={'btn-submit btn_pos-mod ' + this.props.sendHover}
-										onClick={this.sendComment.bind(this)}
-						>Send
-						</button>
-					</ShowIf>
-				</div>
-			</ShowIf>
-		)
-	}
+  renderCommentInput() {
+    return (
+      <ShowIf show={this.props.isUserAuth}>
+        <div className="add-comment_pos-mod">
+          <div className="hidden-div_pos-mod"
+               ref={ref => {
+                 this.hiddenDiv = ref
+               }}
+               style={this.hiddenDiv ? {width: this.props.textareaWidth, maxHeight: 480} : {}}
+          />
+          <textarea ref={ref => this.textArea = ref}
+                    maxLength={2048}
+                    className="form-control text-area_pos-mod"
+                    onChange={this.changeText.bind(this)}
+                    style={{
+                      height: this.hiddenDiv !== undefined
+                        ? this.props.addCommentHeight + 'px'
+                        : START_TEXTAREA_HEIGHT,
+                    }}
+          />
+          <label className={this.props.label + ' label_pos-mod'}>Comment</label>
+          <ShowIf show={this.props.needsCommentFormLoader}>
+            <LoadingSpinner style={{top: 0}}/>
+          </ShowIf>
+          <ShowIf show={!this.props.needsCommentFormLoader}>
+            <button type="submit"
+                    className={'btn-submit btn_pos-mod ' + this.props.sendHover}
+                    onClick={this.sendComment.bind(this)}
+            >Send
+            </button>
+          </ShowIf>
+        </div>
+      </ShowIf>
+    )
+  }
 
-	render() {
-		const authorLink = `/@${this.props.post.author}`;
-		let commentInput = this.renderCommentInput();
-		let hideModalFS = this.props.style.container;
-		if (this.props.fullScreenMode) {
-			hideModalFS = {
-				position: 'absolute',
-				top: '-5000px',
-				visibility: 'hidden'
-			}
-		}
-		return (
-			<div>
-				<div className="container_pos-mod" style={hideModalFS}>
-					<ShowIf show={this.props.showClose}>
-						<ShowIf show={!this.props.firstPost}>
-							<div className="arrow-left-full-screen_post-mod" onClick={this.previousPost.bind(this)}/>
-						</ShowIf>
-						<ShowIf show={!this.props.lastPost && !this.props.newPostsLoading}>
-							<div className="arrow-right-full-screen_post-mod" onClick={this.nextPost.bind(this)}/>
-						</ShowIf>
-						<ShowIf show={this.props.newPostsLoading}>
-							<div className="loader-right-full-screen_post-mod" onClick={this.nextPost.bind(this)}>
-								<LoadingSpinner style={{
-									position: 'absolute', top: '50%', left: '50%',
-									transform: 'translate(-50%, -53%)', width: 35, height: 35
-								}}
-																loaderClass="new-posts-spinner_post-mod"
-								/>
-							</div>
-						</ShowIf>
-					</ShowIf>
-					{this.renderImage()}
-					<div className="header_pos-mod"
-							 style={this.props.style.headerCont}
-					>
-						<div className="date_pos-mod">
-							<TimeAgo datetime={this.props.post.created}
-											 locale='en_US'
-											 className="time_pos-mod"
-							/>
-							<PostContextMenu style={{height: '22px', width: '22px', marginRight: this.props.showClose ? '38px' : 0}}
-															 className="post-context-menu_post"
-															 item={this.props.post}
-															 index={this.props.currentIndex}
-							/>
-							<ShowIf show={this.props.showClose}>
-								<div className="cont-close-btn_pos-mod" onClick={() => this.props.closeModal(this.props.point)}>
-									<i className="close-btn_pos-mod"/>
-								</div>
-							</ShowIf>
-						</div>
-						<Link to={authorLink} className="user_pos-mod">
-							<Avatar src={this.props.post.avatar}/>
-							<div className="name_pos-mod">
-								{this.props.post.author}
-							</div>
-						</Link>
-					</div>
-					<div className="description_pos-mod"
-							 style={this.props.style.description}
-							 ref={(ref) => {
-								 this.descPosMod = ref
-							 }}
-					>
-						<div className="card-controls">
-							<ShowIf show={this.props.post.isPLOpen && this.props.post.powerLikeIndPlace === 'modal'}>
-								<VoteIndicator index={this.props.currentIndex}
-															 voteButton={this.votePosMod}
-															 isPopup={true}
-								/>
-							</ShowIf>
-							<div>
-								<Likes postIndex={this.props.currentIndex} style={{paddingLeft: 20}}/>
-							</div>
-							<div className="card-buttons_post">
-								<div>
-									<ShowIf show={parseFloat(this.props.post.total_payout_reward)}>
-										<div className="amount">${this.props.post.total_payout_reward}</div>
-									</ShowIf>
-								</div>
-								<ShowIf show={this.props.authUser !== this.props.post.author}>
-									<Flag postIndex={this.props.currentIndex} commentLoader={this.props.needsCommentFormLoader}/>
-								</ShowIf>
-								<div className="position--relative"
-										 ref={ref => {
-											 this.votePosMod = ref
-										 }}
-										 onMouseEnter={this.longTapPLInd.bind(this)}
-										 onMouseLeave={this.breakLongTapPLInd.bind(this)}
-										 onTouchStart={this.longTapPLInd.bind(this)}
-										 onTouchEnd={this.breakLongTapPLInd.bind(this)}
-										 onTouchMove={this.breakLongTapPLInd.bind(this)}
-										 onContextMenu={this.breakLongTapPLInd.bind(this)}
-								>
-									<div className="card-control-stop"/>
-									<Vote postIndex={this.props.currentIndex}
-												commentLoader={this.props.needsCommentFormLoader}
-												style={{paddingRight: 20}}
-									/>
-								</div>
-							</div>
-						</div>
+  render() {
+    const authorLink = `/@${this.props.post.author}`;
+    let commentInput = this.renderCommentInput();
+    let hideModalFS = this.props.style.container;
+    if (this.props.fullScreenMode) {
+      hideModalFS = {
+        position: 'absolute',
+        top: '-5000px',
+        visibility: 'hidden'
+      }
+    }
+    return (
+      <div>
+        <div className="container_pos-mod" style={hideModalFS}>
+          <ShowIf show={this.props.showClose && !this.props.style.isMobile}>
+            <ShowIf show={!this.props.firstPost}>
+              <div className="arrow-left-full-screen_post-mod" onClick={this.previousPost.bind(this)}/>
+            </ShowIf>
+            <ShowIf show={!this.props.lastPost && !this.props.newPostsLoading}>
+              <div className="arrow-right-full-screen_post-mod" onClick={this.nextPost.bind(this)}/>
+            </ShowIf>
+            <ShowIf show={this.props.newPostsLoading}>
+              <div className="loader-right-full-screen_post-mod" onClick={this.nextPost.bind(this)}>
+                <LoadingSpinner style={{position: 'absolute', top: '50%', left: '50%',
+                    transform: 'translate(-50%, -53%)', width: 35, height: 35}}
+                                loaderClass="new-posts-spinner_post-mod"
+                />
+              </div>
+            </ShowIf>
+          </ShowIf>
+          {this.renderImage()}
+            <div className="header_pos-mod"
+                 style={this.props.style.headerCont}
+            >
+              <div className="date_pos-mod">
+                <TimeAgo datetime={this.props.post.created}
+                         locale='en_US'
+                         className="time_pos-mod"
+                />
+                <PostContextMenu style={{height: '22px', width: '22px', marginRight: this.props.showClose ? '38px' : 0}}
+                                 className="post-context-menu_post"
+                                 item={this.props.post}
+                                 index={this.props.currentIndex}
+                />
+                <ShowIf show={this.props.showClose}>
+                  <div className="cont-close-btn_pos-mod" onClick={() => this.props.closeModal(this.props.point)}>
+                    <i className="close-btn_pos-mod"/>
+                  </div>
+                </ShowIf>
+              </div>
+              <Link to={authorLink} className="user_pos-mod">
+                <Avatar src={this.props.post.avatar}/>
+                <div className="name_pos-mod">
+                  {this.props.post.author}
+                </div>
+              </Link>
+            </div>
+            <div className="description_pos-mod"
+                 style={this.props.style.description}
+                 ref={(ref) => {this.descPosMod = ref}}
+            >
+              <div className="card-controls">
+                <ShowIf show={this.props.post.isPLOpen && this.props.post.powerLikeIndPlace === 'modal'}>
+                  <VoteIndicator index={this.props.currentIndex}
+                                 voteButton={this.votePosMod}
+                                 isPopup={true}
+                  />
+                </ShowIf>
+                <div>
+                  <Likes postIndex={this.props.currentIndex} style={{paddingLeft: 20}}/>
+                </div>
+                <div className="card-buttons_post">
+                  <div>
+                    <ShowIf show={parseFloat(this.props.post.total_payout_reward)}>
+                      <div className="amount">${this.props.post.total_payout_reward}</div>
+                    </ShowIf>
+                  </div>
+                  <ShowIf show={this.props.authUser !== this.props.post.author}>
+                    <Flag postIndex={this.props.currentIndex} commentLoader={this.props.needsCommentFormLoader}/>
+                  </ShowIf>
+                  <div className="position--relative"
+                       ref={ref => {this.votePosMod = ref}}
+                       onMouseEnter={this.longTapPLInd.bind(this, 1400)}
+                       onMouseLeave={this.breakLongTapPLInd.bind(this)}
+                       onTouchStart={this.longTapPLInd.bind(this, 700)}
+                       onTouchEnd={this.breakLongTapPLInd.bind(this)}
+                       onTouchMove={this.breakLongTapPLInd.bind(this)}
+                       onContextMenu={this.breakLongTapPLInd.bind(this)}
+                  >
+                    <div className="card-control-stop"/>
+                    <Vote postIndex={this.props.currentIndex}
+                          commentLoader={this.props.needsCommentFormLoader}
+                          style={{paddingRight: 20}}
+                    />
+                  </div>
+                </div>
+              </div>
 
 						<div className="comment-container_pos-mod">
 							<ScrollViewComponent
@@ -686,10 +683,11 @@ class PostModal extends React.Component {
 		const textareaMarginTop = this.descPosMod ? this.descPosMod.clientHeight - 220 : null;
 
 		const image = {};
-		if (this.image) {
-			image.width = this.image.naturalWidth;
-			image.height = this.image.naturalHeight ? this.image.naturalHeight : docHeight * 0.4;
-		}
+		const imageSizes = this.props.post.media[0].size;
+
+		image.width = imageSizes.width;
+		image.height = imageSizes.height;
+
 		const imgCont = {};
 		imgCont.width = '100%';
 		const headerCont = {};
@@ -722,7 +720,7 @@ class PostModal extends React.Component {
 		} else {
 			image.width = utils.getLess(image.width, document.documentElement.clientWidth);
 			image.width = image.width ? image.width : docWidth;
-			image.height = image.height * image.width / this.image.naturalWidth;
+			image.height = image.height * image.width / imageSizes.width;
 		}
 
 		let style = {
@@ -748,20 +746,22 @@ const mapStateToProps = (state) => {
 	let currentIndex = state.postModal.currentIndex;
 	let post = state.posts[currentIndex];
 	if (post) {
-		let media = post.media[0];
-		let imgUrl = media.url;
-		if (document.documentElement.clientWidth <= 1024 && media['thumbnails'] && media['thumbnails'][1024]) {
-			imgUrl = media['thumbnails'][1024];
+		let urlVideo = post.media[0].url;
+		let isGallery = false;
+		if (post.media.length > 1) {
+			isGallery = true;
 		}
 		let postsList = state.postsList[state.postModal.point];
 		return {
-			postsList,
-			imgUrl,
 			post,
+      postsList,
+			urlVideo,
 			...state.postModal,
+      isGallery: isGallery,
 			newPostsLoading: postsList.loading,
 			isUserAuth: state.auth.user && state.auth.postingKey,
 			authUser: state.auth.user,
+			isResizeCover: state.imagesGallery.isResizeCover,
 			firstPost: postsList.posts[0] === currentIndex,
 			lastPost: postsList.offset === currentIndex
 		};

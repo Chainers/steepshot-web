@@ -16,109 +16,112 @@ import LoadingSpinner from '../../LoadingSpinner/index';
 import Avatar from '../../Common/Avatar/Avatar';
 import Likes from './Likes/Likes';
 import VoteIndicator from './Vote/VoteIndicator/VoteIndicator';
-import jqApp from "../../../libs/app.min";
+import jqApp from '../../../libs/app.min';
 import './post.css';
 import ReactPlayer from 'react-player'
 
 class Post extends React.Component {
 
-	static defaultProps = {
-		clearPostHeader: false,
-	};
+  static defaultProps = {
+    clearPostHeader: false,
+  };
 
-	openPostModal() {
-		let modalOption = {
-			body: (<PostModal/>)
-		};
-		this.props.openModal(this.props.point, this.props.index, modalOption);
-	}
+  openPostModal() {
+    let modalOption = {
+      body: (<PostModal/>)
+    };
+    this.props.openModal(this.props.point, this.props.index, modalOption);
+  }
 
-	commentNumber() {
-		if (this.props.children) {
-			let text;
-			if (this.props.children === 1) {
-				text = 'comment';
-			} else {
-				text = 'comments';
-			}
-			return (
+  commentNumber() {
+    if (this.props.children) {
+      let text;
+      if (this.props.children === 1) {
+        text = 'comment';
+      } else {
+        text = 'comments';
+      }
+      return (
 				<p>{`${this.props.children} ${text}`}</p>
-			);
-		} else {
-			return (
+      );
+    } else {
+      return (
 				<p style={{color: '#979b9e'}}>Post your comment</p>
-			);
-		}
-	}
+      );
+    }
+  }
 
-	longTapPLInd() {
-		if (this.props.vote) {
-			return;
-		}
-		if (!this.props.authUser) {
-			return;
-		}
-		if (this.props.commentLoader) {
-			jqApp.pushMessage.open(Constants.WAIT_FINISHING_TRANSACTION);
-			return;
-		}
-		if (this.props.isPLOpen) {
-			return;
-		}
-		let plTimeout = setTimeout(() => {
-			this.props.setPowerLikeInd(this.props.index, true, 'post');
-		}, 700);
-		this.props.setPowerLikeTimeout(this.props.index, plTimeout);
-	}
+  longTapPLInd(timeDelay) {
+    if (this.props.vote) {
+      return;
+    }
+    if (!this.props.authUser) {
+      return;
+    }
+    if (this.props.commentLoader) {
+      jqApp.pushMessage.open(Constants.WAIT_FINISHING_TRANSACTION);
+      return;
+    }
+    if (this.props.isPLOpen) {
+      return;
+    }
+    let plTimeout = setTimeout(() => {
+      this.props.setPowerLikeInd(this.props.index, true, 'post');
+    }, timeDelay);
+    this.props.setPowerLikeTimeout(this.props.index, plTimeout);
+  }
 
-	breakLongTapPLInd() {
-		clearTimeout(this.props.plTimeout);
-	}
+  breakLongTapPLInd() {
+    clearTimeout(this.props.plTimeout);
+  }
 
-	renderImage() {
-		if (this.props.isVideo) {
-			return (
-				<div className="card-pic post_vid-con" onClick={this.openPostModal.bind(this)}
-						 onMouseEnter={() => {
-							 this.props.playVideo(this.props.index)
-						 }}
-						 onMouseLeave={() => {
-							 this.props.stopVideo(this.props.index);
-							 this.player.seekTo(0);
-						 }}
-				>
-					<ReactPlayer
-						url={this.props.imgUrl}
-						height='100%'
-						loop={true}
-						playing={this.props.playing}
-						controls={false}
-						ref={ref => this.player = ref}
-					/>
+  renderImage() {
+    if (this.props.isVideo) {
+      return (
+        <div className="card-pic post_vid-con" onClick={this.openPostModal.bind(this)}
+             onMouseEnter={() => {
+               this.props.playVideo(this.props.index)
+             }}
+             onMouseLeave={() => {
+               this.props.stopVideo(this.props.index);
+               this.player.seekTo(0);
+             }}
+        >
+          <ReactPlayer
+            url={this.props.imgUrl}
+            height='100%'
+            loop={true}
+            playing={this.props.playing}
+            controls={false}
+            ref={ref => this.player = ref}
+          />
 
-				</div>
-			)
-		}
-		let itemImage = this.props.imgUrl || Constants.NO_IMAGE;
-		const cardPhotoStyles = {
-			backgroundImage: 'url(' + itemImage + ')',
-		};
-		return (
-			<div className="card-pic" onClick={this.openPostModal.bind(this)}>
-				<ShowIf show={this.props['is_nsfw']}>
-					<div className="forAdult">
-						<p>NSFW content</p>
-					</div>
-				</ShowIf>
-				<ShowIf show={!this.props.is_nsfw && this.props.is_low_rated}>
-					<div className="forAdult">
-						<p>Low rated content</p>
-					</div>
-				</ShowIf>
-				<a style={cardPhotoStyles} className="img" alt="User"> </a>
-			</div>
-		)
-	}
+        </div>
+      )
+    }
+    let itemImage = this.props.imgUrl || Constants.NO_IMAGE;
+    const cardPhotoStyles = {
+      backgroundImage: 'url(' + itemImage + ')',
+    };
+    return (
+      <div className="card-pic" onClick={this.openPostModal.bind(this)}>
+        <ShowIf show={this.props.isGallery}>
+          <div className="gallery-indicator_post"/>
+        </ShowIf>
+        <ShowIf show={this.props['is_nsfw']}>
+          <div className="forAdult">
+            <p>NSFW content</p>
+          </div>
+        </ShowIf>
+        <ShowIf show={!this.props.is_nsfw && this.props.is_low_rated}>
+          <div className="forAdult">
+            <p>Low rated content</p>
+          </div>
+        </ShowIf>
+        <a style={cardPhotoStyles} className="img" alt="User"> </a>
+      </div>
+    )
+  }
 
 	render() {
 		if (!this.props || !this.props.imgUrl) {
@@ -161,7 +164,7 @@ class Post extends React.Component {
 						</div>
 					</ShowIf>
 					<div className="card-body">
-						{this.renderImage()}
+            {this.renderImage()}
 						<div className="card-wrap">
 							<div className="card-controls">
 								<ShowIf show={this.props.isPLOpen && this.props.powerLikeIndPlace === 'post'}>
@@ -183,12 +186,10 @@ class Post extends React.Component {
 										<Flag postIndex={this.props.index} commentLoader={this.props.commentLoader}/>
 									</ShowIf>
 									<div className="position--relative"
-											 ref={ref => {
-												 this.vote = ref
-											 }}
-											 onMouseEnter={this.longTapPLInd.bind(this)}
+											 ref={ref => this.vote = ref}
+											 onMouseEnter={this.longTapPLInd.bind(this, 1400)}
 											 onMouseLeave={this.breakLongTapPLInd.bind(this)}
-											 onTouchStart={this.longTapPLInd.bind(this)}
+											 onTouchStart={this.longTapPLInd.bind(this, 700)}
 											 onTouchEnd={this.breakLongTapPLInd.bind(this)}
 											 onTouchMove={this.breakLongTapPLInd.bind(this)}
 											 onContextMenu={this.breakLongTapPLInd.bind(this)}
@@ -199,32 +200,37 @@ class Post extends React.Component {
 								</div>
 							</div>
 							<div className="card-preview">
-								{UserLinkFunc(null, this.props.title)}
+                {UserLinkFunc(null, this.props.title)}
 								<Tags tags={this.props.tags}/>
 							</div>
 							<div className="number-of-comments_post" onClick={this.openPostModal.bind(this)}>
-								{this.commentNumber()}
+                {this.commentNumber()}
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-		);
-	}
+    );
+  }
 }
 
 const mapStateToProps = (state, props) => {
-	let post = state.posts[props.index];
-	if (post) {
-		const media = post.media[0];
-		let imgUrl = media['thumbnails'] ? media['thumbnails'][1024] : media.url;
-		return {
-			...post,
-			imgUrl,
-			authUser: state.auth.user,
-			commentLoader: state.postModal.needsCommentFormLoader
-		};
-	}
+  let post = state.posts[props.index];
+  if (post) {
+    const media = post.media[0];
+   	let isGallery = false;
+  	if (post.media.length > 1) {
+      isGallery = true;
+		}
+    let imgUrl = media['thumbnails'] ? media['thumbnails'][1024] : media.url;
+    return {
+      ...post,
+      imgUrl,
+      isGallery,
+      authUser: state.auth.user,
+      commentLoader: state.postModal.needsCommentFormLoader
+    };
+  }
 };
 
 const mapDispatchToProps = (dispatch) => {

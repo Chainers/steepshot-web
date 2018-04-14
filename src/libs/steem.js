@@ -295,11 +295,12 @@ class Steem {
 			})
 			.then(response => {
 				let beneficiaries = _getBeneficiaries(operation[1].permlink, response.beneficiaries);
-				if (response.is_plagiarism) {
+				let plagiarism = response.is_plagiarism;
+				if (plagiarism.is_plagiarism) {
 					let data = {
 						ipfs: response.json_metadata.ipfs_photo,
-						plagiarism_author: response.plagiarism_author,
-						plagiarism_permlink: response.plagiarism_permlink,
+						plagiarism_author: plagiarism.plagiarism_username,
+						plagiarism_permlink: plagiarism.plagiarism_permlink,
 						operation: operation,
 						prepareData: response,
 						beneficiaries: beneficiaries
