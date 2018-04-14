@@ -50,10 +50,6 @@
     line-height: 22px;
 }
 
-.list-scroll-view_comments .comment {
-    padding: 10px 0;
-}
-
 .list-scroll-view_comments .comment-text {
     word-break: break-all;
 }
@@ -71,16 +67,11 @@
     outline: 0;
 }
 
-
-.post-single .list_comments {
-    padding-bottom: 20px
-}
-
 .comment-input-big-screen {
     flex-grow: 0;
 }
 
-.container-big-screen_comments {
+.container-small-screen_comments {
     overflow: hidden;
     flex-grow: 1;
     flex-shrink: 100;

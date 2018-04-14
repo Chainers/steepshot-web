@@ -43,9 +43,8 @@ class Comment extends React.Component {
 		}
 		const authorLink = `/@${this.props.item.author}`;
 		return (
-			<div className="comment">
-				<div className="comment-head">
-					<div className="user-wrap clearfix">
+			<div className="container_comment">
+				<div className="head_comment">
 						<div className="date">
 							<TimeAgo
 								datetime={this.props.item.created}
@@ -56,12 +55,9 @@ class Comment extends React.Component {
 							<Avatar src={this.props.item.avatar}/>
 							<div className="name">{this.props.item.author}</div>
 						</Link>
-					</div>
 				</div>
 				<div className="comment-text">
-					<div ref={ref => {
-						this.commentText = ref
-					}} className="comment-text_comment"/>
+					<div ref={ref => {this.commentText = ref}} className="comment-text_comment"/>
 					<VouteComponent
 						key="vote"
 						item={this.props.item}
@@ -69,8 +65,8 @@ class Comment extends React.Component {
 						parent='comment'
 					/>
 				</div>
-				<div className="temp_com comment-controls clearfix">
-					<span className="rectangle_comment text--center">
+				<div className="cont-reply_com">
+					<span className="rectangle_comment">
 						<span onClick={() => this.props.replyAuthor(this.props.item.author)}>Reply</span>
 					</span>
 					<Likes postIndex={this.props.item.url} disabled={true}/>

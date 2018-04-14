@@ -6,8 +6,8 @@ import ShowIf from "../Common/ShowIf";
 import {getPostComments, initPostComment} from "../../actions/comments";
 import Description from "./Description/Description";
 import CommentInput from "./CommentInput/CommentInput";
-import './comments.css';
 import {Scrollbars} from "react-custom-scrollbars";
+import './comments.css';
 
 class Comments extends React.Component {
 
@@ -32,7 +32,7 @@ class Comments extends React.Component {
 	}
 
 	renderScrollbarContainer() {
-		return <div className='list-scroll-view_comments' />
+		return <div className='list-scroll-view_comments'/>
 	}
 
 	render() {
@@ -49,7 +49,7 @@ class Comments extends React.Component {
 		}
 		return (
 			<div className="container_comments">
-				<div className="container-big-screen_comments">
+				<div className="container-small-screen_comments">
 					<Scrollbars
 						ref={(ref) => this.scrollBar = ref}
 						renderView={this.renderScrollbarContainer.bind(this)}
