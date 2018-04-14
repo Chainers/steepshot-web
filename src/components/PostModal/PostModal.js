@@ -217,20 +217,20 @@ class PostModal extends React.Component {
 	}
 
 	renderImage() {
-		if (this.props.post.isVideo) {
-			return (
+    if (this.props.post.isVideo) {
+      return (
 				<div className="image-container_pos-mod image-container_vid-con"
 						 style={this.props.style.imgCont}
 				>
 					<ReactPlayer
 						width='100%'
 						height='100%'
-						url={this.props.imgUrl}
+						url={this.props.urlVideo}
 						playing={true}
 						loop={true}/>
 				</div>
-			)
-		}
+      )
+    }
 		return (
 			<div className="image-container_pos-mod" style={this.props.style.imgCont}>
 				{this.lowNSFWFilter()}
@@ -746,6 +746,7 @@ const mapStateToProps = (state) => {
 	let currentIndex = state.postModal.currentIndex;
 	let post = state.posts[currentIndex];
 	if (post) {
+		let urlVideo = post.media[0].url;
 		let isGallery = false;
 		if (post.media.length > 1) {
 			isGallery = true;
@@ -754,6 +755,7 @@ const mapStateToProps = (state) => {
 		return {
 			post,
       postsList,
+			urlVideo,
 			...state.postModal,
       isGallery: isGallery,
 			newPostsLoading: postsList.loading,
