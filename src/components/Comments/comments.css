@@ -80,7 +80,7 @@
     flex-grow: 0;
 }
 
-.test_comments {
+.container-big-screen_comments {
     overflow: hidden;
     flex-grow: 1;
     flex-shrink: 100;

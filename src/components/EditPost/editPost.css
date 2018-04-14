@@ -84,8 +84,8 @@
     text-align: right;
 }
 
-.buttons-container_edi-pos .btn-default {
-    margin-left: 15px;
+.buttons-container_edi-pos .btn {
+    margin: 15px;
 }
 
 .buttons-container_edi-pos .btn[disabled] {
