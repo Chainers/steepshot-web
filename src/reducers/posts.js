@@ -137,6 +137,14 @@ export default function posts(state = {}, action) {
 					hplTimeout: action.hplTimeout
 				}
 			};
+    case 'SET_GALLERY_IMG_INDEX':
+      return {
+        ...state,
+        [action.postIndex]: {
+          ...state[action.postIndex],
+          imgIndex: action.imgIndex
+        }
+      };
 
 		default:
 			return state;

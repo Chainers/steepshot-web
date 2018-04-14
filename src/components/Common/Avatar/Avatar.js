@@ -94,9 +94,7 @@ class Avatar extends React.Component {
 		return (
 			<div className={this.props.powerIndicator ? 'position--relative' : ''}>
 				<ShowIf show={this.props.powerIndicator}>
-					<canvas ref={ref => {
-						this.canvas = ref
-					}}
+					<canvas ref={ref => this.canvas = ref}
 									className="border-indicator_ava-com"
 									onTouchStart={this.showTip.bind(this)}
 									onTouchEnd={this.hideTip.bind(this)}

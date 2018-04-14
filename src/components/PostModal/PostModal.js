@@ -206,6 +206,16 @@ class PostModal extends React.Component {
 		)
 	}
 
+	resizingFilter() {
+		return (
+			<ShowIf show={this.props.isResizeCover && this.props.isGallery}>
+				<div className="resizing-filter_pos-mod">
+					<p>Resizing...</p>
+				</div>
+			</ShowIf>
+		)
+	}
+
 	renderImage() {
 		if (this.props.post.isVideo) {
 			return (
@@ -222,10 +232,11 @@ class PostModal extends React.Component {
 			)
 		}
 		return (
-			<div className="image-container_pos-mod"
-					 style={this.props.style.imgCont}
-			>
+			<div className="image-container_pos-mod" style={this.props.style.imgCont}>
 				{this.lowNSFWFilter()}
+        {this.resizingFilter()}
+				<span className="open-fs-dblclick_pos-mod"
+							onDoubleClick={this.setFullScreen.bind(this, !this.props.fullScreenMode)}/>
 				<button className="btn btn-default btn-xs"
 								onClick={() => this.props.copyToClipboard(
 									document.location.origin + '/post' + this.props.post.url.replace(/\/[\w-.]+/, ''),
@@ -238,113 +249,104 @@ class PostModal extends React.Component {
 						<img className="img-full-screen" src="/images/shape.svg" alt="open full screen"/>
 					</div>
 				</ShowIf>
-				<img src={this.props.imgUrl || Constants.NO_IMAGE}
-						 alt={this.props.post.title}
-						 style={this.props.style.image}
-						 ref={ref => this.image = ref}
-						 onLoad={this.imageLoaded.bind(this)}
-						 onError={this.loadImgError.bind(this)}
-						 onDoubleClick={this.setFullScreen.bind(this, !this.props.fullScreenMode)}
-				/>
-				<ShowIf show={!this.image || !this.image.complete}>
-					<div className="before-load-curtain_pos-mod">
-						<LoadingSpinner/>
-					</div>
-				</ShowIf>
-				<ShowIf show={this.image && this.image.complete && !this.image.naturalWidth}>
-					<div className="before-load-curtain_pos-mod">
-						<p className="title_pos-mod">Sorry, image isn't found.</p>
-					</div>
-				</ShowIf>
+				<ImagesGallery index={this.props.currentIndex}
+											 styles={this.props.style.image}
+											 post={this.props.post}
+											 isFullScreen={false}
+											 setComponentSize={this.setComponentSize}/>
 			</div>
 		);
 	}
 
-	renderFullScreenImg() {
-		return (
-			<div>
-				<div className="full-image-wrap_pos-mod">
-					{this.lowNSFWFilter()}
-					<img src={this.props.imgUrl || Constants.NO_IMAGE}
-							 alt={this.props.post.title}
-							 className="full-screen-img"
-							 ref={ref => this.fullImage = ref}
-							 onLoad={this.imageLoaded.bind(this)}
-							 onError={this.loadImgError.bind(this)}
-							 onDoubleClick={this.setFullScreen.bind(this, !this.props.fullScreenMode)}
-					/>
-					<button className="btn btn-default btn-xs full-screen-share_pos-mod"
-									onClick={() => this.props.copyToClipboard(
-										document.location.origin + '/post' + this.props.post.url.replace(/\/[\w-.]+/, '')
-									)}
-					>Copy link
-					</button>
-					<ShowIf show={!this.fullImage || !this.fullImage.complete}>
-						<div className="before-load-full-screen_pos-mod">
-							<LoadingSpinner/>
-						</div>
-					</ShowIf>
-					<ShowIf show={this.fullImage && this.fullImage.complete && !this.fullImage.naturalWidth}>
-						<div className="before-load-full-screen_pos-mod" style={{backgroundColor: '#e7e7e7'}}>
-							<p className="title_pos-mod">Sorry, image isn't found.</p>
-						</div>
-					</ShowIf>
-				</div>
-				<ShowIf show={this.props.fullScreenNavigation}>
-					<div>
-						<ShowIf show={!this.props.firstPost}>
-							<div className="arrow-left-full-screen_post-mod"
-									 onClick={this.previousPost.bind(this)}
-									 onMouseEnter={this.fsNavMouseEnter.bind(this)}
-									 onMouseLeave={this.fsNavMouseLeave.bind(this)}
-							/>
-						</ShowIf>
-						<ShowIf show={!this.props.lastPost && !this.props.newPostsLoading}>
-							<div className="arrow-right-full-screen_post-mod"
-									 onClick={this.nextPost.bind(this)}
-									 onMouseEnter={this.fsNavMouseEnter.bind(this)}
-									 onMouseLeave={this.fsNavMouseLeave.bind(this)}
-							/>
-						</ShowIf>
-						<ShowIf show={this.props.newPostsLoading}>
-							<div className="loader-right-full-screen_post-mod"
-									 onClick={this.nextPost.bind(this)}
-									 onMouseEnter={this.fsNavMouseEnter.bind(this)}
-									 onMouseLeave={this.fsNavMouseLeave.bind(this)}
-							>
-								<LoadingSpinner style={{
-									position: 'absolute', top: '50%', left: '50%',
-									transform: 'translate(-50%, -50%)', height: 38
-								}}
-																loaderClass="new-posts-spinner_post-mod"
-								/>
-							</div>
-						</ShowIf>
-					</div>
-					<div className="close-full-screen_pos-mod"
-							 onClick={this.setFullScreen.bind(this, false)}
-							 onMouseEnter={this.fsNavMouseEnter.bind(this)}
-							 onMouseLeave={this.fsNavMouseLeave.bind(this)}
-					>
-						<img className="img-full-screen" src="/images/shape-copy-6.svg" alt="close full screen"/>
-					</div>
-					<div className="cross-wrapper_modal"
-							 onClick={this.closeFromFullScreen.bind(this, false)}
-							 onMouseEnter={this.fsNavMouseEnter.bind(this)}
-							 onMouseLeave={this.fsNavMouseLeave.bind(this)}
-					>
-						<div className="cross-full-screen_modal"/>
-					</div>
-					<div className="fs-post-amount_pos-mod">
-						<ShowIf show={parseFloat(this.props.post.total_payout_reward)}>
-							${this.props.post.total_payout_reward}
-						</ShowIf>
-					</div>
-					<FullScreenButtons/>
-				</ShowIf>
-			</div>
-		)
-	}
+  renderFullScreenImg() {
+    return (
+      <div>
+        <div className="full-image-wrap_pos-mod">
+          {this.lowNSFWFilter()}
+					{this.resizingFilter()}
+					<span className="open-fs-dblclick_pos-mod"
+								onDoubleClick={this.setFullScreen.bind(this, !this.props.fullScreenMode)}/>
+          <button className="btn btn-default btn-xs full-screen-share_pos-mod"
+                  onClick={() => this.props.copyToClipboard(
+                    document.location.origin + '/post' + this.props.post.url.replace(/\/[\w-.]+/, '')
+                  )}
+          >Copy link</button>
+          {/*<img src={this.props.imgUrl || Constants.NO_IMAGE}*/}
+							 {/*alt={this.props.post.title}*/}
+							 {/*className="full-screen-img"*/}
+							 {/*ref={ref => this.fullImage = ref}*/}
+							 {/*onLoad={this.imageLoaded.bind(this)}*/}
+							 {/*onError={this.loadImgError.bind(this)}*/}
+          {/*/>*/}
+          {/*<ShowIf show={!this.fullImage || !this.fullImage.complete}>*/}
+            {/*<div className="before-load-full-screen_pos-mod">*/}
+              {/*<LoadingSpinner/>*/}
+            {/*</div>*/}
+          {/*</ShowIf>*/}
+          {/*<ShowIf show={this.fullImage && this.fullImage.complete && !this.fullImage.naturalWidth}>*/}
+            {/*<div className="before-load-full-screen_pos-mod" style={{backgroundColor: '#e7e7e7'}}>*/}
+              {/*<p className="title_pos-mod">Sorry, image isn't found.</p>*/}
+            {/*</div>*/}
+          {/*</ShowIf>*/}
+					<ImagesGallery index={this.props.currentIndex}
+												 styles={{maxHeight: '90vh', maxWidth: '85vw'}}
+												 post={this.props.post}
+												 isFullScreen={true}
+												 setComponentSize={this.setComponentSize}/>
+        </div>
+        <ShowIf show={this.props.fullScreenNavigation}>
+          <div>
+            <ShowIf show={!this.props.firstPost}>
+              <div className="arrow-left-full-screen_post-mod"
+                   onClick={this.previousPost.bind(this)}
+                   onMouseEnter={this.fsNavMouseEnter.bind(this)}
+                   onMouseLeave={this.fsNavMouseLeave.bind(this)}
+              />
+            </ShowIf>
+            <ShowIf show={!this.props.lastPost && !this.props.newPostsLoading}>
+              <div className="arrow-right-full-screen_post-mod"
+                   onClick={this.nextPost.bind(this)}
+                   onMouseEnter={this.fsNavMouseEnter.bind(this)}
+                   onMouseLeave={this.fsNavMouseLeave.bind(this)}
+              />
+            </ShowIf>
+            <ShowIf show={this.props.newPostsLoading}>
+              <div className="loader-right-full-screen_post-mod"
+                   onClick={this.nextPost.bind(this)}
+                   onMouseEnter={this.fsNavMouseEnter.bind(this)}
+                   onMouseLeave={this.fsNavMouseLeave.bind(this)}
+              >
+                <LoadingSpinner style={{position: 'absolute', top: '50%', left: '50%',
+                    transform: 'translate(-50%, -50%)', height: 38}}
+                                loaderClass="new-posts-spinner_post-mod"
+                />
+              </div>
+            </ShowIf>
+          </div>
+          <div className="close-full-screen_pos-mod"
+               onClick={this.setFullScreen.bind(this, false)}
+               onMouseEnter={this.fsNavMouseEnter.bind(this)}
+               onMouseLeave={this.fsNavMouseLeave.bind(this)}
+          >
+            <img className="img-full-screen" src="/images/shape-copy-6.svg" alt="close full screen"/>
+          </div>
+          <div className="cross-wrapper_modal"
+               onClick={this.closeFromFullScreen.bind(this, false)}
+               onMouseEnter={this.fsNavMouseEnter.bind(this)}
+               onMouseLeave={this.fsNavMouseLeave.bind(this)}
+          >
+             <div className="cross-full-screen_modal"/>
+          </div>
+          <div className="fs-post-amount_pos-mod">
+            <ShowIf show={parseFloat(this.props.post.total_payout_reward)}>
+              ${this.props.post.total_payout_reward}
+            </ShowIf>
+          </div>
+          <FullScreenButtons />
+        </ShowIf>
+      </div>
+      )
+  }
 
 	showFSNavigation() {
 		clearTimeout(this.props.timeoutID);
@@ -464,7 +466,7 @@ class PostModal extends React.Component {
 		this.props.sendComment(this.props.currentIndex, comment);
 	}
 
-	longTapPLInd() {
+	longTapPLInd(timeDelay) {
 		if (this.props.post.vote) {
 			return;
 		}
@@ -480,7 +482,7 @@ class PostModal extends React.Component {
 		}
 		let plTimeout = setTimeout(() => {
 			this.props.setPowerLikeInd(this.props.currentIndex, true, 'modal');
-		}, 700);
+		}, timeDelay);
 		this.props.setPowerLikeTimeout(this.props.currentIndex, plTimeout);
 	}
 
@@ -538,7 +540,7 @@ class PostModal extends React.Component {
     return (
       <div>
         <div className="container_pos-mod" style={hideModalFS}>
-          <ShowIf show={this.props.showClose}>
+          <ShowIf show={this.props.showClose && !this.props.style.isMobile}>
             <ShowIf show={!this.props.firstPost}>
               <div className="arrow-left-full-screen_post-mod" onClick={this.previousPost.bind(this)}/>
             </ShowIf>
@@ -606,9 +608,9 @@ class PostModal extends React.Component {
                   </ShowIf>
                   <div className="position--relative"
                        ref={ref => {this.votePosMod = ref}}
-                       onMouseEnter={this.longTapPLInd.bind(this)}
+                       onMouseEnter={this.longTapPLInd.bind(this, 1400)}
                        onMouseLeave={this.breakLongTapPLInd.bind(this)}
-                       onTouchStart={this.longTapPLInd.bind(this)}
+                       onTouchStart={this.longTapPLInd.bind(this, 700)}
                        onTouchEnd={this.breakLongTapPLInd.bind(this)}
                        onTouchMove={this.breakLongTapPLInd.bind(this)}
                        onContextMenu={this.breakLongTapPLInd.bind(this)}
@@ -681,10 +683,11 @@ class PostModal extends React.Component {
 		const textareaMarginTop = this.descPosMod ? this.descPosMod.clientHeight - 220 : null;
 
 		const image = {};
-		if (this.image) {
-			image.width = this.image.naturalWidth;
-			image.height = this.image.naturalHeight ? this.image.naturalHeight : docHeight * 0.4;
-		}
+		const imageSizes = this.props.post.media[0].size;
+
+		image.width = imageSizes.width;
+		image.height = imageSizes.height;
+
 		const imgCont = {};
 		imgCont.width = '100%';
 		const headerCont = {};
@@ -717,7 +720,7 @@ class PostModal extends React.Component {
 		} else {
 			image.width = utils.getLess(image.width, document.documentElement.clientWidth);
 			image.width = image.width ? image.width : docWidth;
-			image.height = image.height * image.width / this.image.naturalWidth;
+			image.height = image.height * image.width / imageSizes.width;
 		}
 
 		let style = {
@@ -743,20 +746,20 @@ const mapStateToProps = (state) => {
 	let currentIndex = state.postModal.currentIndex;
 	let post = state.posts[currentIndex];
 	if (post) {
-		let media = post.media[0];
-		let imgUrl = media.url;
-		if (document.documentElement.clientWidth <= 1024 && media['thumbnails'] && media['thumbnails'][1024]) {
-			imgUrl = media['thumbnails'][1024];
+		let isGallery = false;
+		if (post.media.length > 1) {
+			isGallery = true;
 		}
 		let postsList = state.postsList[state.postModal.point];
 		return {
-			postsList,
-			imgUrl,
 			post,
+      postsList,
 			...state.postModal,
+      isGallery: isGallery,
 			newPostsLoading: postsList.loading,
 			isUserAuth: state.auth.user && state.auth.postingKey,
 			authUser: state.auth.user,
+			isResizeCover: state.imagesGallery.isResizeCover,
 			firstPost: postsList.posts[0] === currentIndex,
 			lastPost: postsList.offset === currentIndex
 		};

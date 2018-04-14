@@ -1,10 +1,11 @@
 import React from 'react';
 import utils from '../../../utils/utils';
-import ShowIf from "../ShowIf";
+import ShowIf from '../ShowIf';
 import ReactResizeDetector from 'react-resize-detector';
-import {connect} from "react-redux";
-import {initTextInput, setTextInputState} from "../../../actions/textInput";
+import {connect} from 'react-redux';
+import {initTextInput, setTextInputState, setTextInputError} from '../../../actions/textInput';
 import './textInput.css';
+import constants from '../../../common/constants';
 
 class TextInput extends React.Component {
 	static MARGIN_TEXT = 21;
@@ -53,6 +54,9 @@ class TextInput extends React.Component {
 	onChange(event) {
 		let newValue = utils.cloneObject(event.target.value);
 		newValue = this._removeInvalidCharacters(newValue);
+		if (this.props.error) {
+      this.props.setTextInputError(constants.TEXT_INPUT_POINT.TITLE, '');
+		}
 		if (newValue !== this.props.text) {
 			this._updateTextValue(newValue);
 		}
@@ -117,7 +121,7 @@ class TextInput extends React.Component {
 		if (!this.props.fontSize) {
 			return null;
 		}
-
+		console.log(this.props);
 		return (
 			<div className="container_tex-inp">
 				<div className="input-container_tex-inp">
@@ -174,7 +178,6 @@ class TextInput extends React.Component {
 
 
 const mapStateToProps = (state, props) => {
-
 	return {
 		...state.textInput[props.point]
 	};
@@ -187,6 +190,9 @@ const mapDispatchToProps = (dispatch) => {
 		},
 		setTextInputState: (point, state) => {
 			dispatch(setTextInputState(point, state));
+		},
+    setTextInputError: (point, message) => {
+			dispatch(setTextInputError(point, message));
 		}
 	};
 };

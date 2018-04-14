@@ -10,7 +10,6 @@ import Avatar from '../Common/Avatar/Avatar';
 import PostsList from '../PostsList/PostsList';
 import UsersList from '../UsersList/UsersList';
 import {UserLinkFunc} from '../Common/UserLinkFunc';
-import {updateVotingPower} from '../../actions/auth';
 import {withWrapper} from "create-react-server/wrapper";
 import {addMetaTags, getDefaultTags} from "../../actions/metaTags";
 import {push, replace} from 'react-router-redux';
@@ -50,7 +49,6 @@ class UserProfile extends React.Component {
 
 	componentDidMount() {
 		this.getUserProfile();
-		this.props.updateVotingPower(this.props.user);
 	}
 
 	updateActiveTab(index) {
@@ -236,9 +234,6 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		updateVotingPower: (username) => {
-			dispatch(updateVotingPower(username));
-		},
 		historyPush: (path) => {
 			dispatch(push(path))
 		},

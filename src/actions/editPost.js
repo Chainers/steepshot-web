@@ -201,7 +201,7 @@ export function createPost() {
 				image.onload = () => {
 					let dataUrl = photoSrc;
 					if (!isGif && rotate) {
-						dataUrl = getCanvasWithImage(image, rotate).toDataURL(dataType, 0.94);
+						dataUrl = getCanvasWithImage(image, rotate).toDataURL(dataType, 1);
 					}
 					fetch(dataUrl).then(res => {
 						return res.blob()

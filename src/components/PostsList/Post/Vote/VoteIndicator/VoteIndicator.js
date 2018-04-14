@@ -128,8 +128,8 @@ const mapDispatchToProps = (dispatch) => {
 		setPowerLikeInd: (postIndex, isOpen) => {
 			dispatch(setPowerLikeInd(postIndex, isOpen));
 		},
-		toggleVote: (postIndex, power) => {
-			dispatch(toggleVote(postIndex, power));
+		toggleVote: (postIndex) => {
+			dispatch(toggleVote(postIndex));
 		},
 		setLikePower: (power) => {
 			dispatch(setLikePower(power));

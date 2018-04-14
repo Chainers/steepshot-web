@@ -6387,7 +6387,8 @@ modal.modal-like .modal-header {
 }
 
 .user-panel .search .lnk-search:hover {
-    color: #555
+    color: #555;
+    cursor: pointer;
 }
 
 .user-panel .search .lnk-search:hover:before {
@@ -6725,12 +6726,9 @@ modal.modal-like .modal-header {
 
 .search-panel .wrap-panel:before {
     content: ' ';
-    display: inline-block;
     font-size: 10px;
-    background-image: url('/images/sprite_svg1910.svg');
-    background-repeat: no-repeat;
+    background: url('/images/sprite_svg1910.svg') -.2em -30.599999999999998em no-repeat;
     background-size: 4.4em 47.2em;
-    background-position: -.2em -30.599999999999998em;
     width: 1em;
     height: 1em;
     display: block;

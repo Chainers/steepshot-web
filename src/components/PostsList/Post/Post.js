@@ -16,7 +16,7 @@ import LoadingSpinner from '../../LoadingSpinner/index';
 import Avatar from '../../Common/Avatar/Avatar';
 import Likes from './Likes/Likes';
 import VoteIndicator from './Vote/VoteIndicator/VoteIndicator';
-import jqApp from "../../../libs/app.min";
+import jqApp from '../../../libs/app.min';
 import './post.css';
 import ReactPlayer from 'react-player'
 
@@ -51,7 +51,7 @@ class Post extends React.Component {
     }
   }
 
-  longTapPLInd() {
+  longTapPLInd(timeDelay) {
     if (this.props.vote) {
       return;
     }
@@ -67,7 +67,7 @@ class Post extends React.Component {
     }
     let plTimeout = setTimeout(() => {
       this.props.setPowerLikeInd(this.props.index, true, 'post');
-    }, 700);
+    }, timeDelay);
     this.props.setPowerLikeTimeout(this.props.index, plTimeout);
   }
 
@@ -105,7 +105,7 @@ class Post extends React.Component {
     };
     return (
       <div className="card-pic" onClick={this.openPostModal.bind(this)}>
-        <ShowIf show={this.props.galleryParam}>
+        <ShowIf show={this.props.isGallery}>
           <div className="gallery-indicator_post"/>
         </ShowIf>
         <ShowIf show={this.props['is_nsfw']}>
@@ -186,12 +186,10 @@ class Post extends React.Component {
 										<Flag postIndex={this.props.index} commentLoader={this.props.commentLoader}/>
 									</ShowIf>
 									<div className="position--relative"
-											 ref={ref => {
-                         this.vote = ref
-                       }}
-											 onMouseEnter={this.longTapPLInd.bind(this)}
+											 ref={ref => this.vote = ref}
+											 onMouseEnter={this.longTapPLInd.bind(this, 1400)}
 											 onMouseLeave={this.breakLongTapPLInd.bind(this)}
-											 onTouchStart={this.longTapPLInd.bind(this)}
+											 onTouchStart={this.longTapPLInd.bind(this, 700)}
 											 onTouchEnd={this.breakLongTapPLInd.bind(this)}
 											 onTouchMove={this.breakLongTapPLInd.bind(this)}
 											 onContextMenu={this.breakLongTapPLInd.bind(this)}
@@ -220,15 +218,15 @@ const mapStateToProps = (state, props) => {
   let post = state.posts[props.index];
   if (post) {
     const media = post.media[0];
-   	let galleryParam = false;
+   	let isGallery = false;
   	if (post.media.length > 1) {
-  		galleryParam = true;
+      isGallery = true;
 		}
     let imgUrl = media['thumbnails'] ? media['thumbnails'][1024] : media.url;
     return {
       ...post,
       imgUrl,
-			galleryParam,
+      isGallery,
       authUser: state.auth.user,
       commentLoader: state.postModal.needsCommentFormLoader
     };
