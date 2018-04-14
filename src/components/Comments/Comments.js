@@ -2,56 +2,60 @@ import React from 'react';
 import Comment from './Comment/Comment';
 import {connect} from 'react-redux';
 import LoadingSpinner from '../LoadingSpinner';
-import Constants from "../../common/constants";
-import ScrollViewComponent from "../Common/ScrollViewComponent";
 import ShowIf from "../Common/ShowIf";
-import {getPostCommets} from "../../actions/comments";
+import {getPostComments, initPostComment} from "../../actions/comments";
 import Description from "./Description/Description";
 import CommentInput from "./CommentInput/CommentInput";
+import {Scrollbars} from "react-custom-scrollbars";
 import './comments.css';
 
 class Comments extends React.Component {
 
 	constructor(props) {
 		super(props);
-		this.props.getComments(this.props.point);
+		props.initPostComment(props.point);
+		props.getComments(props.point);
 	}
 
 	scrollAfterComment() {
-		this.scrollView.scrollBar.scrollToBottom();
+		this.scrollBar.scrollToBottom();
 	}
 
 	componentWillReceiveProps(nextProps) {
 		if (nextProps.point !== this.props.point) {
 			this.props.getComments(nextProps.point);
 		}
+		if (nextProps.scrollToLastComment !== this.props.scrollToLastComment && this.scrollBar) {
+			this.scrollBar.scrollToBottom();
+		}
 		return true;
+	}
+
+	renderScrollbarContainer() {
+		return <div className='list-scroll-view_comments'/>
 	}
 
 	render() {
 		const isMobile = document.documentElement.clientWidth < 815;
 		let comments = null;
 
-		if (this.props.loading || !this.props.comments) {
+		if (this.props.loading && !this.props.comments.length) {
 			comments = <LoadingSpinner style={{marginTop: 20}}/>;
 		}
 		if (this.props.comments && this.props.comments.length > 0) {
 			comments = this.props.comments.map((item, index) => {
-				return <Comment key={index} point={item} />
+				return <Comment key={index} point={item}/>
 			});
 		}
 		return (
 			<div className="container_comments">
-				<div className="test_comments">
-					<ScrollViewComponent
-						ref={(ref) => this.scrollView = ref}
-						wrapperModifier="list-scroll_comments"
-						scrollViewModifier="list-scroll-view_comments"
-						autoHeight={window.innerWidth < Constants.DISPLAY.DESK_BREAKPOINT}
-						autoHeightMax={15000}
+				<div className="container-small-screen_comments">
+					<Scrollbars
+						ref={(ref) => this.scrollBar = ref}
+						renderView={this.renderScrollbarContainer.bind(this)}
+						autoHeight={true}
 						autoHeightMin={100}
-						autoHide={true}
-						isMobile={isMobile}
+						autoHeightMax={15000}
 					>
 						<Description
 							title={this.props.post.title}
@@ -59,15 +63,15 @@ class Comments extends React.Component {
 							description={this.props.post.description}
 						/>
 						<ShowIf show={isMobile}>
-							<CommentInput/>
+							<CommentInput point={this.props.point}/>
 						</ShowIf>
 						<div className="list_comments">
 							{comments}
 						</div>
-					</ScrollViewComponent>
+					</Scrollbars>
 				</div>
 				<ShowIf show={!isMobile} className='comment-input-big-screen'>
-					<CommentInput/>
+					<CommentInput point={this.props.point}/>
 				</ShowIf>
 			</div>
 		);
@@ -85,7 +89,10 @@ const mapStateToProps = (state, props) => {
 const mapDispatchToProps = (dispatch) => {
 	return {
 		getComments: (point) => {
-			dispatch(getPostCommets(point))
+			dispatch(getPostComments(point))
+		},
+		initPostComment: (point) => {
+			dispatch(initPostComment(point));
 		}
 	}
 };
