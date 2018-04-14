@@ -1,7 +1,7 @@
 import React from 'react';
 import './likeCommentNotification.css';
 import Avatar from '../../Common/Avatar/Avatar';
-import Link from 'react-router-dom/es/Link';
+import Link from 'react-router-dom/Link';
 
 class LikeCommentNotification extends React.Component {
 
