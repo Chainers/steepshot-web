@@ -5,7 +5,7 @@ import LoadingSpinner from '../LoadingSpinner';
 import Constants from "../../common/constants";
 import ScrollViewComponent from "../Common/ScrollViewComponent";
 import ShowIf from "../Common/ShowIf";
-import {getPostComments} from "../../actions/comments";
+import {getPostComments, initPostComment} from "../../actions/comments";
 import Description from "./Description/Description";
 import CommentInput from "./CommentInput/CommentInput";
 import './comments.css';
@@ -14,7 +14,8 @@ class Comments extends React.Component {
 
 	constructor(props) {
 		super(props);
-		this.props.getComments(this.props.point);
+		props.initPostComment(props.point);
+		props.getComments(props.point);
 	}
 
 	scrollAfterComment() {
@@ -35,7 +36,7 @@ class Comments extends React.Component {
 		const isMobile = document.documentElement.clientWidth < 815;
 		let comments = null;
 
-		if (this.props.loading && !this.props.comments) {
+		if (this.props.loading && !this.props.comments.length) {
 			comments = <LoadingSpinner style={{marginTop: 20}}/>;
 		}
 		if (this.props.comments && this.props.comments.length > 0) {
@@ -89,6 +90,9 @@ const mapDispatchToProps = (dispatch) => {
 	return {
 		getComments: (point) => {
 			dispatch(getPostComments(point))
+		},
+		initPostComment: (point) => {
+			dispatch(initPostComment(point));
 		}
 	}
 };
