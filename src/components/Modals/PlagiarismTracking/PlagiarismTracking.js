@@ -13,7 +13,7 @@ class PlagiarismTracking extends React.Component {
 
 	renderImage() {
 		let image = {
-			background: `#f4f4f6 url('https://steepshot.org/ipfs/${this.props.data.ipfs}') center no-repeat`,
+			background: `#f4f4f6 url('${this.props.data.media.thumbnails[1024]}') center no-repeat`,
 			backgroundSize: 'contain'
 		};
 		return (
@@ -76,7 +76,7 @@ class PlagiarismTracking extends React.Component {
 				<div className="title-wrapper_plag-track">
 					<p className="title_plag-track">PLAGIARISM CHECK</p>
 					<p>
-						<a href={`https://steepshot.org/ipfs/${this.props.data.ipfs}`} target="_blank">IPFS link</a>
+						<Link to="/guide" target="_blank">Guidelines</Link>
 					</p>
 				</div>
 				{this.renderImage()}
@@ -85,7 +85,7 @@ class PlagiarismTracking extends React.Component {
 				</p>
 				{this.plagiarismSubText()}
 				<p className="guidelines_plag-track">
-					<Link to="/guide" target="_blank">Posting guidelines</Link>
+					<a href={`https://steepshot.org/ipfs/${this.props.data.ipfs}`} target="_blank">IPFS link</a>
 				</p>
 				<div className="buttons_plag-track">
 					<button className="btn btn-index" onClick={this.closeModal.bind(this)}>NO, CANCEL PUBLISHING</button>
