@@ -5,6 +5,19 @@ import jqApp from "../libs/app.min";
 import Steem from "../libs/steem";
 import {clearTextInputState} from "./textInput";
 
+export function initPostComment(point) {
+	return {
+		type: 'INIT_POST_COMMENTS',
+		options: {
+			point,
+			loading: true,
+			comments: [],
+			sendingNewComment: false,
+			scrollToLastComment: 0
+		}
+	}
+}
+
 export function getPostComments(point) {
 	const post = getStore().getState().posts[point];
 	if (!post) {
@@ -15,22 +28,20 @@ export function getPostComments(point) {
 		}
 	}
 	return (dispatch) => {
-		dispatch({
-			type: 'INIT_POST_COMMENTS',
-			options: {
-				point,
-				loading: true,
-				comments: [],
-				sendingNewComment: false,
-				scrollToLastComment: 0
-			}
-		});
 		const options = {
-			point: `post/${post.author}/${post.url}/comments`,
+			point: `post/${post.author}${post.url}/comments`,
 			params: {}
 		};
 		getComments(options, true).then((response) => {
+
 			const comments = response.results;
+			if (!comments) {
+				dispatch({
+					type: 'GET_COMMENT_ERROR',
+					response
+				});
+				return;
+			}
 			let commentsUrls = comments.map((comment) => {
 				return comment.url
 			});
@@ -45,7 +56,6 @@ export function getPostComments(point) {
 				};
 				commentsObjects[comments[i].url] = comment;
 			}
-
 			dispatch({
 				type: 'GET_POST_COMMENTS_SUCCESS',
 				point,
@@ -90,13 +100,14 @@ export function sendComment(postIndex, point) {
 		dispatch(sendingNewComment(postIndex, true));
 		const urlObject = post.url.split('/');
 		const callback = (err, success) => {
-			const url = postIndex + '#@' + state.auth.user + '/' + success.operations[0][1].permlink;
 			dispatch(sendingNewComment(postIndex, false));
 			if (err) {
 				jqApp.pushMessage.open(err);
 			} else if (success) {
+				const url = postIndex + '#@' + state.auth.user + '/' + success.operations[0][1].permlink;
 				const newComment = {
 					net_votes: 0,
+					net_likes: 0,
 					vote: false,
 					avatar: state.auth.avatar,
 					author: state.auth.user,
@@ -123,4 +134,24 @@ export function sendComment(postIndex, point) {
 			callback,
 		);
 	};
+}
+
+export function replyAuthor(name) {
+	let text = getStore().getState().textInput[Constants.TEXT_INPUT_POINT.COMMENT].text || '';
+	text = text.replace(/^@[^,]+, ?/g, '');
+	return dispatch => {
+		dispatch({
+			type: 'TEXT_INPUT_SET_STATE',
+			point: Constants.TEXT_INPUT_POINT.COMMENT,
+			state: {
+				focusedStyle: 'focused_tex-inp',
+				text: `@${name}, ${text}`,
+				error: ''
+			}
+		});
+		dispatch({
+			type: 'SET_FOCUS_TEXT_INPUT',
+			point: Constants.TEXT_INPUT_POINT.COMMENT
+		})
+	}
 }
