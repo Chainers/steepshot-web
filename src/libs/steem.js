@@ -299,6 +299,7 @@ class Steem {
 				if (plagiarism.is_plagiarism) {
 					let data = {
 						ipfs: response.json_metadata.ipfs_photo,
+						media: response.json_metadata.media[0],
 						plagiarism_author: plagiarism.plagiarism_username,
 						plagiarism_permlink: plagiarism.plagiarism_permlink,
 						operation: operation,
