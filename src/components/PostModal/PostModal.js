@@ -50,15 +50,15 @@ class PostModal extends React.Component {
 		window.addEventListener('resize', this.setComponentSize);
 		window.addEventListener('keydown', this.initKeyPress);
 		this.setComponentSize();
-		// setTimeout(() => {
-		// this.testFunc();
-		// }, 5000);
-		// setTimeout(() => {
-		//   this.testFunc2();
-		// }, 7000);
+		/*setTimeout(() => {
+		this.testFunc();
+		}, 5000);
+		setTimeout(() => {
+		  this.testFunc2();
+		}, 7000);*/
 	}
 
-	testFunc() {
+	/*testFunc() {
 		let pushNotBody = {
 			pushNotBody: (<LikePostNotification avatar={'http://home.kpn.nl/bonge008/BLOG/profile/signature_square1.jpg'}
 																					username={'Isabel Gregory'}
@@ -66,7 +66,7 @@ class PostModal extends React.Component {
 																					userMoney={0.35346}
 																					postPermlink={'test-2018-04-03-07-45-54'}/>)
 		};
-		// this.props.openPushNot(`LikePostNot-${this.props.login}-${new Date().getTime()}`, pushNotBody)
+		this.props.openPushNot(`LikePostNot-${this.props.login}-${new Date().getTime()}`, pushNotBody)
 		this.props.openPushNot(`LikePostNot-${'joseph.kalu'}-${new Date().getTime()}`, pushNotBody);
 	}
 
@@ -76,9 +76,9 @@ class PostModal extends React.Component {
 																						username={'Leonard Henry'}
 																						login={'joseph.kalu'}/>)
 		};
-		// this.props.openPushNot(`FollowUserNot-${this.props.login}-${new Date().getTime()}`, pushNotBody)
+		this.props.openPushNot(`FollowUserNot-${this.props.login}-${new Date().getTime()}`, pushNotBody)
 		this.props.openPushNot(`FollowUserNot-${'joseph.kalu'}-${new Date().getTime()}`, pushNotBody);
-	}
+	}*/
 
 	componentWillUnmount() {
 		window.removeEventListener('resize', this.setComponentSize);
@@ -130,6 +130,8 @@ class PostModal extends React.Component {
 				case 27:
 					if (this.props.fullScreenMode) {
 						this.setFullScreen(false);
+					} else {
+            this.props.closeModal(this.props.point);
 					}
 					break;
 				case 13:
@@ -237,23 +239,6 @@ class PostModal extends React.Component {
 									)}
 					>Copy link
 					</button>
-					{/*<img src={this.props.imgUrl || Constants.NO_IMAGE}*/}
-					{/*alt={this.props.post.title}*/}
-					{/*className="full-screen-img"*/}
-					{/*ref={ref => this.fullImage = ref}*/}
-					{/*onLoad={this.imageLoaded.bind(this)}*/}
-					{/*onError={this.loadImgError.bind(this)}*/}
-					{/*/>*/}
-					{/*<ShowIf show={!this.fullImage || !this.fullImage.complete}>*/}
-					{/*<div className="before-load-full-screen_pos-mod">*/}
-					{/*<LoadingSpinner/>*/}
-					{/*</div>*/}
-					{/*</ShowIf>*/}
-					{/*<ShowIf show={this.fullImage && this.fullImage.complete && !this.fullImage.naturalWidth}>*/}
-					{/*<div className="before-load-full-screen_pos-mod" style={{backgroundColor: '#e7e7e7'}}>*/}
-					{/*<p className="title_pos-mod">Sorry, image isn't found.</p>*/}
-					{/*</div>*/}
-					{/*</ShowIf>*/}
 					<ImagesGallery index={this.props.currentIndex}
 												 styles={{maxHeight: '90vh', maxWidth: '85vw'}}
 												 post={this.props.post}
