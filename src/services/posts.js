@@ -80,14 +80,13 @@ export function getPostShaddow(urlPost) {
 	return fetch(url, {
 		method: 'GET'
 	}).then((response) => {
-		if (response.ok) {
+		const contentType = response.headers.get("content-type");
+		if (response.ok && contentType && contentType.indexOf("application/json") !== -1) {
 			return response.json().then((json) => {
 				return json;
 			});
 		} else {
-			return response.json().then(() => {
-				return null;
-			});
+			return null;
 		}
 	});
 }

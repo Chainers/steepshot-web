@@ -10,7 +10,7 @@ class Tab extends React.Component {
 
 	render() {
 		return (
-			<ShowIf show={this.props.active && !this.props.empty} className="container_tab" removeFromDom={false}>
+			<ShowIf show={this.props.active && !this.props.empty} removeFromDom={false}>
 				{this.props.children}
 			</ShowIf>
 		);

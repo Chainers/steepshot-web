@@ -1,0 +1,42 @@
+.container_com-inp {
+    transition: .2s all ease;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: flex-end;
+    width: 100%;
+    box-shadow: 0 0 10px 0 rgba(204, 204, 204, .5);
+    padding: 0 20px 20px;
+    min-height: 82px;
+}
+
+.btn_com-inp {
+    height: 42px;
+    width: 60px;
+    border: none;
+    border-radius: 25px;
+    background: 0 0;
+    cursor: default;
+    color: #979b9e;
+    font-size: 12px;
+    font-family: inherit;
+    line-height: inherit;
+}
+
+.btn_com-inp:hover {
+    cursor: pointer;
+    border: 1px solid #ececee;
+}
+
+.btn-act_com-inp {
+    color: #e74800;
+}
+
+@media (max-width: 815px) {
+
+    .container_com-inp {
+        box-shadow: none;
+        border-top: 1px solid #f4f4f6;
+        border-bottom: 1px solid #f4f4f6;
+    }
+}

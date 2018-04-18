@@ -157,7 +157,8 @@ export default {
 	TEXT_INPUT_POINT: {
 		TITLE: 'title',
 		TAGS: 'tags',
-		DESCRIPTION: 'description'
+		DESCRIPTION: 'description',
+		COMMENT: 'comment'
 	},
 
 	KEYS: {

@@ -15,15 +15,22 @@ export function addPosts(posts) {
 
 export function updatePost(postIndex) {
 	return (dispatch) => {
-		const urlObject = postIndex.split('/');
-		getPostShaddow(urlObject[urlObject.length - 2] + '/' +
-			urlObject[urlObject.length - 1]).then((result) => {
-			dispatch({
-				type: 'UPDATE_POST',
-				post: result
-			})
-		});
+		if (!postIndex.includes('#')) {
+			updatePostData(dispatch, postIndex);
+		}
 	}
+}
+
+function updatePostData(dispatch, postIndex) {
+	const urlObject = postIndex.split('/');
+	getPostShaddow(urlObject[urlObject.length - 2] + '/' +
+		urlObject[urlObject.length - 1]).then((result) => {
+		console.log(result);
+		dispatch({
+			type: 'UPDATE_POST',
+			post: result
+		})
+	});
 }
 
 export function setPowerLikeInd(postIndex, isOpen, place) {

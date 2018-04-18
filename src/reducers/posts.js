@@ -1,6 +1,8 @@
 export default function posts(state = {}, action) {
 	switch (action.type) {
 
+		case 'GET_POST_COMMENTS_SUCCESS':
+		case 'ADDED_NEW_COMMENT':
 		case 'GET_POSTS_LIST_SUCCESS':
 		case 'ADD_POSTS':
 			return {

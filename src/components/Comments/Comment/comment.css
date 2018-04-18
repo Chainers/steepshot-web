@@ -1,0 +1,38 @@
+.cont-reply_com {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.rectangle_comment span {
+    padding: 3px 20px 4px 20px;
+    border-radius: 15px;
+    background-color: #ffffff;
+    border: solid 1px #ececee;
+    transition: .15s all ease;
+    font: 12px OpenSans-Regular;
+    text-align: center;
+    margin-right: 10px;
+}
+
+.rectangle_comment:hover {
+    color: #e74800;
+    cursor: pointer;
+}
+
+.comment-text_comment a:hover {
+    opacity: .6;
+}
+
+.comment-text_comment img {
+    max-width: 224px;
+    max-height: 210px;
+}
+
+.head_comment {
+    margin: 15px 0;
+}
+
+.container_comment {
+    padding: 10px 0;
+}

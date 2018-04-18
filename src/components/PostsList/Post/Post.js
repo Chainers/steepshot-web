@@ -16,7 +16,6 @@ import LoadingSpinner from '../../LoadingSpinner/index';
 import Avatar from '../../Common/Avatar/Avatar';
 import Likes from './Likes/Likes';
 import VoteIndicator from './Vote/VoteIndicator/VoteIndicator';
-import jqApp from '../../../libs/app.min';
 import './post.css';
 import ReactPlayer from 'react-player'
 
@@ -56,10 +55,6 @@ class Post extends React.Component {
       return;
     }
     if (!this.props.authUser) {
-      return;
-    }
-    if (this.props.commentLoader) {
-      jqApp.pushMessage.open(Constants.WAIT_FINISHING_TRANSACTION);
       return;
     }
     if (this.props.isPLOpen) {
@@ -173,17 +168,13 @@ class Post extends React.Component {
 																 isPopup={false}
 									/>
 								</ShowIf>
-								<div>
-									<Likes postIndex={this.props.index}/>
-								</div>
+								<Likes postIndex={this.props.index}/>
 								<div className="card-buttons_post">
-									<div>
-										<ShowIf show={parseFloat(this.props.total_payout_reward)}>
-											<div className="amount">${this.props.total_payout_reward}</div>
-										</ShowIf>
-									</div>
+									<ShowIf show={parseFloat(this.props.total_payout_reward)}>
+										<div className="amount">${this.props.total_payout_reward}</div>
+									</ShowIf>
 									<ShowIf show={this.props.authUser !== this.props.author}>
-										<Flag postIndex={this.props.index} commentLoader={this.props.commentLoader}/>
+										<Flag postIndex={this.props.index}/>
 									</ShowIf>
 									<div className="position--relative"
 											 ref={ref => this.vote = ref}
@@ -195,7 +186,7 @@ class Post extends React.Component {
 											 onContextMenu={this.breakLongTapPLInd.bind(this)}
 									>
 										<div className="card-control-stop"/>
-										<Vote postIndex={this.props.index} commentLoader={this.props.commentLoader}/>
+										<Vote postIndex={this.props.index} />
 									</div>
 								</div>
 							</div>
@@ -227,8 +218,7 @@ const mapStateToProps = (state, props) => {
       ...post,
       imgUrl,
       isGallery,
-      authUser: state.auth.user,
-      commentLoader: state.postModal.needsCommentFormLoader
+      authUser: state.auth.user
     };
   }
 };
