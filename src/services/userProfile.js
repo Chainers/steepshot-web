@@ -1,6 +1,6 @@
-import RequestService from '../services/requestService';
+import RequestService from './requestService';
 
-export function getUserProfile(userName) {
+export function getProfile(userName) {
 	const url = RequestService.handlev1_1RequestUserInfo(`user/${userName}/info`);
 	return fetch(url, {
 		method: 'GET'

@@ -11,7 +11,9 @@ class Tab extends React.Component {
 	render() {
 		return (
 			<ShowIf show={this.props.active && !this.props.empty} removeFromDom={false}>
-				{this.props.children}
+				<div className={'tab_wrapper'}>
+					{this.props.children}
+				</div>
 			</ShowIf>
 		);
 	}

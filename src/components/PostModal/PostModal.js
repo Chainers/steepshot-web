@@ -119,7 +119,7 @@ class PostModal extends React.Component {
 	}
 
 	initKeyPress(e) {
-		if (document.activeElement !== ReactDOM.findDOMNode(this.textArea)) {
+		if ((document.activeElement !== ReactDOM.findDOMNode(this.textArea)) && !this.props.focusedTextInput) {
 			switch (e.keyCode) {
 				case 37:
 					this.previousPost();
@@ -133,9 +133,7 @@ class PostModal extends React.Component {
 					}
 					break;
 				case 13:
-					if (!this.props.focusedTextInput) {
 						this.props.toggleVote(this.props.currentIndex);
-					}
 					break;
 				default:
 					break;

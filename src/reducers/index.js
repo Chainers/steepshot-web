@@ -20,6 +20,7 @@ import {routerReducer} from "react-router-redux";
 import pushNotifications from "./pushNotifications";
 import comments from "./comments";
 import imagesGallery from "./imagesGallery";
+import userProfile from "./userProfile";
 
 export default combineReducers({
 	clipboard,
@@ -42,5 +43,6 @@ export default combineReducers({
 	pushNotifications,
 	router: routerReducer,
 	comments,
-	imagesGallery
+	imagesGallery,
+	userProfile
 });

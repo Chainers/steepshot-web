@@ -100,7 +100,7 @@ export function getPostsList(point) {
 				postsObject[notDeletedPosts[i].url] = post;
 			}
 			notDeletedPosts = postsObject;
-			dispatch(getPostsListSuccess(pointOptions, notDeletedPosts));
+			//dispatch(getPostsListSuccess(pointOptions, notDeletedPosts));
 		});
 	};
 }

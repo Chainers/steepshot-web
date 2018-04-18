@@ -2,9 +2,9 @@ import fakeAuth from '../components/Routes/fakeAuth';
 import steem from 'steem';
 import Constants from '../common/constants';
 import {logLogin} from './logging';
-import {getUserProfile} from './profile';
 import {baseBrowseFilter} from "../routes";
 import {push} from 'react-router-redux';
+import {getProfile} from "../services/userProfile";
 
 export function login(username, postingKey, dispatch, callback) {
 
@@ -90,7 +90,7 @@ export function login(username, postingKey, dispatch, callback) {
 			// 		})
 			// 	});
 			// }, 30000);
-			getUserProfile(username).then((result) => {
+			getProfile(username).then((result) => {
 				dispatch({
 					type: 'UPDATE_VOTING_POWER',
 					voting_power: result.voting_power
@@ -127,7 +127,7 @@ export function logout() {
 
 export function updateVotingPower(username) {
 	return (dispatch) => {
-		getUserProfile(username).then((result) => {
+		getProfile(username).then((result) => {
 			dispatch({
 				type: 'UPDATE_VOTING_POWER',
 				voting_power: result.voting_power
