@@ -5,10 +5,19 @@ export default function getComments(state = {}, action) {
 				...state,
 				[action.options.point]: action.options,
 			};
+		case 'GET_POST_COMMENT_REQUEST':
+			return {
+				...state,
+				[action.point]: {
+					...state[action.point],
+					loading: true
+				}
+			};
 		case 'GET_POST_COMMENTS_SUCCESS':
 			return {
 				...state,
 				[action.point]: {
+					...state[action.point],
 					comments: action.commentsUrls,
 					loading: false
 				}

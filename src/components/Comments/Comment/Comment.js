@@ -3,11 +3,11 @@ import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
 import TimeAgo from 'timeago-react';
 import Avatar from "../../Common/Avatar/Avatar";
-import VouteComponent from "../../Posts/VouteComponent";
 import {replyAuthor} from "../../../actions/comments";
 import {addPosts} from "../../../actions/post";
 import Likes from "../../PostsList/Post/Likes/Likes";
 import './comment.css';
+import Vote from "../../PostsList/Post/Vote/Vote";
 
 class Comment extends React.Component {
 
@@ -58,12 +58,7 @@ class Comment extends React.Component {
 				</div>
 				<div className="comment-text">
 					<div ref={ref => {this.commentText = ref}} className="comment-text_comment"/>
-					<VouteComponent
-						key="vote"
-						item={this.props.item}
-						updateVoteInComponent={this.updateVoteInComponent.bind(this)}
-						parent='comment'
-					/>
+					<Vote postIndex={this.props.point} />
 				</div>
 				<div className="cont-reply_com">
 					<span className="rectangle_comment">

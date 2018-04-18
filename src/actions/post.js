@@ -5,7 +5,6 @@ import {initPostsList} from './postsList';
 import {initPostModal} from './postModal';
 import Constants from '../common/constants';
 import jqApp from "../libs/app.min";
-import {getPostComments} from "./comments";
 
 export function addPosts(posts) {
 	return {
@@ -16,9 +15,7 @@ export function addPosts(posts) {
 
 export function updatePost(postIndex) {
 	return (dispatch) => {
-		if (postIndex.includes('#')) {
-			updatePostComments(dispatch, postIndex);
-		} else {
+		if (!postIndex.includes('#')) {
 			updatePostData(dispatch, postIndex);
 		}
 	}
@@ -34,11 +31,6 @@ function updatePostData(dispatch, postIndex) {
 			post: result
 		})
 	});
-}
-
-function updatePostComments(dispatch, commentIndex) {
-	const postIndex = commentIndex.substring(0, commentIndex.indexOf('#'));
-	dispatch(getPostComments(postIndex));
 }
 
 export function setPowerLikeInd(postIndex, isOpen, place) {

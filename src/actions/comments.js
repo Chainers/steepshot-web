@@ -28,12 +28,15 @@ export function getPostComments(point) {
 		}
 	}
 	return (dispatch) => {
+		dispatch({
+			type: 'GET_POST_COMMENT_REQUEST',
+			point
+		});
 		const options = {
 			point: `post/${post.author}${post.url}/comments`,
 			params: {}
 		};
 		getComments(options, true).then((response) => {
-
 			const comments = response.results;
 			if (!comments) {
 				dispatch({
