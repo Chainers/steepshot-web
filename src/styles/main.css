@@ -7613,6 +7613,14 @@ modal.modal-like .modal-header {
     }
 }
 
+.post-card .date {
+    float: right;
+    margin-left: 30px;
+    color: #979b9e;
+    font-size: 12px;
+    line-height: 22px;
+}
+
 @media (max-width: 1361px) {
     .posts-list:not(.type-2) .item-wrap {
         width: 33.33%

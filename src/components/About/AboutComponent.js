@@ -1,7 +1,6 @@
 import React from 'react';
 import HeadingLeadComponent from '../Atoms/HeadingLeadComponent';
 import {documentTitle} from '../../utils/documentTitle';
-import {connect} from "react-redux";
 import {addMetaTags, getDefaultTags} from "../../actions/metaTags";
 import {withWrapper} from "create-react-server/wrapper";
 
