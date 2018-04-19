@@ -6,6 +6,11 @@ import './avatar.css';
 import {setAvatarTip, setAvatarTipTimeout} from '../../../actions/avatar';
 
 class Avatar extends React.Component {
+
+	constructor(props) {
+		super(props);
+	}
+
 	static defaultProps = {
 		style: {}
 	};
@@ -74,7 +79,7 @@ class Avatar extends React.Component {
 
 	showTip() {
 		if (!this.props.headerAvatar) {
-			this.props.setAvatarTip(true);
+      this.props.setAvatarTip(true);
 		}
 	}
 
@@ -101,9 +106,7 @@ class Avatar extends React.Component {
 									onMouseEnter={this.showTip.bind(this)}
 					/>
 					<ShowIf show={!this.props.headerAvatar && this.props.isTip}>
-						<div ref={ref => {
-							this.tipVotingPower = ref
-						}}
+						<div ref={ref => this.tipVotingPower = ref}
 								 className="tip-voting-power_ava-com prevent--selection"
 								 onTouchStart={() => {
 									 return;
