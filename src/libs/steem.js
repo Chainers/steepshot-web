@@ -28,7 +28,7 @@ class Steem {
 	}
 
 	comment(wif, parentAuthor, parentPermlink, author, body, tags, callback) {
-		const permlink = _getPermLink('comment');
+		const permlink = _getPermLink(`${author} comment`);
 		const commentObject = {
 			parent_author: parentAuthor,
 			parent_permlink: parentPermlink,
@@ -427,11 +427,16 @@ function _preparePost(media, description, tags, permlink) {
 	}).then(response => response.json());
 }
 
-function _getPermLink() {
+function _getPermLink(permlinkHead) {
 	let today = new Date();
-	const permLink = 'web-' + today.getFullYear() + '-' + today.getMonth() + '-' + today.getDay()
+	let permlinkHeadLimit = 30;
+  permlinkHead = permlinkHead.toLowerCase();
+	if (permlinkHead.length > permlinkHeadLimit) {
+    permlinkHead = permlinkHead.slice(0, permlinkHeadLimit + 1);
+    permlinkHead = permlinkHead.replace(/\W/g, '-');
+	}
+	return permlinkHead.replace(/\s/g, '-') + '-' + today.getFullYear() + '-' + today.getMonth() + '-' + today.getDay()
 		+ '-' + today.getHours() + '-' + today.getMinutes() + '-' + today.getSeconds();
-	return permLink;
 }
 
 function _getValidTags(tags) {
