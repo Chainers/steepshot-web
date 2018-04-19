@@ -8,6 +8,13 @@ const {JSDOM} = jsdom;
 const {window} = new JSDOM(``);
 global.window = window;
 window.$ = require('jquery');
+window.matchMedia = window.matchMedia || function () {
+	return { matches
+			: false,
+		addListener: function () {},
+		removeListener: function () {}
+	};
+};
 for (let key in window) {
 	if (!global[key]) {
 		global[key] = window[key]

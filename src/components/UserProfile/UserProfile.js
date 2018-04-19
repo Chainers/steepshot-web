@@ -128,11 +128,13 @@ class UserProfile extends React.Component {
 const mapStateToProps = (state, props) => {
 	const watcher = state.auth.user;
 	const username = props.match.params.username || watcher;
+
+	const location = state.router.location || props.location || {};
 	return {
 		username,
 		profile: state.userProfile.profile,
 		loading: state.userProfile.loading,
-		pathname: state.router.location.pathname,
+		pathname: location.pathname,
 		isYourProfile: watcher === username,
 		watcher
 	};
