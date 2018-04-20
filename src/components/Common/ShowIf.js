@@ -14,8 +14,15 @@ class ShowIf extends React.Component {
 			? <div className="container_show-if">{this.props.children}</div>
 			: this.props.children;
 
+		let style = this.props.show ? {} : {display: 'none'};
+		if (children.props.style) {
+			style = {
+				...style,
+				...children.props.style
+			}
+		}
 		return React.cloneElement(children, {
-			style: this.props.show ? {} : {display: 'none'},
+			style,
 			className: (children.props.className || '') + ' ' + (this.props.className || '')
 		});
 	}

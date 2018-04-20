@@ -102,14 +102,14 @@ class UserProfile extends React.Component {
 											clearPostHeader={true}
 										/>
 								</Tab>
-								<Tab name={this.props.profile['followers_count'] + ' ' + Constants.USERS_FILTERS.FOLLOWERS.label}>
+								<Tab name={this.props.profile['following_count'] + ' ' + Constants.USERS_FILTERS.FOLLOWING.label}>
 										<UsersList
 											point={insertUsername(Constants.USERS_FILTERS.FOLLOWING.point, this.props.username)}
 											className="posts-list clearfix type-2"
 											getUsers={getFollowers}
 										/>
 								</Tab>
-								<Tab name={this.props.profile['following_count'] + ' ' + Constants.USERS_FILTERS.FOLLOWING.label}>
+								<Tab name={this.props.profile['followers_count'] + ' ' + Constants.USERS_FILTERS.FOLLOWERS.label}>
 										<UsersList
 											point={insertUsername(Constants.USERS_FILTERS.FOLLOWERS.point, this.props.username)}
 											className="posts-list clearfix type-2"

@@ -91,7 +91,7 @@ class TabsBar extends React.Component {
 				{this.renderNavigation()}
 				{this.renderChildren()}
 				<ShowIf show={!this.props.pageLoaded && this.props.showLoader}>
-					<LoadingSpinner style={{height: '100%', position: 'absolute'}}/>
+					<LoadingSpinner style={{height: '80vh'}}/>
 				</ShowIf>
 			</div>
 		);

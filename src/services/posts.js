@@ -37,8 +37,7 @@ async function getItems(url, promiseName, needsDestroyPrevious, where) {
 		return requestPromises[promiseName] = makeCancellableRequest(url).then(result => {
 			return JSON.parse(result.target.response);
 		});
-	}
-	catch (e) {
+	}	catch (e) {
 		console.warn(where);
 		console.log(e);
 		return [];

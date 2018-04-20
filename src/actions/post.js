@@ -25,7 +25,6 @@ function updatePostData(dispatch, postIndex) {
 	const urlObject = postIndex.split('/');
 	getPostShaddow(urlObject[urlObject.length - 2] + '/' +
 		urlObject[urlObject.length - 1]).then((result) => {
-		console.log(result);
 		dispatch({
 			type: 'UPDATE_POST',
 			post: result
