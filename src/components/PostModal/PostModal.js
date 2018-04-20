@@ -23,9 +23,7 @@ import {toggleVote} from '../../actions/vote';
 import './postModal.css';
 import {setPowerLikeInd, setPowerLikeTimeout} from '../../actions/post';
 import VoteIndicator from '../PostsList/Post/Vote/VoteIndicator/VoteIndicator';
-import LikePostNotification from "../PushNotifications/LikePostNotification/LikePostNotification";
 import {openPushNot} from "../../actions/pushNotification";
-import FollowUserNotification from "../PushNotifications/FollowUserNotification/FollowUserNotification";
 import ImagesGallery from "../ImagesGallery/ImagesGallery";
 import ReactPlayer from 'react-player'
 import Comments from "../Comments/Comments";

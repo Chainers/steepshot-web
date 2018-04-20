@@ -7,10 +7,6 @@ import {setAvatarTip, setAvatarTipTimeout} from '../../../actions/avatar';
 
 class Avatar extends React.Component {
 
-	constructor(props) {
-		super(props);
-	}
-
 	static defaultProps = {
 		style: {}
 	};
