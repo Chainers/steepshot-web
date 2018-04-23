@@ -44,6 +44,15 @@ export default function posts(state = {}, action) {
 				}
 			};
 
+		case 'SET_VIDEO_TIME':
+			return {
+				...state,
+				[action.index]: {
+					...state[action.index],
+					time: action.time
+				}
+			};
+
 		case 'TOGGLE_FLAG_FAILURE':
 			return {
 				...state,

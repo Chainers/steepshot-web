@@ -184,5 +184,13 @@ export function stopVideo(index) {
 	}
 }
 
+export function setVideoTime(index, time) {
+	return {
+		type: 'SET_VIDEO_TIME',
+		index,
+		time
+	}
+}
+
 
 
