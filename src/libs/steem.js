@@ -416,7 +416,8 @@ function _preparePost(media, description, tags, permlink) {
 		"description": description,
 		"post_permlink": permlink,
 		"tags": tags,
-		"show_footer": true
+		"show_footer": true,
+		device: 'web'
 	};
 	return fetch(`${_getBaseUrl()}/post/prepare`, {
 		method: 'POST',
