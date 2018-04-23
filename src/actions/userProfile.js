@@ -1,4 +1,5 @@
 import {getProfile} from "../services/userProfile";
+import {push} from "react-router-redux";
 
 export function getUserProfile(userName) {
 	return dispatch => {
@@ -7,7 +8,7 @@ export function getUserProfile(userName) {
 		});
 			getProfile(userName).then((result) => {
 				if (result.length === 0) {
-					this.props.historyPush('*');
+					dispatch(push('/search/' + userName));
 					return;
 				}
 				dispatch({

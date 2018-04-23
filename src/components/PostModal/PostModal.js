@@ -355,14 +355,6 @@ class PostModal extends React.Component {
 		this.fsRightLeft(true);
 	}
 
-	imageLoaded() {
-		this.setComponentSize();
-	}
-
-	loadImgError() {
-		this.setComponentSize();
-	}
-
 	longTapPLInd(timeDelay) {
 		if (this.props.post.vote) {
 			return;
