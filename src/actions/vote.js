@@ -25,6 +25,14 @@ function toggleVoteFailure(postIndex) {
 	};
 }
 
+export function addVoteElement(postIndex, voteElement) {
+	return {
+		type: 'ADD_VOTE_ELEMENT',
+		postIndex,
+		voteElement
+	}
+}
+
 export function toggleVote(postIndex) {
 	return function (dispatch) {
 		let state = getStore().getState();
@@ -33,16 +41,13 @@ export function toggleVote(postIndex) {
 		let post = state.posts[postIndex];
 		const newVoteState = !post.vote;
 		let power = state.auth.like_power * 100;
-
 		if (!username && !postingKey) {
 			return;
 		}
-
 		let queue = sessionStorage.getItem('voteQueue');
 		if (queue === 'true') {
 			return;
 		}
-
 		sessionStorage.setItem('voteQueue', 'true');
 		dispatch(toggleVoteRequest(postIndex));
 

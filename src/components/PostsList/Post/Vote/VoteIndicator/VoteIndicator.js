@@ -21,37 +21,24 @@ class VoteIndicator extends React.Component {
 		window.addEventListener('mousedown', this.hideVoteIndicator);
 		window.addEventListener('touchstart', this.hideVoteIndicator);
 		this.powerIndicator.addEventListener('mouseenter', this.clearDelayTimeout);
-		this.props.voteButton.addEventListener('mouseenter', this.clearDelayTimeout);
-		setTimeout(() => {
-			this.props.voteButton.addEventListener('mouseleave', this.hideWithDelay);
-		}, 200);
-		setTimeout(() => {
-			this.powerIndicator.addEventListener('mouseleave', this.hideWithDelay);
-		}, 200);
+		this.props.voteElement.addEventListener('mouseenter', this.clearDelayTimeout);
+		this.props.voteElement.addEventListener('mouseleave', this.hideWithDelay);
+		this.powerIndicator.addEventListener('mouseleave', this.hideWithDelay);
 	}
 
 	componentWillUnmount() {
 		window.removeEventListener('mousedown', this.hideVoteIndicator);
 		window.removeEventListener('touchstart', this.hideVoteIndicator);
 		this.powerIndicator.removeEventListener('mouseenter', this.clearDelayTimeout);
-		this.props.voteButton.removeEventListener('mouseleave', this.hideWithDelay);
-		this.props.voteButton.removeEventListener('mouseenter', this.clearDelayTimeout);
+		this.props.voteElement.removeEventListener('mouseleave', this.hideWithDelay);
+		this.props.voteElement.removeEventListener('mouseenter', this.clearDelayTimeout);
 		this.powerIndicator.removeEventListener('mouseleave', this.hideWithDelay);
 	}
 
 	hideWithDelay() {
 		let hidePLIndTimeout = setTimeout(() => {
-			if (this.powerIndicator) {
-				if (this.props.isPopup) {
-					this.powerIndicator.classList.add('hid-popup-ind-anim_vote-ind');
-				} else {
-					this.powerIndicator.classList.add('hid-ind-anim_vote-ind');
-				}
-			}
-			setTimeout(() => {
-				this.props.setPowerLikeInd(this.props.index, false);
-			}, 200);
-		}, 1500);
+			this.fluidHide();
+		}, 140000);
 		this.props.setHidePowerLikeTimeout(this.props.index, hidePLIndTimeout);
 	}
 
@@ -68,11 +55,15 @@ class VoteIndicator extends React.Component {
 	}
 
 	fluidHide() {
-		if (this.props.isPopup) {
-			this.powerIndicator.classList.add('hid-popup-ind-anim_vote-ind');
-		} else {
-			this.powerIndicator.classList.add('hid-ind-anim_vote-ind');
-		}
+    if (this.powerIndicator) {
+      if (this.props.isPopup) {
+        this.powerIndicator.classList.add('hid-popup-ind-anim_vote-ind');
+      }
+      if (this.props.isComment) {
+        this.powerIndicator.classList.add('hid-comment-ind-anim_vote-ind');
+      }
+      this.powerIndicator.classList.add('hid-ind-anim_vote-ind');
+    }
 		setTimeout(() => {
 			this.props.setPowerLikeInd(this.props.index, false);
 		}, 200);
@@ -88,12 +79,11 @@ class VoteIndicator extends React.Component {
 	};
 
 	render() {
-		let poweroflikeClass = this.props.isPopup ? 'poweroflike-popup-ind_vote-ind' : 'poweroflike-ind_vote-ind';
+		let poweroflikeClass = this.props.isPopup ? 'poweroflike-popup-ind_vote-ind' : this.props.isComment ?
+			'poweroflike-comment-ind_vote-ind' : 'poweroflike-ind_vote-ind';
 		return (
-			<div className={poweroflikeClass}
-					 ref={ref => {
-						 this.powerIndicator = ref
-					 }}
+			<div className={'poweroflike-common_vote-ind ' + poweroflikeClass}
+					 ref={ref => this.powerIndicator = ref}
 			>
 				<div className="poweroflike-amount_vote-ind">{this.props.likePower}%</div>
 				<div className="wrapper_vote-ind">
@@ -116,10 +106,12 @@ class VoteIndicator extends React.Component {
 }
 
 const mapStateToProps = (state, props) => {
+	let post = state.posts[props.index];
 	return {
 		...props,
 		likePower: state.auth.like_power,
-		hplTimeout: state.posts[props.index].hplTimeout
+		hplTimeout: post.hplTimeout,
+		voteElement: post.voteElement
 	}
 };
 

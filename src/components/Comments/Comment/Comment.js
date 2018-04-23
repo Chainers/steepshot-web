@@ -2,12 +2,15 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
 import TimeAgo from 'timeago-react';
-import Avatar from "../../Common/Avatar/Avatar";
-import {replyAuthor} from "../../../actions/comments";
-import {addPosts} from "../../../actions/post";
-import Likes from "../../PostsList/Post/Likes/Likes";
+import Avatar from '../../Common/Avatar/Avatar';
+import {replyAuthor} from '../../../actions/comments';
+import {addPosts} from '../../../actions/post';
+import Likes from '../../PostsList/Post/Likes/Likes';
 import './comment.css';
-import Vote from "../../PostsList/Post/Vote/Vote";
+import Vote from '../../PostsList/Post/Vote/Vote';
+import ShowIf from '../../Common/ShowIf';
+import Flag from '../../PostsList/Post/Flag/Flag';
+import VoteIndicator from '../../PostsList/Post/Vote/VoteIndicator/VoteIndicator';
 
 class Comment extends React.Component {
 
@@ -41,7 +44,7 @@ class Comment extends React.Component {
 		if (!this.props.item) {
 			return null;
 		}
-		const authorLink = `/@${this.props.item.author}`;
+		const authorLink = `/@${this.props.author}`;
 		return (
 			<div className="container_comment">
 				<div className="head_comment">
@@ -53,18 +56,25 @@ class Comment extends React.Component {
 						</div>
 						<Link to={authorLink} className="user">
 							<Avatar src={this.props.item.avatar}/>
-							<div className="name">{this.props.item.author}</div>
+							<div className="name">{this.props.author}</div>
 						</Link>
 				</div>
 				<div className="comment-text">
-					<div ref={ref => {this.commentText = ref}} className="comment-text_comment"/>
-					<Vote postIndex={this.props.point} />
+					<ShowIf show={this.props.item.isPLOpen && this.props.item.powerLikeIndPlace === 'comment'}>
+						<VoteIndicator index={this.props.point} isComment={true}/>
+					</ShowIf>
+					<div ref={ref => this.commentText = ref} className="comment-text_comment"/>
+					<Vote postIndex={this.props.point}
+								powerLikeIndPlace="comment"
+								isComment={true}/>
 				</div>
-				<div className="cont-reply_com">
-					<span className="rectangle_comment">
-						<span onClick={() => this.props.replyAuthor(this.props.item.author)}>Reply</span>
-					</span>
-					<Likes postIndex={this.props.item.url} disabled={true}/>
+				<div className="actions-buttons_comment">
+					<ShowIf show={!this.props.isYourComment} className="display--flex">
+						<span className="reply_comment" onClick={() => this.props.replyAuthor(this.props.author)}>Reply</span>
+						<Flag postIndex={this.props.point}
+									isComment={true}/>
+					</ShowIf>
+					<Likes postIndex={this.props.item.url} isComment={true}/>
 				</div>
 			</div>
 		);
@@ -72,12 +82,15 @@ class Comment extends React.Component {
 }
 
 const mapStateToProps = (state, props) => {
+	let comment = state.posts[props.point];
 	return {
-		item: state.posts[props.point]
+		item: comment,
+		author: comment.author,
+		isYourComment: comment.author === state.auth.user
 	};
 };
 
-const mapDispatchTOProps = dispatch => {
+const mapDispatchToProps = dispatch => {
 	return {
 		replyAuthor: (name) => {
 			dispatch(replyAuthor(name));
@@ -88,4 +101,4 @@ const mapDispatchTOProps = dispatch => {
 	}
 };
 
-export default connect(mapStateToProps, mapDispatchTOProps)(Comment);
+export default connect(mapStateToProps, mapDispatchToProps)(Comment);

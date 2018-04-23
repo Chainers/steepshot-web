@@ -7,24 +7,27 @@ import ShowIf from "../../Common/ShowIf";
 import LoadingSpinner from "../../LoadingSpinner";
 import './user.css';
 
-const User = ({user, authUser, toggleFollow}) => {
-	let amountMoney = '';
+const User = ({user, authUser, toggleFollow, isParity}) => {
+
+	let amountMoney = null;
 	if (user.amount_sbd) {
-		amountMoney = (user.amount_sbd < 0 ? '-' : '+') + '$' + Math.abs(user.amount_sbd.toFixed(3));
+		amountMoney = <span className="money_user">
+										{(user.amount_sbd < 0 ? '-' : '+') + '$' + Math.abs(user.amount_sbd.toFixed(3))}
+									</span>;
 	}
 
 	return (
-		<div className="container_user">
-			<Link to={`/@${user.author}`}>
-				<Avatar src={user.avatar} style={{width: '60px', height: '60px', position: 'static', marginTop: '-1px'}}/>
-			</Link>
-			<div className="name_user">
+		<div className="container_user" style={isParity ? {marginRight: 10} : {marginLeft: 10}}>
+			<div className="ava-name-wrap_user">
 				<Link to={`/@${user.author}`}>
-					{user.author}
+					<Avatar src={user.avatar} style={{width: '60px', height: '60px', position: 'static', marginTop: '-1px'}}/>
 				</Link>
-				<span className="money_user">
-          {amountMoney}
-        </span>
+				<div className="name_user">
+					<Link to={`/@${user.author}`}>
+						{user.author}
+					</Link>
+					{amountMoney}
+				</div>
 			</div>
 			<ShowIf show={user.author !== authUser}>
 				<div className="following-toggle-wrapper_user">

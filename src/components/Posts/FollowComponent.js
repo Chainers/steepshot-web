@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import Steem from '../../libs/steem';
-import jqApp from "../../libs/app.min";
+import jqApp from '../../libs/app.min';
 
 class FollowComponent extends React.Component {
 

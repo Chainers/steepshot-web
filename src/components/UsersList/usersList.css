@@ -1,7 +1,10 @@
 .body_use-lis {
     display: flex;
     flex-wrap: wrap;
-    padding-bottom: 10px;
+}
+
+.tab_wrapper div div:last-child {
+    right: -12px !important;
 }
 
 .spinner_use-lis {

@@ -4025,45 +4025,10 @@ html body {
     border-top: none;
     border-bottom-left-radius: 4px;
     border-bottom-right-radius: 4px;
-    padding: 0 20px;
-}
-
-.card-controls {
-    padding: 10px 0;
-    display: flex;
-    justify-content: space-between;
-    position: relative;
-}
-
-.post-card .card-controls .wrap-counts {
-    padding-right: 20px;
-    margin-right: 42px
-}
-
-.post-card .card-controls .amount, .post-card .card-controls .likes {
-    font-size: 12px;
-    line-height: 21px
 }
 
 .amount {
     font-size: 12px;
-}
-
-.post-card .card-controls .likes {
-    float: left;
-    cursor: pointer;
-    transition: color .15s ease
-}
-
-.post-card .card-controls .likes:hover {
-    color: #979b9e
-}
-
-.post-card .card-preview {
-    line-height: 1.48;
-    font-size: 14px;
-    font-family: OpenSans-Light, Helvetica, Arial, sans-serif;
-    overflow: hidden;
 }
 
 .post-card .card-tags {
@@ -6612,13 +6577,13 @@ modal.modal-like .modal-header {
     height: 2.1em
 }
 
-.comment .btn-like:before {
+.comment.btn-like:before {
     background-position: -.2em -14.7em;
     width: 2.1em;
     height: 2.1em
 }
 
-.btn-like:after, .comment .btn-like:after {
+.btn-like:after, .comment.btn-like:after {
     background-position: -.2em -19.7em;
     width: 2.1em;
     height: 2.1em;
@@ -6627,19 +6592,19 @@ modal.modal-like .modal-header {
     transform: scale(.3)
 }
 
-.btn-like.liked:before, .comment .btn-like.liked:before {
+.btn-like.liked:before, .comment.btn-like.liked:before {
     background-position: -.2em -19.7em;
     width: 2.1em;
     height: 2.1em
 }
 
-.btn-like.loading:before, .comment .btn-like.loading:before {
+.btn-like.loading:before, .comment.btn-like.loading:before {
     background-position: -.2em -12.2em;
     width: 2.1em;
     height: 2.1em
 }
 
-.btn-like.loading:after, .comment .btn-like.loading:after {
+.btn-like.loading:after, .comment.btn-like.loading:after {
     display: block;
     -webkit-animation: likeLoading 1s infinite linear;
     animation: likeLoading 1s infinite linear
@@ -8376,6 +8341,10 @@ modal.modal-like .modal-header {
     display: none;
 }
 
+.display--flex {
+    display: flex;
+}
+
 .user-panel {
     z-index: 2;
 }
@@ -8440,12 +8409,6 @@ modal.modal-like .modal-header {
     min-height: 150px;
 }
 
-.card-preview {
-    height: 61px;
-    overflow: hidden;
-    margin-bottom: 15px;
-}
-
 .rotate-button {
     position: relative;
     height: 150px;
@@ -8486,42 +8449,6 @@ modal.modal-like .modal-header {
     left: 50.5%;
     z-index: 1003;
     transform: translate(-50%, -50.5%);
-}
-
-.number-of-comments_post {
-    cursor: pointer;
-    border-top: 1px solid #f4f4f6;
-    height: 50px;
-    background: url('/images/comment_arrow.svg') 100% 50% no-repeat;
-}
-
-.number-of-comments_post:hover {
-    animation: comment_arrow .4s linear;
-}
-
-.number-of-comments_post p {
-    transition: .2s opacity ease;
-}
-
-.number-of-comments_post p:hover {
-    opacity: .6;
-}
-
-@keyframes comment_arrow {
-    0% {
-        background-position: 100% 50%;
-    }
-    50% {
-        background-position: 97% 50%;
-    }
-    100% {
-        background-position: 100% 50%;
-    }
-}
-
-.number-of-comments_post p {
-    font: 12px OpenSans-Regular;
-    line-height: 50px;
 }
 
 .user-links_post {
@@ -8565,7 +8492,6 @@ modal.modal-like .modal-header {
 .post-card {
     margin: 0 auto;
     padding: 0 0 15px 0;
-    overflow: hidden;
 }
 
 .like-modal-loader {

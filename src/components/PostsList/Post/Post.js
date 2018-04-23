@@ -168,14 +168,11 @@ class Post extends React.Component {
 					<div className="card-body">
 						{this.renderImage()}
 						<div className="card-wrap">
-							<div className="card-controls">
+							<div className="card-controls_post">
 								<ShowIf show={this.props.isPLOpen && this.props.powerLikeIndPlace === 'post'}>
-									<VoteIndicator index={this.props.index}
-																 voteButton={this.vote}
-																 isPopup={false}
-									/>
+									<VoteIndicator index={this.props.index}/>
 								</ShowIf>
-								<Likes postIndex={this.props.index}/>
+								<Likes postIndex={this.props.index} style={{paddingLeft: 20}}/>
 								<div className="card-buttons_post">
 									<ShowIf show={parseFloat(this.props.total_payout_reward)}>
 										<div className="amount">${this.props.total_payout_reward}</div>
@@ -183,22 +180,15 @@ class Post extends React.Component {
 									<ShowIf show={this.props.authUser !== this.props.author}>
 										<Flag postIndex={this.props.index}/>
 									</ShowIf>
-									<div className="position--relative"
-											 ref={ref => this.vote = ref}
-											 onMouseEnter={this.longTapPLInd.bind(this, 1400)}
-											 onMouseLeave={this.breakLongTapPLInd.bind(this)}
-											 onTouchStart={this.longTapPLInd.bind(this, 700)}
-											 onTouchEnd={this.breakLongTapPLInd.bind(this)}
-											 onTouchMove={this.breakLongTapPLInd.bind(this)}
-											 onContextMenu={this.breakLongTapPLInd.bind(this)}
-									>
+									<div className="position--relative">
 										<div className="card-control-stop"/>
-										<Vote postIndex={this.props.index}/>
+										<Vote postIndex={this.props.index}
+                          powerLikeIndPlace="post"/>
 									</div>
 								</div>
 							</div>
-							<div className="card-preview">
-								{UserLinkFunc(null, this.props.title)}
+							<div className="card-preview_post">
+                {UserLinkFunc(null, this.props.title)}
 								<Tags tags={this.props.tags}/>
 							</div>
 							<div className="number-of-comments_post" onClick={this.openPostModal.bind(this)}>

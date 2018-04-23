@@ -17,16 +17,12 @@ class Comments extends React.Component {
 		props.getComments(props.point);
 	}
 
-	scrollAfterComment() {
-		this.scrollBar.scrollToBottom();
-	}
-
 	componentWillReceiveProps(nextProps) {
 		if (nextProps.point !== this.props.point) {
 			this.props.getComments(nextProps.point);
 		}
 		if (nextProps.scrollToLastComment !== this.props.scrollToLastComment && this.scrollBar) {
-			this.scrollBar.scrollToBottom();
+			this.scrollBar.scrollToTop();
 		}
 		return true;
 	}
@@ -46,6 +42,7 @@ class Comments extends React.Component {
 			comments = this.props.comments.map((item, index) => {
 				return <Comment key={index} point={item}/>
 			});
+			comments = comments.reverse();
 		}
 		return (
 			<div className="container_comments">

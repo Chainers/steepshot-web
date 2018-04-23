@@ -23,10 +23,11 @@ export function getPostComments(point) {
 	if (!post) {
 		jqApp.pushMessage.open(Constants.OOOPS_SOMETHING_WRONG);
 		return {
-			type: "Can't find post.",
+			type: 'Can\'t find post.',
 			point
 		}
 	}
+
 	return (dispatch) => {
 		dispatch({
 			type: 'GET_POST_COMMENT_REQUEST',
@@ -50,8 +51,7 @@ export function getPostComments(point) {
 			});
 
 			let commentsObjects = {};
-			let commentsLength = comments.length;
-			for (let i = 0; i < commentsLength; i++) {
+			for (let i = 0; i < comments.length; i++) {
 				let comment = {
 					...comments[i],
 					flagLoading: false,
@@ -62,8 +62,8 @@ export function getPostComments(point) {
 			dispatch({
 				type: 'GET_POST_COMMENTS_SUCCESS',
 				point,
+        commentsUrls,
 				posts: commentsObjects,
-				commentsUrls
 			});
 		});
 	}
@@ -77,10 +77,10 @@ function sendingNewComment(point, flag) {
 	}
 }
 
-function scrollToLastComment(point) {
+function scrollToLastComment(postIndex) {
 	return {
 		type: 'SCROLL_TO_LAST_COMMENT',
-		point
+		postIndex
 	}
 }
 
