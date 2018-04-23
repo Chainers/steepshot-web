@@ -1,37 +1,36 @@
-.poweroflike-ind_vote-ind {
+.poweroflike-common_vote-ind {
     position: absolute;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     height: 54px;
-    top: -54px;
-    left: -30px;
-    width: calc(100% + 60px);
     z-index: 2;
     background: #ffffff;
     border: 1px solid #ffffff;
     border-radius: 10px;
-    box-shadow: 0 20px 40px 0 rgba(0, 0, 0, 0.1);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    box-shadow: 0 20px 40px 0 rgba(0, 0, 0, .1);
     padding: 0 20px;
+}
+
+.poweroflike-ind_vote-ind {
+    top: -54px;
+    left: -10px;
+    width: calc(100% + 20px);
     animation: fadeVoteIndicator .2s linear;
 }
 
 .poweroflike-popup-ind_vote-ind {
-    position: absolute;
-    height: 54px;
     top: 54px;
     left: 0;
     width: 100%;
-    z-index: 2;
-    background: #ffffff;
-    border: 1px solid #ffffff;
-    border-radius: 10px;
-    box-shadow: 0 20px 40px 0 rgba(0, 0, 0, 0.1);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 20px;
     animation: fadePopupVoteIndicator .2s linear;
+}
+
+.poweroflike-comment-ind_vote-ind {
+    top: -62px;
+    right: -20px;
+    width: 90%;
+    animation: fadeCommentVoteIndicator .2s linear;
 }
 
 .hid-ind-anim_vote-ind {
@@ -40,6 +39,10 @@
 
 .hid-popup-ind-anim_vote-ind {
     animation: unfadePopupVoteIndicator .2s linear;
+}
+
+.hid-comment-ind-anim_vote-ind {
+    animation: unfadeCommentVoteIndicator .2s linear;
 }
 
 .poweroflike-ind_vote-ind p {
@@ -118,6 +121,28 @@
     from {
         opacity: 1;
         top: 54px;
+    }
+    to {
+        opacity: 0;
+        top: 0;
+    }
+}
+
+@keyframes fadeCommentVoteIndicator {
+    from {
+        opacity: 0;
+        top: 0;
+    }
+    to {
+        opacity: 1;
+        top: -62px;
+    }
+}
+
+@keyframes unfadeCommentVoteIndicator {
+    from {
+        opacity: 1;
+        top: -62px;
     }
     to {
         opacity: 0;

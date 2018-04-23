@@ -41,9 +41,9 @@ export default function getComments(state = {}, action) {
 		case 'SCROLL_TO_LAST_COMMENT':
 			return {
 				...state,
-				[action.point]: {
-					...state[action.point],
-					scrollToLastComment: state[action.point].scrollToLastComment + 1
+				[action.postIndex]: {
+					...state[action.postIndex],
+					scrollToLastComment: state[action.postIndex].scrollToLastComment + 1
 				}
 			};
 		default:

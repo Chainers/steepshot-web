@@ -7,12 +7,8 @@ import './likes.css';
 class Likes extends React.Component {
 
 	openLikesModal() {
-		if (this.props.disabled) {
-			//TODO переписать для списка лайков у комента когда будет эндпоинт на бэке
-			return;
-		}
 		let modalOption = {
-			body: (<LikesFlagsList postIndex={this.props.postIndex}/>),
+			body: (<LikesFlagsList postIndex={this.props.postIndex} isComment={this.props.isComment}/>),
 		};
 		this.props.openModal('LikesFlagsList', modalOption);
 	}
@@ -22,7 +18,9 @@ class Likes extends React.Component {
 			return <div> </div>;
 		}
 		return (
-			<div className="container_likes" onClick={this.openLikesModal.bind(this)} style={this.props.style}>
+			<div className="container_likes"
+					 onClick={this.openLikesModal.bind(this)}
+					 style={this.props.style}>
 				{this.props.likes} {this.props.likes > 1 ? 'likes' : 'like'}
 			</div>
 		);

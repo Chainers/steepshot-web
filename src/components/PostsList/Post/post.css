@@ -1,3 +1,61 @@
+.card-controls_post {
+    padding: 10px 0;
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+}
+
+.card-controls-border_post {
+    border-top: 1px solid #f4f4f6;
+    border-bottom: 1px solid #f4f4f6;
+}
+
+.card-preview_post {
+    height: 61px;
+    overflow: hidden;
+    margin-bottom: 15px;
+    line-height: 1.48;
+    font: 14px OpenSans-Light, Helvetica, Arial, sans-serif;
+    padding: 0 20px;
+}
+
+.number-of-comments_post {
+    cursor: pointer;
+    border-top: 1px solid #f4f4f6;
+    height: 50px;
+    background: url('/images/comment_arrow.svg') 100% 50% no-repeat;
+    margin: 0 20px;
+}
+
+.number-of-comments_post:hover {
+    animation: comment_arrow .4s linear;
+}
+
+.number-of-comments_post p {
+    transition: .2s opacity ease;
+}
+
+.number-of-comments_post p:hover {
+    opacity: .6;
+}
+
+@keyframes comment_arrow {
+    0% {
+        background-position: 100% 50%;
+    }
+    50% {
+        background-position: 97% 50%;
+    }
+    100% {
+        background-position: 100% 50%;
+    }
+}
+
+.number-of-comments_post p {
+    font: 12px OpenSans-Regular;
+    line-height: 50px;
+}
+
 .card-buttons_post {
     display: flex;
     justify-content: space-between;
@@ -27,10 +85,12 @@
 }
 
 .btn-like-wrapper_vote {
-    padding: 10px 0 10px 17px;
+    padding: 10px 17px;
+    cursor: pointer;
 }
 
-.btn-like-wrapper_vote:hover .btn-like::before {
+.btn-like-wrapper_vote:hover .btn-like::before,
+.btn-like-wrapper-comment_vote:hover .comment.btn-like::before {
     transform: scale(1.15);
 }
 

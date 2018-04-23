@@ -436,16 +436,11 @@ class PostModal extends React.Component {
 					</div>
 					<div className="description_pos-mod"
 							 style={this.props.style.description}
-							 ref={(ref) => {
-								 this.descPosMod = ref
-							 }}
+							 ref={(ref) => this.descPosMod = ref}
 					>
-						<div className="card-controls">
+						<div className="card-controls_post card-controls-border_post">
 							<ShowIf show={this.props.post.isPLOpen && this.props.post.powerLikeIndPlace === 'modal'}>
-								<VoteIndicator index={this.props.currentIndex}
-															 voteButton={this.votePosMod}
-															 isPopup={true}
-								/>
+								<VoteIndicator index={this.props.currentIndex} isPopup={true}/>
 							</ShowIf>
 							<Likes postIndex={this.props.currentIndex} style={{paddingLeft: 20}}/>
 							<div className="card-buttons_post">
@@ -455,28 +450,17 @@ class PostModal extends React.Component {
 								<ShowIf show={this.props.authUser !== this.props.post.author}>
 									<Flag postIndex={this.props.currentIndex}/>
 								</ShowIf>
-								<div className="position--relative"
-										 ref={ref => {
-											 this.votePosMod = ref
-										 }}
-										 onMouseEnter={this.longTapPLInd.bind(this)}
-										 onMouseLeave={this.breakLongTapPLInd.bind(this)}
-										 onTouchStart={this.longTapPLInd.bind(this)}
-										 onTouchEnd={this.breakLongTapPLInd.bind(this)}
-										 onTouchMove={this.breakLongTapPLInd.bind(this)}
-										 onContextMenu={this.breakLongTapPLInd.bind(this)}
-								>
+								<div className="position--relative">
 									<div className="card-control-stop"/>
 									<Vote postIndex={this.props.currentIndex}
+												powerLikeIndPlace="modal"
 												style={{paddingRight: 20}}
 									/>
 								</div>
 							</div>
 						</div>
 
-						<Comments
-							point={this.props.currentIndex}
-						/>
+						<Comments point={this.props.currentIndex}/>
 					</div>
 				</div>
 				<ShowIf show={this.props.fullScreenMode}>

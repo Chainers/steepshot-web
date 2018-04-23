@@ -276,7 +276,7 @@ function getValidTagsString(str) {
 		result = result.replace(new RegExp(`((\\s[^\\s]+){${MAX_AMOUNT_TAGS - 1}}).*`), '$1');
 		result = result.replace(new RegExp(`(([^\\s]{${MAX_TAG_LENGTH}})[^\\s]+).*`), '$2');
 		result = result.replace(/\bsteepshot\b/g, '');
-		return result;
+		return result.toLowerCase();
 	}
 }
 

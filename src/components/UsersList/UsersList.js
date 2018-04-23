@@ -6,7 +6,7 @@ import InfiniteScroll from 'react-infinite-scroller';
 import LoadingSpinner from '../LoadingSpinner';
 import {clearUsersList, getUsersList, initUsersList} from '../../actions/usersList';
 import {documentTitle} from '../../utils/documentTitle';
-import User from "./User/User";
+import User from './User/User';
 import './usersList.css';
 
 class UsersList extends React.Component {
@@ -74,6 +74,7 @@ class UsersList extends React.Component {
 				<User
 					key={index}
 					index={this.props.users[index]}
+					isParity={index % 2 === 0}
 				/>,
 			);
 		});
@@ -88,7 +89,7 @@ class UsersList extends React.Component {
 				loadMore={debounce(this.getUsersList.bind(this),
 					Constants.ENDLESS_SCROLL.DEBOUNCE)}
 				hasMore={this.props.isComponentVisible && this.props.hasMore}
-				loader={<div className='spinner_use-lis' key={'usersListLoader'}><LoadingSpinner/></div>}
+				loader={<div className="spinner_use-lis" key="usersListLoader"><LoadingSpinner/></div>}
 				threshold={Constants.ENDLESS_SCROLL.OFFSET}
 				useWindow={!this.props.useScrollView}
 				useCapture={this.props.useScrollView}

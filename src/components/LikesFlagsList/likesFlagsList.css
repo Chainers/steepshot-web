@@ -1,13 +1,16 @@
 .container_lik-lis {
     position: relative;
     background-color: #ffffff;
-    border: 1px solid rgba(0, 0, 0, .2);
-    border-radius: 4px;
+    border-radius: 10px;
     max-height: 96vh;
     min-height: 10px;
     width: 660px;
     padding: 10px 20px;
     overflow: hidden;
+}
+
+.container_lik-lis ul .nav-item:not(.active) a {
+    font: 14px OpenSans-Regular;
 }
 
 .close-button_lik-lis {
