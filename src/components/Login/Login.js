@@ -6,6 +6,7 @@ import {withWrapper} from "create-react-server/wrapper";
 import './login.css';
 import ShowIf from "../Common/ShowIf";
 import ReactPlayer from 'react-player'
+import Constants from "../../common/constants";
 
 class Login extends React.Component {
 
@@ -67,16 +68,17 @@ class Login extends React.Component {
 					</div>
 				</form>
 				<div className="how-sign_login">
-					<ShowIf show={true}>
+					<ShowIf show={false}>
 						Also you can check <span className="show-video-btn_login">how to sign in to Steepshot</span>
 					</ShowIf>
-					<ShowIf show={false}>
+					<ShowIf show={true}>
 						<div className="video-cont_login">
 							<ReactPlayer
 								height='100%'
-								url={this.props.urlVideo}
+								width='100%'
+								url={Constants.TUTORIAL.LINK}
 								playing={true}
-								loop={true}/>
+								controls={true}/>
 						</div>
 					</ShowIf>
 				</div>

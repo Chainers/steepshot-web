@@ -127,6 +127,14 @@
     cursor: pointer;
 }
 
+.video-cont_login {
+    width: 550px;
+    height: 315px;
+    margin: 25px auto;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
 @media (max-width: 720px) {
     .container_login {
         width: 100%;
