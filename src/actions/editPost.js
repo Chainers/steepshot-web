@@ -5,12 +5,12 @@ import {getPostShaddow} from "../services/posts";
 import Steem from "../libs/steem";
 import {clearTextInputState, setTextInputError, setTextInputState} from "./textInput";
 import {getCreateWaitingTime} from "../services/users";
-import jqApp from "../libs/app.min";
 import * as React from "react";
 import PlagiarismTracking from "../components/Modals/PlagiarismTracking/PlagiarismTracking";
 import {openModal} from "./modal";
 import {push} from "react-router-redux";
 import {compressJPEG} from "../utils/compressor";
+import {pushMessage} from "./pushMessage";
 
 const getUserName = () => {
 	return getStore().getState().auth.user;
@@ -34,7 +34,7 @@ export function addTag() {
 		let newTag = state.textInput[constants.TEXT_INPUT_POINT.TAGS].text;
 		newTag = getValidTagsString(newTag);
 		if (editPostState.tags.split(' ').length === 20) {
-			jqApp.pushMessage.open(constants.MAX_TAGS_NUMBER);
+			dispatch(pushMessage(constants.MAX_TAGS_NUMBER));
 		}
 		if (utils.isEmptyString(newTag)) {
 			return emptyAction();
@@ -172,14 +172,14 @@ export function editPost() {
 		dispatch(editPostRequest());
 		Steem.editPost(title, tags, description, postData.url.split('/')[3], postData.category, postData.media[0])
 			.then(() => {
-				jqApp.pushMessage.open(constants.POST_SUCCESSFULLY_UPDATED);
+				dispatch(pushMessage(constants.POST_SUCCESSFULLY_UPDATED));
 				setTimeout(() => {
 					dispatch(editPostSuccess());
 					dispatch(push(`/@${getUserName()}`))
 				}, 1700);
 			}).catch(error => {
 			dispatch(editPostReject(error));
-			jqApp.pushMessage.open(error.message);
+			dispatch(pushMessage(error.message));
 		})
 	}
 }
@@ -220,7 +220,7 @@ export function createPost() {
 							return Steem.createPost(tags, title, description, blob)
 						})
 						.then(() => {
-							jqApp.pushMessage.open(constants.POST_SUCCESSFULLY_CREATED);
+							dispatch(pushMessage(constants.POST_SUCCESSFULLY_CREATED));
 							dispatch(editPostSuccess());
 							dispatch(push(`/@${getUserName()}`))
 						})
@@ -236,7 +236,7 @@ export function createPost() {
 						})
 						.catch(error => {
 							dispatch(editPostReject(error));
-							jqApp.pushMessage.open(error.message);
+							dispatch(pushMessage(error.message));
 						});
 				}
 			})

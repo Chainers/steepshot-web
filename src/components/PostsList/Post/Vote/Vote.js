@@ -2,8 +2,8 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {addVoteElement, toggleVote} from '../../../../actions/vote';
 import Constants from '../../../../common/constants';
-import jqApp from '../../../../libs/app.min';
 import {setPowerLikeInd, setPowerLikeTimeout} from '../../../../actions/post';
+import {pushMessage} from "../../../../actions/pushMessage";
 
 class Vote extends React.Component {
 
@@ -13,7 +13,7 @@ class Vote extends React.Component {
 
 	toggleVote() {
     if (!this.props.isUserAuth) {
-      jqApp.pushMessage.open(Constants.VOTE_ACTION_WHEN_NOT_AUTH);
+      this.props.pushMessage(Constants.VOTE_ACTION_WHEN_NOT_AUTH);
       return;
     }
 		if (this.props.isPLOpen) {
@@ -97,6 +97,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     addVoteElement: (postIndex, voteElement) => {
 			dispatch(addVoteElement(postIndex, voteElement));
+		},
+		pushMessage: (message) => {
+			dispatch(pushMessage(message))
 		}
 	};
 };

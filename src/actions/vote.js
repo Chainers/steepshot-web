@@ -2,7 +2,7 @@ import Steem from '../libs/steem';
 import {getStore} from '../store/configureStore';
 import {updatePost} from './post';
 import {updateVotingPower} from './auth';
-import jqApp from "../libs/app.min";
+import {pushMessage} from "./pushMessage";
 
 function toggleVoteRequest(postIndex) {
 	return {
@@ -54,15 +54,15 @@ export function toggleVote(postIndex) {
 		const callback = (err, success) => {
 			sessionStorage.setItem('voteQueue', 'false');
 			if (err) {
-        dispatch(toggleVoteFailure(postIndex));
-				jqApp.pushMessage.open(err);
+				dispatch(toggleVoteFailure(postIndex));
+				dispatch(pushMessage(err));
 			} else if (success) {
 				dispatch(toggleVoteSuccess(postIndex));
 				dispatch(updatePost(postIndex));
 				dispatch(updateVotingPower(username));
 				let text = `The post has been successfully liked. If you don't see your like, please give it a few minutes to sync from the blockchain`;
 				if (!newVoteState) text = `The post has been successfully disliked. If you don't see your dislike, please give it a few minutes to sync from the blockchain`;
-				jqApp.pushMessage.open(text);
+				dispatch(pushMessage(text));
 			}
 		};
 

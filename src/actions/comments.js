@@ -1,9 +1,9 @@
 import {getComments} from "../services/posts";
 import {getStore} from "../store/configureStore";
 import Constants from "../common/constants";
-import jqApp from "../libs/app.min";
 import Steem from "../libs/steem";
 import {clearTextInputState} from "./textInput";
+import {pushMessage} from "./pushMessage";
 
 export function initPostComment(point) {
 	return {
@@ -21,10 +21,12 @@ export function initPostComment(point) {
 export function getPostComments(point) {
 	const post = getStore().getState().posts[point];
 	if (!post) {
-		jqApp.pushMessage.open(Constants.OOOPS_SOMETHING_WRONG);
-		return {
-			type: 'Can\'t find post.',
-			point
+		return dispatch => {
+			dispatch(pushMessage(Constants.OOOPS_SOMETHING_WRONG));
+			dispatch({
+				type: 'Can\'t find post.',
+				point
+			})
 		}
 	}
 
@@ -105,7 +107,7 @@ export function sendComment(postIndex, point) {
 		const callback = (err, success) => {
 			dispatch(sendingNewComment(postIndex, false));
 			if (err) {
-				jqApp.pushMessage.open(err);
+				dispatch(pushMessage(err));
 			} else if (success) {
 				const url = postIndex + '#@' + state.auth.user + '/' + success.operations[0][1].permlink;
 				const newComment = {
@@ -124,7 +126,7 @@ export function sendComment(postIndex, point) {
 				dispatch(addedNewComment(postIndex, { [url]: newComment}, url));
 				dispatch(clearTextInputState(point));
 				dispatch(scrollToLastComment(postIndex));
-				jqApp.pushMessage.open(Constants.COMMENT_SUCCESS_MESSAGE);
+				dispatch(pushMessage(Constants.COMMENT_SUCCESS_MESSAGE));
 			}
 		};
 		Steem.comment(

@@ -2,16 +2,16 @@ import React from 'react';
 import {connect} from "react-redux";
 import {CopyToClipboard} from "react-copy-to-clipboard";
 import './clipboard.css';
-import jqApp from "../../../libs/app.min";
+import {pushMessage} from "../../../actions/pushMessage";
 
 class Clipboard extends React.Component {
 
 	componentDidUpdate() {
 		try {
 			this.button.click();
-			jqApp.pushMessage.open("URL has been copied in your clipboard");
+			this.props.pushMessage("URL has been copied in your clipboard");
 		} catch (e) {
-			jqApp.pushMessage.open("Oops, unable to copy");
+			this.props.pushMessage("Oops, unable to copy");
 		}
 	}
 
@@ -33,4 +33,13 @@ const mapStateToProps = (state) => {
 	};
 };
 
-export default connect(mapStateToProps)(Clipboard);
+
+const mapDispatchToProps = (dispatch) => {
+	return {
+		pushMessage: (message) => {
+			dispatch(pushMessage(message))
+		}
+	}
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Clipboard);

@@ -10,6 +10,7 @@ import $ from 'jquery';
 import jqApp from "../../libs/app.min";
 import {addMetaTags, getDefaultTags} from "../../actions/metaTags";
 import {withWrapper} from "create-react-server/wrapper";
+import {pushMessage} from "../../actions/pushMessage";
 
 class Login extends React.Component {
 
@@ -78,7 +79,7 @@ class Login extends React.Component {
 				this.setState({
 					needsLoader: false
 				}, () => {
-					jqApp.pushMessage.open(message);
+					this.props.dispatch(pushMessage(message));
 				});
 			};
 			login(this.state.userName.toLowerCase(), this.state.postingKey, this.props.dispatch, callback);

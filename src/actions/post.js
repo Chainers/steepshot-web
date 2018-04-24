@@ -4,7 +4,7 @@ import {getStore} from '../store/configureStore';
 import {initPostsList} from './postsList';
 import {initPostModal} from './postModal';
 import Constants from '../common/constants';
-import jqApp from "../libs/app.min";
+import {pushMessage} from "./pushMessage";
 
 export function addPosts(posts) {
 	return {
@@ -103,14 +103,14 @@ export function deletePost(postIndex) {
 			sessionStorage.setItem('voteQueue', 'false');
 			if (success) {
 				dispatch(successDeletePost(postIndex));
-				jqApp.pushMessage.open(Constants.DELETE.DELETE_SUCCESS);
+				dispatch(pushMessage(Constants.DELETE.DELETE_SUCCESS));
 			} else if (err) {
 				Steem.editDelete(title, tags, description, permlink, parentPerm).then(() => {
-					jqApp.pushMessage.open(Constants.DELETE.DELETE_SUCCESS);
+					dispatch(pushMessage(Constants.DELETE.DELETE_SUCCESS));
 					dispatch(successDeletePost(postIndex));
 				}).catch((err) => {
 					dispatch(failureDeletePost(postIndex));
-					jqApp.pushMessage.open(err)
+					dispatch(pushMessage(err));
 				});
 			}
 		};
@@ -122,7 +122,7 @@ export function addSinglePost(url) {
 	return async dispatch => {
 		const urlObject = url.split('/');
 		if (urlObject.length < 3) {
-			error();
+			error(dispatch);
 		} else {
 			await getPostShaddow(getPostIdentifier(urlObject[urlObject.length - 2],
 				urlObject[urlObject.length - 1]))
@@ -145,7 +145,7 @@ export function addSinglePost(url) {
 						}));
 						dispatch(initPostModal('SinglePost', result.url));
 					} else {
-						this.error();
+						this.error(dispatch);
 					}
 				});
 		}
@@ -156,10 +156,10 @@ function getPostIdentifier(author, permlink) {
 	return `${author}/${permlink}`;
 }
 
-function error() {
+function error(dispatch) {
 	let state = getStore().getState();
-	jqApp.pushMessage.open(
-		'Something went wrong, please, check the URL or try again later');
+	dispatch(pushMessage(
+		'Something went wrong, please, check the URL or try again later'));
 	setTimeout(() => {
 		if (state.auth.name && state.auth.postingKey) {
 			//browserHistory.push('/feed');

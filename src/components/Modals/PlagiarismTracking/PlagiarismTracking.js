@@ -2,12 +2,12 @@ import * as React from 'react';
 import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
 import {closeModal} from '../../../actions/modal';
-import {editPostRequest, editPostSuccess, editPostReject} from '../../../actions/editPost';
+import {editPostReject, editPostRequest, editPostSuccess} from '../../../actions/editPost';
 import Steem from '../../../libs/steem';
 import constants from '../../../common/constants';
-import jqApp from "../../../libs/app.min";
 import {push} from "react-router-redux";
 import './plagiarismTracking.css';
+import {pushMessage} from "../../../actions/pushMessage";
 
 class PlagiarismTracking extends React.Component {
 
@@ -28,14 +28,14 @@ class PlagiarismTracking extends React.Component {
 	continuePublishing() {
 		let data = this.props.data;
 		Steem.afterCheckingPlagiarism(data.operation, data.prepareData, data.beneficiaries).then(() => {
-			jqApp.pushMessage.open(constants.POST_SUCCESSFULLY_CREATED);
+			this.props.pushMessage(constants.POST_SUCCESSFULLY_CREATED);
 			this.props.editPostSuccess();
 			this.props.historyPush(`/@${this.props.authUser}`);
 		})
-		.catch(error => {
-			this.props.editPostReject(error);
-			jqApp.pushMessage.open(error.message);
-		});
+			.catch(error => {
+				this.props.editPostReject(error);
+				this.props.pushMessage(error.message);
+			});
 		this.props.closeModal('PlagiarismTrackingModal');
 		this.props.editPostRequest();
 	}
@@ -48,7 +48,7 @@ class PlagiarismTracking extends React.Component {
 					as it may result in low payouts and reputation loss.</span>
 			)
 		}
-    let linkToPlagUser = `/@${plagiator}`;
+		let linkToPlagUser = `/@${plagiator}`;
 		return (
 			<span>
 				<Link to={linkToPlagUser} target="_blank"> @{plagiator}</Link>. We do not recommend you to upload other
@@ -56,17 +56,18 @@ class PlagiarismTracking extends React.Component {
 			</span>
 		)
 	}
+
 	plagiarismSubText() {
-    let plagiator = this.props.data.plagiarism_author;
-    let linkToPlagPhoto = `/post/@${plagiator}/${this.props.data.plagiarism_permlink}`;
+		let plagiator = this.props.data.plagiarism_author;
+		let linkToPlagPhoto = `/post/@${plagiator}/${this.props.data.plagiarism_permlink}`;
 		if (this.props.authUser === plagiator) {
 			return ''
 		}
 		return (
-		  <p className="sub-descrip_plag-track">If you're sure that you are the author of the photo, please flag and/or
-			  leave a comment under the
-			  <Link to={linkToPlagPhoto} target="_blank"> photo </Link>
-			  to let other people know they should flag this post.</p>
+			<p className="sub-descrip_plag-track">If you're sure that you are the author of the photo, please flag and/or
+				leave a comment under the
+				<Link to={linkToPlagPhoto} target="_blank"> photo </Link>
+				to let other people know they should flag this post.</p>
 		)
 	}
 
@@ -81,7 +82,8 @@ class PlagiarismTracking extends React.Component {
 				</div>
 				{this.renderImage()}
 				<p className="descrip_plag-track">We have found a
-					<Link to={`/post/@${this.props.data.plagiarism_author}/${this.props.data.plagiarism_permlink}`} target="_blank"> similar photo</Link> in Steepshot, uploaded by {this.plagiarismAuthor()}
+					<Link to={`/post/@${this.props.data.plagiarism_author}/${this.props.data.plagiarism_permlink}`}
+								target="_blank"> similar photo</Link> in Steepshot, uploaded by {this.plagiarismAuthor()}
 				</p>
 				{this.plagiarismSubText()}
 				<p className="guidelines_plag-track">
@@ -120,6 +122,9 @@ const mapDispatchToProps = (dispatch) => {
 		},
 		historyPush: (path) => {
 			dispatch(push(path))
+		},
+		pushMessage: (message) => {
+			dispatch(pushMessage(message))
 		}
 	};
 };
