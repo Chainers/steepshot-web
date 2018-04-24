@@ -1,6 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {updateVotingPower} from '../../actions/auth';
+import PushMessage from "./PushMessage/PushMessage";
 
 class FunctionalUtils extends React.Component {
 
@@ -15,7 +16,11 @@ class FunctionalUtils extends React.Component {
   }
 
   render() {
-    return null;
+    return (
+      <div className="utils-container">
+        <PushMessage />
+      </div>
+    );
   }
 }
 

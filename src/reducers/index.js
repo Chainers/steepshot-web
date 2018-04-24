@@ -21,6 +21,7 @@ import pushNotifications from "./pushNotifications";
 import comments from "./comments";
 import imagesGallery from "./imagesGallery";
 import userProfile from "./userProfile";
+import pushMessage from "./pushMessage";
 
 export default combineReducers({
 	clipboard,
@@ -44,5 +45,6 @@ export default combineReducers({
 	router: routerReducer,
 	comments,
 	imagesGallery,
-	userProfile
+	userProfile,
+	pushMessage
 });

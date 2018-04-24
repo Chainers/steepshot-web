@@ -1,0 +1,38 @@
+.container_push-msg {
+    position: fixed;
+    z-index: 1100;
+    width: 100%;
+    left: 0;
+    bottom: 0;
+}
+
+.body_push-msg {
+    position: relative;
+    z-index: 1;
+    padding: 20px;
+}
+
+.text-wrap_push-msg {
+    max-width: 620px;
+    margin: 0 auto;
+    text-align: center;
+    border-radius: 100px;
+    padding: 20px 30px;
+    background: rgba(0, 0, 0, .9);
+    line-height: 20px;
+    color: #fff;
+    font-size: 14px;
+}
+
+.will-close_push-msg.body_push-msg {
+    opacity: 0;
+    transition: 1s ease;
+}
+
+@media (max-width: 767px) {
+
+    .text-wrap_push-msg {
+        border-radius: 8px;
+        padding: 20px;
+    }
+}

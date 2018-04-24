@@ -1,6 +1,7 @@
 import {getStore} from '../store/configureStore';
 import {getPosts} from '../services/posts';
 import Constants from '../common/constants';
+import {pushMessage} from "./pushMessage";
 
 export function initPostsList(options) {
 	return {
@@ -101,6 +102,7 @@ export function getPostsList(point) {
 			}
 			notDeletedPosts = postsObject;
 			dispatch(getPostsListSuccess(pointOptions, notDeletedPosts));
+			dispatch(pushMessage("POST LIST SUCCESS"));
 		});
 	};
 }
