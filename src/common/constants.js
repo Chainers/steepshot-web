@@ -158,7 +158,9 @@ export default {
 		TITLE: 'title',
 		TAGS: 'tags',
 		DESCRIPTION: 'description',
-		COMMENT: 'comment'
+		COMMENT: 'comment',
+		NAME: 'name',
+		POSTING_KEY: 'postingKey'
 	},
 
 	KEYS: {

@@ -218,9 +218,11 @@ class PostModal extends React.Component {
 						<div className="video-con-fs_pos-mod">
 							<ReactPlayer
 								height='100%'
-								url={this.props.urlVideo}
+								width='100%'
+								url={Constants.TUTORIAL.LINK}
 								playing={true}
-								loop={true}/>
+								controls={true}
+								loop={false}/>
 						</div>
 					</ShowIf>
 				</div>
