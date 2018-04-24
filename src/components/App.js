@@ -2,9 +2,6 @@ import React from 'react';
 import Header from './Header';
 import MobileNavigationComponent from './MobileNavigationComponent';
 import FooterComponent from './FooterComponent';
-import Clipboard from "./Common/Clipboard/Clipboard";
-import Modals from './Modals/Modals';
-import PushNotifications from "./PushNotifications/PushNotifications";
 import FunctionalUtils from "./Common/FunctionalUtils";
 
 const App = ({children}) => (
@@ -17,10 +14,7 @@ const App = ({children}) => (
 		</div>
 		<MobileNavigationComponent/>
 		<FooterComponent/>
-		<PushNotifications/>
 		<FunctionalUtils/>
-		<Clipboard/>
-		<Modals/>
 	</div>
 );
 

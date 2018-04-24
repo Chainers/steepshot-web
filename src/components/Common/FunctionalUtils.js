@@ -2,6 +2,9 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {updateVotingPower} from '../../actions/auth';
 import PushMessage from "./PushMessage/PushMessage";
+import PushNotifications from "../PushNotifications/PushNotifications";
+import Clipboard from "./Clipboard/Clipboard";
+import Modals from "../Modals/Modals";
 
 class FunctionalUtils extends React.Component {
 
@@ -18,7 +21,10 @@ class FunctionalUtils extends React.Component {
   render() {
     return (
       <div className="utils-container">
+				<PushNotifications/>
         <PushMessage />
+				<Clipboard/>
+				<Modals/>
       </div>
     );
   }
