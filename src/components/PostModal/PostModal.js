@@ -20,13 +20,13 @@ import Likes from '../PostsList/Post/Likes/Likes';
 import FullScreenButtons from './FullScreenButtons/FullScreenButtons';
 import utils from '../../utils/utils';
 import {toggleVote} from '../../actions/vote';
-import './postModal.css';
 import {setPowerLikeInd, setPowerLikeTimeout} from '../../actions/post';
 import VoteIndicator from '../PostsList/Post/Vote/VoteIndicator/VoteIndicator';
 import {openPushNot} from "../../actions/pushNotification";
 import ImagesGallery from "../ImagesGallery/ImagesGallery";
 import ReactPlayer from 'react-player'
 import Comments from "../Comments/Comments";
+import './postModal.css';
 
 const HEADER_HEIGHT = 60;
 
@@ -48,35 +48,7 @@ class PostModal extends React.Component {
 		window.addEventListener('resize', this.setComponentSize);
 		window.addEventListener('keydown', this.initKeyPress);
 		this.setComponentSize();
-		/*setTimeout(() => {
-		this.testFunc();
-		}, 5000);
-		setTimeout(() => {
-		  this.testFunc2();
-		}, 7000);*/
 	}
-
-	/*testFunc() {
-		let pushNotBody = {
-			pushNotBody: (<LikePostNotification avatar={'http://home.kpn.nl/bonge008/BLOG/profile/signature_square1.jpg'}
-																					username={'Isabel Gregory'}
-																					login={'joseph.kalu'}
-																					userMoney={0.35346}
-																					postPermlink={'test-2018-04-03-07-45-54'}/>)
-		};
-		this.props.openPushNot(`LikePostNot-${this.props.login}-${new Date().getTime()}`, pushNotBody)
-		this.props.openPushNot(`LikePostNot-${'joseph.kalu'}-${new Date().getTime()}`, pushNotBody);
-	}
-
-	testFunc2() {
-		let pushNotBody = {
-			pushNotBody: (<FollowUserNotification avatar={'http://home.kpn.nl/bonge008/BLOG/profile/signature_square1.jpg'}
-																						username={'Leonard Henry'}
-																						login={'joseph.kalu'}/>)
-		};
-		this.props.openPushNot(`FollowUserNot-${this.props.login}-${new Date().getTime()}`, pushNotBody)
-		this.props.openPushNot(`FollowUserNot-${'joseph.kalu'}-${new Date().getTime()}`, pushNotBody);
-	}*/
 
 	componentWillUnmount() {
 		window.removeEventListener('resize', this.setComponentSize);
@@ -129,11 +101,11 @@ class PostModal extends React.Component {
 					if (this.props.fullScreenMode) {
 						this.setFullScreen(false);
 					} else {
-            this.props.closeModal(this.props.point);
+						this.props.closeModal(this.props.point);
 					}
 					break;
 				case 13:
-						this.props.toggleVote(this.props.currentIndex);
+					this.props.toggleVote(this.props.currentIndex);
 					break;
 				default:
 					break;
@@ -180,20 +152,6 @@ class PostModal extends React.Component {
 	}
 
 	renderImage() {
-		if (this.props.post.isVideo) {
-			return (
-				<div className="image-container_pos-mod image-container_vid-con"
-						 style={this.props.style.imgCont}
-				>
-					<ReactPlayer
-						width='100%'
-						height='100%'
-						url={this.props.urlVideo}
-						playing={true}
-						loop={true}/>
-				</div>
-			)
-		}
 		return (
 			<div className="image-container_pos-mod" style={this.props.style.imgCont}>
 				{this.lowNSFWFilter()}
@@ -212,13 +170,27 @@ class PostModal extends React.Component {
 						<img className="img-full-screen" src="/images/shape.svg" alt="open full screen"/>
 					</div>
 				</ShowIf>
+				<ShowIf show={!this.props.post.isVideo}>
 				<ImagesGallery index={this.props.currentIndex}
 											 styles={this.props.style.image}
 											 post={this.props.post}
 											 isFullScreen={false}
 											 setComponentSize={this.setComponentSize}/>
+				</ShowIf>
+				<ShowIf show={this.props.post.isVideo}>
+					<div className="image-container_pos-mod image-container_vid-con"
+							 style={this.props.style.imgCont}
+					>
+						<ReactPlayer
+							width='100%'
+							height='100%'
+							url={this.props.urlVideo}
+							playing={true}
+							loop={true}/>
+					</div>
+				</ShowIf>
 			</div>
-		);
+		)
 	}
 
 	renderFullScreenImg() {
@@ -235,11 +207,22 @@ class PostModal extends React.Component {
 									)}
 					>Copy link
 					</button>
-					<ImagesGallery index={this.props.currentIndex}
-												 styles={{maxHeight: '90vh', maxWidth: '85vw'}}
-												 post={this.props.post}
-												 isFullScreen={true}
-												 setComponentSize={this.setComponentSize}/>
+					<ShowIf show={!this.props.post.isVideo}>
+						<ImagesGallery index={this.props.currentIndex}
+													 styles={{maxHeight: '90vh', maxWidth: '85vw'}}
+													 post={this.props.post}
+													 isFullScreen={true}
+													 setComponentSize={this.setComponentSize}/>
+					</ShowIf>
+					<ShowIf show={this.props.post.isVideo}>
+						<div className="video-con-fs_pos-mod">
+							<ReactPlayer
+								height='100%'
+								url={this.props.urlVideo}
+								playing={true}
+								loop={true}/>
+						</div>
+					</ShowIf>
 				</div>
 				<ShowIf show={this.props.fullScreenNavigation}>
 					<div>

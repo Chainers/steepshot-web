@@ -448,6 +448,14 @@
     animation: spin 2s linear infinite;
 }
 
+.video-con-fs_pos-mod {
+    max-height: 100vh;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    justify-content: center;
+}
+
 @media (max-width: 815px) {
     .container_pos-mod {
         min-height: 100vh;

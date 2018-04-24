@@ -291,6 +291,8 @@ class Steem {
 		}];
 		return _fileUpload(operation, file)
 			.then(response => {
+				console.log(response);
+				return;
 				return _preparePost(response, description, tags, permlink);
 			})
 			.then(response => {
