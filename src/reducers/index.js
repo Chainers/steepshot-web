@@ -23,6 +23,7 @@ import imagesGallery from "./imagesGallery";
 import userProfile from "./userProfile";
 import pushMessage from "./pushMessage";
 import formInput from "./formInput";
+import bodyLoader from "./bodyLoader";
 
 export default combineReducers({
 	clipboard,
@@ -48,5 +49,6 @@ export default combineReducers({
 	imagesGallery,
 	userProfile,
 	pushMessage,
-	formInput
+	formInput,
+	bodyLoader
 });

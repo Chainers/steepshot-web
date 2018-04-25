@@ -10,6 +10,7 @@
     position: relative;
     z-index: 1;
     padding: 20px;
+    transition: .5s ease;
 }
 
 .text-wrap_push-msg {

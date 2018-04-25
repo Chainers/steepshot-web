@@ -14,8 +14,7 @@ class PushMessage extends React.Component {
 		return (
 			<div key={index} className={'body_push-msg' + (message.willClose ? ' will-close_push-msg' : '')}
 					 style={{
-						 marginBottom: message.up ? '0' : '-200px',
-						 transition: '1s ease'
+						 marginBottom: message.up ? '0' : '-200px'
 					 }}
 			>
 				<div className="text-wrap_push-msg">

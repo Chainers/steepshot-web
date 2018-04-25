@@ -5,19 +5,21 @@ import {baseBrowseFilter} from "../routes";
 import {push} from 'react-router-redux';
 import {getProfile} from "../services/userProfile";
 import {pushMessage} from "./pushMessage";
+import {hideBodyLoader, showBodyLoader} from "./bodyLoader";
 
-function error(message) {
+function showMessage(message) {
 	return dispatch => {
 		dispatch(pushMessage(message));
-		//added loader
+		dispatch(hideBodyLoader());
 	}
 }
 
 export function login(username, postingKey) {
 	return dispatch => {
+		dispatch(showBodyLoader());
 		steem.api.getAccounts([username], function (err, result) {
 			if (err) {
-				dispatch(error('Something went wrong, please, try again later'));
+				dispatch(showMessage('Something went wrong, please, try again later'));
 
 				const data = JSON.stringify({
 					username: username,
@@ -27,7 +29,7 @@ export function login(username, postingKey) {
 				return false;
 			}
 			if (result.length === 0) {
-				dispatch(error('Such user doesn\'t exist'));
+				dispatch(showMessage('Such user doesn\'t exist'));
 				return false;
 			}
 			let pubWif = result[0].posting.key_auths[0][0];
@@ -38,7 +40,7 @@ export function login(username, postingKey) {
 				console.log('login failure: ', e);
 			}
 			if (!isValid) {
-				dispatch(error('Invalid username or posting key'));
+				dispatch(showMessage('Invalid username or posting key'));
 				return {
 					type: 'LOGIN_FAILURE',
 					messages: 'Not valid username or posting key'
@@ -63,7 +65,6 @@ export function login(username, postingKey) {
 			localStorage.setItem('like_power', '100');
 			localStorage.setItem('avatar', JSON.stringify(avatar));
 
-			dispatch(push('Welcome to Steepshot, ' + username + '!'));
 			dispatch({
 				type: 'LOGIN_SUCCESS',
 				postingKey: postingKey,
@@ -78,6 +79,7 @@ export function login(username, postingKey) {
 				voting_power: result[0].voting_power / 10
 			});
 			dispatch(push('/feed'));
+			dispatch(showMessage('Welcome to Steepshot, ' + username + '!'));
 		});
 	}
 }
