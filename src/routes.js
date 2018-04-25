@@ -26,7 +26,6 @@ export default function getRoutes(store) {
 		});
 	};
 
-
 	const auth = store.getState().auth;
 	const isAuth = !!auth.user && !!auth.postingKey && auth.isSetAuth;
 

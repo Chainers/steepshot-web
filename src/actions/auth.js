@@ -1,4 +1,3 @@
-import fakeAuth from '../components/Routes/fakeAuth';
 import steem from 'steem';
 import Constants from '../common/constants';
 import {logLogin} from './logging';
@@ -6,7 +5,6 @@ import {baseBrowseFilter} from "../routes";
 import {push} from 'react-router-redux';
 import {getProfile} from "../services/userProfile";
 import {pushMessage} from "./pushMessage";
-import utils from '../utils/utils';
 
 function error(message) {
 	return dispatch => {
@@ -45,61 +43,52 @@ export function login(username, postingKey) {
 					type: 'LOGIN_FAILURE',
 					messages: 'Not valid username or posting key'
 				};
-			} else {
-				const data = JSON.stringify({
-					username: username,
-					error: ''
-				});
-				logLogin(data);
-
-				let welcomeName = username;
-				let metadata;
-				localStorage.setItem('user', JSON.stringify(username));
-				localStorage.setItem('postingKey', JSON.stringify(postingKey));
-				localStorage.setItem('settings', JSON.stringify({
-					[Constants.SETTINGS.show_low_rated]: false,
-					[Constants.SETTINGS.show_nsfw]: false
-				}));
-				localStorage.setItem('like_power', '100');
-				let avatar = null;
-				if (result[0])
-					if (utils.isNotEmptyString(result[0].json_metadata)) {
-						metadata = JSON.parse(result[0].json_metadata);
-						if (metadata.profile)
-							if (utils.isNotEmptyString(metadata.profile['profile_image'])) {
-								avatar = metadata.profile['profile_image'];
-							}
-					}
-				localStorage.setItem('avatar', JSON.stringify(avatar));
-
-				if (metadata && metadata.profile && metadata.profile.name) {
-					welcomeName = metadata.profile.name;
-				}
-
-				let settings = {
-					[Constants.SETTINGS.show_low_rated]: false,
-					[Constants.SETTINGS.show_nsfw]: false
-				};
-				dispatch(error('Welcome to Steepshot, ' + welcomeName + '!'));
-				dispatch({
-					type: 'LOGIN_SUCCESS',
-					postingKey: postingKey,
-					user: username,
-					avatar: avatar,
-					settings: settings,
-					like_power: 100
-				});
-
-				dispatch({
-					type: 'UPDATE_VOTING_POWER',
-					voting_power: result[0].voting_power / 10
-				});
-
-				fakeAuth.authenticate(() => dispatch(push('/feed')));
-
 			}
+			const data = JSON.stringify({
+				username: username,
+				error: ''
+			});
+			logLogin(data);
+
+			let settings = {
+				[Constants.SETTINGS.show_low_rated]: false,
+				[Constants.SETTINGS.show_nsfw]: false
+			};
+
+			let avatar = getAvatar(result[0]);
+
+			localStorage.setItem('user', JSON.stringify(username));
+			localStorage.setItem('postingKey', JSON.stringify(postingKey));
+			localStorage.setItem('settings', JSON.stringify(settings));
+			localStorage.setItem('like_power', '100');
+			localStorage.setItem('avatar', JSON.stringify(avatar));
+
+			dispatch(push('Welcome to Steepshot, ' + username + '!'));
+			dispatch({
+				type: 'LOGIN_SUCCESS',
+				postingKey: postingKey,
+				user: username,
+				avatar: avatar,
+				settings: settings,
+				like_power: 100
+			});
+
+			dispatch({
+				type: 'UPDATE_VOTING_POWER',
+				voting_power: result[0].voting_power / 10
+			});
+			dispatch(push('/feed'));
 		});
 	}
+}
+
+function getAvatar(profileData) {
+	let avatar = null;
+	try {
+		const metadata = JSON.parse(profileData.json_metadata);
+		avatar = metadata.profile['profile_image'];
+	} catch(e) {}
+	return avatar;
 }
 
 function logoutUser() {
@@ -116,7 +105,7 @@ export function logout() {
 		localStorage.removeItem('avatar');
 		localStorage.removeItem('like_power');
 		dispatch(logoutUser());
-		fakeAuth.signout(() => dispatch(push(`/browse/${baseBrowseFilter()}`)));
+		dispatch(push(`/browse/${baseBrowseFilter()}`));
 	}
 }
 
