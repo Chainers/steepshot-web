@@ -5,6 +5,7 @@ export default function posts(state = {}, action) {
 		case 'ADDED_NEW_COMMENT':
 		case 'GET_POSTS_LIST_SUCCESS':
 		case 'ADD_POSTS':
+		case 'UPDATE_COMMENT':
 			return {
 				...state,
 				...action.posts

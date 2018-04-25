@@ -58,7 +58,7 @@ export function toggleVote(postIndex) {
 				dispatch(pushMessage(err));
 			} else if (success) {
 				dispatch(toggleVoteSuccess(postIndex));
-				dispatch(updatePost(postIndex));
+				dispatch(updatePost(postIndex, newVoteState, false));
 				dispatch(updateVotingPower(username));
 				let text = `The post has been successfully liked. If you don't see your like, please give it a few minutes to sync from the blockchain`;
 				if (!newVoteState) text = `The post has been successfully disliked. If you don't see your dislike, please give it a few minutes to sync from the blockchain`;

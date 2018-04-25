@@ -291,7 +291,7 @@ class Steem {
 		}];
 		return _fileUpload(operation, file)
 			.then(response => {
-				return _preparePost(response, description, tags, permlink);
+				return _preparePost(response, description, tags, permlink, _getUserName());
 			})
 			.then(response => {
 				let beneficiaries = _getBeneficiaries(operation[1].permlink, response.beneficiaries);
@@ -409,12 +409,12 @@ function _sendToBlockChain(operation, prepareData, beneficiaries) {
 	})
 }
 
-function _preparePost(media, description, tags, permlink) {
+function _preparePost(media, description, tags, permlink, username) {
 	const options = {
 		"username": _getUserName(),
 		"media": [media],
 		"description": description,
-		"post_permlink": permlink,
+		"post_permlink": `@${username}/${permlink}`,
 		"tags": tags,
 		"show_footer": true,
 		device: 'web'

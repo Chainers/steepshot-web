@@ -100,17 +100,23 @@
     height: 16px;
     top: 10px;
     right: 10px;
-    background: url('/images/gallery-indicator.svg') center no-repeat;
+    background: url('/images/post/gallery-indicator.svg') center no-repeat;
+}
+
+.gif-indicator_post {
+    position: absolute;
+    width: 30px;
+    height: 16px;
+    top: 10px;
+    right: 10px;
+    background: url('/images/post/gif.svg') center no-repeat;
 }
 
 .video-time-indicator_post {
     position: absolute;
     top: 8px;
     right: 35px;
-    font-size: 14px;
-    font-weight: 600;
-    font-style: normal;
-    font-stretch: normal;
+    font: 14px OpenSans-Regular;
     line-height: normal;
     letter-spacing: normal;
     text-align: left;
@@ -129,4 +135,10 @@
 
 .card-pic.post_vid-con {
     margin-left: -160px;
+}
+.video-cont-wrap_vid-con {
+    position: relative;
+    z-index: 2;
+    overflow: hidden;
+    border-radius: 4px 4px 0 0;
 }

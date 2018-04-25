@@ -17,7 +17,7 @@ import Avatar from '../../Common/Avatar/Avatar';
 import Likes from './Likes/Likes';
 import VoteIndicator from './Vote/VoteIndicator/VoteIndicator';
 import './post.css';
-import ReactPlayer from 'react-player'
+import ReactPlayer from 'react-player';
 
 class Post extends React.Component {
 
@@ -70,34 +70,35 @@ class Post extends React.Component {
 		clearTimeout(this.props.plTimeout);
 	}
 
+	stopVideoPlaying() {
+    this.props.stopVideo(this.props.index);
+    this.player.seekTo(0);
+	}
+
 	renderImage() {
 		if (this.props.isVideo) {
 			return (
-				<div className="card-pic post_vid-con" onClick={this.openPostModal.bind(this)}
-						 onMouseEnter={() => {
-							 this.props.playVideo(this.props.index)
-						 }}
-						 onMouseLeave={() => {
-							 this.props.stopVideo(this.props.index);
-							 this.player.seekTo(0);
-						 }}
-				>
-					<ShowIf show={!this.props.playing}>
-						<div className="video-time-indicator_post">
-							{this.props.time || '00.00'}
-						</div>
-						<div className="video-indicator_post"/>
-					</ShowIf>
-					<ReactPlayer
-						url={this.props.imgUrl}
-						height='100%'
-						loop={true}
-						playing={this.props.playing}
-						controls={false}
-						ref={ref => this.player = ref}
-						onDuration={time => this.props.setVideoTime(this.props.index, time)}
-					/>
-
+				<div className="video-cont-wrap_vid-con">
+					<div className="card-pic post_vid-con" onClick={this.openPostModal.bind(this)}
+							 onMouseEnter={() => this.props.playVideo(this.props.index)}
+							 onMouseLeave={this.stopVideoPlaying.bind(this)}
+					>
+						<ShowIf show={!this.props.playing}>
+							<div className="video-time-indicator_post">
+								{this.props.time || '00.00'}
+							</div>
+							<div className="video-indicator_post"/>
+						</ShowIf>
+						<ReactPlayer
+							url={this.props.imgUrl}
+							height='100%'
+							loop={true}
+							playing={this.props.playing}
+							controls={false}
+							ref={ref => this.player = ref}
+							onDuration={time => this.props.setVideoTime(this.props.index, time)}
+						/>
+					</div>
 				</div>
 			)
 		}
@@ -109,6 +110,9 @@ class Post extends React.Component {
 			<div className="card-pic" onClick={this.openPostModal.bind(this)}>
 				<ShowIf show={this.props.isGallery}>
 					<div className="gallery-indicator_post"/>
+				</ShowIf>
+				<ShowIf show={this.props.isGif}>
+					<div className="gif-indicator_post"/>
 				</ShowIf>
 				<ShowIf show={this.props['is_nsfw']}>
 					<div className="forAdult">

@@ -34,9 +34,10 @@ class LikesFlagsList extends React.Component {
 		this.updateBodyHeight(undefined, ReactDOM.findDOMNode(currentBody).clientHeight);
 	}
 
-	static permLink(url, isComment) {
-		if (isComment) {
-			return url.replace(/(@[\w-.]+\/)[^/]+\//, '$1');
+	static permLink(url, commentAuthor) {
+		if (commentAuthor) {
+			let correctPermlink = url.replace(/(@[\w-.]+\/)[^/]+\//, '$1');
+			return correctPermlink.replace(/\/@[\w-.]+/, commentAuthor);
 		}
 		let urlObject = url.split('/');
 		return `/${urlObject[urlObject.length - 2]}/${urlObject[urlObject.length - 1]}`;
@@ -96,7 +97,7 @@ class LikesFlagsList extends React.Component {
 }
 
 const mapStateToProps = (state, props) => {
-	let point = `post${LikesFlagsList.permLink(state.posts[props.postIndex].url, props.isComment)}/voters`;
+	let point = `post${LikesFlagsList.permLink(state.posts[props.postIndex].url, props.commentAuthor)}/voters`;
 	let flags = state.usersList[point + 'JSON_OPTIONS:{"flags":1}'];
 	return {
 		flags,
