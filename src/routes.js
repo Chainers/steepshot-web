@@ -2,7 +2,6 @@ import React from 'react';
 import {Route, Switch, Redirect} from 'react-router-dom';
 import App from './components/App';
 import NotFound from './components/NotFound';
-import Signin from './components/Account/Login';
 import PrivateRoute from './components/Routes/PrivateRoute';
 import Feed from './components/Feed/Feed';
 import Settings from './components/Settings';
@@ -14,6 +13,7 @@ import SinglePost from './components/SinglePost/SinglePost';
 import Search from './components/Search/Search';
 import EditPost from './components/EditPost/EditPost';
 import UserProfile from "./components/UserProfile/UserProfile";
+import Login from "./components/Login/Login";
 
 export function baseBrowseFilter() {
 	return localStorage.getItem('browse') || Constants.BROWSE_ROUTES[0].NAME;
@@ -44,13 +44,13 @@ export default function getRoutes(store) {
 					isAuth ? (
 						<Redirect push to="/feed"/>
 					) : (
-						<Signin/>
+						<Login/>
 					)
 				)}/>
 				<Route path="/browse/:filter" component={BrowseWrapper} onLeave={clearMessages}/>
 				<Redirect path="/browse" to={`/browse/${baseBrowseFilter()}`}/>
 				<Route path="/@:username" component={UserProfile} onLeave={clearMessages}/>
-				<Route path="/signin" component={Signin} onLeave={clearMessages}/>
+				<Route path="/signin" component={Login} onLeave={clearMessages}/>
 				<Route path="/post" component={SinglePost} onLeave={clearMessages}/>
 				<Route path="/search/:searchValue" component={Search} onLeave={clearMessages}/>
 				<Route path="/guide" component={AboutComponent} onLeave={clearMessages}/>

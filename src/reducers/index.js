@@ -22,6 +22,7 @@ import comments from "./comments";
 import imagesGallery from "./imagesGallery";
 import userProfile from "./userProfile";
 import pushMessage from "./pushMessage";
+import formInput from "./formInput";
 
 export default combineReducers({
 	clipboard,
@@ -46,5 +47,6 @@ export default combineReducers({
 	comments,
 	imagesGallery,
 	userProfile,
-	pushMessage
+	pushMessage,
+	formInput
 });
