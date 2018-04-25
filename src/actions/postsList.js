@@ -92,6 +92,7 @@ export function getPostsList(point) {
 					voteLoading: false,
 					postDeleting: false,
 					isVideo: !!notDeletedPosts[i].media[0].url.match(/mp4$/i),
+          isGif: !!notDeletedPosts[i].media[0].url.match(/gif$/i),
 					playing: false
 				});
 				post.tags = (post.tags instanceof Array)

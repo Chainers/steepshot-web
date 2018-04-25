@@ -5,18 +5,21 @@ import {initPostsList} from './postsList';
 import {initPostModal} from './postModal';
 import Constants from '../common/constants';
 import {pushMessage} from "./pushMessage";
+import jqApp from '../libs/app.min';
 
-export function addPosts(posts) {
-	return {
-		type: 'ADD_POSTS',
-		posts
-	}
+function addPosts(posts) {
+  return {
+    type: 'ADD_POSTS',
+    posts
+  }
 }
 
-export function updatePost(postIndex) {
+export function updatePost(postIndex, newVoteState, newFlagState) {
 	return (dispatch) => {
 		if (!postIndex.includes('#')) {
 			updatePostData(dispatch, postIndex);
+		} else {
+			updateCommentData(dispatch, postIndex, newVoteState, newFlagState)
 		}
 	}
 }
@@ -29,6 +32,28 @@ function updatePostData(dispatch, postIndex) {
 			type: 'UPDATE_POST',
 			post: result
 		})
+	});
+}
+
+function updateCommentData(dispatch, postIndex, newVoteState, newFlagState) {
+	let newItem = getStore().getState().posts[postIndex];
+	newVoteState ? newItem.net_votes++ : newItem.net_votes--;
+	newVoteState ? newItem.net_likes++ : newItem.net_likes--;
+	newFlagState ? newItem.net_flags++ : newItem.net_flags--;
+	newItem.vote = newVoteState;
+	newItem.flag = newFlagState;
+	if (newItem.vote && newFlagState) {
+    newItem.vote = false;
+    newItem.net_votes--;
+    newItem.net_likes--;
+	}
+  if (newItem.flag && newVoteState) {
+    newItem.flag = false;
+    newItem.net_flags--;
+  }
+	dispatch({
+		type: 'UPDATE_COMMENT',
+		[postIndex]: newItem
 	});
 }
 

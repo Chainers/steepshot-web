@@ -3,10 +3,6 @@
     flex-wrap: wrap;
 }
 
-.tab_wrapper div div:last-child {
-    right: -12px !important;
-}
-
 .spinner_use-lis {
     height: 100px;
     display: flex;

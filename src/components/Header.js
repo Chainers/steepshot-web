@@ -24,31 +24,18 @@ class Header extends React.Component {
 		}
 	}
 
-	// componentDidMount() {
-	// 	this.votingPowerUpdater();
-	// }
-  //
-	// votingPowerUpdater() {
-	// 	if (this.props.user && this.props.postingKey) {
-	// 		let clearTimeout = setInterval(() => {
-	// 			this.props.updateVotingPower(this.props.user);
-	// 		}, 30000);
-	// 		this.props.updateVotingPower(this.props.user);
-	// 		this.props.clearVPTimeout(clearTimeout);
-	// 	}
-	// }
-
 	handleLogout(event) {
 		event.preventDefault();
 		this.props.logout();
-		// clearTimeout(this.props.vpTimeout);
 	}
 
 	searchKeyPress(e) {
 		if (e.key === 'Enter') {
 			e.preventDefault();
 			this.props.historyPush(`/search/${this.props.searchValue}`);
-      jqApp.mobileMenu._menuHide();
+			if (document.getElementsByTagName('body')[0].classList.value === 'mm-open') {
+        jqApp.mobileMenu._menuHide();
+			}
 		}
 	}
 

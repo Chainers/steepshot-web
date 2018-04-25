@@ -4,7 +4,6 @@ import {connect} from 'react-redux';
 import TimeAgo from 'timeago-react';
 import Avatar from '../../Common/Avatar/Avatar';
 import {replyAuthor} from '../../../actions/comments';
-import {addPosts} from '../../../actions/post';
 import Likes from '../../PostsList/Post/Likes/Likes';
 import './comment.css';
 import Vote from '../../PostsList/Post/Vote/Vote';
@@ -13,16 +12,6 @@ import Flag from '../../PostsList/Post/Flag/Flag';
 import VoteIndicator from '../../PostsList/Post/Vote/VoteIndicator/VoteIndicator';
 
 class Comment extends React.Component {
-
-	updateVoteInComponent(vote) {
-		let newItem = this.props.item;
-		vote ? newItem.net_votes++ : newItem.net_votes--;
-		vote ? newItem.net_likes++ : newItem.net_likes--;
-		newItem.vote = vote;
-		this.props.updateComment({
-			[this.props.point]: newItem
-		});
-	}
 
 	componentDidMount() {
 		this.commentsLayout();
@@ -44,6 +33,14 @@ class Comment extends React.Component {
 		if (!this.props.item) {
 			return null;
 		}
+		let money = this.props.item.total_payout_reward > 0 ?
+			<span className="money_comment">{`$${this.props.item.total_payout_reward}`}</span> : null;
+		let commentActions = !this.props.isYourComment ? <div className="display--flex">
+																											 <span className="reply_comment"
+																														 onClick={() => this.props.replyAuthor(this.props.author)}>Reply</span>
+																											 <Flag postIndex={this.props.point}
+																														 isComment={true}/>
+																										 </div> : <div className="display--flex"/>;
 		const authorLink = `/@${this.props.author}`;
 		return (
 			<div className="container_comment">
@@ -69,12 +66,11 @@ class Comment extends React.Component {
 								isComment={true}/>
 				</div>
 				<div className="actions-buttons_comment">
-					<ShowIf show={!this.props.isYourComment} className="display--flex">
-						<span className="reply_comment" onClick={() => this.props.replyAuthor(this.props.author)}>Reply</span>
-						<Flag postIndex={this.props.point}
-									isComment={true}/>
-					</ShowIf>
-					<Likes postIndex={this.props.item.url} isComment={true}/>
+					{commentActions}
+					<div className="display--flex">
+						<Likes postIndex={this.props.item.url} commentAuthor={authorLink}/>
+						{money}
+					</div>
 				</div>
 			</div>
 		);
@@ -94,9 +90,6 @@ const mapDispatchToProps = dispatch => {
 	return {
 		replyAuthor: (name) => {
 			dispatch(replyAuthor(name));
-		},
-		updateComment: (newData) => {
-			dispatch(addPosts(newData))
 		}
 	}
 };

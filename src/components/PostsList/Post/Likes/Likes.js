@@ -8,7 +8,8 @@ class Likes extends React.Component {
 
 	openLikesModal() {
 		let modalOption = {
-			body: (<LikesFlagsList postIndex={this.props.postIndex} isComment={this.props.isComment}/>),
+			body: (<LikesFlagsList postIndex={this.props.postIndex}
+														 commentAuthor={this.props.commentAuthor}/>),
 		};
 		this.props.openModal('LikesFlagsList', modalOption);
 	}
@@ -21,7 +22,7 @@ class Likes extends React.Component {
 			<div className="container_likes"
 					 onClick={this.openLikesModal.bind(this)}
 					 style={this.props.style}>
-				{this.props.likes} {this.props.likes > 1 ? 'likes' : 'like'}
+				{this.props.likes} {this.props.likes > 1 ? ' likes' : ' like'}
 			</div>
 		);
 	}

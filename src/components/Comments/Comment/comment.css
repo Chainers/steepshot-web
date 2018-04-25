@@ -1,6 +1,6 @@
 .actions-buttons_comment {
     display: flex;
-    justify-content: flex-start;
+    justify-content: space-between;
     align-items: center;
     margin: 5px 0 0 30px;
 }
@@ -61,4 +61,10 @@
 
 .user p {
     margin: 0;
+}
+
+.money_comment {
+    font: 12px OpenSans-Regular;
+    color: #979b9e;
+    margin-left: 10px;
 }
