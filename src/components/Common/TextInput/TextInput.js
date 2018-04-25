@@ -22,7 +22,8 @@ class TextInput extends React.Component {
 		smallFont: false,
 		errorMsg: '',
 		noValidCharacters: '',
-		disabled: false
+		disabled: false,
+		password: false
 	};
 
 	constructor(props) {

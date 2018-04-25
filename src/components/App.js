@@ -3,6 +3,7 @@ import Header from './Header';
 import MobileNavigationComponent from './MobileNavigationComponent';
 import FooterComponent from './FooterComponent';
 import FunctionalUtils from "./Common/FunctionalUtils";
+import BodyLoader from "./Common/BodyLoader/BodyLoader";
 
 const App = ({children}) => (
 	<div className="g-wrap">
@@ -10,6 +11,7 @@ const App = ({children}) => (
 			<Header/>
 			<div className="g-main">
 				{children || 'Loading'}
+				<BodyLoader />
 			</div>
 		</div>
 		<MobileNavigationComponent/>

@@ -5,7 +5,6 @@ import {initPostsList} from './postsList';
 import {initPostModal} from './postModal';
 import Constants from '../common/constants';
 import {pushMessage} from "./pushMessage";
-import jqApp from '../libs/app.min';
 
 function addPosts(posts) {
   return {
