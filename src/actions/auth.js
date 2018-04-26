@@ -76,7 +76,7 @@ export function login(username, postingKey) {
 
 			dispatch({
 				type: 'UPDATE_VOTING_POWER',
-				voting_power: result[0].voting_power / 10
+				voting_power: result[0].voting_power / 100
 			});
 			dispatch(push('/feed'));
 			dispatch(showMessage('Welcome to Steepshot, ' + username + '!'));

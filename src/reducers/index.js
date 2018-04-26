@@ -24,6 +24,7 @@ import userProfile from "./userProfile";
 import pushMessage from "./pushMessage";
 import formInput from "./formInput";
 import bodyLoader from "./bodyLoader";
+import session from "./session";
 
 export default combineReducers({
 	clipboard,
@@ -50,5 +51,6 @@ export default combineReducers({
 	userProfile,
 	pushMessage,
 	formInput,
-	bodyLoader
+	bodyLoader,
+	session
 });

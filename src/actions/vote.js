@@ -3,6 +3,7 @@ import {getStore} from '../store/configureStore';
 import {updatePost} from './post';
 import {updateVotingPower} from './auth';
 import {pushMessage} from "./pushMessage";
+import {voteLock, voteUnlock} from "./sessionAction";
 
 function toggleVoteRequest(postIndex) {
 	return {
@@ -44,15 +45,14 @@ export function toggleVote(postIndex) {
 		if (!username && !postingKey) {
 			return;
 		}
-		let queue = sessionStorage.getItem('voteQueue');
-		if (queue === 'true') {
+		if (state.session.voteLocked) {
 			return;
 		}
-		sessionStorage.setItem('voteQueue', 'true');
+		dispatch(voteLock());
 		dispatch(toggleVoteRequest(postIndex));
 
 		const callback = (err, success) => {
-			sessionStorage.setItem('voteQueue', 'false');
+			dispatch(voteUnlock());
 			if (err) {
 				dispatch(toggleVoteFailure(postIndex));
 				dispatch(pushMessage(err));
