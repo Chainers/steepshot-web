@@ -419,12 +419,12 @@ class PostModal extends React.Component {
 					</div>
 					<div className="description_pos-mod"
 							 style={this.props.style.description}
-							 ref={(ref) => this.descPosMod = ref}
+							 ref={ref => this.descPosMod = ref}
 					>
 						<div className="card-controls_post card-controls-border_post">
-							<ShowIf show={this.props.post.isPLOpen && this.props.post.powerLikeIndPlace === 'modal'}>
-								<VoteIndicator index={this.props.currentIndex} isPopup={true}/>
-							</ShowIf>
+							{/*<ShowIf show={this.props.post.isPLOpen && this.props.post.powerLikeIndPlace === 'modal'}>*/}
+								{/*<VoteIndicator index={this.props.currentIndex} isPopup={true}/>*/}
+							{/*</ShowIf>*/}
 							<Likes postIndex={this.props.currentIndex} style={{paddingLeft: 20}}/>
 							<div className="card-buttons_post">
 								<ShowIf show={parseFloat(this.props.post.total_payout_reward)}>
@@ -437,6 +437,7 @@ class PostModal extends React.Component {
 									<div className="card-control-stop"/>
 									<Vote postIndex={this.props.currentIndex}
 												powerLikeIndPlace="modal"
+												isPopup={true}
 												style={{paddingRight: 20}}
 									/>
 								</div>

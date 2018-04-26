@@ -139,7 +139,7 @@ class Post extends React.Component {
 
 		return (
 			<div className="item-wrap" id={this.props.index}>
-				<div className="post-card position--relative">
+				<div className="post-card position--relative" ref={ref => this.postCard = ref}>
 					<ShowIf show={this.props.postDeleting}>
 						<div className="delete-loader_post"
 								 style={{height: this.props.clearPostHeader ? '512px' : '552px'}}
@@ -173,9 +173,9 @@ class Post extends React.Component {
 						{this.renderImage()}
 						<div className="card-wrap">
 							<div className="card-controls_post">
-								<ShowIf show={this.props.isPLOpen && this.props.powerLikeIndPlace === 'post'}>
-									<VoteIndicator index={this.props.index}/>
-								</ShowIf>
+								{/*<ShowIf show={this.props.isPLOpen && this.props.powerLikeIndPlace === 'post'}>*/}
+									{/*<VoteIndicator index={this.props.index}/>*/}
+								{/*</ShowIf>*/}
 								<Likes postIndex={this.props.index} style={{paddingLeft: 20}}/>
 								<div className="card-buttons_post">
 									<ShowIf show={parseFloat(this.props.total_payout_reward)}>
@@ -187,7 +187,9 @@ class Post extends React.Component {
 									<div className="position--relative">
 										<div className="card-control-stop"/>
 										<Vote postIndex={this.props.index}
-                          powerLikeIndPlace="post"/>
+                          powerLikeIndPlace="post"
+													width={this.postCard ? {width: this.postCard.clientWidth + 20,
+														left: -(this.postCard.clientWidth - 45)} : null}/>
 									</div>
 								</div>
 							</div>

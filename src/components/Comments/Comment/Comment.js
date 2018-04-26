@@ -57,13 +57,12 @@ class Comment extends React.Component {
 						</Link>
 				</div>
 				<div className="comment-text">
-					<ShowIf show={this.props.item.isPLOpen && this.props.item.powerLikeIndPlace === 'comment'}>
-						<VoteIndicator index={this.props.point} isComment={true}/>
-					</ShowIf>
+					{/*<ShowIf show={this.props.item.isPLOpen && this.props.item.powerLikeIndPlace === 'comment'}>*/}
+						{/*<VoteIndicator index={this.props.point} isComment={true}/>*/}
+					{/*</ShowIf>*/}
 					<div ref={ref => this.commentText = ref} className="comment-text_comment"/>
 					<Vote postIndex={this.props.point}
-								powerLikeIndPlace="comment"
-								isComment={true}/>
+								powerLikeIndPlace="comment"/>
 				</div>
 				<div className="actions-buttons_comment">
 					{commentActions}
