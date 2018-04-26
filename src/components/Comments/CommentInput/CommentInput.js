@@ -5,7 +5,7 @@ import TextInput from "../../Common/TextInput/TextInput";
 import Constants from "../../../common/constants";
 import {sendComment} from "../../../actions/comments";
 import LoadingSpinner from "../../LoadingSpinner";
-import utils from '../../../utils/utils';
+import {utils} from '../../../utils/utils';
 import './commentInput.css';
 
 class CommentInput extends React.Component {

@@ -25,6 +25,7 @@ import pushMessage from "./pushMessage";
 import formInput from "./formInput";
 import bodyLoader from "./bodyLoader";
 import session from "./session";
+import windowOnStore from "./windowOnStore";
 
 export default combineReducers({
 	clipboard,
@@ -52,5 +53,6 @@ export default combineReducers({
 	pushMessage,
 	formInput,
 	bodyLoader,
-	session
+	session,
+	window: windowOnStore
 });

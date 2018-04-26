@@ -1,30 +1,47 @@
-import Constants from '../common/constants';
+export const utils = {
 
-const s4 = () => Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
+		tagPrettify: str => str.charAt(0) !== '#' ? '#' + str : str,
 
-class utils {
+		isNotEmptyString: str => str !== undefined && str.trim().length > 0,
 
-	capitalize = str => str.charAt(0).toUpperCase() + str.substring(1);
+		isEmptyString: str => !this.isNotEmptyString(str),
 
-	guid = () => s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
+		cloneObject: (object) => JSON.parse(JSON.stringify(object)),
 
-	currencyChecker = str => str.charAt(0) === Constants.CURRENCY ? str : Constants.CURRENCY + str;
+		getFirstObjectField: (obj) => obj[Object.keys(obj)[0]],
 
-	tagPrettify = str => str.charAt(0) !== '#' ? '#' + str : str;
+		getWindowDimension: () => {
+			return {
+				width: document.documentElement.clientWidth,
+				height: document.documentElement.clientHeight
+			}
+		},
 
-	isNotEmptyString = str => str !== undefined && str.trim().length > 0;
+		equalsObjects: (a, b) => {
+			const typeA = typeof a;
+			const typeB = typeof b;
+			if ( typeA !== typeB ) {
+				return false;
+			}
+			if (typeA !== 'object') {
+				return a === b;
+			}
 
-	isEmptyString = str => !this.isNotEmptyString(str);
+			const aProps = Object.getOwnPropertyNames(a);
+			const bProps = Object.getOwnPropertyNames(b);
 
-	getLess = (first, second) => first < second ? first : second;
+			if (aProps.length !== bProps.length) {
+				return false;
+			}
 
-	getMore = (first, second) => first > second ? first : second;
+			for (let i = 0; i < aProps.length; i++) {
+				let propName = aProps[i];
 
-	equalsObject = (first, second) => JSON.stringify(first) === JSON.stringify(second);
+				if (!utils.equalsObjects(a[propName], b[propName])) {
+					return false;
+				}
+			}
 
-	cloneObject = (object) => JSON.parse(JSON.stringify(object));
-
-	getFirstObjectField = (obj) => obj[Object.keys(obj)[0]];
-}
-
-export default new utils();
+			return true;
+		}
+};

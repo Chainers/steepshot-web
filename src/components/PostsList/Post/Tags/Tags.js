@@ -1,6 +1,6 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
-import utils from '../../../../utils/utils';
+import {utils} from "../../../../utils/utils";
 
 class Tags extends React.Component {
 

@@ -1,6 +1,6 @@
 import {getStore} from "../store/configureStore";
 import constants from "../common/constants";
-import utils from "../utils/utils";
+import {utils} from "../utils/utils";
 import {getPostShaddow} from "../services/posts";
 import Steem from "../libs/steem";
 import {clearTextInputState, setTextInputError, setTextInputState} from "./textInput";

@@ -5,8 +5,8 @@ import PostModal from '../PostModal/PostModal';
 import {logSharePost} from '../../actions/logging';
 import './singlePost.css';
 import {withWrapper} from "create-react-server/wrapper";
-import utils from '../../utils/utils';
 import {addMetaTags, getTags} from "../../actions/metaTags";
+import {utils} from "../../utils/utils";
 
 class SinglePost extends React.Component {
 

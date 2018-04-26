@@ -1,5 +1,5 @@
 import React from 'react';
-import utils from '../../../utils/utils';
+import {utils} from '../../../utils/utils';
 import ShowIf from '../ShowIf';
 import ReactResizeDetector from 'react-resize-detector';
 import {connect} from 'react-redux';
@@ -113,7 +113,7 @@ class TextInput extends React.Component {
 			return;
 		}
 		let prefAreaHeight = this.hiddenDiv.clientHeight;
-		prefAreaHeight = utils.getLess(prefAreaHeight, this.props.maxHeight);
+		prefAreaHeight = Math.min(prefAreaHeight, this.props.maxHeight);
 		let areaPadding = prefAreaHeight === this.props.lineHeight ? this.props.lineHeight / 2 : 0;
 		const state = {
 			prefAreaHeight,

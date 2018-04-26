@@ -18,15 +18,14 @@ import ReactDOM from 'react-dom';
 import PostContextMenu from '../PostContextMenu/PostContextMenu';
 import Likes from '../PostsList/Post/Likes/Likes';
 import FullScreenButtons from './FullScreenButtons/FullScreenButtons';
-import utils from '../../utils/utils';
 import {toggleVote} from '../../actions/vote';
 import {setPowerLikeInd, setPowerLikeTimeout} from '../../actions/post';
-import VoteIndicator from '../PostsList/Post/Vote/VoteIndicator/VoteIndicator';
 import {openPushNot} from "../../actions/pushNotification";
 import ImagesGallery from "../ImagesGallery/ImagesGallery";
 import ReactPlayer from 'react-player'
 import Comments from "../Comments/Comments";
 import './postModal.css';
+import {utils} from "../../utils/utils";
 
 const HEADER_HEIGHT = 60;
 
@@ -45,13 +44,11 @@ class PostModal extends React.Component {
 	}
 
 	componentDidMount() {
-		window.addEventListener('resize', this.setComponentSize);
 		window.addEventListener('keydown', this.initKeyPress);
 		this.setComponentSize();
 	}
 
 	componentWillUnmount() {
-		window.removeEventListener('resize', this.setComponentSize);
 		window.removeEventListener('keydown', this.initKeyPress);
 	}
 
@@ -65,6 +62,9 @@ class PostModal extends React.Component {
 		}
 		if (this.props.fullScreenMode && nextProps.fullScreenMode) {
 			this.firstLastPostAfterClickFS(nextProps);
+		}
+		if (!utils.equalsObjects(nextProps.window, this.props.window)) {
+			this.setComponentSize();
 		}
 	}
 
@@ -171,11 +171,11 @@ class PostModal extends React.Component {
 					</div>
 				</ShowIf>
 				<ShowIf show={!this.props.post.isVideo}>
-				<ImagesGallery index={this.props.currentIndex}
-											 styles={this.props.style.image}
-											 post={this.props.post}
-											 isFullScreen={false}
-											 setComponentSize={this.setComponentSize}/>
+					<ImagesGallery index={this.props.currentIndex}
+												 styles={this.props.style.image}
+												 post={this.props.post}
+												 isFullScreen={false}
+												 setComponentSize={this.setComponentSize}/>
 				</ShowIf>
 				<ShowIf show={this.props.post.isVideo}>
 					<div className="image-container_pos-mod image-container_vid-con"
@@ -423,7 +423,7 @@ class PostModal extends React.Component {
 					>
 						<div className="card-controls_post card-controls-border_post">
 							{/*<ShowIf show={this.props.post.isPLOpen && this.props.post.powerLikeIndPlace === 'modal'}>*/}
-								{/*<VoteIndicator index={this.props.currentIndex} isPopup={true}/>*/}
+							{/*<VoteIndicator index={this.props.currentIndex} isPopup={true}/>*/}
 							{/*</ShowIf>*/}
 							<Likes postIndex={this.props.currentIndex} style={{paddingLeft: 20}}/>
 							<div className="card-buttons_post">
@@ -461,11 +461,11 @@ class PostModal extends React.Component {
 
 		let sideMargin = 0.75;
 
-		const docWidth = document.documentElement.clientWidth;
+		const docWidth = utils.getWindowDimension().width;
 		if (docWidth < 1080) {
 			sideMargin = 0.6;
 		}
-		const docHeight = document.documentElement.clientHeight;
+		const docHeight = utils.getWindowDimension().height;
 		const MAX_IMG_WIDTH = (docWidth - DESC_WIDTH) * sideMargin;
 		const PREFERRED_IMG_WIDTH = 640;
 		const isMobile = docWidth < MAX_WIDTH_FULL_SCREEN;
@@ -492,10 +492,9 @@ class PostModal extends React.Component {
 
 		const description = {};
 		description.width = headerCont.width;
-
 		if (docWidth > MAX_WIDTH_FULL_SCREEN) {
-			image.width = image.width ? image.width : utils.getLess((docWidth - DESC_WIDTH) * sideMargin, PREFERRED_IMG_WIDTH);
-			container.height = utils.getMore(docHeight * 0.9, MIN_HEIGHT);
+			image.width = image.width ? image.width : Math.min((docWidth - DESC_WIDTH) * sideMargin, PREFERRED_IMG_WIDTH);
+			container.height = Math.max(docHeight * 0.9, MIN_HEIGHT);
 
 			if (image.height > container.height) {
 				image.width = image.width * container.height / image.height;
@@ -511,9 +510,9 @@ class PostModal extends React.Component {
 			imgCont.width = image.width;
 			headerCont.width = DESC_WIDTH;
 
-			container.height = utils.getMore(image.height, MIN_HEIGHT);
+			container.height = Math.max(image.height, MIN_HEIGHT);
 		} else {
-			image.width = utils.getLess(image.width, document.documentElement.clientWidth);
+			image.width = Math.min(image.width, docWidth);
 			image.width = image.width ? image.width : docWidth;
 			image.height = image.height * image.width / imageSizes.width;
 		}
@@ -560,7 +559,8 @@ const mapStateToProps = (state) => {
 			firstPost: postsList.posts[0] === currentIndex,
 			lastPost: postsList.offset === currentIndex,
 			focusedTextInput: state.textInput[Constants.TEXT_INPUT_POINT.COMMENT] ?
-				state.textInput[Constants.TEXT_INPUT_POINT.COMMENT].focused : false
+				state.textInput[Constants.TEXT_INPUT_POINT.COMMENT].focused : false,
+			window: state.window
 		};
 	}
 };
