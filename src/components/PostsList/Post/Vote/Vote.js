@@ -2,13 +2,23 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {addVoteElement, toggleVote} from '../../../../actions/vote';
 import Constants from '../../../../common/constants';
-import {setPowerLikeInd, setPowerLikeTimeout} from '../../../../actions/post';
-import {pushMessage} from "../../../../actions/pushMessage";
+import {setPowerLikeInd, setPowerLikeTimeout, setHidePowerLikeTimeout} from '../../../../actions/post';
+import {pushMessage} from '../../../../actions/pushMessage';
+import VoteIndicator from './VoteIndicator/VoteIndicator';
+import ShowIf from '../../../Common/ShowIf';
 
 class Vote extends React.Component {
 
+  constructor(props) {
+    super(props);
+    this.hideVoteIndicator = this.hideVoteIndicator.bind(this);
+    this.clearDelayTimeout = this.clearDelayTimeout.bind(this);
+  }
+
 	componentDidMount() {
-		this.props.addVoteElement(this.props.postIndex, this.vote);
+		// this.props.addVoteElement(this.props.postIndex, this.vote);
+    this.vote.addEventListener('mouseenter', this.clearDelayTimeout);
+    this.vote.addEventListener('mouseenter', () => this.longTapPLInd(1400));
 	}
 
 	toggleVote() {
@@ -35,17 +45,60 @@ class Vote extends React.Component {
     }
     let plTimeout = setTimeout(() => {
       this.props.setPowerLikeInd(this.props.postIndex, true, this.props.powerLikeIndPlace);
+      window.addEventListener('touchstart', this.hideVoteIndicator);
+      window.addEventListener('mousedown', this.hideVoteIndicator);
     }, timeDelay);
     this.props.setPowerLikeTimeout(this.props.postIndex, plTimeout);
   }
 
   breakLongTapPLInd() {
-    clearTimeout(this.props.plTimeout);
+  	if (!this.powerIndicator) {
+      clearTimeout(this.props.plTimeout);
+		}
+    this.hideWithDelay();
+  }
+
+  hideWithDelay() {
+    let hidePLIndTimeout = setTimeout(() => {
+      this.fluidHide();
+    }, 1400);
+    this.props.setHidePowerLikeTimeout(this.props.postIndex, hidePLIndTimeout);
+  }
+
+  fluidHide() {
+    if (this.powerIndicator) {
+      if (this.props.isPopup) {
+        this.powerIndicator.classList.add('hid-popup-ind-anim_vote-ind');
+      }
+      if (this.props.isComment) {
+        this.powerIndicator.classList.add('hid-comment-ind-anim_vote-ind');
+      }
+      this.powerIndicator.classList.add('hid-ind-anim_vote-ind');
+    }
+    setTimeout(() => {
+      this.props.setPowerLikeInd(this.props.postIndex, false);
+      window.removeEventListener('touchstart', this.hideVoteIndicator);
+      window.removeEventListener('mousedown', this.hideVoteIndicator);
+    }, 200);
+  }
+
+  hideVoteIndicator(e) {
+    e.stopPropagation();
+    if (this.vote.contains(e.target)) {
+      return;
+    }
+    this.fluidHide();
+  }
+
+  clearDelayTimeout() {
+    clearTimeout(this.props.hplTimeout);
   }
 
 	render() {
+  	let pLIP = this.props.powerLikeIndPlace;
+		let isComment = pLIP === 'comment';
 		let buttonClasses = 'btn-like';
-		if (this.props.isComment) {
+		if (isComment) {
       buttonClasses = 'comment btn-like';
 		}
 		if (this.props.vote) {
@@ -54,19 +107,31 @@ class Vote extends React.Component {
 		if (this.props.voteLoading) {
 			buttonClasses = buttonClasses + ' loading';
 		}
-		let style = this.props.style ? this.props.style : null;
+    let poweroflikeClass = this.props.isPopup ? 'poweroflike-popup-ind_vote-ind' : isComment ?
+      'poweroflike-comment-ind_vote-ind' : 'poweroflike-ind_vote-ind';
 		return (
-			<div className={this.props.isComment ? 'btn-like-wrapper-comment_vote' : 'btn-like-wrapper_vote'}
+			<div className={isComment ? 'btn-like-wrapper-comment_vote' : 'btn-like-wrapper_vote' + ' prevent--selection'}
 					 ref={ref => this.vote = ref}
 					 onClick={this.toggleVote.bind(this)}
-					 onMouseEnter={this.longTapPLInd.bind(this, 1400)}
 					 onMouseLeave={this.breakLongTapPLInd.bind(this)}
 					 onTouchStart={this.longTapPLInd.bind(this, 800)}
 					 onTouchEnd={this.breakLongTapPLInd.bind(this)}
 					 onTouchMove={this.breakLongTapPLInd.bind(this)}
 					 onContextMenu={this.breakLongTapPLInd.bind(this)}
-					 style={style}>
+					 style={this.props.style}>
 				<button type="button" className={buttonClasses}/>
+				<ShowIf show={this.props.isModalOpen ? (pLIP === 'modal' || isComment) && this.props.isPLOpen :
+          pLIP === 'post' && this.props.isPLOpen}>
+					<div className={'poweroflike-common_vote-ind ' + poweroflikeClass}
+							 style={this.props.width}
+							 ref={ref => this.powerIndicator = ref}
+					>
+						<VoteIndicator index={this.props.postIndex}
+													 isComment={isComment}
+													 isPopup={this.props.isPopup}
+													 fluidHide={this.fluidHide.bind(this)}/>
+					</div>
+				</ShowIf>
 			</div>
 		);
 	}
@@ -75,11 +140,12 @@ class Vote extends React.Component {
 const mapStateToProps = (state, props) => {
 	let post = state.posts[props.postIndex];
 	return {
-		post,
 		...post,
 		...props,
+		isModalOpen: Object.keys(state.modals).length > 0,
 		isPLOpen: post.isPLOpen,
 		plTimeout: post.plTimeout,
+    hplTimeout: post.hplTimeout,
     isUserAuth: !!state.auth.user && !!state.auth.postingKey
 	};
 };
@@ -100,7 +166,10 @@ const mapDispatchToProps = (dispatch) => {
 		},
 		pushMessage: (message) => {
 			dispatch(pushMessage(message))
-		}
+		},
+    setHidePowerLikeTimeout: (postIndex, timeout) => {
+      dispatch(setHidePowerLikeTimeout(postIndex, timeout))
+    }
 	};
 };
 
