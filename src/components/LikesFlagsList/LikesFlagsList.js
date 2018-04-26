@@ -10,8 +10,8 @@ import {clearBodyHeight, setLikesFlagsListBodyHeight} from "../../actions/likesF
 import ReactResizeDetector from 'react-resize-detector';
 import TabsBar from "../Common/TabsBar/TabsBar";
 import Tab from "../Common/TabsBar/Tab/Tab";
-import utils from '../../utils/utils';
 import './likesFlagsList.css';
+import {utils} from "../../utils/utils";
 
 class LikesFlagsList extends React.Component {
 
@@ -20,13 +20,10 @@ class LikesFlagsList extends React.Component {
 		this.updateBodyHeight = this.updateBodyHeight.bind(this);
 	}
 
-	componentDidMount() {
-		window.addEventListener('resize', this.updateBodyHeight);
-	}
-
-	componentWillUnmount() {
-		window.removeEventListener('resize', this.updateBodyHeight);
-		this.props.clearBodyHeight();
+	componentWillReceiveProps(nextProps) {
+		if (!utils.equalsObjects(nextProps.window, this.props.window)) {
+			this.updateBodyHeight()
+		}
 	}
 
 	componentDidUpdate() {
@@ -103,7 +100,8 @@ const mapStateToProps = (state, props) => {
 		flags,
 		point,
 		...state.likesFlagsList,
-		...state.tabsBar.likesFlags
+		...state.tabsBar.likesFlags,
+		window: state.window
 	};
 };
 

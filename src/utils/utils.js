@@ -4,7 +4,7 @@ export const utils = {
 
 		isNotEmptyString: str => str !== undefined && str.trim().length > 0,
 
-		isEmptyString: str => !this.isNotEmptyString(str),
+		isEmptyString: str => !utils.isNotEmptyString(str),
 
 		cloneObject: (object) => JSON.parse(JSON.stringify(object)),
 

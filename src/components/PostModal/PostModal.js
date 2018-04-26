@@ -54,25 +54,11 @@ class PostModal extends React.Component {
 
 	componentWillReceiveProps(nextProps) {
 		let post = document.getElementById(this.props.currentIndex);
-		if (post) {
-			if (post.offsetTop === 0) {
-				return;
-			}
+		if (post && (post.offsetTop !== 0) && ((post.offsetTop - HEADER_HEIGHT) !== nextProps.offsetTop)) {
 			this.props.postOffset(post.offsetTop - HEADER_HEIGHT);
-		}
-		if (this.props.fullScreenMode && nextProps.fullScreenMode) {
-			this.firstLastPostAfterClickFS(nextProps);
 		}
 		if (!utils.equalsObjects(nextProps.window, this.props.window)) {
 			this.setComponentSize();
-		}
-	}
-
-	firstLastPostAfterClickFS(nextProps) {
-		if ((!this.props.firstPost || !this.props.lastPost) && (nextProps.firstPost || nextProps.lastPost)
-			&& this.props.fullScreenNavigation && this.props.timeoutID === null) {
-			this.fsNavMouseLeave();
-			this.showFSNavigation();
 		}
 	}
 
@@ -422,9 +408,6 @@ class PostModal extends React.Component {
 							 ref={ref => this.descPosMod = ref}
 					>
 						<div className="card-controls_post card-controls-border_post">
-							{/*<ShowIf show={this.props.post.isPLOpen && this.props.post.powerLikeIndPlace === 'modal'}>*/}
-							{/*<VoteIndicator index={this.props.currentIndex} isPopup={true}/>*/}
-							{/*</ShowIf>*/}
 							<Likes postIndex={this.props.currentIndex} style={{paddingLeft: 20}}/>
 							<div className="card-buttons_post">
 								<ShowIf show={parseFloat(this.props.post.total_payout_reward)}>
@@ -461,11 +444,11 @@ class PostModal extends React.Component {
 
 		let sideMargin = 0.75;
 
-		const docWidth = utils.getWindowDimension().width;
+		const docWidth = this.props.window.width;
 		if (docWidth < 1080) {
 			sideMargin = 0.6;
 		}
-		const docHeight = utils.getWindowDimension().height;
+		const docHeight = this.props.window.height;
 		const MAX_IMG_WIDTH = (docWidth - DESC_WIDTH) * sideMargin;
 		const PREFERRED_IMG_WIDTH = 640;
 		const isMobile = docWidth < MAX_WIDTH_FULL_SCREEN;
@@ -516,7 +499,6 @@ class PostModal extends React.Component {
 			image.width = image.width ? image.width : docWidth;
 			image.height = image.height * image.width / imageSizes.width;
 		}
-
 		let style = {
 			container,
 			image,
@@ -560,7 +542,8 @@ const mapStateToProps = (state) => {
 			lastPost: postsList.offset === currentIndex,
 			focusedTextInput: state.textInput[Constants.TEXT_INPUT_POINT.COMMENT] ?
 				state.textInput[Constants.TEXT_INPUT_POINT.COMMENT].focused : false,
-			window: state.window
+			window: state.window,
+			offsetTop: state.postModal.postOffset
 		};
 	}
 };

@@ -2,8 +2,7 @@ const initialState = {};
 const defaultOption = {
 	body: null,
 	willClose: false,
-	bodyHeight: 0,
-	containerHeight: 0
+	update: 0
 };
 
 export default function modals(state = initialState, action) {
