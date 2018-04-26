@@ -3,11 +3,11 @@ import {
 	Route,
 	Redirect
 } from 'react-router-dom';
-import fakeAuth from './fakeAuth';
+import {connect} from "react-redux";
 
-const PrivateRoute = ({component: Component, ...rest}) => (
+const PrivateRoute = ({component: Component, ...rest, isAuthenticated}) => (
 	<Route {...rest} render={props => (
-		fakeAuth.isAuthenticated ? (
+		isAuthenticated ? (
 			<Component {...props}/>
 		) : (
 			<Redirect to={{
@@ -18,4 +18,10 @@ const PrivateRoute = ({component: Component, ...rest}) => (
 	)}/>
 );
 
-export default PrivateRoute;
+const mapStateToProps = (state) => {
+	return {
+		isAuthenticated: state.auth.user && state.auth.postingKey
+	}
+};
+
+export default connect(mapStateToProps)(PrivateRoute);

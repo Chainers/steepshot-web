@@ -2,9 +2,8 @@ import React from 'react';
 import Header from './Header';
 import MobileNavigationComponent from './MobileNavigationComponent';
 import FooterComponent from './FooterComponent';
-import Clipboard from "./Common/Clipboard/Clipboard";
-import Modals from './Modals/Modals';
-import PushNotifications from "./PushNotifications/PushNotifications";
+import FunctionalUtils from "./Common/FunctionalUtils";
+import BodyLoader from "./Common/BodyLoader/BodyLoader";
 
 const App = ({children}) => (
 	<div className="g-wrap">
@@ -12,14 +11,12 @@ const App = ({children}) => (
 			<Header/>
 			<div className="g-main">
 				{children || 'Loading'}
+				<BodyLoader />
 			</div>
 		</div>
 		<MobileNavigationComponent/>
-		<div className="pm"></div>
 		<FooterComponent/>
-		<PushNotifications/>
-		<Clipboard/>
-		<Modals/>
+		<FunctionalUtils/>
 	</div>
 );
 

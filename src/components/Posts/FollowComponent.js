@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import Steem from '../../libs/steem';
-import jqApp from "../../libs/app.min";
+import {pushMessage} from "../../actions/pushMessage";
 
 class FollowComponent extends React.Component {
 
@@ -27,11 +27,11 @@ class FollowComponent extends React.Component {
 				pendingStatus: false
 			});
 			if (err) {
-				jqApp.pushMessage.open(err);
+				this.props.pushMessage.open(err);
 			} else if (result) {
 				let statusText = 'unfollowed';
 				if (!status) statusText = 'followed';
-				jqApp.pushMessage.open(`User has been successfully ${statusText}`);
+				this.props.pushMessage.open(`User has been successfully ${statusText}`);
 				this.setState({
 					follow: !this.state.follow
 				})
@@ -86,4 +86,13 @@ const mapStateToProps = (state) => {
 	};
 };
 
-export default connect(mapStateToProps)(FollowComponent);
+
+const mapDispatchToProps = (dispatch) => {
+	return {
+		pushMessage: (message) => {
+			dispatch(pushMessage(message))
+		}
+	}
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(FollowComponent);

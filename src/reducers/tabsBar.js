@@ -6,6 +6,10 @@ const initialState = {
 	likesFlags: {
 		activeIndex: 0,
 		pageLoaded: false
+	},
+	userProfile: {
+		activeIndex: 0,
+		pageLoaded: false
 	}
 };
 

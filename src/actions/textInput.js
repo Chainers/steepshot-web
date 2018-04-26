@@ -23,5 +23,19 @@ export function setTextInputError(point, message) {
 }
 
 export function clearTextInputState(point) {
-  return setTextInputState(point, {focused: '', text: '', error: ''});
+  return setTextInputState(point, {focusedStyle: '', text: '', error: ''});
+}
+
+export function focusedTextInput(point) {
+  return {
+    type: 'FOCUSED_TEXT_INPUT',
+    point
+  }
+}
+
+export function blurredTextInput(point) {
+  return {
+    type: 'BLURRED_TEXT_INPUT',
+    point
+  }
 }

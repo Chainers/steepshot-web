@@ -4,7 +4,7 @@ import Constants from '../common/constants';
 import {debounce} from 'lodash';
 import {updatePost} from './post';
 import {updateVotingPower} from './auth';
-import jqApp from "../libs/app.min";
+import {pushMessage} from "./pushMessage";
 
 function toggleFlagRequest(postIndex) {
 	return {
@@ -34,9 +34,8 @@ export function toggleFlag(postIndex) {
 		let postingKey = state.auth.postingKey;
 		let post = state.posts[postIndex];
 		const newFlagState = !post.flag;
-
 		if (!username && !postingKey) {
-			debounce(jqApp.pushMessage.open(Constants.VOTE_ACTION_WHEN_NOT_AUTH), Constants.VOTE_ACTION_WHEN_NOT_AUTH_DEBOUNCE);
+			debounce(dispatch(pushMessage(Constants.VOTE_ACTION_WHEN_NOT_AUTH), Constants.VOTE_ACTION_WHEN_NOT_AUTH_DEBOUNCE));
 			return;
 		}
 		let queue = sessionStorage.getItem('voteQueue');
@@ -51,14 +50,14 @@ export function toggleFlag(postIndex) {
 			sessionStorage.setItem('voteQueue', 'false');
 			if (err) {
 				dispatch(toggleFlagFailure(postIndex));
-				jqApp.pushMessage.open(err);
+				dispatch(pushMessage(err));
 			} else if (success) {
 				dispatch(toggleFlagSuccess(postIndex));
-				dispatch(updatePost(postIndex));
+				dispatch(updatePost(postIndex, false, newFlagState));
 				dispatch(updateVotingPower(username));
 				let text = `The post has been successfully flaged. If you don't see your flag, please give it a few minutes to sync from the blockchain`;
 				if (!newFlagState) text = `The post has been successfully unflaged. If you don't see your flag, please give it a few minutes to sync from the blockchain`;
-				jqApp.pushMessage.open(text);
+				dispatch(pushMessage(text));
 			}
 		};
 

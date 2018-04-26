@@ -3,8 +3,8 @@ import {getSettings, updateSettings, updateSettingsInStore} from '../../actions/
 import {connect} from 'react-redux';
 import Constants from '../../common/constants';
 import {documentTitle} from '../../utils/documentTitle';
-import jqApp from "../../libs/app.min";
 import {goBack} from "react-router-redux";
+import {pushMessage} from "../../actions/pushMessage";
 
 class Settings extends React.Component {
 
@@ -81,7 +81,7 @@ class Settings extends React.Component {
 				saveSettings: getSettings()
 			}, () => this.needsNotice());
 			setTimeout(() => {
-				jqApp.pushMessage.open(Constants.SETTINGS_CHANGED_MESSAGE);
+				this.props.pushMessage.open(Constants.SETTINGS_CHANGED_MESSAGE);
 				this.props.historyGoBack();
 			}, 1700);
 		} else {
@@ -168,6 +168,9 @@ const mapDispatchToProps = (dispatch) => {
 		},
 		historyGoBack: () => {
 			dispatch(goBack());
+		},
+		pushMessage: (message) => {
+			dispatch(pushMessage(message))
 		}
 	};
 };

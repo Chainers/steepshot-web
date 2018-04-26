@@ -70,11 +70,9 @@ class TabsFilterComponent extends React.Component {
 
 	render() {
 		return (
-			<div>
-				<ul role="tablist" className="nav nav-tabs list-reset">
-					{this.renderNavigation()}
-				</ul>
-			</div>
+			<ul role="tablist" className="nav nav-tabs list-reset">
+				{this.renderNavigation()}
+			</ul>
 		);
 	}
 }

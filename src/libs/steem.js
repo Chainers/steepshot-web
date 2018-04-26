@@ -28,7 +28,7 @@ class Steem {
 	}
 
 	comment(wif, parentAuthor, parentPermlink, author, body, tags, callback) {
-		const permlink = _getPermLink('comment');
+		const permlink = _getPermLink(`${author} comment`);
 		const commentObject = {
 			parent_author: parentAuthor,
 			parent_permlink: parentPermlink,
@@ -291,15 +291,17 @@ class Steem {
 		}];
 		return _fileUpload(operation, file)
 			.then(response => {
-				return _preparePost(response, description, tags, permlink);
+				return _preparePost(response, description, tags, permlink, _getUserName());
 			})
 			.then(response => {
 				let beneficiaries = _getBeneficiaries(operation[1].permlink, response.beneficiaries);
-				if (response.is_plagiarism) {
+				let plagiarism = response.is_plagiarism;
+				if (plagiarism.is_plagiarism) {
 					let data = {
 						ipfs: response.json_metadata.ipfs_photo,
-						plagiarism_author: response.plagiarism_author,
-						plagiarism_permlink: response.plagiarism_permlink,
+						media: response.json_metadata.media[0],
+						plagiarism_author: plagiarism.plagiarism_username,
+						plagiarism_permlink: plagiarism.plagiarism_permlink,
 						operation: operation,
 						prepareData: response,
 						beneficiaries: beneficiaries
@@ -407,14 +409,15 @@ function _sendToBlockChain(operation, prepareData, beneficiaries) {
 	})
 }
 
-function _preparePost(media, description, tags, permlink) {
+function _preparePost(media, description, tags, permlink, username) {
 	const options = {
 		"username": _getUserName(),
 		"media": [media],
 		"description": description,
-		"post_permlink": permlink,
+		"post_permlink": `@${username}/${permlink}`,
 		"tags": tags,
-		"show_footer": true
+		"show_footer": true,
+		device: 'web'
 	};
 	return fetch(`${_getBaseUrl()}/post/prepare`, {
 		method: 'POST',
@@ -425,11 +428,16 @@ function _preparePost(media, description, tags, permlink) {
 	}).then(response => response.json());
 }
 
-function _getPermLink() {
+function _getPermLink(permlinkHead) {
 	let today = new Date();
-	const permLink = 'web-' + today.getFullYear() + '-' + today.getMonth() + '-' + today.getDay()
+	let permlinkHeadLimit = 30;
+  permlinkHead = permlinkHead.toLowerCase();
+	if (permlinkHead.length > permlinkHeadLimit) {
+    permlinkHead = permlinkHead.slice(0, permlinkHeadLimit + 1);
+    permlinkHead = permlinkHead.replace(/\W/g, '-');
+	}
+	return permlinkHead.replace(/\s/g, '-') + '-' + today.getFullYear() + '-' + today.getMonth() + '-' + today.getDay()
 		+ '-' + today.getHours() + '-' + today.getMinutes() + '-' + today.getSeconds();
-	return permLink;
 }
 
 function _getValidTags(tags) {

@@ -47,7 +47,7 @@
 }
 
 .hidden-div_tex-inp {
-    width: calc(100% - 20px);
+    width: 100%;
     position: absolute;
     visibility: hidden;
     display: block;

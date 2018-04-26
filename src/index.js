@@ -5,7 +5,7 @@ import React from "react";
 import './styles/main.css';
 import './styles/posts.css';
 import createApp from './app';
-import BrowserRouter from "react-router-dom/es/BrowserRouter";
+import BrowserRouter from "react-router-dom/BrowserRouter";
 
 const Root = () => global.isServerSide ?
 	(<BrowserRouter>

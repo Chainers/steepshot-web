@@ -1,12 +1,9 @@
 import React from 'react';
 import './followUserNotification.css';
 import Avatar from '../../Common/Avatar/Avatar';
-import Link from 'react-router-dom/es/Link';
+import {Link} from 'react-router-dom';
 
 class FollowUserNotification extends React.Component {
-  constructor(props) {
-    super(props);
-  }
 
   render() {
     let thumbnail = {

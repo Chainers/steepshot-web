@@ -6,9 +6,14 @@ import './avatar.css';
 import {setAvatarTip, setAvatarTipTimeout} from '../../../actions/avatar';
 
 class Avatar extends React.Component {
+
 	static defaultProps = {
 		style: {}
 	};
+
+	componentDidMount() {
+    this.powerIndicator(this.props.votingPower);
+	}
 
 	componentWillReceiveProps(nextProps) {
 		this.powerIndicator(nextProps.votingPower);
@@ -74,7 +79,7 @@ class Avatar extends React.Component {
 
 	showTip() {
 		if (!this.props.headerAvatar) {
-			this.props.setAvatarTip(true);
+      this.props.setAvatarTip(true);
 		}
 	}
 
@@ -94,18 +99,14 @@ class Avatar extends React.Component {
 		return (
 			<div className={this.props.powerIndicator ? 'position--relative' : ''}>
 				<ShowIf show={this.props.powerIndicator}>
-					<canvas ref={ref => {
-						this.canvas = ref
-					}}
+					<canvas ref={ref => this.canvas = ref}
 									className="border-indicator_ava-com"
 									onTouchStart={this.showTip.bind(this)}
 									onTouchEnd={this.hideTip.bind(this)}
 									onMouseEnter={this.showTip.bind(this)}
 					/>
 					<ShowIf show={!this.props.headerAvatar && this.props.isTip}>
-						<div ref={ref => {
-							this.tipVotingPower = ref
-						}}
+						<div ref={ref => this.tipVotingPower = ref}
 								 className="tip-voting-power_ava-com prevent--selection"
 								 onTouchStart={() => {
 									 return;

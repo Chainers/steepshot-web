@@ -18,6 +18,12 @@ import editPost from './editPost';
 import avatar from './avatar';
 import {routerReducer} from "react-router-redux";
 import pushNotifications from "./pushNotifications";
+import comments from "./comments";
+import imagesGallery from "./imagesGallery";
+import userProfile from "./userProfile";
+import pushMessage from "./pushMessage";
+import formInput from "./formInput";
+import bodyLoader from "./bodyLoader";
 
 export default combineReducers({
 	clipboard,
@@ -38,5 +44,11 @@ export default combineReducers({
 	metaTags,
 	search,
 	pushNotifications,
-	router: routerReducer
+	router: routerReducer,
+	comments,
+	imagesGallery,
+	userProfile,
+	pushMessage,
+	formInput,
+	bodyLoader
 });

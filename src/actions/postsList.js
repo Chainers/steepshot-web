@@ -54,6 +54,14 @@ export function getPostsList(point) {
 			}
 		};
 		getPosts(requestOptions, statePoint.cancelPrevious).then((response) => {
+			//TODO удалить когда будут реальные видео в ленте
+			/*if (response.results[2]) {
+				const media = response.results[2].media[0];
+				media.url = 'http://steepshot.org/api/v1/image/1440930c-6a1c-4fae-bc63-4646495cc96a.mp4';
+				if (media['thumbnails'] && media['thumbnails'][1024]) {
+					media['thumbnails'][1024] = 'http://steepshot.org/api/v1/image/1440930c-6a1c-4fae-bc63-4646495cc96a.mp4';
+				}
+			}*/
 			let newPosts = response.results;
 			let hasMore = newPosts.length === LIMIT;
 			newPosts = removeDuplicate(newPosts);
@@ -82,7 +90,10 @@ export function getPostsList(point) {
 				let post = Object.assign({}, notDeletedPosts[i], {
 					flagLoading: false,
 					voteLoading: false,
-					postDeleting: false
+					postDeleting: false,
+					isVideo: !!notDeletedPosts[i].media[0].url.match(/mp4$/i),
+          isGif: !!notDeletedPosts[i].media[0].url.match(/gif$/i),
+					playing: false
 				});
 				post.tags = (post.tags instanceof Array)
 					? post.tags

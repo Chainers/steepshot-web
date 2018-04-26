@@ -1,12 +1,9 @@
 import React from 'react';
 import './likePostNotification.css';
 import Avatar from '../../Common/Avatar/Avatar';
-import Link from 'react-router-dom/es/Link';
+import {Link} from 'react-router-dom';
 
 class LikePostNotification extends React.Component {
-  constructor(props) {
-    super(props);
-  }
 
   render() {
     let userMoney = '';

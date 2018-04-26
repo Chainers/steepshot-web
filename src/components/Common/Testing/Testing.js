@@ -1,5 +1,6 @@
 import React from 'react';
 import './testing.css';
+import Login from "../../Login/Login";
 
 class Testing extends React.Component {
 
@@ -8,9 +9,7 @@ class Testing extends React.Component {
 			return null;
 		}
 		return (
-			<div className="test">
-				test23
-			</div>
+			<Login />
 		);
 	}
 }

@@ -1,0 +1,132 @@
+.container_login {
+    width: 720px;
+    height: 100%;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: stretch;
+}
+
+.title_login {
+    font-size: 27px;
+    line-height: 1.5;
+    margin-top: 20px;
+    margin-bottom: 35px;
+    color: #0f181e;
+    font-family: OpenSans-Light, Helvetica, Arial, sans-serif;
+    text-align: center;
+}
+
+.form_login {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: stretch;
+    position: relative;
+}
+
+.btn-group_login {
+    padding-top: 10px;
+    text-align: right;
+    margin-bottom: 28px;
+}
+
+.create-acc_login {
+    display: inline-block;
+    margin-bottom: 0;
+    font-family: OpenSans-SemiBold, Helvetica, Arial, sans-serif;
+    text-align: center;
+    vertical-align: middle;
+    touch-action: manipulation;
+    cursor: pointer;
+    background: #fff none;
+    text-decoration: none;
+    max-width: 100%;
+    padding: 12px 40px 12px;
+    font-size: 14px;
+    line-height: 1;
+    border-radius: 21px;
+    color: #000;
+    user-select: none;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    border: 1px solid #e7e7e7;
+    transition: .2s all ease;
+}
+
+.create-acc_login:hover {
+    color: #e74800;
+}
+
+.sign_login {
+    transition: .2s all ease;
+    display: inline-block;
+    margin-bottom: 0;
+    font-family: OpenSans-SemiBold, Helvetica, Arial, sans-serif;
+    text-align: center;
+    vertical-align: middle;
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+    cursor: pointer;
+    text-decoration: none;
+    max-width: 100%;
+    padding: 12px 40px 12px;
+    font-size: 14px;
+    line-height: 1;
+    border-radius: 21px;
+    color: #fff;
+    user-select: none;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    min-width: 140px;
+    margin-left: 20px;
+
+    border: 1px transparent;
+    background: linear-gradient(to right, rgb(255, 121, 4), rgb(255, 22, 5));
+    box-shadow: 0 10px 20px 0 rgba(231, 72, 0, .3);
+}
+
+.sign_login:hover {
+    box-shadow: 0 5px 12px 0 rgba(231, 72, 0, .3);
+}
+
+.how-sign_login {
+    margin: 0 0 1em;
+    text-align: center;
+}
+
+.show-video-btn_login {
+    color: #eb443d;
+    cursor: pointer;
+}
+
+.video-cont_login {
+    max-width: 80vw;
+    width: 550px;
+    height: 315px;
+    margin: 35px auto;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+
+@media (max-width: 767px) {
+    .container_login {
+        width: 100%;
+        padding: 0 15px;
+    }
+
+    .btn-group_login {
+        text-align: center;
+    }
+
+    .btn-group_login > button {
+        padding-left: 15px;
+        padding-right: 15px;
+        min-width: 120px;
+        margin: 0 10px 10px;
+    }
+}

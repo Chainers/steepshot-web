@@ -1,6 +1,6 @@
-import RequestService from '../services/requestService';
+import RequestService from './requestService';
 
-export function getUserProfile(userName) {
+export function getProfile(userName) {
 	const url = RequestService.handlev1_1RequestUserInfo(`user/${userName}/info`);
 	return fetch(url, {
 		method: 'GET'
@@ -45,14 +45,13 @@ export function getFollowing(userName, offset) {
 	return fetch(url, {
 		method: 'GET'
 	}).then((response) => {
-		if (response.ok) {
+		const contentType = response.headers.get("content-type");
+		if (response.ok && contentType && contentType.indexOf("application/json") !== -1) {
 			return response.json().then((json) => {
 				return json;
 			});
 		} else {
-			return response.json().then(() => {
-				return [];
-			});
+			return [];
 		}
 	});
 }

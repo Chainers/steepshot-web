@@ -67,7 +67,7 @@ class EditPost extends React.Component {
 			let image = new Image();
 			image.src = reader.result;
 			image.onload = () => {
-				this.props.changeImage(reader.result, image, file.size);
+				this.props.changeImage(reader.result, image);
 			};
 			image.onerror = () => {
 				this.props.setEditPostImageError(Constants.WRONG_FILE_FORMAT);
@@ -118,7 +118,7 @@ class EditPost extends React.Component {
 		return (
 			<div className="wrapper_edi-pos">
 				<ShowIf show={this.props.loading}>
-					<LoadingSpinner style={{height: '100%', position: 'absolute'}}/>
+					<LoadingSpinner style={{height: '100%', position: 'absolute', width: '100%'}}/>
 				</ShowIf>
 				<div className={'container_edi-pos ' + (this.props.loading ? 'blur-blocker' : '')}>
 					<div className="image-container_edi-pos"
@@ -148,7 +148,7 @@ class EditPost extends React.Component {
 									 onLoad={() => this.setImageContainerSize(0)}
 									 onError={this.props.setImageNotFound}
 							/>
-							<ShowIf show={this.props.isNew}>
+							<ShowIf show={this.props.isNew && !this.props.isGif}>
 								<div className="rotate-button_edi-pos"
 										 onClick={() => this.props.imageRotate(this.image)}
 								/>
@@ -238,8 +238,8 @@ const mapDispatchToProps = (dispatch) => {
 		removeTag: (index) => {
 			dispatch(removeTag(index))
 		},
-		changeImage: (imageSrc, image, fileSize) => {
-			dispatch(changeImage(imageSrc, image, fileSize))
+		changeImage: (imageSrc, image) => {
+			dispatch(changeImage(imageSrc, image))
 		},
 		imageRotate: (image) => {
 			dispatch(imageRotate(image))

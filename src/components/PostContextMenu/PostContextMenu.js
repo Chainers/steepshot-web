@@ -10,8 +10,8 @@ import {copyToClipboard} from '../../actions/clipboard';
 import {closeModal, openModal, closeAllModals} from '../../actions/modal';
 import {deletePost} from '../../actions/post';
 import './postContextMenu.css';
-import jqApp from "../../libs/app.min";
 import {push} from 'react-router-redux';
+import {pushMessage} from "../../actions/pushMessage";
 
 class PostContextMenu extends React.Component {
 
@@ -83,7 +83,7 @@ class PostContextMenu extends React.Component {
 
 	toggleFlag() {
 		if (!this.props.isUserAuth) {
-			jqApp.pushMessage.open(Constants.VOTE_ACTION_WHEN_NOT_AUTH);
+			this.props.pushMessage(Constants.VOTE_ACTION_WHEN_NOT_AUTH);
 			return;
 		}
 		if (!this.props.item.flag) {
@@ -228,6 +228,9 @@ const mapDispatchToProps = (dispatch) => {
 		},
 		historyPush: (path) => {
 			dispatch(push(path))
+		},
+		pushMessage: (message) => {
+			dispatch(pushMessage(message))
 		}
 	}
 };

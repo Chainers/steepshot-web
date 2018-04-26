@@ -1,6 +1,6 @@
 import React from 'react';
-import {connect} from "react-redux";
-import ShowIf from "../../ShowIf";
+import {connect} from 'react-redux';
+import ShowIf from '../../ShowIf';
 
 class Tab extends React.Component {
 	static defaultProps = {
@@ -10,8 +10,10 @@ class Tab extends React.Component {
 
 	render() {
 		return (
-			<ShowIf show={this.props.active && !this.props.empty} className="container_tab" removeFromDom={false}>
-				{this.props.children}
+			<ShowIf show={this.props.active && !this.props.empty} removeFromDom={false}>
+				<div className="tab_wrapper">
+					{this.props.children}
+				</div>
 			</ShowIf>
 		);
 	}

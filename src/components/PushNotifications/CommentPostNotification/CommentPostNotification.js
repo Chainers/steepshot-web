@@ -1,12 +1,9 @@
 import React from 'react';
 import './commentPostNotification.css';
 import Avatar from '../../Common/Avatar/Avatar';
-import Link from 'react-router-dom/es/Link';
+import {Link} from 'react-router-dom';
 
 class CommentPostNotification extends React.Component {
-  constructor(props) {
-    super(props);
-  }
 
   render() {
     let thumbnail = {
@@ -21,9 +18,7 @@ class CommentPostNotification extends React.Component {
     let loginLink = `/@${this.props.login}`;
     let postLink = `/post/@${this.props.login}/${this.props.postPermlink}`;
     return (
-      <div className="wrapper_like-comment-not" ref={ref => {
-        this.wrapper = ref
-      }}>
+      <div className="wrapper_like-comment-not">
         <div className="sub-wrapper_like-comment-not">
           <Link to={loginLink} target="_blank">
             <Avatar src={this.props.avatar} style={{width: '40px', height: '40px'}}/>

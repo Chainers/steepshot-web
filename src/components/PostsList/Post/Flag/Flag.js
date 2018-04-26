@@ -4,30 +4,24 @@ import ConfirmFlagModal from '../../../PostContextMenu/ConfirmFlagModal/ConfirmF
 import Constants from '../../../../common/constants';
 import {toggleFlag} from '../../../../actions/flag';
 import {closeModal, openModal} from '../../../../actions/modal';
-import jqApp from "../../../../libs/app.min";
+import {pushMessage} from "../../../../actions/pushMessage";
 
 class Flag extends React.Component {
 
 	toggleFlag() {
 		if (!this.props.isUserAuth) {
-			jqApp.pushMessage.open(Constants.VOTE_ACTION_WHEN_NOT_AUTH);
-			return;
-		}
-		if (this.props.commentLoader) {
-			jqApp.pushMessage.open(Constants.WAIT_FINISHING_TRANSACTION);
+			this.props.pushMessage.open(Constants.VOTE_ACTION_WHEN_NOT_AUTH);
 			return;
 		}
 		if (!this.props.flag) {
 			let modalOption = {
 				body: (<ConfirmFlagModal closeModal={() => {
 					this.props.closeModal("ConfirmFlagModal")
-				}}
-																 flagCallback={this.flagCallback.bind(this)}
-				/>),
+				}} flagCallback={this.flagCallback.bind(this)}/>),
 			};
 			this.props.openModal("ConfirmFlagModal", modalOption);
 		} else {
-			this.props.toggleFlag(this.props.postIndex);
+ 			this.props.toggleFlag(this.props.postIndex);
 		}
 	}
 
@@ -41,12 +35,26 @@ class Flag extends React.Component {
 	}
 
 	render() {
-		let buttonClasses = "btn-flag";
+		let buttonClasses = 'btn-flag';
 		if (this.props.flag) {
-			buttonClasses = buttonClasses + " marked";
+			buttonClasses = buttonClasses + ' marked';
 		}
 		if (this.props.flagLoading) {
-			buttonClasses = buttonClasses + " loading";
+			buttonClasses = buttonClasses + ' loading';
+		}
+		if (this.props.isComment) {
+			let flagComment = 'Flag';
+      if (this.props.flag) {
+        flagComment = 'Unflag';
+      }
+      if (this.props.flagLoading) {
+        flagComment = <span className="saving">Pending<span> .</span><span> .</span><span> .</span></span>;
+      }
+			return (
+				<span className={this.props.flagLoading ? 'flag-not-hover_comment' : 'flag_comment'}
+							style={{marginRight: 18}}
+							onClick={this.toggleFlag.bind(this)}>{flagComment}</span>
+			)
 		}
 		return (
 			<div className="position--relative" onClick={this.toggleFlag.bind(this)}>
@@ -74,6 +82,9 @@ const mapDispatchToProps = (dispatch) => {
 		},
 		toggleFlag: (postIndex) => {
 			dispatch(toggleFlag(postIndex));
+		},
+		pushMessage: (message) => {
+			dispatch(pushMessage(message))
 		}
 	}
 };

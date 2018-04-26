@@ -3,7 +3,7 @@ import {debounce} from "lodash";
 import {updateUser} from "./usersList";
 import {getStore} from "../store/configureStore";
 import Constants from '../common/constants';
-import jqApp from "../libs/app.min";
+import {pushMessage} from "./pushMessage";
 
 
 function toggleFollowRequest(author) {
@@ -36,7 +36,7 @@ export function toggleFollow(author) {
 		const newFollowState = user.has_followed;
 
 		if (!username && !postingKey) {
-			debounce(jqApp.pushMessage.open(Constants.VOTE_ACTION_WHEN_NOT_AUTH), 1000);
+			debounce(dispatch(pushMessage(Constants.VOTE_ACTION_WHEN_NOT_AUTH), 1000));
 			return;
 		}
 
@@ -45,14 +45,14 @@ export function toggleFollow(author) {
 		const callback = (err, success) => {
 			if (err) {
 				dispatch(toggleFollowFailure(author));
-				jqApp.pushMessage.open(err);
+				dispatch(pushMessage(err));
 			} else if (success) {
 				dispatch(updateUser(author));
 				let statusText = 'followed';
 				if (newFollowState) statusText = 'unfollowed';
 				dispatch(toggleFollowSuccess(author));
 				setTimeout(() => {
-					jqApp.pushMessage.open(`User has been successfully ${statusText}`);
+					dispatch(pushMessage(`User has been successfully ${statusText}`));
 				}, 1000);
 			}
 		};

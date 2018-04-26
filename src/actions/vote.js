@@ -2,7 +2,7 @@ import Steem from '../libs/steem';
 import {getStore} from '../store/configureStore';
 import {updatePost} from './post';
 import {updateVotingPower} from './auth';
-import jqApp from "../libs/app.min";
+import {pushMessage} from "./pushMessage";
 
 function toggleVoteRequest(postIndex) {
 	return {
@@ -25,39 +25,44 @@ function toggleVoteFailure(postIndex) {
 	};
 }
 
-export function toggleVote(postIndex, power = 100) {
+export function addVoteElement(postIndex, voteElement) {
+	return {
+		type: 'ADD_VOTE_ELEMENT',
+		postIndex,
+		voteElement
+	}
+}
+
+export function toggleVote(postIndex) {
 	return function (dispatch) {
 		let state = getStore().getState();
 		let username = state.auth.user;
 		let postingKey = state.auth.postingKey;
 		let post = state.posts[postIndex];
 		const newVoteState = !post.vote;
-		power = power * 100;
-
+		let power = state.auth.like_power * 100;
 		if (!username && !postingKey) {
 			return;
 		}
-
 		let queue = sessionStorage.getItem('voteQueue');
 		if (queue === 'true') {
 			return;
 		}
-
 		sessionStorage.setItem('voteQueue', 'true');
 		dispatch(toggleVoteRequest(postIndex));
 
 		const callback = (err, success) => {
 			sessionStorage.setItem('voteQueue', 'false');
 			if (err) {
-        dispatch(toggleVoteFailure(postIndex));
-				jqApp.pushMessage.open(err);
+				dispatch(toggleVoteFailure(postIndex));
+				dispatch(pushMessage(err));
 			} else if (success) {
 				dispatch(toggleVoteSuccess(postIndex));
-				dispatch(updatePost(postIndex));
+				dispatch(updatePost(postIndex, newVoteState, false));
 				dispatch(updateVotingPower(username));
 				let text = `The post has been successfully liked. If you don't see your like, please give it a few minutes to sync from the blockchain`;
 				if (!newVoteState) text = `The post has been successfully disliked. If you don't see your dislike, please give it a few minutes to sync from the blockchain`;
-				jqApp.pushMessage.open(text);
+				dispatch(pushMessage(text));
 			}
 		};
 

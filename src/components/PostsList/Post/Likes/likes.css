@@ -1,10 +1,16 @@
+.actions-buttons_comment .container_likes {
+    font: 12px OpenSans-Regular;
+}
+
 .container_likes {
-    cursor: pointer;
     transition: color .15s ease;
-    font-size: 12px;
-    padding: 10px 10px 10px 0;
+    display: flex;
+    font: 12px OpenSans-Regular;
+    justify-content: flex-start;
+    align-items: center;
 }
 
 .container_likes:hover {
+    cursor: pointer;
     color: #979b9e;
 }

@@ -1,8 +1,11 @@
 export default function posts(state = {}, action) {
 	switch (action.type) {
 
+		case 'GET_POST_COMMENTS_SUCCESS':
+		case 'ADDED_NEW_COMMENT':
 		case 'GET_POSTS_LIST_SUCCESS':
 		case 'ADD_POSTS':
+		case 'UPDATE_COMMENT':
 			return {
 				...state,
 				...action.posts
@@ -21,6 +24,33 @@ export default function posts(state = {}, action) {
 					...state[action.index],
 					flag: !state[action.index].flag,
 					flagLoading: true,
+				}
+			};
+
+		case 'POST_PLAY_VIDEO':
+			return {
+				...state,
+				[action.index]: {
+					...state[action.index],
+					playing: true
+				}
+			};
+
+		case 'POST_STOP_VIDEO':
+			return {
+				...state,
+				[action.index]: {
+					...state[action.index],
+					playing: false
+				}
+			};
+
+		case 'SET_VIDEO_TIME':
+			return {
+				...state,
+				[action.index]: {
+					...state[action.index],
+					time: action.time
 				}
 			};
 
@@ -117,6 +147,22 @@ export default function posts(state = {}, action) {
 				[action.index]: {
 					...state[action.index],
 					hplTimeout: action.hplTimeout
+				}
+			};
+    case 'SET_GALLERY_IMG_INDEX':
+      return {
+        ...state,
+        [action.postIndex]: {
+          ...state[action.postIndex],
+          imgIndex: action.imgIndex
+        }
+      };
+		case 'ADD_VOTE_ELEMENT':
+			return {
+				...state,
+				[action.postIndex]: {
+					...state[action.postIndex],
+					voteElement: action.voteElement
 				}
 			};
 

@@ -5,11 +5,12 @@ import {getPostShaddow} from "../services/posts";
 import Steem from "../libs/steem";
 import {clearTextInputState, setTextInputError, setTextInputState} from "./textInput";
 import {getCreateWaitingTime} from "../services/users";
-import jqApp from "../libs/app.min";
 import * as React from "react";
 import PlagiarismTracking from "../components/Modals/PlagiarismTracking/PlagiarismTracking";
 import {openModal} from "./modal";
 import {push} from "react-router-redux";
+import {compressJPEG} from "../utils/compressor";
+import {pushMessage} from "./pushMessage";
 
 const getUserName = () => {
 	return getStore().getState().auth.user;
@@ -33,7 +34,7 @@ export function addTag() {
 		let newTag = state.textInput[constants.TEXT_INPUT_POINT.TAGS].text;
 		newTag = getValidTagsString(newTag);
 		if (editPostState.tags.split(' ').length === 20) {
-			jqApp.pushMessage.open(constants.MAX_TAGS_NUMBER);
+			dispatch(pushMessage(constants.MAX_TAGS_NUMBER));
 		}
 		if (utils.isEmptyString(newTag)) {
 			return emptyAction();
@@ -53,13 +54,9 @@ export function removeTag(index) {
 	}
 }
 
-export function changeImage(imageSrc, image, fileSize) {
+export function changeImage(imageSrc, image) {
 	return dispatch => {
 		if (!isValidImageSize(dispatch, image)) {
-			return;
-		}
-		if (fileSize / 1000 / 1000 > 10) {
-			dispatch(setEditPostImageError('Image should be less than 10 mb.'));
 			return;
 		}
 		dispatch({
@@ -175,20 +172,21 @@ export function editPost() {
 		dispatch(editPostRequest());
 		Steem.editPost(title, tags, description, postData.url.split('/')[3], postData.category, postData.media[0])
 			.then(() => {
-				jqApp.pushMessage.open(constants.POST_SUCCESSFULLY_UPDATED);
+				dispatch(pushMessage(constants.POST_SUCCESSFULLY_UPDATED));
 				setTimeout(() => {
 					dispatch(editPostSuccess());
 					dispatch(push(`/@${getUserName()}`))
 				}, 1700);
 			}).catch(error => {
 			dispatch(editPostReject(error));
-			jqApp.pushMessage.open(error.message);
+			dispatch(pushMessage(error.message));
 		})
 	}
 }
 
+
 export function createPost() {
-	let {title, tags, description, photoSrc, rotate} = prepareData();
+	let {title, tags, description, photoSrc, rotate, isGif} = prepareData();
 
 	return dispatch => {
 		if (!isValidField(dispatch, title, photoSrc)) {
@@ -197,16 +195,32 @@ export function createPost() {
 		checkTimeAfterUpdatedLastPost()
 			.then(() => {
 				dispatch(editPostRequest());
+				const dataType = 'image/gif';
 				const image = new Image();
 				image.src = photoSrc;
 				image.onload = () => {
-					const canvas = getCanvasWithImage(image, rotate);
-					fetch(canvas.toDataURL('image/jpeg', 0.94)).then(res => res.blob())
+					let dataUrl = photoSrc;
+					if (!isGif && rotate) {
+						dataUrl = getCanvasWithImage(image, rotate).toDataURL(dataType, 1);
+					}
+					fetch(dataUrl).then(res => {
+						return res.blob()
+					})
+						.then(blob => {
+							if (!isGif && blob.size > constants.IMAGE.MAX_SIZE) {
+								console.log("compressing...");
+								return compressJPEG(blob);
+							}
+							return new Promise( resolve => {
+								resolve(blob);
+							});
+
+						})
 						.then(blob => {
 							return Steem.createPost(tags, title, description, blob)
 						})
 						.then(() => {
-							jqApp.pushMessage.open(constants.POST_SUCCESSFULLY_CREATED);
+							dispatch(pushMessage(constants.POST_SUCCESSFULLY_CREATED));
 							dispatch(editPostSuccess());
 							dispatch(push(`/@${getUserName()}`))
 						})
@@ -222,7 +236,7 @@ export function createPost() {
 						})
 						.catch(error => {
 							dispatch(editPostReject(error));
-							jqApp.pushMessage.open(error.message);
+							dispatch(pushMessage(error.message));
 						});
 				}
 			})
@@ -245,8 +259,9 @@ function prepareData() {
 	const tags = getValidTagsString(editPostState.tags);
 	const photoSrc = editPostState.src;
 	const rotate = editPostState.rotate;
+	const isGif = editPostState.isGif;
 
-	return {title, description, tags, photoSrc, rotate};
+	return {title, description, tags, photoSrc, rotate, isGif};
 }
 
 
@@ -261,7 +276,7 @@ function getValidTagsString(str) {
 		result = result.replace(new RegExp(`((\\s[^\\s]+){${MAX_AMOUNT_TAGS - 1}}).*`), '$1');
 		result = result.replace(new RegExp(`(([^\\s]{${MAX_TAG_LENGTH}})[^\\s]+).*`), '$2');
 		result = result.replace(/\bsteepshot\b/g, '');
-		return result;
+		return result.toLowerCase();
 	}
 }
 
