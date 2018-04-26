@@ -7,7 +7,6 @@ import './login.css';
 import ShowIf from "../Common/ShowIf";
 import ReactPlayer from 'react-player'
 import Constants from "../../common/constants";
-import scrollToComponent from 'react-scroll-to-component';
 import FormInput from "../Common/FormInput/FormInput";
 import {setErrorFormInput} from "../../actions/formInputActions";
 import {login} from "../../actions/auth";
@@ -59,7 +58,7 @@ class Login extends Component {
 		this.setState({
 			openVideo: true
 		}, () => {
-			scrollToComponent(this.player, {align: 'bottom'});
+			//scrollToComponent(this.player, {align: 'bottom'});
 		})
 	}
 
