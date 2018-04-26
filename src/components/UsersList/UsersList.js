@@ -8,6 +8,7 @@ import {clearUsersList, getUsersList, initUsersList} from '../../actions/usersLi
 import {documentTitle} from '../../utils/documentTitle';
 import User from './User/User';
 import './usersList.css';
+import {utils} from "../../utils/utils";
 
 class UsersList extends React.Component {
 	static defaultProps = {
@@ -30,6 +31,13 @@ class UsersList extends React.Component {
 			this.props.initUsersList(usersListOptions);
 			this.props.getUsersList(nextProps.point, this.props.getUsers);
 		}
+	}
+
+	shouldComponentUpdate(nextProps) {
+		if (utils.equalsObjects(nextProps, this.props)) {
+			return false;
+		}
+		return true;
 	}
 
 	static userListOptions(props) {
