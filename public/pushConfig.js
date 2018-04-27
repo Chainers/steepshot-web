@@ -6,7 +6,7 @@ OneSignal.push(["init", {
 		enable: true
 	},
 	subdomainName: 'qa-second',
-	welcomeNotification: {
+	/*welcomeNotification: {
 		"title": "My Custom Title",
 		"message": "Thanks for subscribing!",
 		"url": "https://qa-second.alpha.steepshot.io/browse"
@@ -15,8 +15,9 @@ OneSignal.push(["init", {
 		actionMessage: "We'd like to show you notifications for the latest news and updates.",
 		acceptButtonText: "ALLOW",
 		cancelButtonText: "NO THANKS"
-	}
+	}*/
 }]);
+/*
 OneSignal.push(function () {
 	OneSignal.showHttpPrompt();
-});
+});*/
