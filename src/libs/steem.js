@@ -46,7 +46,7 @@ class Steem {
 				callback(checkedError, null);
 				const data = JSON.stringify({
 					username: author,
-					err
+          error: err.message
 				});
 				logComment(parentAuthor, parentPermlink, data);
 			} else if (success) {
@@ -129,7 +129,7 @@ class Steem {
 				callback(checkedError, null);
 				const data = JSON.stringify({
 					username: username,
-					err
+					error: err.message
 				});
 				logVote(voteStatus, author, url, data);
 			} else if (success) {
@@ -155,7 +155,7 @@ class Steem {
 				callback(checkedError, null);
         const data = JSON.stringify({
           username: username,
-          err
+          error: err.message
         });
         logVote(flagStatus, author, url, data);
 			} else if (success) {
@@ -197,7 +197,7 @@ class Steem {
 				callback(checkedError, null);
 				const data = JSON.stringify({
 					username: follower,
-					err
+          error: err.message
 				});
 				logFollow(status, following, data);
 			} else if (result) {
@@ -225,11 +225,11 @@ class Steem {
 	deletePost(wif, author, permlink, callback) {
 		const callbackBc = (err, success) => {
 			if (err) {
-				// const data = JSON.stringify({
-				//   username: author
-				//   error: err
-				// });
-				// logDeletedPost(author, permlink, data);
+				const data = JSON.stringify({
+				  username: author,
+          error: err.message
+				});
+				logDeletedPost(author, permlink, data);
         let checkedError = blockchainErrorsList(err);
 				callback(checkedError, null);
 			} else if (success) {
@@ -362,7 +362,6 @@ function _preCompileTransaction(operation) {
 			try {
 				resolve(steem.auth.signTransaction(transaction, [_getUserPostingKey()]));
 			} catch (err) {
-				console.log(err);
 				reject(new Error("Invalidate posting key."));
 			}
 		})
