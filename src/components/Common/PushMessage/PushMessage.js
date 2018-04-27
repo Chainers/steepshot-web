@@ -11,7 +11,6 @@ class PushMessage extends React.Component {
 	}
 
 	renderMessage(message, index) {
-		console.log('render');
 		return (
 			<div key={index} className={'body_push-msg' + (message.willClose ? ' will-close_push-msg' : '')}
 					 style={{
