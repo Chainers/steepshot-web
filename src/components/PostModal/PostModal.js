@@ -149,6 +149,13 @@ class PostModal extends React.Component {
 		)
 	}
 
+	copyLinkToClipboard(e) {
+    e.target.blur();
+    this.props.copyToClipboard(
+      document.location.origin + '/post' + this.props.post.url.replace(/\/[\w-.]+/, '')
+    );
+	}
+
 	renderImage() {
 		return (
 			<div className="image-container_pos-mod" style={this.props.style.imgCont}>
@@ -157,9 +164,7 @@ class PostModal extends React.Component {
 				<span className="open-fs-dblclick_pos-mod"
 							onDoubleClick={this.setFullScreen.bind(this, !this.props.fullScreenMode)}/>
 				<button className="btn btn-default btn-xs"
-								onClick={() => this.props.copyToClipboard(
-									document.location.origin + '/post' + this.props.post.url.replace(/\/[\w-.]+/, ''),
-								)}>Copy link
+								onClick={(e) => this.copyLinkToClipboard(e)}>Copy link
 				</button>
 				<ShowIf show={!this.props.style.isFullScreen && !this.props.fullScreenMode && !this.props.singlePost}>
 					<div className="full-screen-button_pos-mod"
@@ -200,10 +205,7 @@ class PostModal extends React.Component {
 					<span className="open-fs-dblclick_pos-mod"
 								onDoubleClick={this.setFullScreen.bind(this, !this.props.fullScreenMode)}/>
 					<button className="btn btn-default btn-xs full-screen-share_pos-mod"
-									onClick={() => this.props.copyToClipboard(
-										document.location.origin + '/post' + this.props.post.url.replace(/\/[\w-.]+/, '')
-									)}
-					>Copy link
+									onClick={(e) => this.copyLinkToClipboard(e)}>Copy link
 					</button>
 					<ShowIf show={!this.props.post.isVideo}>
 						<ImagesGallery index={this.props.currentIndex}
@@ -295,7 +297,7 @@ class PostModal extends React.Component {
 	}
 
 	fsCheckButtons(e) {
-		if (e.keyCode !== 37 && e.keyCode !== 39) this.showFSNavigation();
+		if (e.keyCode !== 37 && e.keyCode !== 39 && e.keyCode !== 13) this.showFSNavigation();
 	}
 
 	closeFromFullScreen(isOpen) {
