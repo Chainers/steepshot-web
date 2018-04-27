@@ -434,9 +434,8 @@ function _getPermLink(permlinkHead) {
   permlinkHead = permlinkHead.toLowerCase();
 	if (permlinkHead.length > permlinkHeadLimit) {
     permlinkHead = permlinkHead.slice(0, permlinkHeadLimit + 1);
-    permlinkHead = permlinkHead.replace(/\W/g, '-');
 	}
-	return permlinkHead.replace(/\s/g, '-') + '-' + today.getFullYear() + '-' + today.getMonth() + '-' + today.getDay()
+	return permlinkHead.replace(/\W/g, '-') + '-' + today.getFullYear() + '-' + today.getMonth() + '-' + today.getDay()
 		+ '-' + today.getHours() + '-' + today.getMinutes() + '-' + today.getSeconds();
 }
 
