@@ -60,8 +60,8 @@ OneSignal.push(["init", {
 		/!* acceptButtonText limited to 15 characters *!/
 		acceptButtonText: "ALLOW",
 		/!* cancelButtonText limited to 15 characters *!/
-		cancelButtonText: "NO THANKS"
-	}*/
+		cancelButtonText: "NO THANKS"*/
+	}
 }]);
 /*
 OneSignal.push(function () {
