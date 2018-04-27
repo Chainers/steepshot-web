@@ -2,8 +2,12 @@ var OneSignal = window.OneSignal || [];
 OneSignal.push(["init", {
 	appId: "77fa644f-3280-4e87-9f14-1f0c7ddf8ca5",
 	autoRegister: false,
+	httpPermissionRequest: {
+		enable: true
+	},
+	subdomainName: 'qa-second',
 	notifyButton: {
-		enable: true,
+		enable: false,
 		size: 'medium',
 		theme: 'default',
 		position: 'bottom-right',
