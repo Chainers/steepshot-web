@@ -3,7 +3,7 @@ import constants from "../common/constants";
 import {utils} from "../utils/utils";
 import {getPostShaddow} from "../services/posts";
 import Steem from "../libs/steem";
-import {clearTextInputState, setTextInputError, setTextInputState} from "./textInput";
+import {clearTextInputState, setTextInputError} from "./textInput";
 import {getCreateWaitingTime} from "../services/users";
 import * as React from "react";
 import PlagiarismTracking from "../components/Modals/PlagiarismTracking/PlagiarismTracking";
@@ -15,17 +15,6 @@ import {pushMessage} from "./pushMessage";
 const getUserName = () => {
 	return getStore().getState().auth.user;
 };
-
-function clearEditPost() {
-	return dispatch => {
-		dispatch({
-			type: 'EDIT_POST_CLEAR'
-		});
-		dispatch(clearTextInputState(constants.TEXT_INPUT_POINT.TITLE));
-		dispatch(clearTextInputState(constants.TEXT_INPUT_POINT.TAGS));
-		dispatch(clearTextInputState(constants.TEXT_INPUT_POINT.DESCRIPTION));
-	};
-}
 
 export function addTag() {
 	return (dispatch) => {
@@ -100,9 +89,7 @@ export function setImageContainerSize(width, height) {
 export function editClearAll() {
 	return dispatch => {
 		dispatch({type: 'EDIT_POST_CLEAR_ALL'});
-		dispatch(clearTextInputState(constants.TEXT_INPUT_POINT.TITLE));
-		dispatch(clearTextInputState(constants.TEXT_INPUT_POINT.TAGS));
-		dispatch(clearTextInputState(constants.TEXT_INPUT_POINT.DESCRIPTION));
+		dispatch(clearInputFields());
 	}
 }
 
@@ -121,18 +108,12 @@ export function closeTimer() {
 export function editPostClear() {
 	const initDataEditPost = getStore().getState().editPost.initData;
 	return dispatch => {
-		dispatch(clearEditPost());
-		dispatch(setTextInputState(constants.TEXT_INPUT_POINT.TITLE, {
-			text: initDataEditPost.title || '',
-			focused: initDataEditPost.title ? 'focused_tex-inp' : '',
-			error: ''
-		}));
-		dispatch(clearTextInputState(constants.TEXT_INPUT_POINT.TAGS));
-		dispatch(setTextInputState(constants.TEXT_INPUT_POINT.DESCRIPTION, {
-			text: initDataEditPost.description || '',
-			focused: initDataEditPost.description ? 'focused_tex-inp' : '',
-			error: ''
-		}));
+		if (initDataEditPost && initDataEditPost.src) {
+			dispatch({type: 'EDIT_POST_CLEAR_FIELDS'})
+		} else {
+			dispatch({type: 'EDIT_POST_CLEAR_ALL'});
+		}
+		dispatch(clearInputFields());
 	}
 }
 
@@ -312,10 +293,16 @@ function createNewPost() {
 			});
 
 		dispatch({type: 'EDIT_POST_CREATE_NEW'});
+		dispatch(clearInputFields());
+	};
+}
+
+function clearInputFields() {
+	return dispatch => {
 		dispatch(clearTextInputState(constants.TEXT_INPUT_POINT.TITLE));
 		dispatch(clearTextInputState(constants.TEXT_INPUT_POINT.TAGS));
 		dispatch(clearTextInputState(constants.TEXT_INPUT_POINT.DESCRIPTION));
-	};
+	}
 }
 
 export function editPostSuccess() {
