@@ -8,10 +8,14 @@ export function pushMessage(message) {
 			message,
 			index: currentIndex
 		});
-		dispatch({
-			type: 'UP_PUSH_MESSAGE',
-			index: currentIndex
-		});
+
+		setTimeout(() => {
+			dispatch({
+				type: 'UP_PUSH_MESSAGE',
+				index: currentIndex
+			});
+		}, 10);
+
 		setTimeout(() => {
 			dispatch({
 				type: 'WILL_CLOSE_PUSH_MESSAGE',
