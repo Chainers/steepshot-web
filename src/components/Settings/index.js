@@ -81,7 +81,7 @@ class Settings extends React.Component {
 				saveSettings: getSettings()
 			}, () => this.needsNotice());
 			setTimeout(() => {
-				this.props.pushMessage.open(Constants.SETTINGS_CHANGED_MESSAGE);
+				this.props.pushMessage(Constants.SETTINGS_CHANGED_MESSAGE);
 				this.props.historyGoBack();
 			}, 1700);
 		} else {

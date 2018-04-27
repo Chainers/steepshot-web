@@ -16,6 +16,7 @@ import {getUserProfile} from "../../actions/userProfile";
 import ShowIf from "../Common/ShowIf";
 import LoadingSpinner from "../LoadingSpinner";
 import './userProfile.css';
+import {setActiveIndex} from "../../actions/tabsBar";
 
 class UserProfile extends React.Component {
 
@@ -35,6 +36,7 @@ class UserProfile extends React.Component {
 	componentWillReceiveProps(nextProps) {
 		if (nextProps.username !== this.props.username) {
 			this.props.getUserProfile(nextProps.username);
+			this.props.setActiveIndex("userProfile", 0);
 		}
 	}
 
@@ -65,7 +67,7 @@ class UserProfile extends React.Component {
 									<Avatar src={avatar}
 													powerIndicator={this.props.isYourProfile}
 									/>
-									<ShowIf show={!this.props.isYourProfile}>
+									<ShowIf show={!this.props.isYourProfile && this.props.isAuth}>
 										<FollowComponent item={this.props.profile}/>
 									</ShowIf>
 								</div>
@@ -132,6 +134,7 @@ const mapStateToProps = (state, props) => {
 	const location = state.router.location || props.location || {};
 	return {
 		username,
+		isAuth: state.auth.user && state.auth.postingKey,
 		profile: state.userProfile.profile,
 		loading: state.userProfile.loading,
 		pathname: location.pathname,
@@ -156,6 +159,9 @@ const mapDispatchToProps = (dispatch) => {
 		},
 		getUserProfile: (userName) => {
 			dispatch(getUserProfile(userName));
+		},
+		setActiveIndex: (point, index) => {
+			dispatch(setActiveIndex(point, index));
 		}
 	}
 };

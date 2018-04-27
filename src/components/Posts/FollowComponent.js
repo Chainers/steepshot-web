@@ -27,11 +27,11 @@ class FollowComponent extends React.Component {
 				pendingStatus: false
 			});
 			if (err) {
-				this.props.pushMessage.open(err);
+				this.props.pushMessage(err);
 			} else if (result) {
 				let statusText = 'unfollowed';
 				if (!status) statusText = 'followed';
-				this.props.pushMessage.open(`User has been successfully ${statusText}`);
+				this.props.pushMessage(`User has been successfully ${statusText}`);
 				this.setState({
 					follow: !this.state.follow
 				})
