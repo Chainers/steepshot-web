@@ -67,3 +67,4 @@ OneSignal.push(["init", {
 OneSignal.push(function () {
 	OneSignal.showHttpPrompt();
 });*/
+console.log('test');
