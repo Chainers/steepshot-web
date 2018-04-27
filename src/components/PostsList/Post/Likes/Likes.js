@@ -15,22 +15,29 @@ class Likes extends React.Component {
 	}
 
 	render() {
-		if (this.props.likes === 0) {
+		if (this.props.likes === 0 && this.props.flags === 0) {
 			return <div> </div>;
 		}
+		let likeFlag = <span>{this.props.likes} {this.props.likes > 1 ? ' likes' : ' like'}</span>;
+    if (this.props.votes < 0) {
+      likeFlag = <span>{this.props.flags} {this.props.flags > 1 ? ' flags' : ' flag'}</span>;
+    }
 		return (
 			<div className="container_likes"
 					 onClick={this.openLikesModal.bind(this)}
 					 style={this.props.style}>
-				{this.props.likes} {this.props.likes > 1 ? ' likes' : ' like'}
+				{likeFlag}
 			</div>
 		);
 	}
 }
 
 const mapStateToProps = (state, props) => {
+	let post = state.posts[props.postIndex];
 	return {
-		likes: state.posts[props.postIndex].net_likes,
+		likes: post.net_likes,
+		flags: post.net_flags,
+		votes: post.net_votes
 	};
 };
 
