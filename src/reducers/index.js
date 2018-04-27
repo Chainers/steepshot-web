@@ -1,5 +1,4 @@
 import {combineReducers} from 'redux';
-import messages from './messages';
 import auth from './auth';
 import posts from './posts';
 import clipboard from './clipboard';
@@ -29,7 +28,6 @@ import windowOnStore from "./windowOnStore";
 
 export default combineReducers({
 	clipboard,
-	messages,
 	auth,
 	posts,
 	tabsBar,

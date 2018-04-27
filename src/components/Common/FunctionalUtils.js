@@ -9,10 +9,6 @@ import {resizeWindow} from "../../actions/utilsActions";
 
 class FunctionalUtils extends React.Component {
 
-	constructor(){
-		super();
-	}
-
   componentDidMount() {
 		window.addEventListener('resize', this.props.resizeWindow);
     this.updateVotingPower();

@@ -105,7 +105,6 @@ class Login extends Component {
 
 const mapStateToProps = (state) => {
 	return {
-		messages: state.messages,
 		user: state.auth.user,
 		nameValue: state.formInput[NAME_POINT] ? state.formInput[NAME_POINT].value : '',
 		passwordValue: state.formInput[PASSWORD_POINT] ? state.formInput[PASSWORD_POINT].value : ''

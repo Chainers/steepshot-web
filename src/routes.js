@@ -20,15 +20,8 @@ export function baseBrowseFilter() {
 }
 
 export default function getRoutes(store) {
-	const clearMessages = () => {
-		store.dispatch({
-			type: 'CLEAR_MESSAGES'
-		});
-	};
-
 	const auth = store.getState().auth;
-	const isAuth = !!auth.user && !!auth.postingKey && auth.isSetAuth;
-
+	const isAuth = !!auth.user && !!auth.postingKey;
 	return (
 		<App>
 			<Switch>
@@ -46,20 +39,19 @@ export default function getRoutes(store) {
 						<Login/>
 					)
 				)}/>
-				<Route path="/browse/:filter" component={BrowseWrapper} onLeave={clearMessages}/>
+				<Route path="/browse/:filter" component={BrowseWrapper} />
 				<Redirect path="/browse" to={`/browse/${baseBrowseFilter()}`}/>
-				<Route path="/@:username" component={UserProfile} onLeave={clearMessages}/>
-				<Route path="/signin" component={Login} onLeave={clearMessages}/>
-				<Route path="/post" component={SinglePost} onLeave={clearMessages}/>
-				<Route path="/search/:searchValue" component={Search} onLeave={clearMessages}/>
-				<Route path="/guide" component={AboutComponent} onLeave={clearMessages}/>
-				<Route path="/dev/test" component={Testing} onLeave={clearMessages}/>
-				<PrivateRoute path="/feed" component={Feed} onLeave={clearMessages}/>
+				<Route path="/@:username" component={UserProfile} />
+				<Route path="/post" component={SinglePost} />
+				<Route path="/search/:searchValue" component={Search} />
+				<Route path="/guide" component={AboutComponent} />
+				<Route path="/dev/test" component={Testing} />
+				<PrivateRoute path="/feed" component={Feed} />
 				<Redirect path="/createPost" to={'/editPost'}/>
-				<PrivateRoute path="/editPost/:category?/:username?/:postId?" component={EditPost} onLeave={clearMessages}/>
-				<PrivateRoute path="/Profile" component={UserProfile} onLeave={clearMessages}/>
-				<PrivateRoute path="/settings" component={Settings} onLeave={clearMessages}/>
-				<Route path="*" component={NotFound} onLeave={clearMessages}/>
+				<PrivateRoute path="/editPost/:category?/:username?/:postId?" component={EditPost} />
+				<PrivateRoute path="/Profile" component={UserProfile} />
+				<PrivateRoute path="/settings" component={Settings} />
+				<Route path="*" component={NotFound} />
 			</Switch>
 		</App>
 	);
