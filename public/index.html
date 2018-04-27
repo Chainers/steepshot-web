@@ -7,7 +7,18 @@
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-112002704-1"></script>
 
     <script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async=""></script>
-    <script src="/pushConfig.js"></script>
+    <script>
+			var OneSignal = window.OneSignal || [];
+			OneSignal.push(function() {
+				OneSignal.init({
+					appId: "77fa644f-3280-4e87-9f14-1f0c7ddf8ca5",
+					autoRegister: false,
+					notifyButton: {
+						enable: true,
+					},
+				});
+			});
+    </script>
 
     <script>
 			window.dataLayer = window.dataLayer || [];
