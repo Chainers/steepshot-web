@@ -1,7 +1,7 @@
 import React from 'react';
 import Header from './Header';
 import MobileNavigationComponent from './MobileNavigationComponent';
-import FooterComponent from './FooterComponent';
+import Footer from './Footer/Footer';
 import FunctionalUtils from "./Common/FunctionalUtils";
 import BodyLoader from "./Common/BodyLoader/BodyLoader";
 
@@ -15,7 +15,7 @@ const App = ({children}) => (
 			</div>
 		</div>
 		<MobileNavigationComponent/>
-		<FooterComponent/>
+		<Footer/>
 		<FunctionalUtils/>
 	</div>
 );

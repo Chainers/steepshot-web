@@ -15,7 +15,6 @@ import {playVideo, setPowerLikeInd, setPowerLikeTimeout, setVideoTime, stopVideo
 import LoadingSpinner from '../../LoadingSpinner/index';
 import Avatar from '../../Common/Avatar/Avatar';
 import Likes from './Likes/Likes';
-import VoteIndicator from './Vote/VoteIndicator/VoteIndicator';
 import './post.css';
 import ReactPlayer from 'react-player';
 
@@ -142,7 +141,7 @@ class Post extends React.Component {
 				<div className="post-card position--relative" ref={ref => this.postCard = ref}>
 					<ShowIf show={this.props.postDeleting}>
 						<div className="delete-loader_post"
-								 style={{height: this.props.clearPostHeader ? '512px' : '552px'}}
+								 style={{height: this.props.clearPostHeader ? '496px' : '536px'}}
 						>
 							<LoadingSpinner style={{position: 'absolute'}} loaderClass='deleting-loader'/>
 						</div>
@@ -173,9 +172,6 @@ class Post extends React.Component {
 						{this.renderImage()}
 						<div className="card-wrap">
 							<div className="card-controls_post">
-								{/*<ShowIf show={this.props.isPLOpen && this.props.powerLikeIndPlace === 'post'}>*/}
-									{/*<VoteIndicator index={this.props.index}/>*/}
-								{/*</ShowIf>*/}
 								<Likes postIndex={this.props.index} style={{paddingLeft: 20}}/>
 								<div className="card-buttons_post">
 									<ShowIf show={parseFloat(this.props.total_payout_reward)}>

@@ -157,14 +157,6 @@ export default function posts(state = {}, action) {
           imgIndex: action.imgIndex
         }
       };
-		case 'ADD_VOTE_ELEMENT':
-			return {
-				...state,
-				[action.postIndex]: {
-					...state[action.postIndex],
-					voteElement: action.voteElement
-				}
-			};
 
 		default:
 			return state;

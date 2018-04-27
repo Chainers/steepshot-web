@@ -1,5 +1,5 @@
 .main-container-chuldren {
-    background-color: #F8F8F8;
+    background-color: #8f8f8;
 }
 
 body {
@@ -168,21 +168,6 @@ input.autofil--gray:-webkit-autofill {
     border-top: 5px solid #e74800;
     width: 40px;
     height: 40px;
-    -webkit-animation: spin 2s linear infinite;
-    animation: spin 2s linear infinite;
-}
-
-.delete-loader_post .loader-blocker {
-    top: 50%;
-    transform: translateY(-50%);
-}
-
-.deleting-loader {
-    border: 9px solid #f3f3f3;
-    border-radius: 50%;
-    border-top: 9px solid #89210b;
-    width: 75px;
-    height: 75px;
     -webkit-animation: spin 2s linear infinite;
     animation: spin 2s linear infinite;
 }
@@ -435,11 +420,11 @@ h2.card-field__heading {
 }
 
 @media screen and (min-width: 768px) and (max-width: 1023px) {
-    header .container {
-        margin: 0;
-        width: 100%;
-        padding: 0 35px;
-    }
+    /*header .container {*/
+        /*margin: 0;*/
+        /*width: 100%;*/
+        /*padding: 0 35px;*/
+    /*}*/
 
     .search-panel {
         padding: 0 40px;
@@ -5282,8 +5267,18 @@ input[type=button].btn-block, input[type=reset].btn-block, input[type=submit].bt
 
 .nav-tabs:not(.tabs-reset) {
     position: relative;
-    margin-left: -10px;
-    margin-right: -10px
+    margin-left: -5px;
+    margin-right: -10px;
+}
+
+.body_modal .nav-tabs:not(.tabs-reset) {
+    margin-right: 15px;
+}
+
+@media (max-width: 815px) {
+    .body_modal .nav-tabs:not(.tabs-reset) {
+        margin-right: 20px;
+    }
 }
 
 .nav-tabs:not(.tabs-reset):before {
@@ -5291,7 +5286,7 @@ input[type=button].btn-block, input[type=reset].btn-block, input[type=submit].bt
     display: block;
     position: absolute;
     bottom: -1px;
-    left: 10px;
+    left: 0;
     right: 10px;
     height: 1px;
     background: #f4f4f6
@@ -6620,7 +6615,7 @@ modal.modal-like .modal-header {
 
 @media (min-width: 768px) {
     .container {
-        width: 640px
+        width: 740px
     }
 
     .col-sm-1, .col-sm-10, .col-sm-11, .col-sm-12, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9 {
@@ -8431,16 +8426,6 @@ modal.modal-like .modal-header {
 
 .shareWrapper .post__image-container {
     background-color: #ffffff;
-}
-
-.delete-loader_post {
-    z-index: 1000;
-    position: absolute;
-    width: 308px;
-    top: -4px;
-    left: -4px;
-    border-radius: 4px;
-    background: rgba(0, 0, 0, .75);
 }
 
 .loding-spinner_create-post {

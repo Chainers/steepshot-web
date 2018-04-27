@@ -31,8 +31,8 @@ class Login extends Component {
 		};
 	}
 
-	componentWillMount() {
-		documentTitle();
+	componentDidMount() {
+    documentTitle();
 	}
 
 	handleLogin(e) {
@@ -72,11 +72,11 @@ class Login extends Component {
 					Sign in Steepshot
 				</div>
 				<form className="form_login">
-					<FormInput point={NAME_POINT} label="Name" ref={ref => this.name = ref}/>
+					<FormInput point={NAME_POINT} label="Name"/>
 					<FormInput point={PASSWORD_POINT} label="Posting Key" type="password"/>
 					<div className="btn-group_login">
-						<button className="create-acc_login" onClick={Login.openRegisterSite}>Create new Steem account</button>
-						<button className="sign_login" onClick={this.handleLogin.bind(this)}>Log In with Steem</button>
+						<button className="create-acc_login" onClick={Login.openRegisterSite} type="button">Create new Steem account</button>
+						<button className="sign_login" onClick={this.handleLogin.bind(this)} type="submit">Log In with Steem</button>
 					</div>
 				</form>
 				<div className="how-sign_login">

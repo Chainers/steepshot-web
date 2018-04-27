@@ -47,7 +47,7 @@
     font-size: 14px;
     line-height: 1;
     border-radius: 21px;
-    color: #000;
+    color: #000000;
     user-select: none;
     text-overflow: ellipsis;
     overflow: hidden;
@@ -127,6 +127,6 @@
         padding-left: 15px;
         padding-right: 15px;
         min-width: 120px;
-        margin: 0 10px 10px;
+        margin: 0 10px 15px;
     }
 }

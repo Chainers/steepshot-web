@@ -42,7 +42,7 @@ class LikesFlagsList extends React.Component {
 
 	updateBodyHeight(width, height) {
 		const HEADER_HEIGHT = 48;
-		const PADDING_BOTTOM = 10;
+		const PADDING_BOTTOM = 40;
 
 		let fullBodyHeight = height ? height : this.props.fullBodyHeight;
 		fullBodyHeight = Math.max(fullBodyHeight, 120);
@@ -59,10 +59,12 @@ class LikesFlagsList extends React.Component {
 				<CloseButton className='close-button_lik-lis' onClick={this.props.closeModal}/>
 				<TabsBar point="likesFlags"
 								 showLoader={false}
-								 alwaysShowNavigation={true}>
+								 alwaysShowNavigation={true}
+					>
 					<Tab name="Likes">
-						<Scrollbars style={{width: '100%', height: this.props.preferredBodyHeight}}>
+						<Scrollbars style={{width: '100%', height: this.props.preferredBodyHeight, marginTop: 20}}>
 							<UsersList
+								isLikesFlags={true}
 								point={this.props.point}
 								getUsers={getVoters}
 								useScrollView={true}

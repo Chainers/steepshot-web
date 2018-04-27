@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {addVoteElement, toggleVote} from '../../../../actions/vote';
+import {toggleVote} from '../../../../actions/vote';
 import Constants from '../../../../common/constants';
 import {setPowerLikeInd, setPowerLikeTimeout, setHidePowerLikeTimeout} from '../../../../actions/post';
 import {pushMessage} from '../../../../actions/pushMessage';
@@ -16,7 +16,6 @@ class Vote extends React.Component {
   }
 
 	componentDidMount() {
-		// this.props.addVoteElement(this.props.postIndex, this.vote);
     this.vote.addEventListener('mouseenter', this.clearDelayTimeout);
     this.vote.addEventListener('mouseenter', () => this.longTapPLInd(1400));
 	}
@@ -51,11 +50,18 @@ class Vote extends React.Component {
     this.props.setPowerLikeTimeout(this.props.postIndex, plTimeout);
   }
 
-  breakLongTapPLInd() {
-  	if (!this.powerIndicator) {
+  breakLongTapPLInd(isDesktop) {
+    if (isDesktop) {
+      if (!this.powerIndicator) {
+        clearTimeout(this.props.plTimeout);
+      }
+      this.hideWithDelay();
+      return;
+    }
+    if (!this.powerIndicator) {
       clearTimeout(this.props.plTimeout);
-		}
-    this.hideWithDelay();
+      this.hideWithDelay();
+    }
   }
 
   hideWithDelay() {
@@ -110,14 +116,14 @@ class Vote extends React.Component {
     let poweroflikeClass = this.props.isPopup ? 'poweroflike-popup-ind_vote-ind' : isComment ?
       'poweroflike-comment-ind_vote-ind' : 'poweroflike-ind_vote-ind';
 		return (
-			<div className={isComment ? 'btn-like-wrapper-comment_vote' : 'btn-like-wrapper_vote' + ' prevent--selection'}
+			<div className={isComment ? 'btn-like-wrapper-comment_vote' : 'btn-like-wrapper_vote prevent--selection'}
 					 ref={ref => this.vote = ref}
 					 onClick={this.toggleVote.bind(this)}
-					 onMouseLeave={this.breakLongTapPLInd.bind(this)}
+					 onMouseLeave={this.breakLongTapPLInd.bind(this, true)}
 					 onTouchStart={this.longTapPLInd.bind(this, 800)}
-					 onTouchEnd={this.breakLongTapPLInd.bind(this)}
-					 onTouchMove={this.breakLongTapPLInd.bind(this)}
-					 onContextMenu={this.breakLongTapPLInd.bind(this)}
+					 onTouchEnd={this.breakLongTapPLInd.bind(this, false)}
+					 onTouchMove={this.breakLongTapPLInd.bind(this, false)}
+					 onContextMenu={this.breakLongTapPLInd.bind(this, false)}
 					 style={this.props.style}>
 				<button type="button" className={buttonClasses}/>
 				<ShowIf show={this.props.isModalOpen ? (pLIP === 'modal' || isComment) && this.props.isPLOpen :
@@ -161,9 +167,6 @@ const mapDispatchToProps = (dispatch) => {
     setPowerLikeTimeout: (postIndex, plTimeout) => {
       dispatch(setPowerLikeTimeout(postIndex, plTimeout));
     },
-    addVoteElement: (postIndex, voteElement) => {
-			dispatch(addVoteElement(postIndex, voteElement));
-		},
 		pushMessage: (message) => {
 			dispatch(pushMessage(message))
 		},
