@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {
-	nextPostModal, postOffset, previousPostModal, setFSNavigation, setFullScreen,
+	nextPostModal, setPostOffset, previousPostModal, setFSNavigation, setFullScreen,
 	setPostModalOptions
 } from '../../actions/postModal';
 import Constants from '../../common/constants';
@@ -62,13 +62,25 @@ class PostModal extends React.Component {
 		}
 	}
 
-	previousPost() {
+  checkFSFirstLast(isClick) {
+    if (isClick || (!isClick && !this.props.timeoutID)) {
+      setTimeout(() => {
+        if (this.props.firstPost) {
+          this.fsNavMouseLeave();
+        }
+      }, 100);
+    }
+  }
+
+	previousPost(isClick) {
+		this.checkFSFirstLast(isClick);
 		if (!this.props.firstPost) {
 			this.props.previous(this.props.currentIndex);
 		}
 	}
 
-	nextPost() {
+	nextPost(isClick) {
+    this.checkFSFirstLast(isClick);
 		if (!this.props.lastPost) {
 			this.props.next(this.props.currentIndex);
 		}
@@ -214,14 +226,14 @@ class PostModal extends React.Component {
 					<div>
 						<ShowIf show={!this.props.firstPost}>
 							<div className="arrow-left-full-screen_post-mod"
-									 onClick={this.previousPost.bind(this)}
+									 onClick={this.previousPost.bind(this, true)}
 									 onMouseEnter={this.fsNavMouseEnter.bind(this)}
 									 onMouseLeave={this.fsNavMouseLeave.bind(this)}
 							/>
 						</ShowIf>
 						<ShowIf show={!this.props.lastPost && !this.props.newPostsLoading}>
 							<div className="arrow-right-full-screen_post-mod"
-									 onClick={this.nextPost.bind(this)}
+									 onClick={this.nextPost.bind(this, true)}
 									 onMouseEnter={this.fsNavMouseEnter.bind(this)}
 									 onMouseLeave={this.fsNavMouseLeave.bind(this)}
 							/>
@@ -422,6 +434,8 @@ class PostModal extends React.Component {
 												powerLikeIndPlace="modal"
 												isPopup={true}
 												style={{paddingRight: 20}}
+                        width={this.props.documentWidth < 350 ? {
+                            maxWidth: this.props.documentWidth, left: -(this.props.documentWidth - 58)}
 									/>
 								</div>
 							</div>
@@ -519,6 +533,7 @@ class PostModal extends React.Component {
 }
 
 const mapStateToProps = (state) => {
+	let documentWidth = document.documentElement.clientWidth;
 	let currentIndex = state.postModal.currentIndex;
 	let post = state.posts[currentIndex];
 	if (post) {
@@ -532,6 +547,7 @@ const mapStateToProps = (state) => {
 			post,
 			postsList,
 			urlVideo,
+			documentWidth,
 			...state.postModal,
 			isGallery: isGallery,
 			newPostsLoading: postsList.loading,
@@ -574,8 +590,8 @@ const mapDispatchToProps = (dispatch) => {
 		setFSNavigation: (isVisible, timeoutID) => {
 			dispatch(setFSNavigation(isVisible, timeoutID));
 		},
-		postOffset: (offset) => {
-			dispatch(postOffset(offset));
+		setPostOffset: (offset) => {
+			dispatch(setPostOffset(offset));
 		},
 		setPowerLikeInd: (index, isOpen, place) => {
 			dispatch(setPowerLikeInd(index, isOpen, place));

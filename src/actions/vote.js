@@ -26,14 +26,6 @@ function toggleVoteFailure(postIndex) {
 	};
 }
 
-export function addVoteElement(postIndex, voteElement) {
-	return {
-		type: 'ADD_VOTE_ELEMENT',
-		postIndex,
-		voteElement
-	}
-}
-
 export function toggleVote(postIndex) {
 	return function (dispatch) {
 		let state = getStore().getState();

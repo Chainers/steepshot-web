@@ -7,7 +7,7 @@ import ShowIf from "../../Common/ShowIf";
 import LoadingSpinner from "../../LoadingSpinner";
 import './user.css';
 
-const User = ({user, authUser, toggleFollow, isParity}) => {
+const User = ({user, authUser, toggleFollow}) => {
 
 	let amountMoney = null;
 	if (user.amount_sbd) {
@@ -15,9 +15,8 @@ const User = ({user, authUser, toggleFollow, isParity}) => {
 										{(user.amount_sbd < 0 ? '-' : '+') + '$' + Math.abs(user.amount_sbd.toFixed(3))}
 									</span>;
 	}
-
 	return (
-		<div className="container_user" style={isParity ? {marginRight: 10} : {marginLeft: 10}}>
+		<div className="container_user" >
 			<div className="ava-name-wrap_user">
 				<Link to={`/@${user.author}`}>
 					<Avatar src={user.avatar} style={{width: '60px', height: '60px', position: 'static', marginTop: '-1px'}}/>

@@ -82,7 +82,6 @@ class UsersList extends React.Component {
 				<User
 					key={index}
 					index={this.props.users[index]}
-					isParity={index % 2 === 0}
 				/>,
 			);
 		});

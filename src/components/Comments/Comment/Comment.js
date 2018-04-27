@@ -7,9 +7,7 @@ import {replyAuthor} from '../../../actions/comments';
 import Likes from '../../PostsList/Post/Likes/Likes';
 import './comment.css';
 import Vote from '../../PostsList/Post/Vote/Vote';
-import ShowIf from '../../Common/ShowIf';
 import Flag from '../../PostsList/Post/Flag/Flag';
-import VoteIndicator from '../../PostsList/Post/Vote/VoteIndicator/VoteIndicator';
 
 class Comment extends React.Component {
 
@@ -57,9 +55,6 @@ class Comment extends React.Component {
 						</Link>
 				</div>
 				<div className="comment-text">
-					{/*<ShowIf show={this.props.item.isPLOpen && this.props.item.powerLikeIndPlace === 'comment'}>*/}
-						{/*<VoteIndicator index={this.props.point} isComment={true}/>*/}
-					{/*</ShowIf>*/}
 					<div ref={ref => this.commentText = ref} className="comment-text_comment"/>
 					<Vote postIndex={this.props.point}
 								powerLikeIndPlace="comment"/>
