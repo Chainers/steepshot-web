@@ -17,13 +17,16 @@ export const utils = {
 			}
 		},
 
-		equalsObjects: (a, b) => {
+		equalsObjects: (a, b, depth = 5) => {
+			if (depth < 0) {
+				return true;
+			}
 			const typeA = typeof a;
 			const typeB = typeof b;
 			if ( typeA !== typeB ) {
 				return false;
 			}
-			if (typeA !== 'object') {
+			if (typeA !== 'object' || !a || !b) {
 				return a === b;
 			}
 
@@ -37,7 +40,7 @@ export const utils = {
 			for (let i = 0; i < aProps.length; i++) {
 				let propName = aProps[i];
 
-				if (!utils.equalsObjects(a[propName], b[propName])) {
+				if (!utils.equalsObjects(a[propName], b[propName], depth - 1)) {
 					return false;
 				}
 			}
