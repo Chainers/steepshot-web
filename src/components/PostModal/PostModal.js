@@ -55,7 +55,7 @@ class PostModal extends React.Component {
 	componentWillReceiveProps(nextProps) {
 		let post = document.getElementById(this.props.currentIndex);
 		if (post && (post.offsetTop !== 0) && ((post.offsetTop - HEADER_HEIGHT) !== nextProps.offsetTop)) {
-			this.props.postOffset(post.offsetTop - HEADER_HEIGHT);
+			this.props.setPostOffset(post.offsetTop - HEADER_HEIGHT);
 		}
 		if (!utils.equalsObjects(nextProps.window, this.props.window)) {
 			this.setComponentSize();
@@ -435,7 +435,7 @@ class PostModal extends React.Component {
 												isPopup={true}
 												style={{paddingRight: 20}}
                         width={this.props.documentWidth < 350 ? {
-                            maxWidth: this.props.documentWidth, left: -(this.props.documentWidth - 58)}
+                            maxWidth: this.props.documentWidth, left: -(this.props.documentWidth - 58)} : null}
 									/>
 								</div>
 							</div>
