@@ -5,8 +5,8 @@ import PostModal from '../PostModal/PostModal';
 import {logSharePost} from '../../actions/logging';
 import './singlePost.css';
 import {withWrapper} from "create-react-server/wrapper";
-import utils from '../../utils/utils';
 import {addMetaTags, getTags} from "../../actions/metaTags";
+import {utils} from "../../utils/utils";
 
 class SinglePost extends React.Component {
 
@@ -20,7 +20,7 @@ class SinglePost extends React.Component {
 		return {};
 	}
 
-componentDidMount() {
+	componentDidMount() {
 		const urlObject = this.props.location.pathname.split('/');
 		let permlink = urlObject[urlObject.length - 1];
 		let username = this.props.location.pathname.match(/\/@[\w-.]+\//)[0];

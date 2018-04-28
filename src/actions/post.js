@@ -117,14 +117,8 @@ export function deletePost(postIndex) {
 		let postingKey = state.auth.postingKey;
 		const urlObject = postIndex.split('/');
 		let permlink = urlObject[urlObject.length - 1];
-		let queue = sessionStorage.getItem('voteQueue');
-		if (queue === 'true') {
-			return false;
-		}
-		sessionStorage.setItem('voteQueue', 'true');
 		dispatch(sendDeletePost(postIndex));
 		const callback = (err, success) => {
-			sessionStorage.setItem('voteQueue', 'false');
 			if (success) {
 				dispatch(successDeletePost(postIndex));
 				dispatch(pushMessage(Constants.DELETE.DELETE_SUCCESS));

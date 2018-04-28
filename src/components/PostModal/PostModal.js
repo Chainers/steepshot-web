@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {
-	nextPostModal, postOffset, previousPostModal, setFSNavigation, setFullScreen,
+	nextPostModal, setPostOffset, previousPostModal, setFSNavigation, setFullScreen,
 	setPostModalOptions
 } from '../../actions/postModal';
 import Constants from '../../common/constants';
@@ -18,15 +18,14 @@ import ReactDOM from 'react-dom';
 import PostContextMenu from '../PostContextMenu/PostContextMenu';
 import Likes from '../PostsList/Post/Likes/Likes';
 import FullScreenButtons from './FullScreenButtons/FullScreenButtons';
-import utils from '../../utils/utils';
 import {toggleVote} from '../../actions/vote';
 import {setPowerLikeInd, setPowerLikeTimeout} from '../../actions/post';
-import VoteIndicator from '../PostsList/Post/Vote/VoteIndicator/VoteIndicator';
 import {openPushNot} from "../../actions/pushNotification";
 import ImagesGallery from "../ImagesGallery/ImagesGallery";
 import ReactPlayer from 'react-player'
 import Comments from "../Comments/Comments";
 import './postModal.css';
+import {utils} from "../../utils/utils";
 
 const HEADER_HEIGHT = 60;
 
@@ -45,44 +44,46 @@ class PostModal extends React.Component {
 	}
 
 	componentDidMount() {
-		window.addEventListener('resize', this.setComponentSize);
 		window.addEventListener('keydown', this.initKeyPress);
 		this.setComponentSize();
 	}
 
 	componentWillUnmount() {
-		window.removeEventListener('resize', this.setComponentSize);
 		window.removeEventListener('keydown', this.initKeyPress);
 	}
 
 	componentWillReceiveProps(nextProps) {
 		let post = document.getElementById(this.props.currentIndex);
-		if (post) {
-			if (post.offsetTop === 0) {
-				return;
-			}
-			this.props.postOffset(post.offsetTop - HEADER_HEIGHT);
+		if (post && (post.offsetTop !== 0) && ((post.offsetTop - HEADER_HEIGHT) !== nextProps.offsetTop)) {
+			this.props.setPostOffset(post.offsetTop - HEADER_HEIGHT);
 		}
-		if (this.props.fullScreenMode && nextProps.fullScreenMode) {
-			this.firstLastPostAfterClickFS(nextProps);
+		if (!utils.equalsObjects(nextProps.window, this.props.window)) {
+			this.setComponentSize();
 		}
 	}
 
-	firstLastPostAfterClickFS(nextProps) {
-		if ((!this.props.firstPost || !this.props.lastPost) && (nextProps.firstPost || nextProps.lastPost)
-			&& this.props.fullScreenNavigation && this.props.timeoutID === null) {
-			this.fsNavMouseLeave();
-			this.showFSNavigation();
-		}
-	}
+  checkFSFirstLast(isClick) {
+    if (isClick || (!isClick && !this.props.timeoutID)) {
+      setTimeout(() => {
+        if (this.props.firstPost) {
+          this.fsNavMouseLeave();
+        }
+      }, 100);
+    }
+  }
 
-	previousPost() {
+	previousPost(isClick) {
+		this.checkFSFirstLast(isClick);
 		if (!this.props.firstPost) {
 			this.props.previous(this.props.currentIndex);
 		}
 	}
 
-	nextPost() {
+	nextPost(isClick) {
+    this.checkFSFirstLast(isClick);
+    if (this.props.fullScreenMode && this.props.newPostsLoading) {
+    	return;
+		}
 		if (!this.props.lastPost) {
 			this.props.next(this.props.currentIndex);
 		}
@@ -151,6 +152,13 @@ class PostModal extends React.Component {
 		)
 	}
 
+	copyLinkToClipboard(e) {
+    e.target.blur();
+    this.props.copyToClipboard(
+      document.location.origin + '/post' + this.props.post.url.replace(/\/[\w-.]+/, '')
+    );
+	}
+
 	renderImage() {
 		return (
 			<div className="image-container_pos-mod" style={this.props.style.imgCont}>
@@ -159,9 +167,7 @@ class PostModal extends React.Component {
 				<span className="open-fs-dblclick_pos-mod"
 							onDoubleClick={this.setFullScreen.bind(this, !this.props.fullScreenMode)}/>
 				<button className="btn btn-default btn-xs"
-								onClick={() => this.props.copyToClipboard(
-									document.location.origin + '/post' + this.props.post.url.replace(/\/[\w-.]+/, ''),
-								)}>Copy link
+								onClick={(e) => this.copyLinkToClipboard(e)}>Copy link
 				</button>
 				<ShowIf show={!this.props.style.isFullScreen && !this.props.fullScreenMode && !this.props.singlePost}>
 					<div className="full-screen-button_pos-mod"
@@ -171,11 +177,11 @@ class PostModal extends React.Component {
 					</div>
 				</ShowIf>
 				<ShowIf show={!this.props.post.isVideo}>
-				<ImagesGallery index={this.props.currentIndex}
-											 styles={this.props.style.image}
-											 post={this.props.post}
-											 isFullScreen={false}
-											 setComponentSize={this.setComponentSize}/>
+					<ImagesGallery index={this.props.currentIndex}
+												 styles={this.props.style.image}
+												 post={this.props.post}
+												 isFullScreen={false}
+												 setComponentSize={this.setComponentSize}/>
 				</ShowIf>
 				<ShowIf show={this.props.post.isVideo}>
 					<div className="image-container_pos-mod image-container_vid-con"
@@ -202,10 +208,7 @@ class PostModal extends React.Component {
 					<span className="open-fs-dblclick_pos-mod"
 								onDoubleClick={this.setFullScreen.bind(this, !this.props.fullScreenMode)}/>
 					<button className="btn btn-default btn-xs full-screen-share_pos-mod"
-									onClick={() => this.props.copyToClipboard(
-										document.location.origin + '/post' + this.props.post.url.replace(/\/[\w-.]+/, '')
-									)}
-					>Copy link
+									onClick={(e) => this.copyLinkToClipboard(e)}>Copy link
 					</button>
 					<ShowIf show={!this.props.post.isVideo}>
 						<ImagesGallery index={this.props.currentIndex}
@@ -228,29 +231,27 @@ class PostModal extends React.Component {
 					<div>
 						<ShowIf show={!this.props.firstPost}>
 							<div className="arrow-left-full-screen_post-mod"
-									 onClick={this.previousPost.bind(this)}
+									 onClick={this.previousPost.bind(this, true)}
 									 onMouseEnter={this.fsNavMouseEnter.bind(this)}
 									 onMouseLeave={this.fsNavMouseLeave.bind(this)}
 							/>
 						</ShowIf>
 						<ShowIf show={!this.props.lastPost && !this.props.newPostsLoading}>
 							<div className="arrow-right-full-screen_post-mod"
-									 onClick={this.nextPost.bind(this)}
+									 onClick={this.nextPost.bind(this, true)}
 									 onMouseEnter={this.fsNavMouseEnter.bind(this)}
 									 onMouseLeave={this.fsNavMouseLeave.bind(this)}
 							/>
 						</ShowIf>
 						<ShowIf show={this.props.newPostsLoading}>
 							<div className="loader-right-full-screen_post-mod"
-									 onClick={this.nextPost.bind(this)}
 									 onMouseEnter={this.fsNavMouseEnter.bind(this)}
 									 onMouseLeave={this.fsNavMouseLeave.bind(this)}
 							>
 								<LoadingSpinner style={{
-									position: 'absolute', top: '50%', left: '50%',
+									position: 'absolute', top: '50%', left: '24%',
 									transform: 'translate(-50%, -50%)', height: 38
-								}}
-																loaderClass="new-posts-spinner_post-mod"
+								}} loaderClass="new-posts-spinner_post-mod"
 								/>
 							</div>
 						</ShowIf>
@@ -297,7 +298,7 @@ class PostModal extends React.Component {
 	}
 
 	fsCheckButtons(e) {
-		if (e.keyCode !== 37 && e.keyCode !== 39) this.showFSNavigation();
+		if (e.keyCode !== 37 && e.keyCode !== 39 && e.keyCode !== 13) this.showFSNavigation();
 	}
 
 	closeFromFullScreen(isOpen) {
@@ -384,8 +385,7 @@ class PostModal extends React.Component {
 								<LoadingSpinner style={{
 									position: 'absolute', top: '50%', left: '50%',
 									transform: 'translate(-50%, -53%)', width: 35, height: 35
-								}}
-																loaderClass="new-posts-spinner_post-mod"
+								}} loaderClass="new-posts-spinner_post-mod"
 								/>
 							</div>
 						</ShowIf>
@@ -422,9 +422,6 @@ class PostModal extends React.Component {
 							 ref={ref => this.descPosMod = ref}
 					>
 						<div className="card-controls_post card-controls-border_post">
-							{/*<ShowIf show={this.props.post.isPLOpen && this.props.post.powerLikeIndPlace === 'modal'}>*/}
-								{/*<VoteIndicator index={this.props.currentIndex} isPopup={true}/>*/}
-							{/*</ShowIf>*/}
 							<Likes postIndex={this.props.currentIndex} style={{paddingLeft: 20}}/>
 							<div className="card-buttons_post">
 								<ShowIf show={parseFloat(this.props.post.total_payout_reward)}>
@@ -439,6 +436,8 @@ class PostModal extends React.Component {
 												powerLikeIndPlace="modal"
 												isPopup={true}
 												style={{paddingRight: 20}}
+                        width={this.props.documentWidth < 350 ? {
+                            maxWidth: this.props.documentWidth, left: -(this.props.documentWidth - 58)} : null}
 									/>
 								</div>
 							</div>
@@ -461,11 +460,11 @@ class PostModal extends React.Component {
 
 		let sideMargin = 0.75;
 
-		const docWidth = document.documentElement.clientWidth;
+		const docWidth = this.props.window.width;
 		if (docWidth < 1080) {
 			sideMargin = 0.6;
 		}
-		const docHeight = document.documentElement.clientHeight;
+		const docHeight = this.props.window.height;
 		const MAX_IMG_WIDTH = (docWidth - DESC_WIDTH) * sideMargin;
 		const PREFERRED_IMG_WIDTH = 640;
 		const isMobile = docWidth < MAX_WIDTH_FULL_SCREEN;
@@ -492,10 +491,9 @@ class PostModal extends React.Component {
 
 		const description = {};
 		description.width = headerCont.width;
-
 		if (docWidth > MAX_WIDTH_FULL_SCREEN) {
-			image.width = image.width ? image.width : utils.getLess((docWidth - DESC_WIDTH) * sideMargin, PREFERRED_IMG_WIDTH);
-			container.height = utils.getMore(docHeight * 0.9, MIN_HEIGHT);
+			image.width = image.width ? image.width : Math.min((docWidth - DESC_WIDTH) * sideMargin, PREFERRED_IMG_WIDTH);
+			container.height = Math.max(docHeight * 0.9, MIN_HEIGHT);
 
 			if (image.height > container.height) {
 				image.width = image.width * container.height / image.height;
@@ -511,13 +509,12 @@ class PostModal extends React.Component {
 			imgCont.width = image.width;
 			headerCont.width = DESC_WIDTH;
 
-			container.height = utils.getMore(image.height, MIN_HEIGHT);
+			container.height = Math.max(image.height, MIN_HEIGHT);
 		} else {
-			image.width = utils.getLess(image.width, document.documentElement.clientWidth);
+			image.width = Math.min(image.width, docWidth);
 			image.width = image.width ? image.width : docWidth;
 			image.height = image.height * image.width / imageSizes.width;
 		}
-
 		let style = {
 			container,
 			image,
@@ -538,6 +535,7 @@ class PostModal extends React.Component {
 }
 
 const mapStateToProps = (state) => {
+	let documentWidth = document.documentElement.clientWidth;
 	let currentIndex = state.postModal.currentIndex;
 	let post = state.posts[currentIndex];
 	if (post) {
@@ -551,6 +549,7 @@ const mapStateToProps = (state) => {
 			post,
 			postsList,
 			urlVideo,
+			documentWidth,
 			...state.postModal,
 			isGallery: isGallery,
 			newPostsLoading: postsList.loading,
@@ -560,7 +559,9 @@ const mapStateToProps = (state) => {
 			firstPost: postsList.posts[0] === currentIndex,
 			lastPost: postsList.offset === currentIndex,
 			focusedTextInput: state.textInput[Constants.TEXT_INPUT_POINT.COMMENT] ?
-				state.textInput[Constants.TEXT_INPUT_POINT.COMMENT].focused : false
+				state.textInput[Constants.TEXT_INPUT_POINT.COMMENT].focused : false,
+			window: state.window,
+			offsetTop: state.postModal.postOffset
 		};
 	}
 };
@@ -591,8 +592,8 @@ const mapDispatchToProps = (dispatch) => {
 		setFSNavigation: (isVisible, timeoutID) => {
 			dispatch(setFSNavigation(isVisible, timeoutID));
 		},
-		postOffset: (offset) => {
-			dispatch(postOffset(offset));
+		setPostOffset: (offset) => {
+			dispatch(setPostOffset(offset));
 		},
 		setPowerLikeInd: (index, isOpen, place) => {
 			dispatch(setPowerLikeInd(index, isOpen, place));

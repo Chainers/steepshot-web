@@ -10,7 +10,7 @@ class Flag extends React.Component {
 
 	toggleFlag() {
 		if (!this.props.isUserAuth) {
-			this.props.pushMessage.open(Constants.VOTE_ACTION_WHEN_NOT_AUTH);
+			this.props.pushMessage(Constants.VOTE_ACTION_WHEN_NOT_AUTH);
 			return;
 		}
 		if (!this.props.flag) {

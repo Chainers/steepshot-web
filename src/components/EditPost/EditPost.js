@@ -7,7 +7,7 @@ import {
 } from "../../actions/editPost";
 import EditTags from "../Common/EditTags/EditTags";
 import ShowIf from "../Common/ShowIf";
-import utils from "../../utils/utils";
+import {utils} from "../../utils/utils";
 import Constants from "../../common/constants";
 import LoadingSpinner from "../LoadingSpinner";
 import {documentTitle} from "../../utils/documentTitle";
@@ -78,7 +78,7 @@ class EditPost extends React.Component {
 
 	setImageContainerSize(rotate) {
 		const MIN_HEIGHT = 400;
-		const MAX_WIDTH = utils.getLess(750, document.documentElement.clientWidth);
+		const MAX_WIDTH = Math.min(750, document.documentElement.clientWidth);
 
 		let imgWidth = this.image.naturalWidth;
 		let imgHeight = this.image.naturalHeight;
@@ -88,7 +88,7 @@ class EditPost extends React.Component {
 			imgHeight = tmp;
 		}
 
-		imgHeight = utils.getMore(imgHeight, MIN_HEIGHT);
+		imgHeight = Math.max(imgHeight, MIN_HEIGHT);
 		let prefHeight = document.documentElement.clientHeight;
 		if (imgHeight < prefHeight) {
 			prefHeight = imgHeight;

@@ -10,8 +10,8 @@ import {clearBodyHeight, setLikesFlagsListBodyHeight} from "../../actions/likesF
 import ReactResizeDetector from 'react-resize-detector';
 import TabsBar from "../Common/TabsBar/TabsBar";
 import Tab from "../Common/TabsBar/Tab/Tab";
-import utils from '../../utils/utils';
 import './likesFlagsList.css';
+import {utils} from "../../utils/utils";
 
 class LikesFlagsList extends React.Component {
 
@@ -20,13 +20,10 @@ class LikesFlagsList extends React.Component {
 		this.updateBodyHeight = this.updateBodyHeight.bind(this);
 	}
 
-	componentDidMount() {
-		window.addEventListener('resize', this.updateBodyHeight);
-	}
-
-	componentWillUnmount() {
-		window.removeEventListener('resize', this.updateBodyHeight);
-		this.props.clearBodyHeight();
+	componentWillReceiveProps(nextProps) {
+		if (!utils.equalsObjects(nextProps.window, this.props.window)) {
+			this.updateBodyHeight()
+		}
 	}
 
 	componentDidUpdate() {
@@ -45,12 +42,12 @@ class LikesFlagsList extends React.Component {
 
 	updateBodyHeight(width, height) {
 		const HEADER_HEIGHT = 48;
-		const PADDING_BOTTOM = 10;
+		const PADDING_BOTTOM = 40;
 
 		let fullBodyHeight = height ? height : this.props.fullBodyHeight;
-		fullBodyHeight = utils.getMore(fullBodyHeight, 120);
+		fullBodyHeight = Math.max(fullBodyHeight, 120);
 		let preferredBodyHeight = window.innerHeight * 0.95 - HEADER_HEIGHT - PADDING_BOTTOM;
-		preferredBodyHeight = utils.getLess(preferredBodyHeight, fullBodyHeight);
+		preferredBodyHeight = Math.min(preferredBodyHeight, fullBodyHeight);
 		if (this.props.preferredBodyHeight !== preferredBodyHeight) {
 			this.props.setBodyHeight(preferredBodyHeight, fullBodyHeight);
 		}
@@ -62,10 +59,12 @@ class LikesFlagsList extends React.Component {
 				<CloseButton className='close-button_lik-lis' onClick={this.props.closeModal}/>
 				<TabsBar point="likesFlags"
 								 showLoader={false}
-								 alwaysShowNavigation={true}>
+								 alwaysShowNavigation={true}
+					>
 					<Tab name="Likes">
-						<Scrollbars style={{width: '100%', height: this.props.preferredBodyHeight}}>
+						<Scrollbars style={{width: '100%', height: this.props.preferredBodyHeight, marginTop: 20}}>
 							<UsersList
+								isLikesFlags={true}
 								point={this.props.point}
 								getUsers={getVoters}
 								useScrollView={true}
@@ -103,7 +102,8 @@ const mapStateToProps = (state, props) => {
 		flags,
 		point,
 		...state.likesFlagsList,
-		...state.tabsBar.likesFlags
+		...state.tabsBar.likesFlags,
+		window: state.window
 	};
 };
 

@@ -5,7 +5,7 @@
     max-height: 96vh;
     min-height: 10px;
     width: 660px;
-    padding: 10px 20px;
+    padding: 10px 0 10px 20px;
     overflow: hidden;
 }
 
@@ -29,6 +29,10 @@
 
 .has-one_lik-lis {
     max-width: 360px;
+}
+
+.container_lik-lis .tab_wrapper div div:last-child {
+    right: 6px;
 }
 
 @media (max-width: 670px) {

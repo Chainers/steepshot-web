@@ -5,12 +5,16 @@ import TextInput from "../../Common/TextInput/TextInput";
 import Constants from "../../../common/constants";
 import {sendComment} from "../../../actions/comments";
 import LoadingSpinner from "../../LoadingSpinner";
-import utils from '../../../utils/utils';
+import {utils} from '../../../utils/utils';
 import './commentInput.css';
 
 class CommentInput extends React.Component {
 
 	sendComment() {
+		// console.log(this.props.commentValue.comment.text.replace(/\w+/g, ''));
+		// if (this.props.commentValue.comment.text.replace(/\w+/g, '') === '') {
+		// 	return;
+		// }
 		this.props.sendComment(this.props.point, Constants.TEXT_INPUT_POINT.COMMENT);
 	}
 
@@ -44,6 +48,7 @@ const mapStateToProps = (state, props) => {
 	return {
 		isUserAuth: state.auth.user && state.auth.postingKey,
 		...state.comments[props.point],
+		commentValue: state.textInput,
 		canSent: state.textInput[Constants.TEXT_INPUT_POINT.COMMENT] &&
 		utils.isNotEmptyString(state.textInput[Constants.TEXT_INPUT_POINT.COMMENT].text)
 	};

@@ -101,6 +101,7 @@
     top: 10px;
     right: 10px;
     background: url('/images/post/gallery-indicator.svg') center no-repeat;
+    cursor: pointer;
 }
 
 .gif-indicator_post {
@@ -110,6 +111,7 @@
     top: 10px;
     right: 10px;
     background: url('/images/post/gif.svg') center no-repeat;
+    cursor: pointer;
 }
 
 .video-time-indicator_post {
@@ -131,6 +133,7 @@
     top: 10px;
     right: 10px;
     background: url('/images/post/video.svg') center no-repeat;
+    cursor: pointer;
 }
 
 .card-pic.post_vid-con {
@@ -141,4 +144,30 @@
     z-index: 2;
     overflow: hidden;
     border-radius: 4px 4px 0 0;
+}
+
+.delete-loader_post {
+    z-index: 1000;
+    position: absolute;
+    width: calc(100% + 8px);
+    top: -4px;
+    left: -4px;
+    border-radius: 4px;
+    background: rgba(248, 248, 248, .9);
+}
+
+.delete-loader_post .loader-blocker {
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.deleting-loader {
+    border: 5px solid #f3f3f3;
+    border-radius: 50%;
+    border-top: 5px solid #89210b;
+    width: 55px;
+    height: 55px;
+    -webkit-animation: spin 2s linear infinite;
+    animation: spin 2s linear infinite;
 }

@@ -1,5 +1,4 @@
 import {combineReducers} from 'redux';
-import messages from './messages';
 import auth from './auth';
 import posts from './posts';
 import clipboard from './clipboard';
@@ -24,10 +23,11 @@ import userProfile from "./userProfile";
 import pushMessage from "./pushMessage";
 import formInput from "./formInput";
 import bodyLoader from "./bodyLoader";
+import session from "./session";
+import windowOnStore from "./windowOnStore";
 
 export default combineReducers({
 	clipboard,
-	messages,
 	auth,
 	posts,
 	tabsBar,
@@ -50,5 +50,7 @@ export default combineReducers({
 	userProfile,
 	pushMessage,
 	formInput,
-	bodyLoader
+	bodyLoader,
+	session,
+	window: windowOnStore
 });

@@ -69,6 +69,12 @@ export default function editPost(state = initialState, action) {
 		case 'EDIT_POST_CLEAR_ALL':
 			return initialState;
 
+		case 'EDIT_POST_CLEAR_FIELDS':
+			return {
+				...state,
+				tags: ''
+			};
+
 		case 'EDIT_POST_SET_INIT_DATA':
 			return {
 				...initialState,

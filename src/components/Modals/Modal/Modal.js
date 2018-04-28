@@ -9,20 +9,10 @@ const mobileSize = document.documentElement.clientWidth < 815;
 
 class Modal extends React.Component {
 
-	constructor(props) {
-		super(props);
-		this.resizeWindow = this.resizeWindow.bind(this);
-	}
 
 	componentDidMount() {
-		window.addEventListener('resize', this.resizeWindow);
-		this.resizeWindow();
 		this.container.classList.remove('before-load-back_modal');
 		this.body.classList.remove('before-load_modal');
-	}
-
-	componentWillUnmount() {
-		window.removeEventListener('resize', this.resizeWindow);
 	}
 
 	shouldComponentUpdate(nextProps) {
@@ -33,18 +23,6 @@ class Modal extends React.Component {
 		return true;
 	}
 
-	resizeWindow() {
-		if (!this.body || !this.container) {
-			return;
-		}
-		if (this.props.bodyHeight !== this.body.clientHeight || this.props.containerHeight !== this.container.clientHeight) {
-			this.props.setModalOptions(this.props.index, {
-				bodyHeight: this.body.clientHeight,
-				containerHeight: this.container.clientHeight
-			});
-		}
-	}
-
 	clickOutside(event) {
 		event.stopPropagation();
 		if (this.body && !this.body.contains(event.target) && !this.props.fullScreenMode) {
@@ -52,12 +30,21 @@ class Modal extends React.Component {
 		}
 	}
 
+	update() {
+		this.props.setModalOptions(this.props.index, {
+			update: this.props.update + 1
+		})
+	}
+
   render() {
     let styleBack = {backgroundColor: 'rgba(0, 0, 0, .7)'};
     if (this.props.fullScreenMode) {
         styleBack = {backgroundColor: '#000000'};
     }
-    styleBack.alignItems = this.props.bodyHeight >= this.props.containerHeight ? 'flex-start' : 'center';
+		styleBack.alignItems = 'center';
+		if (this.body && this.container && (this.body.clientHeight >= this.container.clientHeight)) {
+			styleBack.alignItems = 'flex-start';
+		}
     styleBack.zIndex = 1005;
     return (
       <div className="back_mods before-load-back_modal ov-scroll_modal"
@@ -71,7 +58,7 @@ class Modal extends React.Component {
           {this.props.body}
         </div>
         <ShowIf show={!mobileSize}>
-           <ReactResizeDetector handleWidth handleHeight onResize={this.resizeWindow} />
+           <ReactResizeDetector handleWidth handleHeight onResize={this.update.bind(this)} />
         </ShowIf>
       </div>
     );
@@ -82,7 +69,8 @@ const mapStateToProps = (state, props) => {
 	return {
 		...state.modals[props.index],
 		state: state,
-		fullScreenMode: state.postModal.fullScreenMode
+		fullScreenMode: state.postModal.fullScreenMode,
+		window: state.window
 	};
 };
 

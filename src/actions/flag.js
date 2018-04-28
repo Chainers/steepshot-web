@@ -5,6 +5,7 @@ import {debounce} from 'lodash';
 import {updatePost} from './post';
 import {updateVotingPower} from './auth';
 import {pushMessage} from "./pushMessage";
+import {voteLock, voteUnlock} from "./sessionActions";
 
 function toggleFlagRequest(postIndex) {
 	return {
@@ -38,16 +39,14 @@ export function toggleFlag(postIndex) {
 			debounce(dispatch(pushMessage(Constants.VOTE_ACTION_WHEN_NOT_AUTH), Constants.VOTE_ACTION_WHEN_NOT_AUTH_DEBOUNCE));
 			return;
 		}
-		let queue = sessionStorage.getItem('voteQueue');
-		if (queue === 'true') {
+		if (state.session.voteLocked) {
 			return;
 		}
-		sessionStorage.setItem('voteQueue', 'true');
-
+		dispatch(voteLock());
 		dispatch(toggleFlagRequest(postIndex));
 
 		const callback = (err, success) => {
-			sessionStorage.setItem('voteQueue', 'false');
+			dispatch(voteUnlock());
 			if (err) {
 				dispatch(toggleFlagFailure(postIndex));
 				dispatch(pushMessage(err));

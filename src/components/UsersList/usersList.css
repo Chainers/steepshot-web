@@ -15,3 +15,9 @@
         justify-content: center;
     }
 }
+
+@media (max-width: 815px) {
+    .body_use-lis {
+        margin-left: -20px;
+    }
+}

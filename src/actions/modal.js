@@ -1,4 +1,5 @@
 import {getStore} from '../store/configureStore';
+import {setPostOffset} from "./postModal";
 
 export function openModal(index, options) {
 	return {
@@ -48,10 +49,7 @@ function scrollToLastSeen(postModal) {
 				return;
 			}
 			window.scrollTo(0, postModal.postOffset);
-			dispatch({
-				type: 'SET_POST_OFFSET',
-				postOffset: null
-			});
+			dispatch(setPostOffset(null));
 		}
 	}
 }

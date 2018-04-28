@@ -1,0 +1,114 @@
+.wrapper_footer {
+    height: 60px;
+    background-color: #ffffff;
+    border-top: 1px solid #e7e7e7;
+    display: flex;
+    justify-content: center;
+}
+
+.sub-wraper_footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    align-content: space-between;
+    padding: 0 10px;
+}
+
+.copyright_footer {
+    font: 14px OpenSans-Regular;
+    color: #0f181e;
+}
+
+.social-links_footer {
+    display: flex;
+}
+
+.social-links_footer a {
+    margin-left: 10px;
+}
+
+.link-guidelines_footer {
+    display: flex;
+    align-items: center;
+    font: 12px OpenSans-SemiBold;
+    color: #333333;
+    margin-right: 20px;
+}
+
+.social-links_footer a:hover {
+    color: #e74800;
+}
+
+.link-appstore_footer {
+    background: url('/images/footer/apple_ico.svg') center no-repeat;
+    background-size: cover;
+    width: 24px;
+    height: 24px;
+}
+
+.link-googleplay_footer {
+    background: url('/images/footer/googleplay_ico.png') center no-repeat;
+    background-size: cover;
+    width: 24px;
+    height: 24px;
+}
+
+.link-telegram_footer {
+    background: url('/images/footer/telegram_ico.svg') center no-repeat;
+    background-size: cover;
+    width: 24px;
+    height: 24px;
+}
+
+.link-discord_footer {
+    background: url('/images/footer/discord_ico.png') center no-repeat;
+    background-size: cover;
+    width: 24px;
+    height: 24px;
+}
+
+@media (min-width: 561px) {
+    .sub-wraper_footer  {
+        width: 720px;
+    }
+}
+
+@media (min-width: 768px) {
+    .sub-wraper_footer  {
+        width: 740px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .sub-wraper_footer {
+        width: 960px;
+    }
+}
+
+@media (min-width: 1362px) {
+    .sub-wraper_footer {
+        width: 1280px;
+    }
+}
+
+@media (max-width: 730px) {
+    .wrapper_footer {
+        padding: 0 15px;
+    }
+}
+
+@media (max-width: 560px) {
+    .wrapper_footer {
+        justify-content: center;
+    }
+    .copyright_footer {
+        display: none;
+    }
+    .social-links_footer a {
+        margin-left: 15px;
+    }
+    .social-links_footer .link-guidelines_footer {
+        margin-left: 0;
+    }
+}

@@ -4,32 +4,19 @@ import './imagesGallery.css';
 import SingleModalImage from './SingleModalImage';
 import Slider from 'react-slick';
 import {setGalleryImgIndex, setResizeCoverBlock} from '../../actions/imagesGallery';
+import {utils} from "../../utils/utils";
 
 class ImagesGallery extends React.Component {
 
-	constructor(props) {
-		super(props);
-		this.resizeCoverBlock = this.resizeCoverBlock.bind(this);
-	}
-
-	componentDidMount() {
-		window.addEventListener('resize', this.resizeCoverBlock);
-	}
-
-	componentWillUnmount() {
-		window.removeEventListener('resize', this.resizeCoverBlock);
-	}
-
 	componentWillReceiveProps(nextProps) {
 		this.slider.slickGoTo(nextProps.galleryImgIndex, true);
-	}
-
-	resizeCoverBlock() {
-		clearTimeout(this.props.rcTimeout);
-		let rcTimeout = setTimeout(() => {
-			this.props.setResizeCoverBlock(false);
-		}, 500);
-		this.props.setResizeCoverBlock(true, rcTimeout);
+		if (!utils.equalsObjects(nextProps.window, this.props.window)) {
+			clearTimeout(this.props.rcTimeout);
+			let rcTimeout = setTimeout(() => {
+				this.props.setResizeCoverBlock(false);
+			}, 500);
+			this.props.setResizeCoverBlock(true, rcTimeout);
+		}
 	}
 
 	render() {
@@ -72,7 +59,8 @@ const mapStateToProps = (state, props) => {
 		images,
 		galleryImgIndex,
 		isResizeCover: state.imagesGallery.isResizeCover,
-		rcTimeout: state.imagesGallery.rcTimeout
+		rcTimeout: state.imagesGallery.rcTimeout,
+		window: state.window
 	};
 };
 

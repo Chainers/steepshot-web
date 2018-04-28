@@ -8,6 +8,7 @@ import LoadingSpinner from '../LoadingSpinner';
 import Post from './Post/Post';
 import HeadingLeadComponent from '../Atoms/HeadingLeadComponent';
 import './postsList.css';
+import {utils} from "../../utils/utils";
 
 class PostsList extends React.Component {
 	static defaultProps = {
@@ -53,6 +54,13 @@ class PostsList extends React.Component {
 			this.props.initPostsList(postsListOptions);
 			this.props.getPosts(nextProps.point);
 		}
+	}
+
+	shouldComponentUpdate(nextProps) {
+		if (utils.equalsObjects(nextProps, this.props)) {
+			return false;
+		}
+		return true;
 	}
 
 	renderPosts() {
