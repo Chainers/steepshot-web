@@ -81,6 +81,9 @@ class PostModal extends React.Component {
 
 	nextPost(isClick) {
     this.checkFSFirstLast(isClick);
+    if (this.props.fullScreenMode && this.props.newPostsLoading) {
+    	return;
+		}
 		if (!this.props.lastPost) {
 			this.props.next(this.props.currentIndex);
 		}
@@ -242,15 +245,13 @@ class PostModal extends React.Component {
 						</ShowIf>
 						<ShowIf show={this.props.newPostsLoading}>
 							<div className="loader-right-full-screen_post-mod"
-									 onClick={this.nextPost.bind(this)}
 									 onMouseEnter={this.fsNavMouseEnter.bind(this)}
 									 onMouseLeave={this.fsNavMouseLeave.bind(this)}
 							>
 								<LoadingSpinner style={{
-									position: 'absolute', top: '50%', left: '50%',
+									position: 'absolute', top: '50%', left: '24%',
 									transform: 'translate(-50%, -50%)', height: 38
-								}}
-																loaderClass="new-posts-spinner_post-mod"
+								}} loaderClass="new-posts-spinner_post-mod"
 								/>
 							</div>
 						</ShowIf>
@@ -384,8 +385,7 @@ class PostModal extends React.Component {
 								<LoadingSpinner style={{
 									position: 'absolute', top: '50%', left: '50%',
 									transform: 'translate(-50%, -53%)', width: 35, height: 35
-								}}
-																loaderClass="new-posts-spinner_post-mod"
+								}} loaderClass="new-posts-spinner_post-mod"
 								/>
 							</div>
 						</ShowIf>
