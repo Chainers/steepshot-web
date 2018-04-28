@@ -15,7 +15,7 @@ class Likes extends React.Component {
 	}
 
 	render() {
-		if (this.props.likes === 0 && this.props.flags === 0) {
+		if (this.props.votes === 0) {
 			return <div> </div>;
 		}
 		let likeFlag = <span>{this.props.likes} {this.props.likes > 1 ? ' likes' : ' like'}</span>;
