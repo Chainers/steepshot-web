@@ -56,7 +56,7 @@ try {
 		.option('port', {
 			alias: 'p',
 			describe: 'Port to listen',
-			default: 3001,
+			default: 3000,
 			type: 'number'
 		})
 		.option('debug', {
