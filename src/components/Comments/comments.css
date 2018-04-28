@@ -26,14 +26,18 @@
     right: 0;
 }
 
+.comment-text {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
 .list-scroll-view_comments .comment-text {
     position: relative;
-    padding-right: 40px;
     min-height: 1.6em;
 }
 
 .list-scroll-view_comments .btn-like {
-    position: absolute;
     right: 0;
     top: 50%;
     margin-top: -11px;
@@ -79,8 +83,11 @@
 }
 
 @media (max-width: 815px) {
-
+    .list-scroll-view_comments {
+        position: relative;
+    }
     .list_comments {
         padding: 0 20px;
+        max-width: 100vw;
     }
 }

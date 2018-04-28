@@ -42,13 +42,12 @@ class Comments extends React.Component {
 			comments = this.props.comments.map((item, index) => {
 				return <Comment key={index} point={item}/>
 			});
-			comments = comments.reverse();
 		}
 		return (
 			<div className="container_comments">
 				<div className="container-small-screen_comments">
 					<Scrollbars
-						ref={(ref) => this.scrollBar = ref}
+						ref={ref => this.scrollBar = ref}
 						renderView={this.renderScrollbarContainer.bind(this)}
 						autoHeight={true}
 						autoHeightMin={100}

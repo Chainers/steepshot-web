@@ -90,7 +90,7 @@ class Vote extends React.Component {
 
   hideVoteIndicator(e) {
     e.stopPropagation();
-    if (this.vote.contains(e.target)) {
+    if (this.vote && this.vote.contains(e.target)) {
       return;
     }
     this.fluidHide();
@@ -129,12 +129,9 @@ class Vote extends React.Component {
 				<ShowIf show={this.props.isModalOpen ? (pLIP === 'modal' || isComment) && this.props.isPLOpen :
           pLIP === 'post' && this.props.isPLOpen}>
 					<div className={'poweroflike-common_vote-ind ' + poweroflikeClass}
-							 style={this.props.width}
 							 ref={ref => this.powerIndicator = ref}
 					>
 						<VoteIndicator index={this.props.postIndex}
-													 isComment={isComment}
-													 isPopup={this.props.isPopup}
 													 fluidHide={this.fluidHide.bind(this)}/>
 					</div>
 				</ShowIf>

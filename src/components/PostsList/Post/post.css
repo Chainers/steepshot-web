@@ -89,6 +89,12 @@
     cursor: pointer;
 }
 
+.btn-like-wrapper-comment_vote {
+    position: relative;
+    width: 21px;
+    height: 21px;
+}
+
 .btn-like-wrapper_vote:hover .btn-like::before,
 .btn-like-wrapper-comment_vote:hover .comment.btn-like::before {
     transform: scale(1.15);
