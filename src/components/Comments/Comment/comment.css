@@ -39,7 +39,7 @@
 }
 
 .comment-text_comment {
-    padding-left: 30px;
+    padding: 5px 10px 5px 30px;
 }
 
 .comment-text_comment a:hover {

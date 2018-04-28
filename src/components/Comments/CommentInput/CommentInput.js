@@ -11,10 +11,9 @@ import './commentInput.css';
 class CommentInput extends React.Component {
 
 	sendComment() {
-		// console.log(this.props.commentValue.comment.text.replace(/\w+/g, ''));
-		// if (this.props.commentValue.comment.text.replace(/\w+/g, '') === '') {
-		// 	return;
-		// }
+		if (this.props.commentValue.comment.text.replace(/\s+/g, '') === '') {
+			return;
+		}
 		this.props.sendComment(this.props.point, Constants.TEXT_INPUT_POINT.COMMENT);
 	}
 

@@ -63,6 +63,9 @@ class PostModal extends React.Component {
 	}
 
   checkFSFirstLast(isClick) {
+		if (!this.props.fullScreenMode) {
+			return;
+		}
     if (isClick || (!isClick && !this.props.timeoutID)) {
       setTimeout(() => {
         if (this.props.firstPost) {
@@ -436,8 +439,6 @@ class PostModal extends React.Component {
 												powerLikeIndPlace="modal"
 												isPopup={true}
 												style={{paddingRight: 20}}
-                        width={this.props.documentWidth < 350 ? {
-                            maxWidth: this.props.documentWidth, left: -(this.props.documentWidth - 58)} : null}
 									/>
 								</div>
 							</div>
