@@ -9,10 +9,10 @@ import BrowserRouter from "react-router-dom/BrowserRouter";
 
 const Root = () => global.isServerSide ?
 	(<BrowserRouter>
-		{createApp({state: window.__INITIAL__STATE__, props: window.__INITIAL__PROPS__})}
+		{createApp({state: {}, props: window.__INITIAL__PROPS__})}
 	</BrowserRouter>)
 	:
-	createApp({state: window.__INITIAL__STATE__, props: window.__INITIAL__PROPS__});
+	createApp({state: {}, props: window.__INITIAL__PROPS__});
 
 render((<Root/>), document.getElementById('root'));
 

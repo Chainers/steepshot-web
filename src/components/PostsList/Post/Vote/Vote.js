@@ -10,7 +10,7 @@ import ShowIf from '../../../Common/ShowIf';
 class Vote extends React.Component {
 
   constructor(props) {
-    super(props);
+    super();
     this.hideVoteIndicator = this.hideVoteIndicator.bind(this);
     this.clearDelayTimeout = this.clearDelayTimeout.bind(this);
   }
@@ -54,15 +54,15 @@ class Vote extends React.Component {
     if (isDesktop) {
       if (!this.powerIndicator) {
         clearTimeout(this.props.plTimeout);
-      }
-      this.hideWithDelay();
-      return;
+			}
+			this.hideWithDelay();
+			return;
     }
     if (!this.powerIndicator) {
       clearTimeout(this.props.plTimeout);
-      this.hideWithDelay();
-    }
-  }
+			this.hideWithDelay();
+		}
+	}
 
   hideWithDelay() {
     let hidePLIndTimeout = setTimeout(() => {
@@ -116,7 +116,7 @@ class Vote extends React.Component {
     let poweroflikeClass = this.props.isPopup ? 'poweroflike-popup-ind_vote-ind' : isComment ?
       'poweroflike-comment-ind_vote-ind' : 'poweroflike-ind_vote-ind';
 		return (
-			<div className={isComment ? 'btn-like-wrapper-comment_vote' : 'btn-like-wrapper_vote prevent--selection'}
+			<div className={isComment ? 'btn-like-wrapper-comment_vote' : 'btn-like-wrapper_vote'}
 					 ref={ref => this.vote = ref}
 					 onClick={this.toggleVote.bind(this)}
 					 onMouseLeave={this.breakLongTapPLInd.bind(this, true)}
