@@ -6,7 +6,6 @@ import Constants from '../common/constants';
 import Avatar from './Common/Avatar/Avatar';
 import jqApp from "../libs/app.min";
 import {setSearchPanelState, setSearchValue} from "../actions/search";
-import {baseBrowseFilter} from "../routes";
 import {push} from "react-router-redux";
 
 class Header extends React.Component {
@@ -84,7 +83,7 @@ class Header extends React.Component {
 					) : null
 				}
 				<div className="item nav-item">
-					<Link to={`/browse/${baseBrowseFilter()}`}>Browse</Link>
+					<Link to={`/browse`}>Browse</Link>
 				</div>
 			</div>
 		</div>;

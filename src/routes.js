@@ -1,13 +1,11 @@
 import React from 'react';
-import {Route, Switch, Redirect} from 'react-router-dom';
+import {Redirect, Route, Switch} from 'react-router-dom';
 import App from './components/App';
 import NotFound from './components/NotFound';
 import PrivateRoute from './components/Routes/PrivateRoute';
 import Feed from './components/Feed/Feed';
 import Settings from './components/Settings';
 import AboutComponent from './components/About/AboutComponent';
-import BrowseWrapper from './components/Wrappers/BrowseWrapper';
-import Constants from './common/constants';
 import Testing from './components/Common/Testing/Testing';
 import SinglePost from './components/SinglePost/SinglePost';
 import Search from './components/Search/Search';
@@ -15,10 +13,7 @@ import EditPost from './components/EditPost/EditPost';
 import UserProfile from "./components/UserProfile/UserProfile";
 import Login from "./components/Login/Login";
 import {getStore} from "./store/configureStore";
-
-export function baseBrowseFilter() {
-	return localStorage.getItem('browse') || Constants.BROWSE_ROUTES[0].NAME;
-}
+import Browse from "./components/Browse/Browse";
 
 export default function getRoutes() {
 	return (
@@ -28,7 +23,7 @@ export default function getRoutes() {
 					!!getStore().getState().auth.user && !!getStore().getState().auth.postingKey ? (
 						<Redirect to="/feed"/>
 					) : (
-						<Redirect to={`/browse/${baseBrowseFilter()}`}/>
+						<Redirect to={'/browse'}/>
 					)
 				)}/>
 				<Route exact path="/signin" render={() => (
@@ -38,19 +33,18 @@ export default function getRoutes() {
 						<Login/>
 					)
 				)}/>
-				<Route path="/browse/:filter" component={BrowseWrapper} />
-				<Redirect path="/browse" to={`/browse/${baseBrowseFilter()}`}/>
-				<Route path="/@:username" component={UserProfile} />
-				<Route path="/post" component={SinglePost} />
-				<Route path="/search/:searchValue" component={Search} />
-				<Route path="/guide" component={AboutComponent} />
-				<Route path="/dev/test" component={Testing} />
-				<PrivateRoute path="/feed" component={Feed} />
+				<Route path="/browse/:filter?" component={Browse}/>
+				<Route path="/@:username" component={UserProfile}/>
+				<Route path="/post" component={SinglePost}/>
+				<Route path="/search/:searchValue" component={Search}/>
+				<Route path="/guide" component={AboutComponent}/>
+				<Route path="/dev/test" component={Testing}/>
+				<PrivateRoute path="/feed" component={Feed}/>
 				<Redirect path="/createPost" to={'/editPost'}/>
-				<PrivateRoute path="/editPost/:category?/:username?/:postId?" component={EditPost} />
-				<PrivateRoute path="/Profile" component={UserProfile} />
-				<PrivateRoute path="/settings" component={Settings} />
-				<Route path="*" component={NotFound} />
+				<PrivateRoute path="/editPost/:category?/:username?/:postId?" component={EditPost}/>
+				<PrivateRoute path="/Profile" component={UserProfile}/>
+				<PrivateRoute path="/settings" component={Settings}/>
+				<Route path="*" component={NotFound}/>
 			</Switch>
 		</App>
 	);

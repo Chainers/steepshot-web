@@ -10,6 +10,10 @@ const initialState = {
 	userProfile: {
 		activeIndex: 0,
 		pageLoaded: false
+	},
+	browser: {
+		activeIndex: parseInt(localStorage.getItem('browse') || 1, 10),
+		pageLoaded: false
 	}
 };
 
