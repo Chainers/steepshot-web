@@ -163,6 +163,11 @@ export default {
 		POSTING_KEY: 'postingKey'
 	},
 
+	TAGS: {
+		MAX_LENGTH: 40,
+		MAX_AMOUNT: 20
+	},
+
 	KEYS: {
 		SPACE: 32,
 		ENTER: 13

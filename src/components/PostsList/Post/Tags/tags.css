@@ -1,0 +1,12 @@
+.container_tags {
+    overflow: hidden;
+}
+
+.container_tags a {
+    opacity: 1;
+    transition: .2s opacity ease;
+}
+
+.container_tags a:hover {
+    opacity: 0.6;
+}

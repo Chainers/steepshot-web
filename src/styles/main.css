@@ -8401,15 +8401,6 @@ modal.modal-like .modal-header {
     height: 150px;
 }
 
-.container_tags a {
-    opacity: 1;
-    transition: .2s opacity ease;
-}
-
-.container_tags a:hover {
-    opacity: 0.6;
-}
-
 .shareWrapper {
     display: flex;
     justify-content: center;
