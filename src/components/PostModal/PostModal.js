@@ -438,6 +438,7 @@ class PostModal extends React.Component {
 									<Vote postIndex={this.props.currentIndex}
 												powerLikeIndPlace="modal"
 												isPopup={true}
+												singlePost={this.props.singlePost}
 												style={{paddingRight: 20}}
 									/>
 								</div>

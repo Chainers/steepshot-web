@@ -40,7 +40,7 @@ export function getPostComments(point) {
 			params: {}
 		};
 		getComments(options, true).then((response) => {
-			const comments = response.results.reverse();
+			const comments = response.results;
 			if (!comments) {
 				dispatch({
 					type: 'GET_COMMENT_ERROR',

@@ -163,7 +163,7 @@ export function addSinglePost(url) {
 						}));
 						dispatch(initPostModal('SinglePost', result.url));
 					} else {
-						this.error(dispatch);
+						error(dispatch);
 					}
 				});
 		}

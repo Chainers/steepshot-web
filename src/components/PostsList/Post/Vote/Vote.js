@@ -115,6 +115,11 @@ class Vote extends React.Component {
 		}
     let poweroflikeClass = this.props.isPopup ? 'poweroflike-popup-ind_vote-ind' : isComment ?
       'poweroflike-comment-ind_vote-ind' : 'poweroflike-ind_vote-ind';
+		let showSlider = (this.props.isModalOpen || this.props.singlePost) ? pLIP === 'modal' && this.props.isPLOpen :
+      pLIP === 'post' && this.props.isPLOpen;
+		if (isComment) {
+      showSlider = this.props.isPLOpen;
+    }
 		return (
 			<div className={isComment ? 'btn-like-wrapper-comment_vote' : 'btn-like-wrapper_vote'}
 					 ref={ref => this.vote = ref}
@@ -126,8 +131,7 @@ class Vote extends React.Component {
 					 onContextMenu={this.breakLongTapPLInd.bind(this, false)}
 					 style={this.props.style}>
 				<button type="button" className={buttonClasses}/>
-				<ShowIf show={this.props.isModalOpen ? (pLIP === 'modal' || isComment) && this.props.isPLOpen :
-          pLIP === 'post' && this.props.isPLOpen}>
+				<ShowIf show={showSlider}>
 					<div className={'poweroflike-common_vote-ind ' + poweroflikeClass}
 							 ref={ref => this.powerIndicator = ref}
 					>
