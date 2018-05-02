@@ -32,6 +32,9 @@ class Header extends React.Component {
 	searchKeyPress(e) {
 		if (e.key === 'Enter') {
 			e.preventDefault();
+			if (e.target.value === '') {
+				return;
+			}
 			this.props.historyPush(`/search/${this.props.searchValue}`);
 			if (document.getElementsByTagName('body')[0].classList.value === 'mm-open') {
         jqApp.mobileMenu._menuHide();

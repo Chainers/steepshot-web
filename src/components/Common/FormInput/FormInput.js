@@ -13,7 +13,16 @@ class FormInput extends React.Component {
 	}
 
 	componentDidMount() {
-		this.input.focus();
+    this.input.focus();
+  }
+
+	inputOnChange() {
+		let nameInput = this.input.value;
+		if (this.props.label === 'Name') {
+			nameInput = nameInput.replace(/\s+/g, '');
+			nameInput = nameInput.toLowerCase();
+		}
+		this.props.changeText(this.props.point, nameInput);
 	}
 
 	render() {
@@ -31,7 +40,7 @@ class FormInput extends React.Component {
 							 autoComplete="new-password"
 							 type={this.props.type}
 							 name={this.props.type}
-							 onChange={() => this.props.changeText(this.props.point, this.input.value)}
+							 onChange={this.inputOnChange.bind(this)}
 							 ref={ref => this.input = ref}
 				/>
 				<ShowIf show={this.props.errorMsg}>
