@@ -1,8 +1,8 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {
-	nextPostModal, setPostOffset, previousPostModal, setFSNavigation, setFullScreen,
-	setPostModalOptions
+	nextPostModal, previousPostModal, setFSNavigation, setFullScreen, setPostModalOptions,
+	setPostOffset
 } from '../../actions/postModal';
 import Constants from '../../common/constants';
 import TimeAgo from 'timeago-react';
@@ -62,18 +62,18 @@ class PostModal extends React.Component {
 		}
 	}
 
-  checkFSFirstLast(isClick) {
+	checkFSFirstLast(isClick) {
 		if (!this.props.fullScreenMode) {
 			return;
 		}
-    if (isClick || (!isClick && !this.props.timeoutID)) {
-      setTimeout(() => {
-        if (this.props.firstPost) {
-          this.fsNavMouseLeave();
-        }
-      }, 100);
-    }
-  }
+		if (isClick || (!isClick && !this.props.timeoutID)) {
+			setTimeout(() => {
+				if (this.props.firstPost) {
+					this.fsNavMouseLeave();
+				}
+			}, 100);
+		}
+	}
 
 	previousPost(isClick) {
 		this.checkFSFirstLast(isClick);
@@ -83,9 +83,9 @@ class PostModal extends React.Component {
 	}
 
 	nextPost(isClick) {
-    this.checkFSFirstLast(isClick);
-    if (this.props.fullScreenMode && this.props.newPostsLoading) {
-    	return;
+		this.checkFSFirstLast(isClick);
+		if (this.props.fullScreenMode && this.props.newPostsLoading) {
+			return;
 		}
 		if (!this.props.lastPost) {
 			this.props.next(this.props.currentIndex);
@@ -156,10 +156,10 @@ class PostModal extends React.Component {
 	}
 
 	copyLinkToClipboard(e) {
-    e.target.blur();
-    this.props.copyToClipboard(
-      document.location.origin + '/post' + this.props.post.url.replace(/\/[\w-.]+/, '')
-    );
+		e.target.blur();
+		this.props.copyToClipboard(
+			document.location.origin + '/post' + this.props.post.url.replace(/\/[\w-.]+/, '')
+		);
 	}
 
 	renderImage() {
@@ -468,7 +468,7 @@ class PostModal extends React.Component {
 		}
 		const docHeight = this.props.window.height;
 		const MAX_IMG_WIDTH = (docWidth - DESC_WIDTH) * sideMargin;
-		const PREFERRED_IMG_WIDTH = 640;
+		const PREFERRED_IMG_WIDTH = Constants.IMAGE.MIN_WIDTH;
 		const isMobile = docWidth < MAX_WIDTH_FULL_SCREEN;
 		const isFullScreen = docWidth < 1025;
 
@@ -479,7 +479,11 @@ class PostModal extends React.Component {
 		const textareaMarginTop = this.descPosMod ? this.descPosMod.clientHeight - 220 : null;
 
 		const image = {};
-		const imageSizes = this.props.post.media[0].size;
+		const imageSizes = this.props.post.media[0].size
+			|| {
+				width: Constants.IMAGE.MIN_WIDTH,
+				height: Constants.IMAGE.MIN_HEIGHT
+			};
 
 		image.width = imageSizes.width;
 		image.height = imageSizes.height;
