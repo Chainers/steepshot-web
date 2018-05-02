@@ -10,9 +10,9 @@ export function blockchainErrorsList(error) {
   }
   let newError = `${error.data.code} ${error.data.name}: ${error.data.message}${format}`;
   let errorsList = [
-    {error: '4100000 plugin_exception: plugin exception: Account: ${account} bandwidth limit exeeded. Please wait to ' +
+    {error: '4100000 plugin_exception: plugin exception: Account: ${account} bandwidth limit exeeded. Please wait to ' + // eslint-disable-line
     'transact or power up STEEM.', notificationText: 'Bandwidth limit exceeded. Please wait to transact or power up STEEM.'},
-    {error: '4100000 plugin_exception: plugin exception: Account: ${account} bandwidth limit exceeded. Please wait to ' +
+    {error: '4100000 plugin_exception: plugin exception: Account: ${account} bandwidth limit exceeded. Please wait to ' + // eslint-disable-line
     'transact or power up STEEM.', notificationText: 'Bandwidth limit exceeded. Please wait to transact or power up STEEM.'},
     {error: '10 assert_exception: Assert Exception: ( now - auth.last_root_post ) > STEEMIT_MIN_ROOT_COMMENT_INTERVAL: ' +
     'You may only post once every 5 minutes.', notificationText: 'You can only create posts 5 minutes after the previous one.'},
