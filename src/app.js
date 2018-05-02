@@ -16,12 +16,12 @@ export default ({state, props}) => {
 		<Provider store={store}>
 			{global.isServerSide ?
 				(<WrapperProvider initialProps={props}>
-					{getRoutes(store)}
+					{getRoutes()}
 				</WrapperProvider>)
 				:
 				(<ConnectedRouter history={history}>
 					<WrapperProvider initialProps={props}>
-						{getRoutes(store)}
+						{getRoutes()}
 					</WrapperProvider>
 				</ConnectedRouter>)}
 		</Provider>
