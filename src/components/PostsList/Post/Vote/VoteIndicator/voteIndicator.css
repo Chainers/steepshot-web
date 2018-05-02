@@ -15,24 +15,27 @@
     border: 1px solid #ffffff;
     border-radius: 10px;
     box-shadow: 0 20px 40px 0 rgba(0, 0, 0, .1);
+    right: 0;
+    width: 100vw;
+    min-width: 320px;
+    max-width: 380px;
 }
 
 .poweroflike-ind_vote-ind {
     top: -54px;
+    right: -10px;
+    width: 100%;
     animation: fadeVoteIndicator .2s linear;
 }
 
 .poweroflike-popup-ind_vote-ind {
     top: 54px;
-    left: -320px;
-    width: calc(100% + 320px);
     animation: fadePopupVoteIndicator .2s linear;
 }
 
 .poweroflike-comment-ind_vote-ind {
     top: -62px;
     right: -20px;
-    width: calc(100% - 20px);
     animation: fadeCommentVoteIndicator .2s linear;
 }
 

@@ -14,26 +14,25 @@ import Search from './components/Search/Search';
 import EditPost from './components/EditPost/EditPost';
 import UserProfile from "./components/UserProfile/UserProfile";
 import Login from "./components/Login/Login";
+import {getStore} from "./store/configureStore";
 
 export function baseBrowseFilter() {
 	return localStorage.getItem('browse') || Constants.BROWSE_ROUTES[0].NAME;
 }
 
-export default function getRoutes(store) {
-	const auth = store.getState().auth;
-	const isAuth = !!auth.user && !!auth.postingKey;
+export default function getRoutes() {
 	return (
 		<App>
 			<Switch>
 				<Route exact path="/" render={() => (
-					isAuth ? (
+					!!getStore().getState().auth.user && !!getStore().getState().auth.postingKey ? (
 						<Redirect to="/feed"/>
 					) : (
 						<Redirect to={`/browse/${baseBrowseFilter()}`}/>
 					)
 				)}/>
 				<Route exact path="/signin" render={() => (
-					isAuth ? (
+					!!getStore().getState().auth.user && !!getStore().getState().auth.postingKey ? (
 						<Redirect push to="/feed"/>
 					) : (
 						<Login/>

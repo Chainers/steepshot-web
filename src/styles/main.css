@@ -147,14 +147,6 @@ input.autofil--gray:-webkit-autofill {
     word-wrap: break-word;
 }
 
-.card-wrap span a, .post-description span a, .comment-text span a {
-    transition: .2s all ease;
-}
-
-.card-wrap span a:hover, .post-description span a:hover, .comment-text span a:hover {
-    opacity: .65;
-}
-
 .loader-blocker {
     display: flex;
     align-items: center;
@@ -8407,15 +8399,6 @@ modal.modal-like .modal-header {
 .rotate-button {
     position: relative;
     height: 150px;
-}
-
-.container_tags a {
-    opacity: 1;
-    transition: .2s opacity ease;
-}
-
-.container_tags a:hover {
-    opacity: 0.6;
 }
 
 .shareWrapper {

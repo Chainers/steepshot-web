@@ -21,6 +21,9 @@ class SinglePost extends React.Component {
 	}
 
 	componentDidMount() {
+		if (!Object.keys(this.props.post).length) {
+			this.props.addSinglePost(this.props.history.location.pathname)
+		}
 		const urlObject = this.props.location.pathname.split('/');
 		let permlink = urlObject[urlObject.length - 1];
 		let username = this.props.location.pathname.match(/\/@[\w-.]+\//)[0];

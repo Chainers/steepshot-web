@@ -74,7 +74,8 @@ export function login(username, postingKey) {
 				voting_power: result[0].voting_power / 100
 			});
 			dispatch(push('/feed'));
-			dispatch(showMessage('Welcome to Steepshot, ' + username + '!'));
+			let parseResult = JSON.parse(result[0].json_metadata);
+			dispatch(showMessage('Welcome to Steepshot, ' + (parseResult.profile.name || username) + '!'));
 		});
 	}
 }

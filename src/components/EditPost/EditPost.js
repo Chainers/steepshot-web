@@ -179,7 +179,7 @@ class EditPost extends React.Component {
 										 noValidCharacters="[А-Яа-я]"
 										 maxLength={255}/>
 					<TextInput title="Tags"
-										 maxLength={20}
+										 maxLength={Constants.TAGS.MAX_LENGTH}
 										 point={Constants.TEXT_INPUT_POINT.TAGS}
 										 multiline={false}
 										 description="Enter tags with spaces, but not more than 20"

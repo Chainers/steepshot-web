@@ -77,7 +77,7 @@ class LikesFlagsList extends React.Component {
 					</Tab>
 					<Tab name="Flags"
 							 empty={!this.props.flags || !this.props.flags.users.length}>
-						<Scrollbars style={{width: '100%', height: this.props.preferredBodyHeight}}>
+						<Scrollbars style={{width: '100%', height: this.props.preferredBodyHeight, marginTop: 20}}>
 							<UsersList
 								point={this.props.point}
 								getUsers={getVoters}

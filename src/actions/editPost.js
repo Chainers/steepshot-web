@@ -245,18 +245,14 @@ function prepareData() {
 	return {title, description, tags, photoSrc, rotate, isGif};
 }
 
-
-const MAX_TAG_LENGTH = 30;
-const MAX_AMOUNT_TAGS = 20;
-
 function getValidTagsString(str) {
 	if (str) {
-		let result = str.replace(/^\s+/g, '');
+		let result = str.replace(/\bsteepshot\b/g, '');
+		result = str.trim();
 		result = result.replace(/\s\s/g, ' ');
 		result = result.replace(/[^\w\s]+/g, '');
-		result = result.replace(new RegExp(`((\\s[^\\s]+){${MAX_AMOUNT_TAGS - 1}}).*`), '$1');
-		result = result.replace(new RegExp(`(([^\\s]{${MAX_TAG_LENGTH}})[^\\s]+).*`), '$2');
-		result = result.replace(/\bsteepshot\b/g, '');
+		result = result.replace(new RegExp(`((\\s[^\\s]+){${constants.TAGS.MAX_AMOUNT - 1}}).*`), '$1');
+		result = result.replace(new RegExp(`(([^\\s]{${constants.TAGS.MAX_LENGTH}})[^\\s]+).*`), '$2');
 		return result.toLowerCase();
 	}
 }
