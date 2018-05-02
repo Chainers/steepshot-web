@@ -13,13 +13,13 @@ class FormInput extends React.Component {
 	}
 
 	componentDidMount() {
-    this.input.focus();
+		if (this.props.isName) this.input.focus();
   }
 
 	inputOnChange() {
 		let nameInput = this.input.value;
-		if (this.props.label === 'Name') {
-			nameInput = nameInput.replace(/\s+/g, '');
+		if (this.props.isName) {
+			nameInput = nameInput.replace(/[^\w-.]+/g, '');
 			nameInput = nameInput.toLowerCase();
 		}
 		this.props.changeText(this.props.point, nameInput);
@@ -63,6 +63,7 @@ FormInput.defaultProps = {
 
 const mapStateToProps = (state, props) => {
 	return {
+		isName: props.label === 'Name',
 		...state.formInput[props.point]
 	}
 };
