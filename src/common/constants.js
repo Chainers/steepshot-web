@@ -1,7 +1,7 @@
 export default {
 	URLS: {
-		baseUrl_v1_1: 'https://qa.steepshot.org/api/v1_1',
-		baseUrl_v1: 'https://qa.steepshot.org/api/v1',
+		baseUrl_v1_1: 'https://steepshot.org/api/v1_1',
+		baseUrl_v1: 'https://steepshot.org/api/v1',
 	},
 	CATEGORIES: {
 		user: 'user',
@@ -139,20 +139,14 @@ export default {
 		LINK: 'https://www.youtube.com/embed/XAVapBwbS1U?autoplay=1'
 	},
 
-	BROWSE_ROUTES: [
-		{
-			NAME: 'hot',
-			INDEX: 0
-		},
-		{
-			NAME: 'new',
-			INDEX: 1
-		},
-		{
-			NAME: 'top',
-			INDEX: 2
-		}
-	],
+	BROWSE_ROUTES: {
+		hot: 0,
+		new: 1,
+		top: 2,
+		0: 'hot',
+		1: 'new',
+		2: 'top'
+	},
 
 	TEXT_INPUT_POINT: {
 		TITLE: 'title',

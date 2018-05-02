@@ -1,7 +1,6 @@
 import steem from 'steem';
 import Constants from '../common/constants';
 import {logLogin} from './logging';
-import {baseBrowseFilter} from "../routes";
 import {push} from 'react-router-redux';
 import {getProfile} from "../services/userProfile";
 import {pushMessage} from "./pushMessage";
@@ -103,7 +102,7 @@ export function logout() {
 		localStorage.removeItem('avatar');
 		localStorage.removeItem('like_power');
 		dispatch(logoutUser());
-		dispatch(push(`/browse/${baseBrowseFilter()}`));
+		dispatch(push(`/browse`));
 	}
 }
 

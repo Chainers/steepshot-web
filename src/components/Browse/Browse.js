@@ -1,13 +1,15 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import TabsFilterComponent from '../Filters/TabsFilterComponent';
 import Constants from '../../common/constants';
-import TabsWrapper from '../Wrappers/TabsWrapper';
 import {documentTitle} from '../../utils/documentTitle';
 import PostsList from '../PostsList/PostsList';
 import {withWrapper} from "create-react-server/wrapper";
 import {addMetaTags, getDefaultTags} from "../../actions/metaTags";
 import {push, replace} from "react-router-redux";
+import TabsBar from "../Common/TabsBar/TabsBar";
+import Tab from "../Common/TabsBar/Tab/Tab";
+import {setActiveIndex} from "../../actions/tabsBar";
+import {utils} from "../../utils/utils";
 
 class Browse extends React.Component {
 
@@ -19,39 +21,30 @@ class Browse extends React.Component {
 		return {};
 	}
 
-	constructor(props) {
-		super(props);
-		this.state = {
-			keys: [
-				{label: Constants.POSTS_FILTERS.POSTS_HOT.label},
-				{label: Constants.POSTS_FILTERS.POSTS_NEW.label},
-				{label: Constants.POSTS_FILTERS.POSTS_TOP.label}
-			],
-			activeItemIndex: props.activeItemIndex
-		};
-	}
-
 	componentDidMount() {
-		localStorage.setItem('browse', Constants.BROWSE_ROUTES[this.state.activeItemIndex].NAME);
+		let lestActiveIndex =
+			Constants.BROWSE_ROUTES[this.props.match.params.filter]
+			|| localStorage.getItem('browse')
+			|| 1;
+		this.props.setActiveIndex('browser', parseInt(lestActiveIndex, 10));
+		this.props.historyReplace('browse/' + Constants.BROWSE_ROUTES[lestActiveIndex]);
 		documentTitle();
 	}
 
 	componentWillReceiveProps(nextProps) {
-		if (nextProps.activeItemIndex === -1) this.props.historyReplace('/*');
+		if (utils.equalsObjects(nextProps.pathname, '/browse')) {
+			let lestActiveIndex =
+				Constants.BROWSE_ROUTES[this.props.match.params.filter]
+				|| localStorage.getItem('browse')
+				|| 1;
+			this.props.setActiveIndex('browser', parseInt(lestActiveIndex, 10));
+			this.props.historyReplace('browse/' + Constants.BROWSE_ROUTES[lestActiveIndex]);
+		}
 	}
 
-	updateActiveTab(index) {
-		this.setState({
-			activeItemIndex: index
-		}, () => {
-			localStorage.setItem('browse', Constants.BROWSE_ROUTES[this.state.activeItemIndex].NAME);
-			this.props.historyPush(Constants.BROWSE_ROUTES[this.state.activeItemIndex].NAME);
-			documentTitle();
-		});
-	}
-
-	shouldComponentUpdate(nextProps, nextState) {
-		return nextState !== this.state;
+	changeIndex(index) {
+		localStorage.setItem('browse', index);
+		this.props.historyReplace(Constants.BROWSE_ROUTES[index])
 	}
 
 	render() {
@@ -61,30 +54,29 @@ class Browse extends React.Component {
 		return (
 			<div className="g-main_i container">
 				<div id="workspace" className="g-content clearfix">
-					<TabsFilterComponent
-						keys={this.state.keys}
-						activeItemIndex={this.state.activeItemIndex}
-						updateCallback={this.updateActiveTab.bind(this)}
-					/>
-					<TabsWrapper
-						activeTab={this.state.activeItemIndex}
-					>
-						<PostsList
-							point={Constants.POSTS_FILTERS.POSTS_HOT.point}
-							cancelPrevious={false}
-							wrapperModifier="posts-list offset-should-replace_browse clearfix"
-						/>
-						<PostsList
-							point={Constants.POSTS_FILTERS.POSTS_NEW.point}
-							cancelPrevious={false}
-							wrapperModifier="posts-list offset-should-replace_browse clearfix"
-						/>
-						<PostsList
-							point={Constants.POSTS_FILTERS.POSTS_TOP.point}
-							cancelPrevious={false}
-							wrapperModifier="posts-list offset-should-replace_browse clearfix"
-						/>
-					</TabsWrapper>
+					<TabsBar point="browser" showLoader={false} changeIndex={this.changeIndex.bind(this)}>
+						<Tab name="Hot">
+							<PostsList
+								point={Constants.POSTS_FILTERS.POSTS_HOT.point}
+								cancelPrevious={false}
+								wrapperModifier="posts-list offset-should-replace_browse clearfix"
+							/>
+						</Tab>
+						<Tab name="New">
+							<PostsList
+								point={Constants.POSTS_FILTERS.POSTS_NEW.point}
+								cancelPrevious={false}
+								wrapperModifier="posts-list offset-should-replace_browse clearfix"
+							/>
+						</Tab>
+						<Tab name="Top">
+							<PostsList
+								point={Constants.POSTS_FILTERS.POSTS_TOP.point}
+								cancelPrevious={false}
+								wrapperModifier="posts-list offset-should-replace_browse clearfix"
+							/>
+						</Tab>
+					</TabsBar>
 				</div>
 			</div>
 		);
@@ -93,7 +85,7 @@ class Browse extends React.Component {
 
 const mapStateToProps = (state) => {
 	return {
-		localization: state.localization
+		pathname: state.router.location.pathname
 	};
 };
 
@@ -104,7 +96,10 @@ const mapDispatchToProps = (dispatch) => {
 		},
 		historyReplace: (newPath) => {
 			dispatch(replace(newPath))
-		}
+		},
+		setActiveIndex: (point, index) => {
+			dispatch(setActiveIndex(point, index));
+		},
 	}
 };
 

@@ -9,7 +9,8 @@ class TabsBar extends React.Component {
 	static defaultProps = {
 		className: '',
 		alwaysShowNavigation: false,
-		showLoader: true
+		showLoader: true,
+		changeIndex: () => {}
 	};
 
 	componentDidUpdate() {
@@ -32,6 +33,7 @@ class TabsBar extends React.Component {
 
 	setIndex(index) {
 		this.props.setActiveIndex(this.props.point, index);
+		this.props.changeIndex(index);
 	}
 
 	renderNavigation() {
