@@ -1,5 +1,4 @@
 import React from 'react';
-import {connect} from 'react-redux';
 import Constants from '../../common/constants';
 import {documentTitle} from '../../utils/documentTitle';
 import PostsList from '../PostsList/PostsList';
@@ -16,13 +15,6 @@ class Feed extends React.Component {
 		return {};
 	}
 
-	constructor(props) {
-		super(props);
-		this.state = {
-			point: Constants.POSTS_FILTERS.POSTS_USER_FEED.point
-		};
-	}
-
 	componentDidMount() {
 		documentTitle();
 	}
@@ -35,7 +27,7 @@ class Feed extends React.Component {
 			<div className="g-main_i container">
 				<div id="workspace" className="g-content clearfix">
 					<PostsList
-						point={this.state.point}
+						point={Constants.POSTS_FILTERS.POSTS_USER_FEED.point}
 						cancelPrevious={false}
 						wrapperModifier="posts-list clearfix"
 					/>
@@ -45,10 +37,5 @@ class Feed extends React.Component {
 	}
 }
 
-const mapStateToProps = (state, props) => {
-	return {
-		localization: state.localization
-	};
-};
 
-export default withWrapper(connect(mapStateToProps)(Feed));
+export default withWrapper(Feed);

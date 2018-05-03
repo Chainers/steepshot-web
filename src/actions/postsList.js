@@ -24,6 +24,14 @@ function getPostsListSuccess(pointOptions, posts) {
 	};
 }
 
+function getPostsListError(point, error) {
+	return {
+		type: 'GET_POSTS_LIST_ERROR',
+		point,
+		error
+	};
+}
+
 export function getPostsList(point) {
 	const LIMIT = 16;
 	const statePoint = getStore().getState().postsList[point];
@@ -102,6 +110,8 @@ export function getPostsList(point) {
 			}
 			notDeletedPosts = postsObject;
 			dispatch(getPostsListSuccess(pointOptions, notDeletedPosts));
+		}).catch( error => {
+			dispatch(getPostsListError(point, error));
 		});
 	};
 }
