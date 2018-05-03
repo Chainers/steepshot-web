@@ -23,7 +23,7 @@ class Comment extends React.Component {
 		let linkToImg = changeBotsLink.replace(
 			/(http(s)?:\/\/[^\s<>]+?(\.png|\.gif|\.jpg|\.jpeg|\.tif|\.tiff)(\?[\w\W]+?)?(?!"))/gi, '<img src="$1"/>');
 		let anyLinks = linkToImg.replace(/<a[\w\W]+?>([\w\W]+?)<\/a>/g, '$1');
-		let userLink = anyLinks.replace(/(@[\w-.]+\w)/g, '<a href="/$1" target="_blank">$1</a>');
+		let userLink = anyLinks.replace(/([^/])(@[\w-.]+\w)/g, '$1<a href="/$2" target="_blank">$2</a>');
 		this.commentText.innerHTML = userLink;
 	}
 
