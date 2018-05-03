@@ -33,15 +33,16 @@ class Comments extends React.Component {
 
 	render() {
 		const isMobile = document.documentElement.clientWidth < 815;
-		let comments = null;
+		let comments = null, propsComments = this.props.comments;
 
-		if (this.props.loading && (!this.props.comments || !this.props.comments.length) ) {
+		if (this.props.loading && (!propsComments || !propsComments.length)) {
 			comments = <LoadingSpinner style={{marginTop: 20}}/>;
 		}
-		if (this.props.comments && this.props.comments.length > 0) {
-			comments = this.props.comments.map((item, index) => {
-				return <Comment key={index} point={item}/>
-			});
+		if (propsComments && propsComments.length > 0) {
+			comments = [];
+			for (let i = 0; i < propsComments.length; i++) {
+        comments.unshift(<Comment key={i} point={propsComments[i]}/>);
+			}
 		}
 		return (
 			<div className="container_comments">
