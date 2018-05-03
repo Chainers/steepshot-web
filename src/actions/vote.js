@@ -3,7 +3,7 @@ import {getStore} from '../store/configureStore';
 import {updatePost} from './post';
 import {updateVotingPower} from './auth';
 import {pushMessage} from "./pushMessage";
-import {voteLock, voteUnlock} from "./sessionActions";
+import {actionLock, actionUnlock} from "./sessionActions";
 
 function toggleVoteRequest(postIndex) {
 	return {
@@ -37,20 +37,20 @@ export function toggleVote(postIndex) {
 		if (!username && !postingKey) {
 			return;
 		}
-		if (state.session.voteLocked) {
+		if (state.session.actionLocked) {
 			return;
 		}
-		dispatch(voteLock());
+		dispatch(actionLock());
 		dispatch(toggleVoteRequest(postIndex));
 
 		const callback = (err, success) => {
-			dispatch(voteUnlock());
+			dispatch(actionUnlock());
 			if (err) {
 				dispatch(toggleVoteFailure(postIndex));
 				dispatch(pushMessage(err));
 			} else if (success) {
 				dispatch(toggleVoteSuccess(postIndex));
-				dispatch(updatePost(postIndex, newVoteState, false));
+				dispatch(updatePost(postIndex, newVoteState, 0));
 				dispatch(updateVotingPower(username));
 				let text = `The post has been successfully liked. If you don't see your like, please give it a few minutes to sync from the blockchain`;
 				if (!newVoteState) text = `The post has been successfully disliked. If you don't see your dislike, please give it a few minutes to sync from the blockchain`;

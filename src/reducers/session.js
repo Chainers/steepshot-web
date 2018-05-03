@@ -1,18 +1,18 @@
 const initialState = {
-	voteLocked: false
+	actionLocked: false
 };
 
 export default function session(state = initialState, action) {
 	switch (action.type) {
-		case 'VOTE_LOCK':
+		case 'ACTION_LOCK':
 			return {
 				...state,
-				voteLocked: true
+				actionLocked: true
 			};
-		case 'VOTE_UNLOCK':
+		case 'ACTION_UNLOCK':
 			return {
 				...state,
-				voteLocked: false
+				actionLocked: false
 			};
 		default:
 			return state;
