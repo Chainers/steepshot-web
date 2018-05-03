@@ -63,6 +63,7 @@ class Browse extends React.Component {
 								point={Constants.POSTS_FILTERS.POSTS_HOT.point}
 								cancelPrevious={false}
 								wrapperModifier="posts-list offset-should-replace_browse clearfix"
+								isComponentVisible={this.props.activeIndex === 0}
 							/>
 						</Tab>
 						<Tab name="New">
@@ -70,6 +71,7 @@ class Browse extends React.Component {
 								point={Constants.POSTS_FILTERS.POSTS_NEW.point}
 								cancelPrevious={false}
 								wrapperModifier="posts-list offset-should-replace_browse clearfix"
+								isComponentVisible={this.props.activeIndex === 1}
 							/>
 						</Tab>
 						<Tab name="Top">
@@ -77,6 +79,7 @@ class Browse extends React.Component {
 								point={Constants.POSTS_FILTERS.POSTS_TOP.point}
 								cancelPrevious={false}
 								wrapperModifier="posts-list offset-should-replace_browse clearfix"
+								isComponentVisible={this.props.activeIndex === 2}
 							/>
 						</Tab>
 					</TabsBar>
@@ -88,7 +91,8 @@ class Browse extends React.Component {
 
 const mapStateToProps = (state) => {
 	return {
-		pathname: state.router.location.pathname
+		pathname: state.router.location.pathname,
+		activeIndex: state.tabsBar.browser.activeIndex
 	};
 };
 
