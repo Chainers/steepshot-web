@@ -89,9 +89,10 @@ class Browse extends React.Component {
 	}
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state, props) => {
+	const location = state.router.location || props.location || {};
 	return {
-		pathname: state.router.location.pathname,
+		pathname: location.pathname,
 		activeIndex: state.tabsBar.browser.activeIndex
 	};
 };

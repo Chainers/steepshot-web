@@ -15,19 +15,24 @@ import Login from "./components/Login/Login";
 import {getStore} from "./store/configureStore";
 import Browse from "./components/Browse/Browse";
 
+function isAuth() {
+	const auth = getStore().getState().auth;
+	return !!auth.user && !!auth.postingKey;
+}
+
 export default function getRoutes() {
 	return (
 		<App>
 			<Switch>
-				<Route exact path="/" render={() => (
-					!!getStore().getState().auth.user && !!getStore().getState().auth.postingKey ? (
+				<Route exact path="/" render={() =>
+					isAuth() ? (
 						<Redirect to="/feed"/>
 					) : (
 						<Redirect to={'/browse'}/>
 					)
-				)}/>
+				}/>
 				<Route exact path="/signin" render={() => (
-					!!getStore().getState().auth.user && !!getStore().getState().auth.postingKey ? (
+					isAuth() ? (
 						<Redirect push to="/feed"/>
 					) : (
 						<Login/>
