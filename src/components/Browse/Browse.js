@@ -22,29 +22,32 @@ class Browse extends React.Component {
 	}
 
 	componentDidMount() {
-		let lestActiveIndex =
-			Constants.BROWSE_ROUTES[this.props.match.params.filter]
-			|| localStorage.getItem('browse')
-			|| 1;
-		this.props.setActiveIndex('browser', parseInt(lestActiveIndex, 10));
-		this.props.historyReplace('browse/' + Constants.BROWSE_ROUTES[lestActiveIndex]);
+		this.setUrlPath.call(this);
 		documentTitle();
 	}
 
 	componentWillReceiveProps(nextProps) {
 		if (utils.equalsObjects(nextProps.pathname, '/browse')) {
-			let lestActiveIndex =
-				Constants.BROWSE_ROUTES[this.props.match.params.filter]
-				|| localStorage.getItem('browse')
-				|| 1;
-			this.props.setActiveIndex('browser', parseInt(lestActiveIndex, 10));
-			this.props.historyReplace('browse/' + Constants.BROWSE_ROUTES[lestActiveIndex]);
+			this.setUrlPath.call(this);
 		}
+	}
+
+	setUrlPath() {
+		let lastActiveIndex =
+			Constants.BROWSE_ROUTES[this.props.match.params.filter]
+			|| localStorage.getItem('browse');
+		lastActiveIndex = parseInt(lastActiveIndex, 10);
+		if (!(lastActiveIndex >= 0 && lastActiveIndex <= 2)) {
+			lastActiveIndex = 0;
+		}
+		localStorage.setItem('browse', lastActiveIndex);
+		this.props.setActiveIndex('browser', lastActiveIndex);
+		this.props.historyReplace('/browse/' + Constants.BROWSE_ROUTES[lastActiveIndex])
 	}
 
 	changeIndex(index) {
 		localStorage.setItem('browse', index);
-		this.props.historyReplace(Constants.BROWSE_ROUTES[index])
+		this.props.historyReplace('/browse/' + Constants.BROWSE_ROUTES[index])
 	}
 
 	render() {
