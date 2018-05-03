@@ -4,6 +4,7 @@ import Constants from "../common/constants";
 import Steem from "../libs/steem";
 import {clearTextInputState} from "./textInput";
 import {pushMessage} from "./pushMessage";
+import {actionLock, actionUnlock} from "./sessionActions";
 
 export function initPostComment(point) {
 	return {
@@ -102,9 +103,14 @@ export function sendComment(postIndex, point) {
 	let post = state.posts[postIndex];
 	let comment = state.textInput[point].text;
 	return (dispatch) => {
+    if (state.session.actionLocked) {
+      return;
+    }
+    dispatch(actionLock());
 		dispatch(sendingNewComment(postIndex, true));
 		const urlObject = post.url.split('/');
 		const callback = (err, success) => {
+      dispatch(actionUnlock());
 			dispatch(sendingNewComment(postIndex, false));
 			if (err) {
 				dispatch(pushMessage(err));

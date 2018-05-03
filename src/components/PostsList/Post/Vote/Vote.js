@@ -10,7 +10,7 @@ import ShowIf from '../../../Common/ShowIf';
 class Vote extends React.Component {
 
   constructor(props) {
-    super();
+    super(props);
     this.hideVoteIndicator = this.hideVoteIndicator.bind(this);
     this.clearDelayTimeout = this.clearDelayTimeout.bind(this);
   }
@@ -89,9 +89,11 @@ class Vote extends React.Component {
   }
 
   hideVoteIndicator(e) {
-    e.stopPropagation();
-    if (this.vote && this.vote.contains(e.target)) {
+    if (this.powerIndicator && this.powerIndicator.contains(e.target)) {
       return;
+    }
+    if (this.vote && this.vote.contains(e.target) && !this.powerIndicator.contains(e.target)) {
+      this.props.toggleVote(this.props.postIndex);
     }
     this.fluidHide();
   }
