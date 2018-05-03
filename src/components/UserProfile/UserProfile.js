@@ -102,6 +102,7 @@ class UserProfile extends React.Component {
 											className="posts-list clearfix type-2"
 											wrapperModifier="clearfix"
 											clearPostHeader={true}
+											isComponentVisible={this.props.activeIndex === 0}
 										/>
 								</Tab>
 								<Tab name={this.props.profile['following_count'] + ' ' + Constants.USERS_FILTERS.FOLLOWING.label}>
@@ -109,6 +110,7 @@ class UserProfile extends React.Component {
 											point={insertUsername(Constants.USERS_FILTERS.FOLLOWING.point, this.props.username)}
 											className="posts-list clearfix type-2"
 											getUsers={getFollowers}
+											isComponentVisible={this.props.activeIndex === 1}
 										/>
 								</Tab>
 								<Tab name={this.props.profile['followers_count'] + ' ' + Constants.USERS_FILTERS.FOLLOWERS.label}>
@@ -116,6 +118,7 @@ class UserProfile extends React.Component {
 											point={insertUsername(Constants.USERS_FILTERS.FOLLOWERS.point, this.props.username)}
 											className="posts-list clearfix type-2"
 											getUsers={getFollowing}
+											isComponentVisible={this.props.activeIndex === 2}
 										/>
 								</Tab>
 							</TabsBar>
@@ -139,7 +142,8 @@ const mapStateToProps = (state, props) => {
 		loading: state.userProfile.loading,
 		pathname: location.pathname,
 		isYourProfile: watcher === username,
-		watcher
+		watcher,
+		activeIndex: state.tabsBar.userProfile.activeIndex
 	};
 };
 

@@ -27,8 +27,16 @@ export default function postsList(state = {}, action) {
 					offset: action.options.offset,
 					hasMore: action.options.hasMore,
 					loading: false,
-					length: state[action.options.point].length + action.options.length,
-					loader: false
+					length: state[action.options.point].length + action.options.length
+				},
+			};
+
+		case 'GET_POSTS_LIST_ERROR':
+			return {
+				...state,
+				[action.point]: {
+					...state[action.point],
+					loading: false
 				},
 			};
 

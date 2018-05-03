@@ -29,8 +29,7 @@ class PostsList extends React.Component {
 			loading: false,
 			posts: [],
 			length: 0,
-			hasMore: true,
-			loader: true
+			hasMore: true
 		};
 		props.initPostsList(postsListOptions);
 	}
@@ -64,12 +63,7 @@ class PostsList extends React.Component {
 	}
 
 	renderPosts() {
-		if (this.props.loader) {
-			return (
-				<span/>
-			)
-		}
-		if (!this.props.length) {
+		if (!this.props.length && !this.props.loading) {
 			return (
 				<div className="empty-query-message">
 					{Constants.EMPTY_QUERY}
