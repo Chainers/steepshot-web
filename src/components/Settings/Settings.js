@@ -15,7 +15,7 @@ class Settings extends React.Component {
 
 	submit(e) {
 		e.preventDefault();
-		this.props.updateSettings();
+		this.props.updateSettings(this.props.lowRated, this.props.nsfw);
 		this.props.historyGoBack();
 		this.props.pushMessage(Constants.SETTINGS_CHANGED_MESSAGE);
 	}
@@ -60,8 +60,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		updateSettings: () => {
-			dispatch(updateSettings());
+		updateSettings: (lowRated, nsfw) => {
+			dispatch(updateSettings(lowRated, nsfw));
 		},
 		historyGoBack: () => {
 			dispatch(goBack());

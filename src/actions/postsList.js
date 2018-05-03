@@ -48,14 +48,14 @@ export function getPostsList(point) {
 	}
 	return (dispatch) => {
 		dispatch(getPostsListRequest(point));
-		let userSettings = getStore().getState().auth.settings;
+		let settings = getStore().getState().settings;
 		const requestOptions = {
 			point,
 			params: {
 				...{
 					offset: statePoint.offset,
-					show_nsfw: userSettings ? userSettings.show_nsfw : false,
-					show_low_rated: userSettings ? userSettings.show_low_rated : false,
+					show_nsfw: settings[Constants.SETTINGS.show_nsfw],
+					show_low_rated: settings[Constants.SETTINGS.show_low_rated],
 					limit: LIMIT
 				},
 				...statePoint.options

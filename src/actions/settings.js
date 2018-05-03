@@ -1,5 +1,4 @@
 import Constants from "../common/constants";
-import {getStore} from "../store/configureStore";
 
 export function getSettings() {
 	return JSON.parse(localStorage.getItem('settings'))
@@ -18,13 +17,12 @@ function updateSettingsInLocalStorage(lowRated, nsfw) {
 	localStorage.setItem('settings', JSON.stringify(settings));
 }
 
-export function updateSettings() {
-	const settings = getStore().getState().settings;
-	updateSettingsInLocalStorage(settings.lowRatedBtn, settings.nsfwBth);
+export function updateSettings(lowRated, nsfw) {
+	updateSettingsInLocalStorage(lowRated, nsfw);
 	return {
 		type: 'UPDATE_SETTINGS',
-		[Constants.SETTINGS.show_low_rated]: settings.lowRatedBtn,
-		[Constants.SETTINGS.show_nsfw]: settings.nsfwBth
+		[Constants.SETTINGS.show_low_rated]: lowRated,
+		[Constants.SETTINGS.show_nsfw]: nsfw
 	}
 }
 
