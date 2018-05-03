@@ -4,7 +4,6 @@ import App from './components/App';
 import NotFound from './components/NotFound';
 import PrivateRoute from './components/Routes/PrivateRoute';
 import Feed from './components/Feed/Feed';
-import Settings from './components/Settings';
 import AboutComponent from './components/About/AboutComponent';
 import Testing from './components/Common/Testing/Testing';
 import SinglePost from './components/SinglePost/SinglePost';
@@ -14,6 +13,7 @@ import UserProfile from "./components/UserProfile/UserProfile";
 import Login from "./components/Login/Login";
 import {getStore} from "./store/configureStore";
 import Browse from "./components/Browse/Browse";
+import Settings from "./components/Settings/Settings";
 
 function isAuth() {
 	const auth = getStore().getState().auth;

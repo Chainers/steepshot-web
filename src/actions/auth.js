@@ -5,6 +5,7 @@ import {push} from 'react-router-redux';
 import {getProfile} from "../services/userProfile";
 import {pushMessage} from "./pushMessage";
 import {hideBodyLoader, showBodyLoader} from "./bodyLoader";
+import {updateSettings} from "./settings";
 
 function showMessage(message) {
 	return dispatch => {
@@ -46,25 +47,20 @@ export function login(username, postingKey) {
 			});
 			logLogin(data);
 
-			let settings = {
-				[Constants.SETTINGS.show_low_rated]: false,
-				[Constants.SETTINGS.show_nsfw]: false
-			};
-
 			let avatar = getAvatar(result[0]);
 
 			localStorage.setItem('user', JSON.stringify(username));
 			localStorage.setItem('postingKey', JSON.stringify(postingKey));
-			localStorage.setItem('settings', JSON.stringify(settings));
 			localStorage.setItem('like_power', '100');
 			localStorage.setItem('avatar', JSON.stringify(avatar));
+
+			dispatch(updateSettings(Constants.SETTINGS.default.show_low_rated, Constants.SETTINGS.default.show_nsfw));
 
 			dispatch({
 				type: 'LOGIN_SUCCESS',
 				postingKey: postingKey,
 				user: username,
 				avatar: avatar,
-				settings: settings,
 				like_power: 100
 			});
 
@@ -96,6 +92,7 @@ function logoutUser() {
 
 export function logout() {
 	return (dispatch) => {
+		dispatch(updateSettings(Constants.SETTINGS.default.show_low_rated, Constants.SETTINGS.default.show_nsfw));
 		localStorage.removeItem('user');
 		localStorage.removeItem('postingKey');
 		localStorage.removeItem('settings');

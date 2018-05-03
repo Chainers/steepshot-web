@@ -25,6 +25,10 @@ export default {
 	SETTINGS: {
 		show_low_rated: 'show_low_rated',
 		show_nsfw: 'show_nsfw',
+		default: {
+			show_low_rated: false,
+			show_nsfw: false
+		}
 	},
 
 	SETTINGS_LABELS: {

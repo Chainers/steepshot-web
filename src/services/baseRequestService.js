@@ -1,4 +1,5 @@
 import constants from '../common/constants';
+import {getSettings} from "../actions/settings";
 
 const basev1_1Url = constants.URLS.baseUrl_v1_1;
 
@@ -11,11 +12,11 @@ class BaseRequestService {
 	}
 
 	getDefaultSettingsOptions() {
-		const settings = JSON.parse(localStorage.getItem("settings"));
+		const settings = getSettings();
 		if (!settings) return {};
 
-		let nsfw = settings[constants.SETTINGS.show_nsfw] || false;
-		let low_rated = settings[constants.SETTINGS.show_low_rated] || false;
+		let nsfw = settings[constants.SETTINGS.show_nsfw];
+		let low_rated = settings[constants.SETTINGS.show_low_rated];
 
 		return {
 			[constants.SETTINGS.show_nsfw]: nsfw,
