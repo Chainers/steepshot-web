@@ -1,14 +1,12 @@
 const initialState = global.isServerSide ? {
 	user: 'fake_user',
 	postingKey: 'fake_posting_key',
-	settings: null,
 	avatar: null,
 	like_power: 100,
 	voting_power: null
 } : {
 	user: JSON.parse(global.localStorage.getItem('user')) || null,
 	postingKey: JSON.parse(global.localStorage.getItem('postingKey')) || null,
-	settings: JSON.parse(global.localStorage.getItem('settings')) || null,
 	avatar: JSON.parse(global.localStorage.getItem('avatar')) || null,
 	like_power: JSON.parse(global.localStorage.getItem('like_power')) || 100,
 	voting_power: null
@@ -24,7 +22,6 @@ export default function auth(state = initialState, action) {
 				...initialState,
 				user: JSON.parse(localStorage.getItem('user')) || null,
 				postingKey: JSON.parse(localStorage.getItem('postingKey')) || null,
-				settings: JSON.parse(localStorage.getItem('settings')) || null,
 				avatar: JSON.parse(localStorage.getItem('avatar')) || null,
 				isSetAuth: true
 			};
@@ -35,7 +32,6 @@ export default function auth(state = initialState, action) {
 				...state,
 				user: action.user,
 				postingKey: action.postingKey,
-				settings: action.settings,
 				avatar: action.avatar,
 				voting_power: action.voting_power,
 				like_power: action.like_power
@@ -46,17 +42,11 @@ export default function auth(state = initialState, action) {
 				...state,
 				user: null,
 				postingKey: null,
-				settings: null,
 				avatar: null,
 				voting_power: null,
 				like_power: null
 			};
 
-		case 'UPDATE_SETTINGS':
-			return {
-				...state,
-				settings: action.settings
-			};
 		case 'UPDATE_VOTING_POWER':
 			return {
 				...state,
