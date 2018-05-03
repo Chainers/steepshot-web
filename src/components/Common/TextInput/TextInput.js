@@ -70,7 +70,6 @@ class TextInput extends React.Component {
 		if (this.props.error) {
       this.props.setTextInputError(constants.TEXT_INPUT_POINT.TITLE, '');
 		}
-		console.log(newValue);
 		if (newValue !== this.props.text) {
 			this._updateTextValue(newValue);
 		}

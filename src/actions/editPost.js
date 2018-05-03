@@ -248,7 +248,8 @@ function prepareData() {
 function getValidTagsString(str) {
 	if (str) {
 		let result = str.replace(/\bsteepshot\b/g, '');
-		result = str.trim();
+    result = result.replace(/(\b\w+\b)(.+)(\1)/g, '$1$2');
+		result = result.trim();
 		result = result.replace(/\s\s/g, ' ');
 		result = result.replace(/[^\w\s]+/g, '');
 		result = result.replace(new RegExp(`((\\s[^\\s]+){${constants.TAGS.MAX_AMOUNT - 1}}).*`), '$1');
