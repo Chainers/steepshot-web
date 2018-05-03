@@ -5,7 +5,7 @@ import {debounce} from 'lodash';
 import {updatePost} from './post';
 import {updateVotingPower} from './auth';
 import {pushMessage} from "./pushMessage";
-import {voteLock, voteUnlock} from "./sessionActions";
+import {actionLock, actionUnlock} from "./sessionActions";
 
 function toggleFlagRequest(postIndex) {
 	return {
@@ -39,20 +39,20 @@ export function toggleFlag(postIndex) {
 			debounce(dispatch(pushMessage(Constants.VOTE_ACTION_WHEN_NOT_AUTH), Constants.VOTE_ACTION_WHEN_NOT_AUTH_DEBOUNCE));
 			return;
 		}
-		if (state.session.voteLocked) {
+		if (state.session.actionLocked) {
 			return;
 		}
-		dispatch(voteLock());
+		dispatch(actionLock());
 		dispatch(toggleFlagRequest(postIndex));
 
 		const callback = (err, success) => {
-			dispatch(voteUnlock());
+			dispatch(actionUnlock());
 			if (err) {
 				dispatch(toggleFlagFailure(postIndex));
 				dispatch(pushMessage(err));
 			} else if (success) {
 				dispatch(toggleFlagSuccess(postIndex));
-				dispatch(updatePost(postIndex, false, newFlagState));
+				dispatch(updatePost(postIndex, 0, newFlagState));
 				dispatch(updateVotingPower(username));
 				let text = `The post has been successfully flaged. If you don't see your flag, please give it a few minutes to sync from the blockchain`;
 				if (!newFlagState) text = `The post has been successfully unflaged. If you don't see your flag, please give it a few minutes to sync from the blockchain`;
