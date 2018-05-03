@@ -1,11 +1,11 @@
-export function voteLock() {
+export function actionLock() {
 	return {
-		type: 'VOTE_LOCK'
+		type: 'ACTION_LOCK'
 	};
 }
 
-export function voteUnlock() {
+export function actionUnlock() {
 	return {
-		type: 'VOTE_UNLOCK'
+		type: 'ACTION_UNLOCK'
 	};
 }

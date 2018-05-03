@@ -4,7 +4,8 @@ import {getStore} from '../store/configureStore';
 import {initPostsList} from './postsList';
 import {initPostModal} from './postModal';
 import Constants from '../common/constants';
-import {pushMessage} from "./pushMessage";
+import {pushMessage} from './pushMessage';
+import {actionLock, actionUnlock} from './sessionActions';
 
 function addPosts(posts) {
   return {
@@ -36,11 +37,13 @@ function updatePostData(dispatch, postIndex) {
 
 function updateCommentData(dispatch, postIndex, newVoteState, newFlagState) {
 	let newItem = getStore().getState().posts[postIndex];
-	newVoteState ? newItem.net_votes++ : newItem.net_votes--;
-	newVoteState ? newItem.net_likes++ : newItem.net_likes--;
-	newFlagState ? newItem.net_flags++ : newItem.net_flags--;
-	newItem.vote = newVoteState;
-	newItem.flag = newFlagState;
+	if (newVoteState !== 0) {
+    newVoteState ? newItem.net_votes++ : newItem.net_votes--;
+    newVoteState ? newItem.net_likes++ : newItem.net_likes--;
+	}
+	if (newFlagState !== 0) {
+    newFlagState ? newItem.net_flags++ : newItem.net_flags--;
+	}
 	if (newItem.vote && newFlagState) {
     newItem.vote = false;
     newItem.net_votes--;
@@ -50,6 +53,8 @@ function updateCommentData(dispatch, postIndex, newVoteState, newFlagState) {
     newItem.flag = false;
     newItem.net_flags--;
   }
+  newItem.vote = newVoteState;
+  newItem.flag = newFlagState;
 	dispatch({
 		type: 'UPDATE_COMMENT',
 		[postIndex]: newItem
@@ -117,8 +122,13 @@ export function deletePost(postIndex) {
 		let postingKey = state.auth.postingKey;
 		const urlObject = postIndex.split('/');
 		let permlink = urlObject[urlObject.length - 1];
+    if (state.session.actionLocked) {
+      return;
+    }
+    dispatch(actionLock());
 		dispatch(sendDeletePost(postIndex));
 		const callback = (err, success) => {
+      dispatch(actionUnlock());
 			if (success) {
 				dispatch(successDeletePost(postIndex));
 				dispatch(pushMessage(Constants.DELETE.DELETE_SUCCESS));
