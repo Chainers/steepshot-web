@@ -30,6 +30,14 @@ function getUsersListSuccess(options, users) {
 	};
 }
 
+function getUsersListError(point, error) {
+	return {
+		type: 'GET_USERS_LIST_ERROR',
+		point,
+		error
+	};
+}
+
 
 export function getUsersList(point, getUsers) {
 	const LIMIT = 16;
@@ -88,6 +96,8 @@ export function getUsersList(point, getUsers) {
 			};
 
 			dispatch(getUsersListSuccess(pointOptions, users));
+		}).catch( error => {
+			dispatch(getUsersListError(point, error));
 		});
 	};
 }

@@ -35,8 +35,16 @@ export default function usersList(state = {}, action) {
 					loading: false,
 					hasMore: action.options.hasMore,
 					users: usersArr,
-					offset: action.options.offset,
-					loader: false
+					offset: action.options.offset
+				}
+			};
+
+		case 'GET_USERS_LIST_ERROR':
+			return {
+				...state,
+				[action.point]: {
+					...state[action.options.point],
+					loading: false
 				}
 			};
 

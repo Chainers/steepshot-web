@@ -47,8 +47,7 @@ class UsersList extends React.Component {
 			hasMore: true,
 			users: [],
 			offset: null,
-			options: props.options,
-			loader: true
+			options: props.options
 		};
 	}
 
@@ -64,12 +63,7 @@ class UsersList extends React.Component {
 	}
 
 	renderUsers() {
-		if (this.props.loader) {
-			return (
-				<span/>
-			)
-		}
-		if (!this.props.users || !this.props.users[0]) {
+		if ((!this.props.users || !this.props.users[0]) && !this.props.loading) {
 			return (
 				<div className="empty-query-message">
 					{Constants.EMPTY_QUERY}
