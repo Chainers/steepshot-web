@@ -4,59 +4,57 @@ import {connect} from 'react-redux';
 import ShowIf from "../Common/ShowIf";
 import {logout} from "../../actions/auth";
 import './mobileNavigation.css';
+import {closeMobileNavigation} from "../../actions/mobileNavigation";
 
 class MobileNavigation extends React.Component {
 
 	handleLogout(event) {
 		event.preventDefault();
-		this.handleClick();
+		this.props.closeMobileNavigation();
 		this.props.logout();
 	}
 
-	handleClick() {
-
-	}
-
 	render() {
+		const {isAuth, name, opened, urls, labels, closeMobileNavigation} = this.props;
 		return (
-			<ShowIf show={this.props.isUserAuth}>
-				<div className="container_mobile">
+			<ShowIf show={isAuth}>
+				<div className={'container_mobile' + (opened ? ' opened' : '')}>
 					<ul className="menu_mobile">
 						<li className="menu-item_mobile">
 							<Link
-								to={this.props.urls.userProfileBase + this.props.user}
-								onClick={this.handleClick.bind(this)}
+								to={urls.userProfileBase + name}
+								onClick={closeMobileNavigation}
 							>
-								{this.props.labels.profileLabel}
+								{labels.profileLabel}
 							</Link>
 						</li>
 						<li className="menu-item_mobile">
 							<Link
-								to={this.props.urls.feed}
-								onClick={this.handleClick.bind(this)}
+								to={urls.feed}
+								onClick={closeMobileNavigation}
 							>
-								{this.props.labels.feedLabel}
+								{labels.feedLabel}
 							</Link>
 						</li>
 						<li className="menu-item_mobile">
 							<Link
-								to={this.props.urls.browse}
-								onClick={this.handleClick.bind(this)}
+								to={urls.browse}
+								onClick={closeMobileNavigation}
 							>
-								{this.props.labels.browseLabel}
+								{labels.browseLabel}
 							</Link>
 						</li>
 						<li className="menu-item_mobile">
 							<Link
-								to={this.props.urls.settings}
-								onClick={this.handleClick.bind(this)}
+								to={urls.settings}
+								onClick={closeMobileNavigation}
 							>
-								{this.props.labels.settingsLabel}
+								{labels.settingsLabel}
 							</Link>
 						</li>
 						<li className="menu-item_mobile">
-							<a onClick={this.handleLogout.bind(this)}>
-								{this.props.labels.logoutLabel}
+							<a onClick={closeMobileNavigation}>
+								{labels.logoutLabel}
 							</a>
 						</li>
 					</ul>
@@ -66,7 +64,7 @@ class MobileNavigation extends React.Component {
 	}
 }
 
-MobileNavigationComponent.defaultProps = {
+MobileNavigation.defaultProps = {
 	labels: {
 		profileLabel: "Profile",
 		feedLabel: "Feed",
@@ -86,8 +84,9 @@ MobileNavigationComponent.defaultProps = {
 
 const mapStateToProps = (state) => {
 	return {
-		isUserAuth: !!state.auth.user && !!state.auth.postingKey,
-		user: state.auth.user
+		isAuth: !!state.auth.user && !!state.auth.postingKey,
+		user: state.auth.user,
+		opened: state.mobileNavigation.opened
 	};
 };
 
@@ -95,6 +94,9 @@ const mapDispatchToProps = (dispatch) => {
 	return {
 		logout: () => {
 			dispatch(logout());
+		},
+		closeMobileNavigation: () => {
+			dispatch(closeMobileNavigation());
 		}
 	}
 };
