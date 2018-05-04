@@ -25,6 +25,7 @@ import formInput from "./formInput";
 import bodyLoader from "./bodyLoader";
 import session from "./session";
 import windowOnStore from "./windowOnStore";
+import settings from "./settings";
 
 export default combineReducers({
 	clipboard,
@@ -52,5 +53,6 @@ export default combineReducers({
 	formInput,
 	bodyLoader,
 	session,
-	window: windowOnStore
+	window: windowOnStore,
+	settings
 });

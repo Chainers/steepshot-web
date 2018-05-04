@@ -1,6 +1,6 @@
 import React from 'react';
 import './testing.css';
-import Login from "../../Login/Login";
+import Settings from "../../Settings/Settings";
 
 class Testing extends React.Component {
 
@@ -9,7 +9,7 @@ class Testing extends React.Component {
 			return null;
 		}
 		return (
-			<Login />
+			<Settings />
 		);
 	}
 }
