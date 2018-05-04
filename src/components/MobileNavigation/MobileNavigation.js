@@ -5,6 +5,7 @@ import ShowIf from "../Common/ShowIf";
 import {logout} from "../../actions/auth";
 import './mobileNavigation.css';
 import {closeMobileNavigation} from "../../actions/mobileNavigation";
+import {Scrollbars} from "react-custom-scrollbars";
 
 class MobileNavigation extends React.Component {
 
@@ -18,46 +19,40 @@ class MobileNavigation extends React.Component {
 		const {isAuth, name, opened, urls, labels, closeMobileNavigation} = this.props;
 		return (
 			<ShowIf show={isAuth}>
-				<div className={'container_mobile' + (opened ? ' opened' : '')}>
-					<ul className="menu_mobile">
-						<li className="menu-item_mobile">
-							<Link
-								to={urls.userProfileBase + name}
-								onClick={closeMobileNavigation}
-							>
-								{labels.profileLabel}
-							</Link>
-						</li>
-						<li className="menu-item_mobile">
-							<Link
-								to={urls.feed}
-								onClick={closeMobileNavigation}
-							>
-								{labels.feedLabel}
-							</Link>
-						</li>
-						<li className="menu-item_mobile">
-							<Link
-								to={urls.browse}
-								onClick={closeMobileNavigation}
-							>
-								{labels.browseLabel}
-							</Link>
-						</li>
-						<li className="menu-item_mobile">
-							<Link
-								to={urls.settings}
-								onClick={closeMobileNavigation}
-							>
-								{labels.settingsLabel}
-							</Link>
-						</li>
-						<li className="menu-item_mobile">
-							<a onClick={closeMobileNavigation}>
-								{labels.logoutLabel}
-							</a>
-						</li>
-					</ul>
+				<div className={'container_mobile' + (opened ? ' opened' : '')} onClick={this.props.closeMobileNavigation}>
+					<div className="menu_mobile">
+						<Scrollbars>
+							<div className="menu-items_mobile">
+								<Link
+									to={urls.userProfileBase + name}
+									onClick={closeMobileNavigation}
+								>
+									{labels.profileLabel}
+								</Link>
+								<Link
+									to={urls.feed}
+									onClick={closeMobileNavigation}
+								>
+									{labels.feedLabel}
+								</Link>
+								<Link
+									to={urls.browse}
+									onClick={closeMobileNavigation}
+								>
+									{labels.browseLabel}
+								</Link>
+								<Link
+									to={urls.settings}
+									onClick={closeMobileNavigation}
+								>
+									{labels.settingsLabel}
+								</Link>
+								<a onClick={this.handleLogout.bind(this)}>
+									{labels.logoutLabel}
+								</a>
+							</div>
+						</Scrollbars>
+					</div>
 				</div>
 			</ShowIf>
 		)

@@ -1,11 +1,41 @@
 .container_mobile {
-
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: rgba(0,0,0,.5);
+    z-index: 1000;
 }
 
 .menu_mobile {
-
+    width: 100vw;
+    height: 100%;
+    max-width: 400px;
+    background: #fff;
+    transition: transform .5s;
+    z-index: 1001;
+    padding: 60px 0 0;
+    margin: 0;
+    overflow: auto;
 }
 
-.menu-item_mobile {
+.menu_mobile a {
+    display: block;
+    width: 100%;
+    text-decoration: none;
+    text-align: center;
+    font-size: 20px;
+    color: #0f181e;
+    line-height: 1.4;
+    padding: 22px 0;
+    border-bottom: 1px solid #e7e7e7;
+}
 
+.menu-items_mobile {
+    padding: 0 15px;
+}
+
+.menu_mobile a:hover {
+    color: #e74800;
 }
