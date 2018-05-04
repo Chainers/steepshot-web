@@ -51,3 +51,7 @@
 .menu_mobile a:hover {
     color: #e74800;
 }
+
+.no-scroll_body {
+    overflow: hidden;
+}

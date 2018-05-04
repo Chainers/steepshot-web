@@ -27,7 +27,6 @@ class Footer extends React.Component {
 						</div>
 					</div>
 				</div>
-				<div className="js--page-bottom"/>
 			</div>
 		);
 	}

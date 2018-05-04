@@ -6,6 +6,7 @@ import PushNotifications from "../PushNotifications/PushNotifications";
 import Clipboard from "./Clipboard/Clipboard";
 import Modals from "../Modals/Modals";
 import {resizeWindow} from "../../actions/utils";
+import MobileNavigation from "../MobileNavigation/MobileNavigation";
 
 class FunctionalUtils extends React.Component {
 
@@ -31,6 +32,7 @@ class FunctionalUtils extends React.Component {
         <PushMessage />
 				<Clipboard/>
 				<Modals/>
+				<MobileNavigation/>
       </div>
     );
   }
