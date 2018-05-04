@@ -1,8 +1,8 @@
 import React from 'react';
 import Constants from '../../common/constants';
-import './imagesGallery.css';
 import ShowIf from '../Common/ShowIf';
 import LoadingSpinner from '../LoadingSpinner/index';
+import './imagesGallery.css';
 
 class SingleModalImage extends React.Component {
 
@@ -58,7 +58,6 @@ class SingleModalImage extends React.Component {
     );
   }
 }
-
 
 
 export default SingleModalImage;

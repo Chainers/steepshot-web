@@ -10,14 +10,23 @@
     justify-content: center;
 }
 
-@media (max-width: 815px) {
+@media (max-width: 645px) {
     .body_use-lis {
         justify-content: center;
     }
 }
 
-@media (max-width: 815px) {
+@media (max-width: 815px) and (min-width: 350px) {
     .body_use-lis {
         margin-left: -20px;
+    }
+}
+
+@media (max-width: 350px) {
+    .body_use-lis {
+        margin: 0 15px 0 -5px;
+    }
+    .body_use-lis.posts-list {
+        margin: 0;
     }
 }

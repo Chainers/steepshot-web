@@ -444,7 +444,6 @@ class PostModal extends React.Component {
 								</div>
 							</div>
 						</div>
-
 						<Comments point={this.props.currentIndex}/>
 					</div>
 				</div>
@@ -559,6 +558,7 @@ const mapStateToProps = (state) => {
 			...state.postModal,
 			isGallery: isGallery,
 			newPostsLoading: postsList.loading,
+			newImageLoader: state.postModal.newImageLoader,
 			isUserAuth: state.auth.user && state.auth.postingKey,
 			authUser: state.auth.user,
 			isResizeCover: state.imagesGallery.isResizeCover,
