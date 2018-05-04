@@ -4,7 +4,7 @@ import Constants from "../common/constants";
 import Steem from "../libs/steem";
 import {clearTextInputState} from "./textInput";
 import {pushMessage} from "./pushMessage";
-import {actionLock, actionUnlock} from "./sessionActions";
+import {actionLock, actionUnlock} from "./session";
 
 export function initPostComment(point) {
 	return {

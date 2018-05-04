@@ -4,9 +4,10 @@ import {connect} from 'react-redux';
 import {clearVPTimeout, logout, setUserAuth, updateVotingPower} from '../actions/auth';
 import Constants from '../common/constants';
 import Avatar from './Common/Avatar/Avatar';
-import jqApp from "../libs/app.min";
 import {setSearchPanelState, setSearchValue} from "../actions/search";
 import {push} from "react-router-redux";
+import {closeMobileNavigation, toggleMobileNavigation} from "../actions/mobileNavigation";
+import Hamburger from "./Hamburger/Hamburger";
 
 class Header extends React.Component {
 
@@ -35,8 +36,8 @@ class Header extends React.Component {
 				return;
 			}
 			this.props.historyPush(`/search/${this.props.searchValue}`);
-			if (document.getElementsByTagName('body')[0].classList.value === 'mm-open') {
-        jqApp.mobileMenu._menuHide();
+			if (this.props.openedMobileNavigation) {
+				this.props.closeMobileNavigation();
 			}
 		}
 	}
@@ -97,9 +98,7 @@ class Header extends React.Component {
 								isUserAuth
 									? <div className="section hamburger">
 										<div className="wrap-hamburger">
-											<button type="button" className="mm-opener">
-												<span className="ico"/>
-											</button>
+											<Hamburger toggle={this.props.toggleMobileNavigation} pressed={this.props.openedMobileNavigation}/>
 										</div>
 									</div>
 									: null
@@ -116,9 +115,7 @@ class Header extends React.Component {
 												</Link>
 												<Link to="/editPost" type="button"
 															className="btn btn-default btn-create-mob"
-															onClick={() => {
-																jqApp.mobileMenu._menuHide();
-															}}
+															onClick={this.props.toggleMobileNavigation}
 												/>
 											</div>
 											: null
@@ -146,7 +143,9 @@ class Header extends React.Component {
 								</a>
 							</div>
 							<div className="section search">
-								<div className="wrap-search" onClick={() => {this.props.setSearchPanelState(true)}}>
+								<div className="wrap-search" onClick={() => {
+									this.props.setSearchPanelState(true)
+								}}>
 									<span className="lnk-search">Search</span>
 									<span className="lnk-search-mob"> </span>
 								</div>
@@ -211,6 +210,12 @@ const mapDispatchToProps = (dispatch) => {
 		},
 		setSearchPanelState: (flag) => {
 			dispatch(setSearchPanelState(flag));
+		},
+		closeMobileNavigation: () => {
+			dispatch(closeMobileNavigation());
+		},
+		toggleMobileNavigation: () => {
+			dispatch(toggleMobileNavigation());
 		}
 	}
 };
@@ -223,7 +228,8 @@ const mapStateToProps = (state) => {
 		avatar: state.auth.avatar,
 		vpTimeout: state.auth.vpTimeout,
 		searchValue: state.search.value,
-		isOpened: state.search.isOpened
+		isOpened: state.search.isOpened,
+		openedMobileNavigation: state.mobileNavigation.opened
 	};
 };
 

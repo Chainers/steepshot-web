@@ -1254,168 +1254,6 @@ a.bg-danger:hover {
     border-bottom: 1px solid #eee
 }
 
-.g-wrap ol, .g-wrap ul {
-    list-style: none;
-    padding-left: 0
-}
-
-.g-wrap ol:not(.list-reset), .g-wrap ul:not(.list-reset) {
-    position: relative;
-    margin: 1em 0 1.5em;
-    padding: 0 0 0 .2em;
-    font-size: 14px;
-    line-height: 1.46667
-}
-
-.g-wrap ol:not(.list-reset) li, .g-wrap ul:not(.list-reset) li {
-    display: table;
-    margin-bottom: .95em;
-    border-collapse: separate
-}
-
-.ie .g-wrap ol:not(.list-reset) li, .ie .g-wrap ul:not(.list-reset) li {
-    position: relative;
-    padding-left: 1.5em
-}
-
-.g-wrap ol:not(.list-reset) li:before, .g-wrap ul:not(.list-reset) li:before {
-    display: table-cell;
-    padding-right: 14px
-}
-
-.ie .g-wrap ol:not(.list-reset) li:before, .ie .g-wrap ul:not(.list-reset) li:before {
-    display: block;
-    position: absolute;
-    top: 0;
-    left: 0
-}
-
-.g-wrap ol:not(.list-reset) ol, .g-wrap ol:not(.list-reset) ul, .g-wrap ul:not(.list-reset) ol, .g-wrap ul:not(.list-reset) ul {
-    padding-left: 3px;
-    margin: 1.1em 0 .4em
-}
-
-.g-wrap ol:not(.list-reset) ol li, .g-wrap ol:not(.list-reset) ul li, .g-wrap ul:not(.list-reset) ol li, .g-wrap ul:not(.list-reset) ul li {
-    margin-bottom: .95em
-}
-
-.g-wrap ol:not(.list-reset) ol li:last-child, .g-wrap ol:not(.list-reset) ul li:last-child, .g-wrap ul:not(.list-reset) ol li:last-child, .g-wrap ul:not(.list-reset) ul li:last-child {
-    margin-bottom: 0
-}
-
-.g-wrap ol:not(.list-reset) {
-    padding-left: .1em;
-    counter-reset: list 0
-}
-
-.g-wrap ol:not(.list-reset) > li:before {
-    counter-increment: list;
-    content: counter(list) ". ";
-    color: #007aff
-}
-
-.g-wrap ol:not(.list-reset) ol > li:before {
-    content: counters(list, ".") ". ";
-    color: #007aff
-}
-
-.ie .g-wrap ol:not(.list-reset) ol > li {
-    padding-left: 2.25em
-}
-
-.ie .g-wrap ol:not(.list-reset) ol ol > li {
-    padding-left: 3em
-}
-
-.ie .g-wrap ol:not(.list-reset) ol ol ol > li {
-    padding-left: 3.75em
-}
-
-.ie .g-wrap ol:not(.list-reset) ol ol ol ol > li {
-    padding-left: 4.5em
-}
-
-.g-wrap ol:not(.list-reset).styled > li {
-    position: relative;
-    padding-left: 38px
-}
-
-.g-wrap ol:not(.list-reset).styled > li:before {
-    content: counters(list, ".");
-    background: #eb443d;
-    color: #fff;
-    font-weight: 700;
-    display: block;
-    position: absolute;
-    top: -3px;
-    left: 0;
-    height: 24px;
-    line-height: 24px;
-    width: 24px;
-    padding: 0;
-    text-align: center;
-    font-size: 12px;
-    border-radius: 2px
-}
-
-.g-wrap ul:not(.list-reset) > li {
-    position: relative;
-    padding-left: 30px
-}
-
-.g-wrap ul:not(.list-reset) > li:before {
-    content: '';
-    display: block;
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    padding: 0;
-    background: #007aff;
-    margin-right: 14px;
-    position: absolute;
-    top: 6px;
-    left: 0
-}
-
-.g-wrap ul:not(.list-reset) ul > li:before {
-    content: '';
-    display: block;
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    padding: 0;
-    border: 2px solid #007aff;
-    margin-right: 14px;
-    background: 0 0;
-    position: absolute;
-    top: 6px;
-    left: 0
-}
-
-.g-wrap ol[start="31"] {
-    counter-reset: list 30
-}
-
-.g-wrap ol[start="26"] {
-    counter-reset: list 25
-}
-
-.g-wrap ol[start="21"] {
-    counter-reset: list 20
-}
-
-.g-wrap ol[start="16"] {
-    counter-reset: list 15
-}
-
-.g-wrap ol[start="11"] {
-    counter-reset: list 10
-}
-
-.g-wrap ol[start="6"] {
-    counter-reset: list 5
-}
-
 .list-inline {
     padding-left: 0;
     list-style: none;
@@ -2620,7 +2458,6 @@ html body {
     position: absolute;
     -webkit-transform: translateX(-100%);
     transform: translateX(-100%);
-    transition: -webkit-transform .5s;
     transition: transform .5s;
     will-change: transform;
     max-width: 400px
@@ -7716,14 +7553,6 @@ modal.modal-like .modal-header {
         margin-top: 0;
         margin-bottom: 25px;
         font-size: 20px
-    }
-
-    .g-wrap ol:not(.list-reset), .g-wrap ul:not(.list-reset) {
-        padding: 0
-    }
-
-    .g-wrap ol:not(.list-reset) {
-        padding-left: 0
     }
 
     .container {
