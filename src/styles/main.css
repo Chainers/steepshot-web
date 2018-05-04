@@ -1,5 +1,5 @@
 .main-container-chuldren {
-    background-color: #8f8f8;
+    background-color: #f8f8f8;
 }
 
 body {
@@ -125,7 +125,7 @@ body {
 input.autofil--gray:-webkit-autofill:hover,
 input.autofil--gray:-webkit-autofill:focus,
 input.autofil--gray:-webkit-autofill {
-    -webkit-box-shadow: 0 0 0px 1000px #fafafa inset;
+    -webkit-box-shadow: 0 0 0 1000px #fafafa inset;
 }
 
 .blur-blocker {
@@ -2066,7 +2066,6 @@ button.close {
     font-size: 14px;
     text-align: left;
     background-color: #fff;
-    border: 1px solid #ccc;
     border: 1px solid rgba(0, 0, 0, .15);
     border-radius: 4px;
     box-shadow: 0 3px 4px rgba(0, 0, 0, .175);
@@ -2388,13 +2387,12 @@ button.close {
     content: ' ';
     display: inline-block;
     font-size: 10px;
-    background-image: url('/images/sprite_svg1910.svg');
-    background-repeat: no-repeat;
-    background-size: 4.4em 47.2em
+    background: url('/images/sprite_svg1910.svg') no-repeat;
+    background-size: 4.4em 47.2em;
 }
 
 .no-svg [class*=ic2-]:before {
-    background-image: url('/images/sprite_svg1910.png')
+    background-image: url('/images/sprite_svg1910.svg');
 }
 
 .ic2-arrow-check:before {
@@ -2624,7 +2622,6 @@ html body {
     transform: translateX(-100%);
     transition: -webkit-transform .5s;
     transition: transform .5s;
-    transition: transform .5s, -webkit-transform .5s;
     will-change: transform;
     max-width: 400px
 }
@@ -4229,8 +4226,6 @@ html body {
 .form-group .input-container .shadow-textarea {
     display: block;
     width: 100%;
-    height: 42px;
-    padding: 9px 0 9px 0;
     font-size: 14px;
     line-height: 1.6;
     color: #000;
@@ -4248,7 +4243,7 @@ html body {
     min-height: 42px;
     height: auto;
     padding-left: 10px;
-    padding-right: 10px
+    padding-right: 10px;
 }
 
 .form-group .input-container .shadow-textarea:hover {
@@ -4571,7 +4566,7 @@ input[type=checkbox] ~ .box:before {
 }
 
 .no-svg input[type=checkbox] ~ .box:before {
-    background-image: url('/images/sprite_svg1910.png')
+    background-image: url('/images/sprite_svg1910.svg');
 }
 
 fieldset[disabled] input[type=checkbox], fieldset[disabled] input[type=radio], input[type=checkbox].disabled, input[type=checkbox][disabled], input[type=radio].disabled, input[type=radio][disabled] {
@@ -4875,7 +4870,6 @@ fieldset[disabled] input[type=checkbox] ~ .box, fieldset[disabled] input[type=ch
 
 .upload .uf-icon:before {
     content: ' ';
-    display: inline-block;
     font-size: 10px;
     background-image: url('/images/sprite_svg1910.svg');
     background-repeat: no-repeat;
@@ -4888,7 +4882,7 @@ fieldset[disabled] input[type=checkbox] ~ .box, fieldset[disabled] input[type=ch
 }
 
 .no-svg .upload .uf-icon:before {
-    background-image: url('/images/sprite_svg1910.png')
+    background-image: url('/images/sprite_svg1910.svg')
 }
 
 .upload .uf-text {
@@ -5260,11 +5254,10 @@ input[type=button].btn-block, input[type=reset].btn-block, input[type=submit].bt
 .nav-tabs:not(.tabs-reset) {
     position: relative;
     margin-left: -5px;
-    margin-right: -10px;
 }
 
 .body_modal .nav-tabs:not(.tabs-reset) {
-    margin-right: 15px;
+    margin-right: 25px;
 }
 
 @media (max-width: 815px) {
@@ -5279,7 +5272,7 @@ input[type=button].btn-block, input[type=reset].btn-block, input[type=submit].bt
     position: absolute;
     bottom: -1px;
     left: 0;
-    right: 10px;
+    right: 0;
     height: 1px;
     background: #f4f4f6
 }

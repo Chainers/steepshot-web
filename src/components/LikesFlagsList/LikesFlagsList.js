@@ -54,6 +54,14 @@ class LikesFlagsList extends React.Component {
 	}
 
 	render() {
+		let likesCondition = !this.props.likes || !this.props.likes.users.length;
+		let flagsCondition = !this.props.flags || !this.props.flags.users.length;
+		let commonLoader = true;
+		if (this.props.likes && this.props.flags) {
+			if (!this.props.likes.loading && !this.props.flags.loading) {
+        commonLoader = false;
+			}
+		}
 		return (
 			<div className="container_lik-lis">
 				<CloseButton className='close-button_lik-lis' onClick={this.props.closeModal}/>
@@ -61,7 +69,7 @@ class LikesFlagsList extends React.Component {
 								 showLoader={false}
 								 alwaysShowNavigation={true}
 					>
-					<Tab name="Likes">
+					<Tab name="Likes" empty={likesCondition && !flagsCondition}>
 						<Scrollbars style={{width: '100%', height: this.props.preferredBodyHeight, marginTop: 20}}>
 							<UsersList
 								isLikesFlags={true}
@@ -69,20 +77,21 @@ class LikesFlagsList extends React.Component {
 								getUsers={getVoters}
 								useScrollView={true}
 								options={{likes: 1}}
+								commonLoader={commonLoader}
 							>
 								<ReactResizeDetector handleWidth handleHeight onResize={this.updateBodyHeight}
 																		 ref={ref => this.likes = ref}/>
 							</UsersList>
 						</Scrollbars>
 					</Tab>
-					<Tab name="Flags"
-							 empty={!this.props.flags || !this.props.flags.users.length}>
+					<Tab name="Flags" empty={flagsCondition && !likesCondition}>
 						<Scrollbars style={{width: '100%', height: this.props.preferredBodyHeight, marginTop: 20}}>
 							<UsersList
 								point={this.props.point}
 								getUsers={getVoters}
 								useScrollView={true}
 								options={{flags: 1}}
+								commonLoader={commonLoader}
 							>
 								<ReactResizeDetector handleWidth handleHeight onResize={this.updateBodyHeight}
 																		 ref={ref => this.flags = ref}/>
@@ -97,10 +106,10 @@ class LikesFlagsList extends React.Component {
 
 const mapStateToProps = (state, props) => {
 	let point = `post${LikesFlagsList.permLink(state.posts[props.postIndex].url, props.commentAuthor)}/voters`;
-	let flags = state.usersList[point + 'JSON_OPTIONS:{"flags":1}'];
 	return {
-		flags,
 		point,
+		flags: state.usersList[point + 'JSON_OPTIONS:{"flags":1}'],
+		likes: state.usersList[point + 'JSON_OPTIONS:{"likes":1}'],
 		...state.likesFlagsList,
 		...state.tabsBar.likesFlags,
 		window: state.window

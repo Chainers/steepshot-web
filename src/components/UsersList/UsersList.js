@@ -63,23 +63,28 @@ class UsersList extends React.Component {
 	}
 
 	renderUsers() {
-		if ((!this.props.users || !this.props.users[0]) && !this.props.loading) {
-			return (
-				<div className="empty-query-message">
-					{Constants.EMPTY_QUERY}
-				</div>
-			);
-		}
-		let users = [];
-		this.props.users.forEach((user, index) => {
-			users.push(
-				<User
-					key={index}
-					index={this.props.users[index]}
-				/>,
-			);
-		});
-		return users;
+		if (this.props.users) {
+      if (this.props.commonLoader && !this.props.users.length) {
+        return null;
+      }
+      if ((!this.props.users || !this.props.users[0]) && !this.props.commonLoader) {
+        return (
+					<div className="empty-query-message">
+            {Constants.EMPTY_QUERY}
+					</div>
+        );
+      }
+      let users = [];
+      this.props.users.forEach((user, index) => {
+        users.push(
+					<User
+						key={index}
+						index={this.props.users[index]}
+					/>,
+        );
+      });
+      return users;
+    }
 	}
 
 	render() {
