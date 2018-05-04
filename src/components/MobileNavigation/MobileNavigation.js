@@ -19,7 +19,7 @@ class MobileNavigation extends React.Component {
 		const {isAuth, name, opened, urls, labels, closeMobileNavigation} = this.props;
 		return (
 			<ShowIf show={isAuth}>
-				<div className={'container_mobile' + (opened ? ' opened' : '')} onClick={this.props.closeMobileNavigation}>
+				<div className={'container_mobile' + (opened ? ' opened_mobile' : '')} onClick={this.props.closeMobileNavigation}>
 					<div className="menu_mobile">
 						<Scrollbars>
 							<div className="menu-items_mobile">
@@ -80,7 +80,7 @@ MobileNavigation.defaultProps = {
 const mapStateToProps = (state) => {
 	return {
 		isAuth: !!state.auth.user && !!state.auth.postingKey,
-		user: state.auth.user,
+		name: state.auth.user,
 		opened: state.mobileNavigation.opened
 	};
 };
