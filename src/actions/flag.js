@@ -5,7 +5,7 @@ import {debounce} from 'lodash';
 import {updatePost} from './post';
 import {updateVotingPower} from './auth';
 import {pushMessage} from "./pushMessage";
-import {actionLock, actionUnlock} from "./sessionActions";
+import {actionLock, actionUnlock} from "./session";
 
 function toggleFlagRequest(postIndex) {
 	return {

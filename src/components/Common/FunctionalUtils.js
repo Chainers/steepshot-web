@@ -5,7 +5,7 @@ import PushMessage from "./PushMessage/PushMessage";
 import PushNotifications from "../PushNotifications/PushNotifications";
 import Clipboard from "./Clipboard/Clipboard";
 import Modals from "../Modals/Modals";
-import {resizeWindow} from "../../actions/utilsActions";
+import {resizeWindow} from "../../actions/utils";
 
 class FunctionalUtils extends React.Component {
 

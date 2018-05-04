@@ -8,7 +8,7 @@ import ShowIf from "../Common/ShowIf";
 import ReactPlayer from 'react-player'
 import Constants from "../../common/constants";
 import FormInput from "../Common/FormInput/FormInput";
-import {setErrorFormInput} from "../../actions/formInputActions";
+import {setErrorFormInput} from "../../actions/formInput";
 import {login} from "../../actions/auth";
 
 const NAME_POINT = "name_login";
