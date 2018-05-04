@@ -6,7 +6,7 @@ import Constants from '../common/constants';
 import Avatar from './Common/Avatar/Avatar';
 import {setSearchPanelState, setSearchValue} from "../actions/search";
 import {push} from "react-router-redux";
-import {closeMobileNavigation, openMobileNavigation, toggleMobileNavigation} from "../actions/mobileNavigation";
+import {closeMobileNavigation, toggleMobileNavigation} from "../actions/mobileNavigation";
 import Hamburger from "./Hamburger/Hamburger";
 
 class Header extends React.Component {
@@ -37,7 +37,7 @@ class Header extends React.Component {
 			}
 			this.props.historyPush(`/search/${this.props.searchValue}`);
 			if (this.props.openedMobileNavigation) {
-        this.props.closeMobileNavigation();
+				this.props.closeMobileNavigation();
 			}
 		}
 	}
@@ -96,7 +96,11 @@ class Header extends React.Component {
 						<div className="wrap-panel clearfix">
 							{
 								isUserAuth
-									? <Hamburger toggle={this.props.toggleMobileNavigation} pressed={this.props.openedMobileNavigation}/>
+									? <div className="section hamburger">
+										<div className="wrap-hamburger">
+											<Hamburger toggle={this.props.toggleMobileNavigation} pressed={this.props.openedMobileNavigation}/>
+										</div>
+									</div>
 									: null
 							}
 							{loginComponent}
@@ -139,7 +143,9 @@ class Header extends React.Component {
 								</a>
 							</div>
 							<div className="section search">
-								<div className="wrap-search" onClick={() => {this.props.setSearchPanelState(true)}}>
+								<div className="wrap-search" onClick={() => {
+									this.props.setSearchPanelState(true)
+								}}>
 									<span className="lnk-search">Search</span>
 									<span className="lnk-search-mob"> </span>
 								</div>
