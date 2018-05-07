@@ -2,7 +2,6 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {getPostsList, initPostsList} from '../../actions/postsList';
 import {debounce} from 'lodash';
-import constants from '../../common/constants';
 import InfiniteScroll from 'react-infinite-scroller';
 import LoadingSpinner from '../LoadingSpinner';
 import Post from './Post/Post';

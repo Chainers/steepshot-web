@@ -1,6 +1,5 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import Constants from '../../common/constants';
 import {documentTitle} from '../../utils/documentTitle';
 import PostsList from '../PostsList/PostsList';
 import {withWrapper} from "create-react-server/wrapper";
@@ -10,6 +9,7 @@ import TabsBar from "../Common/TabsBar/TabsBar";
 import Tab from "../Common/TabsBar/Tab/Tab";
 import {setActiveIndex} from "../../actions/tabsBar";
 import {utils} from "../../utils/utils";
+import Constants from "../../common/constants";
 
 class Browse extends React.Component {
 

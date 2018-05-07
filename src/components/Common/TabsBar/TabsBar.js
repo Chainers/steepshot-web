@@ -2,8 +2,8 @@ import React from 'react';
 import {connect} from "react-redux";
 import {pageLoaded, setActiveIndex} from "../../../actions/tabsBar";
 import LoadingSpinner from "../../LoadingSpinner";
-import Constants from "../../../common/constants";
 import ShowIf from "../ShowIf";
+import Constants from "../../../common/constants";
 
 class TabsBar extends React.Component {
 	static defaultProps = {

@@ -1,10 +1,10 @@
 import {getComments} from "../services/posts";
 import {getStore} from "../store/configureStore";
-import Constants from "../common/constants";
 import Steem from "../libs/steem";
 import {clearTextInputState} from "./textInput";
 import {pushMessage} from "./pushMessage";
 import {actionLock, actionUnlock} from "./session";
+import Constants from "../common/constants";
 
 export function initPostComment(point) {
 	return {

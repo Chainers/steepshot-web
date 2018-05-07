@@ -1,12 +1,12 @@
-import constants from '../common/constants';
 import {getSettings} from "../actions/settings";
+import Constants from "../common/constants";
 
-const basev1_1Url = constants.URLS.baseUrl_v1_1;
+const basev1_1Url = Constants.URLS.baseUrl_v1_1;
 
 class BaseRequestService {
 	getDefaultPostsOptions() {
 		return {
-			limit: constants.POSTS_SETTINGS.defaultLimit,
+			limit: Constants.POSTS_SETTINGS.defaultLimit,
 			offset: null
 		};
 	}
@@ -15,19 +15,19 @@ class BaseRequestService {
 		const settings = getSettings();
 		if (!settings) return {};
 
-		let nsfw = settings[constants.SETTINGS.show_nsfw];
-		let low_rated = settings[constants.SETTINGS.show_low_rated];
+		let nsfw = settings[Constants.SETTINGS.show_nsfw];
+		let low_rated = settings[Constants.SETTINGS.show_low_rated];
 
 		return {
-			[constants.SETTINGS.show_nsfw]: nsfw,
-			[constants.SETTINGS.show_low_rated]: low_rated,
+			[Constants.SETTINGS.show_nsfw]: nsfw,
+			[Constants.SETTINGS.show_low_rated]: low_rated,
 		};
 	}
 
 	getCustomSettingsOptions(nsfw, low_rated) {
 		return {
-			[constants.SETTINGS.show_nsfw]: nsfw,
-			[constants.SETTINGS.show_low_rated]: low_rated
+			[Constants.SETTINGS.show_nsfw]: nsfw,
+			[Constants.SETTINGS.show_low_rated]: low_rated
 		};
 	}
 

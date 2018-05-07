@@ -1,4 +1,4 @@
-export default {
+const Constants = {
 	URLS: {
 		baseUrl_v1_1: 'https://steepshot.org/api/v1_1',
 		baseUrl_v1: 'https://steepshot.org/api/v1',
@@ -198,5 +198,19 @@ export default {
 
 	WAIT_FINISHING_TRANSACTION: 'There\'s unfinished transaction, please wait.',
 
-	MAX_TAGS_NUMBER: 'You have reached the max number of tags.'
-}
+	MAX_TAGS_NUMBER: 'You have reached the max number of tags.',
+
+	ONE_SIGNAL: {
+		APP_ID: '77fa644f-3280-4e87-9f14-1f0c7ddf8ca5',
+		SUBSCRIPTION: {
+			COMMENT: 'comment',
+			UPVOTE: 'upvote',
+			UPVOTE_COMMENT: 'upvote_comment',
+			FOLLOW: 'follow',
+			POST: 'post'
+		}
+	}
+};
+
+
+export default Constants;

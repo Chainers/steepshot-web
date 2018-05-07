@@ -1,13 +1,12 @@
 import steem from 'steem';
-import constants from '../common/constants';
 import Promise from 'bluebird';
 import {getStore} from '../store/configureStore';
 import {prepareComment} from '../actions/steemPayout';
 import {logComment, logDeletedPost, logFlag, logFollow, logPost, logVote} from '../actions/logging';
-
 import _ from 'underscore';
 import FormData from 'form-data';
 import {blockchainErrorsList} from "../utils/blockchainErrorsList";
+import Constants from "../common/constants";
 
 const _getUserName = () => {
 	return getStore().getState().auth.user
@@ -18,7 +17,7 @@ const _getUserPostingKey = () => {
 };
 
 const _getBaseUrl = () => {
-	return constants.URLS.baseUrl_v1_1;
+	return Constants.URLS.baseUrl_v1_1;
 };
 
 class Steem {
@@ -37,7 +36,7 @@ class Steem {
 			body: body,
 			json_metadata: JSON.stringify(_createJsonMetadata(tags))
 		};
-		const commentOperation = [constants.OPERATIONS.COMMENT, commentObject];
+		const commentOperation = [Constants.OPERATIONS.COMMENT, commentObject];
 
 		const callbackBc = (err, success) => {
 			if (err) {
@@ -101,8 +100,8 @@ class Steem {
 		let beneficiariesObject = _.extend({}, {
 			author: _getUserName(),
 			permlink: permlink,
-			max_accepted_payout: constants.STEEM_PATLOAD.MAX_ACCEPTED_PAYOUT,
-			percent_steem_dollars: constants.STEEM_PATLOAD.PERCENT_STEMM_DOLLARS,
+			max_accepted_payout: Constants.STEEM_PATLOAD.MAX_ACCEPTED_PAYOUT,
+			percent_steem_dollars: Constants.STEEM_PATLOAD.PERCENT_STEMM_DOLLARS,
 			allow_votes: true,
 			allow_curation_rewards: true,
 			extensions: [
@@ -118,7 +117,7 @@ class Steem {
 		});
 
 
-		return [constants.OPERATIONS.COMMENT_OPTIONS, beneficiariesObject];
+		return [Constants.OPERATIONS.COMMENT_OPTIONS, beneficiariesObject];
 	}
 
 	vote(wif, username, author, url, voteStatus, power, callback) {
@@ -183,7 +182,7 @@ class Steem {
 		if (status) blog = [];
 
 		const json = JSON.stringify(
-			[constants.OPERATIONS.FOLLOW, {
+			[Constants.OPERATIONS.FOLLOW, {
 				follower: follower,
 				following: following,
 				what: blog
@@ -244,7 +243,7 @@ class Steem {
 
 	editPost(title, tags, description, permlink, parentPerm, media) {
 		tags = _getValidTags(tags);
-		const operation = [constants.OPERATIONS.COMMENT, {
+		const operation = [Constants.OPERATIONS.COMMENT, {
 			parent_author: '',
 			parent_permlink: parentPerm,
 			author: _getUserName(),
@@ -275,7 +274,7 @@ class Steem {
 		tags = _getValidTags(tags);
 		const category = tags[0];
 		const permlink = _getPermLink(title);
-		const operation = [constants.OPERATIONS.COMMENT, {
+		const operation = [Constants.OPERATIONS.COMMENT, {
 			parent_author: '',
 			parent_permlink: category,
 			author: _getUserName(),
@@ -330,7 +329,7 @@ class Steem {
 			tags: tags,
 			app: 'steepshot',
 		};
-		const operation = [constants.OPERATIONS.COMMENT, {
+		const operation = [Constants.OPERATIONS.COMMENT, {
 			parent_author: '',
 			parent_permlink: parentPerm,
 			author: _getUserName(),
@@ -459,14 +458,14 @@ function _getBeneficiaries(permlink, beneficiaries) {
 	let beneficiariesObject = _.extend({}, {
 		author: _getUserName(),
 		permlink: permlink,
-		max_accepted_payout: constants.STEEM_PATLOAD.MAX_ACCEPTED_PAYOUT,
-		percent_steem_dollars: constants.STEEM_PATLOAD.PERCENT_STEMM_DOLLARS,
+		max_accepted_payout: Constants.STEEM_PATLOAD.MAX_ACCEPTED_PAYOUT,
+		percent_steem_dollars: Constants.STEEM_PATLOAD.PERCENT_STEMM_DOLLARS,
 		allow_votes: true,
 		allow_curation_rewards: true,
 		extensions: [[0, {beneficiaries: beneficiaries}]]
 	});
 
-	return [constants.OPERATIONS.COMMENT_OPTIONS, beneficiariesObject];
+	return [Constants.OPERATIONS.COMMENT_OPTIONS, beneficiariesObject];
 }
 
 export default new Steem();

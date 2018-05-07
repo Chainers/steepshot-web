@@ -38,7 +38,7 @@ class FunctionalUtils extends React.Component {
   }
 }
 
-const mapStateToProps = (state, props) => {
+const mapStateToProps = (state) => {
   return {
     user: state.auth.user
   }
