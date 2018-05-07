@@ -7,11 +7,17 @@
     <script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async=""></script>
     <script>
 			var OneSignal = window.OneSignal || [];
-			OneSignal.push(function() {
+			OneSignal.push(function () {
 				OneSignal.init({
 					appId: "77fa644f-3280-4e87-9f14-1f0c7ddf8ca5",
 				});
+
+				OneSignal.getUserId(function (userId) {
+					console.log("OneSignal User ID:", userId);
+					// (Output) OneSignal User ID: 270a35cd-4dda-4b3f-b04e-41d7463a2316
+				});
 			});
+
     </script>
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-112002704-1"></script>
     <script>
