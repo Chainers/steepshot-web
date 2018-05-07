@@ -6,10 +6,10 @@ export function setGalleryImgIndex(postIndex, imgIndex) {
   }
 }
 
-export function setResizeCoverBlock(isResizeCover, rcTimeout) {
+export function setResizeCoverBlock(isResizeCover, resizeCoverTimeout) {
   return {
     type: 'SET_RESIZE_COVER_BLOCK',
     isResizeCover,
-    rcTimeout
+    resizeCoverTimeout
   }
 }

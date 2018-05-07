@@ -10,12 +10,12 @@ class ImagesGallery extends React.Component {
 
 	componentWillReceiveProps(nextProps) {
 		this.slider.slickGoTo(nextProps.galleryImgIndex, true);
-		if (!utils.equalsObjects(nextProps.window, this.props.window)) {
-			clearTimeout(this.props.rcTimeout);
-			let rcTimeout = setTimeout(() => {
+		if (!utils.equalsObjects(nextProps.window, this.props.window) && this.props.images.length > 1) {
+			clearTimeout(this.props.resizeCoverTimeout);
+			let resizeCoverTimeout = setTimeout(() => {
 				this.props.setResizeCoverBlock(false);
 			}, 500);
-			this.props.setResizeCoverBlock(true, rcTimeout);
+			this.props.setResizeCoverBlock(true, resizeCoverTimeout);
 		}
 	}
 
@@ -59,7 +59,7 @@ const mapStateToProps = (state, props) => {
 		images,
 		galleryImgIndex,
 		isResizeCover: state.imagesGallery.isResizeCover,
-		rcTimeout: state.imagesGallery.rcTimeout,
+    resizeCoverTimeout: state.imagesGallery.resizeCoverTimeout,
 		window: state.window
 	};
 };
@@ -69,8 +69,8 @@ const mapDispatchToProps = (dispatch) => {
 		setGalleryImgIndex: (postIndex, imgIndex) => {
 			dispatch(setGalleryImgIndex(postIndex, imgIndex));
 		},
-		setResizeCoverBlock: (isResizeCover, rcTimeout) => {
-			dispatch(setResizeCoverBlock(isResizeCover, rcTimeout));
+		setResizeCoverBlock: (isResizeCover, resizeCoverTimeout) => {
+			dispatch(setResizeCoverBlock(isResizeCover, resizeCoverTimeout));
 		}
 	}
 };

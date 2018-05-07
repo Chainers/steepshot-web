@@ -5,16 +5,11 @@ export function getCreateWaitingTime(username) {
 	return fetch(url, {
 		method: 'GET'
 	}).then((response) => {
-		return new Promise((resolve, reject) => {
 			if (response.ok) {
 				return response.json().then(data => {
-					resolve(data)
-				});
-			} else {
-				return response.json().then(error => {
-					reject(new Error(JSON.stringify(error)))
+					return data
 				});
 			}
-		})
+			throw Error(response.status);
 	})
 }

@@ -1,6 +1,6 @@
 const initialState = {
   isResizeCover: false,
-  rcTimeout: null
+  resizeCoverTimeout: null
 };
 
 export default function imagesGallery(state = initialState, action) {
@@ -9,7 +9,7 @@ export default function imagesGallery(state = initialState, action) {
       return {
         ...state,
         isResizeCover: action.isResizeCover,
-        rcTimeout: action.rcTimeout
+        resizeCoverTimeout: action.resizeCoverTimeout
       };
     default:
       return state;

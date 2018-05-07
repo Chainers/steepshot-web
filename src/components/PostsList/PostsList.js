@@ -2,7 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {getPostsList, initPostsList} from '../../actions/postsList';
 import {debounce} from 'lodash';
-import Constants from '../../common/constants';
+import constants from '../../common/constants';
 import InfiniteScroll from 'react-infinite-scroller';
 import LoadingSpinner from '../LoadingSpinner';
 import Post from './Post/Post';
@@ -64,9 +64,13 @@ class PostsList extends React.Component {
 
 	renderPosts() {
 		if (!this.props.length && !this.props.loading) {
+			let warningMessage = constants.EMPTY_QUERY;
+			if (this.props.errorMessage) {
+				warningMessage = this.props.errorMessage;
+			}
 			return (
 				<div className="empty-query-message">
-					{Constants.EMPTY_QUERY}
+					{warningMessage}
 				</div>
 			);
 		}
@@ -103,13 +107,13 @@ class PostsList extends React.Component {
 				<InfiniteScroll
 					pageStart={0}
 					initialLoad={false}
-					loadMore={debounce(this.getPostsList.bind(this), Constants.ENDLESS_SCROLL.DEBOUNCE)}
+					loadMore={debounce(this.getPostsList.bind(this), constants.ENDLESS_SCROLL.DEBOUNCE)}
 					hasMore={this.props.isComponentVisible && this.props.hasMore}
 					loader={
 						<div className='spinner_pos-lis' key={this.props.point}>
 							<LoadingSpinner/>
 						</div>}
-					threshold={Constants.ENDLESS_SCROLL.OFFSET}
+					threshold={constants.ENDLESS_SCROLL.OFFSET}
 				>
 					<div className={this.props.wrapperModifier}>
 						{this.renderPosts()}

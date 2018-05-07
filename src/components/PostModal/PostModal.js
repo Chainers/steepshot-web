@@ -25,7 +25,6 @@ import ImagesGallery from "../ImagesGallery/ImagesGallery";
 import ReactPlayer from 'react-player'
 import Comments from "../Comments/Comments";
 import './postModal.css';
-import {utils} from "../../utils/utils";
 
 const HEADER_HEIGHT = 60;
 
@@ -41,15 +40,18 @@ class PostModal extends React.Component {
 		this.showFSNavigation = this.showFSNavigation.bind(this);
 		this.fsCheckButtons = this.fsCheckButtons.bind(this);
 		this.initKeyPress = this.initKeyPress.bind(this);
+		this.resizePostModal = this.resizePostModal.bind(this);
 	}
 
 	componentDidMount() {
 		window.addEventListener('keydown', this.initKeyPress);
+		window.addEventListener('resize', this.resizePostModal);
 		this.setComponentSize();
 	}
 
 	componentWillUnmount() {
 		window.removeEventListener('keydown', this.initKeyPress);
+    window.removeEventListener('resize', this.resizePostModal);
 	}
 
 	componentWillReceiveProps(nextProps) {
@@ -57,9 +59,10 @@ class PostModal extends React.Component {
 		if (post && (post.offsetTop !== 0) && ((post.offsetTop - HEADER_HEIGHT) !== nextProps.offsetTop)) {
 			this.props.setPostOffset(post.offsetTop - HEADER_HEIGHT);
 		}
-		if (!utils.equalsObjects(nextProps.window, this.props.window)) {
-			this.setComponentSize();
-		}
+	}
+
+	resizePostModal() {
+		this.setComponentSize();
 	}
 
 	checkFSFirstLast(isClick) {
