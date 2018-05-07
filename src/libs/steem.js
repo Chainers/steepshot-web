@@ -22,7 +22,6 @@ const _getBaseUrl = () => {
 };
 
 class Steem {
-
 	constructor() {
 		steem.api.setOptions({url: 'https://api.steemit.com'});
 	}
@@ -173,7 +172,7 @@ class Steem {
 	}
 
 
-	_sendBroadCasts(operations, postingWif) {
+	 _sendBroadCasts(operations, postingWif) {
 		steem.broadcast.sendAsync({operations, extensions: []}, {posting: postingWif});
 	}
 
@@ -377,7 +376,7 @@ function _fileUpload(operation, file) {
 			return fetch(`${_getBaseUrl()}/media/upload`, {
 				method: 'POST',
 				body: form
-			}).then(response => response.json())
+			}).then(response => response.json()).catch(error => console.warn(error));
 		})
 }
 
