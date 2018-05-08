@@ -27,11 +27,12 @@ class ShowIf extends React.Component {
 }
 
 ShowIf.defaultProps = {
-	removeFromDom: true
+	removeFromDom: true,
+	show: false
 };
 
 ShowIf.propTypes = {
-	show: PropTypes.bool.isRequired,
+	show: PropTypes.any,
 	children: PropTypes.node.isRequired,
 	removeFromDom: PropTypes.bool
 };
