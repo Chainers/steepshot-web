@@ -8,13 +8,13 @@
     <script>
 			var OneSignal = window.OneSignal = window.OneSignal || [];
 			OneSignal.push(function () {
+				console.log(OneSignal.init);
 				OneSignal.init({
 					appId: "77fa644f-3280-4e87-9f14-1f0c7ddf8ca5",
-				});
-
-				OneSignal.getUserId(function (userId) {
-					console.log("OneSignal User ID:", userId);
-					// (Output) OneSignal User ID: 270a35cd-4dda-4b3f-b04e-41d7463a2316
+					autoRegister: false,
+					notifyButton: {
+						enable: false,
+					},
 				});
 			});
     </script>

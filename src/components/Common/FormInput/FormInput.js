@@ -43,7 +43,7 @@ class FormInput extends React.Component {
 							 onChange={this.inputOnChange.bind(this)}
 							 ref={ref => this.input = ref}
 				/>
-				<ShowIf show={this.props.errorMsg}>
+				<ShowIf show={!!this.props.errorMsg}>
 					<div className="error-msg_for-inp">{this.props.errorMsg}</div>
 				</ShowIf>
 			</div>
