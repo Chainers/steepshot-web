@@ -1,6 +1,6 @@
 export function subscribe() {
 	return dispatch => {
 		console.log('test');
-		window.OneSignal.showHttpPrompt();
+		window.OneSignal.registerForPushNotifications();
 	}
 }
