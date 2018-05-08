@@ -1,35 +1,84 @@
+import Constants from "../common/constants";
+import {getStore} from "../store/configureStore";
+
 let OneSignal = window.OneSignal;
 
-export function subscribe() {
-	return dispatch => {
-		OneSignal.registerForPushNotifications({
-			modalPrompt: true
-		});
-
-		isPushNotificationsEnabledVerbose();
+export function initSubscribe() {
+	return async dispatch => {
+		let playerId = localStorage.getItem(Constants.ONE_SIGNAL.LOCAL_STORAGE.USER_ID);
+		let settings = JSON.parse(localStorage.getItem(Constants.ONE_SIGNAL.LOCAL_STORAGE.SETTINGS) || 'null');
+		let state = localStorage.getItem(Constants.ONE_SIGNAL.LOCAL_STORAGE.STATE);
+		if (!playerId || !settings || !state) {
+			playerId = await OneSignal.getUserId();
+			state = await OneSignal.getNotificationPermission();
+			settings = Object.values(Constants.SUBSCRIPTION);
+		}
+		dispatch(setOneSignalSettings(playerId, state, settings))
 	}
 }
 
-function isPushNotificationsEnabledVerbose() {
-	Promise.all([
-		OneSignal.isPushNotificationsEnabled(),
-		OneSignal.getUserId(),
-		OneSignal.getRegistrationId(),
-		OneSignal.getNotificationPermission(),
-		OneSignal.isOptedOut(),
-		OneSignal.context.serviceWorkerManager.getActiveState()
-	])
-		.then(([isSubscribed, userId, registrationId, notificationPermission, optedOut, serviceWorkerActive]) => {
-			console.log('Is Completely Subscribed:', isSubscribed);
-			console.log('');
-			console.log('What is our OneSignal user ID?', userId);
-			console.log('What is our push subscription token?', registrationId);
-			console.log('What is the notification permission status?', notificationPermission);
-			console.log('Are you manually opted out?', optedOut);
-			console.log("Is a service worker registered and active? (should be false on Safari, otherwise should be 'Worker A (Main)')?", serviceWorkerActive);
-			console.log("What environment does OneSignal think it's in?", OneSignal.sdkEnvironment.getWindowEnv());
-		})
-		.catch(e => {
-			console.error("Issue determining whether push is enabled:", e);
-		});
+function setOneSignalSettings(playerId, state, settings) {
+	return {
+		type: 'SET_ONE_SIGNAL_SETTINGS',
+		playerId,
+		state,
+		settings
+	}
+}
+
+export function registerForPushNotifications() {
+	let playerId = getStore().getState().oneSignal.playerId;
+	return async dispatch => {
+		if (!playerId) {
+			await OneSignal.registerForPushNotifications({
+				modalPrompt: true
+			});
+		}
+		playerId = await OneSignal.getUserId();
+		let state = await OneSignal.getNotificationPermission();
+		let settings = [
+			Constants.ONE_SIGNAL.SUBSCRIPTION.COMMENT,
+			Constants.ONE_SIGNAL.SUBSCRIPTION.UPVOTE,
+			Constants.ONE_SIGNAL.SUBSCRIPTION.UPVOTE_COMMENT,
+			Constants.ONE_SIGNAL.SUBSCRIPTION.FOLLOW,
+			Constants.ONE_SIGNAL.SUBSCRIPTION.POST
+		];
+		dispatch(setOneSignalSettings(playerId, state, settings));
+		saveOneSignalSettingsToLocalStorage(playerId, state, settings);
+	}
+}
+
+export function setSubscribeSettings(comment, upvote, upvoteComment, follow, post) {
+	const store = getStore().getState();
+	let playerId = store.oneSignal.playerId;
+	return async dispatch => {
+		if (!playerId) {
+			playerId = await OneSignal.getUserId();
+		}
+		let settings = [];
+		if (comment) {
+			settings.push(Constants.ONE_SIGNAL.SUBSCRIPTION.COMMENT);
+		}
+		if (upvote) {
+			settings.push(Constants.ONE_SIGNAL.SUBSCRIPTION.UPVOTE);
+		}
+		if (upvoteComment) {
+			settings.push(Constants.ONE_SIGNAL.SUBSCRIPTION.UPVOTE_COMMENT);
+		}
+		if (follow) {
+			settings.push(Constants.ONE_SIGNAL.SUBSCRIPTION.FOLLOW);
+		}
+		if (post) {
+			settings.push(Constants.ONE_SIGNAL.SUBSCRIPTION.POST);
+		}
+		let state = Constants.ONE_SIGNAL.STATES.GRANTED;
+		dispatch(setOneSignalSettings(playerId, state, settings))
+		saveOneSignalSettingsToLocalStorage(playerId, state, settings);
+	}
+}
+
+function saveOneSignalSettingsToLocalStorage(playerId, state, settings) {
+	localStorage.setItem(Constants.ONE_SIGNAL.LOCAL_STORAGE.USER_ID, playerId);
+	localStorage.setItem(Constants.ONE_SIGNAL.LOCAL_STORAGE.SETTINGS, settings);
+	localStorage.setItem(Constants.ONE_SIGNAL.LOCAL_STORAGE.STATE, state);
 }

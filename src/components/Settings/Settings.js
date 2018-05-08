@@ -7,12 +7,18 @@ import './settings.css';
 import Constants from "../../common/constants";
 import {withWrapper} from "create-react-server/wrapper";
 import SettingsField from "./SettingsField/SettingsField";
-import {subscribe} from "../../actions/oneSignal";
+import {initSubscribe, registerForPushNotifications} from "../../actions/oneSignal";
 
 class Settings extends React.Component {
 
+	constructor(props) {
+		super();
+		props.initSubscribe();
+	}
+
 	componentWillUnmount() {
 		this.props.setOldSettings();
+
 	}
 
 	submit(e) {
@@ -71,7 +77,10 @@ const mapDispatchToProps = (dispatch) => {
 			dispatch(setOldSettings())
 		},
 		subscribe: () => {
-			dispatch(subscribe())
+			dispatch(registerForPushNotifications())
+		},
+		initSubscribe: () => {
+			dispatch(initSubscribe())
 		}
 	};
 };

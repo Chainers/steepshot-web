@@ -215,9 +215,9 @@ const Constants = {
 			STATE: 'oneSignalState'
 		},
 		STATES: {
-			NO_CHOOSE: 1,
-			SUBSCRIBE: 2,
-			UNSUBSCRIBE: 3
+			DEFAULT: 'default',
+			GRANTED: 'granted',
+			DENIED: 'denied'
 		}
 	}
 };
