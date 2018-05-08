@@ -1,14 +1,16 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {setPowerLikeInd, setHidePowerLikeTimeout} from '../../../../../actions/post';
+import {setPowerLikeInd, setHidePowerLikeTimeout, setSliderWidth} from '../../../../../actions/post';
 import {toggleVote} from '../../../../../actions/vote';
 import {setLikePower} from '../../../../../actions/auth';
 import Slider from 'react-rangeslider';
 import './voteIndicator.css';
 
-const CIRCLE_OFFSET = 0;
-
 class VoteIndicator extends React.Component {
+
+	componentDidMount() {
+    this.props.setSliderWidth(this.props.index, this.testRef.clientWidth);
+	}
 
 	toggleVote() {
 		this.props.toggleVote(this.props.index, this.props.likePower);
@@ -19,11 +21,25 @@ class VoteIndicator extends React.Component {
 		this.props.setLikePower(power);
 	};
 
+	renderDistributionDots() {
+		if (this.props.sliderWidth) {
+      let NUMBER_OF_PARTS = 4;
+      let LINE_WIDTH = this.props.sliderWidth;
+      let dots = [];
+      let dotOffset = LINE_WIDTH / NUMBER_OF_PARTS - 6 / NUMBER_OF_PARTS;
+      for (let i = 0; i < 5; i++) {
+        dots.push(<div key={i} className="circle_vote-ind" style={{left: i * dotOffset,
+          background: this.props.likePower > i * (99 / NUMBER_OF_PARTS) ? '#ff7500' : '#e6e6e6'}}/>)
+      }
+      return dots;
+		}
+	}
+
 	render() {
 		return (
 			<div className="wrapper_vote-ind">
 				<div className="poweroflike-amount_vote-ind">{this.props.likePower}%</div>
-				<div className="sub-wrapper_vote-ind">
+				<div className="sub-wrapper_vote-ind" ref={ref => this.testRef = ref}>
 					<div className="slider_vote-ind">
 						<Slider
 							min={1}
@@ -33,8 +49,7 @@ class VoteIndicator extends React.Component {
 						/>
 					</div>
 					<div className="circle-line_vote-ind"/>
-					<div className="circle_vote-ind" style={{left: CIRCLE_OFFSET, background: '#ff7500'}}/>
-					<div className="circle_vote-ind" style={{right: CIRCLE_OFFSET}}/>
+					{this.renderDistributionDots()}
 				</div>
 				<div className="heart_vote-ind" onClick={this.toggleVote.bind(this)}/>
 			</div>
@@ -47,7 +62,8 @@ const mapStateToProps = (state, props) => {
 	return {
 		...props,
 		likePower: state.auth.like_power,
-		hplTimeout: post.hplTimeout
+		hplTimeout: post.hplTimeout,
+		sliderWidth: post.sliderWidth
 	}
 };
 
@@ -64,6 +80,9 @@ const mapDispatchToProps = (dispatch) => {
 		},
 		setHidePowerLikeTimeout: (postIndex, timeout) => {
 			dispatch(setHidePowerLikeTimeout(postIndex, timeout))
+		},
+		setSliderWidth: (postIndex, width) => {
+			dispatch(setSliderWidth(postIndex, width))
 		}
 	}
 };

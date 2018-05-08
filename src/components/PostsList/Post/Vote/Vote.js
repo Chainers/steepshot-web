@@ -43,7 +43,7 @@ class Vote extends React.Component {
       return;
     }
     let plTimeout = setTimeout(() => {
-      this.props.setPowerLikeInd(this.props.postIndex, true, this.props.powerLikeIndPlace);
+      this.props.setPowerLikeInd(this.props.postIndex, true);
       window.addEventListener('touchstart', this.hideVoteIndicator);
       window.addEventListener('mousedown', this.hideVoteIndicator);
     }, timeDelay);
@@ -67,7 +67,7 @@ class Vote extends React.Component {
   hideWithDelay() {
     let hidePLIndTimeout = setTimeout(() => {
       this.fluidHide();
-    }, 1400);
+    }, 140000);
     this.props.setHidePowerLikeTimeout(this.props.postIndex, hidePLIndTimeout);
   }
 
@@ -164,8 +164,8 @@ const mapDispatchToProps = (dispatch) => {
 		toggleVote: (postIndex) => {
 			dispatch(toggleVote(postIndex));
 		},
-    setPowerLikeInd: (postIndex, isOpen, place) => {
-      dispatch(setPowerLikeInd(postIndex, isOpen, place));
+    setPowerLikeInd: (postIndex, isOpen) => {
+      dispatch(setPowerLikeInd(postIndex, isOpen));
     },
     setPowerLikeTimeout: (postIndex, plTimeout) => {
       dispatch(setPowerLikeTimeout(postIndex, plTimeout));
