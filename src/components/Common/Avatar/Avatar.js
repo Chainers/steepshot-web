@@ -108,8 +108,8 @@ class Avatar extends React.Component {
 					<ShowIf show={!this.props.headerAvatar && this.props.isTip}>
 						<div ref={ref => this.tipVotingPower = ref}
 								 className="tip-voting-power_ava-com prevent--selection"
-								 onTouchStart={() => {return;}}
-								 onMouseEnter={() => {return;}}
+								 onTouchStart={() => {}}
+								 onMouseEnter={() => {}}
 								 onMouseLeave={this.hideTip.bind(this)}
 						>
 							<p>Power of like: {this.props.votingPower}%</p>

@@ -6,6 +6,8 @@ import {pushMessage} from "../../actions/pushMessage";
 import './settings.css';
 import Constants from "../../common/constants";
 import {withWrapper} from "create-react-server/wrapper";
+import SettingsField from "./SettingsField/SettingsField";
+import {subscribe} from "../../actions/oneSignal";
 
 class Settings extends React.Component {
 
@@ -30,21 +32,10 @@ class Settings extends React.Component {
 					<span>SETTINGS</span>
 				</div>
 				<div className="body_settings">
-					<div className="field_settings">
-						<span>Show low rated posts</span>
-						<div className={'check-box_settings' + (this.props.lowRated ? ' active' : '')}
-								 onClick={this.props.toggleLowRated}>
-							<div className="checked_settings"/>
-						</div>
-					</div>
-					<div className="field_settings">
-						<span>Show NSFW posts</span>
-						<div className={'check-box_settings' + (this.props.nsfw ? ' active' : '')}
-								 onClick={this.props.toggleNsfw}>
-							<div className="checked_settings"/>
-						</div>
-					</div>
+					<SettingsField label="Show low rated posts" active={this.props.lowRated} onClick={this.props.toggleLowRated}/>
+					<SettingsField label="Show NSFW posts" active={this.props.nsfw} onClick={this.props.toggleNsfw}/>
 					<button className="save_settings" onClick={this.submit.bind(this)}>Save</button>
+					<button onClick={this.props.subscribe}>Subscribe</button>
 				</div>
 			</div>
 		);
@@ -54,7 +45,8 @@ class Settings extends React.Component {
 const mapStateToProps = (state) => {
 	return {
 		lowRated: state.settings.lowRatedBtn,
-		nsfw: state.settings.nsfwBth
+		nsfw: state.settings.nsfwBth,
+
 	};
 };
 
@@ -77,6 +69,9 @@ const mapDispatchToProps = (dispatch) => {
 		},
 		setOldSettings: () => {
 			dispatch(setOldSettings())
+		},
+		subscribe: () => {
+			dispatch(subscribe())
 		}
 	};
 };

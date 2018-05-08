@@ -1,0 +1,42 @@
+.field_settings {
+    margin-bottom: 30px;
+    padding-right: 10px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.field_settings > span {
+    color: #979b9e;
+    font-size: 14px;
+    line-height: 1.6;
+    margin-bottom: 6px;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+}
+
+.checked_settings {
+    width: 20px;
+    height: 20px;
+    border-color: #e74800;
+    background-size: 4.4em 47.2em;
+    background: #e74800 url(/images/sprite_svg1910.svg) no-repeat .15em .2em;
+    transition: opacity .2s ease;
+    opacity: 0;
+}
+
+.active > .checked_settings {
+    opacity: 1;
+}
+
+.check-box_settings {
+    width: 22px;
+    height: 22px;
+    border: 1px solid #e1e1e1;
+    background: #fff;
+    border-radius: 2px;
+    overflow: hidden;
+    transition: background .2s ease,border .2s ease;
+    font-weight: 400;
+    cursor: pointer;
+    line-height: 22px;
+}

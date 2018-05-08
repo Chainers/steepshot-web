@@ -1,9 +1,7 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 class ShowIf extends React.Component {
-	static defaultProps = {
-		removeFromDom: true,
-	};
 
 	render() {
 		if (this.props.removeFromDom && !this.props.show) {
@@ -27,5 +25,15 @@ class ShowIf extends React.Component {
 		});
 	}
 }
+
+ShowIf.defaultProps = {
+	removeFromDom: true
+};
+
+ShowIf.propTypes = {
+	show: PropTypes.bool.isRequired,
+	children: PropTypes.node.isRequired,
+	removeFromDom: PropTypes.bool
+};
 
 export default ShowIf;

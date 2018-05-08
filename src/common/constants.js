@@ -208,6 +208,16 @@ const Constants = {
 			UPVOTE_COMMENT: 'upvote_comment',
 			FOLLOW: 'follow',
 			POST: 'post'
+		},
+		LOCAL_STORAGE: {
+			USER_ID: 'oneSignalUserId',
+			SETTINGS: 'oneSignalSettings',
+			STATE: 'oneSignalState'
+		},
+		STATES: {
+			NO_CHOOSE: 1,
+			SUBSCRIBE: 2,
+			UNSUBSCRIBE: 3
 		}
 	}
 };
