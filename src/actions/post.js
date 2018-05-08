@@ -5,7 +5,7 @@ import {initPostsList} from './postsList';
 import {initPostModal} from './postModal';
 import Constants from '../common/constants';
 import {pushMessage} from './pushMessage';
-import {actionLock, actionUnlock} from './sessionActions';
+import {actionLock, actionUnlock} from './session';
 
 function addPosts(posts) {
   return {

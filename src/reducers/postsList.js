@@ -36,7 +36,9 @@ export default function postsList(state = {}, action) {
 				...state,
 				[action.point]: {
 					...state[action.point],
-					loading: false
+					loading: false,
+					hasMore: false,
+					errorMessage: action.error
 				},
 			};
 

@@ -3,7 +3,7 @@ import {getStore} from '../store/configureStore';
 import {updatePost} from './post';
 import {updateVotingPower} from './auth';
 import {pushMessage} from "./pushMessage";
-import {actionLock, actionUnlock} from "./sessionActions";
+import {actionLock, actionUnlock} from "./session";
 
 function toggleVoteRequest(postIndex) {
 	return {

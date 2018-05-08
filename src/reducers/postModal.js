@@ -3,7 +3,8 @@ const initialState = {
 	needsCommentFormLoader: false,
 	fullScreenMode: false,
 	fullScreenNavigation: true,
-	timeoutID: null
+	timeoutID: null,
+	newImageLoader: true
 };
 
 export default function postModal(state = initialState, action) {
@@ -21,7 +22,8 @@ export default function postModal(state = initialState, action) {
 				currentIndex: action.index,
 				fullScreenMode: state.fullScreenMode,
 				fullScreenNavigation: state.fullScreenNavigation,
-				timeoutID: state.timeoutID
+				timeoutID: state.timeoutID,
+				newImageLoader: true
 			};
 
 		case 'SET_FULL_SCREEN':

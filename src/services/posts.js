@@ -27,7 +27,7 @@ let requestPromises = {
 	[Constants.PROMISES.GET_FOLLOWING]: Promise.resolve(),
 	[Constants.PROMISES.GET_USERS_SEARCH]: Promise.resolve(),
 	[Constants.PROMISES.GET_USERS_VOTERS]: Promise.resolve()
-}
+};
 
 async function getItems(url, promiseName, needsDestroyPrevious, where) {
 
@@ -35,8 +35,11 @@ async function getItems(url, promiseName, needsDestroyPrevious, where) {
 
 	try {
 		return requestPromises[promiseName] = makeCancellableRequest(url).then(result => {
-			return JSON.parse(result.target.response);
-		});
+			if (result.target.status === 200) {
+				return JSON.parse(result.target.response);
+			}
+			throw Error(result.target.status);
+		})
 	}	catch (e) {
 		console.warn(where);
 		console.log(e);

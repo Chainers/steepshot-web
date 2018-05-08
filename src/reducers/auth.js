@@ -48,9 +48,13 @@ export default function auth(state = initialState, action) {
 			};
 
 		case 'UPDATE_VOTING_POWER':
+			let checkedVotingPower = action.voting_power;
+			if (checkedVotingPower > 100) {
+        checkedVotingPower = 100
+			}
 			return {
 				...state,
-				voting_power: action.voting_power
+				voting_power: checkedVotingPower
 			};
 		case 'VOTING_POWER_TIMEOUT':
 			return {

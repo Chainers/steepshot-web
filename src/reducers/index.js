@@ -26,6 +26,7 @@ import bodyLoader from "./bodyLoader";
 import session from "./session";
 import windowOnStore from "./windowOnStore";
 import settings from "./settings";
+import mobileNavigation from "./mobileNavigation";
 
 export default combineReducers({
 	clipboard,
@@ -54,5 +55,6 @@ export default combineReducers({
 	bodyLoader,
 	session,
 	window: windowOnStore,
-	settings
+	settings,
+	mobileNavigation
 });
