@@ -1,9 +1,9 @@
 .container_push-msg {
     position: fixed;
     z-index: 1100;
-    width: 100%;
-    left: 0;
+    left: 50%;
     bottom: 0;
+    transform: translateX(-50%);
 }
 
 .body_push-msg {
