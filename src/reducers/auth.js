@@ -5,9 +5,9 @@ const initialState = global.isServerSide ? {
 	like_power: 100,
 	voting_power: null
 } : {
-	user: JSON.parse(global.localStorage.getItem('user')) || null,
-	postingKey: JSON.parse(global.localStorage.getItem('postingKey')) || null,
-	avatar: JSON.parse(global.localStorage.getItem('avatar')) || null,
+	user: JSON.parse(global.localStorage.getItem('user')),
+	postingKey: JSON.parse(global.localStorage.getItem('postingKey')),
+	avatar: JSON.parse(global.localStorage.getItem('avatar')),
 	like_power: JSON.parse(global.localStorage.getItem('like_power')) || 100,
 	voting_power: null
 };
@@ -20,9 +20,9 @@ export default function auth(state = initialState, action) {
 		case 'SET_USER_AUTH':
 			return {
 				...initialState,
-				user: JSON.parse(localStorage.getItem('user')) || null,
-				postingKey: JSON.parse(localStorage.getItem('postingKey')) || null,
-				avatar: JSON.parse(localStorage.getItem('avatar')) || null,
+				user: JSON.parse(localStorage.getItem('user')),
+				postingKey: JSON.parse(localStorage.getItem('postingKey')),
+				avatar: JSON.parse(localStorage.getItem('avatar')),
 				isSetAuth: true
 			};
 		case 'LOGIN_SUCCESS':

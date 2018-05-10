@@ -1,21 +1,58 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import {connect} from "react-redux";
 import './settingsField.css';
+import {initializeSettingsField, toggleSettingsField} from "../../../actions/settingsFields";
 
-const SettingsField = ({label, active, onClick}) => (
-	<div className="field_settings">
-		<span>{label}</span>
-		<div className={'check-box_settings' + (active ? ' active' : '')}
-				 onClick={onClick}>
-			<div className="checked_settings"/>
-		</div>
-	</div>
-);
+class SettingsField extends React.Component {
+
+	componentWillMount() {
+		this.props.initializeSettingsField(this.props.point, this.props.default);
+	};
+
+	render(){
+		if (!this.props.initialized) {
+			return null;
+		}
+		const {label, active, point, toggleSettingsField} = this.props;
+		return (
+			<div className="field_settings">
+				<span>{label}</span>
+				<div className={'check-box_settings' + (active ? ' active' : '')}
+						 onClick={() => toggleSettingsField(point)}>
+					<div className="checked_settings"/>
+				</div>
+			</div>
+		)
+	}
+}
 
 SettingsField.propTypes = {
 	label: PropTypes.string.isRequired,
-	active: PropTypes.bool.isRequired,
-	onClick: PropTypes.func.isRequired
+	point: PropTypes.string.isRequired,
+	default: PropTypes.bool
 };
 
-export default SettingsField;
+SettingsField.defaultProps = {
+	default: false
+};
+
+const mapStateToProps = (state, props) => {
+	return {
+		initialized: state.settings[props.point] !== undefined,
+		active: state.settings[props.point]
+	}
+};
+
+const mapDispatchToProps = dispatch => {
+	return {
+		initializeSettingsField: (point, def) => {
+			dispatch(initializeSettingsField(point, def))
+		},
+		toggleSettingsField: point => {
+			dispatch(toggleSettingsField(point))
+		}
+	}
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(SettingsField);

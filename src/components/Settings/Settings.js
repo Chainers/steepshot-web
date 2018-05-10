@@ -1,5 +1,5 @@
 import React from 'react';
-import {setOldSettings, toggleLowRated, toggleNsfw, updateSettings} from '../../actions/settings';
+import {updateSettings} from '../../actions/settings';
 import {connect} from 'react-redux';
 import {goBack} from "react-router-redux";
 import {pushMessage} from "../../actions/pushMessage";
@@ -12,14 +12,9 @@ import ShowIf from "../Common/ShowIf";
 
 class Settings extends React.Component {
 
-	componentWillUnmount() {
-		this.props.setOldSettings();
-
-	}
-
 	submit(e) {
 		e.preventDefault();
-		this.props.updateSettings(this.props.lowRated, this.props.nsfw);
+		this.props.updateSettings();
 		this.props.historyGoBack();
 		this.props.pushMessage(Constants.SETTINGS_CHANGED_MESSAGE);
 	}
@@ -34,20 +29,16 @@ class Settings extends React.Component {
 					<span>SETTINGS</span>
 				</div>
 				<div className="body_settings">
-					<SettingsField label="Show low rated posts" active={this.props.lowRated} onClick={this.props.toggleLowRated}/>
-					<SettingsField label="Show NSFW posts" active={this.props.nsfw} onClick={this.props.toggleNsfw}/>
+					<SettingsField label="Show low rated posts" point={Constants.SETTINGS.FIELDS.show_low_rated}
+												 default={this.props[Constants.SETTINGS.FIELDS.show_low_rated]}/>
+					<SettingsField label="Show NSFW posts" point={Constants.SETTINGS.FIELDS.show_nsfw}
+												 default={this.props[Constants.SETTINGS.FIELDS.show_nsfw]}/>
 					<div className="notification_settings">
 						<span>Push Notification</span>
 						<ShowIf show={!this.props.notificationEnabled}>
 							<button onClick={registerForPushNotifications}>Subscribe</button>
 						</ShowIf>
-						<ShowIf show={this.props.notificationEnabled}>
-							<SettingsField label="Post" active={this.props.lowRated} onClick={this.props.toggleLowRated}/>
-							<SettingsField label="Upvote" active={this.props.nsfw} onClick={this.props.toggleNsfw}/>
-							<SettingsField label="Comment" active={this.props.lowRated} onClick={this.props.toggleLowRated}/>
-							<SettingsField label="Upvote comment" active={this.props.nsfw} onClick={this.props.toggleNsfw}/>
-							<SettingsField label="follow" active={this.props.lowRated} onClick={this.props.toggleLowRated}/>
-						</ShowIf>
+
 					</div>
 					<button className="save_settings" onClick={this.submit.bind(this)}>Save</button>
 				</div>
@@ -58,31 +49,21 @@ class Settings extends React.Component {
 
 const mapStateToProps = (state) => {
 	return {
-		lowRated: state.settings.lowRatedBtn,
-		nsfw: state.settings.nsfwBth,
+		...state.settings,
 		notificationEnabled: state.oneSignal.notificationPermission && state.oneSignal.isNotificationsEnabled
 	};
 };
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		updateSettings: (lowRated, nsfw) => {
-			dispatch(updateSettings(lowRated, nsfw));
+		updateSettings: () => {
+			dispatch(updateSettings());
 		},
 		historyGoBack: () => {
 			dispatch(goBack());
 		},
 		pushMessage: (message) => {
 			dispatch(pushMessage(message))
-		},
-		toggleLowRated: () => {
-			dispatch(toggleLowRated())
-		},
-		toggleNsfw: () => {
-			dispatch(toggleNsfw())
-		},
-		setOldSettings: () => {
-			dispatch(setOldSettings())
 		}
 	};
 };

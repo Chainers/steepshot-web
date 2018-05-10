@@ -23,11 +23,23 @@ const Constants = {
 	NO_IMAGE: '/images/noimage.jpg',
 
 	SETTINGS: {
-		show_low_rated: 'show_low_rated',
-		show_nsfw: 'show_nsfw',
-		default: {
+		FIELDS: {
+			show_low_rated: 'show_low_rated',
+			show_nsfw: 'show_nsfw',
+			comment: 'comment',
+			upvote: 'upvote',
+			upvote_comment: 'upvote_comment',
+			follow: 'follow',
+			post: 'post',
+		},
+		DEFAULT: {
 			show_low_rated: false,
-			show_nsfw: false
+			show_nsfw: false,
+			comment: true,
+			upvote: true,
+			upvote_comment: true,
+			follow: true,
+			post: true
 		}
 	},
 

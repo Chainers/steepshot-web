@@ -54,7 +54,7 @@ export function login(username, postingKey) {
 			localStorage.setItem('like_power', '100');
 			localStorage.setItem('avatar', JSON.stringify(avatar));
 
-			dispatch(updateSettings(Constants.SETTINGS.default.show_low_rated, Constants.SETTINGS.default.show_nsfw));
+			dispatch(updateSettings(Constants.SETTINGS.DEFAULT.show_low_rated, Constants.SETTINGS.DEFAULT.show_nsfw));
 
 			dispatch({
 				type: 'LOGIN_SUCCESS',
@@ -92,7 +92,7 @@ function logoutUser() {
 
 export function logout() {
 	return (dispatch) => {
-		dispatch(updateSettings(Constants.SETTINGS.default.show_low_rated, Constants.SETTINGS.default.show_nsfw));
+		dispatch(updateSettings(Constants.SETTINGS.DEFAULT.show_low_rated, Constants.SETTINGS.DEFAULT.show_nsfw));
 		localStorage.removeItem('user');
 		localStorage.removeItem('postingKey');
 		localStorage.removeItem('settings');

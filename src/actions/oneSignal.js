@@ -9,7 +9,7 @@ export function loadSubscribeSettings() {
 		let playerId = await OneSignal.getUserId();
 		let notificationPermission = await OneSignal.getNotificationPermission();
 		let isNotificationsEnabled = await OneSignal.isPushNotificationsEnabled();
-		let settings = JSON.parse(localStorage.getItem(Constants.ONE_SIGNAL.LOCAL_STORAGE.SETTINGS) || 'null')
+		let settings = JSON.parse(localStorage.getItem(Constants.ONE_SIGNAL.LOCAL_STORAGE.SETTINGS))
 			|| Object.values(Constants.ONE_SIGNAL.SUBSCRIPTION);
 
 		dispatch(setOneSignalSettings(playerId, notificationPermission, isNotificationsEnabled, settings));

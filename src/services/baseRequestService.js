@@ -1,4 +1,3 @@
-import {getSettings} from "../actions/settings";
 import Constants from "../common/constants";
 
 const basev1_1Url = Constants.URLS.baseUrl_v1_1;
@@ -12,22 +11,25 @@ class BaseRequestService {
 	}
 
 	getDefaultSettingsOptions() {
-		const settings = getSettings();
-		if (!settings) return {};
+		let settings = JSON.parse(localStorage.getItem('settings'))
+		|| {
+			[Constants.SETTINGS.show_low_rated]: Constants.SETTINGS.DEFAULT.show_low_rated,
+			[Constants.SETTINGS.show_nsfw]: Constants.SETTINGS.DEFAULT.show_nsfw
+		};
 
-		let nsfw = settings[Constants.SETTINGS.show_nsfw];
-		let low_rated = settings[Constants.SETTINGS.show_low_rated];
+		let nsfw = settings[Constants.SETTINGS.FIELDS.show_nsfw];
+		let low_rated = settings[Constants.SETTINGS.FIELDS.show_low_rated];
 
 		return {
-			[Constants.SETTINGS.show_nsfw]: nsfw,
-			[Constants.SETTINGS.show_low_rated]: low_rated,
+			[Constants.SETTINGS.FIELDS.show_nsfw]: nsfw,
+			[Constants.SETTINGS.FIELDS.show_low_rated]: low_rated,
 		};
 	}
 
 	getCustomSettingsOptions(nsfw, low_rated) {
 		return {
-			[Constants.SETTINGS.show_nsfw]: nsfw,
-			[Constants.SETTINGS.show_low_rated]: low_rated
+			[Constants.SETTINGS.FIELDS.show_nsfw]: nsfw,
+			[Constants.SETTINGS.FIELDS.show_low_rated]: low_rated
 		};
 	}
 
