@@ -5,7 +5,8 @@ const initialState = {
 	playerId: null,
 	settings: null,
 	notificationPermission: null,
-	isNotificationsEnabled: null
+	isNotificationsEnabled: null,
+	loaded: false
 };
 
 export default function oneSignal(state = initialState, action) {
@@ -16,7 +17,8 @@ export default function oneSignal(state = initialState, action) {
 				playerId: action.playerId,
 				settings: action.settings,
 				notificationPermission: action.notificationPermission,
-				isNotificationsEnabled: action.isNotificationsEnabled
+				isNotificationsEnabled: action.isNotificationsEnabled,
+				loaded: true
 			};
 
 		default:

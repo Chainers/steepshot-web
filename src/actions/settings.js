@@ -1,7 +1,7 @@
 import {getStore} from "../store/configureStore";
 
 export function updateSettings() {
-	let settings = getStore().getState().settings;
+	let settings = getStore().getState().settingsFields;
 	updateSettingsInLocalStorage(settings);
 	return {
 		type: 'UPDATE_SETTINGS',

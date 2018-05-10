@@ -39,8 +39,8 @@ SettingsField.defaultProps = {
 
 const mapStateToProps = (state, props) => {
 	return {
-		initialized: state.settings[props.point] !== undefined,
-		active: state.settings[props.point]
+		initialized: state.settingsFields[props.point] !== undefined,
+		active: state.settingsFields[props.point]
 	}
 };
 
