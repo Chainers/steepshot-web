@@ -89,6 +89,7 @@ class Vote extends React.Component {
   }
 
   hideVoteIndicator(e) {
+    console.log('click');
     if (this.powerIndicator && this.powerIndicator.contains(e.target)) {
       return;
     }
