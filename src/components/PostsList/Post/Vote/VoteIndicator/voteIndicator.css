@@ -15,16 +15,10 @@
     border: 1px solid #ffffff;
     border-radius: 10px;
     box-shadow: 0 20px 40px 0 rgba(0, 0, 0, .1);
-    right: 0;
-    width: 100vw;
-    min-width: 320px;
-    max-width: 380px;
 }
 
 .poweroflike-ind_vote-ind {
     top: -54px;
-    right: -10px;
-    width: 100%;
     animation: fadeVoteIndicator .2s linear;
 }
 
@@ -35,7 +29,6 @@
 
 .poweroflike-comment-ind_vote-ind {
     top: -62px;
-    right: -20px;
     animation: fadeCommentVoteIndicator .2s linear;
 }
 
@@ -65,13 +58,13 @@
 
 .circle_vote-ind {
     position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 1;
     width: 6px;
     height: 6px;
     border-radius: 50%;
     background: #e6e6e6;
-    top: 50%;
-    transform: translateY(-50%);
-    z-index: 1;
 }
 
 .circle-line_vote-ind {
@@ -84,7 +77,7 @@
 }
 
 .poweroflike-amount_vote-ind {
-    width: 29px;
+    width: 37px;
     height: 19px;
     font: 14px OpenSans-SemiBold;
     color: #0f181e;

@@ -173,30 +173,30 @@ export default {
 
 	DELETE: {
 		PUTATIVE_DELETED_POST: 'https://steemitimages.com/DQmd4wyZvtAUifJDLZD9vaqek17S1cUhN3PyEbFMMMgLW8o/Steepshot_footer2.PNG',
-		DELETE_SUCCESS: 'The post has been successfully deleted. If you still see your post, please give it a few minutes to sync from the blockchain'
+		DELETE_SUCCESS: 'The post has been successfully deleted. If you still see your post, please give it a few minutes to sync from the blockchain.'
 	},
 
 	POST_SUCCESSFULLY_CREATED: 'Post has been successfully created. If you don\'t see the post in your profile, '
-	+ 'please give it a few minutes to sync from the blockchain',
+	+ 'please give it a few minutes to sync from the blockchain.',
 	POST_SUCCESSFULLY_UPDATED: 'Post has been successfully updated. If you don\'t see the updated post in your profile, '
-	+ 'please give it a few minutes to sync from the blockchain',
+	+ 'please give it a few minutes to sync from the blockchain.',
 
-	COMMENT_ERROR_MESSAGE: 'You can only create comments once per 20 seconds',
-	COMMENT_SUCCESS_MESSAGE: 'Comment has been successfully added',
+	COMMENT_ERROR_MESSAGE: 'You can only create comments once per 20 seconds.',
+	COMMENT_SUCCESS_MESSAGE: 'Comment has been successfully added.',
 
-	SETTINGS_CHANGED_MESSAGE: 'Setting has been successfully changed',
-	SETTINGS_NOTCHANGED_MESSAGE: 'Setting hasn\'t been changed',
+	SETTINGS_CHANGED_MESSAGE: 'Setting has been successfully changed.',
+	SETTINGS_NOTCHANGED_MESSAGE: 'Setting hasn\'t been changed.',
 
 	VOTE_ACTION_WHEN_NOT_AUTH: 'This action is only available for logged-in users',
 	VOTE_ACTION_WHEN_NOT_AUTH_DEBOUNCE: 500,
 
-	FOLLOW_REQUEST_ERROR: 'Something went wrong, please, try again later',
+	FOLLOW_REQUEST_ERROR: 'Something went wrong, please, try again later.',
 	OOOPS_SOMETHING_WRONG: 'Ooops, something went wrong.',
 
 	POST_DESRIPTION_MAXLENGTH: 120,
 	POST_LIKED_BY: 'Post has been rated by these users',
 
-	WAIT_FINISHING_TRANSACTION: 'There\'s unfinished transaction, please wait',
+	WAIT_FINISHING_TRANSACTION: 'There\'s unfinished transaction, please wait.',
 
 	MAX_TAGS_NUMBER: 'You have reached the max number of tags.'
 }

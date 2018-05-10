@@ -4,6 +4,7 @@
     left: 50%;
     bottom: 0;
     transform: translateX(-50%);
+    min-width: 50vw;
 }
 
 .body_push-msg {
@@ -30,10 +31,18 @@
     transition: 1s ease;
 }
 
-@media (max-width: 767px) {
+@media (max-width: 1024px) and (min-width: 768px) {
+    .container_push-msg {
+        min-width: 60vw;
+    }
+}
 
+@media (max-width: 767px) {
+    .container_push-msg {
+        min-width: 85vw;
+    }
     .text-wrap_push-msg {
-        border-radius: 8px;
+        border-radius: 16px;
         padding: 20px;
     }
 }

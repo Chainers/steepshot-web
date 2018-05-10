@@ -440,9 +440,7 @@ class PostModal extends React.Component {
 									<div className="card-control-stop"/>
 									<Vote postIndex={this.props.currentIndex}
 												powerLikeIndPlace="modal"
-												isPopup={true}
 												singlePost={this.props.singlePost}
-												style={{paddingRight: 20}}
 									/>
 								</div>
 							</div>
