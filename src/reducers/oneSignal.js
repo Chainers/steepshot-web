@@ -1,10 +1,8 @@
-import Constants from "../common/constants";
-
 const initialState = {
-	appId: Constants.ONE_SIGNAL.APP_ID,
-	playerId: localStorage.getItem(Constants.ONE_SIGNAL.LOCAL_STORAGE.USER_ID),
-	settings: JSON.parse(localStorage.getItem(Constants.ONE_SIGNAL.LOCAL_STORAGE.SETTINGS) || 'null'),
-	state: localStorage.getItem(Constants.ONE_SIGNAL.LOCAL_STORAGE.STATE)
+	appId: null,
+	playerId: null,
+	settings: null,
+	state: null
 };
 
 export default function oneSignal(state = initialState, action) {

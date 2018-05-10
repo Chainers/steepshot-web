@@ -1,9 +1,10 @@
-import Constants from "../common/constants";
 import {getStore} from "../store/configureStore";
+import Constants from "../common/constants";
 
 let OneSignal = window.OneSignal;
 
-export function initSubscribe() {
+export function loadSubscribeSettings() {
+	OneSignal.on('subscriptionChange', changeSubscribe);
 	return async dispatch => {
 		let playerId = localStorage.getItem(Constants.ONE_SIGNAL.LOCAL_STORAGE.USER_ID);
 		let settings = JSON.parse(localStorage.getItem(Constants.ONE_SIGNAL.LOCAL_STORAGE.SETTINGS) || 'null');
@@ -11,7 +12,7 @@ export function initSubscribe() {
 		if (!playerId || !settings || !state) {
 			playerId = await OneSignal.getUserId();
 			state = await OneSignal.getNotificationPermission();
-			settings = Object.values(Constants.SUBSCRIPTION);
+			settings = Object.values(Constants.ONE_SIGNAL.SUBSCRIPTION);
 		}
 		dispatch(setOneSignalSettings(playerId, state, settings))
 	}
@@ -27,26 +28,27 @@ function setOneSignalSettings(playerId, state, settings) {
 }
 
 export function registerForPushNotifications() {
-	let playerId = getStore().getState().oneSignal.playerId;
-	return async dispatch => {
-		if (!playerId) {
-			await OneSignal.registerForPushNotifications({
-				modalPrompt: true
-			});
-		}
-		playerId = await OneSignal.getUserId();
-		let state = await OneSignal.getNotificationPermission();
-		let settings = [
-			Constants.ONE_SIGNAL.SUBSCRIPTION.COMMENT,
-			Constants.ONE_SIGNAL.SUBSCRIPTION.UPVOTE,
-			Constants.ONE_SIGNAL.SUBSCRIPTION.UPVOTE_COMMENT,
-			Constants.ONE_SIGNAL.SUBSCRIPTION.FOLLOW,
-			Constants.ONE_SIGNAL.SUBSCRIPTION.POST
-		];
-		dispatch(setOneSignalSettings(playerId, state, settings));
-		saveOneSignalSettingsToLocalStorage(playerId, state, settings);
-	}
+	OneSignal.registerForPushNotifications({
+		modalPrompt: true
+	});
 }
+
+async function changeSubscribe() {
+	console.log('change');
+	const store = getStore();
+	let playerId = await OneSignal.getUserId();
+	let state = await OneSignal.getNotificationPermission();
+	let settings = [
+		Constants.ONE_SIGNAL.SUBSCRIPTION.COMMENT,
+		Constants.ONE_SIGNAL.SUBSCRIPTION.UPVOTE,
+		Constants.ONE_SIGNAL.SUBSCRIPTION.UPVOTE_COMMENT,
+		Constants.ONE_SIGNAL.SUBSCRIPTION.FOLLOW,
+		Constants.ONE_SIGNAL.SUBSCRIPTION.POST
+	];
+	store.dispatch(setOneSignalSettings(playerId, state, settings));
+	saveOneSignalSettingsToLocalStorage(playerId, state, settings);
+}
+
 
 export function setSubscribeSettings(comment, upvote, upvoteComment, follow, post) {
 	const store = getStore().getState();
@@ -72,13 +74,13 @@ export function setSubscribeSettings(comment, upvote, upvoteComment, follow, pos
 			settings.push(Constants.ONE_SIGNAL.SUBSCRIPTION.POST);
 		}
 		let state = Constants.ONE_SIGNAL.STATES.GRANTED;
-		dispatch(setOneSignalSettings(playerId, state, settings))
+		dispatch(setOneSignalSettings(playerId, state, settings));
 		saveOneSignalSettingsToLocalStorage(playerId, state, settings);
 	}
 }
 
 function saveOneSignalSettingsToLocalStorage(playerId, state, settings) {
-	localStorage.setItem(Constants.ONE_SIGNAL.LOCAL_STORAGE.USER_ID, playerId);
-	localStorage.setItem(Constants.ONE_SIGNAL.LOCAL_STORAGE.SETTINGS, settings);
-	localStorage.setItem(Constants.ONE_SIGNAL.LOCAL_STORAGE.STATE, state);
+	localStorage.setItem(Constants.ONE_SIGNAL.LOCAL_STORAGE.USER_ID, JSON.stringify(playerId));
+	localStorage.setItem(Constants.ONE_SIGNAL.LOCAL_STORAGE.SETTINGS, JSON.stringify(settings));
+	localStorage.setItem(Constants.ONE_SIGNAL.LOCAL_STORAGE.STATE, JSON.stringify(state));
 }

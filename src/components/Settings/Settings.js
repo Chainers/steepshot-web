@@ -7,14 +7,9 @@ import './settings.css';
 import Constants from "../../common/constants";
 import {withWrapper} from "create-react-server/wrapper";
 import SettingsField from "./SettingsField/SettingsField";
-import {initSubscribe, registerForPushNotifications} from "../../actions/oneSignal";
+import {registerForPushNotifications} from "../../actions/oneSignal";
 
 class Settings extends React.Component {
-
-	constructor(props) {
-		super();
-		props.initSubscribe();
-	}
 
 	componentWillUnmount() {
 		this.props.setOldSettings();
@@ -41,7 +36,8 @@ class Settings extends React.Component {
 					<SettingsField label="Show low rated posts" active={this.props.lowRated} onClick={this.props.toggleLowRated}/>
 					<SettingsField label="Show NSFW posts" active={this.props.nsfw} onClick={this.props.toggleNsfw}/>
 					<button className="save_settings" onClick={this.submit.bind(this)}>Save</button>
-					<button onClick={this.props.subscribe}>Subscribe</button>
+					<button id="subscribe" onClick={window.subscribeOneSignal}>Subscribe </button>
+					<button id="unsubscribe"  onClick={window.unSubscribeOneSignal}>Unsubscribe </button>
 				</div>
 			</div>
 		);
@@ -75,12 +71,6 @@ const mapDispatchToProps = (dispatch) => {
 		},
 		setOldSettings: () => {
 			dispatch(setOldSettings())
-		},
-		subscribe: () => {
-			dispatch(registerForPushNotifications())
-		},
-		initSubscribe: () => {
-			dispatch(initSubscribe())
 		}
 	};
 };

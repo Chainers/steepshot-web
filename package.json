@@ -9,7 +9,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "server": "node ./configs/server.js --app ./src/app.js --template template.js",
-    "redeploy": "npm run build && npm run server"
+    "redeploy": "npm run build && npm run server",
+    "https": "set HTTPS=true&&npm run start"
   },
   "babel": {
     "presets": [
@@ -24,6 +25,7 @@
     "create-react-server": "^0.3.2",
     "es6-promise": "^4.2.4",
     "history": "^4.7.2",
+    "image-compressor": "^1.2.0",
     "image-compressor.js": "^1.1.3",
     "isomorphic-fetch": "^2.2.1",
     "jquery": "^3.3.1",

@@ -7,8 +7,14 @@ import Clipboard from "./Clipboard/Clipboard";
 import Modals from "../Modals/Modals";
 import {resizeWindow} from "../../actions/utils";
 import MobileNavigation from "../MobileNavigation/MobileNavigation";
+import {loadSubscribeSettings} from "../../actions/oneSignal";
 
 class FunctionalUtils extends React.Component {
+
+	constructor(props) {
+		super();
+		props.loadSubscribeSettings();
+	}
 
   componentDidMount() {
 		window.addEventListener('resize', this.props.resizeWindow);
@@ -51,6 +57,9 @@ const mapDispatchToProps = (dispatch) => {
     },
 		resizeWindow: (width, height) => {
     	dispatch(resizeWindow(width, height))
+		},
+		loadSubscribeSettings: () => {
+			dispatch(loadSubscribeSettings())
 		}
   }
 };
