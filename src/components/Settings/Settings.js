@@ -7,7 +7,7 @@ import './settings.css';
 import Constants from "../../common/constants";
 import {withWrapper} from "create-react-server/wrapper";
 import SettingsField from "./SettingsField/SettingsField";
-import {registerForPushNotifications} from "../../actions/oneSignal";
+import {subscribe} from "../../actions/oneSignal";
 import ShowIf from "../Common/ShowIf";
 
 class Settings extends React.Component {
@@ -37,7 +37,7 @@ class Settings extends React.Component {
 					<div className="notification_settings">
 						<span>Push Notification</span>
 						<ShowIf show={!this.props.notificationEnabled}>
-							<button onClick={registerForPushNotifications}>Subscribe</button>
+							<button onClick={subscribe}>Subscribe</button>
 						</ShowIf>
 						<ShowIf show={this.props.notificationEnabled}>
 							<SettingsField label="Comment" point={fields.comment}

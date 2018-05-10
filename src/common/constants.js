@@ -214,16 +214,6 @@ const Constants = {
 
 	ONE_SIGNAL: {
 		APP_ID: '77fa644f-3280-4e87-9f14-1f0c7ddf8ca5',
-		SUBSCRIPTION: {
-			COMMENT: 'comment',
-			UPVOTE: 'upvote',
-			UPVOTE_COMMENT: 'upvote_comment',
-			FOLLOW: 'follow',
-			POST: 'post'
-		},
-		LOCAL_STORAGE: {
-			SETTINGS: 'oneSignalSettings',
-		},
 		STATES: {
 			DEFAULT: 'default',
 			GRANTED: 'granted',
