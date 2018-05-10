@@ -8,6 +8,7 @@ import Constants from "../../common/constants";
 import {withWrapper} from "create-react-server/wrapper";
 import SettingsField from "./SettingsField/SettingsField";
 import {registerForPushNotifications} from "../../actions/oneSignal";
+import ShowIf from "../Common/ShowIf";
 
 class Settings extends React.Component {
 
@@ -35,9 +36,20 @@ class Settings extends React.Component {
 				<div className="body_settings">
 					<SettingsField label="Show low rated posts" active={this.props.lowRated} onClick={this.props.toggleLowRated}/>
 					<SettingsField label="Show NSFW posts" active={this.props.nsfw} onClick={this.props.toggleNsfw}/>
+					<div className="notification_settings">
+						<span>Push Notification</span>
+						<ShowIf show={!this.props.notificationEnabled}>
+							<button onClick={registerForPushNotifications}>Subscribe</button>
+						</ShowIf>
+						<ShowIf show={this.props.notificationEnabled}>
+							<SettingsField label="Post" active={this.props.lowRated} onClick={this.props.toggleLowRated}/>
+							<SettingsField label="Upvote" active={this.props.nsfw} onClick={this.props.toggleNsfw}/>
+							<SettingsField label="Comment" active={this.props.lowRated} onClick={this.props.toggleLowRated}/>
+							<SettingsField label="Upvote comment" active={this.props.nsfw} onClick={this.props.toggleNsfw}/>
+							<SettingsField label="follow" active={this.props.lowRated} onClick={this.props.toggleLowRated}/>
+						</ShowIf>
+					</div>
 					<button className="save_settings" onClick={this.submit.bind(this)}>Save</button>
-					<button id="subscribe" onClick={window.subscribeOneSignal}>Subscribe </button>
-					<button id="unsubscribe"  onClick={window.unSubscribeOneSignal}>Unsubscribe </button>
 				</div>
 			</div>
 		);
@@ -48,7 +60,7 @@ const mapStateToProps = (state) => {
 	return {
 		lowRated: state.settings.lowRatedBtn,
 		nsfw: state.settings.nsfwBth,
-
+		notificationEnabled: state.oneSignal.notificationPermission && state.oneSignal.isNotificationsEnabled
 	};
 };
 

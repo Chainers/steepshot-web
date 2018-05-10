@@ -210,9 +210,7 @@ const Constants = {
 			POST: 'post'
 		},
 		LOCAL_STORAGE: {
-			USER_ID: 'oneSignalUserId',
 			SETTINGS: 'oneSignalSettings',
-			STATE: 'oneSignalState'
 		},
 		STATES: {
 			DEFAULT: 'default',

@@ -4,49 +4,47 @@ import Constants from "../common/constants";
 let OneSignal = window.OneSignal;
 
 export function loadSubscribeSettings() {
-	OneSignal.on('subscriptionChange', changeSubscribe);
+	OneSignal.on('subscriptionChange', subscribe);
 	return async dispatch => {
-		let playerId = localStorage.getItem(Constants.ONE_SIGNAL.LOCAL_STORAGE.USER_ID);
-		let settings = JSON.parse(localStorage.getItem(Constants.ONE_SIGNAL.LOCAL_STORAGE.SETTINGS) || 'null');
-		let state = localStorage.getItem(Constants.ONE_SIGNAL.LOCAL_STORAGE.STATE);
-		if (!playerId || !settings || !state) {
-			playerId = await OneSignal.getUserId();
-			state = await OneSignal.getNotificationPermission();
-			settings = Object.values(Constants.ONE_SIGNAL.SUBSCRIPTION);
-		}
-		dispatch(setOneSignalSettings(playerId, state, settings))
+		let playerId = await OneSignal.getUserId();
+		let notificationPermission = await OneSignal.getNotificationPermission();
+		let isNotificationsEnabled = await OneSignal.isPushNotificationsEnabled();
+		let settings = JSON.parse(localStorage.getItem(Constants.ONE_SIGNAL.LOCAL_STORAGE.SETTINGS) || 'null')
+			|| Object.values(Constants.ONE_SIGNAL.SUBSCRIPTION);
+
+		dispatch(setOneSignalSettings(playerId, notificationPermission, isNotificationsEnabled, settings));
 	}
 }
 
-function setOneSignalSettings(playerId, state, settings) {
+function setOneSignalSettings(playerId, notificationPermission, isNotificationsEnabled, settings) {
 	return {
 		type: 'SET_ONE_SIGNAL_SETTINGS',
 		playerId,
-		state,
+		notificationPermission,
+		isNotificationsEnabled,
 		settings
 	}
 }
 
-export function registerForPushNotifications() {
-	OneSignal.registerForPushNotifications({
-		modalPrompt: true
-	});
+export async function registerForPushNotifications() {
+	if (await OneSignal.getUserId() != null) {
+		OneSignal.setSubscription(true);
+	}	else {
+		OneSignal.registerForPushNotifications({
+			modalPrompt: true
+		});
+	}
 }
 
-async function changeSubscribe() {
-	console.log('change');
+async function subscribe() {
 	const store = getStore();
 	let playerId = await OneSignal.getUserId();
-	let state = await OneSignal.getNotificationPermission();
-	let settings = [
-		Constants.ONE_SIGNAL.SUBSCRIPTION.COMMENT,
-		Constants.ONE_SIGNAL.SUBSCRIPTION.UPVOTE,
-		Constants.ONE_SIGNAL.SUBSCRIPTION.UPVOTE_COMMENT,
-		Constants.ONE_SIGNAL.SUBSCRIPTION.FOLLOW,
-		Constants.ONE_SIGNAL.SUBSCRIPTION.POST
-	];
-	store.dispatch(setOneSignalSettings(playerId, state, settings));
-	saveOneSignalSettingsToLocalStorage(playerId, state, settings);
+	let settings = Object.values(Constants.ONE_SIGNAL.SUBSCRIPTION);
+	let notificationPermission = await OneSignal.getNotificationPermission();
+	let isNotificationsEnabled = await OneSignal.isPushNotificationsEnabled();
+
+	saveOneSignalSettingsToLocalStorage(settings);
+	store.dispatch(setOneSignalSettings(playerId, notificationPermission, isNotificationsEnabled, settings));
 }
 
 
@@ -79,8 +77,6 @@ export function setSubscribeSettings(comment, upvote, upvoteComment, follow, pos
 	}
 }
 
-function saveOneSignalSettingsToLocalStorage(playerId, state, settings) {
-	localStorage.setItem(Constants.ONE_SIGNAL.LOCAL_STORAGE.USER_ID, JSON.stringify(playerId));
+function saveOneSignalSettingsToLocalStorage(settings) {
 	localStorage.setItem(Constants.ONE_SIGNAL.LOCAL_STORAGE.SETTINGS, JSON.stringify(settings));
-	localStorage.setItem(Constants.ONE_SIGNAL.LOCAL_STORAGE.STATE, JSON.stringify(state));
 }

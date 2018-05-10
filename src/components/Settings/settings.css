@@ -1,6 +1,6 @@
 .container_settings {
     width: 100vw;
-    height: 330px;
+    height: 100%;
     max-width: 405px;
     background: #fff;
     box-shadow: 0 30px 30px 0 hsla(0,0%,80%,.5);
@@ -13,7 +13,7 @@
     text-align: center;
 }
 
-.header_settings > span {
+.header_settings > span, .notification_settings > span {
     line-height: 1.2;
     font-size: 30px;
     font-family: OpenSans-Bold,Helvetica,Arial,sans-serif;
@@ -30,6 +30,15 @@
 
 .active.check-box_settings {
     border-color: #e74800;
+}
+
+.notification_settings {
+    width: 100%;
+    margin-bottom: 22px;
+}
+
+.notification_settings > button {
+    margin: 22px 0;
 }
 
 .save_settings {

@@ -7,7 +7,6 @@
     <link rel="manifest" href="/manifest.json"/>
     <script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async=""></script>
     <script>
-			var useragentid = null;
 			var OneSignal = window.OneSignal || [];
 			OneSignal.push(function () {
 				OneSignal.init({
@@ -20,74 +19,6 @@
 					subdomainName: 'alpha-steep'
 				});
 			});
-			OneSignal.push(function () {
-				OneSignal.getUserId().then(function (userId) {
-					if (userId == null) {
-						document.getElementById('unsubscribe').style.display = 'none';
-					}
-					else {
-						useragentid = userId;
-						document.getElementById('unsubscribe').style.display = '';
-						OneSignal.push(["getNotificationPermission", function (permission) {
-						}]);
-						OneSignal.isPushNotificationsEnabled(function (isEnabled) {
-							if (isEnabled) {
-								document.getElementById('unsubscribe').style.display = '';
-								document.getElementById('subscribe').style.display = 'none';
-							}
-							else {
-								document.getElementById('unsubscribe').style.display = 'none';
-								document.getElementById('subscribe').style.display = '';
-							}
-						});
-					}
-				});
-			});
-			//Secondly this will check when subscription changed
-			OneSignal.push(function () {
-				OneSignal.on('subscriptionChange', function (isSubscribed) {
-					if (isSubscribed == true) {
-						OneSignal.getUserId().then(function (userId) {
-							useragentid = userId;
-						}).then(function () {
-							// this is custom function
-							// here you can send post request to php file as well.
-							OneSignalUserSubscription(useragentid);
-						});
-						document.getElementById('unsubscribe').style.display = '';
-						document.getElementById('subscribe').style.display = 'none';
-					}
-					else if (isSubscribed == false) {
-						OneSignal.getUserId().then(function (userId) {
-							useragentid = userId;
-						});
-						document.getElementById('unsubscribe').style.display = 'none';
-						document.getElementById('subscribe').style.display = '';
-					}
-					else {
-						console.log('Unable to process the request');
-					}
-				});
-			});
-
-			function subscribeOneSignal() {
-				if (useragentid != null) {
-					OneSignal.setSubscription(true);
-				}
-				else {
-					OneSignal.registerForPushNotifications({
-						modalPrompt: true
-					});
-				}
-				console.log(useragentid);
-				console.log('subscribe');
-			}
-
-			function unSubscribeOneSignal() {
-				OneSignal.setSubscription(false);
-				console.log(useragentid);
-				console.log('unsubscribe');
-			}
     </script>
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-112002704-1"></script>
     <script>

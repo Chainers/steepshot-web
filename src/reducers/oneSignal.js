@@ -1,8 +1,11 @@
+import Constants from "../common/constants";
+
 const initialState = {
-	appId: null,
+	appId: Constants.ONE_SIGNAL.APP_ID,
 	playerId: null,
 	settings: null,
-	state: null
+	notificationPermission: null,
+	isNotificationsEnabled: null
 };
 
 export default function oneSignal(state = initialState, action) {
@@ -12,7 +15,8 @@ export default function oneSignal(state = initialState, action) {
 				...state,
 				playerId: action.playerId,
 				settings: action.settings,
-				state: action.state
+				notificationPermission: action.notificationPermission,
+				isNotificationsEnabled: action.isNotificationsEnabled
 			};
 
 		default:
