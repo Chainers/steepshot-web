@@ -43,7 +43,7 @@ class Vote extends React.Component {
       return;
     }
     let plTimeout = setTimeout(() => {
-      this.props.setPowerLikeInd(this.props.postIndex, true, this.props.powerLikeIndPlace);
+      this.props.setPowerLikeInd(this.props.postIndex, true);
       window.addEventListener('touchstart', this.hideVoteIndicator);
       window.addEventListener('mousedown', this.hideVoteIndicator);
     }, timeDelay);
@@ -102,11 +102,22 @@ class Vote extends React.Component {
     clearTimeout(this.props.hplTimeout);
   }
 
+  styleVoteInd() {
+    const VOTE_IND_LUMP = 10;
+    if (this.vote) {
+      let postWidth = this.vote.parentNode.parentNode.parentNode.clientWidth;
+      if (this.props.isPost) {
+        let voteIndWidth = (postWidth) + 2 * VOTE_IND_LUMP + 2;
+        return {width: voteIndWidth, right: -VOTE_IND_LUMP};
+      }
+      if (this.props.isPopup) return {width: postWidth, right: 0};
+      if (this.props.isComment) return {width: postWidth, right: -VOTE_IND_LUMP * 2};
+    }
+  }
+
 	render() {
-  	let pLIP = this.props.powerLikeIndPlace;
-		let isComment = pLIP === 'comment';
 		let buttonClasses = 'btn-like';
-		if (isComment) {
+		if (this.props.isComment) {
       buttonClasses = 'comment btn-like';
 		}
 		if (this.props.vote) {
@@ -115,15 +126,15 @@ class Vote extends React.Component {
 		if (this.props.voteLoading) {
 			buttonClasses = buttonClasses + ' loading';
 		}
-    let poweroflikeClass = this.props.isPopup ? 'poweroflike-popup-ind_vote-ind' : isComment ?
+    let poweroflikeClass = this.props.isPopup ? 'poweroflike-popup-ind_vote-ind' : this.props.isComment ?
       'poweroflike-comment-ind_vote-ind' : 'poweroflike-ind_vote-ind';
-		let showSlider = (this.props.isModalOpen || this.props.singlePost) ? pLIP === 'modal' && this.props.isPLOpen :
-      pLIP === 'post' && this.props.isPLOpen;
-		if (isComment) {
+		let showSlider = (this.props.isModalOpen || this.props.singlePost) ? this.props.isPopup && this.props.isPLOpen :
+      this.props.isPost && this.props.isPLOpen;
+		if (this.props.isComment) {
       showSlider = this.props.isPLOpen;
     }
 		return (
-			<div className={isComment ? 'btn-like-wrapper-comment_vote' : 'btn-like-wrapper_vote'}
+			<div className={this.props.isComment ? 'btn-like-wrapper-comment_vote' : 'btn-like-wrapper_vote'}
 					 ref={ref => this.vote = ref}
 					 onClick={this.toggleVote.bind(this)}
 					 onMouseLeave={this.breakLongTapPLInd.bind(this, true)}
@@ -131,11 +142,12 @@ class Vote extends React.Component {
 					 onTouchEnd={this.breakLongTapPLInd.bind(this, false)}
 					 onTouchMove={this.breakLongTapPLInd.bind(this, false)}
 					 onContextMenu={this.breakLongTapPLInd.bind(this, false)}
-					 style={this.props.style}>
+					 style={this.props.isPopup ? {paddingRight: 20} : null}>
 				<button type="button" className={buttonClasses}/>
 				<ShowIf show={showSlider}>
 					<div className={'poweroflike-common_vote-ind ' + poweroflikeClass}
 							 ref={ref => this.powerIndicator = ref}
+               style={this.styleVoteInd()}
 					>
 						<VoteIndicator index={this.props.postIndex}
 													 fluidHide={this.fluidHide.bind(this)}/>
@@ -148,9 +160,16 @@ class Vote extends React.Component {
 
 const mapStateToProps = (state, props) => {
 	let post = state.posts[props.postIndex];
+  let powerLikeIndPlace = props.powerLikeIndPlace;
+  let isComment = powerLikeIndPlace === 'comment';
+  let isPost = powerLikeIndPlace === 'post';
+  let isPopup = powerLikeIndPlace === 'modal';
 	return {
 		...post,
 		...props,
+    isComment,
+    isPost,
+    isPopup,
 		isModalOpen: Object.keys(state.modals).length > 0,
 		isPLOpen: post.isPLOpen,
 		plTimeout: post.plTimeout,
@@ -164,8 +183,8 @@ const mapDispatchToProps = (dispatch) => {
 		toggleVote: (postIndex) => {
 			dispatch(toggleVote(postIndex));
 		},
-    setPowerLikeInd: (postIndex, isOpen, place) => {
-      dispatch(setPowerLikeInd(postIndex, isOpen, place));
+    setPowerLikeInd: (postIndex, isOpen) => {
+      dispatch(setPowerLikeInd(postIndex, isOpen));
     },
     setPowerLikeTimeout: (postIndex, plTimeout) => {
       dispatch(setPowerLikeTimeout(postIndex, plTimeout));
