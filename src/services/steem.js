@@ -1,7 +1,6 @@
 import steem from 'steem';
 import Promise from 'bluebird';
 import {getStore} from '../store/configureStore';
-import {prepareComment} from '../actions/steemPayout';
 import {logComment, logDeletedPost, logFlag, logFollow, logPost, logVote} from '../actions/logging';
 import _ from 'underscore';
 import FormData from 'form-data';
@@ -44,7 +43,7 @@ class Steem {
 				callback(checkedError, null);
 				const data = JSON.stringify({
 					username: author,
-          error: err.message
+					error: err.message
 				});
 				logComment(parentAuthor, parentPermlink, data);
 			} else if (success) {
@@ -56,45 +55,18 @@ class Steem {
 				callback(null, success);
 			}
 		};
-		this.handleBroadcastMessagesComment(commentOperation, [], wif, callbackBc);
+		this.handleBroadcastMessagesComment(commentOperation, wif, callbackBc);
 	}
 
-	handleBroadcastMessagesComment(message, extetion, postingKey, callback) {
-		let self = this;
-		this._preCompileTransactionComment(message, postingKey)
-			.then((response) => {
-				if (response.ok) {
-					let beneficiaries = self._getCommentBenificiaries(message[1].permlink);
-
-					const operations = [message, beneficiaries];
-
-					steem.broadcast.sendAsync(
-						{operations, extensions: []},
-						{posting: postingKey}, callback
-					);
-				} else {
-					response.json().then((result) => {
-						callback(result.username[0]);
-					});
-				}
-			});
+	handleBroadcastMessagesComment(message, postingKey, callback) {
+		let beneficiaries = this._getCommentBenificiaries(message[1].permlink);
+		const operations = [message, beneficiaries];
+		steem.broadcast.sendAsync(
+			{operations, extensions: []},
+			{posting: postingKey}, callback
+		);
 	}
 
-	_preCompileTransactionComment(message, postingKey) {
-		return steem.broadcast._prepareTransaction({
-			extensions: [],
-			operations: [message],
-		})
-			.then((transaction) => {
-				return Promise.join(
-					transaction,
-					steem.auth.signTransaction(transaction, [postingKey])
-				)
-			})
-			.spread((transaction, signedTransaction) => {
-				return prepareComment(message, signedTransaction);
-			});
-	}
 
 	_getCommentBenificiaries(permlink) {
 		let beneficiariesObject = _.extend({}, {
@@ -123,7 +95,7 @@ class Steem {
 	vote(wif, username, author, url, voteStatus, power, callback) {
 		const callbackBc = (err, success) => {
 			if (err) {
-        let checkedError = blockchainErrorsList(err);
+				let checkedError = blockchainErrorsList(err);
 				callback(checkedError, null);
 				const data = JSON.stringify({
 					username: username,
@@ -149,13 +121,13 @@ class Steem {
 
 		const callbackBc = (err, success) => {
 			if (err) {
-        let checkedError = blockchainErrorsList(err);
+				let checkedError = blockchainErrorsList(err);
 				callback(checkedError, null);
-        const data = JSON.stringify({
-          username: username,
-          error: err.message
-        });
-        logVote(flagStatus, author, url, data);
+				const data = JSON.stringify({
+					username: username,
+					error: err.message
+				});
+				logVote(flagStatus, author, url, data);
 			} else if (success) {
 				const data = JSON.stringify({
 					username: username
@@ -171,7 +143,7 @@ class Steem {
 	}
 
 
-	 _sendBroadCasts(operations, postingWif) {
+	_sendBroadCasts(operations, postingWif) {
 		steem.broadcast.sendAsync({operations, extensions: []}, {posting: postingWif});
 	}
 
@@ -195,7 +167,7 @@ class Steem {
 				callback(checkedError, null);
 				const data = JSON.stringify({
 					username: follower,
-          error: err.message
+					error: err.message
 				});
 				logFollow(status, following, data);
 			} else if (result) {
@@ -224,11 +196,11 @@ class Steem {
 		const callbackBc = (err, success) => {
 			if (err) {
 				const data = JSON.stringify({
-				  username: author,
-          error: err.message
+					username: author,
+					error: err.message
 				});
 				logDeletedPost(author, permlink, data);
-        let checkedError = blockchainErrorsList(err);
+				let checkedError = blockchainErrorsList(err);
 				callback(checkedError, null);
 			} else if (success) {
 				const data = JSON.stringify({
@@ -287,7 +259,7 @@ class Steem {
 				app: 'steepshot'
 			}
 		}];
-		return _fileUpload(operation, file)
+		return _fileUpload(file)
 			.then(response => {
 				return _preparePost(response, description, tags, permlink, _getUserName());
 			})
@@ -351,7 +323,20 @@ class Steem {
 	}
 }
 
-function _preCompileTransaction(operation) {
+export function getValidTransaction() {
+	const operation = [Constants.OPERATIONS.COMMENT, {
+		parent_author: '',
+		parent_permlink: '',
+		author: _getUserName(),
+		permlink:  _getPermLink('steepshot'),
+		title: 'steepshot',
+		description: '',
+		body: 'steepshot',
+		json_metadata: {
+			tags: ['steepshot'],
+			app: 'steepshot'
+		}
+	}];
 	return steem.broadcast._prepareTransaction({
 		extensions: [],
 		operations: [operation],
@@ -363,8 +348,8 @@ function _preCompileTransaction(operation) {
 	});
 }
 
-function _fileUpload(operation, file) {
-	return _preCompileTransaction(operation)
+function _fileUpload(file) {
+	return getValidTransaction()
 		.then(transaction => {
 			let form = new FormData();
 			form.append('file', file);
@@ -425,9 +410,9 @@ function _preparePost(media, description, tags, permlink, username) {
 function _getPermLink(permlinkHead) {
 	let today = new Date();
 	let permlinkHeadLimit = 30;
-  permlinkHead = permlinkHead.toLowerCase();
+	permlinkHead = permlinkHead.toLowerCase();
 	if (permlinkHead.length > permlinkHeadLimit) {
-    permlinkHead = permlinkHead.slice(0, permlinkHeadLimit + 1);
+		permlinkHead = permlinkHead.slice(0, permlinkHeadLimit + 1);
 	}
 	return permlinkHead.replace(/\W/g, '-') + '-' + today.getFullYear() + '-' + today.getMonth() + '-' + today.getDay()
 		+ '-' + today.getHours() + '-' + today.getMinutes() + '-' + today.getSeconds();

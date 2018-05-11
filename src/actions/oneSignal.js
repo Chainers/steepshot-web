@@ -1,4 +1,6 @@
 import {getStore} from "../store/configureStore";
+import Constants from "../common/constants";
+import {addNotificationTags, removeNotificationTags} from "../services/oneSignal";
 
 let OneSignal = window.OneSignal;
 
@@ -8,6 +10,10 @@ export function loadSubscribeData() {
 		let playerId = await OneSignal.getUserId();
 		let notificationPermission = await OneSignal.getNotificationPermission();
 		let isNotificationsEnabled = await OneSignal.isPushNotificationsEnabled();
+		let shownSubscribe = localStorage.getItem('shownSubscribe');
+		if ((notificationPermission === Constants.ONE_SIGNAL.STATES.DEFAULT) && !shownSubscribe) {
+			subscribe();
+		}
 		dispatch(setOneSignalData(playerId, notificationPermission, isNotificationsEnabled));
 	}
 }
@@ -21,21 +27,29 @@ function setOneSignalData(playerId, notificationPermission, isNotificationsEnabl
 	}
 }
 
-export async function subscribe() {
-	if (await OneSignal.getUserId() != null) {
-		OneSignal.setSubscription(true);
-	}	else {
-		OneSignal.registerForPushNotifications({
-			modalPrompt: true
-		});
-	}
+export function subscribe() {
+	OneSignal.getUserId().then(userId => {
+		if (userId != null) {
+			OneSignal.setSubscription(true);
+		} else {
+			OneSignal.registerForPushNotifications({
+				modalPrompt: true
+			});
+		}
+		localStorage.setItem('shownSubscribe', 'true');
+	})
 }
 
-async function subscribeListener() {
+async function subscribeListener(isSubscribed) {
 	const store = getStore();
 	let playerId = await OneSignal.getUserId();
 	let notificationPermission = await OneSignal.getNotificationPermission();
 	let isNotificationsEnabled = await OneSignal.isPushNotificationsEnabled();
-
+	let user = store.getState().auth.user;
+	if (isSubscribed) {
+		addNotificationTags(user, playerId);
+	} else {
+		removeNotificationTags();
+	}
 	store.dispatch(setOneSignalData(playerId, notificationPermission, isNotificationsEnabled));
 }

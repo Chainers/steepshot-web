@@ -1,6 +1,6 @@
 import {getComments} from "../services/posts";
 import {getStore} from "../store/configureStore";
-import Steem from "../libs/steem";
+import Steem from "../services/steem";
 import {clearTextInputState} from "./textInput";
 import {pushMessage} from "./pushMessage";
 import {actionLock, actionUnlock} from "./session";

@@ -1,5 +1,5 @@
 import {getPostShaddow} from '../services/posts';
-import Steem from '../libs/steem';
+import Steem from '../services/steem';
 import {getStore} from '../store/configureStore';
 import {initPostsList} from './postsList';
 import {initPostModal} from './postModal';

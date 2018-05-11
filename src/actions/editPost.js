@@ -1,7 +1,7 @@
 import {getStore} from "../store/configureStore";
 import {utils} from "../utils/utils";
 import {getPostShaddow} from "../services/posts";
-import Steem from "../libs/steem";
+import Steem from "../services/steem";
 import {clearTextInputState, setTextInputError} from "./textInput";
 import {getCreateWaitingTime} from "../services/users";
 import * as React from "react";

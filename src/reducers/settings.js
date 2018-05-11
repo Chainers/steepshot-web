@@ -5,7 +5,10 @@ const initialState = JSON.parse(localStorage.getItem('settings')) || Constants.S
 export default function settings(state = initialState, action) {
 	switch (action.type) {
 		case 'UPDATE_SETTINGS':
-			return action.settings;
+			return {
+				...state,
+				...action.settings
+			};
 		default:
 			return state;
 	}

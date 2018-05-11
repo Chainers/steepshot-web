@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
 import {closeModal} from '../../../actions/modal';
 import {editPostReject, editPostRequest, editPostSuccess} from '../../../actions/editPost';
-import Steem from '../../../libs/steem';
+import Steem from '../../../services/steem';
 import constants from '../../../common/constants';
 import {push} from "react-router-redux";
 import './plagiarismTracking.css';

@@ -6,6 +6,7 @@ import {getProfile} from "../services/userProfile";
 import {pushMessage} from "./pushMessage";
 import {hideBodyLoader, showBodyLoader} from "./bodyLoader";
 import {updateSettings} from "./settings";
+import {addNotificationTags, removeNotificationTags} from "../services/oneSignal";
 
 function showMessage(message) {
 	return dispatch => {
@@ -53,7 +54,7 @@ export function login(username, postingKey) {
 			localStorage.setItem('postingKey', JSON.stringify(postingKey));
 			localStorage.setItem('like_power', '100');
 			localStorage.setItem('avatar', JSON.stringify(avatar));
-
+			addNotificationTags(username);
 			dispatch(updateSettings(Constants.SETTINGS.DEFAULT.show_low_rated, Constants.SETTINGS.DEFAULT.show_nsfw));
 
 			dispatch({
@@ -98,6 +99,7 @@ export function logout() {
 		localStorage.removeItem('settings');
 		localStorage.removeItem('avatar');
 		localStorage.removeItem('like_power');
+		removeNotificationTags();
 		dispatch(logoutUser());
 		dispatch(push(`/browse`));
 	}

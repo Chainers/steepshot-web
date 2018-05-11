@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import Steem from '../../libs/steem';
+import Steem from '../../services/steem';
 import {pushMessage} from "../../actions/pushMessage";
 
 class FollowComponent extends React.Component {
