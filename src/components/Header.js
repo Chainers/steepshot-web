@@ -115,7 +115,7 @@ class Header extends React.Component {
 												</Link>
 												<Link to="/editPost" type="button"
 															className="btn btn-default btn-create-mob"
-															onClick={this.props.toggleMobileNavigation}
+															onClick={this.props.closeMobileNavigation}
 												/>
 											</div>
 											: null

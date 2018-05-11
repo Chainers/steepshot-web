@@ -17,10 +17,11 @@ class MobileNavigation extends React.Component {
 
 	render() {
 		const {isAuth, name, opened, urls, labels, closeMobileNavigation} = this.props;
+		let menuMobilePaddingTop = !localStorage.getItem('advertisingStatus') ? {paddingTop: 160} : null;
 		return (
 			<ShowIf show={isAuth}>
 				<div className={'container_mobile' + (opened ? ' opened_mobile' : '')} onClick={this.props.closeMobileNavigation}>
-					<div className="menu_mobile">
+					<div className="menu_mobile" style={menuMobilePaddingTop}>
 						<Scrollbars>
 							<div className="menu-items_mobile">
 								<Link
