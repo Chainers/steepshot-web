@@ -81,6 +81,16 @@ export function setPowerLikeTimeout(postIndex, timeout) {
 	}
 }
 
+export function setChangeStatus(postIndex, param) {
+  return (dispatch) => {
+    dispatch({
+      type: 'POWER_OF_LIKE_CHANGE_STATUS',
+      index: postIndex,
+      changeStatus: param
+    })
+  }
+}
+
 export function setHidePowerLikeTimeout(postIndex, timeout) {
 	return (dispatch) => {
 		dispatch({
