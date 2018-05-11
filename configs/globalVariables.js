@@ -7,7 +7,6 @@ const jsdom = require("jsdom");
 const {JSDOM} = jsdom;
 const {window} = new JSDOM(``);
 global.window = window;
-window.$ = require('jquery');
 window.matchMedia = window.matchMedia || function () {
 	return { matches
 			: false,
