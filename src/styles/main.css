@@ -17,6 +17,12 @@ body {
     text-align: center;
 }
 
+.centered--flex {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .prevent--selection {
     -webkit-touch-callout: none;
     -webkit-user-select: none;
@@ -2237,14 +2243,11 @@ html body {
     background-color: #fafafa
 }
 
-.outer-bg {
-    min-width: 300px
-}
-
 .g-wrap .outer-bg {
     max-width: 3000px;
     background: #fafafa;
-    margin: 0 auto
+    margin: 0 auto;
+    min-width: 300px
 }
 
 .g-wrap {
@@ -2260,17 +2263,6 @@ html body {
 
 .search-open .g-header {
     z-index: 1010
-}
-
-.g-header_i {
-    position: relative
-}
-
-.g-footer {
-    background: #ffffff;
-    border-top: 1px solid #e7e7e7;
-    padding: 22px 0 18px;
-    line-height: 1.4
 }
 
 .mm-open {
@@ -5028,7 +5020,6 @@ input[type=button].btn-block, input[type=reset].btn-block, input[type=submit].bt
     .g-header {
         position: fixed;
         z-index: 1010;
-        top: 0;
         left: 0;
         width: 100%;
         min-width: 300px
