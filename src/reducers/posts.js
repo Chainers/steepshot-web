@@ -156,6 +156,14 @@ export default function posts(state = {}, action) {
           sliderWidth: action.sliderWidth
         }
 			};
+		case 'POWER_OF_LIKE_CHANGE_STATUS':
+			return {
+        ...state,
+        [action.index]: {
+          ...state[action.index],
+          changeStatus: action.changeStatus
+        }
+			};
     case 'SET_GALLERY_IMG_INDEX':
       return {
         ...state,

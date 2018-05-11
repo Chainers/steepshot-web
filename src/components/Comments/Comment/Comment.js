@@ -33,12 +33,17 @@ class Comment extends React.Component {
 		}
 		let money = this.props.item.total_payout_reward > 0 ?
 			<span className="money_comment">{`$${this.props.item.total_payout_reward}`}</span> : null;
-		let commentActions = !this.props.isYourComment ? <div className="display--flex">
-																											 <span className="reply_comment"
-																														 onClick={() => this.props.replyAuthor(this.props.author)}>Reply</span>
-																											 <Flag postIndex={this.props.point}
-																														 isComment={true}/>
-																										 </div> : <div className="display--flex"/>;
+		let commentActions = !this.props.isYourComment
+			? <div className="display--flex">
+			    <span className="reply_comment"
+				   		 onClick={() => this.props.replyAuthor(this.props.author)}>Reply</span>
+			    <Flag postIndex={this.props.point}
+						 isComment={true}/>
+		    </div>
+			: <div className="display--flex">
+					{/*<span className="edit_comment">Edit</span>*/}
+					{/*<span className="delete_comment">Delete</span>*/}
+				</div>;
 		const authorLink = `/@${this.props.author}`;
 		return (
 			<div className="container_comment">

@@ -122,11 +122,12 @@ class PostModal extends React.Component {
 		}
 	}
 
-	lowNSFWFilter(isFullScreen) {
-		let backgroundStyle = {backgroundColor: isFullScreen ? 'rgba(0, 0, 0, .96)' : 'rgba(255, 255, 255, .96)'};
-		let colorTitleStyle = {color: isFullScreen ? '#ffffff' : '#000000'};
-		let colorMessageStyle = {color: isFullScreen ? '#f3f3f2' : '#696969'};
-		let buttonColor = isFullScreen ? {color: '#ffffff', backgroundColor: 'rgba(0, 0, 0, .96)'}
+	lowNSFWFilter() {
+		let fullScreenMode = this.props.fullScreenMode;
+		let backgroundStyle = {backgroundColor: fullScreenMode ? 'rgba(0, 0, 0, .96)' : 'rgba(255, 255, 255, .96)'};
+		let colorTitleStyle = {color: fullScreenMode ? '#ffffff' : '#000000'};
+		let colorMessageStyle = {color: fullScreenMode ? '#f3f3f2' : '#696969'};
+		let buttonColor = fullScreenMode ? {color: '#ffffff', backgroundColor: 'rgba(0, 0, 0, .96)'}
 			: {color: '#000000', backgroundColor: 'rgba(255, 255, 255, .96)'};
 		return (
 			<div>
@@ -221,7 +222,7 @@ class PostModal extends React.Component {
 		return (
 			<div>
 				<div className="full-image-wrap_pos-mod">
-					{this.lowNSFWFilter(true)}
+					{this.lowNSFWFilter()}
 					{this.resizingFilter()}
 					<span className="open-fs-dblclick_pos-mod"
 								onDoubleClick={this.setFullScreen.bind(this, !this.props.fullScreenMode)}/>

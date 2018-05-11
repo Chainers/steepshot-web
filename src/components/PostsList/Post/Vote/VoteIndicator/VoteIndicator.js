@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {setSliderWidth} from '../../../../../actions/post';
+import {setChangeStatus, setSliderWidth} from '../../../../../actions/post';
 import {toggleVote} from '../../../../../actions/vote';
 import {setLikePower} from '../../../../../actions/auth';
 import Slider from 'react-rangeslider';
@@ -43,7 +43,7 @@ class VoteIndicator extends React.Component {
 	}
 
 	sliderHandleChange = (power) => {
-		if (power !== this.props.likePower) this.props.setLikePower(power);
+		if (power !== this.props.likePower && this.props.changeStatus) this.props.setLikePower(power);
 	};
 
 	renderDistributionDots() {
@@ -61,6 +61,10 @@ class VoteIndicator extends React.Component {
 		}
 	}
 
+	setChangeStatus(param) {
+		this.props.setChangeStatus(this.props.index, param);
+	}
+
 	render() {
 		return (
 			<div className="wrapper_vote-ind">
@@ -72,6 +76,8 @@ class VoteIndicator extends React.Component {
 							max={100}
 							value={this.props.likePower}
 							onChange={this.sliderHandleChange}
+							onChangeStart={this.setChangeStatus.bind(this, true)}
+							onChangeComplete={this.setChangeStatus.bind(this, false)}
 						/>
 					</div>
 					<div className="circle-line_vote-ind"/>
@@ -89,7 +95,8 @@ const mapStateToProps = (state, props) => {
 		...props,
 		likePower: state.auth.like_power,
 		hplTimeout: post.hplTimeout,
-		sliderWidth: post.sliderWidth
+		sliderWidth: post.sliderWidth,
+		changeStatus: post.changeStatus
 	}
 };
 
@@ -103,6 +110,9 @@ const mapDispatchToProps = (dispatch) => {
 		},
 		setSliderWidth: (postIndex, width) => {
 			dispatch(setSliderWidth(postIndex, width))
+		},
+    setChangeStatus: (postIndex, param) => {
+			dispatch(setChangeStatus(postIndex, param))
 		}
 	}
 };
