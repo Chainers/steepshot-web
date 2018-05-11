@@ -15,6 +15,7 @@
     justify-content: center;
     margin-top: 0 !important;
     padding: 0 !important;
+    bottom: 10px;
 }
 .slick-dots li {
     padding-left: 0 !important;
@@ -27,8 +28,18 @@
     opacity: .5;
 }
 .slick-dots li button::before {
-    background: transparent;
     color: transparent;
+    height: 8px;
+    width: 8px;
+    background: #ffffff;
+    opacity: .4;
+    top: 6px;
+    left: 6px;
+    border-radius: 50%;
+}
+.slick-dots li button:hover::before {
+    background: #ffffff;
+    opacity: .6;
 }
 .slick-dots li.slick-active button::before {
     opacity: 1;

@@ -18,7 +18,7 @@
     cursor: pointer;
 }
 
-.flag_comment {
+.flag_comment, .delete_comment {
     padding: 3px 0;
     margin-left: 18px;
     font: 12px OpenSans-Regular;
@@ -26,14 +26,21 @@
     color: #979b9e;
 }
 
-.flag-not-hover_comment {
+.edit_comment {
+    padding: 3px 0;
+    font: 12px OpenSans-Regular;
+    transition: .15s all ease;
+    color: #979b9e;
+}
+
+.not-hover_comment {
     padding: 3px 0;
     margin-left: 18px;
     font: 12px OpenSans-Regular;
     color: #979b9e;
 }
 
-.flag_comment:hover {
+.flag_comment:hover, .edit_comment:hover, .delete_comment:hover {
     cursor: pointer;
     color: #0f181e;
 }

@@ -51,7 +51,7 @@ class Flag extends React.Component {
         flagComment = <span className="saving">Pending<span> .</span><span> .</span><span> .</span></span>;
       }
 			return (
-				<span className={this.props.flagLoading ? 'flag-not-hover_comment' : 'flag_comment'}
+				<span className={this.props.flagLoading ? 'not-hover_comment' : 'flag_comment'}
 							style={{marginRight: 18}}
 							onClick={this.toggleFlag.bind(this)}>{flagComment}</span>
 			)

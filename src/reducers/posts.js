@@ -129,8 +129,7 @@ export default function posts(state = {}, action) {
 				...state,
 				[action.index]: {
 					...state[action.index],
-					isPLOpen: action.isPLOpen,
-					powerLikeIndPlace: action.powerLikeIndPlace
+					isPLOpen: action.isPLOpen
 				}
 			};
 		case 'POWER_OF_LIKE_TIMEOUT':
@@ -148,6 +147,22 @@ export default function posts(state = {}, action) {
 					...state[action.index],
 					hplTimeout: action.hplTimeout
 				}
+			};
+		case 'SET_SLIDER_TIMEOUT':
+			return {
+        ...state,
+        [action.index]: {
+          ...state[action.index],
+          sliderWidth: action.sliderWidth
+        }
+			};
+		case 'POWER_OF_LIKE_CHANGE_STATUS':
+			return {
+        ...state,
+        [action.index]: {
+          ...state[action.index],
+          changeStatus: action.changeStatus
+        }
 			};
     case 'SET_GALLERY_IMG_INDEX':
       return {

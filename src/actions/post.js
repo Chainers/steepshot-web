@@ -61,13 +61,12 @@ function updateCommentData(dispatch, postIndex, newVoteState, newFlagState) {
 	});
 }
 
-export function setPowerLikeInd(postIndex, isOpen, place) {
+export function setPowerLikeInd(postIndex, isOpen) {
 	return (dispatch) => {
 		dispatch({
 			type: 'POWER_OF_LIKE_IND',
 			index: postIndex,
-			isPLOpen: isOpen,
-			powerLikeIndPlace: place
+			isPLOpen: isOpen
 		})
 	}
 }
@@ -82,12 +81,32 @@ export function setPowerLikeTimeout(postIndex, timeout) {
 	}
 }
 
+export function setChangeStatus(postIndex, param) {
+  return (dispatch) => {
+    dispatch({
+      type: 'POWER_OF_LIKE_CHANGE_STATUS',
+      index: postIndex,
+      changeStatus: param
+    })
+  }
+}
+
 export function setHidePowerLikeTimeout(postIndex, timeout) {
 	return (dispatch) => {
 		dispatch({
 			type: 'HIDE_POWER_OF_LIKE_TIMEOUT',
 			index: postIndex,
 			hplTimeout: timeout
+		})
+	}
+}
+
+export function setSliderWidth(postIndex, width) {
+	return (dispatch) => {
+		dispatch({
+			type: 'SET_SLIDER_TIMEOUT',
+			index: postIndex,
+      sliderWidth: width
 		})
 	}
 }

@@ -183,9 +183,7 @@ class Post extends React.Component {
 									<div className="position--relative">
 										<div className="card-control-stop"/>
 										<Vote postIndex={this.props.index}
-                          powerLikeIndPlace="post"
-													width={this.postCard ? {width: this.postCard.clientWidth + 20,
-														left: -(this.postCard.clientWidth - 45)} : null}/>
+                          powerLikeIndPlace="post"/>
 									</div>
 								</div>
 							</div>
