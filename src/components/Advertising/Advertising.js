@@ -24,6 +24,9 @@ class Advertising extends React.Component {
   }
 
   render() {
+		if (global.isServerSide) {
+			return <div/>;
+		}
     return(
       <div>
         <ShowIf show={this.props.advertisingStatus}>
