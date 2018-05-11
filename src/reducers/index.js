@@ -27,6 +27,7 @@ import session from "./session";
 import windowOnStore from "./windowOnStore";
 import settings from "./settings";
 import mobileNavigation from "./mobileNavigation";
+import advertising from "./advertising";
 
 export default combineReducers({
 	clipboard,
@@ -56,5 +57,6 @@ export default combineReducers({
 	session,
 	window: windowOnStore,
 	settings,
-	mobileNavigation
+	mobileNavigation,
+  advertising
 });
