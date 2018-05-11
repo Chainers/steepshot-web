@@ -7,6 +7,7 @@ import {pushMessage} from "./pushMessage";
 import {hideBodyLoader, showBodyLoader} from "./bodyLoader";
 import {updateSettings} from "./settings";
 import {addNotificationTags, removeNotificationTags} from "../services/oneSignal";
+import {setSubscribeConfigurationAction} from "./oneSignal";
 
 function showMessage(message) {
 	return dispatch => {
@@ -64,7 +65,7 @@ export function login(username, postingKey) {
 				avatar: avatar,
 				like_power: 100
 			});
-
+			dispatch(setSubscribeConfigurationAction());
 			dispatch({
 				type: 'UPDATE_VOTING_POWER',
 				voting_power: result[0].voting_power / 100

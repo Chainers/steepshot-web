@@ -1,6 +1,6 @@
 import {getStore} from "../store/configureStore";
 import Constants from "../common/constants";
-import {addNotificationTags, removeNotificationTags} from "../services/oneSignal";
+import {addNotificationTags, removeNotificationTags, setSubscribeConfiguration} from "../services/oneSignal";
 
 let OneSignal = window.OneSignal;
 
@@ -52,4 +52,24 @@ async function subscribeListener(isSubscribed) {
 		removeNotificationTags();
 	}
 	store.dispatch(setOneSignalData(playerId, notificationPermission, isNotificationsEnabled));
+}
+
+export function setSubscribeConfigurationAction() {
+	return async dispatch => {
+		dispatch({
+			type: 'SET_SUBSCRIPTION_CONFIGURATION_REQUEST'
+		});
+		try {
+			let response = await setSubscribeConfiguration();
+			dispatch({
+				type: 'SET_SUBSCRIBE_CONFIGURATION_SUCCESS',
+				response
+			})
+		} catch (error) {
+			dispatch({
+				type: 'SET_SUBSCRIBE_CONFIGURATION_ERROR',
+				error
+			})
+		}
+	}
 }

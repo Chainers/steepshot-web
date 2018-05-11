@@ -23,12 +23,15 @@ export function removeNotificationTags() {
 	OneSignal.deleteTags(['username', 'player_id']);
 }
 
-export async function setConfigSubscribe() {
-	const url = Constants.baseUrl_v1_1 + '/subscribe';
+export async function setSubscribeConfiguration() {
+	const url = Constants.URLS.baseUrl_v1_1 + '/subscribe';
 	const state = getStore().getState();
 	const settings = state.settings;
 
 	let username = state.auth.user;
+	if (!username || !state.auth.postingKey) {
+		return;
+	}
 	let player_id = state.oneSignal.playerId;
 	let app_id = state.oneSignal.appId;
 	let subscriptions = getSubscriptions(settings);
@@ -45,7 +48,6 @@ export async function setConfigSubscribe() {
 			trx
 		})
 	});
-
 	return response;
 }
 
@@ -109,8 +111,7 @@ function getSubscriptions(settings) {
 }
 
 function addNotEmptySetting(subscriptions, settings, field) {
-	let setting = settings[field];
-	if (setting) {
-		subscriptions.push(setting);
+	if (settings[field]) {
+		subscriptions.push(field);
 	}
 }

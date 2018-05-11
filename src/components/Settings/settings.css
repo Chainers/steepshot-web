@@ -1,44 +1,38 @@
 .container_settings {
     width: 100vw;
     height: 100%;
-    max-width: 405px;
+    margin: 40px;
+}
+
+.block_settings {
+    border-radius: 10px;
+    margin: 20px;
+    padding: 0 30px;
     background: #fff;
-    box-shadow: 0 30px 30px 0 hsla(0,0%,80%,.5);
-    margin: 80px auto 40px;
+    max-width: 405px;
+    min-width: 300px;
+    width: 100vw;
 }
 
 .header_settings {
-    padding: 4rem 0 2.2rem;
+    padding: 25px 0;
     border-bottom: 1px solid #f4f4f6;
-    text-align: center;
+    display: flex;
+    justify-content: space-between;
 }
 
-.header_settings > span, .notification_settings > span {
-    line-height: 1.2;
-    font-size: 30px;
-    font-family: OpenSans-Bold,Helvetica,Arial,sans-serif;
-    font-weight: 400;
+.header_settings > span {
+    font-size: 14px;
+    font-weight: 600;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: normal;
     color: #0f181e;
-    word-wrap: break-word;
-    text-transform: uppercase;
 }
 
-.body_settings {
-    padding: 40px 35px;
-    text-align: center;
-}
-
-.active.check-box_settings {
-    border-color: #e74800;
-}
-
-.notification_settings {
-    width: 100%;
-    margin-bottom: 22px;
-}
-
-.notification_settings > button {
-    margin: 22px 0;
+.container_settings:first-child {
+    float: left;
 }
 
 .save_settings {

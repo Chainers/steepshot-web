@@ -1,6 +1,6 @@
 import React from 'react';
 import './testing.css';
-import MobileNavigation from "../../MobileNavigation/MobileNavigation";
+import Settings from "../../Settings/Settings";
 
 class Testing extends React.Component {
 
@@ -9,7 +9,7 @@ class Testing extends React.Component {
 			return null;
 		}
 		return (
-			<MobileNavigation/>
+			<Settings/>
 		);
 	}
 }
