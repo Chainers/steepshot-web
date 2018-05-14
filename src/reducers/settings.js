@@ -1,6 +1,7 @@
 import Constants from "../common/constants";
+import storage from "../utils/Storage";
 
-const initialState = JSON.parse(localStorage.getItem('settings')) || Constants.SETTINGS.DEFAULT;
+const initialState = storage.settings || Constants.SETTINGS.DEFAULT;
 
 export default function settings(state = initialState, action) {
 	switch (action.type) {

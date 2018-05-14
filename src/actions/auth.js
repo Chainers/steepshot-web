@@ -8,6 +8,7 @@ import {hideBodyLoader, showBodyLoader} from "./bodyLoader";
 import {updateSettings} from "./settings";
 import {addNotificationTags, removeNotificationTags} from "../services/oneSignal";
 import {setSubscribeConfigurationAction} from "./oneSignal";
+import storage from "../utils/Storage";
 
 function showMessage(message) {
 	return dispatch => {
@@ -51,10 +52,10 @@ export function login(username, postingKey) {
 
 			let avatar = getAvatar(result[0]);
 
-			localStorage.setItem('user', JSON.stringify(username));
-			localStorage.setItem('postingKey', JSON.stringify(postingKey));
-			localStorage.setItem('like_power', '100');
-			localStorage.setItem('avatar', JSON.stringify(avatar));
+			storage.user = username;
+			storage.postingKey = postingKey;
+			storage.like_power = 100;
+			storage.avatar = avatar;
 			addNotificationTags(username);
 			dispatch(updateSettings(Constants.SETTINGS.DEFAULT.show_low_rated, Constants.SETTINGS.DEFAULT.show_nsfw));
 
@@ -95,11 +96,11 @@ function logoutUser() {
 export function logout() {
 	return (dispatch) => {
 		dispatch(updateSettings(Constants.SETTINGS.DEFAULT.show_low_rated, Constants.SETTINGS.DEFAULT.show_nsfw));
-		localStorage.removeItem('user');
-		localStorage.removeItem('postingKey');
-		localStorage.removeItem('settings');
-		localStorage.removeItem('avatar');
-		localStorage.removeItem('like_power');
+		storage.user = null;
+		storage.postingKey = null;
+		storage.settings = null;
+		storage.avatar = null;
+		storage.like_power = null;
 		removeNotificationTags();
 		dispatch(logoutUser());
 		dispatch(push(`/browse`));
@@ -128,7 +129,7 @@ export function clearVPTimeout(vpTimeout) {
 
 export function setLikePower(likePower) {
 	return (dispatch) => {
-		localStorage.setItem('like_power', JSON.stringify(likePower));
+		storage.like_power = likePower;
 		dispatch({
 			type: 'SET_LIKE_POWER',
 			like_power: likePower

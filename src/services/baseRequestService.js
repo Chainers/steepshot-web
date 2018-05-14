@@ -1,4 +1,5 @@
 import Constants from "../common/constants";
+import storage from "../utils/Storage";
 
 const basev1_1Url = Constants.URLS.baseUrl_v1_1;
 
@@ -11,7 +12,7 @@ class BaseRequestService {
 	}
 
 	getDefaultSettingsOptions() {
-		let settings = JSON.parse(localStorage.getItem('settings'))
+		let settings = storage.settings
 		|| {
 			[Constants.SETTINGS.show_low_rated]: Constants.SETTINGS.DEFAULT.show_low_rated,
 			[Constants.SETTINGS.show_nsfw]: Constants.SETTINGS.DEFAULT.show_nsfw
@@ -34,7 +35,7 @@ class BaseRequestService {
 	}
 
 	getAuthUser() {
-		const user = JSON.parse(localStorage.getItem("user"));
+		const user = storage.user;
 		if (user === undefined) return {};
 		return {
 			username: user

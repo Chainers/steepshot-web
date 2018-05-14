@@ -1,6 +1,7 @@
 import {getStore} from "../store/configureStore";
 import Constants from "../common/constants";
 import {addNotificationTags, removeNotificationTags, setSubscribeConfiguration} from "../services/oneSignal";
+import storage from "../utils/Storage";
 
 let OneSignal = window.OneSignal;
 
@@ -10,8 +11,7 @@ export function loadSubscribeData() {
 		let playerId = await OneSignal.getUserId();
 		let notificationPermission = await OneSignal.getNotificationPermission();
 		let isNotificationsEnabled = await OneSignal.isPushNotificationsEnabled();
-		let shownSubscribe = localStorage.getItem('shownSubscribe');
-		if ((notificationPermission === Constants.ONE_SIGNAL.STATES.DEFAULT) && !shownSubscribe) {
+		if ((notificationPermission === Constants.ONE_SIGNAL.STATES.DEFAULT) && !storage.shownSubscribe) {
 			subscribe();
 		}
 		dispatch(setOneSignalData(playerId, notificationPermission, isNotificationsEnabled));
@@ -27,20 +27,38 @@ function setOneSignalData(playerId, notificationPermission, isNotificationsEnabl
 	}
 }
 
+function setSubscription(isNotificationsEnabled) {
+	return {
+		type: 'SET_ONE_SIGNAL_DATA',
+		isNotificationsEnabled
+	}
+}
+
 export function subscribe() {
-	OneSignal.getUserId().then(userId => {
-		if (userId != null) {
+	return dispatch => {
+		dispatch(setSubscription(true));
+		const playerId = getStore().getState().oneSignal.playerId;
+		if (playerId != null) {
 			OneSignal.setSubscription(true);
 		} else {
 			OneSignal.registerForPushNotifications({
 				modalPrompt: true
 			});
+			storage.shownSubscribe = true;
 		}
-		localStorage.setItem('shownSubscribe', 'true');
-	})
+	}
+}
+
+export function unsubscribe() {
+
+	return dispatch => {
+		OneSignal.setSubscription(false);
+		dispatch(setSubscription(false));
+	}
 }
 
 async function subscribeListener(isSubscribed) {
+	console.log(isSubscribed);
 	const store = getStore();
 	let playerId = await OneSignal.getUserId();
 	let notificationPermission = await OneSignal.getNotificationPermission();
@@ -52,6 +70,9 @@ async function subscribeListener(isSubscribed) {
 		removeNotificationTags();
 	}
 	store.dispatch(setOneSignalData(playerId, notificationPermission, isNotificationsEnabled));
+	store.dispatch({
+		type: 'SUBSCRIBE_SUCCESS'
+	});
 }
 
 export function setSubscribeConfigurationAction() {

@@ -13,9 +13,10 @@ export default function oneSignal(state = initialState, action) {
 		case 'SET_ONE_SIGNAL_DATA':
 			return {
 				...state,
-				playerId: action.playerId,
-				notificationPermission: action.notificationPermission,
-				isNotificationsEnabled: action.isNotificationsEnabled,
+				playerId: action.playerId || state.playerId,
+				notificationPermission: action.notificationPermission || state.notificationPermission,
+				isNotificationsEnabled: action.isNotificationsEnabled === undefined ? state.isNotificationsEnabled :
+					action.isNotificationsEnabled,
 				loaded: true
 			};
 

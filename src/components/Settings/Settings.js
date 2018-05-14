@@ -7,7 +7,8 @@ import './settings.css';
 import Constants from "../../common/constants";
 import {withWrapper} from "create-react-server/wrapper";
 import SettingsField from "./SettingsField/SettingsField";
-import {subscribe} from "../../actions/oneSignal";
+import {subscribe, unsubscribe} from "../../actions/oneSignal";
+import ShowIf from "../Common/ShowIf";
 
 class Settings extends React.Component {
 
@@ -25,33 +26,39 @@ class Settings extends React.Component {
 		const fields = Constants.SETTINGS.FIELDS;
 		return (
 			<div className="container_settings">
-				<div className="block_settings">
-					<div className="header_settings">
-						<span>SETTINGS</span>
+				<div className="body_settings">
+					<div className="block_settings">
+						<div className="header_settings">
+							<span>SETTINGS</span>
+						</div>
+						<SettingsField label="Show low rated posts" point={fields.show_low_rated}
+													 default={this.props[fields.show_low_rated]}/>
+						<SettingsField label="Show NSFW posts" point={fields.show_nsfw}
+													 default={this.props[fields.show_nsfw]}/>
 					</div>
-					<SettingsField label="Show low rated posts" point={fields.show_low_rated}
-												 default={this.props[fields.show_low_rated]}/>
-					<SettingsField label="Show NSFW posts" point={fields.show_nsfw}
-												 default={this.props[fields.show_nsfw]}/>
-				</div>
-				<div className="block_settings">
-					<div className="header_settings">
-						<span>Push Notification</span>
-						<button onClick={subscribe}>Subscribe</button>
+					<div className="block_settings">
+						<div className="header_settings">
+							<span>Push Notification</span>
+							<ShowIf show={!this.props.notificationEnabled}>
+								<button className="subscribe-btn_settings" onClick={this.props.subscribe}>SUBSCRIBE</button>
+							</ShowIf>
+							<ShowIf show={this.props.notificationEnabled}>
+								<button className="unsubscribe-btn_settings" onClick={this.props.unsubscribe}>UNSUBSCRIBE</button>
+							</ShowIf>
+						</div>
+						<SettingsField label="Comment" point={fields.comment}
+													 default={this.props[fields.comment]}/>
+						<SettingsField label="Upvote" point={fields.upvote}
+													 default={this.props[fields.upvote]}/>
+						<SettingsField label="Upvote comment" point={fields.upvote_comment}
+													 default={this.props[fields.upvote_comment]}/>
+						<SettingsField label="follow" point={fields.follow}
+													 default={this.props[fields.follow]}/>
+						<SettingsField label="post" point={fields.post}
+													 default={this.props[fields.post]}/>
 					</div>
-					<SettingsField label="Comment" point={fields.comment}
-												 default={this.props[fields.comment]}/>
-					<SettingsField label="Upvote" point={fields.upvote}
-												 default={this.props[fields.upvote]}/>
-					<SettingsField label="Upvote comment" point={fields.upvote_comment}
-												 default={this.props[fields.upvote_comment]}/>
-					<SettingsField label="follow" point={fields.follow}
-												 default={this.props[fields.follow]}/>
-					<SettingsField label="post" point={fields.post}
-												 default={this.props[fields.post]}/>
 				</div>
-				<button className="save_settings" onClick={this.submit.bind(this)}
-								disabled={!this.props.notificationSettingsLoaded}>
+				<button className="save_settings" onClick={this.submit.bind(this)}>
 					Save
 				</button>
 			</div>
@@ -77,6 +84,12 @@ const mapDispatchToProps = (dispatch) => {
 		},
 		pushMessage: (message) => {
 			dispatch(pushMessage(message))
+		},
+		unsubscribe: () => {
+			dispatch(unsubscribe())
+		},
+		subscribe: () => {
+			dispatch(subscribe())
 		}
 	};
 };

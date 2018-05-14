@@ -1,19 +1,15 @@
 import {getStore} from "../store/configureStore";
 import {setSubscribeConfigurationAction} from "./oneSignal";
+import storage from "../utils/Storage";
 
 export function updateSettings() {
 	return dispatch => {
 		let settings = getStore().getState().settingsFields;
-		updateSettingsInLocalStorage(settings);
+		storage.settings = settings;
 		dispatch(setSubscribeConfigurationAction());
 		dispatch({
 			type: 'UPDATE_SETTINGS',
 			settings
 		});
 	}
-}
-
-function updateSettingsInLocalStorage(settings) {
-	localStorage.removeItem('settings');
-	localStorage.setItem('settings', JSON.stringify(settings));
 }

@@ -1,3 +1,5 @@
+import storage from "../utils/Storage";
+
 const initialState = global.isServerSide ? {
 	user: 'fake_user',
 	postingKey: 'fake_posting_key',
@@ -5,10 +7,10 @@ const initialState = global.isServerSide ? {
 	like_power: 100,
 	voting_power: null
 } : {
-	user: JSON.parse(global.localStorage.getItem('user')),
-	postingKey: JSON.parse(global.localStorage.getItem('postingKey')),
-	avatar: JSON.parse(global.localStorage.getItem('avatar')),
-	like_power: JSON.parse(global.localStorage.getItem('like_power')) || 100,
+	user: storage.user,
+	postingKey: storage.postingKey,
+	avatar: storage.avatar,
+	like_power: storage.like_power || 100,
 	voting_power: null
 };
 
@@ -20,9 +22,9 @@ export default function auth(state = initialState, action) {
 		case 'SET_USER_AUTH':
 			return {
 				...initialState,
-				user: JSON.parse(localStorage.getItem('user')),
-				postingKey: JSON.parse(localStorage.getItem('postingKey')),
-				avatar: JSON.parse(localStorage.getItem('avatar')),
+				user: storage.user,
+				postingKey: storage.postingKey,
+				avatar: storage.avatar,
 				isSetAuth: true
 			};
 		case 'LOGIN_SUCCESS':
