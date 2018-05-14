@@ -9,6 +9,7 @@ import {withWrapper} from "create-react-server/wrapper";
 import SettingsField from "./SettingsField/SettingsField";
 import {subscribe, unsubscribe} from "../../actions/oneSignal";
 import ShowIf from "../Common/ShowIf";
+import BodyLoader from "../Common/BlockLoader/BlockLoader";
 
 class Settings extends React.Component {
 
@@ -46,16 +47,19 @@ class Settings extends React.Component {
 								<button className="unsubscribe-btn_settings" onClick={this.props.unsubscribe}>UNSUBSCRIBE</button>
 							</ShowIf>
 						</div>
-						<SettingsField label="Comment" point={fields.comment}
-													 default={this.props[fields.comment]}/>
-						<SettingsField label="Upvote" point={fields.upvote}
-													 default={this.props[fields.upvote]}/>
-						<SettingsField label="Upvote comment" point={fields.upvote_comment}
-													 default={this.props[fields.upvote_comment]}/>
-						<SettingsField label="follow" point={fields.follow}
-													 default={this.props[fields.follow]}/>
-						<SettingsField label="post" point={fields.post}
-													 default={this.props[fields.post]}/>
+						<div className="blocked-block_settings">
+							<BodyLoader show={!this.props.notificationEnabled} withLoader={false}/>
+							<SettingsField label="Comment" point={fields.comment}
+														 default={this.props[fields.comment]}/>
+							<SettingsField label="Upvote" point={fields.upvote}
+														 default={this.props[fields.upvote]}/>
+							<SettingsField label="Upvote comment" point={fields.upvote_comment}
+														 default={this.props[fields.upvote_comment]}/>
+							<SettingsField label="follow" point={fields.follow}
+														 default={this.props[fields.follow]}/>
+							<SettingsField label="post" point={fields.post}
+														 default={this.props[fields.post]}/>
+						</div>
 					</div>
 				</div>
 				<button className="save_settings" onClick={this.submit.bind(this)}>
@@ -70,7 +74,6 @@ const mapStateToProps = (state) => {
 	return {
 		...state.settings,
 		notificationEnabled: state.oneSignal.notificationPermission && state.oneSignal.isNotificationsEnabled,
-		notificationSettingsLoaded: state.oneSignal.loaded
 	};
 };
 
