@@ -17,12 +17,12 @@ class FormInput extends React.Component {
   }
 
 	inputOnChange() {
-		let nameInput = this.input.value;
+		let inputValue = this.input.value.replace(/\s+/g, '');
 		if (this.props.isName) {
-			nameInput = nameInput.replace(/[^\w-.]+/g, '');
-			nameInput = nameInput.toLowerCase();
+      inputValue = inputValue.replace(/[^\w-.]+/g, '');
+      inputValue = inputValue.toLowerCase();
 		}
-		this.props.changeText(this.props.point, nameInput);
+		this.props.changeText(this.props.point, inputValue);
 	}
 
 	render() {

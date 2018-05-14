@@ -1,8 +1,8 @@
 import React from 'react';
 import './advertising.css';
 import {setAdvertisingStatus} from '../../actions/advertising';
-import ShowIf from "../Common/ShowIf";
-import {connect} from "react-redux";
+import ShowIf from '../Common/ShowIf';
+import {connect} from 'react-redux';
 
 class Advertising extends React.Component {
 
