@@ -4,7 +4,7 @@ import './imagesGallery.css';
 import SingleModalImage from './SingleModalImage';
 import Slider from 'react-slick';
 import {setGalleryImgIndex, setResizeCoverBlock} from '../../actions/imagesGallery';
-import {utils} from "../../utils/utils";
+import {utils} from '../../utils/utils';
 
 class ImagesGallery extends React.Component {
 
