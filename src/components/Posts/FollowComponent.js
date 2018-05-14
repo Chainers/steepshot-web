@@ -10,7 +10,7 @@ class FollowComponent extends React.Component {
 		this.state = {
 			item: props.item,
 			follow: props.item ? props.item['has_followed'] !== 0 : false,
-			pendingStatus: false
+			pendingStatus: true
 		}
 	}
 

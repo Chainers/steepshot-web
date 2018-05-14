@@ -1,0 +1,111 @@
+.follow-button_follow {
+    width: 125px;
+    background: linear-gradient(90deg,#ff7904,#ff1605);
+    border: 1px transparent;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    text-decoration: none;
+    max-width: 100%;
+    font-size: 14px;
+    line-height: 1;
+    border-radius: 21px;
+    color: #fff;
+    touch-action: manipulation;
+    display: inline-block;
+    margin-bottom: 0;
+    font-family: OpenSans-SemiBold,Helvetica,Arial,sans-serif;
+    text-align: center;
+    vertical-align: middle;
+    box-shadow: 0 10px 20px 0 rgba(231,72,0,.3);
+    padding: 12px 10px;
+    cursor: pointer;
+}
+
+.follow-button_follow:active {
+    border-color: transparent;
+    outline: 0;
+    box-shadow: none;
+}
+
+.follow-button_follow:hover {
+    box-shadow: 0 5px 12px 0 rgba(231,72,0,.3);
+}
+
+.unfollow-button_follow {
+    width: 125px;
+    background: #fff;
+    color: #0f181e;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    user-select: none;
+    text-decoration: none;
+    max-width: 100%;
+    padding: 12px 10px;
+    font-size: 14px;
+    line-height: 1;
+    border-radius: 21px;
+    touch-action: manipulation;
+    cursor: pointer;
+    transition: all .2s ease;
+    display: inline-block;
+    margin-bottom: 0;
+    font-family: OpenSans-SemiBold,Helvetica,Arial,sans-serif;
+    text-align: center;
+    vertical-align: middle;
+    border: 1px solid #e7e7e7;
+}
+
+.unfollow-button_follow:active {
+    color: #0f181e;
+    outline: 0;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,.1);
+}
+
+.unfollow-button_follow:hover {
+    outline: 0;
+    text-decoration: none;
+    color: #e74800;
+}
+
+.saving_follow {
+    width: 125px;
+    background: #f1f1f1;
+    opacity: .3;
+    cursor: not-allowed;
+    pointer-events: none;
+    color: #0f181e;
+    display: inline-block;
+    margin-bottom: 0;
+    font-family: OpenSans-SemiBold, Helvetica, Arial, sans-serif;
+    text-align: center;
+    vertical-align: middle;
+    touch-action: manipulation;
+    border: 1px solid transparent;
+    text-decoration: none;
+    max-width: 100%;
+    padding: 12px 10px;
+    font-size: 14px;
+    line-height: 1;
+    border-radius: 21px;
+    user-select: none;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    transition: .2s all ease;
+}
+
+.saving_follow span {
+    animation-name: blink;
+    animation-duration: 1.4s;
+    animation-iteration-count: infinite;
+    animation-fill-mode: both;
+}
+
+.saving_follow span:nth-child(2) {
+    animation-delay: .2s;
+}
+
+.saving_follow span:nth-child(3) {
+    animation-delay: .4s;
+}

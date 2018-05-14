@@ -18,3 +18,15 @@ export function getUserProfile(userName) {
 			});
 	}
 }
+
+export function changeFollow() {
+	return dispatch => {
+		dispatch({
+			type: 'CHANGE_FOLLOW_REQUEST'
+		});
+		//TODO остановилс тут
+		dispatch({
+			type: 'CHANGE_FOLLOW_SUCCESS'
+		})
+	}
+}

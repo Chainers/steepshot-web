@@ -1,6 +1,7 @@
 const initialState = {
 	profile: null,
-	loading: false
+	loading: false,
+	changeFollow: false
 };
 
 export default function userProfile(state = initialState, action) {
@@ -15,6 +16,16 @@ export default function userProfile(state = initialState, action) {
 				...state,
 				profile: action.profile,
 				loading: false
+			};
+		case 'CHANGE_FOLLOW_REQUEST':
+			return {
+				...state,
+				changeFollow: true
+			};
+		case 'CHANGE_FOLLOW_SUCCESS':
+			return {
+				...state,
+				changeFollow: false
 			};
 
 		default:

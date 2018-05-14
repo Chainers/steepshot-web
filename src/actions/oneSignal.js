@@ -94,3 +94,17 @@ export function setSubscribeConfigurationAction() {
 		}
 	}
 }
+
+export function subscribeOnUser(user) {
+	return {
+		type: 'SUBSCRIBE_ON_USER',
+		user
+	}
+}
+
+export function unsubscribeOnUser(user) {
+	return {
+		type: 'UNSUBSCRIBE_FROM_USER',
+		user
+	}
+}
