@@ -27,10 +27,13 @@ class Follow extends React.Component {
 					</div>
 				</ShowIf>
 				<ShowIf show={this.props.notificationEnabled}>
+					<ShowIf show={!this.props.changeSubscribe}>
 					<div className={this.props.isSubscribed ? 'unsubscribe_follow' : 'subscribe_follow'}
-							 onClick={() => {if (!this.props.changeSubscribe) this.props.changeSubscribeFunc()}}>
-						{this.props.isSubscribed ? 'UF' : 'F'}
-					</div>
+							 onClick={this.props.changeSubscribeFunc}/>
+					</ShowIf>
+					<ShowIf show={this.props.changeSubscribe}>
+						<div className="subscribing_follow"/>
+					</ShowIf>
 				</ShowIf>
 			</div>
 		);
@@ -50,7 +53,6 @@ const mapStateToProps = (state) => {
 		changeSubscribe: state.userProfile.changeSubscribe
 	};
 };
-
 
 const mapDispatchToProps = (dispatch) => {
 	return {
