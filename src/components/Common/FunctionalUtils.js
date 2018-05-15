@@ -13,7 +13,9 @@ class FunctionalUtils extends React.Component {
 
 	constructor(props) {
 		super();
-		props.loadSubscribeData();
+		if (!global.isServerSide) {
+			props.loadSubscribeData();
+		}
 	}
 
   componentDidMount() {

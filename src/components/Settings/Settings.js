@@ -16,7 +16,7 @@ class Settings extends React.Component {
 
 	constructor() {
 		super();
-		if (!storage.settings) {
+		if (!storage.settings && !global.isServerSide) {
 			this.props.updateSettings();
 		}
 	}

@@ -7,7 +7,7 @@
     <link rel="manifest" href="/manifest.json"/>
     <script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async=""></script>
     <script>
-			var OneSignal = window.OneSignal || [];
+			var OneSignal = [];
 			OneSignal.push(function () {
 				OneSignal.init({
 					appId: "77fa644f-3280-4e87-9f14-1f0c7ddf8ca5",
@@ -19,6 +19,7 @@
 					subdomainName: 'steepshot'
 				});
 			});
+            window.OneSignal = OneSignal;
     </script>
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-112002704-1"></script>
     <script>
