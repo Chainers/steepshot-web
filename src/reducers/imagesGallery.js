@@ -11,6 +11,7 @@ export default function imagesGallery(state = initialState, action) {
         isResizeCover: action.isResizeCover,
         resizeCoverTimeout: action.resizeCoverTimeout
       };
+
     default:
       return state;
   }

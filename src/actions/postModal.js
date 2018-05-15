@@ -20,7 +20,6 @@ export function openPostModal(point, index, options) {
 }
 
 export function setPostModalOptions(options) {
-	console.log(options);
 	return (dispatch) => {
 		dispatch({
 			type: 'SET_POST_MODAL_OPTIONS',

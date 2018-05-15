@@ -13,3 +13,11 @@ export function setResizeCoverBlock(isResizeCover, resizeCoverTimeout) {
     resizeCoverTimeout
   }
 }
+
+export function setGalleryImage(postIndex, imageNumber) {
+  return {
+    type: 'SET_GALLERY_IMG',
+    postIndex,
+    imageNumber
+  }
+}

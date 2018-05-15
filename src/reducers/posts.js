@@ -173,6 +173,15 @@ export default function posts(state = {}, action) {
         }
       };
 
+		case 'SET_GALLERY_IMG':
+			return {
+        ...state,
+        [action.postIndex]: {
+          ...state[action.postIndex],
+          imageNumber: action.imageNumber
+        }
+			};
+
 		default:
 			return state;
 	}
