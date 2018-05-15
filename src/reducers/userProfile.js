@@ -25,6 +25,15 @@ export default function userProfile(state = initialState, action) {
 		case 'CHANGE_FOLLOW_SUCCESS':
 			return {
 				...state,
+				changeFollow: false,
+				profile: {
+					...state.profile,
+					has_followed: !state.profile['has_followed']
+				}
+			};
+		case 'CHANGE_FOLLOW_ERROR':
+			return {
+				...state,
 				changeFollow: false
 			};
 

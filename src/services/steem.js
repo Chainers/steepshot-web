@@ -148,7 +148,7 @@ class Steem {
 	}
 
 	/** Follow an user */
-	followUnfollowUser(wif, follower, following, status, callback) {
+	followUnfollowUser(wif, follower, following, status) {
 
 		let blog = ['blog'];
 		if (status) blog = [];
@@ -161,33 +161,31 @@ class Steem {
 			}]
 		);
 
-		const callbackBc = (err, result) => {
-			if (err) {
-				let checkedError = blockchainErrorsList(err);
-				callback(checkedError, null);
+		return new Promise((resolve, reject) => {
+			const callbackBc = (err, result) => {
 				const data = JSON.stringify({
 					username: follower,
-					error: err.message
+					error: err ? err.message : ''
 				});
 				logFollow(status, following, data);
-			} else if (result) {
-				const data = JSON.stringify({
-					username: follower,
-					error: ''
-				});
-				logFollow(status, following, data);
-				callback(null, result);
-			}
-		};
 
-		steem.broadcast.customJson(
-			wif,
-			[], // Required_auths
-			[follower], // Required Posting Auths
-			'follow', // Id
-			json,
-			callbackBc
-		);
+				if (err) {
+					let checkedError = blockchainErrorsList(err);
+					reject(new Error(checkedError));
+				} else {
+					resolve(result)
+				}
+			};
+
+			steem.broadcast.customJson(
+				wif,
+				[], // Required_auths
+				[follower], // Required Posting Auths
+				'follow', // Id
+				json,
+				callbackBc
+			);
+		});
 	}
 
 	/** Broadcast a post */
