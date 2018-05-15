@@ -1,13 +1,13 @@
 import steem from 'steem';
-import Constants from '../common/constants';
 import {logLogin} from './logging';
 import {push} from 'react-router-redux';
 import {getProfile} from "../services/userProfile";
 import {pushMessage} from "./pushMessage";
 import {hideBodyLoader, showBodyLoader} from "./bodyLoader";
-import {updateSettings} from "./settings";
+import {checkSubscribeAndUpdateSettings, removeSettings} from "./settings";
 import {addNotificationTags, removeNotificationTags} from "../services/oneSignal";
 import storage from "../utils/Storage";
+import {unsubscribe} from "./oneSignal";
 
 function showMessage(message) {
 	return dispatch => {
@@ -56,8 +56,7 @@ export function login(username, postingKey) {
 			storage.like_power = 100;
 			storage.avatar = avatar;
 			addNotificationTags(username);
-			dispatch(updateSettings(Constants.SETTINGS.DEFAULT.show_low_rated, Constants.SETTINGS.DEFAULT.show_nsfw));
-
+			dispatch(checkSubscribeAndUpdateSettings());
 			dispatch({
 				type: 'LOGIN_SUCCESS',
 				postingKey: postingKey,
@@ -81,7 +80,8 @@ function getAvatar(profileData) {
 	try {
 		const metadata = JSON.parse(profileData.json_metadata);
 		avatar = metadata.profile['profile_image'];
-	} catch(e) {}
+	} catch (e) {
+	}
 	return avatar;
 }
 
@@ -93,7 +93,8 @@ function logoutUser() {
 
 export function logout() {
 	return (dispatch) => {
-		dispatch(updateSettings(Constants.SETTINGS.DEFAULT.show_low_rated, Constants.SETTINGS.DEFAULT.show_nsfw));
+		dispatch(removeSettings());
+		dispatch(unsubscribe());
 		storage.user = null;
 		storage.postingKey = null;
 		storage.settings = null;

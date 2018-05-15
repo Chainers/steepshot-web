@@ -39,12 +39,12 @@ export async function setSubscribeConfiguration(username, postingKey, player_id,
 			app_id,
 			subscriptions,
 			trx
-		}).then( (response) => {
-			if (response.status === 200) {
-				return Promise.resolve();
-			}
-			return Promise.reject(response)
 		})
+	}).then((response) => {
+		if (response.status === 200) {
+			return Promise.resolve();
+		}
+		return Promise.reject(response)
 	});
 }
 
@@ -53,22 +53,22 @@ export async function changeSubscribeOnUser(subscriberName, subscribingName, pla
 	let trx = await getValidTransaction();
 
 	return fetch(url, {
-			method: 'post',
-			headers: {'Content-Type': 'application/json'},
-			body: JSON.stringify({
-				username: subscriberName,
-				player_id,
-				app_id,
-				watched_user: subscribingName,
-				trx
-			})
-		}).then( response => {
-			if (response.status === 200) {
-				return Promise.resolve();
-			} else {
-				return Promise.reject(response.statusText)
-			}
-		});
+		method: 'post',
+		headers: {'Content-Type': 'application/json'},
+		body: JSON.stringify({
+			username: subscriberName,
+			player_id,
+			app_id,
+			watched_user: subscribingName,
+			trx
+		})
+	}).then(response => {
+		if (response.status === 200) {
+			return Promise.resolve();
+		} else {
+			return Promise.reject(response.statusText)
+		}
+	});
 }
 
 function getSubscriptions(settings) {

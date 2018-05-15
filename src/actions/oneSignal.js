@@ -80,7 +80,7 @@ async function subscribeListener(isSubscribed) {
 	});
 }
 
-export function setSubscribeConfigurationAction() {
+export function setSubscribeOnBackend() {
 	const state = getStore().getState();
 	const settings = state.settings;
 	const player_id = state.oneSignal.playerId;
@@ -90,18 +90,18 @@ export function setSubscribeConfigurationAction() {
 
 	return dispatch => {
 		dispatch({
-			type: 'SET_SUBSCRIPTION_CONFIGURATION_REQUEST'
+			type: 'SET_SUBSCRIPTION_ON_BACKEND_REQUEST'
 		});
 
 		setSubscribeConfiguration(username, postingKey, player_id, app_id, settings).then(() => {
 			dispatch({
-				type: 'SET_SUBSCRIBE_CONFIGURATION_SUCCESS',
+				type: 'SET_SUBSCRIBE_ON_BACKEND_SUCCESS',
 				settings,
 				player_id
 			})
 		}).catch(error => {
 			dispatch({
-				type: 'SET_SUBSCRIBE_CONFIGURATION_ERROR',
+				type: 'SET_SUBSCRIBE_ON_BACKEND_ERROR',
 				error,
 				settings,
 				player_id

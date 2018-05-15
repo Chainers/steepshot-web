@@ -10,6 +10,8 @@ export default function settings(state = initialState, action) {
 				...state,
 				...action.settings
 			};
+		case 'REMOVE_SETTINGS':
+			return initialState;
 		default:
 			return state;
 	}

@@ -1,5 +1,5 @@
 import React from 'react';
-import {checkSubscribeAndUpdateSettings} from '../../actions/settings';
+import {updateSettings} from '../../actions/settings';
 import {connect} from 'react-redux';
 import {goBack} from "react-router-redux";
 import {pushMessage} from "../../actions/pushMessage";
@@ -14,10 +14,10 @@ import storage from "../../utils/Storage";
 
 class Settings extends React.Component {
 
-	constructor() {
+	constructor(props) {
 		super();
 		if (!storage.settings && !global.isServerSide) {
-			this.props.updateSettings();
+			props.updateSettings();
 		}
 	}
 
@@ -88,7 +88,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
 	return {
 		updateSettings: () => {
-			dispatch(checkSubscribeAndUpdateSettings());
+			dispatch(updateSettings());
 		},
 		historyGoBack: () => {
 			dispatch(goBack());
