@@ -1,5 +1,5 @@
 import React from 'react';
-import {updateSettings} from '../../actions/settings';
+import {checkSubscribeAndUpdateSettings} from '../../actions/settings';
 import {connect} from 'react-redux';
 import {goBack} from "react-router-redux";
 import {pushMessage} from "../../actions/pushMessage";
@@ -88,7 +88,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
 	return {
 		updateSettings: () => {
-			dispatch(updateSettings());
+			dispatch(checkSubscribeAndUpdateSettings());
 		},
 		historyGoBack: () => {
 			dispatch(goBack());

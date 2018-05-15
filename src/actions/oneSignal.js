@@ -87,12 +87,6 @@ export function setSubscribeConfigurationAction() {
 	const app_id = state.oneSignal.appId;
 	const username = state.auth.user;
 	const postingKey = state.auth.postingKey;
-	const isNotificationsEnabled = state.oneSignal.isNotificationsEnabled;
-	const shownSubscribe = storage.shownSubscribe;
-
-	if (!(isNotificationsEnabled && shownSubscribe)) {
-		getStore().dispatch(subscribe())
-	}
 
 	return dispatch => {
 		dispatch({

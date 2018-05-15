@@ -1,6 +1,20 @@
 import {getStore} from "../store/configureStore";
-import {setSubscribeConfigurationAction} from "./oneSignal";
+import {setSubscribeConfigurationAction, subscribe} from "./oneSignal";
 import storage from "../utils/Storage";
+
+export function checkSubscribeAndUpdateSettings() {
+	const state = getStore().getState();
+	const isNotificationsEnabled = state.oneSignal.isNotificationsEnabled;
+	const shownSubscribe = storage.shownSubscribe;
+
+	return dispatch => {
+		if (!(isNotificationsEnabled && shownSubscribe)) {
+			dispatch(subscribe())
+		} else {
+			dispatch(updateSettings());
+		}
+	}
+}
 
 export function updateSettings() {
 	return dispatch => {

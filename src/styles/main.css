@@ -3231,7 +3231,6 @@ input[type=button].btn-block, input[type=reset].btn-block, input[type=submit].bt
 .user-information .pic-wrap {
     margin-bottom: 25px;
     display: flex;
-    justify-content: space-between;
     align-items: center;
 }
 
