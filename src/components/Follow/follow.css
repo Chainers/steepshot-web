@@ -1,25 +1,31 @@
-.follow-button_follow {
-    width: 125px;
-    background: linear-gradient(90deg,#ff7904,#ff1605);
-    border: 1px transparent;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
-    text-decoration: none;
-    max-width: 100%;
+.container_follow {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.follow-button_follow, .unfollow-button_follow, .saving_follow {
+    width: 105px;
+    cursor: pointer;
+    display: inline-block;
+    margin-bottom: 0;
+    font-family: OpenSans-SemiBold, Helvetica, Arial, sans-serif;
+    text-align: center;
+    vertical-align: middle;
+    border: 1px solid transparent;
+    padding: 12px 10px;
     font-size: 14px;
     line-height: 1;
     border-radius: 21px;
+    transition: .2s all ease;
+}
+
+.follow-button_follow {
+    background: linear-gradient(90deg,#ff7904,#ff1605);
+    border: 1px transparent;
     color: #fff;
-    touch-action: manipulation;
-    display: inline-block;
-    margin-bottom: 0;
-    font-family: OpenSans-SemiBold,Helvetica,Arial,sans-serif;
-    text-align: center;
-    vertical-align: middle;
     box-shadow: 0 10px 20px 0 rgba(231,72,0,.3);
-    padding: 12px 10px;
-    cursor: pointer;
 }
 
 .follow-button_follow:active {
@@ -33,27 +39,9 @@
 }
 
 .unfollow-button_follow {
-    width: 125px;
     background: #fff;
     color: #0f181e;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
-    user-select: none;
-    text-decoration: none;
-    max-width: 100%;
     padding: 12px 10px;
-    font-size: 14px;
-    line-height: 1;
-    border-radius: 21px;
-    touch-action: manipulation;
-    cursor: pointer;
-    transition: all .2s ease;
-    display: inline-block;
-    margin-bottom: 0;
-    font-family: OpenSans-SemiBold,Helvetica,Arial,sans-serif;
-    text-align: center;
-    vertical-align: middle;
     border: 1px solid #e7e7e7;
 }
 
@@ -70,29 +58,11 @@
 }
 
 .saving_follow {
-    width: 125px;
     background: #f1f1f1;
     opacity: .3;
     cursor: not-allowed;
-    pointer-events: none;
     color: #0f181e;
-    display: inline-block;
-    margin-bottom: 0;
-    font-family: OpenSans-SemiBold, Helvetica, Arial, sans-serif;
-    text-align: center;
-    vertical-align: middle;
-    touch-action: manipulation;
-    border: 1px solid transparent;
-    text-decoration: none;
-    max-width: 100%;
     padding: 12px 10px;
-    font-size: 14px;
-    line-height: 1;
-    border-radius: 21px;
-    user-select: none;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    transition: .2s all ease;
 }
 
 .saving_follow span {
@@ -108,4 +78,19 @@
 
 .saving_follow span:nth-child(3) {
     animation-delay: .4s;
+}
+
+.subscribe_follow, .unsubscribe_follow {
+    width: 40px;
+    height: 38px;
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+.subscribe_follow {
+    background-color: red;
+}
+
+.unsubscribe_follow {
+    background-color: green;
 }

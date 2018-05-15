@@ -1,4 +1,3 @@
-import {getStore} from "../store/configureStore";
 import Constants from "../common/constants";
 import {getValidTransaction} from "./steem";
 
@@ -23,17 +22,11 @@ export function removeNotificationTags() {
 	OneSignal.deleteTags(['username', 'player_id']);
 }
 
-export async function setSubscribeConfiguration() {
+export async function setSubscribeConfiguration(username, postingKey, player_id, app_id, settings) {
 	const url = Constants.URLS.baseUrl_v1_1 + '/subscribe';
-	const state = getStore().getState();
-	const settings = state.settings;
-
-	let username = state.auth.user;
-	if (!username || !state.auth.postingKey) {
+	if (!username || !postingKey) {
 		return;
 	}
-	let player_id = state.oneSignal.playerId;
-	let app_id = state.oneSignal.appId;
 	let subscriptions = getSubscriptions(settings);
 	let trx = await getValidTransaction();
 
@@ -51,54 +44,28 @@ export async function setSubscribeConfiguration() {
 	return response;
 }
 
-export async function subscribeOnUser(watchedUser) {
-	const url = Constants.baseUrl_v1_1 + '/subscribe';
-	const state = getStore().getState();
-
-	let username = state.auth.user;
-	let player_id = state.oneSignal.playerId;
-	let app_id = state.oneSignal.appId;
+export async function changeSubscribeOnUser(subscriberName, subscribingName, player_id, app_id, subscribed) {
+	const url = `${Constants.URLS.baseUrl_v1_1}/${subscribed ? 'un' : ''}subscribe`;
 	let trx = await getValidTransaction();
 
-	let response = await fetch(url, {
-		method: 'post',
-		headers: {'Content-Type': 'application/json'},
-		body: JSON.stringify({
-			username,
-			player_id,
-			app_id,
-			watched_user: watchedUser,
-			trx
-		})
-	});
-
-	return response;
+	return fetch(url, {
+			method: 'post',
+			headers: {'Content-Type': 'application/json'},
+			body: JSON.stringify({
+				username: subscriberName,
+				player_id,
+				app_id,
+				watched_user: subscribingName,
+				trx
+			})
+		}).then( response => {
+			if (response.status === 200) {
+				return Promise.resolve();
+			} else {
+				return Promise.reject(response.statusText)
+			}
+		});
 }
-
-export async function unsubscribeFromUser(watchedUser) {
-	const url = Constants.baseUrl_v1_1 + '/unsubscribe';
-	const state = getStore().getState();
-
-	let username = state.auth.user;
-	let player_id = state.oneSignal.playerId;
-	let app_id = state.oneSignal.appId;
-	let trx = await getValidTransaction();
-
-	let response = await fetch(url, {
-		method: 'post',
-		headers: {'Content-Type': 'application/json'},
-		body: JSON.stringify({
-			username,
-			player_id,
-			app_id,
-			watched_user: watchedUser,
-			trx
-		})
-	});
-
-	return response;
-}
-
 
 function getSubscriptions(settings) {
 	let subscriptions = [];

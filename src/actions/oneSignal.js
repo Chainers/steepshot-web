@@ -1,7 +1,11 @@
 import {getStore} from "../store/configureStore";
 import Constants from "../common/constants";
-import {addNotificationTags, removeNotificationTags, setSubscribeConfiguration} from "../services/oneSignal";
+import {
+	addNotificationTags, changeSubscribeOnUser, removeNotificationTags,
+	setSubscribeConfiguration
+} from "../services/oneSignal";
 import storage from "../utils/Storage";
+import {pushMessage} from "./pushMessage";
 
 let OneSignal = window.OneSignal;
 
@@ -50,7 +54,6 @@ export function subscribe() {
 }
 
 export function unsubscribe() {
-
 	return dispatch => {
 		OneSignal.setSubscription(false);
 		dispatch(setSubscription(false));
@@ -58,7 +61,6 @@ export function unsubscribe() {
 }
 
 async function subscribeListener(isSubscribed) {
-	console.log(isSubscribed);
 	const store = getStore();
 	let playerId = await OneSignal.getUserId();
 	let notificationPermission = await OneSignal.getNotificationPermission();
@@ -76,12 +78,19 @@ async function subscribeListener(isSubscribed) {
 }
 
 export function setSubscribeConfigurationAction() {
+	const state = getStore().getState();
+	const settings = state.settings;
+	const player_id = state.oneSignal.playerId;
+	const app_id = state.oneSignal.appId;
+	const username = state.auth.user;
+	const postingKey = state.auth.postingKey;
+
 	return async dispatch => {
 		dispatch({
 			type: 'SET_SUBSCRIPTION_CONFIGURATION_REQUEST'
 		});
 		try {
-			let response = await setSubscribeConfiguration();
+			let response = await setSubscribeConfiguration(username, postingKey, player_id, app_id, settings);
 			dispatch({
 				type: 'SET_SUBSCRIBE_CONFIGURATION_SUCCESS',
 				response
@@ -95,16 +104,30 @@ export function setSubscribeConfigurationAction() {
 	}
 }
 
-export function subscribeOnUser(user) {
-	return {
-		type: 'SUBSCRIBE_ON_USER',
-		user
-	}
-}
+export function changeUserSubscribe() {
+	const state = getStore().getState();
+	const profile = state.userProfile.profile;
+	const subscribed = profile['is_subscribed'];
+	const player_id = state.oneSignal.playerId;
+	const app_id = state.oneSignal.appId;
+	const subscriber = state.auth.user;
 
-export function unsubscribeOnUser(user) {
-	return {
-		type: 'UNSUBSCRIBE_FROM_USER',
-		user
+	return dispatch => {
+		dispatch({
+			type: 'CHANGE_USER_SUBSCRIBE_REQUEST'
+		});
+		changeSubscribeOnUser(subscriber, profile.username, player_id, app_id, subscribed).then(() => {
+			dispatch(pushMessage(`User has been successfully ${subscribed ? 'un' : ''}subscribed`));
+			dispatch({
+				type: 'CHANGE_USER_SUBSCRIBE_SUCCESS'
+			});
+		}).catch( error => {
+			dispatch(pushMessage(error));
+			dispatch({
+				type: 'CHANGE_USER_SUBSCRIBE_ERROR',
+				error
+			});
+		});
+
 	}
 }

@@ -33,7 +33,7 @@ export function changeFollow() {
 			type: 'CHANGE_FOLLOW_REQUEST'
 		});
 		Steem.followUnfollowUser(postingKey, followerName, followingName, followed).then(() => {
-			dispatch(pushMessage(`User has been successfully ${!followed ? '' : 'un'}followed`));
+			dispatch(pushMessage(`User has been successfully ${followed ? 'un' : ''}followed`));
 			dispatch({
 				type: 'CHANGE_FOLLOW_SUCCESS'
 			})

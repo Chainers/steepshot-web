@@ -1,7 +1,8 @@
 const initialState = {
 	profile: null,
 	loading: false,
-	changeFollow: false
+	changeFollow: false,
+	changeSubscribe: false
 };
 
 export default function userProfile(state = initialState, action) {
@@ -35,6 +36,25 @@ export default function userProfile(state = initialState, action) {
 			return {
 				...state,
 				changeFollow: false
+			};
+		case 'CHANGE_USER_SUBSCRIBE_REQUEST':
+			return {
+				...state,
+				changeSubscribe: true
+			};
+		case 'CHANGE_USER_SUBSCRIBE_SUCCESS':
+			return {
+				...state,
+				changeSubscribe: false,
+				profile: {
+					...state.profile,
+					is_subscribed: !state.profile['is_subscribed']
+				}
+			};
+		case 'CHANGE_USER_SUBSCRIBE_ERROR':
+			return {
+				...state,
+				changeSubscribe: false
 			};
 
 		default:

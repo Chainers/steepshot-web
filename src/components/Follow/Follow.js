@@ -4,6 +4,7 @@ import {pushMessage} from "../../actions/pushMessage";
 import './follow.css';
 import ShowIf from "../Common/ShowIf";
 import {changeFollow} from "../../actions/userProfile";
+import {changeUserSubscribe} from "../../actions/oneSignal";
 
 class Follow extends React.Component {
 
@@ -25,7 +26,12 @@ class Follow extends React.Component {
 						{this.props.isFollowed ? 'Unfollow' : 'Follow'}
 					</div>
 				</ShowIf>
-				<div className={''}/>
+				<ShowIf show={this.props.notificationEnabled}>
+					<div className={this.props.isSubscribed ? 'unsubscribe_follow' : 'subscribe_follow'}
+							 onClick={() => {if (!this.props.changeSubscribe) this.props.changeSubscribeFunc()}}>
+						{this.props.isSubscribed ? 'UF' : 'F'}
+					</div>
+				</ShowIf>
 			</div>
 		);
 	}
@@ -39,7 +45,9 @@ const mapStateToProps = (state) => {
 		isFollowed: profile['has_followed'],
 		isSubscribed: profile['is_subscribed'],
 		profileUserName: profile.username,
-		changeFollow: state.userProfile.changeFollow
+		changeFollow: state.userProfile.changeFollow,
+		notificationEnabled: state.oneSignal.notificationPermission && state.oneSignal.isNotificationsEnabled,
+		changeSubscribe: state.userProfile.changeSubscribe
 	};
 };
 
@@ -51,6 +59,9 @@ const mapDispatchToProps = (dispatch) => {
 		},
 		pushMessage: (message) => {
 			dispatch(pushMessage(message))
+		},
+		changeSubscribeFunc: () => {
+			dispatch(changeUserSubscribe())
 		}
 	}
 };
