@@ -356,14 +356,11 @@ function _preCompileTransaction(operation) {
 	return steem.broadcast._prepareTransaction({
 		extensions: [],
 		operations: [operation],
-	}).then((transaction) => {
-		return new Promise((resolve, reject) => {
-			try {
-				resolve(steem.auth.signTransaction(transaction, [_getUserPostingKey()]));
-			} catch (err) {
-				reject(new Error("Invalidate posting key."));
-			}
-		})
+	}).then(transaction => {
+		return steem.auth.signTransaction(transaction, [_getUserPostingKey()])
+	}).catch(error => {
+		let checkedError = blockchainErrorsList(error);
+		return Promise.reject(checkedError);
 	});
 }
 

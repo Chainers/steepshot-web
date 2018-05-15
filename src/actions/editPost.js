@@ -217,7 +217,7 @@ export function createPost() {
 						})
 						.catch(error => {
 							dispatch(editPostReject(error));
-							dispatch(pushMessage(error.message));
+							dispatch(pushMessage(error));
 						});
 				}
 			})

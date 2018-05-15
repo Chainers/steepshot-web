@@ -24,13 +24,7 @@ export default function getRoutes() {
 	return (
 		<App>
 			<Switch>
-				<Route exact path="/" render={() =>
-					isAuth() ? (
-						<Redirect to="/feed"/>
-					) : (
-						<Redirect to={'/browse'}/>
-					)
-				}/>
+				<Route exact path="/" render={() => <Redirect to={"/browse"}/>}/>
 				<Route exact path="/signin" render={() => (
 					isAuth() ? (
 						<Redirect push to="/feed"/>
