@@ -6,6 +6,7 @@ import {
 } from "../services/oneSignal";
 import storage from "../utils/Storage";
 import {pushMessage} from "./pushMessage";
+import {updateSettings} from "./settings";
 
 let OneSignal = window.OneSignal;
 
@@ -48,6 +49,7 @@ export function subscribe() {
 			OneSignal.registerForPushNotifications({
 				modalPrompt: true
 			});
+			dispatch(updateSettings());
 			storage.shownSubscribe = true;
 		}
 	}
