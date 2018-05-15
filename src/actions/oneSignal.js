@@ -40,10 +40,10 @@ function setSubscription(isNotificationsEnabled) {
 
 export function subscribe() {
 	return dispatch => {
-		dispatch(setSubscription(true));
 		const playerId = getStore().getState().oneSignal.playerId;
 		if (playerId != null) {
 			OneSignal.setSubscription(true);
+			dispatch(setSubscription(true));
 		} else {
 			OneSignal.registerForPushNotifications({
 				modalPrompt: true
@@ -68,6 +68,7 @@ async function subscribeListener(isSubscribed) {
 	let user = store.getState().auth.user;
 	if (isSubscribed) {
 		addNotificationTags(user, playerId);
+		store.dispatch(setSubscription(true));
 	} else {
 		removeNotificationTags();
 	}
@@ -84,23 +85,32 @@ export function setSubscribeConfigurationAction() {
 	const app_id = state.oneSignal.appId;
 	const username = state.auth.user;
 	const postingKey = state.auth.postingKey;
+	const isNotificationsEnabled = state.oneSignal.isNotificationsEnabled;
+	const shownSubscribe = storage.shownSubscribe;
 
-	return async dispatch => {
+	if (!(isNotificationsEnabled && shownSubscribe)) {
+		getStore().dispatch(subscribe())
+	}
+
+	return dispatch => {
 		dispatch({
 			type: 'SET_SUBSCRIPTION_CONFIGURATION_REQUEST'
 		});
-		try {
-			let response = await setSubscribeConfiguration(username, postingKey, player_id, app_id, settings);
+
+		setSubscribeConfiguration(username, postingKey, player_id, app_id, settings).then(() => {
 			dispatch({
 				type: 'SET_SUBSCRIBE_CONFIGURATION_SUCCESS',
-				response
+				settings,
+				player_id
 			})
-		} catch (error) {
+		}).catch(error => {
 			dispatch({
 				type: 'SET_SUBSCRIBE_CONFIGURATION_ERROR',
-				error
+				error,
+				settings,
+				player_id
 			})
-		}
+		});
 	}
 }
 

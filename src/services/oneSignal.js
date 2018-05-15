@@ -30,7 +30,7 @@ export async function setSubscribeConfiguration(username, postingKey, player_id,
 	let subscriptions = getSubscriptions(settings);
 	let trx = await getValidTransaction();
 
-	let response = await fetch(url, {
+	return fetch(url, {
 		method: 'post',
 		headers: {'Content-Type': 'application/json'},
 		body: JSON.stringify({
@@ -39,9 +39,13 @@ export async function setSubscribeConfiguration(username, postingKey, player_id,
 			app_id,
 			subscriptions,
 			trx
+		}).then( (response) => {
+			if (response.status === 200) {
+				return Promise.resolve();
+			}
+			return Promise.reject(response)
 		})
 	});
-	return response;
 }
 
 export async function changeSubscribeOnUser(subscriberName, subscribingName, player_id, app_id, subscribed) {

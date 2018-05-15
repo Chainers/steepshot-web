@@ -10,8 +10,16 @@ import SettingsField from "./SettingsField/SettingsField";
 import {subscribe, unsubscribe} from "../../actions/oneSignal";
 import ShowIf from "../Common/ShowIf";
 import BodyLoader from "../Common/BlockLoader/BlockLoader";
+import storage from "../../utils/Storage";
 
 class Settings extends React.Component {
+
+	constructor() {
+		super();
+		if (!storage.settings) {
+			this.props.updateSettings();
+		}
+	}
 
 	submit(e) {
 		e.preventDefault();

@@ -9,5 +9,5 @@ const storage = new Proxy({}, {
 		return true;
 	}
 });
-window.storage = storage;
+
 export default storage;
