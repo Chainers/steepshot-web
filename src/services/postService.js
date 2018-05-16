@@ -27,6 +27,17 @@ class PostService {
 
 		return RequestService.get(url, options);
 	}
+
+	static createPostPermlink(permlinkHead) {
+		const today = new Date();
+		const permlinkHeadLimit = 30;
+		permlinkHead = permlinkHead.toLowerCase();
+		if (permlinkHead.length > permlinkHeadLimit) {
+			permlinkHead = permlinkHead.slice(0, permlinkHeadLimit + 1);
+		}
+		return permlinkHead.replace(/\W/g, '-') + '-' + today.getFullYear() + '-' + today.getMonth() + '-' + today.getDay()
+			+ '-' + today.getHours() + '-' + today.getMinutes() + '-' + today.getSeconds();
+	}
 }
 
 export default PostService;

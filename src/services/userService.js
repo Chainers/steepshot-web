@@ -24,6 +24,7 @@ class UserService {
 		};
 		return RequestService.get(`user/${username}/info`, options);
 	}
+
 }
 
 export default UserService;

@@ -1,19 +1,12 @@
 import steem from 'steem';
 import Promise from 'bluebird';
-import {getStore} from '../store/configureStore';
-import _ from 'underscore';
 import FormData from 'form-data';
 import {blockchainErrorsList} from "../utils/blockchainErrorsList";
 import Constants from "../common/constants";
 import LoggingService from "./loggingService";
-
-const _getUserName = () => {
-	return getStore().getState().auth.user
-};
-
-const _getUserPostingKey = () => {
-	return getStore().getState().auth.postingKey
-};
+import PostService from "./postService";
+import SteemService from "./steemService";
+import AuthService from "./authService";
 
 class Steem {
 	constructor() {
@@ -21,7 +14,7 @@ class Steem {
 	}
 
 	comment(wif, parentAuthor, parentPermlink, author, body, tags, callback) {
-		const permlink = _getPermLink(`${author} comment`);
+		const permlink = PostService.createPostPermlink(`${author} comment`);
 		const commentObject = {
 			parent_author: parentAuthor,
 			parent_permlink: parentPermlink,
@@ -55,37 +48,15 @@ class Steem {
 	}
 
 	handleBroadcastMessagesComment(message, postingKey, callback) {
-		let beneficiaries = this._getCommentBenificiaries(message[1].permlink);
+		let beneficiaries = SteemService.getBeneficiaries(message[1].permlink, {
+			account: 'steepshot',
+			weight: 1000
+		});
 		const operations = [message, beneficiaries];
 		steem.broadcast.sendAsync(
 			{operations, extensions: []},
 			{posting: postingKey}, callback
 		);
-	}
-
-
-	_getCommentBenificiaries(permlink) {
-		let beneficiariesObject = _.extend({}, {
-			author: _getUserName(),
-			permlink: permlink,
-			max_accepted_payout: Constants.STEEM_PATLOAD.MAX_ACCEPTED_PAYOUT,
-			percent_steem_dollars: Constants.STEEM_PATLOAD.PERCENT_STEMM_DOLLARS,
-			allow_votes: true,
-			allow_curation_rewards: true,
-			extensions: [
-				[0, {
-					beneficiaries: [
-						{
-							account: 'steepshot',
-							weight: 1000
-						}
-					]
-				}]
-			]
-		});
-
-
-		return [Constants.OPERATIONS.COMMENT_OPTIONS, beneficiariesObject];
 	}
 
 	vote(wif, username, author, url, voteStatus, power, callback) {
@@ -184,7 +155,6 @@ class Steem {
 		});
 	}
 
-	/** Broadcast a post */
 
 	deletePost(wif, author, permlink, callback) {
 		const callbackBc = (err, success) => {
@@ -212,7 +182,7 @@ class Steem {
 		const operation = [Constants.OPERATIONS.COMMENT, {
 			parent_author: '',
 			parent_permlink: parentPerm,
-			author: _getUserName(),
+			author: AuthService.getUsername(),
 			permlink,
 			title,
 			description,
@@ -228,7 +198,7 @@ class Steem {
 			})
 			.then(response => {
 				const data = JSON.stringify({
-					username: _getUserName(),
+					username: AuthService.getUsername(),
 					error: ''
 				});
 				LoggingService.logPost(data);
@@ -239,11 +209,11 @@ class Steem {
 	createPost(tags, title, description, file) {
 		tags = _getValidTags(tags);
 		const category = tags[0];
-		const permlink = _getPermLink(title);
+		const permlink = PostService.createPostPermlink(title);
 		const operation = [Constants.OPERATIONS.COMMENT, {
 			parent_author: '',
 			parent_permlink: category,
-			author: _getUserName(),
+			author: AuthService.getUsername(),
 			permlink: permlink,
 			title: title,
 			description: description,
@@ -255,10 +225,10 @@ class Steem {
 		}];
 		return _fileUpload(file)
 			.then(response => {
-				return _preparePost(response, description, tags, permlink, _getUserName());
+				return _preparePost(response, description, tags, permlink, AuthService.getUsername());
 			})
 			.then(response => {
-				let beneficiaries = _getBeneficiaries(operation[1].permlink, response.beneficiaries);
+				let beneficiaries = SteemService.getBeneficiaries(operation[1].permlink, response.beneficiaries);
 				let plagiarism = response.is_plagiarism;
 				if (plagiarism.is_plagiarism) {
 					let data = {
@@ -282,7 +252,7 @@ class Steem {
 		return _sendToBlockChain(operation, prepareData, beneficiaries)
 			.then(response => {
 				const data = JSON.stringify({
-					username: _getUserName(),
+					username: AuthService.getUsername(),
 					error: ''
 				});
 				LoggingService.logPost(data);
@@ -298,7 +268,7 @@ class Steem {
 		const operation = [Constants.OPERATIONS.COMMENT, {
 			parent_author: '',
 			parent_permlink: parentPerm,
-			author: _getUserName(),
+			author: AuthService.getUsername(),
 			permlink,
 			title,
 			description,
@@ -308,42 +278,17 @@ class Steem {
 		return _sendToBlockChain(operation, false, false)
 			.then(response => {
 				const data = JSON.stringify({
-					username: _getUserName(),
+					username: AuthService.getUsername(),
 					error: ''
 				});
-				LoggingService.logDeletedPost(_getUserName(), permlink, data);
+				LoggingService.logDeletedPost(AuthService.getUsername(), permlink, data);
 				return response;
 			})
 	}
 }
 
-export function getValidTransaction() {
-	const operation = [Constants.OPERATIONS.COMMENT, {
-		parent_author: '',
-		parent_permlink: '',
-		author: _getUserName(),
-		permlink:  _getPermLink('steepshot'),
-		title: 'steepshot',
-		description: '',
-		body: 'steepshot',
-		json_metadata: {
-			tags: ['steepshot'],
-			app: 'steepshot'
-		}
-	}];
-	return steem.broadcast._prepareTransaction({
-		extensions: [],
-		operations: [operation],
-	}).then(transaction => {
-		return steem.auth.signTransaction(transaction, [_getUserPostingKey()])
-	}).catch(error => {
-		let checkedError = blockchainErrorsList(error);
-		return Promise.reject(checkedError);
-	});
-}
-
 function _fileUpload(file) {
-	return getValidTransaction()
+	return SteemService.getValidTransaction()
 		.then(transaction => {
 			let form = new FormData();
 			form.append('file', file);
@@ -377,14 +322,14 @@ function _sendToBlockChain(operation, prepareData, beneficiaries) {
 		};
 		steem.broadcast.sendAsync(
 			{operations, extensions: []},
-			{posting: _getUserPostingKey()}, callback
+			{posting: AuthService.getPostingKey()}, callback
 		);
 	})
 }
 
 function _preparePost(media, description, tags, permlink, username) {
 	const options = {
-		"username": _getUserName(),
+		"username": AuthService.getUsername(),
 		"media": [media],
 		"description": description,
 		"post_permlink": `@${username}/${permlink}`,
@@ -399,17 +344,6 @@ function _preparePost(media, description, tags, permlink, username) {
 			...options
 		})
 	}).then(response => response.json());
-}
-
-function _getPermLink(permlinkHead) {
-	let today = new Date();
-	let permlinkHeadLimit = 30;
-	permlinkHead = permlinkHead.toLowerCase();
-	if (permlinkHead.length > permlinkHeadLimit) {
-		permlinkHead = permlinkHead.slice(0, permlinkHeadLimit + 1);
-	}
-	return permlinkHead.replace(/\W/g, '-') + '-' + today.getFullYear() + '-' + today.getMonth() + '-' + today.getDay()
-		+ '-' + today.getHours() + '-' + today.getMinutes() + '-' + today.getSeconds();
 }
 
 function _getValidTags(tags) {
@@ -431,20 +365,6 @@ function _createJsonMetadata(tags) {
 		tags: tags,
 		app: 'steepshot/0.0.6'
 	}
-}
-
-function _getBeneficiaries(permlink, beneficiaries) {
-	let beneficiariesObject = _.extend({}, {
-		author: _getUserName(),
-		permlink: permlink,
-		max_accepted_payout: Constants.STEEM_PATLOAD.MAX_ACCEPTED_PAYOUT,
-		percent_steem_dollars: Constants.STEEM_PATLOAD.PERCENT_STEMM_DOLLARS,
-		allow_votes: true,
-		allow_curation_rewards: true,
-		extensions: [[0, {beneficiaries: beneficiaries}]]
-	});
-
-	return [Constants.OPERATIONS.COMMENT_OPTIONS, beneficiariesObject];
 }
 
 export default new Steem();
