@@ -28,14 +28,6 @@ export function getItems(options) {
 	return RequestService.get(options.point, defOptions);
 }
 
-export function getPosts(options) {
-	return getItems(options);
-}
-
-export function getComments(options) {
-	return getItems(options);
-}
-
 export function getFollowers(options) {
 	return getItems(options);
 }
@@ -50,14 +42,4 @@ export function getUsersSearch(options) {
 
 export function getVoters(options) {
 	return getItems(options);
-}
-
-export function getPostShaddow(urlPost) {
-	let options = {
-		show_nsfw: true,
-		show_low_rated: true,
-		username: storage.username || undefined
-	};
-
-	return RequestService.get(`post/${urlPost}/info`, options);
 }

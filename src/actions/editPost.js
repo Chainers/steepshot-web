@@ -1,6 +1,5 @@
 import {getStore} from "../store/configureStore";
 import {utils} from "../utils/utils";
-import {getPostShaddow} from "../services/posts";
 import Steem from "../services/steem";
 import {clearTextInputState, setTextInputError} from "./textInput";
 import {getCreateWaitingTime} from "../services/users";
@@ -11,6 +10,7 @@ import {push} from "react-router-redux";
 import {compressJPEG} from "../utils/compressor";
 import {pushMessage} from "./pushMessage";
 import Constants from "../common/constants";
+import PostService from "../services/postService";
 
 const getUserName = () => {
 	return getStore().getState().auth.user;
@@ -117,15 +117,14 @@ export function editPostClear() {
 	}
 }
 
-export function setInitDataForEditPost(username, postId) {
+export function setInitDataForEditPost(postId) {
+	const username = getStore().getState().auth.user;
 	return (dispatch) => {
 		if (!username || !postId) {
 			dispatch(createNewPost())
 		} else {
-			getPostShaddow(username + '/' + postId).then((response) => {
-				if (!response) {
-					dispatch(createNewPost())
-				} else {
+			PostService.getPost(username, postId)
+				.then((response) => {
 					dispatch({
 						type: 'EDIT_POST_SET_INIT_DATA',
 						initData: {
@@ -136,8 +135,10 @@ export function setInitDataForEditPost(username, postId) {
 							dataResponse: response
 						}
 					})
-				}
-			});
+				})
+				.catch( () => {
+					dispatch(createNewPost());
+				});
 		}
 	}
 }
@@ -192,7 +193,7 @@ export function createPost() {
 								console.log("compressing...");
 								return compressJPEG(blob);
 							}
-							return new Promise( resolve => {
+							return new Promise(resolve => {
 								resolve(blob);
 							});
 
@@ -248,7 +249,7 @@ function prepareData() {
 function getValidTagsString(str) {
 	if (str) {
 		let result = str.replace(/\bsteepshot\b/g, '');
-    result = result.replace(/(\b\w+\b)(.+)(\1)/g, '$1$2');
+		result = result.replace(/(\b\w+\b)(.+)(\1)/g, '$1$2');
 		result = result.trim();
 		result = result.replace(/\s\s/g, ' ');
 		result = result.replace(/[^\w\s]+/g, '');

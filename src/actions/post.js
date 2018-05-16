@@ -1,4 +1,3 @@
-import {getPostShaddow} from '../services/posts';
 import Steem from '../services/steem';
 import {getStore} from '../store/configureStore';
 import {initPostsList} from './postsList';
@@ -6,12 +5,13 @@ import {initPostModal} from './postModal';
 import {pushMessage} from './pushMessage';
 import {actionLock, actionUnlock} from './session';
 import Constants from "../common/constants";
+import PostService from "../services/postService";
 
 function addPosts(posts) {
-  return {
-    type: 'ADD_POSTS',
-    posts
-  }
+	return {
+		type: 'ADD_POSTS',
+		posts
+	}
 }
 
 export function updatePost(postIndex, newVoteState, newFlagState) {
@@ -26,35 +26,35 @@ export function updatePost(postIndex, newVoteState, newFlagState) {
 
 function updatePostData(dispatch, postIndex) {
 	const urlObject = postIndex.split('/');
-	getPostShaddow(urlObject[urlObject.length - 2] + '/' +
-		urlObject[urlObject.length - 1]).then((result) => {
-		dispatch({
-			type: 'UPDATE_POST',
-			post: result
-		})
-	});
+	PostService.getPost(urlObject[urlObject.length - 2], urlObject[urlObject.length - 1])
+		.then((result) => {
+			dispatch({
+				type: 'UPDATE_POST',
+				post: result
+			})
+		});
 }
 
 function updateCommentData(dispatch, postIndex, newVoteState, newFlagState) {
 	let newItem = getStore().getState().posts[postIndex];
 	if (newVoteState !== 0) {
-    newVoteState ? newItem.net_votes++ : newItem.net_votes--;
-    newVoteState ? newItem.net_likes++ : newItem.net_likes--;
+		newVoteState ? newItem.net_votes++ : newItem.net_votes--;
+		newVoteState ? newItem.net_likes++ : newItem.net_likes--;
 	}
 	if (newFlagState !== 0) {
-    newFlagState ? newItem.net_flags++ : newItem.net_flags--;
+		newFlagState ? newItem.net_flags++ : newItem.net_flags--;
 	}
 	if (newItem.vote && newFlagState) {
-    newItem.vote = false;
-    newItem.net_votes--;
-    newItem.net_likes--;
+		newItem.vote = false;
+		newItem.net_votes--;
+		newItem.net_likes--;
 	}
-  if (newItem.flag && newVoteState) {
-    newItem.flag = false;
-    newItem.net_flags--;
-  }
-  newItem.vote = newVoteState;
-  newItem.flag = newFlagState;
+	if (newItem.flag && newVoteState) {
+		newItem.flag = false;
+		newItem.net_flags--;
+	}
+	newItem.vote = newVoteState;
+	newItem.flag = newFlagState;
 	dispatch({
 		type: 'UPDATE_COMMENT',
 		[postIndex]: newItem
@@ -82,13 +82,13 @@ export function setPowerLikeTimeout(postIndex, timeout) {
 }
 
 export function setChangeStatus(postIndex, param) {
-  return (dispatch) => {
-    dispatch({
-      type: 'POWER_OF_LIKE_CHANGE_STATUS',
-      index: postIndex,
-      changeStatus: param
-    })
-  }
+	return (dispatch) => {
+		dispatch({
+			type: 'POWER_OF_LIKE_CHANGE_STATUS',
+			index: postIndex,
+			changeStatus: param
+		})
+	}
 }
 
 export function setHidePowerLikeTimeout(postIndex, timeout) {
@@ -106,7 +106,7 @@ export function setSliderWidth(postIndex, width) {
 		dispatch({
 			type: 'SET_SLIDER_TIMEOUT',
 			index: postIndex,
-      sliderWidth: width
+			sliderWidth: width
 		})
 	}
 }
@@ -141,13 +141,13 @@ export function deletePost(postIndex) {
 		let postingKey = state.auth.postingKey;
 		const urlObject = postIndex.split('/');
 		let permlink = urlObject[urlObject.length - 1];
-    if (state.session.actionLocked) {
-      return;
-    }
-    dispatch(actionLock());
+		if (state.session.actionLocked) {
+			return;
+		}
+		dispatch(actionLock());
 		dispatch(sendDeletePost(postIndex));
 		const callback = (err, success) => {
-      dispatch(actionUnlock());
+			dispatch(actionUnlock());
 			if (success) {
 				dispatch(successDeletePost(postIndex));
 				dispatch(pushMessage(Constants.DELETE.DELETE_SUCCESS));
@@ -171,8 +171,7 @@ export function addSinglePost(url) {
 		if (urlObject.length < 3) {
 			error(dispatch);
 		} else {
-			await getPostShaddow(getPostIdentifier(urlObject[urlObject.length - 2],
-				urlObject[urlObject.length - 1]))
+			await PostService.getPost(urlObject[urlObject.length - 2], urlObject[urlObject.length - 1])
 				.then((result) => {
 					if (result) {
 						let postOptions = {
@@ -196,10 +195,6 @@ export function addSinglePost(url) {
 				});
 		}
 	}
-}
-
-function getPostIdentifier(author, permlink) {
-	return `${author}/${permlink}`;
 }
 
 function error(dispatch) {

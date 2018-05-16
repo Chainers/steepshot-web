@@ -14,12 +14,12 @@ class Comments extends React.Component {
 	constructor(props) {
 		super(props);
 		props.initPostComment(props.point);
-		props.getComments(props.point);
+		PostService.getComments(props.point);
 	}
 
 	componentWillReceiveProps(nextProps) {
 		if (nextProps.point !== this.props.point) {
-			this.props.getComments(nextProps.point);
+			PostService.getComments(nextProps.point);
 		}
 		if (nextProps.scrollToLastComment !== this.props.scrollToLastComment && this.scrollBar) {
 			this.scrollBar.scrollToTop();

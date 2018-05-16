@@ -27,15 +27,15 @@ class EditPost extends React.Component {
 	}
 
 	constructor(props) {
-		super(props);
+		super();
 		this.setImageContainerSize = this.setImageContainerSize.bind(this);
-		props.setInitDataForEditPost(props.username, props.postId);
+		props.setInitDataForEditPost(props.postId);
 	}
 
 	componentWillReceiveProps(nextProps) {
 		documentTitle();
 		if (this.props.postId !== nextProps.postId) {
-			this.props.setInitDataForEditPost(nextProps.username, nextProps.postId);
+			this.props.setInitDataForEditPost(nextProps.postId);
 		}
 		if (this.props.rotate !== nextProps.rotate) {
 			this.setImageContainerSize(nextProps.rotate);
@@ -225,7 +225,6 @@ const mapStateToProps = (state, props) => {
 	const {postId} = props.match.params;
 	return {
 		postId,
-		username: state.auth.user,
 		...state.editPost
 	};
 };
@@ -247,8 +246,8 @@ const mapDispatchToProps = (dispatch) => {
 		setImageContainerSize: (width, height) => {
 			dispatch(setImageContainerSize(width, height))
 		},
-		setInitDataForEditPost: (username, postId) => {
-			dispatch(setInitDataForEditPost(username, postId))
+		setInitDataForEditPost: (postId) => {
+			dispatch(setInitDataForEditPost(postId))
 		},
 		editPostClear: () => {
 			dispatch(editPostClear())

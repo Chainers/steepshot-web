@@ -1,10 +1,10 @@
-import {getComments} from "../services/posts";
 import {getStore} from "../store/configureStore";
 import Steem from "../services/steem";
 import {clearTextInputState} from "./textInput";
 import {pushMessage} from "./pushMessage";
 import {actionLock, actionUnlock} from "./session";
 import Constants from "../common/constants";
+import PostService from "../services/postService";
 
 export function initPostComment(point) {
 	return {
@@ -36,39 +36,42 @@ export function getPostComments(point) {
 			type: 'GET_POST_COMMENT_REQUEST',
 			point
 		});
-		const options = {
-			point: `post/${post.author}${post.url}/comments`,
-			params: {}
-		};
-		getComments(options).then((response) => {
-			const comments = response.results.reverse();
-			if (!comments) {
-				dispatch({
-					type: 'GET_COMMENT_ERROR',
-					response
+		PostService.getComments(post.author, post.url)
+			.then((response) => {
+				const comments = response.results.reverse();
+				if (!comments) {
+					dispatch({
+						type: 'GET_COMMENT_ERROR',
+						response
+					});
+					return;
+				}
+				let commentsUrls = comments.map((comment) => {
+					return comment.url
 				});
-				return;
-			}
-			let commentsUrls = comments.map((comment) => {
-				return comment.url
-			});
 
-			let commentsObjects = {};
-			for (let i = 0; i < comments.length; i++) {
-				let comment = {
-					...comments[i],
-					flagLoading: false,
-					voteLoading: false
-				};
-				commentsObjects[comments[i].url] = comment;
-			}
-			dispatch({
-				type: 'GET_POST_COMMENTS_SUCCESS',
-				point,
-        commentsUrls,
-				posts: commentsObjects,
+				let commentsObjects = {};
+				for (let i = 0; i < comments.length; i++) {
+					let comment = {
+						...comments[i],
+						flagLoading: false,
+						voteLoading: false
+					};
+					commentsObjects[comments[i].url] = comment;
+				}
+				dispatch({
+					type: 'GET_POST_COMMENTS_SUCCESS',
+					point,
+					commentsUrls,
+					posts: commentsObjects,
+				});
+			})
+			.catch(error => {
+				dispatch({
+					type: 'GET_POST_COMMENTS_ERROR',
+					error
+				});
 			});
-		});
 	}
 }
 
@@ -103,14 +106,14 @@ export function sendComment(postIndex, point) {
 	let post = state.posts[postIndex];
 	let comment = state.textInput[point].text;
 	return (dispatch) => {
-    if (state.session.actionLocked) {
-      return;
-    }
-    dispatch(actionLock());
+		if (state.session.actionLocked) {
+			return;
+		}
+		dispatch(actionLock());
 		dispatch(sendingNewComment(postIndex, true));
 		const urlObject = post.url.split('/');
 		const callback = (err, success) => {
-      dispatch(actionUnlock());
+			dispatch(actionUnlock());
 			dispatch(sendingNewComment(postIndex, false));
 			if (err) {
 				dispatch(pushMessage(err));
@@ -129,7 +132,7 @@ export function sendComment(postIndex, point) {
 					voteLoading: false,
 					url
 				};
-				dispatch(addedNewComment(postIndex, { [url]: newComment}, url));
+				dispatch(addedNewComment(postIndex, {[url]: newComment}, url));
 				dispatch(clearTextInputState(point));
 				dispatch(scrollToLastComment(postIndex));
 				dispatch(pushMessage(Constants.COMMENT_SUCCESS_MESSAGE));

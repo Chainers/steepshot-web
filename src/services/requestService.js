@@ -45,6 +45,8 @@ class RequestService {
 	}
 
 	static convertOptionsToRequestString(options) {
+		if (!options) return '';
+
 		let optionsArray = [];
 		for (let key in options) {
 			if (options[key]) optionsArray.push(key + '=' + RequestService.convertIfBool(options[key]));
