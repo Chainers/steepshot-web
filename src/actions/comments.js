@@ -40,7 +40,7 @@ export function getPostComments(point) {
 			point: `post/${post.author}${post.url}/comments`,
 			params: {}
 		};
-		getComments(options, true).then((response) => {
+		getComments(options).then((response) => {
 			const comments = response.results.reverse();
 			if (!comments) {
 				dispatch({

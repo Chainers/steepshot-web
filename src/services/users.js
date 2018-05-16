@@ -1,7 +1,7 @@
-import RequestService from "./requestService";
+import Constants from "../common/constants";
 
 export function getCreateWaitingTime(username) {
-	const url = `${RequestService.getBasev1_1Url()}/user/${username}/spam`;
+	const url = `${Constants.URLS.baseUrl_v1_1}/user/${username}/spam`;
 	return fetch(url, {
 		method: 'GET'
 	}).then((response) => {

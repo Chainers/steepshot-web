@@ -62,7 +62,7 @@ export function getPostsList(point) {
 				...statePoint.options
 			}
 		};
-		getPosts(requestOptions, statePoint.cancelPrevious).then((response) => {
+		getPosts(requestOptions).then((response) => {
 			//TODO удалить когда будут реальные видео в ленте
 			/*if (response.results[2]) {
 				const media = response.results[2].media[0];

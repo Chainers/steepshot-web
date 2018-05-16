@@ -12,23 +12,19 @@ let baseCORSOptions = {
 };
 
 function notify(message, response, warn) {
-	response.json().then((json) => {
-		warn ? console.warn(message) : console.log(message);
-	});
+	warn ? console.warn(message) : console.log(message);
 }
 
 function makePostId(author, permlink) {
 	return `@${author}/${permlink}`;
 }
 
-export async function logCORS(url, options, operation) {
+export function logCORS(url, options, operation) {
 	try {
-		await fetch(url, options)
+		fetch(url, options)
 			.then((response) => {
-				if (response.ok) {
-					if (response.status !== 200) {
-						notify(`logCORS, ${operation}. Response is OK but something went wrong`, response, true);
-					}
+				if (response.ok && response.status !== 200) {
+					notify(`logCORS, ${operation}. Response is OK but something went wrong`, response, true);
 				}
 			})
 			.catch((error) => {

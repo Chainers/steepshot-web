@@ -1,6 +1,7 @@
 import RequestService from './requestService';
 import Constants from '../common/constants';
 import Promise from 'bluebird';
+import storage from "../utils/Storage";
 
 Promise.config({
 	warnings: true,
@@ -8,87 +9,55 @@ Promise.config({
 	monitoring: true
 });
 
-const makeCancellableRequest = url =>
-	new Promise((resolve, reject, onCancel) => {
-		let xhr = new XMLHttpRequest();
-		xhr.onload = resolve;
-		xhr.onerror = reject;
-		xhr.open("GET", url, true);
-		xhr.send(null);
-		onCancel(function () {
-			xhr.abort();
-		});
-	});
 
-let requestPromises = {
-	[Constants.PROMISES.GET_COMMENTS]: Promise.resolve(),
-	[Constants.PROMISES.GET_POSTS]: Promise.resolve(),
-	[Constants.PROMISES.GET_FOLLOWERS]: Promise.resolve(),
-	[Constants.PROMISES.GET_FOLLOWING]: Promise.resolve(),
-	[Constants.PROMISES.GET_USERS_SEARCH]: Promise.resolve(),
-	[Constants.PROMISES.GET_USERS_VOTERS]: Promise.resolve()
-};
+export function getItems(options) {
 
-async function getItems(url, promiseName, needsDestroyPrevious, where) {
+	let defOptions = {
+		limit: Constants.POSTS_SETTINGS.defaultLimit,
+		offset: null,
+		show_nsfw: storage.settings.show_nsfw || Constants.SETTINGS.DEFAULT.show_nsfw,
+		show_low_rated: storage.settings.show_low_rated || Constants.SETTINGS.DEFAULT.show_low_rated,
+		username: storage.username || undefined
+	};
 
-	if (requestPromises[promiseName].isPending() && needsDestroyPrevious) requestPromises[promiseName].cancel();
+	defOptions = {
+		...defOptions,
+		...options.params
+	};
 
-	try {
-		return requestPromises[promiseName] = makeCancellableRequest(url).then(result => {
-			if (result.target.status === 200) {
-				return JSON.parse(result.target.response);
-			}
-			throw Error(result.target.status);
-		})
-	}	catch (e) {
-		console.warn(where);
-		console.log(e);
-		return [];
-	}
+	return RequestService.get(options.point, defOptions);
 }
 
-export function getPosts(options, needsDestroyPrevious) {
-	const url = RequestService.handlev1_1BaseRequestPosts(options.point, options.params);
-	return getItems(url, Constants.PROMISES.GET_POSTS, needsDestroyPrevious, 'getPosts');
+export function getPosts(options) {
+	return getItems(options);
 }
 
-export function getComments(options, needsDestroyPrevious) {
-	const url = RequestService.handlev1_1BaseRequestPosts(options.point, options.params);
-	return getItems(url, Constants.PROMISES.GET_COMMENTS, needsDestroyPrevious, 'getComments');
+export function getComments(options) {
+	return getItems(options);
 }
 
-export function getFollowers(options, needsDestroyPrevious) {
-	const url = RequestService.handlev1_1BaseRequestPosts(options.point, options.params);
-	return getItems(url, Constants.PROMISES.GET_FOLLOWERS, needsDestroyPrevious, 'getFollowers');
+export function getFollowers(options) {
+	return getItems(options);
 }
 
-export function getFollowing(options, needsDestroyPrevious) {
-	const url = RequestService.handlev1_1BaseRequestPosts(options.point, options.params);
-	return getItems(url, Constants.PROMISES.GET_FOLLOWING, needsDestroyPrevious, 'getFollowing');
+export function getFollowing(options) {
+	return getItems(options);
 }
 
-export function getUsersSearch(options, needsDestroyPrevious) {
-	const url = RequestService.handlev1_1BaseRequestPosts(options.point, options.params);
-	return getItems(url, Constants.PROMISES.GET_USERS_SEARCH, needsDestroyPrevious, 'getUsersSearch');
+export function getUsersSearch(options) {
+	return getItems(options);
 }
 
 export function getVoters(options) {
-	const url = RequestService.handlev1_1BaseRequestPosts(options.point, options.params);
-	return getItems(url, Constants.PROMISES.GET_USERS_VOTERS, false, 'getUserVoters');
+	return getItems(options);
 }
 
 export function getPostShaddow(urlPost) {
-	const url = RequestService.handlev1_1BaseRequestPost(`post/${urlPost}/info`);
-	return fetch(url, {
-		method: 'GET'
-	}).then((response) => {
-		const contentType = response.headers.get("content-type");
-		if (response.ok && contentType && contentType.indexOf("application/json") !== -1) {
-			return response.json().then((json) => {
-				return json;
-			});
-		} else {
-			return null;
-		}
-	});
+	let options = {
+		show_nsfw: true,
+		show_low_rated: true,
+		username: storage.username || undefined
+	};
+
+	return RequestService.get(`post/${urlPost}/info`, options);
 }

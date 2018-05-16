@@ -177,7 +177,6 @@ export function addSinglePost(url) {
 					if (result) {
 						let postOptions = {
 							point: 'SinglePost',
-							cancelPrevious: false,
 							maxPosts: 1,
 							loading: false,
 							posts: [result.url],

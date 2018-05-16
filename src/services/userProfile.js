@@ -1,57 +1,34 @@
 import RequestService from './requestService';
+import Constants from "../common/constants";
+import storage from "../utils/Storage";
 
 export function getProfile(userName) {
-	const url = RequestService.handlev1_1RequestUserInfo(`user/${userName}/info`);
-	return fetch(url, {
-		method: 'GET'
-	}).then((response) => {
-		if (response.ok) {
-			return response.json().then((json) => {
-				return json;
-			});
-		} else {
-			return [];
-		}
-	});
+	let options = {
+		show_nsfw: true,
+		show_low_rated: true,
+		username: storage.username || undefined
+	};
+
+	return RequestService.get(`user/${userName}/info`, options);
 }
 
 export function getFollowers(userName, offset) {
-	const options = {
-		offset: offset
-	};
-	const url = RequestService.handlev1_1BaseRequestPosts(`user/${userName}/followers`, options);
-
-	return fetch(url, {
-		method: 'GET'
-	}).then((response) => {
-		if (response.ok) {
-			return response.json().then((json) => {
-				return json;
-			});
-		} else {
-			return response.json().then(() => {
-				return [];
-			});
-		}
-	});
-
+	return getFollowUsers('followers', userName, offset);
 }
 
 export function getFollowing(userName, offset) {
+	return getFollowUsers('following', userName, offset);
+}
+
+function getFollowUsers(whom, userName, offset) {
 	const options = {
-		offset: offset
+		offset: offset,
+		limit: Constants.POSTS_SETTINGS.defaultLimit,
+		show_nsfw: storage.settings.show_nsfw || Constants.SETTINGS.DEFAULT.show_nsfw,
+		show_low_rated: storage.settings.show_low_rated || Constants.SETTINGS.DEFAULT.show_low_rated,
+		username: storage.username || undefined
 	};
-	const url = RequestService.handlev1_1BaseRequestPosts(`user/${userName}/following`, options);
-	return fetch(url, {
-		method: 'GET'
-	}).then((response) => {
-		const contentType = response.headers.get("content-type");
-		if (response.ok && contentType && contentType.indexOf("application/json") !== -1) {
-			return response.json().then((json) => {
-				return json;
-			});
-		} else {
-			return [];
-		}
-	});
+
+	RequestService.get(`user/${userName}/${whom}`, options);
+
 }

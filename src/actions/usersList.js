@@ -63,7 +63,7 @@ export function getUsersList(point, getUsers) {
 				limit: LIMIT
 			}
 		};
-		getUsers(requestOptions, true).then((response) => {
+		getUsers(requestOptions).then((response) => {
 			statePoint = getStore().getState().usersList[point];
 			let newUsers = response.results;
 			let hasMore = response.results.length === LIMIT;
@@ -127,7 +127,7 @@ export function updateUser(author) {
 				query: author
 			})
 		};
-		getUsersSearch(requestOptions, true).then((response) => {
+		getUsersSearch(requestOptions).then((response) => {
 			let updatedUser = {[author]: {...response.results[0], togglingFollow: false}};
 			dispatch(updateUserSuccess(updatedUser));
 		});

@@ -9,16 +9,18 @@ export function getUserProfile(userName) {
 		dispatch({
 			type: "GET_USER_PROFILE_REQUEST"
 		});
-			getProfile(userName).then((result) => {
-				if (result.length === 0) {
-					dispatch(push('/search/' + userName));
-					return;
-				}
-				dispatch({
-					type: 'GET_USER_PROFILE_SUCCESS',
-					profile: result
-				});
+		getProfile(userName).then((result) => {
+			dispatch({
+				type: 'GET_USER_PROFILE_SUCCESS',
+				profile: result
 			});
+		}).catch(error => {
+			dispatch({
+				type: 'GET_USER_PROFILE_ERROR',
+				error
+			});
+			dispatch(push('/search/' + userName));
+		});
 	}
 }
 

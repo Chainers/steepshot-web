@@ -15,10 +15,6 @@ const _getUserPostingKey = () => {
 	return getStore().getState().auth.postingKey
 };
 
-const _getBaseUrl = () => {
-	return Constants.URLS.baseUrl_v1_1;
-};
-
 class Steem {
 	constructor() {
 		steem.api.setOptions({url: 'https://api.steemit.com'});
@@ -352,7 +348,7 @@ function _fileUpload(file) {
 			let form = new FormData();
 			form.append('file', file);
 			form.append('trx', JSON.stringify(transaction));
-			return fetch(`${_getBaseUrl()}/media/upload`, {
+			return fetch(`${Constants.URLS.baseUrl_v1_1}/media/upload`, {
 				method: 'POST',
 				body: form
 			}).then(response => response.json()).catch(error => console.warn(error));
@@ -396,7 +392,7 @@ function _preparePost(media, description, tags, permlink, username) {
 		"show_footer": true,
 		device: 'web'
 	};
-	return fetch(`${_getBaseUrl()}/post/prepare`, {
+	return fetch(`${Constants.URLS.baseUrl_v1_1}/post/prepare`, {
 		method: 'POST',
 		headers: {'Content-Type': 'application/json'},
 		body: JSON.stringify({
