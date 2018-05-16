@@ -13,16 +13,17 @@ class Steem {
 		steem.api.setOptions({url: 'https://api.steemit.com'});
 	}
 
-	comment(wif, parentAuthor, parentPermlink, author, body, tags, callback) {
+	comment(postAuthor, parentPermlink, body, callback) {
+		const author = AuthService.getUsername();
 		const permlink = PostService.createPostPermlink(`${author} comment`);
 		const commentObject = {
-			parent_author: parentAuthor,
+			parent_author: postAuthor,
 			parent_permlink: parentPermlink,
 			author: author,
 			permlink: permlink,
 			title: "",
 			body: body,
-			json_metadata: JSON.stringify(_createJsonMetadata(tags))
+			json_metadata: {}
 		};
 		const commentOperation = [Constants.OPERATIONS.COMMENT, commentObject];
 
@@ -34,20 +35,20 @@ class Steem {
 					username: author,
 					error: err.message
 				});
-				LoggingService.logComment(parentAuthor, parentPermlink, data);
+				LoggingService.logComment(postAuthor, parentPermlink, data);
 			} else if (success) {
 				const data = JSON.stringify({
 					username: author,
 					error: ''
 				});
-				LoggingService.logComment(parentAuthor, parentPermlink, data);
+				LoggingService.logComment(postAuthor, parentPermlink, data);
 				callback(null, success);
 			}
 		};
-		this.handleBroadcastMessagesComment(commentOperation, wif, callbackBc);
+		this.handleBroadcastMessagesComment(commentOperation, callbackBc);
 	}
 
-	handleBroadcastMessagesComment(message, postingKey, callback) {
+	handleBroadcastMessagesComment(message, callback) {
 		let beneficiaries = SteemService.getBeneficiaries(message[1].permlink, {
 			account: 'steepshot',
 			weight: 1000
@@ -55,7 +56,7 @@ class Steem {
 		const operations = [message, beneficiaries];
 		steem.broadcast.sendAsync(
 			{operations, extensions: []},
-			{posting: postingKey}, callback
+			{posting: AuthService.getPostingKey()}, callback
 		);
 	}
 

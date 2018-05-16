@@ -139,12 +139,9 @@ export function sendComment(postIndex, point) {
 			}
 		};
 		Steem.comment(
-			state.auth.postingKey,
 			post.author,
 			urlObject[urlObject.length - 1],
-			state.auth.user,
 			comment,
-			post.tags,
 			callback,
 		);
 	};
