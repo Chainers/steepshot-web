@@ -1,4 +1,4 @@
-export default {
+const Constants = {
 	URLS: {
 		baseUrl_v1_1: 'https://steepshot.org/api/v1_1',
 		baseUrl_v1: 'https://steepshot.org/api/v1',
@@ -23,11 +23,23 @@ export default {
 	NO_IMAGE: '/images/noimage.jpg',
 
 	SETTINGS: {
-		show_low_rated: 'show_low_rated',
-		show_nsfw: 'show_nsfw',
-		default: {
+		FIELDS: {
+			show_low_rated: 'show_low_rated',
+			show_nsfw: 'show_nsfw',
+			comment: 'comment',
+			upvote: 'upvote',
+			upvote_comment: 'upvote_comment',
+			follow: 'follow',
+			post: 'post',
+		},
+		DEFAULT: {
 			show_low_rated: false,
-			show_nsfw: false
+			show_nsfw: false,
+			comment: true,
+			upvote: true,
+			upvote_comment: true,
+			follow: true,
+			post: true
 		}
 	},
 
@@ -198,5 +210,17 @@ export default {
 
 	WAIT_FINISHING_TRANSACTION: 'There\'s unfinished transaction, please wait.',
 
-	MAX_TAGS_NUMBER: 'You have reached the max number of tags.'
-}
+	MAX_TAGS_NUMBER: 'You have reached the max number of tags.',
+
+	ONE_SIGNAL: {
+		APP_ID: '77fa644f-3280-4e87-9f14-1f0c7ddf8ca5',
+		STATES: {
+			DEFAULT: 'default',
+			GRANTED: 'granted',
+			DENIED: 'denied'
+		}
+	}
+};
+
+
+export default Constants;

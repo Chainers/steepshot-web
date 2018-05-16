@@ -55,8 +55,8 @@ export function getPostsList(point) {
 			params: {
 				...{
 					offset: statePoint.offset,
-					show_nsfw: settings[Constants.SETTINGS.show_nsfw],
-					show_low_rated: settings[Constants.SETTINGS.show_low_rated],
+					show_nsfw: settings[Constants.SETTINGS.FIELDS.show_nsfw],
+					show_low_rated: settings[Constants.SETTINGS.FIELDS.show_low_rated],
 					limit: LIMIT
 				},
 				...statePoint.options

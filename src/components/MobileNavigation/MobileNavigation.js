@@ -6,6 +6,7 @@ import {logout} from "../../actions/auth";
 import './mobileNavigation.css';
 import {closeMobileNavigation} from "../../actions/mobileNavigation";
 import {Scrollbars} from "react-custom-scrollbars";
+import storage from "../../utils/Storage";
 
 class MobileNavigation extends React.Component {
 
@@ -17,7 +18,7 @@ class MobileNavigation extends React.Component {
 
 	render() {
 		const {isAuth, name, opened, urls, labels, closeMobileNavigation} = this.props;
-		let menuMobilePaddingTop = !localStorage.getItem('advertisingStatus') ? {paddingTop: 160} : null;
+		let menuMobilePaddingTop = !storage.advertisingStatus ? {paddingTop: 160} : null;
 		return (
 			<ShowIf show={isAuth}>
 				<div className={'container_mobile' + (opened ? ' opened_mobile' : '')} onClick={this.props.closeMobileNavigation}>

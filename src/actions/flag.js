@@ -1,4 +1,4 @@
-import Steem from '../libs/steem';
+import Steem from '../services/steem';
 import {getStore} from '../store/configureStore';
 import Constants from '../common/constants';
 import {debounce} from 'lodash';

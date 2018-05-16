@@ -1,8 +1,7 @@
 import {getStore} from "../store/configureStore";
-import constants from "../common/constants";
 import {utils} from "../utils/utils";
 import {getPostShaddow} from "../services/posts";
-import Steem from "../libs/steem";
+import Steem from "../services/steem";
 import {clearTextInputState, setTextInputError} from "./textInput";
 import {getCreateWaitingTime} from "../services/users";
 import * as React from "react";
@@ -11,6 +10,7 @@ import {openModal} from "./modal";
 import {push} from "react-router-redux";
 import {compressJPEG} from "../utils/compressor";
 import {pushMessage} from "./pushMessage";
+import Constants from "../common/constants";
 
 const getUserName = () => {
 	return getStore().getState().auth.user;
@@ -20,17 +20,17 @@ export function addTag() {
 	return (dispatch) => {
 		const state = getStore().getState();
 		const editPostState = state.editPost;
-		let newTag = state.textInput[constants.TEXT_INPUT_POINT.TAGS].text;
+		let newTag = state.textInput[Constants.TEXT_INPUT_POINT.TAGS].text;
 		newTag = getValidTagsString(newTag);
 		if (editPostState.tags.split(' ').length === 20) {
-			dispatch(pushMessage(constants.MAX_TAGS_NUMBER));
+			dispatch(pushMessage(Constants.MAX_TAGS_NUMBER));
 		}
 		if (utils.isEmptyString(newTag)) {
 			return emptyAction();
 		}
 		dispatch(editPostChangeTags(getValidTagsString(editPostState.tags + ' ' + newTag.trim())));
 
-		dispatch(clearTextInputState(constants.TEXT_INPUT_POINT.TAGS));
+		dispatch(clearTextInputState(Constants.TEXT_INPUT_POINT.TAGS));
 	}
 }
 
@@ -153,7 +153,7 @@ export function editPost() {
 		dispatch(editPostRequest());
 		Steem.editPost(title, tags, description, postData.url.split('/')[3], postData.category, postData.media[0])
 			.then(() => {
-				dispatch(pushMessage(constants.POST_SUCCESSFULLY_UPDATED));
+				dispatch(pushMessage(Constants.POST_SUCCESSFULLY_UPDATED));
 				setTimeout(() => {
 					dispatch(editPostSuccess());
 					dispatch(push(`/@${getUserName()}`))
@@ -188,7 +188,7 @@ export function createPost() {
 						return res.blob()
 					})
 						.then(blob => {
-							if (!isGif && blob.size > constants.IMAGE.MAX_SIZE) {
+							if (!isGif && blob.size > Constants.IMAGE.MAX_SIZE) {
 								console.log("compressing...");
 								return compressJPEG(blob);
 							}
@@ -201,7 +201,7 @@ export function createPost() {
 							return Steem.createPost(tags, title, description, blob)
 						})
 						.then(() => {
-							dispatch(pushMessage(constants.POST_SUCCESSFULLY_CREATED));
+							dispatch(pushMessage(Constants.POST_SUCCESSFULLY_CREATED));
 							dispatch(editPostSuccess());
 							dispatch(push(`/@${getUserName()}`))
 						})
@@ -252,8 +252,8 @@ function getValidTagsString(str) {
 		result = result.trim();
 		result = result.replace(/\s\s/g, ' ');
 		result = result.replace(/[^\w\s]+/g, '');
-		result = result.replace(new RegExp(`((\\s[^\\s]+){${constants.TAGS.MAX_AMOUNT - 1}}).*`), '$1');
-		result = result.replace(new RegExp(`(([^\\s]{${constants.TAGS.MAX_LENGTH}})[^\\s]+).*`), '$2');
+		result = result.replace(new RegExp(`((\\s[^\\s]+){${Constants.TAGS.MAX_AMOUNT - 1}}).*`), '$1');
+		result = result.replace(new RegExp(`(([^\\s]{${Constants.TAGS.MAX_LENGTH}})[^\\s]+).*`), '$2');
 		return result.toLowerCase();
 	}
 }
@@ -296,9 +296,9 @@ function createNewPost() {
 
 function clearInputFields() {
 	return dispatch => {
-		dispatch(clearTextInputState(constants.TEXT_INPUT_POINT.TITLE));
-		dispatch(clearTextInputState(constants.TEXT_INPUT_POINT.TAGS));
-		dispatch(clearTextInputState(constants.TEXT_INPUT_POINT.DESCRIPTION));
+		dispatch(clearTextInputState(Constants.TEXT_INPUT_POINT.TITLE));
+		dispatch(clearTextInputState(Constants.TEXT_INPUT_POINT.TAGS));
+		dispatch(clearTextInputState(Constants.TEXT_INPUT_POINT.DESCRIPTION));
 	}
 }
 
@@ -358,9 +358,9 @@ function getCanvasWithImage(image, rotate) {
 }
 
 function isValidImageSize(dispatch, imageSize) {
-	if (imageSize.width < constants.IMAGE.MIN_WIDTH
-		|| imageSize.height < constants.IMAGE.MIN_HEIGHT) {
-		const message = 'Photo size should be more than ' + constants.IMAGE.MIN_WIDTH + 'x' + constants.IMAGE.MIN_HEIGHT
+	if (imageSize.width < Constants.IMAGE.MIN_WIDTH
+		|| imageSize.height < Constants.IMAGE.MIN_HEIGHT) {
+		const message = 'Photo size should be more than ' + Constants.IMAGE.MIN_WIDTH + 'x' + Constants.IMAGE.MIN_HEIGHT
 			+ '. Your photo has ' + imageSize.width + 'x' + imageSize.height + '.';
 		dispatch(setEditPostImageError(message));
 		return false;
@@ -371,7 +371,7 @@ function isValidImageSize(dispatch, imageSize) {
 function isValidField(dispatch, title, photoSrc) {
 	let isValid = true;
 	if (utils.isEmptyString(title)) {
-		dispatch(setTextInputError(constants.TEXT_INPUT_POINT.TITLE, 'Title is required'));
+		dispatch(setTextInputError(Constants.TEXT_INPUT_POINT.TITLE, 'Title is required'));
 		isValid = false;
 	}
 	if (utils.isEmptyString(photoSrc)) {

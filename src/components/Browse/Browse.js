@@ -1,6 +1,5 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import Constants from '../../common/constants';
 import {documentTitle} from '../../utils/documentTitle';
 import PostsList from '../PostsList/PostsList';
 import {withWrapper} from "create-react-server/wrapper";
@@ -10,6 +9,8 @@ import TabsBar from "../Common/TabsBar/TabsBar";
 import Tab from "../Common/TabsBar/Tab/Tab";
 import {setActiveIndex} from "../../actions/tabsBar";
 import {utils} from "../../utils/utils";
+import Constants from "../../common/constants";
+import storage from "../../utils/Storage";
 
 class Browse extends React.Component {
 
@@ -35,18 +36,18 @@ class Browse extends React.Component {
 	setUrlPath() {
 		let lastActiveIndex =
 			Constants.BROWSE_ROUTES[this.props.match.params.filter]
-			|| localStorage.getItem('browse');
+			|| storage.browse;
 		lastActiveIndex = parseInt(lastActiveIndex, 10);
 		if (!(lastActiveIndex >= 0 && lastActiveIndex <= 2)) {
 			lastActiveIndex = 0;
 		}
-		localStorage.setItem('browse', lastActiveIndex);
+		storage.browse = lastActiveIndex;
 		this.props.setActiveIndex('browser', lastActiveIndex);
 		this.props.historyReplace('/browse/' + Constants.BROWSE_ROUTES[lastActiveIndex])
 	}
 
 	changeIndex(index) {
-		localStorage.setItem('browse', index);
+		storage.browse = index;
 		this.props.historyReplace('/browse/' + Constants.BROWSE_ROUTES[index])
 	}
 

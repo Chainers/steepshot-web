@@ -4,7 +4,6 @@ import {
 	nextPostModal, previousPostModal, setFSNavigation, setFullScreen, setPostModalOptions,
 	setPostOffset
 } from '../../actions/postModal';
-import Constants from '../../common/constants';
 import TimeAgo from 'timeago-react';
 import {Link} from 'react-router-dom';
 import Avatar from '../Common/Avatar/Avatar';
@@ -25,6 +24,7 @@ import ImagesGallery from "../ImagesGallery/ImagesGallery";
 import ReactPlayer from 'react-player'
 import Comments from "../Comments/Comments";
 import './postModal.css';
+import Constants from "../../common/constants";
 
 const HEADER_HEIGHT = 60;
 

@@ -1,10 +1,10 @@
-.container_body-loader {
-    position: fixed;
+.container_block-loader {
+    position: absolute;
     top: 0;
     bottom: 0;
     left: 0;
     right: 0;
-    z-index: 10000;
+    z-index: 1000;
     display: flex;
     justify-content: center;
     align-items: center;

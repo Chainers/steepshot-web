@@ -1,11 +1,11 @@
 import {getPostShaddow} from '../services/posts';
-import Steem from '../libs/steem';
+import Steem from '../services/steem';
 import {getStore} from '../store/configureStore';
 import {initPostsList} from './postsList';
 import {initPostModal} from './postModal';
-import Constants from '../common/constants';
 import {pushMessage} from './pushMessage';
 import {actionLock, actionUnlock} from './session';
+import Constants from "../common/constants";
 
 function addPosts(posts) {
   return {

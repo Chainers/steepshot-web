@@ -1,5 +1,4 @@
 import React from 'react';
-import Constants from '../../common/constants';
 import PostsList from '../PostsList/PostsList';
 import {getUsersSearch} from '../../services/posts';
 import {documentTitle} from '../../utils/documentTitle';
@@ -13,6 +12,7 @@ import HeadingLeadComponent from "../Atoms/HeadingLeadComponent";
 import {pageLoading} from "../../actions/tabsBar";
 import {withWrapper} from "create-react-server/wrapper";
 import {addMetaTags, getDefaultTags} from "../../actions/metaTags";
+import Constants from "../../common/constants";
 
 class Search extends React.Component {
 

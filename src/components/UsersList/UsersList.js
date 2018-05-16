@@ -1,7 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {debounce} from 'lodash';
-import Constants from '../../common/constants';
 import InfiniteScroll from 'react-infinite-scroller';
 import LoadingSpinner from '../LoadingSpinner';
 import {clearUsersList, getUsersList, initUsersList} from '../../actions/usersList';
@@ -9,6 +8,7 @@ import {documentTitle} from '../../utils/documentTitle';
 import User from './User/User';
 import './usersList.css';
 import {utils} from "../../utils/utils";
+import Constants from "../../common/constants";
 
 class UsersList extends React.Component {
 	static defaultProps = {

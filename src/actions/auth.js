@@ -1,11 +1,13 @@
 import steem from 'steem';
-import Constants from '../common/constants';
 import {logLogin} from './logging';
 import {push} from 'react-router-redux';
 import {getProfile} from "../services/userProfile";
 import {pushMessage} from "./pushMessage";
 import {hideBodyLoader, showBodyLoader} from "./bodyLoader";
-import {updateSettings} from "./settings";
+import {checkSubscribeAndUpdateSettings, removeSettings} from "./settings";
+import {addNotificationTags, removeNotificationTags} from "../services/oneSignal";
+import storage from "../utils/Storage";
+import {unsubscribe} from "./oneSignal";
 
 function showMessage(message) {
 	return dispatch => {
@@ -49,13 +51,12 @@ export function login(username, postingKey) {
 
 			let avatar = getAvatar(result[0]);
 
-			localStorage.setItem('user', JSON.stringify(username));
-			localStorage.setItem('postingKey', JSON.stringify(postingKey));
-			localStorage.setItem('like_power', '100');
-			localStorage.setItem('avatar', JSON.stringify(avatar));
-
-			dispatch(updateSettings(Constants.SETTINGS.default.show_low_rated, Constants.SETTINGS.default.show_nsfw));
-
+			storage.user = username;
+			storage.postingKey = postingKey;
+			storage.like_power = 100;
+			storage.avatar = avatar;
+			addNotificationTags(username);
+			dispatch(checkSubscribeAndUpdateSettings());
 			dispatch({
 				type: 'LOGIN_SUCCESS',
 				postingKey: postingKey,
@@ -63,7 +64,6 @@ export function login(username, postingKey) {
 				avatar: avatar,
 				like_power: 100
 			});
-
 			dispatch({
 				type: 'UPDATE_VOTING_POWER',
 				voting_power: result[0].voting_power / 100
@@ -80,7 +80,8 @@ function getAvatar(profileData) {
 	try {
 		const metadata = JSON.parse(profileData.json_metadata);
 		avatar = metadata.profile['profile_image'];
-	} catch(e) {}
+	} catch (e) {
+	}
 	return avatar;
 }
 
@@ -92,12 +93,14 @@ function logoutUser() {
 
 export function logout() {
 	return (dispatch) => {
-		dispatch(updateSettings(Constants.SETTINGS.default.show_low_rated, Constants.SETTINGS.default.show_nsfw));
-		localStorage.removeItem('user');
-		localStorage.removeItem('postingKey');
-		localStorage.removeItem('settings');
-		localStorage.removeItem('avatar');
-		localStorage.removeItem('like_power');
+		dispatch(removeSettings());
+		dispatch(unsubscribe());
+		storage.user = null;
+		storage.postingKey = null;
+		storage.settings = null;
+		storage.avatar = null;
+		storage.like_power = null;
+		removeNotificationTags();
 		dispatch(logoutUser());
 		dispatch(push(`/browse`));
 	}
@@ -125,7 +128,7 @@ export function clearVPTimeout(vpTimeout) {
 
 export function setLikePower(likePower) {
 	return (dispatch) => {
-		localStorage.setItem('like_power', JSON.stringify(likePower));
+		storage.like_power = likePower;
 		dispatch({
 			type: 'SET_LIKE_POWER',
 			like_power: likePower

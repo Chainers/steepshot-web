@@ -1,81 +1,50 @@
 .container_settings {
-    width: 100vw;
-    height: 330px;
-    max-width: 405px;
-    background: #fff;
-    box-shadow: 0 30px 30px 0 hsla(0,0%,80%,.5);
-    margin: 80px auto 40px;
-}
-
-.header_settings {
-    padding: 4rem 0 2.2rem;
-    border-bottom: 1px solid #f4f4f6;
-    text-align: center;
-}
-
-.header_settings > span {
-    line-height: 1.2;
-    font-size: 30px;
-    font-family: OpenSans-Bold,Helvetica,Arial,sans-serif;
-    font-weight: 400;
-    color: #0f181e;
-    word-wrap: break-word;
-    text-transform: uppercase;
+    margin: 40px 40px 0;
 }
 
 .body_settings {
-    padding: 40px 35px;
-    text-align: center;
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    border-bottom: 1px solid #f4f4f6;
+    padding-bottom: 30px;
 }
 
-.field_settings {
-    margin-bottom: 30px;
-    padding-right: 10px;
+.block_settings {
+    border-radius: 10px;
+    margin: 20px;
+    padding: 0 30px;
+    background: #fff;
+    max-width: 405px;
+    min-width: 300px;
+    width: 100vw;
+}
+
+.blocked-block_settings {
+    position: relative;
+}
+
+.header_settings {
+    padding: 25px 0;
+    border-bottom: 1px solid #f4f4f6;
     display: flex;
     justify-content: space-between;
 }
 
-.checked_settings {
-    width: 20px;
-    height: 20px;
-    border-color: #e74800;
-    background-size: 4.4em 47.2em;
-    background: #e74800 url(/images/sprite_svg1910.svg) no-repeat .15em .2em;
-    transition: opacity .2s ease;
-    opacity: 0;
-}
-
-.active > .checked_settings {
-    opacity: 1;
-}
-
-.check-box_settings {
-    width: 22px;
-    height: 22px;
-    border: 1px solid #e1e1e1;
-    background: #fff;
-    border-radius: 2px;
-    overflow: hidden;
-    transition: background .2s ease,border .2s ease;
-    font-weight: 400;
-    cursor: pointer;
-    line-height: 22px;
-}
-
-.active.check-box_settings {
-    border-color: #e74800;
-}
-
-.field_settings > span {
-    color: #979b9e;
+.header_settings > span {
     font-size: 14px;
-    line-height: 1.6;
-    margin-bottom: 6px;
-    overflow-wrap: break-word;
-    word-wrap: break-word;
+    font-weight: 600;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    color: #0f181e;
 }
 
 .save_settings {
+    margin: 20px;
     transition: .2s all ease;
     display: inline-block;
     font-family: OpenSans-SemiBold, Helvetica, Arial, sans-serif;
@@ -102,4 +71,58 @@
 
 .save_settings:hover {
     box-shadow: 0 5px 12px 0 rgba(231, 72, 0, .3);
+}
+
+.subscribe-btn_settings {
+    width: 120px;
+    height: 30px;
+    border-radius: 6px;
+    background-color: #ff1e00;
+    border: 0;
+    font-size: 12px;
+    font-weight: bold;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    text-align: center;
+    color: #ffffff;
+}
+
+.subscribe-btn_settings:hover {
+    background-color: #ff3c00;
+}
+
+.subscribe-btn_settings:active {
+    background-color: #cc1a00;
+}
+
+.unsubscribe-btn_settings {
+    width: 120px;
+    height: 30px;
+    border-radius: 6px;
+    background-color: #f3f3f3;
+    border: 0;
+    font-size: 12px;
+    font-weight: bold;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    text-align: center;
+    color: #333333;
+}
+
+.unsubscribe-btn_settings:hover {
+    background-color: #f8f8f8;
+}
+
+.unsubscribe-btn_settings:active {
+    background-color: #e3e3e3;
+}
+
+@media (max-width: 450px) {
+    .container_settings {
+        margin: 5px;
+    }
 }
