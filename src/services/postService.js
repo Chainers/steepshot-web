@@ -2,12 +2,13 @@ import RequestService from "./requestService";
 
 class PostService {
 
-	static getPostsList(url, offset, show_nsfw, show_low_rated, limit) {
+	static getPostsList(url, offset, show_nsfw, show_low_rated, limit, currentOptions) {
 		const options = {
 			offset,
 			show_nsfw,
 			show_low_rated,
-			limit
+			limit,
+			...currentOptions
 		};
 		return RequestService.get(url, options);
 	}

@@ -51,7 +51,7 @@ export function getPostsList(point) {
 		dispatch(getPostsListRequest(point));
 		let settings = getStore().getState().settings;
 
-		PostService.getPostsList(point, statePoint.offset, settings.show_nsfw, settings.show_low_rated, LIMIT)
+		PostService.getPostsList(point, statePoint.offset, settings.show_nsfw, settings.show_low_rated, LIMIT, statePoint.options)
 			.then((response) => {
 				//TODO удалить когда будут реальные видео в ленте
 				/*if (response.results[2]) {

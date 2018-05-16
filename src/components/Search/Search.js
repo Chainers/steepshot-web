@@ -1,6 +1,5 @@
 import React from 'react';
 import PostsList from '../PostsList/PostsList';
-import {getUsersSearch} from '../../services/posts';
 import {documentTitle} from '../../utils/documentTitle';
 import {insertCategory} from '../../utils/search';
 import UsersList from '../UsersList/UsersList';
@@ -80,7 +79,6 @@ class Search extends React.Component {
 					<HeadingLeadComponent text={userResult}/>
 					<UsersList
 						point={Constants.SEARCH_FILTERS.USERS.point}
-						getUsers={getUsersSearch}
 						options={{query: this.props.searchValue}}
 						isComponentVisible={this.props.activeIndex === 1}
 					/>

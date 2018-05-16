@@ -29,7 +29,7 @@ class UsersList extends React.Component {
 		if (nextProps.options && (nextProps.options.query !== this.props.options.query)) {
 			let usersListOptions = UsersList.userListOptions(nextProps);
 			this.props.initUsersList(usersListOptions);
-			this.props.getUsersList(nextProps.point, this.props.getUsers);
+			this.props.getUsersList(nextProps.point);
 		}
 	}
 
@@ -53,12 +53,12 @@ class UsersList extends React.Component {
 
 	getUsersList() {
 		if (this.props.isComponentVisible) {
-			this.props.getUsersList(this.props.point, this.props.getUsers);
+			this.props.getUsersList(this.props.point);
 		}
 	}
 
 	componentDidMount() {
-		this.props.getUsersList(this.props.point, this.props.getUsers);
+		this.props.getUsersList(this.props.point);
 		documentTitle();
 	}
 
@@ -123,8 +123,8 @@ const mapDispatchToProps = (dispatch) => {
 		initUsersList: (options) => {
 			dispatch(initUsersList(options));
 		},
-		getUsersList: (point, func) => {
-			dispatch(getUsersList(point, func));
+		getUsersList: (point) => {
+			dispatch(getUsersList(point));
 		},
 		clearUsersList: (point) => {
 			dispatch(clearUsersList(point));
