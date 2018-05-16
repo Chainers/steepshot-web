@@ -2,7 +2,6 @@ import {getStore} from "../store/configureStore";
 import {utils} from "../utils/utils";
 import Steem from "../services/steem";
 import {clearTextInputState, setTextInputError} from "./textInput";
-import {getCreateWaitingTime} from "../services/users";
 import * as React from "react";
 import PlagiarismTracking from "../components/Modals/PlagiarismTracking/PlagiarismTracking";
 import {openModal} from "./modal";
@@ -11,6 +10,7 @@ import {compressJPEG} from "../utils/compressor";
 import {pushMessage} from "./pushMessage";
 import Constants from "../common/constants";
 import PostService from "../services/postService";
+import UserService from "../services/userService";
 
 const getUserName = () => {
 	return getStore().getState().auth.user;
@@ -274,7 +274,7 @@ function editPostChangeTags(tagsString) {
 
 function createNewPost() {
 	return dispatch => {
-		getCreateWaitingTime(getUserName())
+		UserService.getWaitingTimeForCreate(getUserName())
 			.then(response => {
 				dispatch({
 					type: 'EDIT_POST_SET_WAITING_TIME_SUCCESS',
@@ -317,21 +317,16 @@ export function editPostReject(error) {
 }
 
 function checkTimeAfterUpdatedLastPost() {
-	return new Promise((resolve, reject) => {
-		getCreateWaitingTime(getUserName())
-			.then(response => {
-				const waitingTime = response['waiting_time'];
-				if (waitingTime !== 0) {
-					reject(waitingTime);
-				} else {
-					resolve();
-				}
-			})
-			.catch(() => {
-				resolve();
-			});
-		resolve();
-	})
+	return UserService.getWaitingTimeForCreate(getUserName())
+		.then( response => {
+			const waitingTime = response['waiting_time'];
+			if (waitingTime !== 0) {
+				return Promise.reject(waitingTime)
+			}
+			return Promise.resolve();
+		}).catch ( () => {
+			return Promise.resolve();
+		});
 }
 
 function getCanvasWithImage(image, rotate) {

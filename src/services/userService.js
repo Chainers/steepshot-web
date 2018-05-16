@@ -1,4 +1,5 @@
 import RequestService from "./requestService";
+import storage from "../utils/Storage";
 
 class UserService {
 
@@ -8,7 +9,20 @@ class UserService {
 			limit,
 			...currentOptions
 		};
-		return RequestService.get(options.point, options);
+		return RequestService.get(url, options);
+	}
+
+	static getWaitingTimeForCreate(username) {
+		return RequestService.get(`/user/${username}/spam`);
+	}
+
+	static getProfile(username) {
+		const options = {
+			show_nsfw: true,
+			show_low_rated: true,
+			username: storage.username || undefined
+		};
+		return RequestService.get(`user/${username}/info`, options);
 	}
 }
 

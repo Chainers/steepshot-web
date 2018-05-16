@@ -1,13 +1,13 @@
 import steem from 'steem';
 import {logLogin} from '../services/logging';
 import {push} from 'react-router-redux';
-import {getProfile} from "../services/userProfile";
 import {pushMessage} from "./pushMessage";
 import {hideBodyLoader, showBodyLoader} from "./bodyLoader";
 import {checkSubscribeAndUpdateSettings, removeSettings} from "./settings";
 import {addNotificationTags, removeNotificationTags} from "../services/oneSignal";
 import storage from "../utils/Storage";
 import {unsubscribe} from "./oneSignal";
+import UserService from "../services/userService";
 
 function showMessage(message) {
 	return dispatch => {
@@ -108,7 +108,7 @@ export function logout() {
 
 export function updateVotingPower(username) {
 	return (dispatch) => {
-		getProfile(username).then((result) => {
+		UserService.getProfile(username).then((result) => {
 			dispatch({
 				type: 'UPDATE_VOTING_POWER',
 				voting_power: result.voting_power
