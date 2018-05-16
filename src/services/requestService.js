@@ -2,18 +2,18 @@ import Constants from "../common/constants";
 
 class RequestService {
 
-	get(url, options) {
-		const fullUrl = Constants.URLS.baseUrl_v1_1 + '/' + url + RequestService.convertOptionsToRequestString(options);
+	static get(url, options) {
+		const fullUrl = Constants.URLS.baseUrl_v1_1 + '/' + url + convertOptionsToRequestString(options);
 		return fetch(fullUrl, {
 			method: 'GET'
 		}).then(RequestService.processResponse);
 	}
 
-	post(url, data) {
+	static post(url, data) {
 		const options = {
 			method: 'POST'
 		};
-		if (RequestService.isJson(data)) {
+		if (isJson(data)) {
 			options.headers = {'Content-Type': 'application/json'};
 			options.body = JSON.stringify(data)
 		} else {
@@ -34,36 +34,35 @@ class RequestService {
 		}
 		return Promise.reject(response);
 	}
-
-	static isJson(str) {
-		try {
-			JSON.parse(str);
-		} catch (e) {
-			return false;
-		}
-		return true;
-	}
-
-	static convertOptionsToRequestString(options) {
-		if (!options) return '';
-
-		let optionsArray = [];
-		for (let key in options) {
-			if (options[key]) optionsArray.push(key + '=' + RequestService.convertIfBool(options[key]));
-		}
-		return '?' + optionsArray.join('&');
-	}
-
-	static convertIfBool(option) {
-		if (option === true) {
-			return "1";
-		} else if (option === false) {
-			return "0";
-		} else {
-			return option;
-		}
-	}
-
 }
 
-export default new RequestService();
+export default RequestService;
+
+function isJson(str) {
+	try {
+		JSON.parse(str);
+	} catch (e) {
+		return false;
+	}
+	return true;
+}
+
+function convertOptionsToRequestString(options) {
+	if (!options) return '';
+
+	let optionsArray = [];
+	for (let key in options) {
+		if (options[key]) optionsArray.push(key + '=' + convertIfBool(options[key]));
+	}
+	return '?' + optionsArray.join('&');
+}
+
+function convertIfBool(option) {
+	if (option === true) {
+		return "1";
+	} else if (option === false) {
+		return "0";
+	} else {
+		return option;
+	}
+}
