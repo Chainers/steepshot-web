@@ -3,8 +3,8 @@ import Constants from "../common/constants";
 class RequestService {
 
 	get(url, options) {
-		const url = Constants.URLS.baseUrl_v1_1 + '/' + url + RequestService.convertOptionsToRequestString(options);
-		return fetch(url, {
+		const fullUrl = Constants.URLS.baseUrl_v1_1 + '/' + url + RequestService.convertOptionsToRequestString(options);
+		return fetch(fullUrl, {
 			method: 'GET'
 		}).then(RequestService.processResponse);
 	}
@@ -20,12 +20,12 @@ class RequestService {
 			options.body = data
 		}
 
-		return fetch(`${Constants.URLS.baseUrl_v1_1}/post/prepare`, options)
+		return fetch(`${Constants.URLS.baseUrl_v1_1}/${url}`, options)
 			.then(RequestService.processResponse);
 	}
 
 	static processResponse(response) {
-		if (response.ok && response.status === 200) {
+		if (response.status === 200) {
 			const contentType = response.headers.get("content-type");
 			if (contentType && contentType.indexOf("application/json") !== -1) {
 				return response.json();

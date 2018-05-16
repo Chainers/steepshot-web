@@ -7,6 +7,7 @@ import {getPostComments, initPostComment} from "../../actions/comments";
 import Description from "./Description/Description";
 import CommentInput from "./CommentInput/CommentInput";
 import {Scrollbars} from "react-custom-scrollbars";
+import PostService from "../../services/postService";
 import './comments.css';
 
 class Comments extends React.Component {

@@ -4,10 +4,10 @@ import {push} from 'react-router-redux';
 import {pushMessage} from "./pushMessage";
 import {hideBodyLoader, showBodyLoader} from "./bodyLoader";
 import {checkSubscribeAndUpdateSettings, removeSettings} from "./settings";
-import {addNotificationTags, removeNotificationTags} from "../services/oneSignal";
 import storage from "../utils/Storage";
 import {unsubscribe} from "./oneSignal";
 import UserService from "../services/userService";
+import OneSignalService from "../services/oneSignalService";
 
 function showMessage(message) {
 	return dispatch => {
@@ -55,7 +55,7 @@ export function login(username, postingKey) {
 			storage.postingKey = postingKey;
 			storage.like_power = 100;
 			storage.avatar = avatar;
-			addNotificationTags(username);
+			OneSignalService.addNotificationTags(username);
 			dispatch(checkSubscribeAndUpdateSettings());
 			dispatch({
 				type: 'LOGIN_SUCCESS',
@@ -100,7 +100,7 @@ export function logout() {
 		storage.settings = null;
 		storage.avatar = null;
 		storage.like_power = null;
-		removeNotificationTags();
+		OneSignalService.removeNotificationTags();
 		dispatch(logoutUser());
 		dispatch(push(`/browse`));
 	}

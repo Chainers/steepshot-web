@@ -59,7 +59,7 @@ export function getUsersList(point) {
 			.then((response) => {
 				statePoint = getStore().getState().usersList[point];
 				let newUsers = response.results;
-				let hasMore = response.results.length === LIMIT;
+				let hasMore = response.offset !== statePoint.offset;
 				if (statePoint.users.length !== 0) {
 					newUsers = newUsers.slice(1, newUsers.length);
 				}
