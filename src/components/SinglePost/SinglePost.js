@@ -2,11 +2,11 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {addSinglePost} from '../../actions/post';
 import PostModal from '../PostModal/PostModal';
-import {logSharePost} from '../../services/logging';
 import './singlePost.css';
 import {withWrapper} from "create-react-server/wrapper";
 import {addMetaTags, getTags} from "../../actions/metaTags";
 import {utils} from "../../utils/utils";
+import LoggingService from "../../services/loggingService";
 
 class SinglePost extends React.Component {
 
@@ -31,7 +31,7 @@ class SinglePost extends React.Component {
 			action: 'share_post',
 			error: ''
 		});
-		logSharePost(username.replace(/\/@([\w-.]+)\//, '$1'), permlink, data);
+		LoggingService.logSharePost(username.replace(/\/@([\w-.]+)\//, '$1'), permlink, data);
 	}
 
 	render() {

@@ -1,11 +1,11 @@
 import steem from 'steem';
 import Promise from 'bluebird';
 import {getStore} from '../store/configureStore';
-import {logComment, logDeletedPost, logFlag, logFollow, logPost, logVote} from './logging';
 import _ from 'underscore';
 import FormData from 'form-data';
 import {blockchainErrorsList} from "../utils/blockchainErrorsList";
 import Constants from "../common/constants";
+import LoggingService from "./loggingService";
 
 const _getUserName = () => {
 	return getStore().getState().auth.user
@@ -41,13 +41,13 @@ class Steem {
 					username: author,
 					error: err.message
 				});
-				logComment(parentAuthor, parentPermlink, data);
+				LoggingService.logComment(parentAuthor, parentPermlink, data);
 			} else if (success) {
 				const data = JSON.stringify({
 					username: author,
 					error: ''
 				});
-				logComment(parentAuthor, parentPermlink, data);
+				LoggingService.logComment(parentAuthor, parentPermlink, data);
 				callback(null, success);
 			}
 		};
@@ -97,13 +97,13 @@ class Steem {
 					username: username,
 					error: err.message
 				});
-				logVote(voteStatus, author, url, data);
+				LoggingService.logVote(voteStatus, author, url, data);
 			} else if (success) {
 				const data = JSON.stringify({
 					username: username,
 					error: ''
 				});
-				logVote(voteStatus, author, url, data);
+				LoggingService.logVote(voteStatus, author, url, data);
 				callback(null, success);
 			}
 		};
@@ -123,12 +123,12 @@ class Steem {
 					username: username,
 					error: err.message
 				});
-				logVote(flagStatus, author, url, data);
+				LoggingService.logVote(flagStatus, author, url, data);
 			} else if (success) {
 				const data = JSON.stringify({
 					username: username
 				});
-				logFlag(author, url, data);
+				LoggingService.logFlag(author, url, data);
 				callback(null, success);
 			}
 		};
@@ -163,7 +163,7 @@ class Steem {
 					username: follower,
 					error: err ? err.message : ''
 				});
-				logFollow(status, following, data);
+				LoggingService.logFollow(status, following, data);
 
 				if (err) {
 					let checkedError = blockchainErrorsList(err);
@@ -193,14 +193,14 @@ class Steem {
 					username: author,
 					error: err.message
 				});
-				logDeletedPost(author, permlink, data);
+				LoggingService.logDeletedPost(author, permlink, data);
 				let checkedError = blockchainErrorsList(err);
 				callback(checkedError, null);
 			} else if (success) {
 				const data = JSON.stringify({
 					username: author
 				});
-				logDeletedPost(author, permlink, data);
+				LoggingService.logDeletedPost(author, permlink, data);
 				callback(null, success);
 			}
 		};
@@ -231,7 +231,7 @@ class Steem {
 					username: _getUserName(),
 					error: ''
 				});
-				logPost(data);
+				LoggingService.logPost(data);
 				return response;
 			})
 	}
@@ -285,7 +285,7 @@ class Steem {
 					username: _getUserName(),
 					error: ''
 				});
-				logPost(data);
+				LoggingService.logPost(data);
 				return response;
 			})
 	}
@@ -311,7 +311,7 @@ class Steem {
 					username: _getUserName(),
 					error: ''
 				});
-				logDeletedPost(_getUserName(), permlink, data);
+				LoggingService.logDeletedPost(_getUserName(), permlink, data);
 				return response;
 			})
 	}

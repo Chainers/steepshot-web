@@ -1,5 +1,4 @@
 import steem from 'steem';
-import {logLogin} from '../services/logging';
 import {push} from 'react-router-redux';
 import {pushMessage} from "./pushMessage";
 import {hideBodyLoader, showBodyLoader} from "./bodyLoader";
@@ -8,6 +7,7 @@ import storage from "../utils/Storage";
 import {unsubscribe} from "./oneSignal";
 import UserService from "../services/userService";
 import OneSignalService from "../services/oneSignalService";
+import LoggingService from "../services/loggingService";
 
 function showMessage(message) {
 	return dispatch => {
@@ -47,7 +47,7 @@ export function login(username, postingKey) {
 				username: username,
 				error: ''
 			});
-			logLogin(data);
+			LoggingService.logLogin(data);
 
 			let avatar = getAvatar(result[0]);
 
