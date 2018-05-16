@@ -1,5 +1,5 @@
 import steem from 'steem';
-import {logLogin} from './logging';
+import {logLogin} from '../services/logging';
 import {push} from 'react-router-redux';
 import {getProfile} from "../services/userProfile";
 import {pushMessage} from "./pushMessage";

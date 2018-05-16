@@ -2,7 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {addSinglePost} from '../../actions/post';
 import PostModal from '../PostModal/PostModal';
-import {logSharePost} from '../../actions/logging';
+import {logSharePost} from '../../services/logging';
 import './singlePost.css';
 import {withWrapper} from "create-react-server/wrapper";
 import {addMetaTags, getTags} from "../../actions/metaTags";

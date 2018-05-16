@@ -1,7 +1,7 @@
 import steem from 'steem';
 import Promise from 'bluebird';
 import {getStore} from '../store/configureStore';
-import {logComment, logDeletedPost, logFlag, logFollow, logPost, logVote} from '../actions/logging';
+import {logComment, logDeletedPost, logFlag, logFollow, logPost, logVote} from './logging';
 import _ from 'underscore';
 import FormData from 'form-data';
 import {blockchainErrorsList} from "../utils/blockchainErrorsList";
