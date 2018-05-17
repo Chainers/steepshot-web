@@ -100,8 +100,13 @@ class PostService {
 					};
 					return Promise.reject(data);
 				}
-				return SteemService.addPostDataToBlockchain(operations)
+				return PostService.afterCheckingPlagiarism(operations)
 			})
+
+	}
+
+	static afterCheckingPlagiarism(operations) {
+		return SteemService.addPostDataToBlockchain(operations)
 			.then(response => {
 				LoggingService.logPost();
 				return Promise.resolve(response);

@@ -35,19 +35,6 @@ class Steem {
 	}
 
 
-
-	afterCheckingPlagiarism(operation, prepareData, beneficiaries) {
-		return _sendToBlockChain(operation, prepareData, beneficiaries)
-			.then(response => {
-				const data = {
-					username: AuthService.getUsername(),
-					error: ''
-				};
-				LoggingService.logPost(data);
-				return response;
-			})
-	}
-
 	editDelete(title, tags, description, permlink, parentPerm) {
 		let json_metadata = {
 			tags: tags,
@@ -75,19 +62,6 @@ class Steem {
 	}
 }
 
-function _fileUpload(file) {
-	return SteemService.getValidTransaction()
-		.then(transaction => {
-			let form = new FormData();
-			form.append('file', file);
-			form.append('trx', JSON.stringify(transaction));
-			return fetch(`${Constants.URLS.baseUrl_v1_1}/media/upload`, {
-				method: 'POST',
-				body: form
-			}).then(response => response.json()).catch(error => console.warn(error));
-		})
-}
-
 function _sendToBlockChain(operation, prepareData, beneficiaries) {
 	return new Promise((resolve, reject) => {
 		if (prepareData) {
@@ -113,38 +87,6 @@ function _sendToBlockChain(operation, prepareData, beneficiaries) {
 			{posting: AuthService.getPostingKey()}, callback
 		);
 	})
-}
-
-function _preparePost(media, description, tags, permlink) {
-	const options = {
-		"username": AuthService.getUsername(),
-		"media": [media],
-		"description": description,
-		"post_permlink": `@${AuthService.getUsername()}/${permlink}`,
-		"tags": tags,
-		"show_footer": true,
-		device: 'web'
-	};
-	return fetch(`${Constants.URLS.baseUrl_v1_1}/post/prepare`, {
-		method: 'POST',
-		headers: {'Content-Type': 'application/json'},
-		body: JSON.stringify({
-			...options
-		})
-	}).then(response => response.json());
-}
-
-function _getValidTags(tags) {
-	if (!tags) {
-		tags = 'steepshot ';
-	}
-	tags = tags.split(' ');
-	let empty = tags.indexOf('');
-	while (empty !== -1) {
-		tags.splice(empty, 1);
-		empty = tags.indexOf('');
-	}
-	return tags;
 }
 
 export default new Steem();
