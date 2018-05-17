@@ -43,10 +43,10 @@ export function login(username, postingKey) {
 					messages: 'Not valid username or posting key'
 				};
 			}
-			const data = JSON.stringify({
+			const data = {
 				username: username,
 				error: ''
-			});
+			};
 			LoggingService.logLogin(data);
 
 			let avatar = getAvatar(result[0]);

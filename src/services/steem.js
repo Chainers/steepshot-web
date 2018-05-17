@@ -13,68 +13,21 @@ class Steem {
 		steem.api.setOptions({url: 'https://api.steemit.com'});
 	}
 
-	comment(postAuthor, parentPermlink, body, callback) {
-		const author = AuthService.getUsername();
-		const permlink = PostService.createPostPermlink(`${author} comment`);
-		const commentObject = {
-			parent_author: postAuthor,
-			parent_permlink: parentPermlink,
-			author: author,
-			permlink: permlink,
-			title: "",
-			body: body,
-			json_metadata: {}
-		};
-		const commentOperation = [Constants.OPERATIONS.COMMENT, commentObject];
-
-		const callbackBc = (err, success) => {
-			if (err) {
-				let checkedError = blockchainErrorsList(err);
-				callback(checkedError, null);
-				const data = JSON.stringify({
-					username: author,
-					error: err.message
-				});
-				LoggingService.logComment(postAuthor, parentPermlink, data);
-			} else if (success) {
-				const data = JSON.stringify({
-					username: author,
-					error: ''
-				});
-				LoggingService.logComment(postAuthor, parentPermlink, data);
-				callback(null, success);
-			}
-		};
-		this.handleBroadcastMessagesComment(commentOperation, callbackBc);
-	}
-
-	handleBroadcastMessagesComment(message, callback) {
-		let beneficiaries = SteemService.getBeneficiaries(message[1].permlink, {
-			account: 'steepshot',
-			weight: 1000
-		});
-		const operations = [message, beneficiaries];
-		steem.broadcast.sendAsync(
-			{operations, extensions: []},
-			{posting: AuthService.getPostingKey()}, callback
-		);
-	}
-
 	vote(wif, username, author, url, voteStatus, power, callback) {
 		const callbackBc = (err, success) => {
 			if (err) {
 				let checkedError = blockchainErrorsList(err);
 				callback(checkedError, null);
-				const data = JSON.stringify({
+				const data = {
 					username: username,
 					error: err.message
-				});
+				};
 				LoggingService.logVote(voteStatus, author, url, data);
 			} else if (success) {
-				const data = JSON.stringify({
+				const data = {
 					username: username,
 					error: ''
-				});
+				};
 				LoggingService.logVote(voteStatus, author, url, data);
 				callback(null, success);
 			}
@@ -91,15 +44,15 @@ class Steem {
 			if (err) {
 				let checkedError = blockchainErrorsList(err);
 				callback(checkedError, null);
-				const data = JSON.stringify({
+				const data = {
 					username: username,
 					error: err.message
-				});
+				};
 				LoggingService.logVote(flagStatus, author, url, data);
 			} else if (success) {
-				const data = JSON.stringify({
+				const data = {
 					username: username
-				});
+				};
 				LoggingService.logFlag(author, url, data);
 				callback(null, success);
 			}
@@ -131,10 +84,10 @@ class Steem {
 
 		return new Promise((resolve, reject) => {
 			const callbackBc = (err, result) => {
-				const data = JSON.stringify({
+				const data = {
 					username: follower,
 					error: err ? err.message : ''
-				});
+				};
 				LoggingService.logFollow(status, following, data);
 
 				if (err) {
@@ -160,17 +113,17 @@ class Steem {
 	deletePost(wif, author, permlink, callback) {
 		const callbackBc = (err, success) => {
 			if (err) {
-				const data = JSON.stringify({
+				const data = {
 					username: author,
 					error: err.message
-				});
+				};
 				LoggingService.logDeletedPost(author, permlink, data);
 				let checkedError = blockchainErrorsList(err);
 				callback(checkedError, null);
 			} else if (success) {
-				const data = JSON.stringify({
+				const data = {
 					username: author
-				});
+				};
 				LoggingService.logDeletedPost(author, permlink, data);
 				callback(null, success);
 			}
@@ -198,10 +151,10 @@ class Steem {
 				return _sendToBlockChain(operation, response)
 			})
 			.then(response => {
-				const data = JSON.stringify({
+				const data = {
 					username: AuthService.getUsername(),
 					error: ''
-				});
+				};
 				LoggingService.logPost(data);
 				return response;
 			})
@@ -252,10 +205,10 @@ class Steem {
 	afterCheckingPlagiarism(operation, prepareData, beneficiaries) {
 		return _sendToBlockChain(operation, prepareData, beneficiaries)
 			.then(response => {
-				const data = JSON.stringify({
+				const data = {
 					username: AuthService.getUsername(),
 					error: ''
-				});
+				};
 				LoggingService.logPost(data);
 				return response;
 			})
@@ -278,10 +231,10 @@ class Steem {
 		}];
 		return _sendToBlockChain(operation, false, false)
 			.then(response => {
-				const data = JSON.stringify({
+				const data = {
 					username: AuthService.getUsername(),
 					error: ''
-				});
+				};
 				LoggingService.logDeletedPost(AuthService.getUsername(), permlink, data);
 				return response;
 			})
@@ -358,14 +311,6 @@ function _getValidTags(tags) {
 		empty = tags.indexOf('');
 	}
 	return tags;
-}
-
-function _createJsonMetadata(tags) {
-	if (tags.length === 0) tags.push('steepshot');
-	return {
-		tags: tags,
-		app: 'steepshot/0.0.6'
-	}
 }
 
 export default new Steem();

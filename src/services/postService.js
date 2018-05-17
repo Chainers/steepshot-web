@@ -13,11 +13,6 @@ class PostService {
 		return RequestService.get(url, options);
 	}
 
-	static getComments(postAuthor, postUrl) {
-		const url = `post/${postAuthor}${postUrl}/comments`;
-		return RequestService.get(url);
-	}
-
 	static getPost(username, postId) {
 		const url = `post/${username}/${postId}/info`;
 		const options = {

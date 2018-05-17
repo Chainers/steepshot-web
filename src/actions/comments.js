@@ -1,10 +1,9 @@
 import {getStore} from "../store/configureStore";
-import Steem from "../services/steem";
 import {clearTextInputState} from "./textInput";
 import {pushMessage} from "./pushMessage";
 import {actionLock, actionUnlock} from "./session";
 import Constants from "../common/constants";
-import PostService from "../services/postService";
+import CommentService from "../services/commentService";
 
 export function initPostComment(point) {
 	return {
@@ -36,7 +35,7 @@ export function getPostComments(point) {
 			type: 'GET_POST_COMMENT_REQUEST',
 			point
 		});
-		PostService.getComments(post.author, post.url)
+		CommentService.getComments(post.author, post.url)
 			.then((response) => {
 				const comments = response.results.reverse();
 				if (!comments) {
@@ -75,11 +74,25 @@ export function getPostComments(point) {
 	}
 }
 
-function sendingNewComment(point, flag) {
+function addNewCommentRequest(point) {
 	return {
-		type: 'SENDING_NEW_COMMENT',
+		type: 'ADD_NEW_COMMENT_REQUEST',
+		point
+	}
+}
+
+function addNewCommentSuccess(point, response) {
+	return {
+		type: 'ADD_NEW_COMMENT_SUCCESS',
 		point,
-		flag
+		response
+	}
+}
+
+function addNewCommentError(point) {
+	return {
+		type: 'ADD_NEW_COMMENT_ERROR',
+		point
 	}
 }
 
@@ -110,15 +123,14 @@ export function sendComment(postIndex, point) {
 			return;
 		}
 		dispatch(actionLock());
-		dispatch(sendingNewComment(postIndex, true));
+		dispatch(addNewCommentRequest(postIndex));
 		const urlObject = post.url.split('/');
-		const callback = (err, success) => {
-			dispatch(actionUnlock());
-			dispatch(sendingNewComment(postIndex, false));
-			if (err) {
-				dispatch(pushMessage(err));
-			} else if (success) {
-				const url = postIndex + '#@' + state.auth.user + '/' + success.operations[0][1].permlink;
+
+		CommentService.addComment(post.author, urlObject[urlObject.length - 1], comment)
+			.then(response => {
+				dispatch(actionUnlock());
+				dispatch(addNewCommentSuccess(postIndex, response));
+				const url = postIndex + '#@' + state.auth.user + '/' + response.operations[0][1].permlink;
 				const newComment = {
 					net_votes: 0,
 					net_likes: 0,
@@ -136,14 +148,12 @@ export function sendComment(postIndex, point) {
 				dispatch(clearTextInputState(point));
 				dispatch(scrollToLastComment(postIndex));
 				dispatch(pushMessage(Constants.COMMENT_SUCCESS_MESSAGE));
-			}
-		};
-		Steem.comment(
-			post.author,
-			urlObject[urlObject.length - 1],
-			comment,
-			callback,
-		);
+			})
+			.catch( error => {
+				dispatch(actionUnlock());
+				dispatch(addNewCommentError(postIndex));
+				dispatch(pushMessage(error));
+			})
 	};
 }
 

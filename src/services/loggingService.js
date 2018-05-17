@@ -1,4 +1,5 @@
 import constants from '../common/constants';
+import AuthService from "./authService";
 
 const baseUrl = constants.URLS.baseUrl_v1;
 class LoggingService {
@@ -8,8 +9,12 @@ class LoggingService {
 		logCORS(url, data, 'login');
 	}
 
-	static logComment(author, permlink, data) {
-		const url = `${baseUrl}/log/post/${makePostId(author, permlink)}/comment`;
+	static logComment(postAuthor, permlink, error = '') {
+		const data = {
+			username: AuthService.getUsername(),
+			error: error
+		};
+		const url = `${baseUrl}/log/post/${makePostId(postAuthor, permlink)}/comment`;
 		logCORS(url, data, 'comment');
 	}
 
@@ -57,7 +62,7 @@ function logCORS(url, body, operation) {
 			'cache-control': 'no-cache',
 			'content-Type': 'application/json'
 		},
-		body
+		body: JSON.stringify(body)
 	};
 
 	try {

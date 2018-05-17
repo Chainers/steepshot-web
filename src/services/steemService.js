@@ -44,6 +44,34 @@ class SteemService {
 
 		return [Constants.OPERATIONS.COMMENT_OPTIONS, beneficiariesObject];
 	}
+
+	static addCommentToBlockchain(commentOperation) {
+		return new Promise((resolve, reject) => {
+			const callbackBc = (err, success) => {
+				let errorMessage = '';
+				if (err) {
+					errorMessage = blockchainErrorsList(err);
+					reject(errorMessage);
+				} else if (success) {
+					resolve(success);
+				}
+			};
+			sendCommentToBlockchain(commentOperation, callbackBc);
+		});
+	}
 }
 
 export default SteemService;
+
+function sendCommentToBlockchain(commentOperation, callback) {
+	let beneficiaries = SteemService.getBeneficiaries(commentOperation[1].permlink, {
+		account: 'steepshot',
+		weight: 1000
+	});
+	const operations = [commentOperation, beneficiaries];
+	steem.broadcast.sendAsync(
+		{operations, extensions: []},
+		{posting: AuthService.getPostingKey()},
+		callback
+	);
+}
