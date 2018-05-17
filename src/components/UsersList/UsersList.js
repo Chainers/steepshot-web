@@ -19,7 +19,7 @@ class UsersList extends React.Component {
 	};
 
 	constructor(props) {
-		super(props);
+		super();
 		props.clearUsersList(props.point);
 		let usersListOptions = UsersList.userListOptions(props);
 		props.initUsersList(usersListOptions);
@@ -34,10 +34,7 @@ class UsersList extends React.Component {
 	}
 
 	shouldComponentUpdate(nextProps) {
-		if (utils.equalsObjects(nextProps, this.props)) {
-			return false;
-		}
-		return true;
+		return !utils.equalsObjects(nextProps, this.props);
 	}
 
 	static userListOptions(props) {

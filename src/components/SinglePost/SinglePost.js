@@ -7,6 +7,7 @@ import {withWrapper} from "create-react-server/wrapper";
 import {addMetaTags, getTags} from "../../actions/metaTags";
 import {utils} from "../../utils/utils";
 import LoggingService from "../../services/loggingService";
+import PostService from "../../services/postService";
 
 class SinglePost extends React.Component {
 
@@ -24,14 +25,13 @@ class SinglePost extends React.Component {
 		if (!Object.keys(this.props.post).length) {
 			this.props.addSinglePost(this.props.history.location.pathname)
 		}
-		const urlObject = this.props.location.pathname.split('/');
-		let permlink = urlObject[urlObject.length - 1];
 		let username = this.props.location.pathname.match(/\/@[\w-.]+\//)[0];
 		const data = {
 			action: 'share_post',
 			error: ''
 		};
-		LoggingService.logSharePost(username.replace(/\/@([\w-.]+)\//, '$1'), permlink, data);
+		LoggingService.logSharePost(username.replace(/\/@([\w-.]+)\//, '$1'),
+			PostService.getPermlinkFromUrl(this.props.location.pathname), data);
 	}
 
 	render() {

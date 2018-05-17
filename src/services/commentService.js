@@ -12,12 +12,12 @@ class CommentService {
 		return RequestService.get(url);
 	}
 
-	static addComment(postAuthor, parentPermlink, body) {
+	static addComment(postAuthor, postPermlink, body) {
 		const author = AuthService.getUsername();
 		const permlink = PostService.createPostPermlink(`${author} comment`);
 		const commentObject = {
 			parent_author: postAuthor,
-			parent_permlink: parentPermlink,
+			parent_permlink: postPermlink,
 			author: author,
 			permlink: permlink,
 			title: "",
@@ -28,11 +28,11 @@ class CommentService {
 
 		return SteemService.addCommentToBlockchain(commentOperation)
 			.then( response => {
-				LoggingService.logComment(postAuthor, parentPermlink);
+				LoggingService.logComment(postAuthor, postPermlink);
 				return Promise.resolve(response);
 			})
 			.catch( error => {
-				LoggingService.logComment(postAuthor, parentPermlink, error);
+				LoggingService.logComment(postAuthor, postPermlink, error);
 				return Promise.reject(error);
 			});
 	}

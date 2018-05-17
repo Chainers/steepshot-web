@@ -4,6 +4,7 @@ import {pushMessage} from "./pushMessage";
 import {actionLock, actionUnlock} from "./session";
 import Constants from "../common/constants";
 import CommentService from "../services/commentService";
+import PostService from "../services/postService";
 
 export function initPostComment(point) {
 	return {
@@ -125,9 +126,8 @@ export function sendComment(postIndex, point) {
 		}
 		dispatch(actionLock());
 		dispatch(addNewCommentRequest(postIndex));
-		const urlObject = post.url.split('/');
 
-		CommentService.addComment(post.author, urlObject[urlObject.length - 1], comment)
+		CommentService.addComment(post.author, PostService.getPermlinkFromUrl(post.url), comment)
 			.then(response => {
 				dispatch(actionUnlock());
 				dispatch(addNewCommentSuccess(postIndex, response));

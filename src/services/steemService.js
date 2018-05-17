@@ -36,6 +36,15 @@ class SteemService {
 		})
 	}
 
+	static addPostDataToBlockchain(operations) {
+		return processResponse( callback => {
+			steem.broadcast.sendAsync(
+				{operations, extensions: []},
+				{posting: AuthService.getPostingKey()}, callback
+			);
+		})
+	}
+
 	static getValidTransaction() {
 		const operation = [Constants.OPERATIONS.COMMENT, {
 			parent_author: '',

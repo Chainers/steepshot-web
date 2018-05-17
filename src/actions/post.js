@@ -24,9 +24,8 @@ export function updatePost(postIndex, newVoteState, newFlagState) {
 	}
 }
 
-function updatePostData(dispatch, postIndex) {
-	const urlObject = postIndex.split('/');
-	PostService.getPost(urlObject[urlObject.length - 2], urlObject[urlObject.length - 1])
+function updatePostData(dispatch, postUrl) {
+	PostService.getPost(postUrl)
 		.then((result) => {
 			dispatch({
 				type: 'UPDATE_POST',
@@ -132,31 +131,30 @@ function failureDeletePost(postIndex) {
 	}
 }
 
-export function deletePost(postIndex) {
+export function deletePost(postUrl) {
 	return function (dispatch) {
 		let state = getStore().getState();
-		let post = state.posts[postIndex];
+		let post = state.posts[postUrl];
 		let title = post.title, tags = post.tags, description = post.description, parentPerm = post.category;
 		let username = state.auth.user;
 		let postingKey = state.auth.postingKey;
-		const urlObject = postIndex.split('/');
-		let permlink = urlObject[urlObject.length - 1];
+		let permlink = PostService.getPermlinkFromUrl(postUrl);
 		if (state.session.actionLocked) {
 			return;
 		}
 		dispatch(actionLock());
-		dispatch(sendDeletePost(postIndex));
+		dispatch(sendDeletePost(postUrl));
 		const callback = (err, success) => {
 			dispatch(actionUnlock());
 			if (success) {
-				dispatch(successDeletePost(postIndex));
+				dispatch(successDeletePost(postUrl));
 				dispatch(pushMessage(Constants.DELETE.DELETE_SUCCESS));
 			} else if (err) {
 				Steem.editDelete(title, tags, description, permlink, parentPerm).then(() => {
 					dispatch(pushMessage(Constants.DELETE.DELETE_SUCCESS));
-					dispatch(successDeletePost(postIndex));
+					dispatch(successDeletePost(postUrl));
 				}).catch((err) => {
-					dispatch(failureDeletePost(postIndex));
+					dispatch(failureDeletePost(postUrl));
 					dispatch(pushMessage(err));
 				});
 			}
@@ -171,7 +169,7 @@ export function addSinglePost(url) {
 		if (urlObject.length < 3) {
 			error(dispatch);
 		} else {
-			await PostService.getPost(urlObject[urlObject.length - 2], urlObject[urlObject.length - 1])
+			await PostService.getPost(url)
 				.then((result) => {
 					if (result) {
 						let postOptions = {

@@ -9,21 +9,17 @@ class LoggingService {
 		logCORS(url, data, 'login');
 	}
 
-	static logComment(postAuthor, permlink, error = '') {
-		const data = {
-			username: AuthService.getUsername(),
-			error
-		};
+	static logComment(postAuthor, permlink, error) {
 		const url = `${baseUrl}/log/post/${makePostId(postAuthor, permlink)}/comment`;
-		logCORS(url, data, 'comment');
+		logCORS(url, 'comment', error);
 	}
 
-	static logFlag(isFlag, permlink, error = '') {
-		logChangVote(isFlag, permlink, error, 'flag');
+	static logFlag(isFlag, permlink, postAuthor, error) {
+		logChangVote(isFlag, permlink, postAuthor, error, 'flag');
 	}
 
-	static logVote(isVoteUp, permlink, error = '') {
-		logChangVote(isVoteUp, permlink, error, 'upvote');
+	static logVote(isVoteUp, permlink, postAuthor, error) {
+		logChangVote(isVoteUp, permlink, postAuthor, error, 'upvote');
 	}
 
 	static logPost(data) {
@@ -31,14 +27,15 @@ class LoggingService {
 		logCORS(url, data, 'post');
 	}
 
+	static logEditPost(permlink, error) {
+		const url = `${baseUrl}/log/post/${makePostId(AuthService.getUsername(), permlink)}/edit`;
+		logCORS(url, 'edit', error);
+	}
+
 	static logFollow(isFollowed, user, error) {
-		const data = {
-			username: AuthService.getUsername(),
-			error
-		};
 		let fType = (isFollowed) ? 'unfollow' : 'follow';
 		const url = `${baseUrl}/log/user/${user}/${fType}`;
-		logCORS(url, data, fType);
+		logCORS(url, fType,  error);
 	}
 
 	static logDeletedPost(author, permlink, data) {
@@ -54,18 +51,19 @@ class LoggingService {
 
 export default LoggingService;
 
-function logChangVote(isFlag, permlink, error = '', event) {
-	const author = AuthService.getUsername();
-	const data = {
-		username: author,
-		error
-	};
-	let vType = isFlag ? event : 'downvote';
-	const url = `${baseUrl}/log/post/${makePostId(author, permlink)}/${vType}`;
-	logCORS(url, data, vType);
+
+function logChangVote(isFlag, permlink, postAuthor, error, event) {
+	let operation = isFlag ? event : 'downvote';
+	const url = `${baseUrl}/log/post/${makePostId(postAuthor, permlink)}/${operation}`;
+	logCORS(url, operation, error);
 }
 
-function logCORS(url, body, operation) {
+function logCORS(url, operation, error = '') {
+	const body = {
+		username: AuthService.getUsername(),
+		error
+	};
+
 	const options = {
 		method: 'POST',
 		mode: 'cors',

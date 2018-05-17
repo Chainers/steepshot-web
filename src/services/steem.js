@@ -20,7 +20,7 @@ class Steem {
 					username: author,
 					error: err.message
 				};
-				LoggingService.logDeletedPost(author, permlink, data);
+				LoggingService.logDeletedPost(author, permlink , data);
 				let checkedError = blockchainErrorsList(err);
 				callback(checkedError, null);
 			} else if (success) {
@@ -32,35 +32,6 @@ class Steem {
 			}
 		};
 		steem.broadcast.deleteComment(wif, author, permlink, callbackBc);
-	}
-
-	editPost(title, tags, description, permlink, parentPerm, media) {
-		tags = _getValidTags(tags);
-		const operation = [Constants.OPERATIONS.COMMENT, {
-			parent_author: '',
-			parent_permlink: parentPerm,
-			author: AuthService.getUsername(),
-			permlink,
-			title,
-			description,
-			body: 'empty',
-			json_metadata: {
-				tags: tags,
-				app: 'steepshot'
-			}
-		}];
-		return _preparePost(media, description, tags, permlink)
-			.then(response => {
-				return _sendToBlockChain(operation, response)
-			})
-			.then(response => {
-				const data = {
-					username: AuthService.getUsername(),
-					error: ''
-				};
-				LoggingService.logPost(data);
-				return response;
-			})
 	}
 
 	createPost(tags, title, description, file) {
@@ -82,7 +53,7 @@ class Steem {
 		}];
 		return _fileUpload(file)
 			.then(response => {
-				return _preparePost(response, description, tags, permlink, AuthService.getUsername());
+				return _preparePost(response, description, tags, permlink);
 			})
 			.then(response => {
 				let beneficiaries = SteemService.getBeneficiaries(operation[1].permlink, response.beneficiaries);
@@ -184,12 +155,12 @@ function _sendToBlockChain(operation, prepareData, beneficiaries) {
 	})
 }
 
-function _preparePost(media, description, tags, permlink, username) {
+function _preparePost(media, description, tags, permlink) {
 	const options = {
 		"username": AuthService.getUsername(),
 		"media": [media],
 		"description": description,
-		"post_permlink": `@${username}/${permlink}`,
+		"post_permlink": `@${AuthService.getUsername()}/${permlink}`,
 		"tags": tags,
 		"show_footer": true,
 		device: 'web'

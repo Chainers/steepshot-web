@@ -117,13 +117,13 @@ export function editPostClear() {
 	}
 }
 
-export function setInitDataForEditPost(postId) {
+export function setInitDataForEditPost(postUrl) {
 	const username = getStore().getState().auth.user;
 	return (dispatch) => {
-		if (!username || !postId) {
+		if (!username || !postUrl) {
 			dispatch(createNewPost())
 		} else {
-			PostService.getPost(username, postId)
+			PostService.getPost(postUrl)
 				.then((response) => {
 					dispatch({
 						type: 'EDIT_POST_SET_INIT_DATA',
@@ -136,7 +136,7 @@ export function setInitDataForEditPost(postId) {
 						}
 					})
 				})
-				.catch( () => {
+				.catch(() => {
 					dispatch(createNewPost());
 				});
 		}
@@ -152,17 +152,16 @@ export function editPost() {
 			return;
 		}
 		dispatch(editPostRequest());
-		Steem.editPost(title, tags, description, postData.url.split('/')[3], postData.category, postData.media[0])
-			.then(() => {
+		PostService.editPost(title, tags, description, PostService.getPermlinkFromUrl(postData.url), postData.media[0])
+			.then(response => {
 				dispatch(pushMessage(Constants.POST_SUCCESSFULLY_UPDATED));
-				setTimeout(() => {
-					dispatch(editPostSuccess());
-					dispatch(push(`/@${getUserName()}`))
-				}, 1700);
-			}).catch(error => {
-			dispatch(editPostReject(error));
-			dispatch(pushMessage(error.message));
-		})
+				dispatch(editPostSuccess(response));
+				dispatch(push(`/@${getUserName()}`))
+			})
+			.catch(error => {
+				dispatch(editPostReject(error));
+				dispatch(pushMessage(error.message));
+			})
 	}
 }
 
@@ -303,9 +302,10 @@ function clearInputFields() {
 	}
 }
 
-export function editPostSuccess() {
+export function editPostSuccess(response) {
 	return {
-		type: 'EDIT_POST_SUCCESS'
+		type: 'EDIT_POST_SUCCESS',
+		response
 	};
 }
 
@@ -318,13 +318,13 @@ export function editPostReject(error) {
 
 function checkTimeAfterUpdatedLastPost() {
 	return UserService.getWaitingTimeForCreate(getUserName())
-		.then( response => {
+		.then(response => {
 			const waitingTime = response['waiting_time'];
 			if (waitingTime !== 0) {
 				return Promise.reject(waitingTime)
 			}
 			return Promise.resolve();
-		}).catch ( () => {
+		}).catch(() => {
 			return Promise.resolve();
 		});
 }

@@ -47,7 +47,7 @@ export function toggleFlag(postIndex) {
 
 		dispatch(actionLock());
 		dispatch(toggleFlagRequest(postIndex));
-		PostService.changeFlag(post.author, post.permlink, newFlagState)
+		PostService.changeFlag(post.author, PostService.getPermlinkFromUrl(post.url), newFlagState)
 			.then(response => {
 				dispatch(actionUnlock());
 				dispatch(toggleFlagSuccess(postIndex, response));

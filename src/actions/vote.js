@@ -45,7 +45,7 @@ export function toggleVote(postIndex) {
 		dispatch(actionLock());
 		dispatch(toggleVoteRequest(postIndex));
 
-		PostService.changeVote(post.author, post.permlink, newVoteState, power)
+		PostService.changeVote(post.author, PostService.getPermlinkFromUrl(post.url), newVoteState, power)
 			.then(response => {
 				dispatch(actionUnlock());
 				dispatch(toggleVoteSuccess(postIndex, response));

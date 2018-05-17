@@ -29,13 +29,13 @@ class EditPost extends React.Component {
 	constructor(props) {
 		super();
 		this.setImageContainerSize = this.setImageContainerSize.bind(this);
-		props.setInitDataForEditPost(props.postId);
+		props.setInitDataForEditPost(props.postUrl);
 	}
 
 	componentWillReceiveProps(nextProps) {
 		documentTitle();
-		if (this.props.postId !== nextProps.postId) {
-			this.props.setInitDataForEditPost(nextProps.postId);
+		if (this.props.postUrl !== nextProps.postUrl) {
+			this.props.setInitDataForEditPost(nextProps.postUrl);
 		}
 		if (this.props.rotate !== nextProps.rotate) {
 			this.setImageContainerSize(nextProps.rotate);
@@ -222,9 +222,9 @@ class EditPost extends React.Component {
 }
 
 const mapStateToProps = (state, props) => {
-	const {postId} = props.match.params;
+	const {postUrl} = props.match.params;
 	return {
-		postId,
+		postUrl,
 		...state.editPost
 	};
 };
@@ -246,8 +246,8 @@ const mapDispatchToProps = (dispatch) => {
 		setImageContainerSize: (width, height) => {
 			dispatch(setImageContainerSize(width, height))
 		},
-		setInitDataForEditPost: (postId) => {
-			dispatch(setInitDataForEditPost(postId))
+		setInitDataForEditPost: (postUrl) => {
+			dispatch(setInitDataForEditPost(postUrl))
 		},
 		editPostClear: () => {
 			dispatch(editPostClear())
