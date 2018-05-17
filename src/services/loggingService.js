@@ -22,9 +22,9 @@ class LoggingService {
 		logChangVote(isVoteUp, permlink, postAuthor, error, 'upvote');
 	}
 
-	static logPost(data) {
+	static logPost(error) {
 		const url = `${baseUrl}/log/post`;
-		logCORS(url, data, 'post');
+		logCORS(url, 'post', error);
 	}
 
 	static logEditPost(permlink, error) {

@@ -34,47 +34,7 @@ class Steem {
 		steem.broadcast.deleteComment(wif, author, permlink, callbackBc);
 	}
 
-	createPost(tags, title, description, file) {
-		tags = _getValidTags(tags);
-		const category = tags[0];
-		const permlink = PostService.createPostPermlink(title);
-		const operation = [Constants.OPERATIONS.COMMENT, {
-			parent_author: '',
-			parent_permlink: category,
-			author: AuthService.getUsername(),
-			permlink: permlink,
-			title: title,
-			description: description,
-			body: 'empty',
-			json_metadata: {
-				tags: tags,
-				app: 'steepshot'
-			}
-		}];
-		return _fileUpload(file)
-			.then(response => {
-				return _preparePost(response, description, tags, permlink);
-			})
-			.then(response => {
-				let beneficiaries = SteemService.getBeneficiaries(operation[1].permlink, response.beneficiaries);
-				let plagiarism = response.is_plagiarism;
-				if (plagiarism.is_plagiarism) {
-					let data = {
-						ipfs: response.json_metadata.ipfs_photo,
-						media: response.json_metadata.media[0],
-						plagiarism_author: plagiarism.plagiarism_username,
-						plagiarism_permlink: plagiarism.plagiarism_permlink,
-						operation: operation,
-						prepareData: response,
-						beneficiaries: beneficiaries
-					};
-					let error = new Error();
-					error.data = data;
-					return Promise.reject(error);
-				}
-				return this.afterCheckingPlagiarism(operation, response, beneficiaries);
-			})
-	}
+
 
 	afterCheckingPlagiarism(operation, prepareData, beneficiaries) {
 		return _sendToBlockChain(operation, prepareData, beneficiaries)

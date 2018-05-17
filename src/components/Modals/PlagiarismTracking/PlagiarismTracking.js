@@ -8,6 +8,7 @@ import constants from '../../../common/constants';
 import {push} from "react-router-redux";
 import './plagiarismTracking.css';
 import {pushMessage} from "../../../actions/pushMessage";
+import SteemService from "../../../services/steemService";
 
 class PlagiarismTracking extends React.Component {
 
@@ -27,11 +28,12 @@ class PlagiarismTracking extends React.Component {
 
 	continuePublishing() {
 		let data = this.props.data;
-		Steem.afterCheckingPlagiarism(data.operation, data.prepareData, data.beneficiaries).then(() => {
-			this.props.pushMessage(constants.POST_SUCCESSFULLY_CREATED);
-			this.props.editPostSuccess();
-			this.props.historyPush(`/@${this.props.authUser}`);
-		})
+		SteemService.addPostDataToBlockchain(data.operations)
+			.then(() => {
+				this.props.pushMessage(constants.POST_SUCCESSFULLY_CREATED);
+				this.props.editPostSuccess();
+				this.props.historyPush(`/@${this.props.authUser}`);
+			})
 			.catch(error => {
 				this.props.editPostReject(error);
 				this.props.pushMessage(error.message);

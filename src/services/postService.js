@@ -75,22 +75,50 @@ class PostService {
 			})
 	}
 
+	static createPost(tags, title, description, file) {
+		tags = getValidTags(tags);
+		const permlink = PostService.createPostPermlink(title);
+		const operation = getDefaultPostOperation(title, tags, description, permlink);
+
+		return fileUpload(file)
+			.then(media => {
+				return preparePost(tags, description, permlink, [media]);
+			})
+			.then(prepareData => {
+				let beneficiaries = SteemService.getBeneficiaries(permlink, prepareData.beneficiaries);
+				let plagiarism = prepareData['is_plagiarism'];
+				operation.body = prepareData.body;
+				operation.json_metadata = prepareData.json_metadata;
+				const operations = [operation, beneficiaries];
+				if (plagiarism['is_plagiarism']) {
+					let data = {
+						ipfs: prepareData.json_metadata['ipfs_photo'],
+						media: prepareData.json_metadata.media[0],
+						plagiarism_author: plagiarism['plagiarism_username'],
+						plagiarism_permlink: plagiarism.plagiarism_permlink,
+						operations
+					};
+					return Promise.reject(data);
+				}
+				return SteemService.addPostDataToBlockchain(operations)
+			})
+			.then(response => {
+				LoggingService.logPost();
+				return Promise.resolve(response);
+			})
+			.catch(error => {
+				if (!error.data) {
+					error = blockchainErrorsList(error);
+				}
+				LoggingService.logPost(error);
+				return Promise.reject(error);
+			})
+	}
+
 	static editPost(title, tags, description, permlink, media) {
 		tags = getValidTags(tags);
-		const category = tags[0];
-		const operation = [Constants.OPERATIONS.COMMENT, {
-			parent_author: '',
-			parent_permlink: category,
-			author: AuthService.getUsername(),
-			permlink,
-			title,
-			description,
-			body: 'empty',
-			json_metadata: {
-				tags: tags,
-				app: 'steepshot'
-			}
-		}];
+		const operation = getDefaultPostOperation(title, tags, description, permlink);
+
 		return preparePost(tags, description, permlink, media)
 			.then(response => {
 				operation.body = response.body;
@@ -107,7 +135,6 @@ class PostService {
 				return Promise.reject(checkedError);
 			})
 	}
-
 }
 
 export default PostService;
@@ -143,4 +170,32 @@ function removeEmptyTags(tags) {
 		empty = tags.indexOf('');
 	}
 	return tags;
+}
+
+function getDefaultPostOperation(title, tags, description, permlink) {
+	const category = tags[0];
+	return [Constants.OPERATIONS.COMMENT, {
+		parent_author: '',
+		parent_permlink: category,
+		author: AuthService.getUsername(),
+		permlink,
+		title,
+		description,
+		body: 'empty',
+		json_metadata: {
+			tags: tags,
+			app: 'steepshot'
+		}
+	}]
+}
+
+function fileUpload(file) {
+	const url = `${Constants.URLS.baseUrl_v1_1}/media/upload`;
+	return SteemService.getValidTransaction()
+		.then(transaction => {
+			let form = new FormData();
+			form.append('file', file);
+			form.append('trx', JSON.stringify(transaction));
+			return RequestService.post(url, form);
+		})
 }
