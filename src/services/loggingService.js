@@ -38,9 +38,9 @@ class LoggingService {
 		logCORS(url, fType,  error);
 	}
 
-	static logDeletedPost(author, permlink, data) {
-		const url = `${baseUrl}/log/post/${makePostId(author, permlink)}/delete`;
-		logCORS(url, data, 'delete');
+	static logDeletedPost(permlink, error) {
+		const url = `${baseUrl}/log/post/${makePostId(AuthService.getUsername(), permlink)}/delete`;
+		logCORS(url, 'delete', error);
 	}
 
 	static logSharePost(author, permlink, data) {

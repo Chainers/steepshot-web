@@ -150,13 +150,15 @@ export function deletePost(postUrl) {
 				dispatch(successDeletePost(postUrl));
 				dispatch(pushMessage(Constants.DELETE.DELETE_SUCCESS));
 			} else if (err) {
-				Steem.editDelete(title, tags, description, permlink, parentPerm).then(() => {
-					dispatch(pushMessage(Constants.DELETE.DELETE_SUCCESS));
-					dispatch(successDeletePost(postUrl));
-				}).catch((err) => {
-					dispatch(failureDeletePost(postUrl));
-					dispatch(pushMessage(err));
-				});
+				Steem.editDelete(title, tags, description, permlink, parentPerm)
+					.then(() => {
+						dispatch(pushMessage(Constants.DELETE.DELETE_SUCCESS));
+						dispatch(successDeletePost(postUrl));
+					})
+					.catch((err) => {
+						dispatch(failureDeletePost(postUrl));
+						dispatch(pushMessage(err));
+					});
 			}
 		};
 		Steem.deletePost(postingKey, username, permlink, callback);

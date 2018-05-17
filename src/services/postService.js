@@ -28,27 +28,6 @@ class PostService {
 		return RequestService.get(url, options);
 	}
 
-	static createPostPermlink(permlinkHead) {
-		const today = new Date();
-		const permlinkHeadLimit = 30;
-		permlinkHead = permlinkHead.toLowerCase();
-		if (permlinkHead.length > permlinkHeadLimit) {
-			permlinkHead = permlinkHead.slice(0, permlinkHeadLimit + 1);
-		}
-		return permlinkHead.replace(/\W/g, '-') + '-' + today.getFullYear() + '-' + today.getMonth() + '-' + today.getDay()
-			+ '-' + today.getHours() + '-' + today.getMinutes() + '-' + today.getSeconds();
-	}
-
-	static getPermlinkFromUrl(url) {
-		const elements = url.split('/');
-		return elements[elements.length - 1];
-	}
-
-	static getUsernameFromUrl(url) {
-		const elements = url.split('/');
-		return elements[elements.length - 2];
-	}
-
 	static changeVote(postAuthor, permlink, voteStatus, power) {
 		SteemService.changeVoteInBlockchain(postAuthor, permlink, voteStatus ? power : 0)
 			.then(response => {
@@ -139,6 +118,50 @@ class PostService {
 				LoggingService.logEditPost(permlink, checkedError);
 				return Promise.reject(checkedError);
 			})
+	}
+
+	static deletePost(post) {
+		const permlink = PostService.getPermlinkFromUrl(post.url);
+		return SteemService.deletePostFromBlockchain(permlink)
+			.then(response => {
+				LoggingService.logDeletedPost(permlink);
+				return Promise.resolve(response);
+			})
+			.catch(() => {
+				const operation = getDefaultPostOperation(post.title, post.tags, post.description, permlink);
+				operation.body = '*deleted*';
+				return SteemService.addPostDataToBlockchain([operation]);
+			})
+			.then(response => {
+				LoggingService.logDeletedPost(permlink);
+				return Promise.resolve(response);
+			})
+			.catch(error => {
+				let checkedError = blockchainErrorsList(error);
+				LoggingService.logDeletedPost(permlink, checkedError);
+				return Promise.reject(checkedError);
+			})
+	}
+
+	static createPostPermlink(permlinkHead) {
+		const today = new Date();
+		const permlinkHeadLimit = 30;
+		permlinkHead = permlinkHead.toLowerCase();
+		if (permlinkHead.length > permlinkHeadLimit) {
+			permlinkHead = permlinkHead.slice(0, permlinkHeadLimit + 1);
+		}
+		return permlinkHead.replace(/\W/g, '-') + '-' + today.getFullYear() + '-' + today.getMonth() + '-' + today.getDay()
+			+ '-' + today.getHours() + '-' + today.getMinutes() + '-' + today.getSeconds();
+	}
+
+	static getPermlinkFromUrl(url) {
+		const elements = url.split('/');
+		return elements[elements.length - 1];
+	}
+
+	static getUsernameFromUrl(url) {
+		const elements = url.split('/');
+		return elements[elements.length - 2];
 	}
 }
 

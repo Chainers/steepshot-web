@@ -4,10 +4,12 @@ import Constants from "../common/constants";
 import PostService from "./postService";
 import AuthService from "./authService";
 
+steem.api.setOptions({url: 'https://api.steemit.com'});
+
 class SteemService {
 
 	static addCommentToBlockchain(commentOperation) {
-		return processResponse( callback => {
+		return processResponse(callback => {
 
 			let beneficiaries = SteemService.getBeneficiaries(commentOperation[1].permlink, {
 				account: 'steepshot',
@@ -23,21 +25,27 @@ class SteemService {
 	}
 
 	static changeVoteInBlockchain(postAuthor, permlink, power) {
-		return processResponse( callback => {
+		return processResponse(callback => {
 			steem.broadcast.vote(AuthService.getPostingKey(), AuthService.getUsername(), postAuthor, permlink, power, callback);
 		})
 	}
 
+	static deletePostFromBlockchain(permlink) {
+		return processResponse(callback => {
+			steem.broadcast.deleteComment(AuthService.getPostingKey(), AuthService.getUsername(), permlink, callback);
+		})
+	}
+
 	static changeFollowInBlockchain(jsonData) {
-		return processResponse( callback => {
-			steem.broadcast.customJson(AuthService.getPostingKey(),	[], [AuthService.getUsername()], 'follow', jsonData,
+		return processResponse(callback => {
+			steem.broadcast.customJson(AuthService.getPostingKey(), [], [AuthService.getUsername()], 'follow', jsonData,
 				callback
 			);
 		})
 	}
 
 	static addPostDataToBlockchain(operations) {
-		return processResponse( callback => {
+		return processResponse(callback => {
 			steem.broadcast.sendAsync(
 				{operations, extensions: []},
 				{posting: AuthService.getPostingKey()}, callback
@@ -50,7 +58,7 @@ class SteemService {
 			parent_author: '',
 			parent_permlink: '',
 			author: AuthService.getUsername(),
-			permlink:  PostService.createPostPermlink('steepshot'),
+			permlink: PostService.createPostPermlink('steepshot'),
 			title: 'steepshot',
 			description: '',
 			body: 'steepshot',
