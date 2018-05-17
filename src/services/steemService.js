@@ -6,6 +6,28 @@ import AuthService from "./authService";
 
 class SteemService {
 
+	static addCommentToBlockchain(commentOperation) {
+		return processResponse( callback => {
+
+			let beneficiaries = SteemService.getBeneficiaries(commentOperation[1].permlink, {
+				account: 'steepshot',
+				weight: 1000
+			});
+			const operations = [commentOperation, beneficiaries];
+			steem.broadcast.sendAsync(
+				{operations, extensions: []},
+				{posting: AuthService.getPostingKey()},
+				callback
+			);
+		})
+	}
+
+	static changeVoteInBlockchain(postAuthor, permlink, power) {
+		return processResponse( callback => {
+			steem.broadcast.vote(AuthService.getPostingKey(), AuthService.getUsername(), postAuthor, permlink, power, callback);
+		})
+	}
+
 	static getValidTransaction() {
 		const operation = [Constants.OPERATIONS.COMMENT, {
 			parent_author: '',
@@ -44,34 +66,21 @@ class SteemService {
 
 		return [Constants.OPERATIONS.COMMENT_OPTIONS, beneficiariesObject];
 	}
-
-	static addCommentToBlockchain(commentOperation) {
-		return new Promise((resolve, reject) => {
-			const callbackBc = (err, success) => {
-				let errorMessage = '';
-				if (err) {
-					errorMessage = blockchainErrorsList(err);
-					reject(errorMessage);
-				} else if (success) {
-					resolve(success);
-				}
-			};
-			sendCommentToBlockchain(commentOperation, callbackBc);
-		});
-	}
 }
 
 export default SteemService;
 
-function sendCommentToBlockchain(commentOperation, callback) {
-	let beneficiaries = SteemService.getBeneficiaries(commentOperation[1].permlink, {
-		account: 'steepshot',
-		weight: 1000
-	});
-	const operations = [commentOperation, beneficiaries];
-	steem.broadcast.sendAsync(
-		{operations, extensions: []},
-		{posting: AuthService.getPostingKey()},
-		callback
-	);
+function processResponse(sendingFunction) {
+	return new Promise((resolve, reject) => {
+		const callbackBc = (err, success) => {
+			let errorMessage = '';
+			if (err) {
+				errorMessage = blockchainErrorsList(err);
+				reject(errorMessage);
+			} else if (success) {
+				resolve(success);
+			}
+		};
+		sendingFunction(callbackBc);
+	})
 }

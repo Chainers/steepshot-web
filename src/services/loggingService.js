@@ -23,7 +23,12 @@ class LoggingService {
 		logCORS(url, data, 'flag');
 	}
 
-	static logVote(isVouteUp, author, permlink, data) {
+	static logVote(isVouteUp, permlink, error = '') {
+		const author = AuthService.getUsername();
+		const data = {
+			username: author,
+			error: error
+		};
 		let vType = (isVouteUp) ? 'upvote' : 'downvote';
 		const url = `${baseUrl}/log/post/${makePostId(author, permlink)}/${vType}`;
 		logCORS(url, data, vType);

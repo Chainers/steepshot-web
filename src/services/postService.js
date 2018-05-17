@@ -1,4 +1,7 @@
 import RequestService from "./requestService";
+import {blockchainErrorsList} from "../utils/blockchainErrorsList";
+import LoggingService from "./loggingService";
+import SteemService from "./steemService";
 
 class PostService {
 
@@ -33,6 +36,20 @@ class PostService {
 		return permlinkHead.replace(/\W/g, '-') + '-' + today.getFullYear() + '-' + today.getMonth() + '-' + today.getDay()
 			+ '-' + today.getHours() + '-' + today.getMinutes() + '-' + today.getSeconds();
 	}
+
+	static changeVote(postAuthor, permlink, voteStatus, power) {
+		SteemService.changeVoteInBlockchain(postAuthor, permlink, voteStatus ? power : 0)
+			.then(response => {
+				LoggingService.logVote(voteStatus, permlink);
+				return Promise.resolve(response);
+			})
+			.catch(error => {
+				let checkedError = blockchainErrorsList(error);
+				LoggingService.logVote(voteStatus, permlink, checkedError);
+				return Promise.reject(checkedError);
+			})
+	}
+
 }
 
 export default PostService;

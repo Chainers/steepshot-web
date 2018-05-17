@@ -83,7 +83,7 @@ export default function posts(state = {}, action) {
 				},
 			};
 
-		case 'TOGGLE_VOTE_FAILURE':
+		case 'TOGGLE_VOTE_ERROR':
 			return {
 				...state,
 				[action.index]: {

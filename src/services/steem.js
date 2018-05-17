@@ -13,7 +13,7 @@ class Steem {
 		steem.api.setOptions({url: 'https://api.steemit.com'});
 	}
 
-	vote(wif, username, author, url, voteStatus, power, callback) {
+	vote(wif, username, author, url, voteStatus, power, permlink, callback) {
 		const callbackBc = (err, success) => {
 			if (err) {
 				let checkedError = blockchainErrorsList(err);
@@ -33,9 +33,7 @@ class Steem {
 			}
 		};
 
-		steem.api.getContentAsync(author, url).then((response) => {
-			steem.broadcast.vote(wif, username, response.author, response.permlink, voteStatus ? power : 0, callbackBc);
-		});
+		steem.broadcast.vote(wif, username, author, permlink, voteStatus ? power : 0, callbackBc);
 	}
 
 	flag(wif, username, author, url, flagStatus, callback) {
