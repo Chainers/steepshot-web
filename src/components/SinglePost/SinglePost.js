@@ -26,12 +26,8 @@ class SinglePost extends React.Component {
 			this.props.addSinglePost(this.props.history.location.pathname)
 		}
 		let username = this.props.location.pathname.match(/\/@[\w-.]+\//)[0];
-		const data = {
-			action: 'share_post',
-			error: ''
-		};
 		LoggingService.logSharePost(username.replace(/\/@([\w-.]+)\//, '$1'),
-			PostService.getPermlinkFromUrl(this.props.location.pathname), data);
+			PostService.getPermlinkFromUrl(this.props.location.pathname));
 	}
 
 	render() {

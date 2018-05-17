@@ -4,9 +4,9 @@ import AuthService from "./authService";
 const baseUrl = constants.URLS.baseUrl_v1;
 class LoggingService {
 
-	static logLogin(data) {
+	static logLogin() {
 		const url = `${baseUrl}/log/login-with-posting`;
-		logCORS(url, data, 'login');
+		logCORS(url, 'login');
 	}
 
 	static logComment(postAuthor, permlink, error) {
@@ -43,9 +43,9 @@ class LoggingService {
 		logCORS(url, 'delete', error);
 	}
 
-	static logSharePost(author, permlink, data) {
+	static logSharePost(author, permlink) {
 		const url = `${baseUrl}/log/post/${makePostId(author, permlink)}/info`;
-		logCORS(url, data, 'share_post');
+		logCORS(url, 'share_post');
 	}
 }
 

@@ -10,7 +10,6 @@ class SteemService {
 
 	static addCommentToBlockchain(commentOperation) {
 		return processResponse(callback => {
-
 			let beneficiaries = SteemService.getBeneficiaries(commentOperation[1].permlink, {
 				account: 'steepshot',
 				weight: 1000
@@ -51,6 +50,16 @@ class SteemService {
 				{posting: AuthService.getPostingKey()}, callback
 			);
 		})
+	}
+
+	static getAccounts(username) {
+		return processResponse(callback => {
+			steem.api.getAccounts([username], callback);
+		})
+	}
+
+	static wifIsValid(postingKey, pubWif) {
+		return steem.auth.wifIsValid(postingKey, pubWif);
 	}
 
 	static getValidTransaction() {
