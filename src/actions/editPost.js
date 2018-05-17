@@ -1,6 +1,5 @@
 import {getStore} from "../store/configureStore";
 import {utils} from "../utils/utils";
-import Steem from "../services/steem";
 import {clearTextInputState, setTextInputError} from "./textInput";
 import * as React from "react";
 import PlagiarismTracking from "../components/Modals/PlagiarismTracking/PlagiarismTracking";
@@ -198,7 +197,7 @@ export function createPost() {
 
 						})
 						.then(blob => {
-							return Steem.createPost(tags, title, description, blob)
+							return PostService.createPost(tags, title, description, blob)
 						})
 						.then(() => {
 							dispatch(pushMessage(Constants.POST_SUCCESSFULLY_CREATED));

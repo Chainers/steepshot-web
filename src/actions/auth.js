@@ -34,14 +34,14 @@ export function login(username, postingKey) {
 				if (response.length === 0) {
 					return dispatch(loginError('Such user doesn\'t exist'));
 				}
-				let pubWif = result[0].posting.key_auths[0][0];
+				let pubWif = response[0].posting.key_auths[0][0];
 				let isValid = SteemService.wifIsValid(postingKey, pubWif);
 				if (!isValid) {
 					return dispatch(loginError('Invalid username or posting key'));
 				}
 
 				LoggingService.logLogin();
-				let avatar = getAvatar(result[0]);
+				let avatar = getAvatar(response[0]);
 				storage.user = username;
 				storage.postingKey = postingKey;
 				storage.like_power = 100;
@@ -57,10 +57,10 @@ export function login(username, postingKey) {
 				});
 				dispatch({
 					type: 'UPDATE_VOTING_POWER',
-					voting_power: result[0].voting_power / 100
+					voting_power: response[0].voting_power / 100
 				});
 				dispatch(push('/feed'));
-				let parseResult = JSON.parse(result[0].json_metadata);
+				let parseResult = JSON.parse(response[0].json_metadata);
 				dispatch(showMessage('Welcome to Steepshot, ' + (parseResult.profile.name || username) + '!'));
 			})
 			.catch(() => {

@@ -1,4 +1,3 @@
-import Steem from '../services/steem';
 import {getStore} from '../store/configureStore';
 import {initPostsList} from './postsList';
 import {initPostModal} from './postModal';
@@ -110,23 +109,23 @@ export function setSliderWidth(postIndex, width) {
 	}
 }
 
-function sendDeletePost(postIndex) {
+function deletePostRequest(postIndex) {
 	return {
-		type: 'SEND_DELETE_POST',
+		type: 'DELETE_POST_REQUEST',
 		index: postIndex
 	}
 }
 
-function successDeletePost(postIndex) {
+function deletePostSuccess(postIndex) {
 	return {
-		type: 'SUCCESS_DELETE_POST',
+		type: 'DELETE_POST_SUCCESS',
 		index: postIndex
 	}
 }
 
-function failureDeletePost(postIndex) {
+function deletePostError(postIndex) {
 	return {
-		type: 'FAILURE_DELETE_POST',
+		type: 'DELETE_POST_ERROR',
 		index: postIndex
 	}
 }
@@ -134,34 +133,22 @@ function failureDeletePost(postIndex) {
 export function deletePost(postUrl) {
 	return function (dispatch) {
 		let state = getStore().getState();
-		let post = state.posts[postUrl];
-		let title = post.title, tags = post.tags, description = post.description, parentPerm = post.category;
-		let username = state.auth.user;
-		let postingKey = state.auth.postingKey;
-		let permlink = PostService.getPermlinkFromUrl(postUrl);
 		if (state.session.actionLocked) {
 			return;
 		}
 		dispatch(actionLock());
-		dispatch(sendDeletePost(postUrl));
-		const callback = (err, success) => {
-			dispatch(actionUnlock());
-			if (success) {
-				dispatch(successDeletePost(postUrl));
+		dispatch(deletePostRequest(postUrl));
+		PostService.deletePost(state.posts[postUrl])
+			.then(response => {
+				dispatch(actionUnlock());
+				dispatch(deletePostSuccess(postUrl, response));
 				dispatch(pushMessage(Constants.DELETE.DELETE_SUCCESS));
-			} else if (err) {
-				Steem.editDelete(title, tags, description, permlink, parentPerm)
-					.then(() => {
-						dispatch(pushMessage(Constants.DELETE.DELETE_SUCCESS));
-						dispatch(successDeletePost(postUrl));
-					})
-					.catch((err) => {
-						dispatch(failureDeletePost(postUrl));
-						dispatch(pushMessage(err));
-					});
-			}
-		};
-		Steem.deletePost(postingKey, username, permlink, callback);
+			})
+			.catch(error => {
+				dispatch(actionUnlock());
+				dispatch(deletePostError(postUrl, error));
+				dispatch(pushMessage(error));
+			});
 	}
 }
 
