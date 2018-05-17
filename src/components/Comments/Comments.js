@@ -8,19 +8,18 @@ import Description from "./Description/Description";
 import CommentInput from "./CommentInput/CommentInput";
 import {Scrollbars} from "react-custom-scrollbars";
 import './comments.css';
-import CommentService from "../../services/commentService";
 
 class Comments extends React.Component {
 
 	constructor(props) {
 		super();
 		props.initPostComment(props.point);
-		CommentService.getComments(props.point);
+		props.getComments(props.point);
 	}
 
 	componentWillReceiveProps(nextProps) {
 		if (nextProps.point !== this.props.point) {
-			CommentService.getComments(nextProps.point);
+			nextProps.getComments(nextProps.point);
 		}
 		if (nextProps.scrollToLastComment !== this.props.scrollToLastComment && this.scrollBar) {
 			this.scrollBar.scrollToTop();

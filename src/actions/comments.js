@@ -89,10 +89,11 @@ function addNewCommentSuccess(point, response) {
 	}
 }
 
-function addNewCommentError(point) {
+function addNewCommentError(point, error) {
 	return {
 		type: 'ADD_NEW_COMMENT_ERROR',
-		point
+		point,
+		error
 	}
 }
 
@@ -151,7 +152,7 @@ export function sendComment(postIndex, point) {
 			})
 			.catch( error => {
 				dispatch(actionUnlock());
-				dispatch(addNewCommentError(postIndex));
+				dispatch(addNewCommentError(postIndex, error));
 				dispatch(pushMessage(error));
 			})
 	};
