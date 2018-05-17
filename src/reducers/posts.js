@@ -54,7 +54,7 @@ export default function posts(state = {}, action) {
 				}
 			};
 
-		case 'TOGGLE_FLAG_FAILURE':
+		case 'TOGGLE_FLAG_ERROR':
 			return {
 				...state,
 				[action.index]: {

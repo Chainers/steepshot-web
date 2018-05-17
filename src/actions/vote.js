@@ -46,7 +46,7 @@ export function toggleVote(postIndex) {
 		dispatch(toggleVoteRequest(postIndex));
 
 		PostService.changeVote(post.author, post.permlink, newVoteState, power)
-			.then( response => {
+			.then(response => {
 				dispatch(actionUnlock());
 				dispatch(toggleVoteSuccess(postIndex, response));
 				dispatch(updatePost(postIndex, newVoteState, 0));
@@ -55,7 +55,7 @@ export function toggleVote(postIndex) {
 				if (!newVoteState) text = `The post has been successfully disliked. If you don't see your dislike, please give it a few minutes to sync from the blockchain`;
 				dispatch(pushMessage(text));
 			})
-			.catch( error => {
+			.catch(error => {
 				dispatch(actionUnlock());
 				dispatch(toggleVoteError(postIndex));
 				dispatch(pushMessage(error));

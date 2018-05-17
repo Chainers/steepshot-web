@@ -50,6 +50,19 @@ class PostService {
 			})
 	}
 
+	static changeFlag(postAuthor, permlink, isFlag, power = -10000) {
+		SteemService.changeVoteInBlockchain(postAuthor, permlink, isFlag ? power : 0)
+			.then(response => {
+				LoggingService.logFlag(isFlag, permlink);
+				return Promise.resolve(response);
+			})
+			.catch(error => {
+				let checkedError = blockchainErrorsList(error);
+				LoggingService.logFlag(isFlag, permlink, checkedError);
+				return Promise.reject(checkedError);
+			})
+	}
+
 }
 
 export default PostService;

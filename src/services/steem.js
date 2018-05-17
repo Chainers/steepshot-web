@@ -13,59 +13,6 @@ class Steem {
 		steem.api.setOptions({url: 'https://api.steemit.com'});
 	}
 
-	vote(wif, username, author, url, voteStatus, power, permlink, callback) {
-		const callbackBc = (err, success) => {
-			if (err) {
-				let checkedError = blockchainErrorsList(err);
-				callback(checkedError, null);
-				const data = {
-					username: username,
-					error: err.message
-				};
-				LoggingService.logVote(voteStatus, author, url, data);
-			} else if (success) {
-				const data = {
-					username: username,
-					error: ''
-				};
-				LoggingService.logVote(voteStatus, author, url, data);
-				callback(null, success);
-			}
-		};
-
-		steem.broadcast.vote(wif, username, author, permlink, voteStatus ? power : 0, callbackBc);
-	}
-
-	flag(wif, username, author, url, flagStatus, callback) {
-
-		const callbackBc = (err, success) => {
-			if (err) {
-				let checkedError = blockchainErrorsList(err);
-				callback(checkedError, null);
-				const data = {
-					username: username,
-					error: err.message
-				};
-				LoggingService.logVote(flagStatus, author, url, data);
-			} else if (success) {
-				const data = {
-					username: username
-				};
-				LoggingService.logFlag(author, url, data);
-				callback(null, success);
-			}
-		};
-
-		steem.api.getContentAsync(author, url).then((response) => {
-			steem.broadcast.vote(wif, username, response.author, response.permlink, flagStatus ? -10000 : 0, callbackBc);
-		});
-	}
-
-
-	_sendBroadCasts(operations, postingWif) {
-		steem.broadcast.sendAsync({operations, extensions: []}, {posting: postingWif});
-	}
-
 	/** Follow an user */
 	followUnfollowUser(wif, follower, following, status) {
 

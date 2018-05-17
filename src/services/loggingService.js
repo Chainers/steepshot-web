@@ -12,26 +12,18 @@ class LoggingService {
 	static logComment(postAuthor, permlink, error = '') {
 		const data = {
 			username: AuthService.getUsername(),
-			error: error
+			error
 		};
 		const url = `${baseUrl}/log/post/${makePostId(postAuthor, permlink)}/comment`;
 		logCORS(url, data, 'comment');
 	}
 
-	static logFlag(author, permlink, data) {
-		const url = `${baseUrl}/log/post/${makePostId(author, permlink)}/flag`;
-		logCORS(url, data, 'flag');
+	static logFlag(isFlag, permlink, error = '') {
+		logChangVote(isFlag, permlink, error, 'flag');
 	}
 
-	static logVote(isVouteUp, permlink, error = '') {
-		const author = AuthService.getUsername();
-		const data = {
-			username: author,
-			error: error
-		};
-		let vType = (isVouteUp) ? 'upvote' : 'downvote';
-		const url = `${baseUrl}/log/post/${makePostId(author, permlink)}/${vType}`;
-		logCORS(url, data, vType);
+	static logVote(isVoteUp, permlink, error = '') {
+		logChangVote(isVoteUp, permlink, error, 'upvote');
 	}
 
 	static logPost(data) {
@@ -57,6 +49,17 @@ class LoggingService {
 }
 
 export default LoggingService;
+
+function logChangVote(isFlag, permlink, error = '', event) {
+	const author = AuthService.getUsername();
+	const data = {
+		username: author,
+		error
+	};
+	let vType = isFlag ? event : 'downvote';
+	const url = `${baseUrl}/log/post/${makePostId(author, permlink)}/${vType}`;
+	logCORS(url, data, vType);
+}
 
 function logCORS(url, body, operation) {
 	const options = {
