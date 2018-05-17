@@ -26,7 +26,7 @@ class UsersList extends React.Component {
 	}
 
 	componentWillReceiveProps(nextProps) {
-		if (nextProps.options && (nextProps.options.query !== this.props.options.query)) {
+		if (nextProps.options && (nextProps.options.query !== this.props.options.query) && nextProps.point) {
 			let usersListOptions = UsersList.userListOptions(nextProps);
 			this.props.initUsersList(usersListOptions);
 			this.props.getUsersList(nextProps.point);
@@ -52,13 +52,15 @@ class UsersList extends React.Component {
 	}
 
 	getUsersList() {
-		if (this.props.isComponentVisible) {
+		if (this.props.isComponentVisible && this.props.point) {
 			this.props.getUsersList(this.props.point);
 		}
 	}
 
 	componentDidMount() {
-		this.props.getUsersList(this.props.point);
+		if (this.props.point) {
+			this.props.getUsersList(this.props.point);
+		}
 		documentTitle();
 	}
 

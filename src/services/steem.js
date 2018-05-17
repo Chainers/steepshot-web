@@ -13,48 +13,6 @@ class Steem {
 		steem.api.setOptions({url: 'https://api.steemit.com'});
 	}
 
-	/** Follow an user */
-	followUnfollowUser(wif, follower, following, status) {
-
-		let blog = ['blog'];
-		if (status) blog = [];
-
-		const json = JSON.stringify(
-			[Constants.OPERATIONS.FOLLOW, {
-				follower: follower,
-				following: following,
-				what: blog
-			}]
-		);
-
-		return new Promise((resolve, reject) => {
-			const callbackBc = (err, result) => {
-				const data = {
-					username: follower,
-					error: err ? err.message : ''
-				};
-				LoggingService.logFollow(status, following, data);
-
-				if (err) {
-					let checkedError = blockchainErrorsList(err);
-					reject(new Error(checkedError));
-				} else {
-					resolve(result)
-				}
-			};
-
-			steem.broadcast.customJson(
-				wif,
-				[], // Required_auths
-				[follower], // Required Posting Auths
-				'follow', // Id
-				json,
-				callbackBc
-			);
-		});
-	}
-
-
 	deletePost(wif, author, permlink, callback) {
 		const callbackBc = (err, success) => {
 			if (err) {

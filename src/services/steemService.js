@@ -28,6 +28,14 @@ class SteemService {
 		})
 	}
 
+	static changeFollowInBlockchain(jsonData) {
+		return processResponse( callback => {
+			steem.broadcast.customJson(AuthService.getPostingKey(),	[], [AuthService.getUsername()], 'follow', jsonData,
+				callback
+			);
+		})
+	}
+
 	static getValidTransaction() {
 		const operation = [Constants.OPERATIONS.COMMENT, {
 			parent_author: '',

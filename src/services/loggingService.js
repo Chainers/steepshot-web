@@ -31,7 +31,11 @@ class LoggingService {
 		logCORS(url, data, 'post');
 	}
 
-	static logFollow(isFollowed, user, data) {
+	static logFollow(isFollowed, user, error) {
+		const data = {
+			username: AuthService.getUsername(),
+			error
+		};
 		let fType = (isFollowed) ? 'unfollow' : 'follow';
 		const url = `${baseUrl}/log/user/${user}/${fType}`;
 		logCORS(url, data, fType);
