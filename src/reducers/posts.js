@@ -164,21 +164,20 @@ export default function posts(state = {}, action) {
           changeStatus: action.changeStatus
         }
 			};
-    case 'SET_GALLERY_IMG_INDEX':
-      return {
-        ...state,
-        [action.postIndex]: {
-          ...state[action.postIndex],
-          imgIndex: action.imgIndex
-        }
-      };
-
 		case 'SET_GALLERY_IMG':
 			return {
         ...state,
         [action.postIndex]: {
           ...state[action.postIndex],
-          imageNumber: action.imageNumber
+          imageNumberInGallery: action.imageNumberInGallery
+        }
+			};
+		case 'SET_IMAGE_COMPLETE_STATUS':
+			return {
+        ...state,
+        [action.postIndex]: {
+          ...state[action.postIndex],
+          completeStatus: action.isComplete
         }
 			};
 

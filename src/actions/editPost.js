@@ -19,8 +19,7 @@ export function addTag() {
 	return (dispatch) => {
 		const state = getStore().getState();
 		const editPostState = state.editPost;
-		let newTag = state.textInput[Constants.TEXT_INPUT_POINT.TAGS].text;
-		newTag = getValidTagsString(newTag);
+		let newTag = state.textInput[Constants.TEXT_INPUT_POINT.TAGS].text.toLowerCase();
 		if (editPostState.tags.split(' ').length === 20) {
 			dispatch(pushMessage(Constants.MAX_TAGS_NUMBER));
 		}
@@ -167,7 +166,6 @@ export function editPost() {
 
 export function createPost() {
 	let {title, tags, description, photoSrc, rotate, isGif} = prepareData();
-
 	return dispatch => {
 		if (!isValidField(dispatch, title, photoSrc)) {
 			return;
@@ -247,14 +245,26 @@ function prepareData() {
 function getValidTagsString(str) {
 	if (str) {
 		let result = str.replace(/\bsteepshot\b/g, '');
-		result = result.replace(/(\b\w+\b)(.+)(\1)/g, '$1$2');
 		result = result.trim();
-		result = result.replace(/\s\s/g, ' ');
+		result = result.replace(/\s+/g, ' ');
 		result = result.replace(/[^\w\s]+/g, '');
 		result = result.replace(new RegExp(`((\\s[^\\s]+){${Constants.TAGS.MAX_AMOUNT - 1}}).*`), '$1');
 		result = result.replace(new RegExp(`(([^\\s]{${Constants.TAGS.MAX_LENGTH}})[^\\s]+).*`), '$2');
-		return result.toLowerCase();
+		return result;
 	}
+}
+
+function deleteSimilarTags(result) {
+	let arr = result.split(' ');
+	for (let i = 0; i < arr.length; i++) {
+		for (let j = i + 1; j < arr.length; j++) {
+			if (arr[i] === arr[j]) {
+				arr.splice(j, 1);
+				j--;
+			}
+		}
+	}
+	return arr.join(' ');
 }
 
 function emptyAction() {

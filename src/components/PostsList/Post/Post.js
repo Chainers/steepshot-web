@@ -138,7 +138,7 @@ class Post extends React.Component {
 
 		return (
 			<div className="item-wrap" id={this.props.index}>
-				<div className="post-card position--relative" ref={ref => this.postCard = ref}>
+				<div className="post-card position--relative">
 					<ShowIf show={this.props.postDeleting}>
 						<div className="delete-loader_post"
 								 style={{height: this.props.clearPostHeader ? '496px' : '536px'}}
