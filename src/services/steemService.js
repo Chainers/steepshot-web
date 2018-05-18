@@ -10,10 +10,10 @@ class SteemService {
 
 	static addCommentToBlockchain(commentOperation) {
 		return processResponse(callback => {
-			let beneficiaries = SteemService.getBeneficiaries(commentOperation[1].permlink, {
+			let beneficiaries = SteemService.getBeneficiaries(commentOperation[1].permlink, [{
 				account: 'steepshot',
 				weight: 1000
-			});
+			}]);
 			const operations = [commentOperation, beneficiaries];
 			steem.broadcast.sendAsync(
 				{operations, extensions: []},

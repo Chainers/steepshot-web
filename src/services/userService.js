@@ -18,7 +18,7 @@ class UserService {
 	}
 
 	static getWaitingTimeForCreate(username) {
-		return RequestService.get(`/user/${username}/spam`);
+		return RequestService.get(`user/${username}/spam`);
 	}
 
 	static getProfile(username) {

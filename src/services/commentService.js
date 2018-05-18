@@ -22,7 +22,7 @@ class CommentService {
 			permlink: permlink,
 			title: "",
 			body: body,
-			json_metadata: {}
+			json_metadata: ''
 		};
 		const commentOperation = [Constants.OPERATIONS.COMMENT, commentObject];
 

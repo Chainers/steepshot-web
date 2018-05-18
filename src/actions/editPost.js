@@ -205,10 +205,10 @@ export function createPost() {
 							dispatch(push(`/@${getUserName()}`))
 						})
 						.catch(error => {
-							if (error.data) {
+							if (error.plagiarism_author) {
 								dispatch(editPostReject(error.data));
 								dispatch(openModal("PlagiarismTrackingModal", {
-									body: (<PlagiarismTracking data={error.data}/>)
+									body: (<PlagiarismTracking data={error}/>)
 								}))
 							} else {
 								throw error;

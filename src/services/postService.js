@@ -66,8 +66,8 @@ class PostService {
 			.then(prepareData => {
 				let beneficiaries = SteemService.getBeneficiaries(permlink, prepareData.beneficiaries);
 				let plagiarism = prepareData['is_plagiarism'];
-				operation.body = prepareData.body;
-				operation.json_metadata = prepareData.json_metadata;
+				operation[1].body = prepareData.body;
+				operation[1].json_metadata = JSON.stringify(prepareData.json_metadata);
 				const operations = [operation, beneficiaries];
 				if (plagiarism['is_plagiarism']) {
 					let data = {
@@ -81,7 +81,6 @@ class PostService {
 				}
 				return PostService.afterCheckingPlagiarism(operations)
 			})
-
 	}
 
 	static afterCheckingPlagiarism(operations) {
@@ -94,7 +93,6 @@ class PostService {
 				if (!error.data) {
 					error = blockchainErrorsList(error);
 				}
-				LoggingService.logPost(error);
 				return Promise.reject(error);
 			})
 	}
@@ -168,13 +166,13 @@ class PostService {
 export default PostService;
 
 function preparePost(tags, description, permlink, media) {
-	const url = `${Constants.URLS.baseUrl_v1_1}/post/prepare`;
+	const url = 'post/prepare';
 	const data = {
 		username: AuthService.getUsername(),
 		tags: tags,
 		description: description,
 		post_permlink: `@${AuthService.getUsername()}/${permlink}`,
-		media: [media],
+		media: media,
 		show_footer: true,
 		device: 'web'
 	};
@@ -218,7 +216,7 @@ function getDefaultPostOperation(title, tags, description, permlink) {
 }
 
 function fileUpload(file) {
-	const url = `${Constants.URLS.baseUrl_v1_1}/media/upload`;
+	const url = 'media/upload';
 	return SteemService.getValidTransaction()
 		.then(transaction => {
 			let form = new FormData();

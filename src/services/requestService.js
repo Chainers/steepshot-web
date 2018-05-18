@@ -14,19 +14,18 @@ class RequestService {
 		const options = {
 			method: 'POST'
 		};
-		if (isJson(data)) {
-			options.headers = {'Content-Type': 'application/json'};
-			options.body = JSON.stringify(data)
+		if (data instanceof FormData) {
+			options.body = data;
 		} else {
-			options.body = data
+			options.headers = {'Content-Type': 'application/json'};
+			options.body = JSON.stringify(data);
 		}
-
 		return fetch(`${Constants.URLS.baseUrl_v1_1}/${url}`, options)
 			.then(RequestService.processResponse);
 	}
 
 	static processResponse(response) {
-		if (response.status === 200) {
+		if ((response.status === 200) || (response.status === 201)) {
 			const contentType = response.headers.get("content-type");
 			if (contentType && contentType.indexOf("application/json") !== -1) {
 				return response.json();
@@ -38,15 +37,6 @@ class RequestService {
 }
 
 export default RequestService;
-
-function isJson(str) {
-	try {
-		JSON.parse(str);
-	} catch (e) {
-		return false;
-	}
-	return true;
-}
 
 function convertOptionsToRequestString(options) {
 	if (!options) return '';
