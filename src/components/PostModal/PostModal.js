@@ -214,7 +214,7 @@ class PostModal extends React.Component {
 				</ShowIf>
 				<ShowIf show={this.props.post.isVideo}>
 					<div className="image-container_pos-mod image-container_vid-con"
-							 style={this.props.style.imgCont}
+							 style={this.props.style.imgCont || previousImageWidth}
 					>
 						<ReactPlayer
 							width='100%'
@@ -251,7 +251,7 @@ class PostModal extends React.Component {
 					</ShowIf>
 					<ShowIf show={this.props.post.isVideo}>
 						<div className="video-con-fs_pos-mod"
-								 style={this.props.style.imgCont}>
+								 style={this.props.style.imgCont || previousImageWidth}>
 							<ReactPlayer
 								height='100%'
 								url={this.props.urlVideo}
@@ -563,11 +563,11 @@ const mapDispatchToProps = (dispatch) => {
 		setPowerLikeTimeout: (index, plTimeout) => {
 			dispatch(setPowerLikeTimeout(index, plTimeout));
 		},
+		setNewImageLoading: (isLoading) => {
+			dispatch(setNewImageLoading(isLoading));
+		},
 		openPushNot: (index, pushNotBody) => {
 			dispatch(openPushNot(index, pushNotBody));
-		},
-    setNewImageLoading: (isLoading) => {
-			dispatch(setNewImageLoading(isLoading));
 		}
 	};
 };

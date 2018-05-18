@@ -4,10 +4,18 @@ import './imagesGallery.css';
 import {setGalleryImage, setImageCompleteStatus} from '../../actions/imagesGallery';
 import Constants from '../../common/constants';
 import ShowIf from '../Common/ShowIf';
+import {setNewImageLoading} from '../../actions/postModal';
 
 class ImagesGallery extends React.Component {
 
 	componentWillReceiveProps(nextProps) {
+		if (this.props.imageNumberInGallery !== nextProps.imageNumberInGallery) {
+			setTimeout( () => {
+				if (!this.image.complete) {
+          this.props.setNewImageLoading(true);
+        }
+      }, 50);
+    }
 		if (this.props.index !== nextProps.index && this.image.complete) {
 			this.props.setImageCompleteStatus(this.props.index, true);
 		}
@@ -71,11 +79,6 @@ class ImagesGallery extends React.Component {
 						 onLoad={this.imageLoaded.bind(this)}
 						 onError={this.loadImgError.bind(this)}
 				/>
-				{/*<ShowIf show={!this.image || !this.image.complete}>
-					<div className={holderClass} style={{width: imgWidth}}>
-						<LoadingSpinner/>
-					</div>
-				</ShowIf>*/}
 				<ShowIf show={this.image && this.image.complete && !this.image.naturalWidth}>
 					<div className={holderClass} style={{width: imgWidth, backgroundColor: this.props.isFullScreen ? '#e7e7e7' : ''}}>
 						<p className="title_pos-mod">Sorry, image isn't found.</p>
@@ -112,6 +115,9 @@ const mapDispatchToProps = (dispatch) => {
     },
 		setImageCompleteStatus: (postIndex, isComplete) => {
     	dispatch(setImageCompleteStatus(postIndex, isComplete));
+		},
+		setNewImageLoading: (isLoading) => {
+    	dispatch(setNewImageLoading(isLoading));
 		}
 	}
 };
