@@ -118,13 +118,17 @@ export function editPostClear() {
 export function setInitDataForEditPost(postUrl) {
 	const username = getStore().getState().auth.user;
 	return (dispatch) => {
+		dispatch({
+			type: 'EDIT_POST_INIT_DATA_REQUEST',
+			postUrl
+		});
 		if (!username || !postUrl) {
 			dispatch(createNewPost())
 		} else {
 			PostService.getPost(postUrl)
 				.then((response) => {
 					dispatch({
-						type: 'EDIT_POST_SET_INIT_DATA',
+						type: 'EDIT_POST_INIT_DATA_SUCCESS',
 						initData: {
 							src: response.media[0].url,
 							tags: response.tags.join(' '),
@@ -250,7 +254,7 @@ function getValidTagsString(str) {
 		result = result.replace(/[^\w\s]+/g, '');
 		result = result.replace(new RegExp(`((\\s[^\\s]+){${Constants.TAGS.MAX_AMOUNT - 1}}).*`), '$1');
 		result = result.replace(new RegExp(`(([^\\s]{${Constants.TAGS.MAX_LENGTH}})[^\\s]+).*`), '$2');
-		return result;
+		return deleteSimilarTags(result);
 	}
 }
 

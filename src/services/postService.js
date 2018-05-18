@@ -13,6 +13,7 @@ class PostService {
 			show_nsfw,
 			show_low_rated,
 			limit,
+			username: AuthService.getUsername(),
 			...currentOptions
 		};
 		return RequestService.get(url, options);
@@ -22,7 +23,8 @@ class PostService {
 		const url = `post/${PostService.getUsernameFromUrl(postUrl)}/${PostService.getPermlinkFromUrl(postUrl)}/info`;
 		const options = {
 			show_nsfw: true,
-			show_low_rated: true
+			show_low_rated: true,
+			username: AuthService.getUsername()
 		};
 
 		return RequestService.get(url, options);

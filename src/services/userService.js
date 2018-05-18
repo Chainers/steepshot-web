@@ -1,5 +1,4 @@
 import RequestService from "./requestService";
-import storage from "../utils/Storage";
 import Constants from "../common/constants";
 import AuthService from "./authService";
 import SteemService from "./steemService";
@@ -12,6 +11,7 @@ class UserService {
 		const options = {
 			offset,
 			limit,
+			username: AuthService.getUsername(),
 			...currentOptions
 		};
 		return RequestService.get(url, options);
@@ -21,11 +21,11 @@ class UserService {
 		return RequestService.get(`user/${username}/spam`);
 	}
 
-	static getProfile(username) {
+	static getProfile(username, show_nsfw, show_low_rated) {
 		const options = {
-			show_nsfw: true,
-			show_low_rated: true,
-			username: storage.username || undefined
+			show_nsfw,
+			show_low_rated,
+			username: AuthService.getUsername()
 		};
 		return RequestService.get(`user/${username}/info`, options);
 	}

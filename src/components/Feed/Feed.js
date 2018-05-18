@@ -30,7 +30,6 @@ class Feed extends React.Component {
 					<PostsList
 						point={Constants.POSTS_FILTERS.POSTS_USER_FEED.point}
 						wrapperModifier="posts-list clearfix"
-						options={{username: this.props.username}}
 					/>
 				</div>
 			</div>

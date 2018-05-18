@@ -53,6 +53,9 @@ class EditPost extends React.Component {
 
 	imageChanged(event) {
 		event.preventDefault();
+		if(!this.inputField.value) {
+			return;
+		}
 		const reader = new FileReader();
 		const file = event.target.files[0];
 		if (typeof file === 'object') {
@@ -74,6 +77,7 @@ class EditPost extends React.Component {
 			}
 		};
 		reader.readAsDataURL(file);
+		this.inputField.value = '';
 	}
 
 	setImageContainerSize(rotate) {
@@ -163,6 +167,7 @@ class EditPost extends React.Component {
 							<input className="file-input_edi-pos"
 										 type="file"
 										 onChange={this.imageChanged.bind(this)}
+										 ref={ref => this.inputField = ref}
 							/>
 						</ShowIf>
 					</div>
@@ -222,9 +227,10 @@ class EditPost extends React.Component {
 }
 
 const mapStateToProps = (state, props) => {
-	const {postUrl} = props.match.params;
+	const {category, username, permlink} = props.match.params;
 	return {
-		postUrl,
+		postUrl: `${category}/${username}/${permlink}`,
+		isNew: !state.editPost.initData.src,
 		...state.editPost
 	};
 };
