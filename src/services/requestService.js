@@ -1,4 +1,5 @@
 import Constants from "../common/constants";
+import {utils} from "../utils/utils";
 
 class RequestService {
 
@@ -52,7 +53,7 @@ function convertOptionsToRequestString(options) {
 
 	let optionsArray = [];
 	for (let key in options) {
-		if (options[key]) optionsArray.push(key + '=' + convertIfBool(options[key]));
+		if (utils.isNotEmpty(options[key])) optionsArray.push(key + '=' + convertIfBool(options[key]));
 	}
 	return '?' + optionsArray.join('&');
 }

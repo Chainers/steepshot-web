@@ -7,7 +7,7 @@ import AuthService from "./authService";
 
 class PostService {
 
-	static getPostsList(url, offset, show_nsfw, show_low_rated, limit, currentOptions) {
+	static getPostsList(url, offset, show_nsfw = 0, show_low_rated = 0, limit, currentOptions) {
 		const options = {
 			offset,
 			show_nsfw,
