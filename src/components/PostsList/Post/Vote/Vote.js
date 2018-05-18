@@ -67,7 +67,7 @@ class Vote extends React.Component {
   hideWithDelay() {
     let hidePLIndTimeout = setTimeout(() => {
       this.fluidHide();
-    }, 1400);
+    }, 1400000);
     this.props.setHidePowerLikeTimeout(this.props.postIndex, hidePLIndTimeout);
   }
 

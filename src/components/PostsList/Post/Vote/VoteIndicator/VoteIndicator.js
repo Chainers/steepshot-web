@@ -51,7 +51,7 @@ class VoteIndicator extends React.Component {
       const NUMBER_OF_PARTS = 4, DOT_DIAMETER = 6, LINE_WIDTH = this.props.sliderWidth;
       let dots = [];
       let dotOffset = LINE_WIDTH / NUMBER_OF_PARTS - DOT_DIAMETER / NUMBER_OF_PARTS;
-      for (let i = 0; i < 5; i++) {
+      for (let i = 0; i < NUMBER_OF_PARTS + 1; i++) {
         dots.push(
 					<div key={i} className="circle_vote-ind" style={{left: i * dotOffset,
 						background: this.props.likePower > i * (99 / NUMBER_OF_PARTS) ? '#ff7500' : '#e6e6e6'}}/>
