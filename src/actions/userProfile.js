@@ -4,22 +4,25 @@ import {pushMessage} from "./pushMessage";
 import UserService from "../services/userService";
 
 export function getUserProfile(userName) {
+	let settings = getStore().getState().settings;
 	return dispatch => {
 		dispatch({
 			type: "GET_USER_PROFILE_REQUEST"
 		});
-		UserService.getProfile(userName).then((result) => {
-			dispatch({
-				type: 'GET_USER_PROFILE_SUCCESS',
-				profile: result
+		UserService.getProfile(userName, settings.show_nsfw, settings.show_low_rated)
+			.then((result) => {
+				dispatch({
+					type: 'GET_USER_PROFILE_SUCCESS',
+					profile: result
+				});
+			})
+			.catch(error => {
+				dispatch({
+					type: 'GET_USER_PROFILE_ERROR',
+					error
+				});
+				dispatch(push('/search/' + userName));
 			});
-		}).catch(error => {
-			dispatch({
-				type: 'GET_USER_PROFILE_ERROR',
-				error
-			});
-			dispatch(push('/search/' + userName));
-		});
 	}
 }
 
