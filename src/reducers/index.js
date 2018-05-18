@@ -27,6 +27,8 @@ import session from "./session";
 import windowOnStore from "./windowOnStore";
 import settings from "./settings";
 import mobileNavigation from "./mobileNavigation";
+import oneSignal from "./oneSignal";
+import settingsFields from "./settingsFields";
 import advertising from "./advertising";
 
 export default combineReducers({
@@ -57,6 +59,8 @@ export default combineReducers({
 	session,
 	window: windowOnStore,
 	settings,
+	settingsFields,
 	mobileNavigation,
-  advertising
+  advertising,
+	oneSignal
 });

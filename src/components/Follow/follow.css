@@ -1,0 +1,122 @@
+.container_follow {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.follow-button_follow, .unfollow-button_follow, .saving_follow {
+    width: 105px;
+    cursor: pointer;
+    display: inline-block;
+    margin-bottom: 0;
+    font-family: OpenSans-SemiBold, Helvetica, Arial, sans-serif;
+    text-align: center;
+    vertical-align: middle;
+    border: 1px solid transparent;
+    padding: 12px 10px;
+    font-size: 14px;
+    line-height: 1;
+    border-radius: 21px;
+    transition: .2s all ease;
+}
+
+.follow-button_follow {
+    background: linear-gradient(90deg,#ff7904,#ff1605);
+    border: 1px transparent;
+    color: #fff;
+    box-shadow: 0 10px 20px 0 rgba(231,72,0,.3);
+}
+
+.follow-button_follow:active {
+    border-color: transparent;
+    outline: 0;
+    box-shadow: none;
+}
+
+.follow-button_follow:hover {
+    box-shadow: 0 5px 12px 0 rgba(231,72,0,.3);
+}
+
+.unfollow-button_follow {
+    background: #fff;
+    color: #0f181e;
+    padding: 12px 10px;
+    border: 1px solid #e7e7e7;
+}
+
+.unfollow-button_follow:active {
+    color: #0f181e;
+    outline: 0;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,.1);
+}
+
+.unfollow-button_follow:hover {
+    outline: 0;
+    text-decoration: none;
+    color: #e74800;
+}
+
+.saving_follow {
+    background: #f1f1f1;
+    opacity: .3;
+    cursor: not-allowed;
+    color: #0f181e;
+    padding: 12px 10px;
+}
+
+.saving_follow span {
+    animation-name: blink;
+    animation-duration: 1.4s;
+    animation-iteration-count: infinite;
+    animation-fill-mode: both;
+}
+
+.saving_follow span:nth-child(2) {
+    animation-delay: .2s;
+}
+
+.saving_follow span:nth-child(3) {
+    animation-delay: .4s;
+}
+
+.subscribe_follow, .unsubscribe_follow, .subscribing_follow {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-left: 10px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-size: 16px 18px;
+    border: solid 1px #e7e7e7;
+}
+
+.subscribe_follow, .subscribing_follow {
+    background: url('/images/userProfile/subscribe.svg') no-repeat 10px 10px;
+}
+
+.unsubscribe_follow {
+    background: url('/images/userProfile/subscribed.svg') no-repeat 9px 10px;
+}
+
+@keyframes subscribing {
+    0% {
+        transform: rotate(10grad);
+    }
+    50% {
+        transform: rotate(-20grad);
+    }
+    100% {
+        transform: rotate(10grad);
+    }
+}
+
+.subscribing_follow {
+    animation-name: subscribing;
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
+    animation-fill-mode: both;
+}
+

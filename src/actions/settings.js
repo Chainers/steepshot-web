@@ -1,45 +1,31 @@
-import Constants from "../common/constants";
+import {getStore} from "../store/configureStore";
+import {setSubscribeOnBackend, subscribe} from "./oneSignal";
+import storage from "../utils/Storage";
 
-export function getSettings() {
-	return JSON.parse(localStorage.getItem('settings'))
-		|| {
-			[Constants.SETTINGS.show_low_rated]: Constants.SETTINGS.default.show_low_rated,
-			[Constants.SETTINGS.show_nsfw]: Constants.SETTINGS.default.show_nsfw
+export function checkSubscribeAndUpdateSettings() {
+	return dispatch => {
+		if (!storage.shownSubscribe) {
+			dispatch(subscribe())
+		} else {
+			dispatch(updateSettings());
 		}
-}
-
-function updateSettingsInLocalStorage(lowRated, nsfw) {
-	let settings = {
-		[Constants.SETTINGS.show_low_rated]: lowRated,
-		[Constants.SETTINGS.show_nsfw]: nsfw
-	};
-	localStorage.removeItem('settings');
-	localStorage.setItem('settings', JSON.stringify(settings));
-}
-
-export function updateSettings(lowRated, nsfw) {
-	updateSettingsInLocalStorage(lowRated, nsfw);
-	return {
-		type: 'UPDATE_SETTINGS',
-		[Constants.SETTINGS.show_low_rated]: lowRated,
-		[Constants.SETTINGS.show_nsfw]: nsfw
 	}
 }
 
-export function toggleLowRated() {
-	return {
-		type: 'TOGGLE_LOW_RATED_BTN'
+export function updateSettings() {
+	return dispatch => {
+		let settings = getStore().getState().settingsFields;
+		storage.settings = settings;
+		dispatch(setSubscribeOnBackend());
+		dispatch({
+			type: 'UPDATE_SETTINGS',
+			settings
+		});
 	}
 }
 
-export function toggleNsfw() {
+export function removeSettings() {
 	return {
-		type: 'TOGGLE_NSFW_BTN'
-	}
-}
-
-export function setOldSettings() {
-	return {
-		type: 'SET_OLD_SETTINGS'
+		type: 'REMOVE_SETTINGS'
 	}
 }

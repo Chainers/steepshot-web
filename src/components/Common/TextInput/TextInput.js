@@ -127,8 +127,12 @@ class TextInput extends React.Component {
 		return areaModifier + this.props.multiline ? ' multiline_tex-inp' : '';
 	}
 
-	_keyPress(event) {
-		this._callFunctionsFromProps(event.charCode);
+	_keyUp(e) {
+    let keyCode = e.keyCode || e.which;
+    if (keyCode === 0 || keyCode === 229) {
+      keyCode = this.input.value.charCodeAt(this.input.value.length - 1);
+    }
+    this._callFunctionsFromProps(keyCode);
 	}
 
 	render() {
@@ -141,7 +145,7 @@ class TextInput extends React.Component {
 				<div className="input-container_tex-inp">
           <textarea className={'area_tex-inp input-text_tex-inp' + this.areaModifier}
 										onChange={this.onChange.bind(this)}
-										onKeyPress={this._keyPress.bind(this)}
+										onKeyUp={this._keyUp.bind(this)}
 										value={this.props.text}
 										maxLength={this.props.maxLength}
 										ref={ref => this.input = ref}

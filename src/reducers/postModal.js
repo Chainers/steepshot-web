@@ -4,7 +4,7 @@ const initialState = {
 	fullScreenMode: false,
 	fullScreenNavigation: true,
 	timeoutID: null,
-	newImageLoader: true
+	newImageLoading: true
 };
 
 export default function postModal(state = initialState, action) {
@@ -23,7 +23,8 @@ export default function postModal(state = initialState, action) {
 				fullScreenMode: state.fullScreenMode,
 				fullScreenNavigation: state.fullScreenNavigation,
 				timeoutID: state.timeoutID,
-				newImageLoader: true
+        newImageLoading: action.isLoading,
+        previousStyle: state.style
 			};
 
 		case 'SET_FULL_SCREEN':
@@ -44,6 +45,11 @@ export default function postModal(state = initialState, action) {
 			return {
 				...state,
 				postOffset: action.postOffset
+			};
+		case 'SET_NEW_IMAGE_LOADING':
+			return {
+				...state,
+        newImageLoading: action.newImageLoading
 			};
 
 		default:

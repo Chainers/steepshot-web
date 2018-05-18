@@ -1,5 +1,7 @@
+import storage from "../utils/Storage";
+
 export function setAdvertisingStatus(status) {
-  localStorage.setItem('advertisingStatus', status);
+	storage.advertisingStatus = status;
   return {
     type: 'SET_ADVERTISING_STATUS',
     status

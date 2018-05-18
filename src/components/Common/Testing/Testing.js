@@ -1,6 +1,5 @@
 import React from 'react';
 import './testing.css';
-import MobileNavigation from "../../MobileNavigation/MobileNavigation";
 
 class Testing extends React.Component {
 
@@ -9,7 +8,7 @@ class Testing extends React.Component {
 			return null;
 		}
 		return (
-			<MobileNavigation/>
+			null
 		);
 	}
 }

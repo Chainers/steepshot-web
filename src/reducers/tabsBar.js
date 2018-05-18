@@ -1,3 +1,5 @@
+import storage from "../utils/Storage";
+
 const initialState = {
 	search: {
 		activeIndex: 0,
@@ -12,7 +14,7 @@ const initialState = {
 		pageLoaded: false
 	},
 	browser: {
-		activeIndex: parseInt(localStorage.getItem('browse') || 1, 10),
+		activeIndex: parseInt(storage.browse || 1, 10),
 		pageLoaded: false
 	}
 };

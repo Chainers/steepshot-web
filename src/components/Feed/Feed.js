@@ -4,6 +4,7 @@ import {documentTitle} from '../../utils/documentTitle';
 import PostsList from '../PostsList/PostsList';
 import {addMetaTags, getDefaultTags} from "../../actions/metaTags";
 import {withWrapper} from "create-react-server/wrapper";
+import {connect} from "react-redux";
 
 class Feed extends React.Component {
 
@@ -28,8 +29,8 @@ class Feed extends React.Component {
 				<div id="workspace" className="g-content clearfix">
 					<PostsList
 						point={Constants.POSTS_FILTERS.POSTS_USER_FEED.point}
-						cancelPrevious={false}
 						wrapperModifier="posts-list clearfix"
+						options={{username: this.props.username}}
 					/>
 				</div>
 			</div>
@@ -38,4 +39,10 @@ class Feed extends React.Component {
 }
 
 
-export default withWrapper(Feed);
+const mapStateToProps = (state) => {
+	return {
+		username: state.auth.user
+	}
+};
+
+export default connect(mapStateToProps)(withWrapper(Feed));

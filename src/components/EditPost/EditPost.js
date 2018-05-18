@@ -8,13 +8,13 @@ import {
 import EditTags from "../Common/EditTags/EditTags";
 import ShowIf from "../Common/ShowIf";
 import {utils} from "../../utils/utils";
-import Constants from "../../common/constants";
 import LoadingSpinner from "../LoadingSpinner";
 import {documentTitle} from "../../utils/documentTitle";
 import './editPost.css';
 import Timer from "../Common/Timer/Timer";
 import {withWrapper} from "create-react-server/wrapper";
 import {addMetaTags, getDefaultTags} from "../../actions/metaTags";
+import Constants from "../../common/constants";
 
 class EditPost extends React.Component {
 
@@ -27,15 +27,15 @@ class EditPost extends React.Component {
 	}
 
 	constructor(props) {
-		super(props);
+		super();
 		this.setImageContainerSize = this.setImageContainerSize.bind(this);
-		props.setInitDataForEditPost(props.username, props.postId);
+		props.setInitDataForEditPost(props.postUrl);
 	}
 
 	componentWillReceiveProps(nextProps) {
 		documentTitle();
-		if (this.props.postId !== nextProps.postId) {
-			this.props.setInitDataForEditPost(nextProps.username, nextProps.postId);
+		if (this.props.postUrl !== nextProps.postUrl) {
+			this.props.setInitDataForEditPost(nextProps.postUrl);
 		}
 		if (this.props.rotate !== nextProps.rotate) {
 			this.setImageContainerSize(nextProps.rotate);
@@ -183,7 +183,7 @@ class EditPost extends React.Component {
 										 point={Constants.TEXT_INPUT_POINT.TAGS}
 										 multiline={false}
 										 description="Enter tags with spaces, but not more than 20"
-										 noValidCharacters="[^A-Za-z0-9]"
+										 noValidCharacters="[^\w\s]"
 										 keyPressEvents={[{
 											 keys: [Constants.KEYS.SPACE, Constants.KEYS.ENTER],
 											 func: () => this.props.addTag()
@@ -222,10 +222,9 @@ class EditPost extends React.Component {
 }
 
 const mapStateToProps = (state, props) => {
-	const {postId} = props.match.params;
+	const {postUrl} = props.match.params;
 	return {
-		postId,
-		username: state.auth.user,
+		postUrl,
 		...state.editPost
 	};
 };
@@ -247,8 +246,8 @@ const mapDispatchToProps = (dispatch) => {
 		setImageContainerSize: (width, height) => {
 			dispatch(setImageContainerSize(width, height))
 		},
-		setInitDataForEditPost: (username, postId) => {
-			dispatch(setInitDataForEditPost(username, postId))
+		setInitDataForEditPost: (postUrl) => {
+			dispatch(setInitDataForEditPost(postUrl))
 		},
 		editPostClear: () => {
 			dispatch(editPostClear())
