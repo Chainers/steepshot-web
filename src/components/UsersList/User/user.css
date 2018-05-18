@@ -10,6 +10,15 @@
     border-radius: 4px;
 }
 
+.name_user {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    vertical-align: top;
+    padding-left: 10px;
+    flex-grow: 2;
+    max-width: 140px;
+}
+
 .name_user a {
     white-space: nowrap;
     text-overflow: ellipsis;
@@ -24,14 +33,6 @@
 
 .name_user a:hover {
     color: #e74800;
-}
-
-.name_user {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    vertical-align: top;
-    padding-left: 10px;
-    flex-grow: 2;
 }
 
 .ava-name-wrap_user {

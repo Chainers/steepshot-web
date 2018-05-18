@@ -20,7 +20,6 @@ export function openPostModal(point, index, options) {
 }
 
 export function setPostModalOptions(options) {
-	console.log(options);
 	return (dispatch) => {
 		dispatch({
 			type: 'SET_POST_MODAL_OPTIONS',
@@ -29,14 +28,15 @@ export function setPostModalOptions(options) {
 	}
 }
 
-function swapPostModal(index) {
+function swapPostModal(index, isLoading) {
 	return {
 		type: 'SWAP_POST_MODAL',
-		index
+		index,
+		isLoading
 	}
 }
 
-export function nextPostModal(index) {
+export function nextPostModal(index, isLoading) {
 	let state = getStore().getState();
 	if (Object.keys(state.modals).length >= 2) {
 		return {
@@ -59,12 +59,12 @@ export function nextPostModal(index) {
 			}
 		} else {
 			let newIndex = postsList[positionPost + 1];
-			dispatch(swapPostModal(newIndex))
+			dispatch(swapPostModal(newIndex, isLoading))
 		}
 	}
 }
 
-export function previousPostModal(index) {
+export function previousPostModal(index, isLoading) {
 	let state = getStore().getState();
 	if (Object.keys(state.modals).length >= 2) {
 		return {
@@ -81,7 +81,7 @@ export function previousPostModal(index) {
 	}
 	return (dispatch) => {
 		let newIndex = postsList[positionPost - 1];
-		dispatch(swapPostModal(newIndex))
+		dispatch(swapPostModal(newIndex, isLoading))
 	}
 }
 
@@ -114,3 +114,9 @@ export function setPostOffset(offset) {
 	}
 }
 
+export function setNewImageLoading(isLoading) {
+	return {
+		type: 'SET_NEW_IMAGE_LOADING',
+		newImageLoading: isLoading
+	}
+}

@@ -1,6 +1,6 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
-import {utils} from "../../../../utils/utils";
+import {utils} from '../../../../utils/utils';
 import './tags.css';
 
 class Tags extends React.Component {
@@ -24,7 +24,7 @@ class Tags extends React.Component {
 
 	render() {
 		return (
-			<div className="container_tags">
+			<div className="container_tags break--word">
 				{this.getTags()}
 			</div>
 		);

@@ -29,13 +29,6 @@
     background: #e7e7e7;
 }
 
-.open-fs-dblclick_pos-mod {
-    position: absolute;
-    z-index: 3;
-    width: 100%;
-    height: 100%;
-}
-
 .resizing-filter_pos-mod {
     display: flex;
     justify-content: center;
@@ -376,7 +369,6 @@
 
 .full-image-wrap_pos-mod {
     position: relative;
-    width: 85vw;
     overflow: hidden;
 }
 
