@@ -63,7 +63,6 @@ function logCORS(url, operation, error = '') {
 		username: AuthService.getUsername(),
 		error
 	};
-
 	const options = {
 		method: 'POST',
 		mode: 'cors',

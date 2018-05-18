@@ -39,13 +39,12 @@ export function login(username, postingKey) {
 				if (!isValid) {
 					return dispatch(loginError('Invalid username or posting key'));
 				}
-
-				LoggingService.logLogin();
 				let avatar = getAvatar(response[0]);
 				storage.user = username;
 				storage.postingKey = postingKey;
 				storage.like_power = 100;
 				storage.avatar = avatar;
+				LoggingService.logLogin();
 				OneSignalService.addNotificationTags(username);
 				dispatch(checkSubscribeAndUpdateSettings());
 				dispatch({
@@ -63,7 +62,11 @@ export function login(username, postingKey) {
 				let parseResult = JSON.parse(response[0].json_metadata);
 				dispatch(showMessage('Welcome to Steepshot, ' + (parseResult.profile.name || username) + '!'));
 			})
-			.catch(() => {
+			.catch((error) => {
+				dispatch({
+					type: "LOGIN_ERROR",
+					error
+				});
 				return dispatch(loginError('Something went wrong, please, try again later'));
 			})
 	}
