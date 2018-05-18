@@ -29,20 +29,20 @@ class PostService {
 	}
 
 	static changeVote(postAuthor, permlink, voteStatus, power) {
-		SteemService.changeVoteInBlockchain(postAuthor, permlink, voteStatus ? power : 0)
+		return SteemService.changeVoteInBlockchain(postAuthor, permlink, voteStatus ? power : 0)
 			.then(response => {
-				LoggingService.logVote(voteStatus, permlink);
+				LoggingService.logVote(voteStatus, permlink, postAuthor);
 				return Promise.resolve(response);
 			})
 			.catch(error => {
 				let checkedError = blockchainErrorsList(error);
-				LoggingService.logVote(voteStatus, permlink, checkedError);
+				LoggingService.logVote(voteStatus, permlink, postAuthor, checkedError);
 				return Promise.reject(checkedError);
 			})
 	}
 
 	static changeFlag(postAuthor, permlink, isFlag, power = -10000) {
-		SteemService.changeVoteInBlockchain(postAuthor, permlink, isFlag ? power : 0)
+		return SteemService.changeVoteInBlockchain(postAuthor, permlink, isFlag ? power : 0)
 			.then(response => {
 				LoggingService.logFlag(isFlag, permlink, postAuthor);
 				return Promise.resolve(response);
