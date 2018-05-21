@@ -35,7 +35,7 @@ class PlagiarismTracking extends React.Component {
 			})
 			.catch(error => {
 				this.props.editPostReject(error);
-				this.props.pushMessage(error.message);
+				this.props.pushMessage(error);
 			});
 		this.props.closeModal('PlagiarismTrackingModal');
 		this.props.editPostRequest();
