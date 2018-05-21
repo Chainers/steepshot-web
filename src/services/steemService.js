@@ -44,6 +44,7 @@ class SteemService {
 	}
 
 	static addPostDataToBlockchain(operations) {
+		console.log(operations);
 		return processResponse(callback => {
 			steem.broadcast.sendAsync(
 				{operations, extensions: []},
@@ -109,6 +110,7 @@ function processResponse(sendingFunction) {
 		const callbackBc = (err, success) => {
 			let errorMessage = '';
 			if (err) {
+				console.error(err);
 				errorMessage = blockchainErrorsList(err);
 				reject(errorMessage);
 			} else if (success) {

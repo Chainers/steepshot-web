@@ -103,20 +103,20 @@ class PostService {
 		tags = getValidTags(tags);
 		const operation = getDefaultPostOperation(title, tags, description, permlink);
 
-		return preparePost(tags, description, permlink, media)
+		return preparePost(tags, description, permlink, [media])
 			.then(response => {
-				operation.body = response.body;
-				operation.json_metadata = response.json_metadata;
-				return SteemService.addPostDataToBlockchain([operation])
+				operation[1].body = response.body;
+				operation[1].json_metadata = JSON.stringify(response.json_metadata);
+				const operations = [operation];
+				return SteemService.addPostDataToBlockchain(operations)
 			})
 			.then(response => {
 				LoggingService.logEditPost(permlink);
 				return Promise.resolve(response);
 			})
 			.catch(error => {
-				let checkedError = blockchainErrorsList(error);
-				LoggingService.logEditPost(permlink, checkedError);
-				return Promise.reject(checkedError);
+				LoggingService.logEditPost(permlink, error);
+				return Promise.reject(error);
 			})
 	}
 
@@ -129,7 +129,7 @@ class PostService {
 			})
 			.catch(() => {
 				const operation = getDefaultPostOperation(post.title, post.tags, post.description, permlink);
-				operation.body = '*deleted*';
+				operation[1].body = '*deleted*';
 				return SteemService.addPostDataToBlockchain([operation]);
 			})
 			.then(response => {

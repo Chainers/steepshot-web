@@ -162,7 +162,7 @@ export function editPost() {
 			})
 			.catch(error => {
 				dispatch(editPostReject(error));
-				dispatch(pushMessage(error.message));
+				dispatch(pushMessage(error));
 			})
 	}
 }
@@ -174,9 +174,9 @@ export function createPost() {
 		if (!isValidField(dispatch, title, photoSrc)) {
 			return;
 		}
+		dispatch(editPostRequest());
 		checkTimeAfterUpdatedLastPost()
 			.then(() => {
-				dispatch(editPostRequest());
 				const dataType = 'image/gif';
 				const image = new Image();
 				image.src = photoSrc;
