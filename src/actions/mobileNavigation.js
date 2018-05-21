@@ -1,4 +1,4 @@
-import {getStore} from "../store/configureStore";
+import {getStore} from '../store/configureStore';
 
 export function openMobileNavigation() {
 	document.body.classList.add('no-scroll_body');

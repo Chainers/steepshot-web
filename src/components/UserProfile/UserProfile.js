@@ -1,7 +1,5 @@
 import React from 'react';
-import {getFollowers, getFollowing} from '../../services/posts';
 import {connect} from 'react-redux';
-import FollowComponent from '../Posts/FollowComponent';
 import Constants from '../../common/constants';
 import Avatar from '../Common/Avatar/Avatar';
 import PostsList from '../PostsList/PostsList';
@@ -17,6 +15,7 @@ import ShowIf from "../Common/ShowIf";
 import LoadingSpinner from "../LoadingSpinner";
 import './userProfile.css';
 import {setActiveIndex} from "../../actions/tabsBar";
+import Follow from "../Follow/Follow";
 
 class UserProfile extends React.Component {
 
@@ -29,8 +28,8 @@ class UserProfile extends React.Component {
 	}
 
 	constructor(props) {
-		super(props);
-		this.props.getUserProfile(props.username);
+		super();
+		props.getUserProfile(props.username);
 	}
 
 	componentWillReceiveProps(nextProps) {
@@ -68,7 +67,7 @@ class UserProfile extends React.Component {
 													powerIndicator={this.props.isYourProfile}
 									/>
 									<ShowIf show={!this.props.isYourProfile && this.props.isAuth}>
-										<FollowComponent item={this.props.profile}/>
+										<Follow/>
 									</ShowIf>
 								</div>
 								<div className="name">{name}</div>
@@ -109,7 +108,6 @@ class UserProfile extends React.Component {
 										<UsersList
 											point={insertUsername(Constants.USERS_FILTERS.FOLLOWING.point, this.props.username)}
 											className="posts-list clearfix type-2"
-											getUsers={getFollowers}
 											isComponentVisible={this.props.activeIndex === 1}
 										/>
 								</Tab>
@@ -117,7 +115,6 @@ class UserProfile extends React.Component {
 										<UsersList
 											point={insertUsername(Constants.USERS_FILTERS.FOLLOWERS.point, this.props.username)}
 											className="posts-list clearfix type-2"
-											getUsers={getFollowing}
 											isComponentVisible={this.props.activeIndex === 2}
 										/>
 								</Tab>

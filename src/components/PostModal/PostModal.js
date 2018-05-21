@@ -1,10 +1,9 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {
-	nextPostModal, previousPostModal, setFSNavigation, setFullScreen, setPostModalOptions,
-	setPostOffset
+  nextPostModal, previousPostModal, setFSNavigation, setFullScreen, setNewImageLoading, setPostModalOptions,
+  setPostOffset
 } from '../../actions/postModal';
-import Constants from '../../common/constants';
 import TimeAgo from 'timeago-react';
 import {Link} from 'react-router-dom';
 import Avatar from '../Common/Avatar/Avatar';
@@ -25,6 +24,9 @@ import ImagesGallery from "../ImagesGallery/ImagesGallery";
 import ReactPlayer from 'react-player'
 import Comments from "../Comments/Comments";
 import './postModal.css';
+import Constants from "../../common/constants";
+import {utils} from "../../utils/utils";
+import {setComponentSize} from "../../utils/setComponentSize";
 
 const HEADER_HEIGHT = 60;
 
@@ -36,7 +38,7 @@ class PostModal extends React.Component {
 
 	constructor() {
 		super();
-		this.setComponentSize = this.setComponentSize.bind(this);
+		this.setPostModalSize = this.setPostModalSize.bind(this);
 		this.showFSNavigation = this.showFSNavigation.bind(this);
 		this.fsCheckButtons = this.fsCheckButtons.bind(this);
 		this.initKeyPress = this.initKeyPress.bind(this);
@@ -46,7 +48,7 @@ class PostModal extends React.Component {
 	componentDidMount() {
 		window.addEventListener('keydown', this.initKeyPress);
 		window.addEventListener('resize', this.resizePostModal);
-		this.setComponentSize();
+		this.setPostModalSize();
 	}
 
 	componentWillUnmount() {
@@ -61,8 +63,13 @@ class PostModal extends React.Component {
 		}
 	}
 
+	shouldComponentUpdate(nextProps) {
+    if (utils.equalsObjects(nextProps, this.props)) return false;
+    return true;
+	}
+
 	resizePostModal() {
-		this.setComponentSize();
+		this.setPostModalSize(this.props.fullScreenMode);
 	}
 
 	checkFSFirstLast(isClick) {
@@ -82,7 +89,7 @@ class PostModal extends React.Component {
 		this.checkFSFirstLast(isClick);
     if (this.props.post.isPLOpen) return;
 		if (!this.props.firstPost) {
-			this.props.previous(this.props.currentIndex);
+			this.props.previous(this.props.currentIndex, !this.props.completeStatus);
 		}
 	}
 
@@ -93,7 +100,7 @@ class PostModal extends React.Component {
 			return;
 		}
 		if (!this.props.lastPost) {
-			this.props.next(this.props.currentIndex);
+			this.props.next(this.props.currentIndex, !this.props.completeStatus);
 		}
 	}
 
@@ -108,7 +115,7 @@ class PostModal extends React.Component {
 					break;
 				case 27:
 					if (this.props.fullScreenMode) {
-						this.setFullScreen(false);
+						this.setFullScreen(false, false);
 					} else {
 						this.props.closeModal(this.props.point);
 					}
@@ -161,13 +168,13 @@ class PostModal extends React.Component {
 		)
 	}
 
-	resizingFilter() {
+	loadingFilter(isFullScreen) {
+    let holderClass = isFullScreen ? 'before-load-full-screen_pos-mod' : 'before-load-curtain_pos-mod';
+    if (!this.props.newImageLoading) return null;
 		return (
-			<ShowIf show={this.props.isResizeCover && this.props.isGallery}>
-				<div className="resizing-filter_pos-mod">
-					<p>Resizing...</p>
-				</div>
-			</ShowIf>
+			<div className={holderClass} style={{width: '100%'}}>
+				<LoadingSpinner/>
+			</div>
 		)
 	}
 
@@ -179,18 +186,22 @@ class PostModal extends React.Component {
 	}
 
 	renderImage() {
+    let previousImageWidth;
+    if (this.props.previousStyle && this.props.previousStyle.image) {
+    	previousImageWidth = {width: this.props.previousStyle.image.width};
+		}
 		return (
-			<div className="image-container_pos-mod" style={this.props.style.imgCont}>
+			<div className="image-container_pos-mod"
+					 style={this.props.style.imgCont || previousImageWidth}
+					 onDoubleClick={(e) => this.setFullScreen(!this.props.fullScreenMode, e)}>
 				{this.lowNSFWFilter()}
-				{this.resizingFilter()}
-				<span className="open-fs-dblclick_pos-mod"
-							onDoubleClick={this.setFullScreen.bind(this, !this.props.fullScreenMode)}/>
+				{this.loadingFilter(false)}
 				<button className="btn btn-default btn-xs"
 								onClick={(e) => this.copyLinkToClipboard(e)}>Copy link
 				</button>
-				<ShowIf show={!this.props.style.isFullScreen && !this.props.fullScreenMode && !this.props.singlePost}>
+				<ShowIf show={!this.props.isFSByScreenSize && !this.props.fullScreenMode && !this.props.singlePost}>
 					<div className="full-screen-button_pos-mod"
-							 onClick={this.setFullScreen.bind(this, true)}
+							 onClick={this.setFullScreen.bind(this, true, false)}
 					>
 						<img className="img-full-screen" src="/images/shape.svg" alt="open full screen"/>
 					</div>
@@ -198,13 +209,12 @@ class PostModal extends React.Component {
 				<ShowIf show={!this.props.post.isVideo}>
 					<ImagesGallery index={this.props.currentIndex}
 												 styles={this.props.style.image}
-												 post={this.props.post}
 												 isFullScreen={false}
-												 setComponentSize={this.setComponentSize}/>
+												 setPostModalSize={this.setPostModalSize}/>
 				</ShowIf>
 				<ShowIf show={this.props.post.isVideo}>
 					<div className="image-container_pos-mod image-container_vid-con"
-							 style={this.props.style.imgCont}
+							 style={this.props.style.imgCont || previousImageWidth}
 					>
 						<ReactPlayer
 							width='100%'
@@ -219,25 +229,29 @@ class PostModal extends React.Component {
 	}
 
 	renderFullScreenImg() {
+    let previousImageWidth;
+    if (this.props.previousStyle && this.props.previousStyle.image) {
+      previousImageWidth = {width: this.props.previousStyle.image.width};
+    }
 		return (
 			<div>
-				<div className="full-image-wrap_pos-mod">
+				<div className="full-image-wrap_pos-mod"
+						 style={this.props.style.imgCont || previousImageWidth}
+						 onDoubleClick={(e) => this.setFullScreen(!this.props.fullScreenMode, e)}>
 					{this.lowNSFWFilter()}
-					{this.resizingFilter()}
-					<span className="open-fs-dblclick_pos-mod"
-								onDoubleClick={this.setFullScreen.bind(this, !this.props.fullScreenMode)}/>
+          {this.loadingFilter(true)}
 					<button className="btn btn-default btn-xs full-screen-share_pos-mod"
 									onClick={(e) => this.copyLinkToClipboard(e)}>Copy link
 					</button>
 					<ShowIf show={!this.props.post.isVideo}>
 						<ImagesGallery index={this.props.currentIndex}
-													 styles={{maxHeight: '90vh', maxWidth: '85vw'}}
-													 post={this.props.post}
+													 styles={this.props.style.image}
 													 isFullScreen={true}
-													 setComponentSize={this.setComponentSize}/>
+													 setPostModalSize={this.setPostModalSize}/>
 					</ShowIf>
 					<ShowIf show={this.props.post.isVideo}>
-						<div className="video-con-fs_pos-mod">
+						<div className="video-con-fs_pos-mod"
+								 style={this.props.style.imgCont || previousImageWidth}>
 							<ReactPlayer
 								height='100%'
 								url={this.props.urlVideo}
@@ -276,7 +290,7 @@ class PostModal extends React.Component {
 						</ShowIf>
 					</div>
 					<div className="close-full-screen_pos-mod"
-							 onClick={this.setFullScreen.bind(this, false)}
+							 onClick={this.setFullScreen.bind(this, false, false)}
 							 onMouseEnter={this.fsNavMouseEnter.bind(this)}
 							 onMouseLeave={this.fsNavMouseLeave.bind(this)}
 					>
@@ -321,12 +335,15 @@ class PostModal extends React.Component {
 	}
 
 	closeFromFullScreen(isOpen) {
-		this.setFullScreen(isOpen);
+		this.setFullScreen(isOpen, false);
 		this.props.closeModal(this.props.point);
 	}
 
-	setFullScreen(isOpen) {
-		if (this.props.singlePost || this.props.style.isFullScreen) {
+	setFullScreen(isOpen, e) {
+		if (e && !e.target.src) {
+			return;
+		}
+		if (this.props.singlePost || this.props.isFSByScreenSize) {
 			return;
 		}
 		let timeoutID = null;
@@ -343,6 +360,7 @@ class PostModal extends React.Component {
 			clearTimeout(this.props.timeoutID);
 			this.props.setFSNavigation(true, null);
 		}
+		this.setPostModalSize(isOpen);
 		this.props.setFullScreen(isOpen, timeoutID);
 	}
 
@@ -381,7 +399,10 @@ class PostModal extends React.Component {
 	render() {
 		const authorLink = `/@${this.props.post.author}`;
 
-		let hideModalFS = this.props.style.container;
+		let previousContainerStyle;
+		if (this.props.previousStyle) previousContainerStyle = this.props.previousStyle.container;
+
+		let hideModalFS = this.props.style.container || previousContainerStyle;
 		if (this.props.fullScreenMode) {
 			hideModalFS = {
 				position: 'absolute',
@@ -468,114 +489,35 @@ class PostModal extends React.Component {
 		);
 	}
 
-	setComponentSize() {
-		const DESC_WIDTH = 380;
-		const MIN_HEIGHT = 440;
-		const MAX_WIDTH_FULL_SCREEN = 815;
-
-		let sideMargin = 0.75;
-
-		const docWidth = this.props.window.width;
-		if (docWidth < 1080) {
-			sideMargin = 0.6;
-		}
-		const docHeight = this.props.window.height;
-		const MAX_IMG_WIDTH = (docWidth - DESC_WIDTH) * sideMargin;
-		const PREFERRED_IMG_WIDTH = Constants.IMAGE.MIN_WIDTH;
-		const isMobile = docWidth < MAX_WIDTH_FULL_SCREEN;
-		const isFullScreen = docWidth < 1025;
-
-		const container = {};
-		container.width = docWidth;
-		container.height = '100%';
-
-		const textareaMarginTop = this.descPosMod ? this.descPosMod.clientHeight - 220 : null;
-
-		const image = {};
-		const imageSizes = this.props.post.media[0].size
-			|| {
-				width: Constants.IMAGE.MIN_WIDTH,
-				height: Constants.IMAGE.MIN_HEIGHT
-			};
-
-		image.width = imageSizes.width;
-		image.height = imageSizes.height;
-
-		const imgCont = {};
-		imgCont.width = '100%';
-		const headerCont = {};
-		if (isMobile) {
-			headerCont.width = '100%';
-		}
-
-		const description = {};
-		description.width = headerCont.width;
-		if (docWidth > MAX_WIDTH_FULL_SCREEN) {
-			image.width = image.width ? image.width : Math.min((docWidth - DESC_WIDTH) * sideMargin, PREFERRED_IMG_WIDTH);
-			container.height = Math.max(docHeight * 0.9, MIN_HEIGHT);
-
-			if (image.height > container.height) {
-				image.width = image.width * container.height / image.height;
-				image.height = container.height;
-			}
-
-			if (image.width > MAX_IMG_WIDTH) {
-				image.height = image.height * MAX_IMG_WIDTH / image.width;
-				image.width = MAX_IMG_WIDTH;
-			}
-
-			container.width = image.width + DESC_WIDTH;
-			imgCont.width = image.width;
-			headerCont.width = DESC_WIDTH;
-
-			container.height = Math.max(image.height, MIN_HEIGHT);
-		} else {
-			image.width = Math.min(image.width, docWidth);
-			image.width = image.width ? image.width : docWidth;
-			image.height = image.height * image.width / imageSizes.width;
-		}
-		let style = {
-			container,
-			image,
-			imgCont,
-			headerCont,
-			description,
-			textareaMarginTop,
-			isMobile,
-			isFullScreen
-		};
+	setPostModalSize(isFullScreen = false) {
+		let style = setComponentSize(this.props.window, this.props.post.media[0].size, isFullScreen);
 		if (JSON.stringify(style) !== JSON.stringify(this.props.style)) {
 			this.props.setPostModalOptions({style});
 		}
-		if (isFullScreen && this.props.fullScreenMode) {
-			this.props.setFullScreen(false);
+		if (this.props.isFSByScreenSize && this.props.fullScreenMode) {
+			this.setFullScreen(false, false);
 		}
+		this.props.setNewImageLoading(false);
 	}
 }
 
 const mapStateToProps = (state) => {
-	let documentWidth = document.documentElement.clientWidth;
 	let currentIndex = state.postModal.currentIndex;
 	let post = state.posts[currentIndex];
 	if (post) {
+    const isFSByScreenSize = state.window.width < 1025;
 		let urlVideo = post.media[0].url;
-		let isGallery = false;
-		if (post.media.length > 1) {
-			isGallery = true;
-		}
 		let postsList = state.postsList[state.postModal.point];
 		return {
 			post,
 			postsList,
 			urlVideo,
-			documentWidth,
+      isFSByScreenSize,
+			completeStatus: post.completeStatus,
 			...state.postModal,
-			isGallery: isGallery,
 			newPostsLoading: postsList.loading,
-			newImageLoader: state.postModal.newImageLoader,
 			isUserAuth: state.auth.user && state.auth.postingKey,
 			authUser: state.auth.user,
-			isResizeCover: state.imagesGallery.isResizeCover,
 			firstPost: postsList.posts[0] === currentIndex,
 			lastPost: postsList.offset === currentIndex,
 			focusedTextInput: state.textInput[Constants.TEXT_INPUT_POINT.COMMENT] ?
@@ -597,11 +539,11 @@ const mapDispatchToProps = (dispatch) => {
 		copyToClipboard: (text) => {
 			dispatch(copyToClipboard(text));
 		},
-		next: (index) => {
-			dispatch(nextPostModal(index));
+		next: (index, isLoading) => {
+			dispatch(nextPostModal(index, isLoading));
 		},
-		previous: (index) => {
-			dispatch(previousPostModal(index));
+		previous: (index, isLoading) => {
+			dispatch(previousPostModal(index, isLoading));
 		},
 		toggleVote: (postIndex) => {
 			dispatch(toggleVote(postIndex));
@@ -620,6 +562,9 @@ const mapDispatchToProps = (dispatch) => {
 		},
 		setPowerLikeTimeout: (index, plTimeout) => {
 			dispatch(setPowerLikeTimeout(index, plTimeout));
+		},
+		setNewImageLoading: (isLoading) => {
+			dispatch(setNewImageLoading(isLoading));
 		},
 		openPushNot: (index, pushNotBody) => {
 			dispatch(openPushNot(index, pushNotBody));

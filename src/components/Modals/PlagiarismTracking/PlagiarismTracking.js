@@ -3,11 +3,11 @@ import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
 import {closeModal} from '../../../actions/modal';
 import {editPostReject, editPostRequest, editPostSuccess} from '../../../actions/editPost';
-import Steem from '../../../libs/steem';
 import constants from '../../../common/constants';
 import {push} from "react-router-redux";
 import './plagiarismTracking.css';
 import {pushMessage} from "../../../actions/pushMessage";
+import PostService from "../../../services/postService";
 
 class PlagiarismTracking extends React.Component {
 
@@ -27,14 +27,15 @@ class PlagiarismTracking extends React.Component {
 
 	continuePublishing() {
 		let data = this.props.data;
-		Steem.afterCheckingPlagiarism(data.operation, data.prepareData, data.beneficiaries).then(() => {
-			this.props.pushMessage(constants.POST_SUCCESSFULLY_CREATED);
-			this.props.editPostSuccess();
-			this.props.historyPush(`/@${this.props.authUser}`);
-		})
+		PostService.afterCheckingPlagiarism(data.operations)
+			.then(() => {
+				this.props.pushMessage(constants.POST_SUCCESSFULLY_CREATED);
+				this.props.editPostSuccess();
+				this.props.historyPush(`/@${this.props.authUser}`);
+			})
 			.catch(error => {
 				this.props.editPostReject(error);
-				this.props.pushMessage(error.message);
+				this.props.pushMessage(error);
 			});
 		this.props.closeModal('PlagiarismTrackingModal');
 		this.props.editPostRequest();

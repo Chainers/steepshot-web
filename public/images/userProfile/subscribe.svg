@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="18px" height="19px" viewBox="0 0 18 19" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 50 (54983) - http://www.bohemiancoding.com/sketch -->
+    <title>notification@1,5x</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Web" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="3_3_User-Profile-Followers" transform="translate(-361.000000, -224.000000)">
+            <g id="Group-4" transform="translate(90.000000, 164.000000)">
+                <g id="Follow-Copy" transform="translate(260.000000, 50.000000)">
+                    <g id="notification" transform="translate(12.000000, 11.000000)">
+                        <path d="M15.0986499,13.896306 C14.0500545,12.6123117 13.2,10.2249115 13.2,8.57142857 L13.2,5.57142857 C13.2,2.49441354 10.8718807,0 8,0 C5.1281193,0 2.8,2.49441354 2.8,5.57142857 L2.8,8.57142857 C2.8,10.2282828 1.94469337,12.6187428 0.901350069,13.896306 L0,15 L16,15 L15.0986499,13.896306 Z" id="Combined-Shape" stroke="#D1D5D8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                        <path d="M6.39985353,14.5714286 C6.14877793,14.9295688 6,15.3747403 6,15.8571429 C6,17.0406102 6.8954305,18 8,18 C9.1045695,18 10,17.0406102 10,15.8571429 C10,15.3747403 9.85122207,14.9295688 9.60014647,14.5714286 L6.39985353,14.5714286 Z" id="Combined-Shape" fill="#D1D5D8"></path>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

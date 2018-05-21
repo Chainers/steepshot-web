@@ -17,12 +17,12 @@ class FormInput extends React.Component {
   }
 
 	inputOnChange() {
-		let nameInput = this.input.value;
+		let inputValue = this.input.value.replace(/\s+/g, '');
 		if (this.props.isName) {
-			nameInput = nameInput.replace(/[^\w-.]+/g, '');
-			nameInput = nameInput.toLowerCase();
+      inputValue = inputValue.replace(/[^\w-.]+/g, '');
+      inputValue = inputValue.toLowerCase();
 		}
-		this.props.changeText(this.props.point, nameInput);
+		this.props.changeText(this.props.point, inputValue);
 	}
 
 	render() {
@@ -43,7 +43,7 @@ class FormInput extends React.Component {
 							 onChange={this.inputOnChange.bind(this)}
 							 ref={ref => this.input = ref}
 				/>
-				<ShowIf show={this.props.errorMsg}>
+				<ShowIf show={!!this.props.errorMsg}>
 					<div className="error-msg_for-inp">{this.props.errorMsg}</div>
 				</ShowIf>
 			</div>

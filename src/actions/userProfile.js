@@ -1,20 +1,53 @@
-import {getProfile} from "../services/userProfile";
 import {push} from "react-router-redux";
+import {getStore} from "../store/configureStore";
+import {pushMessage} from "./pushMessage";
+import UserService from "../services/userService";
 
 export function getUserProfile(userName) {
+	let settings = getStore().getState().settings;
 	return dispatch => {
 		dispatch({
 			type: "GET_USER_PROFILE_REQUEST"
 		});
-			getProfile(userName).then((result) => {
-				if (result.length === 0) {
-					dispatch(push('/search/' + userName));
-					return;
-				}
+		UserService.getProfile(userName, settings.show_nsfw, settings.show_low_rated)
+			.then((result) => {
 				dispatch({
 					type: 'GET_USER_PROFILE_SUCCESS',
 					profile: result
 				});
+			})
+			.catch(error => {
+				dispatch({
+					type: 'GET_USER_PROFILE_ERROR',
+					error
+				});
+				dispatch(push('/search/' + userName));
 			});
+	}
+}
+
+export function changeFollow() {
+	const state = getStore().getState();
+	const followed = state.userProfile.profile['has_followed'];
+	const followingName = state.userProfile.profile.username;
+	return dispatch => {
+		dispatch({
+			type: 'CHANGE_FOLLOW_REQUEST'
+		});
+		UserService.changeFollow(followingName, followed)
+			.then(response => {
+				dispatch(pushMessage(`User has been successfully ${followed ? 'un' : ''}followed`));
+				dispatch({
+					type: 'CHANGE_FOLLOW_SUCCESS',
+					response
+				})
+			})
+			.catch(error => {
+				dispatch(pushMessage(error));
+				dispatch({
+					type: 'CHANGE_FOLLOW_ERROR',
+					error
+				})
+			})
 	}
 }

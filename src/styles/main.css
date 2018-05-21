@@ -3229,7 +3229,9 @@ input[type=button].btn-block, input[type=reset].btn-block, input[type=submit].bt
 }
 
 .user-information .pic-wrap {
-    margin-bottom: 25px
+    margin-bottom: 25px;
+    display: flex;
+    align-items: center;
 }
 
 .user-information .pic_ava-com {

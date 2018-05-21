@@ -33,14 +33,14 @@ const User = ({user, authUser, toggleFollow}) => {
 					<ShowIf show={!user.togglingFollow}>
 						<ShowIf show={!user.has_followed}>
 							<div className="follow-btn_user" onClick={() => toggleFollow(user.author)}>
-								<img src="/images/user/follow-button.svg"
+								<img src="/images/userProfile/follow.svg"
 										 alt="toggle follow"
 								/>
 							</div>
 						</ShowIf>
 						<ShowIf show={user.has_followed}>
 							<div className="following_user">
-								<img src="/images/user/following.svg"
+								<img src="/images/userProfile/followed.svg"
 										 alt="toggle follow"
 								/>
 							</div>

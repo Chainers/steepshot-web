@@ -7,8 +7,16 @@ import Clipboard from "./Clipboard/Clipboard";
 import Modals from "../Modals/Modals";
 import {resizeWindow} from "../../actions/utils";
 import MobileNavigation from "../MobileNavigation/MobileNavigation";
+import {loadSubscribeData} from "../../actions/oneSignal";
 
 class FunctionalUtils extends React.Component {
+
+	constructor(props) {
+		super();
+		if (!global.isServerSide) {
+			props.loadSubscribeData();
+		}
+	}
 
   componentDidMount() {
 		window.addEventListener('resize', this.props.resizeWindow);
@@ -38,7 +46,7 @@ class FunctionalUtils extends React.Component {
   }
 }
 
-const mapStateToProps = (state, props) => {
+const mapStateToProps = (state) => {
   return {
     user: state.auth.user
   }
@@ -51,6 +59,9 @@ const mapDispatchToProps = (dispatch) => {
     },
 		resizeWindow: (width, height) => {
     	dispatch(resizeWindow(width, height))
+		},
+		loadSubscribeData: () => {
+			dispatch(loadSubscribeData())
 		}
   }
 };

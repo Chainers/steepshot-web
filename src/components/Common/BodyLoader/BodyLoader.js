@@ -1,21 +1,10 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import ShowIf from '../ShowIf';
-import LoadingSpinner from "../../LoadingSpinner";
-import './bodyLoader.css';
+import BlockLoader from "../BlockLoader/BlockLoader";
 
-class BodyLoader extends React.Component {
-
-	render() {
-		return (
-			<ShowIf show={this.props.loading}>
-				<div className="container_body-loader">
-					<LoadingSpinner/>
-				</div>
-			</ShowIf>
-		)
-	}
-}
+const BodyLoader = ({loading}) => (
+	<BlockLoader show={loading}/>
+);
 
 const mapStateToProps = (state) => {
 	return {

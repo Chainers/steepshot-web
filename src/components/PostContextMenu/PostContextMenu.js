@@ -3,7 +3,6 @@ import Menu from './Menu/Menu';
 import ConfirmDeleteModal from './ConfirmDeleteModal/ConfirmDeleteModal';
 import ChooseSocialNetwork from './ChooseSocialNetwork/ChooseSocialNetwork';
 import ConfirmFlagModal from './ConfirmFlagModal/ConfirmFlagModal';
-import Constants from '../../common/constants';
 import {connect} from 'react-redux';
 import {toggleFlag} from '../../actions/flag';
 import {copyToClipboard} from '../../actions/clipboard';
@@ -12,6 +11,7 @@ import {deletePost} from '../../actions/post';
 import './postContextMenu.css';
 import {push} from 'react-router-redux';
 import {pushMessage} from "../../actions/pushMessage";
+import Constants from "../../common/constants";
 
 class PostContextMenu extends React.Component {
 

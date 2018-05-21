@@ -1,15 +1,15 @@
-export function setGalleryImgIndex(postIndex, imgIndex) {
+export function setGalleryImage(postIndex, imageNumberInGallery) {
   return {
-    type: 'SET_GALLERY_IMG_INDEX',
+    type: 'SET_GALLERY_IMG',
     postIndex,
-    imgIndex
+    imageNumberInGallery
   }
 }
 
-export function setResizeCoverBlock(isResizeCover, resizeCoverTimeout) {
+export function setImageCompleteStatus(postIndex, isComplete) {
   return {
-    type: 'SET_RESIZE_COVER_BLOCK',
-    isResizeCover,
-    resizeCoverTimeout
+    type: 'SET_IMAGE_COMPLETE_STATUS',
+    postIndex,
+    isComplete
   }
 }

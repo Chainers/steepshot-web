@@ -1,7 +1,7 @@
 import React from 'react';
 import ShowIf from '../ShowIf';
 
-const MILISECONDS_IN_SECOND = 1000;
+const MILLISECONDS_IN_SECOND = 1000;
 const SECONDS_IN_MINUTE = 60;
 const MINUTES_IN_HOUR = 60;
 
@@ -16,8 +16,8 @@ class Timer extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			waitingTime: props.waitingTime * MILISECONDS_IN_SECOND,
-			targetTime: new Date().getTime() + props.waitingTime * MILISECONDS_IN_SECOND,
+			waitingTime: props.waitingTime * MILLISECONDS_IN_SECOND,
+			targetTime: new Date().getTime() + props.waitingTime * MILLISECONDS_IN_SECOND,
 			show: false
 		};
 	}
@@ -34,7 +34,7 @@ class Timer extends React.Component {
 
 	tick() {
 		const waitingTime = this.state.targetTime - new Date().getTime();
-		if (waitingTime < 0.5 * MILISECONDS_IN_SECOND) {
+		if (waitingTime < 0.5 * MILLISECONDS_IN_SECOND) {
 			clearInterval(this.timer);
 			this.setState({
 				waitingTime: 0,
@@ -50,7 +50,7 @@ class Timer extends React.Component {
 	}
 
 	render() {
-		let seconds = Math.floor(this.state.waitingTime / MILISECONDS_IN_SECOND);
+		let seconds = Math.floor(this.state.waitingTime / MILLISECONDS_IN_SECOND);
 		let minutes = Math.floor(seconds / SECONDS_IN_MINUTE);
 		let hours = Math.floor(minutes / MINUTES_IN_HOUR);
 		seconds %= SECONDS_IN_MINUTE;

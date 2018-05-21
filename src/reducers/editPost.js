@@ -5,7 +5,6 @@ const initialState = {
 	rotate: 0,
 	tags: '',
 	loading: false,
-	isNew: true,
 	waitingTime: 0,
 	canCreate: true,
 	isGif: false
@@ -75,7 +74,13 @@ export default function editPost(state = initialState, action) {
 				tags: ''
 			};
 
-		case 'EDIT_POST_SET_INIT_DATA':
+		case 'EDIT_POST_INIT_DATA_REQUEST':
+			return {
+				...state,
+				loading: true
+			};
+
+		case 'EDIT_POST_INIT_DATA_SUCCESS':
 			return {
 				...initialState,
 				initData: {
@@ -83,7 +88,7 @@ export default function editPost(state = initialState, action) {
 				},
 				src: action.initData.src,
 				tags: action.initData.tags,
-				isNew: false
+				loading: false
 			};
 
 		case 'EDIT_POST_CLEAR':
@@ -93,8 +98,7 @@ export default function editPost(state = initialState, action) {
 					...state.initData
 				},
 				src: state.initData.src,
-				tags: state.initData.tags,
-				isNew: !state.initData.src
+				tags: state.initData.tags
 			};
 
 		case 'EDIT_POST_REQUEST':

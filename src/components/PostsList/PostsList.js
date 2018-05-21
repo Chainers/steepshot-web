@@ -2,17 +2,16 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {getPostsList, initPostsList} from '../../actions/postsList';
 import {debounce} from 'lodash';
-import constants from '../../common/constants';
 import InfiniteScroll from 'react-infinite-scroller';
 import LoadingSpinner from '../LoadingSpinner';
 import Post from './Post/Post';
 import HeadingLeadComponent from '../Atoms/HeadingLeadComponent';
 import './postsList.css';
 import {utils} from "../../utils/utils";
+import Constants from "../../common/constants";
 
 class PostsList extends React.Component {
 	static defaultProps = {
-		cancelPrevious: false,
 		maxPosts: 9999,
 		clearPostHeader: false,
 		isComponentVisible: true,
@@ -23,7 +22,6 @@ class PostsList extends React.Component {
 		super(props);
 		let postsListOptions = {
 			point: props.point,
-			cancelPrevious: props.cancelPrevious,
 			options: props.options,
 			maxPosts: props.maxPosts,
 			loading: false,
@@ -42,7 +40,6 @@ class PostsList extends React.Component {
 		if (nextProps.point !== this.props.point) {
 			let postsListOptions = {
 				point: nextProps.point,
-				cancelPrevious: nextProps.cancelPrevious,
 				options: nextProps.options,
 				maxPosts: nextProps.maxPosts,
 				loading: false,
@@ -64,7 +61,7 @@ class PostsList extends React.Component {
 
 	renderPosts() {
 		if (!this.props.length && !this.props.loading) {
-			let warningMessage = constants.EMPTY_QUERY;
+			let warningMessage = Constants.EMPTY_QUERY;
 			if (this.props.errorMessage) {
 				warningMessage = this.props.errorMessage;
 			}
@@ -107,13 +104,13 @@ class PostsList extends React.Component {
 				<InfiniteScroll
 					pageStart={0}
 					initialLoad={false}
-					loadMore={debounce(this.getPostsList.bind(this), constants.ENDLESS_SCROLL.DEBOUNCE)}
+					loadMore={debounce(this.getPostsList.bind(this), Constants.ENDLESS_SCROLL.DEBOUNCE)}
 					hasMore={this.props.isComponentVisible && this.props.hasMore}
 					loader={
 						<div className='spinner_pos-lis' key={this.props.point}>
 							<LoadingSpinner/>
 						</div>}
-					threshold={constants.ENDLESS_SCROLL.OFFSET}
+					threshold={Constants.ENDLESS_SCROLL.OFFSET}
 				>
 					<div className={this.props.wrapperModifier}>
 						{this.renderPosts()}

@@ -24,13 +24,7 @@ export default function getRoutes() {
 	return (
 		<App>
 			<Switch>
-				<Route exact path="/" render={() =>
-					isAuth() ? (
-						<Redirect to="/feed"/>
-					) : (
-						<Redirect to={'/browse'}/>
-					)
-				}/>
+				<Route exact path="/" render={() => <Redirect to={"/browse"}/>}/>
 				<Route exact path="/signin" render={() => (
 					isAuth() ? (
 						<Redirect push to="/feed"/>
@@ -46,7 +40,7 @@ export default function getRoutes() {
 				<Route path="/dev/test" component={Testing}/>
 				<PrivateRoute path="/feed" component={Feed}/>
 				<Redirect path="/createPost" to={'/editPost'}/>
-				<PrivateRoute path="/editPost/:category?/:username?/:postId?" component={EditPost}/>
+				<PrivateRoute path="/editPost/:category?/:username?/:permlink?" component={EditPost}/>
 				<PrivateRoute path="/Profile" component={UserProfile}/>
 				<PrivateRoute path="/settings" component={Settings}/>
 				<Route path="*" component={NotFound}/>

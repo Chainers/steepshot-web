@@ -1,18 +1,18 @@
 import ImageCompressor from "image-compressor.js";
-import constants from "../common/constants";
+import Constants from "../common/constants";
 
 export function compressJPEG(blob, quality = 1) {
 	return new Promise((resolve, reject) => {
-		if (blob.size > constants.IMAGE.MAX_SIZE) {
+		if (blob.size > Constants.IMAGE.MAX_SIZE) {
 			new ImageCompressor(blob, {
 				quality: quality,
-				convertSize: constants.IMAGE.MAX_SIZE,
+				convertSize: Constants.IMAGE.MAX_SIZE,
 				mimeType: 'jpeg',
-				maxWidth: constants.IMAGE.MAX_WIDTH,
-				maxHeight: constants.IMAGE.MAX_HEIGHT,
+				maxWidth: Constants.IMAGE.MAX_WIDTH,
+				maxHeight: Constants.IMAGE.MAX_HEIGHT,
 				checkOrientation: true,
 				success(result) {
-					if (result.size > constants.IMAGE.MAX_SIZE && quality.toFixed(1) > 0.1) {
+					if (result.size > Constants.IMAGE.MAX_SIZE && quality.toFixed(1) > 0.1) {
 						quality -= 0.1;
 						compressJPEG(blob, quality).then( newResult => {
 							resolve(newResult);

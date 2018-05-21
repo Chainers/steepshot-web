@@ -2,11 +2,11 @@ import React from 'react';
 import {connect} from 'react-redux';
 import ShowIf from "../../Common/ShowIf";
 import TextInput from "../../Common/TextInput/TextInput";
-import Constants from "../../../common/constants";
 import {sendComment} from "../../../actions/comments";
 import LoadingSpinner from "../../LoadingSpinner";
 import {utils} from '../../../utils/utils';
 import './commentInput.css';
+import Constants from "../../../common/constants";
 
 class CommentInput extends React.Component {
 
