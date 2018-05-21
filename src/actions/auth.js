@@ -114,15 +114,6 @@ export function updateVotingPower(username) {
 	}
 }
 
-export function clearVPTimeout(vpTimeout) {
-	return (dispatch) => {
-		dispatch({
-			type: 'VOTING_POWER_TIMEOUT',
-			vpTimeout: vpTimeout
-		})
-	}
-}
-
 export function setLikePower(likePower) {
 	return (dispatch) => {
 		storage.like_power = likePower;

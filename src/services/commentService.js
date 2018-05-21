@@ -15,16 +15,17 @@ class CommentService {
 	static addComment(postAuthor, postPermlink, body) {
 		const author = AuthService.getUsername();
 		const permlink = PostService.createPostPermlink(`${author} comment`);
-		const commentObject = {
+		const data = {
 			parent_author: postAuthor,
 			parent_permlink: postPermlink,
 			author: author,
 			permlink: permlink,
-			title: "",
+			title: '',
 			body: body,
-			json_metadata: ''
+			json_metadata: '',
+			device: 'web'
 		};
-		const commentOperation = [Constants.OPERATIONS.COMMENT, commentObject];
+		const commentOperation = [Constants.OPERATIONS.COMMENT, data];
 
 		return SteemService.addCommentToBlockchain(commentOperation)
 			.then( response => {
