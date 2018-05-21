@@ -27,14 +27,16 @@
 }
 
 .checked_settings {
-    width: 0;
-    height: 0;
+    width: 1px;
+    height: 1px;
     border-radius: 10px;
     background-image: linear-gradient(to right, #ff7700, #ff1000);
+    opacity: 0;
     transition: .3s;
 }
 
 .active > .checked_settings {
+    opacity: 1;
     width: 20px;
     height: 20px;
 }
