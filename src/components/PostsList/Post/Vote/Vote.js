@@ -6,6 +6,7 @@ import {setPowerLikeInd, setPowerLikeTimeout, setHidePowerLikeTimeout} from '../
 import {pushMessage} from '../../../../actions/pushMessage';
 import VoteIndicator from './VoteIndicator/VoteIndicator';
 import ShowIf from '../../../Common/ShowIf';
+import './vote.css';
 
 class Vote extends React.Component {
 
@@ -116,15 +117,17 @@ class Vote extends React.Component {
   }
 
 	render() {
-		let buttonClasses = 'btn-like';
+		let buttonClasses = 'btn-like_vote', wrapperClass = 'btn-like-wrapper_vote';
 		if (this.props.isComment) {
-      buttonClasses = 'comment btn-like';
+      buttonClasses = 'comment btn-like_vote';
+      wrapperClass = 'btn-like-wrapper-comment_vote';
 		}
 		if (this.props.vote) {
-			buttonClasses = buttonClasses + ' liked';
+			buttonClasses = buttonClasses + ' liked_vote';
 		}
 		if (this.props.voteLoading) {
-			buttonClasses = buttonClasses + ' loading';
+			buttonClasses = buttonClasses + ' loading_vote';
+			wrapperClass = wrapperClass + ' loading_vote';
 		}
     let poweroflikeClass = this.props.isPopup ? 'poweroflike-popup-ind_vote-ind' : this.props.isComment ?
       'poweroflike-comment-ind_vote-ind' : 'poweroflike-ind_vote-ind';
@@ -134,7 +137,7 @@ class Vote extends React.Component {
       showSlider = this.props.isPLOpen;
     }
 		return (
-			<div className={this.props.isComment ? 'btn-like-wrapper-comment_vote' : 'btn-like-wrapper_vote'}
+			<div className={wrapperClass}
 					 ref={ref => this.vote = ref}
 					 onClick={this.toggleVote.bind(this)}
 					 onMouseLeave={this.breakLongTapPLInd.bind(this, true)}

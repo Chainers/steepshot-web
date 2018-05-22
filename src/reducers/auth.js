@@ -58,11 +58,6 @@ export default function auth(state = initialState, action) {
 				...state,
 				voting_power: checkedVotingPower
 			};
-		case 'VOTING_POWER_TIMEOUT':
-			return {
-				...state,
-				vpTimeout: action.vpTimeout
-			};
 		case 'SET_LIKE_POWER':
 			return {
 				...state,
