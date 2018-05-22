@@ -192,7 +192,8 @@ class Header extends React.Component {
 	}
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state, props) => {
+  const location = state.router.location || props.location || {};
   return {
     sizeParam: document.body.clientWidth < 420,
     postingKey: state.auth.postingKey,
@@ -200,7 +201,7 @@ const mapStateToProps = (state) => {
     avatar: state.auth.avatar,
     searchValue: state.search.value,
     isOpened: state.search.isOpened,
-		currentLocation: state.router.location.pathname,
+    currentLocation: location.pathname,
     openedMobileNavigation: state.mobileNavigation.opened
   };
 };
