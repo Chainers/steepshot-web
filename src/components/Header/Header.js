@@ -1,13 +1,14 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
-import {clearVPTimeout, logout, setUserAuth, updateVotingPower} from '../actions/auth';
-import Constants from '../common/constants';
-import Avatar from './Common/Avatar/Avatar';
-import {setSearchPanelState, setSearchValue} from "../actions/search";
-import {push} from "react-router-redux";
-import {closeMobileNavigation, toggleMobileNavigation} from "../actions/mobileNavigation";
-import Hamburger from "./Hamburger/Hamburger";
+import {push} from 'react-router-redux';
+import {logout, setUserAuth, updateVotingPower} from '../../actions/auth';
+import Constants from '../../common/constants';
+import Avatar from '../Common/Avatar/Avatar';
+import {setSearchPanelState, setSearchValue} from '../../actions/search';
+import {closeMobileNavigation, toggleMobileNavigation} from '../../actions/mobileNavigation';
+import Hamburger from '../Hamburger/Hamburger';
+import './header.css';
 
 class Header extends React.Component {
 
@@ -52,8 +53,7 @@ class Header extends React.Component {
 			return null;
 		}
 		const isUserAuth = this.props.user && this.props.postingKey;
-		let browse;
-		let authorLink = '';
+		let browse, authorLink = '';
 		let authorImage = this.props.avatar || Constants.NO_AVATAR;
 		let loginComponent = <div className="section login">
 			<div className="wrap-login">
@@ -75,16 +75,20 @@ class Header extends React.Component {
 		}
 
 		browse = <div className="section menu">
-			<div className="wrap-menu">
+			<div>
 				{
 					(isUserAuth) ? (
-						<div className="item nav-item">
-							<Link to="/feed">Feed</Link>
+						<div className="item feed-block_header">
+							<Link to="/feed"
+										className={this.props.currentLocation === '/feed' ? 'feed-browse-active_header' : null}>Feed
+							</Link>
 						</div>
 					) : null
 				}
-				<div className="item nav-item">
-					<Link to={`/browse`}>Browse</Link>
+				<div className="item browse-block_header">
+					<Link to="/browse"
+								className={this.props.currentLocation.match(/\/browse\/\w+/) ? 'feed-browse-active_header' : null}>Browse
+					</Link>
 				</div>
 			</div>
 		</div>;
@@ -188,6 +192,20 @@ class Header extends React.Component {
 	}
 }
 
+const mapStateToProps = (state, props) => {
+	const location = state.router.location || props.location || {};
+  return {
+    sizeParam: document.body.clientWidth < 420,
+    postingKey: state.auth.postingKey,
+    user: state.auth.user,
+    avatar: state.auth.avatar,
+    searchValue: state.search.value,
+    isOpened: state.search.isOpened,
+    currentLocation: location.pathname,
+    openedMobileNavigation: state.mobileNavigation.opened
+  };
+};
+
 const mapDispatchToProps = (dispatch) => {
 	return {
 		logout: () => {
@@ -195,9 +213,6 @@ const mapDispatchToProps = (dispatch) => {
 		},
 		updateVotingPower: (username) => {
 			dispatch(updateVotingPower(username));
-		},
-		clearVPTimeout: (vpTimeout) => {
-			dispatch(clearVPTimeout(vpTimeout));
 		},
 		setUserAuth: () => {
 			dispatch(setUserAuth());
@@ -218,19 +233,6 @@ const mapDispatchToProps = (dispatch) => {
 			dispatch(toggleMobileNavigation());
 		}
 	}
-};
-
-const mapStateToProps = (state) => {
-	return {
-		sizeParam: document.body.clientWidth < 420,
-		postingKey: state.auth.postingKey,
-		user: state.auth.user,
-		avatar: state.auth.avatar,
-		vpTimeout: state.auth.vpTimeout,
-		searchValue: state.search.value,
-		isOpened: state.search.isOpened,
-		openedMobileNavigation: state.mobileNavigation.opened
-	};
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Header);

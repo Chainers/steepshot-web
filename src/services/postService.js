@@ -123,14 +123,12 @@ class PostService {
 	static deletePost(post) {
 		const permlink = PostService.getPermlinkFromUrl(post.url);
 		return SteemService.deletePostFromBlockchain(permlink)
-			.then(response => {
-				LoggingService.logDeletedPost(permlink);
-				return Promise.resolve(response);
-			})
 			.catch(() => {
 				const operation = getDefaultPostOperation(post.title, post.tags, post.description, permlink);
 				operation[1].body = '*deleted*';
-				return SteemService.addPostDataToBlockchain([operation]);
+				operation[1].json_metadata = JSON.stringify(post.json_metadata);
+				const operations = [operation];
+				return SteemService.addPostDataToBlockchain(operations);
 			})
 			.then(response => {
 				LoggingService.logDeletedPost(permlink);

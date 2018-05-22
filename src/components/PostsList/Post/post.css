@@ -84,22 +84,6 @@
     background: #f4f4f6;
 }
 
-.btn-like-wrapper_vote {
-    padding: 10px 17px;
-    cursor: pointer;
-}
-
-.btn-like-wrapper-comment_vote {
-    position: relative;
-    width: 21px;
-    height: 21px;
-}
-
-.btn-like-wrapper_vote:hover .btn-like::before,
-.btn-like-wrapper-comment_vote:hover .comment.btn-like::before {
-    transform: scale(1.15);
-}
-
 .gallery-indicator_post {
     position: absolute;
     width: 16px;

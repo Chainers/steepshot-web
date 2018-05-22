@@ -44,7 +44,6 @@ export function login(username, postingKey) {
 				storage.postingKey = postingKey;
 				storage.like_power = 100;
 				storage.avatar = avatar;
-				LoggingService.logLogin();
 				OneSignalService.addNotificationTags(username);
 				dispatch(checkSubscribeAndUpdateSettings());
 				dispatch({
@@ -61,6 +60,7 @@ export function login(username, postingKey) {
 				dispatch(push('/feed'));
 				let parseResult = JSON.parse(response[0].json_metadata);
 				dispatch(showMessage('Welcome to Steepshot, ' + (parseResult.profile.name || username) + '!'));
+				LoggingService.logLogin();
 			})
 			.catch((error) => {
 				dispatch({
@@ -111,15 +111,6 @@ export function updateVotingPower(username) {
 				voting_power: result.voting_power
 			})
 		});
-	}
-}
-
-export function clearVPTimeout(vpTimeout) {
-	return (dispatch) => {
-		dispatch({
-			type: 'VOTING_POWER_TIMEOUT',
-			vpTimeout: vpTimeout
-		})
 	}
 }
 

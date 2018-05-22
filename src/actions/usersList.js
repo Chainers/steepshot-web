@@ -53,7 +53,13 @@ export function getUsersList(point) {
 			point
 		}
 	}
+
 	return (dispatch) => {
+		if (statePoint.options.query) {
+      if (statePoint.options.query.length < 3) {
+        return {type: 'EMPTY_GET_USERS'};
+      }
+		}
 		dispatch(getUsersListRequest(point));
 		UserService.getUsersList(point.substr(0, point.indexOf('JSON_OPTIONS:')), statePoint.offset, LIMIT, statePoint.options)
 			.then((response) => {
