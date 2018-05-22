@@ -19,14 +19,16 @@ import Likes from '../PostsList/Post/Likes/Likes';
 import FullScreenButtons from './FullScreenButtons/FullScreenButtons';
 import {toggleVote} from '../../actions/vote';
 import {setPowerLikeInd, setPowerLikeTimeout} from '../../actions/post';
-import {openPushNot} from "../../actions/pushNotification";
-import ImagesGallery from "../ImagesGallery/ImagesGallery";
+import {openPushNot} from '../../actions/pushNotification';
+import ImagesGallery from '../ImagesGallery/ImagesGallery';
 import ReactPlayer from 'react-player'
-import Comments from "../Comments/Comments";
+import Comments from '../Comments/Comments';
 import './postModal.css';
-import Constants from "../../common/constants";
-import {utils} from "../../utils/utils";
-import {setComponentSize} from "../../utils/setComponentSize";
+import Constants from '../../common/constants';
+import {utils} from '../../utils/utils';
+import {setComponentSize} from '../../utils/setComponentSize';
+import storage from '../../utils/Storage';
+
 
 const HEADER_HEIGHT = 60;
 
@@ -48,7 +50,6 @@ class PostModal extends React.Component {
 	componentDidMount() {
 		window.addEventListener('keydown', this.initKeyPress);
 		window.addEventListener('resize', this.resizePostModal);
-		this.setPostModalSize();
 	}
 
 	componentWillUnmount() {
@@ -57,10 +58,17 @@ class PostModal extends React.Component {
 	}
 
 	componentWillReceiveProps(nextProps) {
-		let post = document.getElementById(this.props.currentIndex);
-		if (post && (post.offsetTop !== 0) && ((post.offsetTop - HEADER_HEIGHT) !== nextProps.offsetTop)) {
-			this.props.setPostOffset(post.offsetTop - HEADER_HEIGHT);
-		}
+		this.setCurrentPostOffset(nextProps);
+	}
+
+	setCurrentPostOffset(nextProps) {
+    let post = document.getElementById(this.props.currentIndex), headersCount = 1;
+    if (!storage.advertisingStatus) {
+      headersCount = 2;
+    }
+    if (post && (post.offsetTop !== 0) && ((post.offsetTop - headersCount * HEADER_HEIGHT) !== nextProps.offsetTop)) {
+      this.props.setPostOffset(post.offsetTop - headersCount * HEADER_HEIGHT);
+    }
 	}
 
 	shouldComponentUpdate(nextProps) {

@@ -1,4 +1,4 @@
-import storage from "../utils/Storage";
+import storage from '../utils/Storage';
 
 export function setAdvertisingStatus(status) {
 	storage.advertisingStatus = status;
