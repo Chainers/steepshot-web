@@ -4,13 +4,15 @@
 
 .container_likes {
     transition: color .15s ease;
-    display: flex;
     font: 12px OpenSans-Regular;
-    justify-content: flex-start;
-    align-items: center;
 }
 
 .container_likes:hover {
     cursor: pointer;
     color: #979b9e;
+}
+
+.no-likes-flags_likes {
+    color: rgb(151, 155, 158);
+    font: 12px OpenSans-Regular;
 }

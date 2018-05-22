@@ -21,12 +21,12 @@ export function pushMessage(message) {
 				type: 'WILL_CLOSE_PUSH_MESSAGE',
 				index: currentIndex
 			})
-		}, 3000);
+		}, 3700);
 		setTimeout(() => {
 			dispatch({
 				type: 'REMOVE_PUSH_MESSAGE',
 				index: currentIndex
 			})
-		}, 4000)
+		}, 4700)
 	}
 }

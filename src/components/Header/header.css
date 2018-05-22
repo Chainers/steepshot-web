@@ -1,0 +1,14 @@
+.browse-block_header a, .feed-block_header a {
+    transition: .15s all ease-in;
+    margin: 0 10px;
+    color: #0f181e;
+}
+
+.section.menu a:hover {
+    color: #e74800;
+}
+
+a.feed-browse-active_header {
+    font: 14px OpenSans-Semibold;
+    color: #e74800;
+}

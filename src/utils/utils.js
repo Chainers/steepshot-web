@@ -41,7 +41,7 @@ export const utils = {
 
 		for (let i = 0; i < aProps.length; i++) {
 			let propName = aProps[i];
-
+			if (propName === 'key') continue;
 			if (!utils.equalsObjects(a[propName], b[propName], depth - 1)) {
 				return false;
 			}

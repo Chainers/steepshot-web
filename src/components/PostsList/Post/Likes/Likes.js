@@ -15,8 +15,10 @@ class Likes extends React.Component {
 	}
 
 	render() {
-		if (this.props.votes === 0 && !this.props.flags) {
-			return <div> </div>;
+		if (this.props.likes === 0 && !this.props.flags) {
+			return <div className="no-likes-flags_likes centered--flex"
+									style={this.props.style}>No likes yet
+						 </div>;
 		}
 		let likeFlag;
 		if (this.props.likes > 0 || this.props.votes > 0) {
@@ -25,7 +27,7 @@ class Likes extends React.Component {
       likeFlag = <span>{this.props.flags} {this.props.flags > 1 ? ' flags' : ' flag'}</span>;
 		}
 		return (
-			<div className="container_likes"
+			<div className="container_likes centered--flex"
 					 onClick={this.openLikesModal.bind(this)}
 					 style={this.props.style}>
 				{likeFlag}

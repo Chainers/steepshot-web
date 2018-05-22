@@ -9,6 +9,10 @@ body {
     cursor: default;
 }
 
+a {
+    outline: none;
+}
+
 .overflow--hidden {
     overflow: hidden;
 }
@@ -915,15 +919,6 @@ textarea {
 
 optgroup {
     font-weight: 700
-}
-
-table {
-    border-collapse: collapse;
-    border-spacing: 0
-}
-
-td, th {
-    padding: 0
 }
 
 * {
@@ -3112,14 +3107,14 @@ input[type=button].btn-block, input[type=reset].btn-block, input[type=submit].bt
 .posts-list:not(.type-2) .item-wrap {
     float: left;
     width: 25%;
-    margin-bottom: 20px;
+    margin-bottom: 5px;
     padding: 0 10px
 }
 
 .posts-list.type-2 .item-wrap {
     float: left;
     width: 33.33%;
-    margin-bottom: 20px;
+    margin-bottom: 5px;
     padding: 0 10px
 }
 
@@ -3392,18 +3387,6 @@ input[type=button].btn-block, input[type=reset].btn-block, input[type=submit].bt
     height: 2.2em
 }
 
-.user-panel .search .lnk-search-mob:before {
-    content: ' ';
-    display: inline-block;
-    font-size: 10px;
-    background-image: url('/images/sprite_svg1910.svg');
-    background-repeat: no-repeat;
-    background-size: 4.4em 47.2em;
-    background-position: -.2em -32em;
-    width: 2.2em;
-    height: 2.2em
-}
-
 .no-svg .user-panel .search .lnk-search-mob:before {
     background-image: url('/images/sprite_svg1910.svg')
 }
@@ -3419,22 +3402,6 @@ input[type=button].btn-block, input[type=reset].btn-block, input[type=submit].bt
 
 .user-panel .menu .item + .item {
     margin-left: 46px
-}
-
-.user-panel .menu .item > a {
-    display: block;
-    text-decoration: none;
-    line-height: 22px;
-    color: #0f181e
-}
-
-.user-panel .menu .item > a:hover {
-    color: #e74800
-}
-
-.user-panel .menu .item.active > a {
-    font-family: OpenSans-SemiBold, Helvetica, Arial, sans-serif;
-    color: #e74800
 }
 
 .user-panel .user {
