@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {openModal} from "../../../../actions/modal";
-import LikesFlagsList from "../../../LikesFlagsList/LikesFlagsList";
+import {openModal} from '../../../../actions/modal';
+import LikesFlagsList from '../../../LikesFlagsList/LikesFlagsList';
 import './likes.css';
 
 class Likes extends React.Component {
@@ -16,6 +16,7 @@ class Likes extends React.Component {
 
 	render() {
 		if (this.props.likes === 0 && !this.props.flags) {
+			if (this.props.commentAuthor) return <div> </div>;
 			return <div className="no-likes-flags_likes centered--flex"
 									style={this.props.style}>No likes yet
 						 </div>;
