@@ -193,7 +193,7 @@ class Header extends React.Component {
 }
 
 const mapStateToProps = (state, props) => {
-  const location = state.router.location || props.location || {};
+	const location = state.router.location || props.location || {};
   return {
     sizeParam: document.body.clientWidth < 420,
     postingKey: state.auth.postingKey,

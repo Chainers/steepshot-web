@@ -3999,15 +3999,7 @@ input[type=button].btn-block, input[type=reset].btn-block, input[type=submit].bt
 .btn-like.loading:after, .comment.btn-like.loading:after {
     display: block;
     -webkit-animation: likeLoading 1s infinite linear;
-    animation: likeLoading 1s infinite linear
-}
-
-.p a:not(.btn).lnk-less, .p a:not(.btn):visited.lnk-less, p a:not(.btn).lnk-less, p a:not(.btn):visited.lnk-less {
-    color: #489fff
-}
-
-.p a:not(.btn).lnk-less:hover, .p a:not(.btn):visited.lnk-less:hover, p a:not(.btn).lnk-less:hover, p a:not(.btn):visited.lnk-less:hover {
-    color: #007aff
+    animation: likeLoading 1s infinite linear;
 }
 
 @media (min-width: 768px) {

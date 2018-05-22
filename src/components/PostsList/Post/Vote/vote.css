@@ -1,0 +1,61 @@
+.btn-like-wrapper_vote {
+    padding: 10px 17px;
+    cursor: pointer;
+}
+
+.btn-like-wrapper-comment_vote {
+    position: relative;
+    width: 21px;
+    height: 21px;
+}
+
+.btn-like-wrapper_vote:hover .btn-like::before,
+.btn-like-wrapper-comment_vote:hover .comment.btn-like::before {
+    transform: scale(1.15);
+}
+
+.btn-like_vote {
+    position: relative;
+    z-index: 2;
+    width: 22px;
+    height: 21px;
+    display: block;
+    padding: 0;
+    border: none;
+    background: url('/images/sprite_svg1910.svg') 7% 38% no-repeat;
+}
+
+.btn-like_vote.liked_vote {
+    background: url('/images/sprite_svg1910.svg') 7% 43.5% no-repeat;
+}
+
+.btn-like-wrapper_vote:hover .btn-like_vote {
+    transform: scale(1.15);
+}
+
+.btn-like-wrapper_vote.loading_vote::after {
+    content: ' ';
+    position: absolute;
+    top: 11px;
+    background: url('/images/sprite_svg1910.svg') 7% 27% no-repeat;
+    height: 21px;
+    width: 22px;
+}
+
+.btn-like_vote.loading_vote {
+    display: block;
+    background: url('/images/sprite_svg1910.svg') 7% 43.5% no-repeat;
+    animation: likeLoading 1s infinite linear;
+}
+
+@keyframes likeLoading {
+    0% {
+        transform: scale(.3);
+    }
+    50% {
+        transform: scale(.9);
+    }
+    100% {
+        transform: scale(.3);
+    }
+}
