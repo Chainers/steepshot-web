@@ -9,11 +9,13 @@ import {setSearchPanelState, setSearchValue} from '../../actions/search';
 import {closeMobileNavigation, toggleMobileNavigation} from '../../actions/mobileNavigation';
 import Hamburger from '../Hamburger/Hamburger';
 import './header.css';
+import InstagramService from '../../services/instagramService';
 
 class Header extends React.Component {
 
 	constructor(props) {
 		super(props);
+		new InstagramService().getInfo('armaanmalik22');
 		if (!global.isServerSide) {
 			props.setUserAuth();
 		}
@@ -194,16 +196,16 @@ class Header extends React.Component {
 
 const mapStateToProps = (state, props) => {
 	const location = state.router.location || props.location || {};
-  return {
-    sizeParam: document.body.clientWidth < 420,
-    postingKey: state.auth.postingKey,
-    user: state.auth.user,
-    avatar: state.auth.avatar,
-    searchValue: state.search.value,
-    isOpened: state.search.isOpened,
-    currentLocation: location.pathname,
-    openedMobileNavigation: state.mobileNavigation.opened
-  };
+	return {
+		sizeParam: document.body.clientWidth < 420,
+		postingKey: state.auth.postingKey,
+		user: state.auth.user,
+		avatar: state.auth.avatar,
+		searchValue: state.search.value,
+		isOpened: state.search.isOpened,
+		currentLocation: location.pathname,
+		openedMobileNavigation: state.mobileNavigation.opened
+	};
 };
 
 const mapDispatchToProps = (dispatch) => {
