@@ -3107,14 +3107,14 @@ input[type=button].btn-block, input[type=reset].btn-block, input[type=submit].bt
 .posts-list:not(.type-2) .item-wrap {
     float: left;
     width: 25%;
-    margin-bottom: 20px;
+    margin-bottom: 5px;
     padding: 0 10px
 }
 
 .posts-list.type-2 .item-wrap {
     float: left;
     width: 33.33%;
-    margin-bottom: 20px;
+    margin-bottom: 5px;
     padding: 0 10px
 }
 
