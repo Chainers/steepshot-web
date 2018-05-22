@@ -1,15 +1,13 @@
 import steem from 'steem';
-import {blockchainErrorsList} from "../utils/blockchainErrorsList";
 import Constants from "../common/constants";
 import PostService from "./postService";
 import AuthService from "./authService";
-
-steem.api.setOptions({url: 'https://api.steemit.com'});
+import NodeService from "./nodeService";
 
 class SteemService {
 
 	static addCommentToBlockchain(commentOperation) {
-		return processResponse(callback => {
+		return processRequest(callback => {
 			let beneficiaries = SteemService.getBeneficiaries(commentOperation[1].permlink, [{
 				account: 'steepshot',
 				weight: 1000
@@ -24,19 +22,19 @@ class SteemService {
 	}
 
 	static changeVoteInBlockchain(postAuthor, permlink, power) {
-		return processResponse(callback => {
+		return processRequest(callback => {
 			steem.broadcast.vote(AuthService.getPostingKey(), AuthService.getUsername(), postAuthor, permlink, power, callback);
 		})
 	}
 
 	static deletePostFromBlockchain(permlink) {
-		return processResponse(callback => {
+		return processRequest(callback => {
 			steem.broadcast.deleteComment(AuthService.getPostingKey(), AuthService.getUsername(), permlink, callback);
 		})
 	}
 
 	static changeFollowInBlockchain(jsonData) {
-		return processResponse(callback => {
+		return processRequest(callback => {
 			steem.broadcast.customJson(AuthService.getPostingKey(), [], [AuthService.getUsername()], 'follow', jsonData,
 				callback
 			);
@@ -44,8 +42,7 @@ class SteemService {
 	}
 
 	static addPostDataToBlockchain(operations) {
-		console.log(operations);
-		return processResponse(callback => {
+		return processRequest(callback => {
 			steem.broadcast.sendAsync(
 				{operations, extensions: []},
 				{posting: AuthService.getPostingKey()}, callback
@@ -54,7 +51,7 @@ class SteemService {
 	}
 
 	static getAccounts(username) {
-		return processResponse(callback => {
+		return processRequest(callback => {
 			steem.api.getAccounts([username], callback);
 		})
 	}
@@ -83,8 +80,7 @@ class SteemService {
 		}).then(transaction => {
 			return steem.auth.signTransaction(transaction, [AuthService.getPostingKey()])
 		}).catch(error => {
-			let checkedError = blockchainErrorsList(error);
-			return Promise.reject(checkedError);
+			return Promise.reject(error);
 		});
 	}
 
@@ -105,18 +101,39 @@ class SteemService {
 
 export default SteemService;
 
+function processRequest(sendRequestFunction) {
+	return new Promise((resolve, reject) => {
+		const nodeService = new NodeService();
+		checkingNode(resolve, reject, sendRequestFunction, nodeService);
+	});
+}
+
+function checkingNode(resolve, reject, sendRequestFunction, nodeService) {
+	processResponse(callback => {
+		sendRequestFunction(callback)
+	})
+		.then(response => {
+			resolve(response);
+		})
+		.catch(error => {
+			if (nodeService.isMaxCountRequests()) {
+				reject(error);
+			} else {
+				nodeService.setNextNode();
+				checkingNode(resolve, reject, sendRequestFunction, nodeService);
+			}
+		})
+}
+
 function processResponse(sendingFunction) {
 	return new Promise((resolve, reject) => {
-		const callbackBc = (err, success) => {
-			let errorMessage = '';
+		const callback = (err, success) => {
 			if (err) {
-				console.error(err);
-				errorMessage = blockchainErrorsList(err);
-				reject(errorMessage);
-			} else if (success) {
+				reject(err);
+			} else {
 				resolve(success);
 			}
 		};
-		sendingFunction(callbackBc);
+		sendingFunction(callback);
 	})
 }
