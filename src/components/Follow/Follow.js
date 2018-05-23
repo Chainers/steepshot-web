@@ -26,7 +26,7 @@ class Follow extends React.Component {
 						{this.props.isFollowed ? 'Unfollow' : 'Follow'}
 					</div>
 				</ShowIf>
-				<ShowIf show={!this.props.notificationEnabled}>
+				<ShowIf show={this.props.notificationEnabled}>
 					<ShowIf show={!this.props.changeSubscribe}>
 					<div className={this.props.isSubscribed ? 'unsubscribe_follow' : 'subscribe_follow'}
 							 onClick={this.props.changeSubscribeFunc}/>
