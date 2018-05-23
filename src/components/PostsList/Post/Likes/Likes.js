@@ -18,7 +18,7 @@ class Likes extends React.Component {
 		if (this.props.likes === 0 && !this.props.flags) {
 			if (this.props.commentAuthor) return <div> </div>;
 			return <div className="no-likes-flags_likes centered--flex"
-									style={this.props.style}>No likes yet
+									style={this.props.style}>Not rated yet
 						 </div>;
 		}
 		let likeFlag;

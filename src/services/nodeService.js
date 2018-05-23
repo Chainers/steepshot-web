@@ -2,7 +2,7 @@ import steem from "steem";
 
 const MAX_COUNT_TRY = 3;
 const NODE_LIST = [
-	'https://steemd.steepshot.org',
+	//'https://steemd.steepshot.org',
 	'https://api.steemit.com',
 	'https://api.steemitstage.com'
 ];

@@ -57,7 +57,9 @@ class SteemService {
 	}
 
 	static wifIsValid(postingKey, pubWif) {
-		return steem.auth.wifIsValid(postingKey, pubWif);
+		return processRequest(() => {
+			steem.auth.wifIsValid(postingKey, pubWif);
+		})
 	}
 
 	static getValidTransaction() {
@@ -74,14 +76,20 @@ class SteemService {
 				app: 'steepshot'
 			}
 		}];
-		return steem.broadcast._prepareTransaction({
-			extensions: [],
-			operations: [operation],
-		}).then(transaction => {
-			return steem.auth.signTransaction(transaction, [AuthService.getPostingKey()])
-		}).catch(error => {
-			return Promise.reject(error);
-		});
+		return processRequest(() => {
+			return steem.broadcast._prepareTransaction({
+				extensions: [],
+				operations: [operation],
+			})
+		})
+			.then(transaction => {
+				return processRequest(() => {
+					return steem.auth.signTransaction(transaction, [AuthService.getPostingKey()])
+				})
+			})
+			.catch(error => {
+				return Promise.reject(error);
+			});
 	}
 
 	static getBeneficiaries(permlink, beneficiaries) {
@@ -110,7 +118,7 @@ function processRequest(sendRequestFunction) {
 
 function checkingNode(resolve, reject, sendRequestFunction, nodeService) {
 	processResponse(callback => {
-		sendRequestFunction(callback)
+		return sendRequestFunction(callback)
 	})
 		.then(response => {
 			resolve(response);
@@ -135,6 +143,23 @@ function processResponse(sendingFunction) {
 				resolve(success);
 			}
 		};
-		sendingFunction(callback);
+		const responseBlockchain = sendingFunction(callback);
+		if (typeof(responseBlockchain) === 'object') {
+			if (typeof(responseBlockchain.then) === 'function') {
+				responseBlockchain
+					.then(response => {
+						if (!response.error) {
+							resolve(response);
+						} else {
+							reject(response.error);
+						}
+					})
+					.catch(error => {
+						reject(error);
+					})
+			} else {
+				resolve(responseBlockchain);
+			}
+		}
 	})
 }

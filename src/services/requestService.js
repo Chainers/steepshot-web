@@ -7,7 +7,8 @@ class RequestService {
 		const fullUrl = Constants.URLS.baseUrl_v1_1 + '/' + url + convertOptionsToRequestString(options);
 		return fetch(fullUrl, {
 			method: 'GET'
-		}).then(RequestService.processResponse);
+		})
+			.then(RequestService.processResponse);
 	}
 
 	static post(url, data) {
