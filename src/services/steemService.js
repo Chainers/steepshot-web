@@ -83,9 +83,7 @@ class SteemService {
 			})
 		})
 			.then(transaction => {
-				return processRequest(() => {
-					return steem.auth.signTransaction(transaction, [AuthService.getPostingKey()])
-				})
+				return steem.auth.signTransaction(transaction, [AuthService.getPostingKey()])
 			})
 			.catch(error => {
 				return Promise.reject(error);
@@ -144,10 +142,10 @@ function processResponse(sendingFunction) {
 			}
 		};
 		const responsePromise = sendingFunction(callback);
-		if (responsePromise instanceof Object) {
+		if (typeof(responsePromise) === 'object' && typeof(responsePromise.then) === 'function') {
 			responsePromise
 				.then(response => {
-					if(!response.error) {
+					if (!response.error) {
 						resolve(response);
 					} else {
 						reject(response.error);
