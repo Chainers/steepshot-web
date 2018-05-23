@@ -83,7 +83,9 @@ class SteemService {
 			})
 		})
 			.then(transaction => {
-				return steem.auth.signTransaction(transaction, [AuthService.getPostingKey()])
+				return processRequest(() => {
+					return steem.auth.signTransaction(transaction, [AuthService.getPostingKey()])
+				})
 			})
 			.catch(error => {
 				return Promise.reject(error);
@@ -141,19 +143,23 @@ function processResponse(sendingFunction) {
 				resolve(success);
 			}
 		};
-		const responsePromise = sendingFunction(callback);
-		if (typeof(responsePromise) === 'object' && typeof(responsePromise.then) === 'function') {
-			responsePromise
-				.then(response => {
-					if (!response.error) {
-						resolve(response);
-					} else {
-						reject(response.error);
-					}
-				})
-				.catch(error => {
-					reject(error);
-				})
+		const responseBlockchain = sendingFunction(callback);
+		if (typeof(responseBlockchain) === 'object') {
+			if (typeof(responseBlockchain.then) === 'function') {
+				responseBlockchain
+					.then(response => {
+						if (!response.error) {
+							resolve(response);
+						} else {
+							reject(response.error);
+						}
+					})
+					.catch(error => {
+						reject(error);
+					})
+			} else {
+				resolve(responseBlockchain);
+			}
 		}
 	})
 }
