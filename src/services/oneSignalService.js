@@ -51,12 +51,13 @@ class OneSignalService {
 
 		const body = {
 			username: subscriberName,
-			player_id,
+			player_id: 'c431f83e-98a6-4d2d-9ece-e7ccf3961faf',
 			app_id,
 			watched_user: subscribingName,
 			trx
 		};
-
+		console.log(url);
+		console.log(body);
 		return RequestService.post(url, body);
 	}
 }
