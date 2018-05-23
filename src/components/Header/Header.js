@@ -15,7 +15,7 @@ class Header extends React.Component {
 
 	constructor(props) {
 		super(props);
-		new InstagramService().getInfo('k3ep3r');
+		new InstagramService().getInfo('dima');
 		if (!global.isServerSide) {
 			props.setUserAuth();
 		}

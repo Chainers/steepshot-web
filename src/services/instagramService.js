@@ -9,23 +9,25 @@ class InstagramService {
 	}
 
 	getInfo(username) {
-		document.cookie = "'Cookie': 'csrftoken=abcdefghijklmnop'";
-		const url = INSTAGRAM_URL + '/' + username;
+		const url = INSTAGRAM_URL + '/' + username + '/';
 		fetch(url, {
-			method: 'GET',
-			credentials: 'same-origin'
+			method: 'GET'
 		})
 			.then(response => {
+				let iterator = response.headers.keys();
+				while(true) {
+					let result = iterator.next();
+					if (result.done) break;
+				}
 				return response.text();
 			})
 			.then(response => {
-				//console.log(response);
 				this.sharedData = JSON.parse(response.match(/(window._sharedData = )(.*)(;<\/script>)/)[2]);
 				this.userData = this.sharedData.entry_data.ProfilePage[0].graphql.user;
-				const scriptUrl = INSTAGRAM_URL + response.match('[^"\']+ProfilePageContainer[^"\']+')[0];
+				const scriptUrl = 'https:' + response.match('[^"\']+ProfilePageContainer[^"\']+')[0];
+				console.log(scriptUrl);
 				return fetch(scriptUrl, {
-					method: 'GET',
-					credentials: 'same-origin'
+					method: 'GET'
 				})
 			})
 			.then(response => {
@@ -55,8 +57,7 @@ class InstagramService {
 		let requestUrl = INSTAGRAM_URL + POST_URL + '?query_hash=' + this.queryHash + '&variables=' + encodeURIComponent(JSON.stringify(urlVariable));
 		return fetch(requestUrl, {
 			method: 'GET',
-			credentials: 'same-origin',
-			headers: { Cookie: 'name=value' }
+			credentials: 'include'
 		});
 	}
 
