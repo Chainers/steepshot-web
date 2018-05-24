@@ -7,7 +7,7 @@ import {unsubscribe} from "./oneSignal";
 import UserService from "../services/userService";
 import OneSignalService from "../services/oneSignalService";
 import LoggingService from "../services/loggingService";
-import SteemService from "../services/steemService";
+import ChainService from "../services/chainService";
 
 function showMessage(message) {
 	return dispatch => {
@@ -30,13 +30,13 @@ function loginError(error) {
 export function login(username, postingKey) {
 	return dispatch => {
 		dispatch(showBodyLoader());
-		SteemService.getAccounts(username)
+		ChainService.getAccounts(username)
 			.then(response => {
 				if (response.length === 0) {
 					return dispatch(loginError('Such user doesn\'t exist.'));
 				}
 				let pubWif = response[0].posting.key_auths[0][0];
-        return SteemService.wifIsValid(postingKey, pubWif).then(() => {
+        return ChainService.wifIsValid(postingKey, pubWif).then(() => {
           let avatar = getAvatar(response[0]);
           storage.user = username;
           storage.postingKey = postingKey;

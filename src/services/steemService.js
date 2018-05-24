@@ -2,9 +2,13 @@ import steem from 'steem';
 import Constants from "../common/constants";
 import PostService from "./postService";
 import AuthService from "./authService";
-import NodeService from "./nodeService";
+import SteemNodeService from "./steemNodeService";
 
 class SteemService {
+
+	static initConfig() {
+		SteemNodeService.initConfig();
+	}
 
 	static addCommentToBlockchain(commentOperation) {
 		return processRequest(callback => {
@@ -109,26 +113,27 @@ export default SteemService;
 
 function processRequest(sendRequestFunction) {
 	return new Promise((resolve, reject) => {
-		const nodeService = new NodeService();
-		checkingNode(resolve, reject, sendRequestFunction, nodeService);
+		const steemNodeService = new SteemNodeService();
+		checkingNode(resolve, reject, sendRequestFunction, steemNodeService);
 	});
 }
 
-function checkingNode(resolve, reject, sendRequestFunction, nodeService) {
+function checkingNode(resolve, reject, sendRequestFunction, steemNodeService) {
 	processResponse(callback => {
 		return sendRequestFunction(callback)
 	})
-	.then(response => {
-		resolve(response);
-	})
-	.catch(error => {
-		if (nodeService.isMaxCountRequests()) {
-			reject(error);
-		} else {
-			nodeService.setNextNode();
-			checkingNode(resolve, reject, sendRequestFunction, nodeService);
-		}
-	})
+		.then(response => {
+			resolve(response);
+		})
+		.catch(error => {
+			console.log(error);
+			if (steemNodeService.isMaxCountRequests()) {
+				reject(error);
+			} else {
+				steemNodeService.setNextNode();
+				checkingNode(resolve, reject, sendRequestFunction, steemNodeService);
+			}
+		})
 }
 
 function processResponse(sendingFunction) {

@@ -1,16 +1,16 @@
 import steem from "steem";
+import Constants from "../common/constants";
 
 const MAX_COUNT_TRY = 3;
-const NODE_LIST = [
-	//'https://steemd.steepshot.org',
-	'https://api.steemit.com',
-	'https://api.steemitstage.com'
-];
 let currentNode = 0;
+const NODE_LIST = Constants.BLOCKCHAIN.STEEM.CONNECTION_SERVERS;
 
-steem.api.setOptions({url: NODE_LIST[currentNode]});
 
-class NodeService {
+class SteemNodeService {
+
+	static initConfig() {
+		steem.api.setOptions({url: NODE_LIST[currentNode]});
+	}
 
 	static switchNode() {
 		let infoMsg = `switch node from ${NODE_LIST[currentNode]} to `;
@@ -26,7 +26,7 @@ class NodeService {
 
 	setNextNode() {
 		this.countTry++;
-		NodeService.switchNode();
+		SteemNodeService.switchNode();
 	}
 
 	isMaxCountRequests() {
@@ -34,4 +34,4 @@ class NodeService {
 	}
 }
 
-export default NodeService;
+export default SteemNodeService;

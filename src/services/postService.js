@@ -1,8 +1,8 @@
 import RequestService from "./requestService";
 import LoggingService from "./loggingService";
-import SteemService from "./steemService";
 import Constants from "../common/constants";
 import AuthService from "./authService";
+import ChainService from "./chainService";
 
 class PostService {
 
@@ -29,7 +29,7 @@ class PostService {
 	}
 
 	static changeVote(postAuthor, permlink, voteStatus, power) {
-		return SteemService.changeVoteInBlockchain(postAuthor, permlink, voteStatus ? power : 0)
+		return ChainService.changeVoteInBlockchain(postAuthor, permlink, voteStatus ? power : 0)
 			.then(response => {
 				LoggingService.logVote(voteStatus, permlink, postAuthor);
 				return Promise.resolve(response);
@@ -41,7 +41,7 @@ class PostService {
 	}
 
 	static changeFlag(postAuthor, permlink, isFlag, power = -10000) {
-		return SteemService.changeVoteInBlockchain(postAuthor, permlink, isFlag ? power : 0)
+		return ChainService.changeVoteInBlockchain(postAuthor, permlink, isFlag ? power : 0)
 			.then(response => {
 				LoggingService.logFlag(isFlag, permlink, postAuthor);
 				return Promise.resolve(response);
@@ -62,7 +62,7 @@ class PostService {
 				return preparePost(tags, description, permlink, [media]);
 			})
 			.then(prepareData => {
-				let beneficiaries = SteemService.getBeneficiaries(permlink, prepareData.beneficiaries);
+				let beneficiaries = ChainService.getBeneficiaries(permlink, prepareData.beneficiaries);
 				let plagiarism = prepareData['is_plagiarism'];
 				operation[1].body = prepareData.body;
 				operation[1].json_metadata = JSON.stringify(prepareData.json_metadata);
@@ -82,7 +82,7 @@ class PostService {
 	}
 
 	static afterCheckingPlagiarism(operations) {
-		return SteemService.addPostDataToBlockchain(operations)
+		return ChainService.addPostDataToBlockchain(operations)
 			.then(response => {
 				LoggingService.logPost();
 				return Promise.resolve(response);
@@ -104,7 +104,7 @@ class PostService {
 				operation[1].body = response.body;
 				operation[1].json_metadata = JSON.stringify(response.json_metadata);
 				const operations = [operation];
-				return SteemService.addPostDataToBlockchain(operations)
+				return ChainService.addPostDataToBlockchain(operations)
 			})
 			.then(response => {
 				LoggingService.logEditPost(permlink);
@@ -118,7 +118,7 @@ class PostService {
 
 	static deletePost(post) {
 		const permlink = PostService.getPermlinkFromUrl(post.url);
-		return SteemService.deletePostFromBlockchain(permlink)
+		return ChainService.deletePostFromBlockchain(permlink)
 			.catch(() => {
 				const operation = getDefaultPostOperation(post.title, post.tags, post.description, permlink);
 				operation[1].body = '*deleted*';
@@ -127,7 +127,7 @@ class PostService {
           post.json_metadata.tags.splice(1, post.json_metadata.tags.length - 2);
 				}
 				operation[1].json_metadata = JSON.stringify(post.json_metadata);
-				return SteemService.addPostDataToBlockchain([operation]);
+				return ChainService.addPostDataToBlockchain([operation]);
 			})
 			.then(response => {
 				LoggingService.logDeletedPost(permlink);
@@ -215,7 +215,7 @@ function getDefaultPostOperation(title, tags, description, permlink) {
 
 function fileUpload(file) {
 	const url = 'media/upload';
-	return SteemService.getValidTransaction()
+	return ChainService.getValidTransaction()
 		.then(transaction => {
 			let form = new FormData();
 			form.append('file', file);

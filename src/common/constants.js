@@ -180,6 +180,24 @@ const Constants = {
 			GRANTED: 'granted',
 			DENIED: 'denied'
 		}
+	},
+
+	BLOCKCHAIN : {
+		GOLOS: {
+			CONNECTION_SERVERS: [
+				"wss://ws.golos.io"
+			],
+			PREFIX: 'GLS',
+			CHAIN_ID: '782a3039b478c839e4cb0c941ff4eaeb7df40bdd68bd441afd444b9da763de12'
+		},
+
+		STEEM: {
+			CONNECTION_SERVERS: [
+				//'https://steemd.steepshot.org',
+				'https://api.steemit.com',
+				'https://api.steemitstage.com'
+			]
+		}
 	}
 };
 

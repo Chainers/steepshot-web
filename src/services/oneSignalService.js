@@ -1,6 +1,6 @@
 import Constants from "../common/constants";
 import RequestService from "./requestService";
-import SteemService from "./steemService";
+import ChainService from "./chainService";
 
 let OneSignal = window.OneSignal;
 
@@ -32,7 +32,7 @@ class OneSignalService {
 
 		const url = 'subscribe';
 		let subscriptions = getSubscriptions(settings);
-		let trx = await SteemService.getValidTransaction();
+		let trx = await ChainService.getValidTransaction();
 
 		const body = {
 			username,
@@ -47,7 +47,7 @@ class OneSignalService {
 
 	static async changeSubscribeOnUser(subscriberName, subscribingName, player_id, app_id, subscribed) {
 		const url = subscribed ? "unsubscribe" : "subscribe";
-		let trx = await SteemService.getValidTransaction();
+		let trx = await ChainService.getValidTransaction();
 
 		const body = {
 			username: subscriberName,
