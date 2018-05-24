@@ -48,8 +48,18 @@ class EditPost extends React.Component {
 	}
 
 	componentDidMount() {
+		window.addEventListener('drop', (e) => this.correctDragAndDropImage(e));
+		window.addEventListener('dragover', (e) => this.correctDragAndDropImage(e));
 		documentTitle();
 	}
+
+  correctDragAndDropImage(e) {
+		if (!this.inputField) return;
+    if (!this.props.isNew || !this.inputField.contains(e.target)) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+  }
 
 	imageChanged(event) {
 		event.preventDefault();
@@ -121,10 +131,10 @@ class EditPost extends React.Component {
 		}
 		return (
 			<div className="wrapper_edi-pos">
-				<ShowIf show={this.props.loading}>
+				<ShowIf show={this.props.loading && !this.props.isCreatePostPage}>
 					<LoadingSpinner style={{height: '100%', position: 'absolute', width: '100%'}}/>
 				</ShowIf>
-				<div className={'container_edi-pos ' + (this.props.loading ? 'blur-blocker' : '')}>
+				<div className={'container_edi-pos ' + (this.props.loading && !this.props.isCreatePostPage ? 'blur-blocker' : '')}>
 					<div className="image-container_edi-pos"
 							 style={{
 								 height: this.props.height,
@@ -228,9 +238,12 @@ class EditPost extends React.Component {
 
 const mapStateToProps = (state, props) => {
 	const {category, username, permlink} = props.match.params;
+  const location = state.router.location || props.location || {};
+	const isCreatePostPage = /\/editPost$/.test(location.pathname);
 	return {
 		postUrl: `${category}/${username}/${permlink}`,
 		isNew: !state.editPost.initData.src,
+		isCreatePostPage,
 		...state.editPost
 	};
 };

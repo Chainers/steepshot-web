@@ -29,10 +29,15 @@ export function setPostModalOptions(options) {
 }
 
 function swapPostModal(index, isLoading) {
+  let state = getStore().getState(), previousStyle = state.postModal.style;
+  if (Object.keys(state.postModal.style).length < 1) {
+    previousStyle = state.postModal.previousStyle;
+	}
 	return {
 		type: 'SWAP_POST_MODAL',
 		index,
-		isLoading
+		isLoading,
+		previousStyle
 	}
 }
 

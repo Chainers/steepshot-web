@@ -1,5 +1,6 @@
 import {getStore} from '../store/configureStore';
 import {setPostOffset} from "./postModal";
+import {setAdvertisingStatus as storage} from "./advertising";
 
 export function openModal(index, options) {
 	return {
@@ -48,7 +49,16 @@ function scrollToLastSeen(postModal) {
 			if (delta) {
 				return;
 			}
-			window.scrollTo(0, postModal.postOffset);
+      const HEADER_HEIGHT = 60, DISTANCE_BETWEEN_POSTS = 20;
+			let headersCount = 1, location = getStore().getState().router.location.pathname;
+      if (!storage.advertisingStatus) {
+        headersCount = 2;
+      }
+			let correctionPostOffset = postModal.postOffset - headersCount * HEADER_HEIGHT;
+      if (location.match(/\/@[\w-.]+/)) {
+      	correctionPostOffset = correctionPostOffset + 120 - DISTANCE_BETWEEN_POSTS;
+			}
+			window.scrollTo(0, correctionPostOffset);
 			dispatch(setPostOffset(null));
 		}
 	}
