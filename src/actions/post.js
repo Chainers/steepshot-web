@@ -3,8 +3,9 @@ import {initPostsList} from './postsList';
 import {initPostModal} from './postModal';
 import {pushMessage} from './pushMessage';
 import {actionLock, actionUnlock} from './session';
-import Constants from "../common/constants";
-import PostService from "../services/postService";
+import Constants from '../common/constants';
+import PostService from '../services/postService';
+import CommentService from '../services/commentService';
 
 function addPosts(posts) {
 	return {
@@ -16,47 +17,44 @@ function addPosts(posts) {
 export function updatePost(postIndex, newVoteState, newFlagState) {
 	return (dispatch) => {
 		if (!postIndex.includes('#')) {
-			updatePostData(dispatch, postIndex);
+			updatePostData(dispatch, postIndex, newVoteState, newFlagState);
 		} else {
 			updateCommentData(dispatch, postIndex, newVoteState, newFlagState)
 		}
 	}
 }
 
-function updatePostData(dispatch, postUrl) {
+function updatePostData(dispatch, postUrl, newVoteState, newFlagState) {
 	PostService.getPost(postUrl)
-		.then((result) => {
+		.then((response) => {
+      let newItem = updateFromResponse(postUrl, response, newVoteState, newFlagState);
 			dispatch({
 				type: 'UPDATE_POST',
-				post: result
+				post: newItem
 			})
 		});
 }
 
 function updateCommentData(dispatch, postIndex, newVoteState, newFlagState) {
-	let newItem = getStore().getState().posts[postIndex];
-	if (newVoteState !== 0) {
-		newVoteState ? newItem.net_votes++ : newItem.net_votes--;
-		newVoteState ? newItem.net_likes++ : newItem.net_likes--;
-	}
-	if (newFlagState !== 0) {
-		newFlagState ? newItem.net_flags++ : newItem.net_flags--;
-	}
-	if (newItem.vote && newFlagState) {
-		newItem.vote = false;
-		newItem.net_votes--;
-		newItem.net_likes--;
-	}
-	if (newItem.flag && newVoteState) {
-		newItem.flag = false;
-		newItem.net_flags--;
-	}
-	newItem.vote = newVoteState;
-	newItem.flag = newFlagState;
-	dispatch({
-		type: 'UPDATE_COMMENT',
-		[postIndex]: newItem
-	});
+	CommentService.getComment(postIndex)
+		.then((response) => {
+			let newItem = updateFromResponse(postIndex, response, newVoteState, newFlagState);
+			dispatch({
+				type: 'UPDATE_COMMENT',
+				[postIndex]: newItem
+			})
+		});
+}
+
+function updateFromResponse(postIndex, response, newVoteState, newFlagState) {
+  let newItem = getStore().getState().posts[postIndex];
+  newItem.vote = !!newVoteState;
+  newItem.flag = !!newFlagState;
+  newItem.net_likes = response.net_likes;
+  newItem.net_votes = response.net_votes;
+  newItem.net_flags = response.net_flags;
+  newItem.total_payout_reward = response.total_payout_reward;
+  return newItem;
 }
 
 export function setPowerLikeInd(postIndex, isOpen) {

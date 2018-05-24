@@ -27,10 +27,6 @@ import './postModal.css';
 import Constants from '../../common/constants';
 import {utils} from '../../utils/utils';
 import {setComponentSize} from '../../utils/setComponentSize';
-import storage from '../../utils/Storage';
-
-
-const HEADER_HEIGHT = 60;
 
 class PostModal extends React.Component {
 
@@ -62,12 +58,9 @@ class PostModal extends React.Component {
 	}
 
 	setCurrentPostOffset(nextProps) {
-    let post = document.getElementById(this.props.currentIndex), headersCount = 1;
-    if (!storage.advertisingStatus) {
-      headersCount = 2;
-    }
-    if (post && (post.offsetTop !== 0) && ((post.offsetTop - headersCount * HEADER_HEIGHT) !== nextProps.offsetTop)) {
-      this.props.setPostOffset(post.offsetTop - headersCount * HEADER_HEIGHT);
+    let post = document.getElementById(this.props.currentIndex);
+    if (post && (post.offsetTop !== 0) && ((post.offsetTop) !== nextProps.offsetTop)) {
+      this.props.setPostOffset(post.offsetTop);
     }
 	}
 
