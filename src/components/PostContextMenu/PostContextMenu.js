@@ -31,7 +31,8 @@ class PostContextMenu extends React.Component {
 	}
 
 	deletePost() {
-		let modalOption = {
+
+		/*let modalOption = {
 			body: (<ConfirmDeleteModal closeModal={() => {
 				this.props.closeModal("ConfirmDeleteModal")
 			}}
@@ -42,16 +43,16 @@ class PostContextMenu extends React.Component {
 			/>)
 		};
 		this.props.closeModal("MenuModal");
-		this.props.openModal("ConfirmDeleteModal", modalOption);
+		this.props.openModal("ConfirmDeleteModal", modalOption);*/
 	}
 
-	modalsCallback(param) {
+	/*modalsCallback(param) {
 		if (param) {
 			this.props.deletePost(this.props.index);
 		} else {
 			this.openFunc();
 		}
-	}
+	}*/
 
 	editPost() {
 		this.props.historyPush('/editPost' + this.props.item.url);

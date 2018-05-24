@@ -63,9 +63,9 @@ class Settings extends React.Component {
 														 default={this.props[fields.upvote]}/>
 							<SettingsField label="Upvote comment" point={fields.upvote_comment}
 														 default={this.props[fields.upvote_comment]}/>
-							<SettingsField label="follow" point={fields.follow}
+							<SettingsField label="Follow" point={fields.follow}
 														 default={this.props[fields.follow]}/>
-							<SettingsField label="post" point={fields.post}
+							<SettingsField label="Post" point={fields.post}
 														 default={this.props[fields.post]}/>
 						</div>
 					</div>
