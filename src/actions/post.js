@@ -6,6 +6,9 @@ import {actionLock, actionUnlock} from './session';
 import Constants from '../common/constants';
 import PostService from '../services/postService';
 import CommentService from '../services/commentService';
+import {closeAllModals, closeModal, openModal} from './modal';
+import * as React from 'react';
+import ConfirmDeleteModal from '../components/PostContextMenu/ConfirmDeleteModal/ConfirmDeleteModal';
 
 function addPosts(posts) {
 	return {
@@ -128,23 +131,37 @@ function deletePostError(postIndex) {
 	}
 }
 
-export function deletePost(postUrl) {
-	return function (dispatch) {
+export function deletePost(postIndex, isContextMenu) {
+	return (dispatch) => {
+    let modalOption = {
+      body: (<ConfirmDeleteModal
+								closeModal={() => dispatch(closeModal("ConfirmDeleteModal"))}
+							  closeAllModals={dispatch(closeAllModals())}
+							  postIndex={postIndex}/>)
+    };
+    if (isContextMenu) dispatch(closeModal("MenuModal"));
+    dispatch(openModal("ConfirmDeleteModal", modalOption));
+	}
+}
+
+export function deletePostAfterConfirm(postIndex, startDeleting) {
+	return (dispatch) => {
+		if (!startDeleting) return;
 		let state = getStore().getState();
 		if (state.session.actionLocked) {
 			return;
 		}
 		dispatch(actionLock());
-		dispatch(deletePostRequest(postUrl));
-		PostService.deletePost(state.posts[postUrl])
+		dispatch(deletePostRequest(postIndex));
+		PostService.deletePost(state.posts[postIndex])
 			.then(response => {
 				dispatch(actionUnlock());
-				dispatch(deletePostSuccess(postUrl, response));
+				dispatch(deletePostSuccess(postIndex, response));
 				dispatch(pushMessage(Constants.DELETE.DELETE_SUCCESS));
 			})
 			.catch(error => {
 				dispatch(actionUnlock());
-				dispatch(deletePostError(postUrl, error));
+				dispatch(deletePostError(postIndex, error));
 				dispatch(pushMessage(error));
 			});
 	}

@@ -41,8 +41,8 @@ class Comment extends React.Component {
 						 isComment={true}/>
 		    </div>
 			: <div className="display--flex">
-					{/*<span className="edit_comment">Edit</span>*/}
-					{/*<span className="delete_comment">Delete</span>*/}
+					<span className="edit_comment">Edit</span>
+					<span className="delete_comment" onClick={this.deleteComment.bind(this)}>Delete</span>
 				</div>;
 		const authorLink = `/@${this.props.author}`;
 		return (
