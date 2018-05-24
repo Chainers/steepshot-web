@@ -24,6 +24,7 @@
   "dependencies": {
     "create-react-server": "^0.3.2",
     "es6-promise": "^4.2.4",
+    "golos-js": "^0.6.3",
     "history": "^4.7.2",
     "image-compressor": "^1.2.0",
     "image-compressor.js": "^1.1.3",

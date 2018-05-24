@@ -3,10 +3,6 @@ const Constants = {
 		baseUrl_v1_1: 'https://steepshot.org/api/v1_1',
 		baseUrl_v1: 'https://steepshot.org/api/v1'
 	},
-	CATEGORIES: {
-		user: 'user',
-		tag: 'tag'
-	},
 	OPERATIONS: {
 		COMMENT: 'comment',
 		VOTE: 'vote',
@@ -43,16 +39,6 @@ const Constants = {
 		}
 	},
 
-	SETTINGS_LABELS: {
-		save: 'Save',
-		succesSave: 'Saved',
-		upToDate: 'Already up to date'
-	},
-
-	POSTS_SETTINGS: {
-		defaultLimit: 17
-	},
-
 	IMAGE: {
 		MIN_WIDTH: 640,
 		MIN_HEIGHT: 480,
@@ -62,7 +48,6 @@ const Constants = {
 	},
 
 	EMPTY_QUERY: 'It\'s very strange, but we do not have anything yet for this query. Try to look for something else...',
-	EMPTY_QUERY_VOTERS: 'Still no one has rated this post...',
 
 	SEARCH_PLACEHOLDER: 'Type your search query and press "Enter"',
 	SEARCH_PLACEHOLDER_MIN: 'To search, press "Enter"',
@@ -103,15 +88,6 @@ const Constants = {
 		}
 	},
 
-	LIKES_FILTER: {
-		LIKE: {
-			label: 'Liked by'
-		},
-		DISLIKE: {
-			label: 'Flaged by'
-		}
-	},
-
 	SEARCH_FILTERS: {
 		USERS: {
 			label: 'Users',
@@ -128,21 +104,6 @@ const Constants = {
 		NEW_POSTS_RESULT: 'New posts by tag ',
 		HOT_POSTS_RESULT: 'Hot posts by tag '
 	},
-
-	PROMISES: {
-		GET_COMMENTS: 'GET_COMMENTS_PROMISE',
-		GET_POSTS: 'GET_POSTS_PROMISE',
-		GET_FOLLOWERS: 'GET_FOLLOWERS_PROMISE',
-		GET_FOLLOWING: 'GET_FOLLOWING_PROMISE',
-		GET_USERS_SEARCH: 'GET_USERS_SEARCH',
-		GET_USERS_VOTERS: 'GET_USERS_VOTERS'
-	},
-
-	DISPLAY: {
-		DESK_BREAKPOINT: 1024
-	},
-
-	CURRENCY: '$',
 
 	ENDLESS_SCROLL: {
 		DEBOUNCE: 500,
