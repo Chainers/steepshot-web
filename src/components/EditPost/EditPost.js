@@ -238,7 +238,8 @@ class EditPost extends React.Component {
 
 const mapStateToProps = (state, props) => {
 	const {category, username, permlink} = props.match.params;
-	const isCreatePostPage = /\/editPost$/.test(state.router.location.pathname);
+  const location = state.router.location || props.location || {};
+	const isCreatePostPage = /\/editPost$/.test(location.pathname);
 	return {
 		postUrl: `${category}/${username}/${permlink}`,
 		isNew: !state.editPost.initData.src,
