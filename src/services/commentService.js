@@ -7,9 +7,19 @@ import PostService from "./postService";
 
 class CommentService {
 
-	static getComments(postAuthor, postUrl) {
+	static getCommentsList(postAuthor, postUrl) {
 		const url = `post/${postAuthor}${postUrl}/comments`;
 		return RequestService.get(url);
+	}
+
+	static getComment(postUrl) {
+		const url = `comment/${CommentService.getCommentPermlinkFromUrl(postUrl)}/info`;
+
+		return RequestService.get(url);
+	}
+
+	static getCommentPermlinkFromUrl(postUrl) {
+    return postUrl.replace(/.+#(.+)/g, '$1');
 	}
 
 	static addComment(postAuthor, postPermlink, body) {

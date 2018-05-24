@@ -126,3 +126,9 @@
         margin: 5px;
     }
 }
+
+@media (max-width: 350px) {
+    .block_settings {
+        margin: 20px 5px;
+    }
+}

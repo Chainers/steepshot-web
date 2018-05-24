@@ -14,12 +14,12 @@ class Comments extends React.Component {
 	constructor(props) {
 		super();
 		props.initPostComment(props.point);
-		props.getComments(props.point);
+		props.getPostComments(props.point);
 	}
 
 	componentWillReceiveProps(nextProps) {
 		if (nextProps.point !== this.props.point) {
-			nextProps.getComments(nextProps.point);
+			nextProps.getPostComments(nextProps.point);
 		}
 		if (nextProps.scrollToLastComment !== this.props.scrollToLastComment && this.scrollBar) {
 			this.scrollBar.scrollToTop();
@@ -85,7 +85,7 @@ const mapStateToProps = (state, props) => {
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		getComments: (point) => {
+    getPostComments: (point) => {
 			dispatch(getPostComments(point))
 		},
 		initPostComment: (point) => {

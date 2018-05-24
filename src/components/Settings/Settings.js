@@ -47,7 +47,7 @@ class Settings extends React.Component {
 					</div>
 					<div className="block_settings">
 						<div className="header_settings">
-							<span>Push Notification</span>
+							<span>PUSH NOTIFICATIONS</span>
 							<ShowIf show={!this.props.notificationEnabled}>
 								<button className="subscribe-btn_settings" onClick={this.props.subscribe}>SUBSCRIBE</button>
 							</ShowIf>

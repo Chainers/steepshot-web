@@ -24,7 +24,7 @@ export default function postModal(state = initialState, action) {
 				fullScreenNavigation: state.fullScreenNavigation,
 				timeoutID: state.timeoutID,
         newImageLoading: action.isLoading,
-        previousStyle: state.style
+        previousStyle: action.previousStyle
 			};
 
 		case 'SET_FULL_SCREEN':

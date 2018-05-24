@@ -10,7 +10,7 @@ class ImagesGallery extends React.Component {
 
 	componentWillReceiveProps(nextProps) {
 		if (this.props.imageNumberInGallery !== nextProps.imageNumberInGallery) {
-			setTimeout( () => {
+			setTimeout(() => {
 				if (!this.image.complete) {
           this.props.setNewImageLoading(true);
         }
