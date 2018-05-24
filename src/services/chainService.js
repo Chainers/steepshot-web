@@ -3,7 +3,7 @@ class ChainService {
 	
 	static initConfig(service) {
 		ChainService.currentService = service;
-		ChainService.currentService.initConfig();
+		ChainService.currentService.init();
 	}
 
 	static setService(service) {
@@ -23,7 +23,7 @@ class ChainService {
 	}
 
 	static changeFollowInBlockchain(jsonData) {
-		return ChainService.currentService.changeFollowInBlockchain(jsonData)
+		return ChainService.currentService.changeFollowInBlockchain(jsonData);
 	}
 
 	static addPostDataToBlockchain(operations) {

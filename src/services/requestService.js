@@ -1,10 +1,33 @@
 import Constants from "../common/constants";
 import {utils} from "../utils/utils";
+import ChainService from "./chainService";
+import SteemService from "./steemService";
+import GolosService from "./golosService";
+
+let config = null;
 
 class RequestService {
 
+	static init(serviceName) {
+		switch(serviceName) {
+			case Constants.SERVICES.GOLOS.name:
+				ChainService.initConfig(GolosService);
+				config = Constants.SERVICES.GOLOS;
+				break;
+			case Constants.SERVICES.STEEM:
+			default:
+				ChainService.initConfig(SteemService);
+				config = Constants.SERVICES.STEEM;
+				break;
+		}
+	}
+
+	static getLoggingUrl() {
+		return config.loggingUrl;
+	}
+
 	static get(url, options) {
-		const fullUrl = Constants.URLS.baseUrl_v1_1 + '/' + url + convertOptionsToRequestString(options);
+		const fullUrl = config.baseUrl + '/' + url + convertOptionsToRequestString(options);
 		return fetch(fullUrl, {
 			method: 'GET'
 		})
@@ -21,7 +44,7 @@ class RequestService {
 			options.headers = {'Content-Type': 'application/json'};
 			options.body = JSON.stringify(data);
 		}
-		return fetch(`${Constants.URLS.baseUrl_v1_1}/${url}`, options)
+		return fetch(`${config.baseUrl}/${url}`, options)
 			.then(RequestService.processResponse);
 	}
 

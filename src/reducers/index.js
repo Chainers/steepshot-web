@@ -30,7 +30,7 @@ import mobileNavigation from "./mobileNavigation";
 import oneSignal from "./oneSignal";
 import settingsFields from "./settingsFields";
 import advertising from "./advertising";
-import chain from "./chain";
+import services from "./services";
 
 export default combineReducers({
 	clipboard,
@@ -64,5 +64,5 @@ export default combineReducers({
 	mobileNavigation,
   advertising,
 	oneSignal,
-	chain
+	services
 });

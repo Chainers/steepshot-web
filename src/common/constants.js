@@ -1,8 +1,17 @@
 const Constants = {
-	URLS: {
-		baseUrl_v1_1: 'https://steepshot.org/api/v1_1',
-		baseUrl_v1: 'https://steepshot.org/api/v1'
+	SERVICES: {
+		GOLOS: {
+			name: 'GOLOS',
+			baseUrl: 'https://golos.steepshot.org/api/v1_1',
+			loggingUrl: 'https://golos.steepshot.org/api/v1'
+		},
+		STEEM: {
+			name: 'STEEM',
+			baseUrl: 'https://steepshot.org/api/v1_1',
+			loggingUrl: 'https://steepshot.org/api/v1'
+		},
 	},
+
 	OPERATIONS: {
 		COMMENT: 'comment',
 		VOTE: 'vote',

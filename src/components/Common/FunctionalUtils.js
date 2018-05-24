@@ -8,13 +8,13 @@ import Modals from "../Modals/Modals";
 import {resizeWindow} from "../../actions/utils";
 import MobileNavigation from "../MobileNavigation/MobileNavigation";
 import {loadSubscribeData} from "../../actions/oneSignal";
-import {initChain} from "../../actions/chain";
+import {initServices} from "../../actions/services";
 
 class FunctionalUtils extends React.Component {
 
 	constructor(props) {
 		super();
-		props.initChain();
+		props.setService();
 		if (!global.isServerSide) {
 			props.loadSubscribeData();
 		}
@@ -65,8 +65,8 @@ const mapDispatchToProps = (dispatch) => {
 		loadSubscribeData: () => {
 			dispatch(loadSubscribeData())
 		},
-		initChain: () => {
-    	dispatch(initChain())
+		setService: () => {
+    	dispatch(setService())
 		}
   }
 };
