@@ -6,11 +6,11 @@ import SteemNodeService from "./steemNodeService";
 
 class SteemService {
 
-	static initConfig() {
+	init() {
 		SteemNodeService.initConfig();
 	}
 
-	static addCommentToBlockchain(commentOperation) {
+	addCommentToBlockchain(commentOperation) {
 		return processRequest(callback => {
 			let beneficiaries = SteemService.getBeneficiaries(commentOperation[1].permlink, [{
 				account: 'steepshot',
@@ -25,19 +25,19 @@ class SteemService {
 		})
 	}
 
-	static changeVoteInBlockchain(postAuthor, permlink, power) {
+	changeVoteInBlockchain(postAuthor, permlink, power) {
 		return processRequest(callback => {
 			steem.broadcast.vote(AuthService.getPostingKey(), AuthService.getUsername(), postAuthor, permlink, power, callback);
 		})
 	}
 
-	static deletePostFromBlockchain(permlink) {
+	deletePostFromBlockchain(permlink) {
 		return processRequest(callback => {
 			steem.broadcast.deleteComment(AuthService.getPostingKey(), AuthService.getUsername(), permlink, callback);
 		})
 	}
 
-	static changeFollowInBlockchain(jsonData) {
+	changeFollowInBlockchain(jsonData) {
 		return processRequest(callback => {
 			steem.broadcast.customJson(AuthService.getPostingKey(), [], [AuthService.getUsername()], 'follow', jsonData,
 				callback
@@ -45,7 +45,7 @@ class SteemService {
 		})
 	}
 
-	static addPostDataToBlockchain(operations) {
+	addPostDataToBlockchain(operations) {
 		return processRequest(callback => {
 			steem.broadcast.sendAsync(
 				{operations, extensions: []},
@@ -54,17 +54,17 @@ class SteemService {
 		})
 	}
 
-	static getAccounts(username) {
+	getAccounts(username) {
 		return processRequest(callback => {
 			steem.api.getAccounts([username], callback);
 		})
 	}
 
-	static wifIsValid(postingKey, pubWif) {
+	wifIsValid(postingKey, pubWif) {
 		return Promise.resolve(steem.auth.wifIsValid(postingKey, pubWif));
 	}
 
-	static getValidTransaction() {
+	getValidTransaction() {
 		const operation = [Constants.OPERATIONS.COMMENT, {
 			parent_author: '',
 			parent_permlink: '',
@@ -94,7 +94,7 @@ class SteemService {
 			});
 	}
 
-	static getBeneficiaries(permlink, beneficiaries) {
+	getBeneficiaries(permlink, beneficiaries) {
 		let beneficiariesObject = {
 			author: AuthService.getUsername(),
 			permlink: permlink,

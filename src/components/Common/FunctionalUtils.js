@@ -8,7 +8,7 @@ import Modals from "../Modals/Modals";
 import {resizeWindow} from "../../actions/utils";
 import MobileNavigation from "../MobileNavigation/MobileNavigation";
 import {loadSubscribeData} from "../../actions/oneSignal";
-import {initServices} from "../../actions/services";
+import {setService} from "../../actions/services";
 
 class FunctionalUtils extends React.Component {
 

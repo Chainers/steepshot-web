@@ -1,7 +1,7 @@
 class ChainService {
 	static currentService = null;
 	
-	static initConfig(service) {
+	static init(service) {
 		ChainService.currentService = service;
 		ChainService.currentService.init();
 	}

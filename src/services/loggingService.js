@@ -2,17 +2,15 @@ import RequestService from "./requestService";
 import AuthService from './authService';
 import {blockchainErrorsList} from '../utils/blockchainErrorsList';
 
-const loggingUrl = RequestService.getLoggingUrl();
-
 class LoggingService {
 
 	static logLogin() {
-		const url = `${loggingUrl}/log/login-with-posting`;
+		const url = `${RequestService.getLoggingUrl()}/log/login-with-posting`;
 		logCORS(url, 'login');
 	}
 
 	static logComment(postAuthor, permlink, error) {
-		const url = `${loggingUrl}/log/post/${makePostId(postAuthor, permlink)}/comment`;
+		const url = `${RequestService.getLoggingUrl()}/log/post/${makePostId(postAuthor, permlink)}/comment`;
 		logCORS(url, 'comment', error);
 	}
 
@@ -25,28 +23,28 @@ class LoggingService {
 	}
 
 	static logPost(error) {
-		const url = `${loggingUrl}/log/post`;
+		const url = `${RequestService.getLoggingUrl()}/log/post`;
 		logCORS(url, 'post', error);
 	}
 
 	static logEditPost(permlink, error) {
-		const url = `${loggingUrl}/log/post/${makePostId(AuthService.getUsername(), permlink)}/edit`;
+		const url = `${RequestService.getLoggingUrl()}/log/post/${makePostId(AuthService.getUsername(), permlink)}/edit`;
 		logCORS(url, 'edit', error);
 	}
 
 	static logFollow(isFollowed, user, error) {
 		let fType = (isFollowed) ? 'unfollow' : 'follow';
-		const url = `${loggingUrl}/log/user/${user}/${fType}`;
+		const url = `${RequestService.getLoggingUrl()}/log/user/${user}/${fType}`;
 		logCORS(url, fType, error);
 	}
 
 	static logDeletedPost(permlink, error) {
-		const url = `${loggingUrl}/log/post/${makePostId(AuthService.getUsername(), permlink)}/delete`;
+		const url = `${RequestService.getLoggingUrl()}/log/post/${makePostId(AuthService.getUsername(), permlink)}/delete`;
 		logCORS(url, 'delete', error);
 	}
 
 	static logSharePost(author, permlink) {
-		const url = `${loggingUrl}/log/post/${makePostId(author, permlink)}/info`;
+		const url = `${RequestService.getLoggingUrl()}/log/post/${makePostId(author, permlink)}/info`;
 		logCORS(url, 'share_post');
 	}
 }
@@ -56,7 +54,7 @@ export default LoggingService;
 
 function logChangVote(isFlag, permlink, postAuthor, error, event) {
 	let operation = isFlag ? event : 'downvote';
-	const url = `${loggingUrl}/log/post/${makePostId(postAuthor, permlink)}/${operation}`;
+	const url = `${RequestService.getLoggingUrl()}/log/post/${makePostId(postAuthor, permlink)}/${operation}`;
 	logCORS(url, operation, error);
 }
 

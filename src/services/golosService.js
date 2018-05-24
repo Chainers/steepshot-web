@@ -1,43 +1,42 @@
 import golos from 'golos-js';
 import Constants from "../common/constants";
-import ChainService from "./chainService";
 
 class GolosService {
 
-	static initConfig() {
+	init() {
 		golos.config.set('websocket', Constants.BLOCKCHAIN.GOLOS.CONNECTION_SERVERS[0]);
 		golos.config.set('address_prefix', Constants.BLOCKCHAIN.GOLOS.PREFIX);
 		golos.config.set('chain_id', Constants.BLOCKCHAIN.GOLOS.CHAIN_ID);
 	}
 
-	static setService(service) {
+	setService(service) {
 	}
 
-	static addCommentToBlockchain(commentOperation) {
+	addCommentToBlockchain(commentOperation) {
 	}
 
-	static changeVoteInBlockchain(postAuthor, permlink, power) {
+	changeVoteInBlockchain(postAuthor, permlink, power) {
 	}
 
-	static deletePostFromBlockchain(permlink) {
+	deletePostFromBlockchain(permlink) {
 	}
 
-	static changeFollowInBlockchain(jsonData) {
+	changeFollowInBlockchain(jsonData) {
 	}
 
-	static addPostDataToBlockchain(operations) {
+	addPostDataToBlockchain(operations) {
 	}
 
-	static getAccounts(username) {
+	getAccounts(username) {
 	}
 
-	static wifIsValid(postingKey, pubWif) {
+	wifIsValid(postingKey, pubWif) {
 	}
 
-	static getValidTransaction() {
+	getValidTransaction() {
 	}
 
-	static getBeneficiaries(permlink, beneficiaries) {
+	getBeneficiaries(permlink, beneficiaries) {
 	}
 }
 
