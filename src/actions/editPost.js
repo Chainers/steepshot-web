@@ -27,17 +27,23 @@ export function addTag() {
 			return emptyAction();
 		}
 		dispatch(editPostChangeTags(getValidTagsString(editPostState.tags + ' ' + newTag.trim())));
-
 		dispatch(clearTextInputState(Constants.TEXT_INPUT_POINT.TAGS));
 	}
 }
 
 export function removeTag(index) {
-	const tagsString = getStore().getState().editPost.tags;
-	let tagsList = tagsString.toLowerCase().split(' ');
-	tagsList.splice(index, 1);
+	const editPost = getStore().getState().editPost;
+	const tagsString = editPost.tags;
+	const isEditingPost = editPost.initData.src;
+
 	return dispatch => {
-		dispatch(editPostChangeTags(tagsList.join(' ')));
+		if (isEditingPost && index === 0) {
+			dispatch(pushMessage("You can not edit the first hashtag!"));
+		} else {
+			let tagsList = tagsString.toLowerCase().split(' ');
+			tagsList.splice(index, 1);
+			dispatch(editPostChangeTags(tagsList.join(' ')));
+		}
 	}
 }
 
@@ -247,13 +253,14 @@ function prepareData() {
 }
 
 function getValidTagsString(str) {
+	const serviceName = getStore().getState().services.name;
 	if (str) {
 		let result = str.replace(/\bsteepshot\b/g, '');
 		result = result.trim();
 		result = result.replace(/\s+/g, ' ');
-		result = result.replace(/[^\w\s]+/g, '');
-		result = result.replace(new RegExp(`((\\s[^\\s]+){${Constants.TAGS.MAX_AMOUNT - 1}}).*`), '$1');
-		result = result.replace(new RegExp(`(([^\\s]{${Constants.TAGS.MAX_LENGTH}})[^\\s]+).*`), '$2');
+		result = result.replace(/[^a-zA-Zа-яА-Я0-9_-\s]+/g, '');
+		result = result.replace(new RegExp(`((\\s[^\\s]+){${Constants.SERVICES[serviceName].TAGS.MAX_AMOUNT - 1}}).*`), '$1');
+		result = result.replace(new RegExp(`(([^\\s]{${Constants.SERVICES[serviceName].TAGS.MAX_LENGTH}})[^\\s]+).*`), '$2');
 		return deleteSimilarTags(result);
 	}
 }

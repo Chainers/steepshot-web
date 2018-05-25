@@ -5,14 +5,22 @@ const Constants = {
 			baseUrl: 'https://golos.steepshot.org/api/v1_1',
 			loggingUrl: 'https://golos.steepshot.org/api/v1',
 			MAX_ACCEPTED_PAYOUT: '1000000.000 GBG',
-			PERCENT_STEEM_DOLLARS: 10000
+			PERCENT_STEEM_DOLLARS: 10000,
+			TAGS: {
+				MAX_LENGTH: 40,
+				MAX_AMOUNT: 5
+			},
 		},
 		STEEM: {
 			name: 'STEEM',
 			baseUrl: 'https://steepshot.org/api/v1_1',
 			loggingUrl: 'https://steepshot.org/api/v1',
 			MAX_ACCEPTED_PAYOUT: '1000000.000 SBD',
-			PERCENT_STEEM_DOLLARS: 10000
+			PERCENT_STEEM_DOLLARS: 10000,
+			TAGS: {
+				MAX_LENGTH: 40,
+				MAX_AMOUNT: 20
+			},
 		},
 	},
 

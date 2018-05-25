@@ -56,8 +56,6 @@ class OneSignalService {
 			watched_user: subscribingName,
 			trx
 		};
-		console.log(url);
-		console.log(body);
 		return RequestService.post(url, body);
 	}
 }

@@ -7,7 +7,7 @@ export default function services(state = initialState, action) {
 		case 'SET_SERVICE':
 			return {
 				...state,
-				serviceName: action.serviceName
+				name: action.serviceName
 			};
 		default:
 			return state;

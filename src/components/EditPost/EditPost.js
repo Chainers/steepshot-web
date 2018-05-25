@@ -191,14 +191,13 @@ class EditPost extends React.Component {
 										 multiline={false}
 										 required={true}
 										 value={this.props.initData.title}
-										 noValidCharacters="[А-Яа-я]"
 										 maxLength={255}/>
 					<TextInput title="Tags"
 										 maxLength={Constants.TAGS.MAX_LENGTH}
 										 point={Constants.TEXT_INPUT_POINT.TAGS}
 										 multiline={false}
 										 description="Enter tags with spaces, but not more than 20"
-										 noValidCharacters="[^\w\s]"
+										 noValidCharacters="[^a-zA-Zа-яА-Я0-9_]"
 										 keyPressEvents={[{
 											 keys: [Constants.KEYS.SPACE, Constants.KEYS.ENTER],
 											 func: () => this.props.addTag()

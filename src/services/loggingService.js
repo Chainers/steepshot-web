@@ -74,7 +74,6 @@ function logCORS(url, operation, error = '') {
 		},
 		body: JSON.stringify(body)
 	};
-
 	try {
 		fetch(url, options)
 			.then((response) => {

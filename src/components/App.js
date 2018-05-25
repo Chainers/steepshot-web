@@ -10,13 +10,13 @@ const App = ({children}) => (
 		<div className="outer-bg">
 			<Advertising/>
 			<Header/>
+			<FunctionalUtils/>
 			<div className="g-main">
 				{children || 'Loading'}
 				<BodyLoader/>
 			</div>
 		</div>
 		<Footer/>
-		<FunctionalUtils/>
 	</div>
 );
 

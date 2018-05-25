@@ -27,7 +27,6 @@ class ChainService {
 	}
 
 	static addPostDataToBlockchain(operations) {
-		console.log(operations);
 		return ChainService.currentService.addPostDataToBlockchain(operations);
 	}
 

@@ -22,7 +22,7 @@ class EditTags extends React.Component {
 			return (
 				<div className="tag_edi-tag" key={index}>
 					<div className="text_edi-tag">
-						{tag}
+						{utils.detransliterate(tag)}
 					</div>
 					<div className="remove-btn_edi-tag" onClick={this.removeTag.bind(this, index)}/>
 				</div>
