@@ -2250,7 +2250,12 @@ html body {
     min-width: 300px
 }
 
+.block-in-body_header, .g-header {
+    height: 60px;
+}
+
 .g-header {
+
     position: relative;
     background: #ffffff;
     border-bottom: 1px solid #e7e7e7
@@ -3147,7 +3152,6 @@ input[type=button].btn-block, input[type=reset].btn-block, input[type=submit].bt
     box-shadow: none;
     border: none;
     background: 0 0;
-    padding-top: 60px;
     padding-bottom: 60px
 }
 
@@ -3745,7 +3749,6 @@ input[type=button].btn-block, input[type=reset].btn-block, input[type=submit].bt
     left: 0;
     height: 100%;
     width: 100%;
-    padding-top: 60px;
     opacity: 0;
     z-index: -1;
     transition: opacity .4s, z-index .5s;
@@ -4938,10 +4941,6 @@ input[type=button].btn-block, input[type=reset].btn-block, input[type=submit].bt
         padding-bottom: 20px
     }
 
-    .g-main {
-        padding-top: 60px;
-    }
-
     .g-content {
         padding-top: 20px
     }
@@ -5454,10 +5453,6 @@ input[type=button].btn-block, input[type=reset].btn-block, input[type=submit].bt
     padding-right: 0;
     z-index: 1005;
     box-shadow: 0 0 3px 0 rgba(0, 0, 0, .1);
-}
-
-.g-main {
-    padding-top: 60px;
 }
 
 .modal {
