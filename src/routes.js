@@ -9,11 +9,11 @@ import Testing from './components/Common/Testing/Testing';
 import SinglePost from './components/SinglePost/SinglePost';
 import Search from './components/Search/Search';
 import EditPost from './components/EditPost/EditPost';
-import UserProfile from "./components/UserProfile/UserProfile";
-import Login from "./components/Login/Login";
-import {getStore} from "./store/configureStore";
-import Browse from "./components/Browse/Browse";
-import Settings from "./components/Settings/Settings";
+import UserProfile from './components/UserProfile/UserProfile';
+import Login from './components/Login/Login';
+import {getStore} from './store/configureStore';
+import Browse from './components/Browse/Browse';
+import Settings from './components/Settings/Settings';
 
 function isAuth() {
 	const auth = getStore().getState().auth;

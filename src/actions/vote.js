@@ -1,7 +1,7 @@
 import {getStore} from '../store/configureStore';
 import {updatePost} from './post';
 import {updateVotingPower} from './auth';
-import {pushMessage} from "./pushMessage";
+import {pushErrorMessage, pushMessage} from "./pushMessage";
 import {actionLock, actionUnlock} from "./session";
 import PostService from "../services/postService";
 
@@ -56,8 +56,8 @@ export function toggleVote(postIndex) {
 			})
 			.catch(error => {
 				dispatch(actionUnlock());
-				dispatch(toggleVoteError(postIndex));
-				dispatch(pushMessage(error));
+				dispatch(toggleVoteError(postIndex, error));
+				dispatch(pushErrorMessage(error));
 			})
 	};
 }

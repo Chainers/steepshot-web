@@ -2,7 +2,6 @@ import RequestService from "./requestService";
 import Constants from "../common/constants";
 import AuthService from "./authService";
 import SteemService from "./steemService";
-import {blockchainErrorsList} from "../utils/blockchainErrorsList";
 import LoggingService from "./loggingService";
 
 class UserService {
@@ -49,9 +48,8 @@ class UserService {
 				return Promise.resolve(response);
 			})
 			.catch(error => {
-				let checkedError = blockchainErrorsList(error);
-				LoggingService.logFollow(status, following, checkedError);
-				return Promise.reject(checkedError);
+				LoggingService.logFollow(status, following, error);
+				return Promise.reject(error);
 			})
 	}
 }

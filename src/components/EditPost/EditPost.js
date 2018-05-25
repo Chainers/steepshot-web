@@ -61,13 +61,13 @@ class EditPost extends React.Component {
     }
   }
 
-	imageChanged(event) {
-		event.preventDefault();
-		if(!this.inputField.value) {
+	imageChanged(e) {
+		e.preventDefault();
+		if (!this.inputField.value) {
 			return;
 		}
 		const reader = new FileReader();
-		const file = event.target.files[0];
+		const file = e.target.files[0];
 		if (typeof file === 'object') {
 			Object.defineProperty(file, 'name', {
 				writable: true

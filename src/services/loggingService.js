@@ -1,5 +1,6 @@
 import constants from '../common/constants';
-import AuthService from "./authService";
+import AuthService from './authService';
+import {blockchainErrorsList} from '../utils/blockchainErrorsList';
 
 const baseUrl = constants.URLS.baseUrl_v1;
 class LoggingService {
@@ -59,9 +60,10 @@ function logChangVote(isFlag, permlink, postAuthor, error, event) {
 }
 
 function logCORS(url, operation, error = '') {
+	let checkedError = blockchainErrorsList(error);
 	const body = {
 		username: AuthService.getUsername(),
-		error
+    checkedError
 	};
 	const options = {
 		method: 'POST',

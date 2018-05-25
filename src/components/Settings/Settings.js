@@ -2,7 +2,6 @@ import React from 'react';
 import {updateSettings} from '../../actions/settings';
 import {connect} from 'react-redux';
 import {goBack} from "react-router-redux";
-import {pushMessage} from "../../actions/pushMessage";
 import './settings.css';
 import Constants from "../../common/constants";
 import {withWrapper} from "create-react-server/wrapper";
@@ -15,17 +14,15 @@ import storage from "../../utils/Storage";
 class Settings extends React.Component {
 
 	constructor(props) {
-		super();
+		super(props);
 		if (!storage.settings && !global.isServerSide) {
 			props.updateSettings();
 		}
 	}
 
-	submit(e) {
-		e.preventDefault();
+	submit() {
 		this.props.updateSettings();
 		this.props.historyGoBack();
-		this.props.pushMessage(Constants.SETTINGS_CHANGED_MESSAGE);
 	}
 
 	render() {
@@ -63,9 +60,9 @@ class Settings extends React.Component {
 														 default={this.props[fields.upvote]}/>
 							<SettingsField label="Upvote comment" point={fields.upvote_comment}
 														 default={this.props[fields.upvote_comment]}/>
-							<SettingsField label="follow" point={fields.follow}
+							<SettingsField label="Follow" point={fields.follow}
 														 default={this.props[fields.follow]}/>
-							<SettingsField label="post" point={fields.post}
+							<SettingsField label="Post" point={fields.post}
 														 default={this.props[fields.post]}/>
 						</div>
 					</div>
@@ -92,9 +89,6 @@ const mapDispatchToProps = (dispatch) => {
 		},
 		historyGoBack: () => {
 			dispatch(goBack());
-		},
-		pushMessage: (message) => {
-			dispatch(pushMessage(message))
 		},
 		unsubscribe: () => {
 			dispatch(unsubscribe())
