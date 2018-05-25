@@ -94,7 +94,7 @@ class Header extends React.Component {
 		</div>;
 
 		return (
-			<header className="g-header">
+			<header className="g-header" key="Header">
 				<div className="container">
 					<div className={'user-panel ' + (this.props.isOpened ? 'closed' : 'open')}>
 						<div className="wrap-panel clearfix">

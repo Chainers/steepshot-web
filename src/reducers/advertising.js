@@ -1,7 +1,7 @@
 import storage from "../utils/Storage";
 
 const initialState = {
-  advertisingStatus: !storage.advertisingStatus
+  advertisingStatus: !!storage.advertisingStatus
 };
 export default function advertising(state = initialState, action) {
   switch (action.type) {

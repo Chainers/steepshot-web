@@ -1,11 +1,13 @@
 .container_login {
-    width: 720px;
+    width: 100%;
     height: 100%;
-    margin: auto;
+    margin: 0;
     display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: stretch;
+    flex-direction: row;
+}
+
+.welcome-body_login, .form-body_login {
+    flex: 1;
 }
 
 .title_login {

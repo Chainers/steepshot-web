@@ -1,9 +1,19 @@
+.block-in-body_advertising.closed_advertising, .closed_advertising > .wrapper_advertising {
+    height: 0;
+    opacity: 0;
+}
+
+.block-in-body_advertising, .wrapper_advertising {
+    height: 60px;
+    width: 100vw;
+    transition: height .25s;
+    opacity: 1;
+}
+
 .wrapper_advertising {
     position: fixed;
     top: 0;
     z-index: 1002;
-    height: 60px;
-    width: 100vw;
     background-color: #eedd82;
 }
 
@@ -54,16 +64,9 @@
     background: url('/images/sprite_svg1910.svg') -2px -56px  no-repeat;
 }
 
-.padding-top_advertising {
-    padding-top: 60px;
-}
-
 @media (max-width: 692px) {
-    .wrapper_advertising {
+    .wrapper_advertising, .block-in-body_advertising {
         height: 100px;
-    }
-    .padding-top_advertising {
-        padding-top: 100px;
     }
     .text-wrapper_advertising {
         padding: 0 30px;

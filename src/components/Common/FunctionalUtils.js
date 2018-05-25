@@ -37,7 +37,7 @@ class FunctionalUtils extends React.Component {
 
   render() {
     return (
-      <div className="utils-container">
+      <div className="utils-container" key="FunctionalUtils">
 				<PushNotifications/>
         <PushMessage />
 				<Clipboard/>
