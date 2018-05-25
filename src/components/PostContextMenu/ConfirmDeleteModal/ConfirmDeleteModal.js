@@ -1,18 +1,17 @@
 import * as React from 'react';
+import {connect} from 'react-redux';
+import {deletePostAfterConfirm} from '../../../actions/post';
 import './ConfirmDeleteModal.css';
 
 class ConfirmDeleteModal extends React.Component {
 
-	closeModal(e) {
-		e.stopPropagation();
+	cancelDeleting() {
 		this.props.closeModal();
-		this.props.modalsCallback(false);
 	}
 
-	closeAllModals(e) {
-		e.stopPropagation();
+	deletePost() {
 		this.props.closeAllModals();
-		this.props.modalsCallback(true);
+		this.props.deletePostAfterConfirm(this.props.postIndex);
 	}
 
 	render() {
@@ -24,13 +23,20 @@ class ConfirmDeleteModal extends React.Component {
 						undo this action.</p>
 				</div>
 				<div className="buttons_holder-del-mod">
-					<button className="btn btn-index" onClick={this.closeModal.bind(this)}>CANCEL</button>
-					<button className="btn btn-default" onClick={this.closeAllModals.bind(this)}>DELETE</button>
+					<button className="btn btn-index" onClick={this.cancelDeleting.bind(this)}>CANCEL</button>
+					<button className="btn btn-default" onClick={this.deletePost.bind(this)}>DELETE</button>
 				</div>
 			</div>
 		);
 	}
 }
 
+const mapDispatchToProps = (dispatch) => {
+	return {
+    deletePostAfterConfirm: (postIndex, startDeleting) => {
+    	dispatch(deletePostAfterConfirm(postIndex, startDeleting))
+		}
+	}
+};
 
-export default ConfirmDeleteModal;
+export default connect(() => {return {}}, mapDispatchToProps)(ConfirmDeleteModal);

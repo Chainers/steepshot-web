@@ -1,4 +1,13 @@
+import {blockchainErrorsList} from '../utils/blockchainErrorsList';
+
 let index = 0;
+
+export function pushErrorMessage(errorMessage) {
+  let checkedError = blockchainErrorsList(errorMessage);
+  return dispatch => {
+		dispatch(pushMessage(checkedError));
+	}
+}
 
 export function pushMessage(message) {
 	let currentIndex = ++index;

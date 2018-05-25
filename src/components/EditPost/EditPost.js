@@ -61,13 +61,13 @@ class EditPost extends React.Component {
     }
   }
 
-	imageChanged(event) {
-		event.preventDefault();
-		if(!this.inputField.value) {
+	imageChanged(e) {
+		e.preventDefault();
+		if (!this.inputField.value) {
 			return;
 		}
 		const reader = new FileReader();
-		const file = event.target.files[0];
+		const file = e.target.files[0];
 		if (typeof file === 'object') {
 			Object.defineProperty(file, 'name', {
 				writable: true
@@ -131,10 +131,10 @@ class EditPost extends React.Component {
 		}
 		return (
 			<div className="wrapper_edi-pos">
-				<ShowIf show={this.props.loading && !this.props.isCreatePostPage}>
+				<ShowIf show={this.props.loading}>
 					<LoadingSpinner style={{height: '100%', position: 'absolute', width: '100%'}}/>
 				</ShowIf>
-				<div className={'container_edi-pos ' + (this.props.loading && !this.props.isCreatePostPage ? 'blur-blocker' : '')}>
+				<div className={'container_edi-pos ' + (this.props.loading ? 'blur-blocker' : '')}>
 					<div className="image-container_edi-pos"
 							 style={{
 								 height: this.props.height,
@@ -238,12 +238,9 @@ class EditPost extends React.Component {
 
 const mapStateToProps = (state, props) => {
 	const {category, username, permlink} = props.match.params;
-  const location = state.router.location || props.location || {};
-	const isCreatePostPage = /\/editPost$/.test(location.pathname);
 	return {
 		postUrl: `${category}/${username}/${permlink}`,
 		isNew: !state.editPost.initData.src,
-		isCreatePostPage,
 		...state.editPost
 	};
 };

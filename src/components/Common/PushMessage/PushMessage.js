@@ -7,7 +7,7 @@ class PushMessage extends React.Component {
 	constructor(props) {
 		super(props);
 		this.renderMessage = this.renderMessage.bind(this);
-		this.renderAllMessage = this.renderAllMessage.bind(this);
+		this.renderAllMessages = this.renderAllMessages.bind(this);
 	}
 
 	renderMessage(message, index) {
@@ -25,7 +25,7 @@ class PushMessage extends React.Component {
 		);
 	}
 
-	renderAllMessage() {
+	renderAllMessages() {
 		const result = [];
 		for (let index in this.props.messages) {
 			result.push(
@@ -38,7 +38,7 @@ class PushMessage extends React.Component {
 	render() {
 		return (
 			<div className="container_push-msg">
-				{this.renderAllMessage()}
+				{this.renderAllMessages()}
 			</div>
 		);
 	}

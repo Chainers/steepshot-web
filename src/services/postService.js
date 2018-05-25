@@ -1,5 +1,4 @@
 import RequestService from "./requestService";
-import {blockchainErrorsList} from "../utils/blockchainErrorsList";
 import LoggingService from "./loggingService";
 import SteemService from "./steemService";
 import Constants from "../common/constants";
@@ -26,7 +25,6 @@ class PostService {
 			show_low_rated: true,
 			username: AuthService.getUsername()
 		};
-
 		return RequestService.get(url, options);
 	}
 
@@ -37,9 +35,8 @@ class PostService {
 				return Promise.resolve(response);
 			})
 			.catch(error => {
-				let checkedError = blockchainErrorsList(error);
-				LoggingService.logVote(voteStatus, permlink, postAuthor, checkedError);
-				return Promise.reject(checkedError);
+				LoggingService.logVote(voteStatus, permlink, postAuthor, error);
+				return Promise.reject(error);
 			})
 	}
 
@@ -50,9 +47,8 @@ class PostService {
 				return Promise.resolve(response);
 			})
 			.catch(error => {
-				let checkedError = blockchainErrorsList(error);
-				LoggingService.logFlag(isFlag, permlink, postAuthor, checkedError);
-				return Promise.reject(checkedError);
+				LoggingService.logFlag(isFlag, permlink, postAuthor, error);
+				return Promise.reject(error);
 			})
 	}
 
@@ -92,9 +88,9 @@ class PostService {
 				return Promise.resolve(response);
 			})
 			.catch(error => {
-				if (!error.data) {
+				/*if (!error.data) {
 					error = blockchainErrorsList(error);
-				}
+				}*/
 				return Promise.reject(error);
 			})
 	}
@@ -126,18 +122,20 @@ class PostService {
 			.catch(() => {
 				const operation = getDefaultPostOperation(post.title, post.tags, post.description, permlink);
 				operation[1].body = '*deleted*';
+				operation[1].title = '*deleted*';
+				if (post.json_metadata.tags.length > 2) {
+          post.json_metadata.tags.splice(1, post.json_metadata.tags.length - 2);
+				}
 				operation[1].json_metadata = JSON.stringify(post.json_metadata);
-				const operations = [operation];
-				return SteemService.addPostDataToBlockchain(operations);
+				return SteemService.addPostDataToBlockchain([operation]);
 			})
 			.then(response => {
 				LoggingService.logDeletedPost(permlink);
 				return Promise.resolve(response);
 			})
 			.catch(error => {
-				let checkedError = blockchainErrorsList(error);
-				LoggingService.logDeletedPost(permlink, checkedError);
-				return Promise.reject(checkedError);
+				LoggingService.logDeletedPost(permlink, error);
+				return Promise.reject(error);
 			})
 	}
 
