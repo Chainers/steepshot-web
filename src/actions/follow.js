@@ -1,5 +1,5 @@
 import {getStore} from "../store/configureStore";
-import {pushMessage} from "./pushMessage";
+import {pushErrorMessage, pushMessage} from "./pushMessage";
 import UserService from "../services/userService";
 
 
@@ -38,7 +38,7 @@ export function toggleFollow(author) {
 				dispatch(toggleFollowSuccess(author, response));
 			})
 			.catch(error => {
-				dispatch(pushMessage(error));
+				dispatch(pushErrorMessage(error));
 				dispatch(toggleFollowError(author, error));
 			})
 	};

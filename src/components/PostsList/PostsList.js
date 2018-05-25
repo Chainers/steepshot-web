@@ -7,8 +7,8 @@ import LoadingSpinner from '../LoadingSpinner';
 import Post from './Post/Post';
 import HeadingLeadComponent from '../Atoms/HeadingLeadComponent';
 import './postsList.css';
-import {utils} from "../../utils/utils";
-import Constants from "../../common/constants";
+import {utils} from '../../utils/utils';
+import Constants from '../../common/constants';
 
 class PostsList extends React.Component {
 	static defaultProps = {

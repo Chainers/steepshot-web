@@ -48,16 +48,26 @@ class EditPost extends React.Component {
 	}
 
 	componentDidMount() {
+		window.addEventListener('drop', (e) => this.correctDragAndDropImage(e));
+		window.addEventListener('dragover', (e) => this.correctDragAndDropImage(e));
 		documentTitle();
 	}
 
-	imageChanged(event) {
-		event.preventDefault();
-		if(!this.inputField.value) {
+  correctDragAndDropImage(e) {
+		if (!this.inputField) return;
+    if (!this.props.isNew || !this.inputField.contains(e.target)) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+  }
+
+	imageChanged(e) {
+		e.preventDefault();
+		if (!this.inputField.value) {
 			return;
 		}
 		const reader = new FileReader();
-		const file = event.target.files[0];
+		const file = e.target.files[0];
 		if (typeof file === 'object') {
 			Object.defineProperty(file, 'name', {
 				writable: true

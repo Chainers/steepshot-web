@@ -4,10 +4,8 @@ import './ConfirmFlagModal.css';
 
 class ConfirmFlagModal extends React.Component {
 
-	closeModal(e) {
-		e.stopPropagation();
+	closeModal() {
 		this.props.closeModal();
-		this.props.flagCallback(false);
 	}
 
 	render() {
@@ -25,9 +23,7 @@ class ConfirmFlagModal extends React.Component {
 				</div>
 				<div className="buttons_holder-flag-mod">
 					<button className="btn btn-index" onClick={this.closeModal.bind(this)}>CANCEL</button>
-					<button className="btn btn-default" onClick={() => {
-						this.props.flagCallback(true)
-					}}>FLAG
+					<button className="btn btn-default" onClick={() => this.props.flagCallback()}>FLAG
 					</button>
 				</div>
 			</div>

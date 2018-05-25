@@ -34,6 +34,8 @@
 }
 
 .header_settings > span {
+    display: flex;
+    align-items: center;
     font-size: 14px;
     font-weight: 600;
     font-style: normal;
@@ -124,5 +126,11 @@
 @media (max-width: 450px) {
     .container_settings {
         margin: 5px;
+    }
+}
+
+@media (max-width: 350px) {
+    .block_settings {
+        margin: 20px 5px;
     }
 }

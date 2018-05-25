@@ -124,7 +124,6 @@ function checkingNode(resolve, reject, sendRequestFunction, nodeService) {
 			resolve(response);
 		})
 		.catch(error => {
-			console.log(error);
 			if (nodeService.isMaxCountRequests()) {
 				reject(error);
 			} else {

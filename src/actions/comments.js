@@ -36,7 +36,7 @@ export function getPostComments(point) {
 			type: 'GET_POST_COMMENT_REQUEST',
 			point
 		});
-		CommentService.getComments(post.author, post.url)
+		CommentService.getCommentsList(post.author, post.url)
 			.then((response) => {
 				const comments = response.results.reverse();
 				if (!comments) {
@@ -55,7 +55,8 @@ export function getPostComments(point) {
 					let comment = {
 						...comments[i],
 						flagLoading: false,
-						voteLoading: false
+						voteLoading: false,
+						postDeleting: false
 					};
 					commentsObjects[comments[i].url] = comment;
 				}
