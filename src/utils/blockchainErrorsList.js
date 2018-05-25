@@ -27,7 +27,9 @@ export function blockchainErrorsList(error) {
       'weight is too small, please accumulate more voting power or steem power.', notificationText: 'You can vote this ' +
       'way because you haven’t got enough Steem Power. For more information click <a href="https://steepshot.io/faq#not-able-to-post" target="_blank">here</a>.'},
       {error: '10 assert_exception: Assert Exception: itr->vote_percent != o.weight: You have already voted in a similar' +
-      ' way.', notificationText: 'You\'ve already voted in a similar way.'}
+      ' way.', notificationText: 'You\'ve already voted in a similar way.'},
+      {error: '10 assert_exception: Assert Exception: equal(com.parent_permlink, o.parent_permlink): The permlink of a ' +
+      'comment cannot change.', notificationText: 'The permlink of comment can\'t change.'}
     ];
     for (let i = 0; i < errorsList.length; i++) {
       if (errorsList[i].error === newError) {

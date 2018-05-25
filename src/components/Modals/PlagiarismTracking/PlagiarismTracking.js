@@ -4,10 +4,10 @@ import {Link} from 'react-router-dom';
 import {closeModal} from '../../../actions/modal';
 import {editPostReject, editPostRequest, editPostSuccess} from '../../../actions/editPost';
 import constants from '../../../common/constants';
-import {push} from "react-router-redux";
+import {push} from 'react-router-redux';
 import './plagiarismTracking.css';
-import {pushMessage} from "../../../actions/pushMessage";
-import PostService from "../../../services/postService";
+import {pushErrorMessage, pushMessage} from '../../../actions/pushMessage';
+import PostService from '../../../services/postService';
 
 class PlagiarismTracking extends React.Component {
 
@@ -35,7 +35,7 @@ class PlagiarismTracking extends React.Component {
 			})
 			.catch(error => {
 				this.props.editPostReject(error);
-				this.props.pushMessage(error);
+				this.props.pushErrorMessage(error);
 			});
 		this.props.closeModal('PlagiarismTrackingModal');
 		this.props.editPostRequest();
@@ -126,7 +126,10 @@ const mapDispatchToProps = (dispatch) => {
 		},
 		pushMessage: (message) => {
 			dispatch(pushMessage(message))
-		}
+		},
+    pushErrorMessage: (message) => {
+      dispatch(pushErrorMessage(message))
+    },
 	};
 };
 

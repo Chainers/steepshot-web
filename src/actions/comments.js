@@ -55,7 +55,8 @@ export function getPostComments(point) {
 					let comment = {
 						...comments[i],
 						flagLoading: false,
-						voteLoading: false
+						voteLoading: false,
+						postDeleting: false
 					};
 					commentsObjects[comments[i].url] = comment;
 				}

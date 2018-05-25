@@ -6,7 +6,7 @@ import PlagiarismTracking from "../components/Modals/PlagiarismTracking/Plagiari
 import {openModal} from "./modal";
 import {push} from "react-router-redux";
 import {compressJPEG} from "../utils/compressor";
-import {pushMessage} from "./pushMessage";
+import {pushErrorMessage, pushMessage} from "./pushMessage";
 import Constants from "../common/constants";
 import PostService from "../services/postService";
 import UserService from "../services/userService";
@@ -162,7 +162,7 @@ export function editPost() {
 			})
 			.catch(error => {
 				dispatch(editPostReject(error));
-				dispatch(pushMessage(error));
+				dispatch(pushErrorMessage(error));
 			})
 	}
 }
@@ -218,7 +218,7 @@ export function createPost() {
 						})
 						.catch(error => {
 							dispatch(editPostReject(error));
-							dispatch(pushMessage(error));
+							dispatch(pushErrorMessage(error));
 						});
 				}
 			})

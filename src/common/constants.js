@@ -196,8 +196,8 @@ const Constants = {
 	COMMENT_ERROR_MESSAGE: 'You can only create comments once per 20 seconds.',
 	COMMENT_SUCCESS_MESSAGE: 'Comment has been successfully added.',
 
-	SETTINGS_CHANGED_MESSAGE: 'Setting has been successfully changed.',
-	SETTINGS_NOTCHANGED_MESSAGE: 'Setting hasn\'t been changed.',
+	SETTINGS_CHANGED_MESSAGE: 'Settings has been successfully changed.',
+	SETTINGS_NOT_CHANGED_MESSAGE: 'Settings hasn\'t been changed.',
 
 	VOTE_ACTION_WHEN_NOT_AUTH: 'This action is only available for logged-in users',
 	VOTE_ACTION_WHEN_NOT_AUTH_DEBOUNCE: 500,

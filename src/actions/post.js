@@ -1,7 +1,7 @@
 import {getStore} from '../store/configureStore';
 import {initPostsList} from './postsList';
 import {initPostModal} from './postModal';
-import {pushMessage} from './pushMessage';
+import {pushErrorMessage, pushMessage} from './pushMessage';
 import {actionLock, actionUnlock} from './session';
 import Constants from '../common/constants';
 import PostService from '../services/postService';
@@ -131,22 +131,20 @@ function deletePostError(postIndex) {
 	}
 }
 
-export function deletePost(postIndex, isContextMenu) {
+export function deletePost(postIndex) {
 	return (dispatch) => {
     let modalOption = {
       body: (<ConfirmDeleteModal
 								closeModal={() => dispatch(closeModal("ConfirmDeleteModal"))}
-							  closeAllModals={dispatch(closeAllModals())}
+							  closeAllModals={() => dispatch(closeAllModals())}
 							  postIndex={postIndex}/>)
     };
-    if (isContextMenu) dispatch(closeModal("MenuModal"));
     dispatch(openModal("ConfirmDeleteModal", modalOption));
 	}
 }
 
-export function deletePostAfterConfirm(postIndex, startDeleting) {
+export function deletePostAfterConfirm(postIndex) {
 	return (dispatch) => {
-		if (!startDeleting) return;
 		let state = getStore().getState();
 		if (state.session.actionLocked) {
 			return;
@@ -162,7 +160,7 @@ export function deletePostAfterConfirm(postIndex, startDeleting) {
 			.catch(error => {
 				dispatch(actionUnlock());
 				dispatch(deletePostError(postIndex, error));
-				dispatch(pushMessage(error));
+				dispatch(pushErrorMessage(error));
 			});
 	}
 }

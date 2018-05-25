@@ -7,12 +7,11 @@ class ConfirmDeleteModal extends React.Component {
 
 	cancelDeleting() {
 		this.props.closeModal();
-    this.props.deletePostAfterConfirm(this.props.postIndex, false);
 	}
 
 	deletePost() {
 		this.props.closeAllModals();
-		this.props.deletePostAfterConfirm(this.props.postIndex, true);
+		this.props.deletePostAfterConfirm(this.props.postIndex);
 	}
 
 	render() {
@@ -40,4 +39,4 @@ const mapDispatchToProps = (dispatch) => {
 	}
 };
 
-export default connect({}, mapDispatchToProps)(ConfirmDeleteModal);
+export default connect(() => {return {}}, mapDispatchToProps)(ConfirmDeleteModal);
