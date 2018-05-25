@@ -34,6 +34,10 @@ class Search extends React.Component {
 		documentTitle();
 	}
 
+	documentWillMount() {
+		documentTitle();
+	}
+
 	render() {
 		if (global.isServerSide) {
 			return null;
@@ -102,7 +106,7 @@ const mapStateToProps = (state, props) => {
 		newPostsList,
 		usersList,
 		...state.tabsBar.search,
-		searchValue,
+		searchValue
 	};
 };
 

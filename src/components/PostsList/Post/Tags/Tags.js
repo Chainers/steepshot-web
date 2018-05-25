@@ -16,6 +16,7 @@ class Tags extends React.Component {
 			if (tag === 'steepshot' || tag === '#steepshot') {
 				return null;
 			}
+			tag = utils.detransliterate(tag);
 			return <Link key={index} to={`/search/${this.checkFirst(tag)}`}>
 				{utils.tagPrettify(tag) + ' '}
 			</Link>
