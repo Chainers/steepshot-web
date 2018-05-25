@@ -193,7 +193,7 @@ class EditPost extends React.Component {
 										 value={this.props.initData.title}
 										 maxLength={255}/>
 					<TextInput title="Tags"
-										 maxLength={Constants.TAGS.MAX_LENGTH}
+										 maxLength={this.props.tagsMaxLength}
 										 point={Constants.TEXT_INPUT_POINT.TAGS}
 										 multiline={false}
 										 description="Enter tags with spaces, but not more than 20"
@@ -240,7 +240,8 @@ const mapStateToProps = (state, props) => {
 	return {
 		postUrl: `${category}/${username}/${permlink}`,
 		isNew: !state.editPost.initData.src,
-		...state.editPost
+		...state.editPost,
+		tagsMaxLength: Constants.SERVICES[state.services.name].TAGS.MAX_AMOUNT
 	};
 };
 
