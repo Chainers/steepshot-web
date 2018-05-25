@@ -3,7 +3,7 @@ import {
 	Route,
 	Redirect
 } from 'react-router-dom';
-import {connect} from "react-redux";
+import {connect} from 'react-redux';
 
 const PrivateRoute = ({component: Component, ...rest, isAuthenticated}) => (
 	<Route {...rest} render={props => (

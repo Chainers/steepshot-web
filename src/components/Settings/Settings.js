@@ -2,7 +2,6 @@ import React from 'react';
 import {updateSettings} from '../../actions/settings';
 import {connect} from 'react-redux';
 import {goBack} from "react-router-redux";
-import {pushMessage} from "../../actions/pushMessage";
 import './settings.css';
 import Constants from "../../common/constants";
 import {withWrapper} from "create-react-server/wrapper";
@@ -15,17 +14,15 @@ import storage from "../../utils/Storage";
 class Settings extends React.Component {
 
 	constructor(props) {
-		super();
+		super(props);
 		if (!storage.settings && !global.isServerSide) {
 			props.updateSettings();
 		}
 	}
 
-	submit(e) {
-		e.preventDefault();
+	submit() {
 		this.props.updateSettings();
 		this.props.historyGoBack();
-		this.props.pushMessage(Constants.SETTINGS_CHANGED_MESSAGE);
 	}
 
 	render() {
@@ -92,9 +89,6 @@ const mapDispatchToProps = (dispatch) => {
 		},
 		historyGoBack: () => {
 			dispatch(goBack());
-		},
-		pushMessage: (message) => {
-			dispatch(pushMessage(message))
 		},
 		unsubscribe: () => {
 			dispatch(unsubscribe())

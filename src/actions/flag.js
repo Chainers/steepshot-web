@@ -3,7 +3,7 @@ import Constants from '../common/constants';
 import {debounce} from 'lodash';
 import {updatePost} from './post';
 import {updateVotingPower} from './auth';
-import {pushMessage} from "./pushMessage";
+import {pushErrorMessage, pushMessage} from "./pushMessage";
 import {actionLock, actionUnlock} from "./session";
 import PostService from "../services/postService";
 
@@ -60,7 +60,7 @@ export function toggleFlag(postIndex) {
 			.catch(error => {
 				dispatch(actionUnlock());
 				dispatch(toggleFlagError(postIndex, error));
-				dispatch(pushMessage(error));
+				dispatch(pushErrorMessage(error));
 			});
 	};
 }

@@ -23,7 +23,7 @@ class PostContextMenu extends React.Component {
 			fullScreen: false,
 			BUTTONS_OPTIONS: buttonsOptions,
 		};
-		this.openFunc = this.openFunc.bind(this);
+		this.openMenuModal = this.openMenuModal.bind(this);
 	}
 
 	hidePost() {
@@ -31,35 +31,15 @@ class PostContextMenu extends React.Component {
 	}
 
 	deletePost() {
-
-		/*let modalOption = {
-			body: (<ConfirmDeleteModal closeModal={() => {
-				this.props.closeModal("ConfirmDeleteModal")
-			}}
-				 closeAllModals={() => {
-					 this.props.closeAllModals()
-				 }}
-				 modalsCallback={this.modalsCallback.bind(this)}
-			/>)
-		};
-		this.props.closeModal("MenuModal");
-		this.props.openModal("ConfirmDeleteModal", modalOption);*/
+		this.props.deletePost(this.props.index);
 	}
-
-	/*modalsCallback(param) {
-		if (param) {
-			this.props.deletePost(this.props.index);
-		} else {
-			this.openFunc();
-		}
-	}*/
 
 	editPost() {
 		this.props.historyPush('/editPost' + this.props.item.url);
 		this.props.closeModal("MenuModal");
 	}
 
-	share() {
+	sharePost() {
 		let modalOption = {
 			body: (<ChooseSocialNetwork closeModal={() => {
 				this.props.closeModal("ChooseSocialNetwork")
@@ -68,7 +48,6 @@ class PostContextMenu extends React.Component {
 				item={this.props.item}
 			/>)
 		};
-		this.props.closeModal("MenuModal");
 		this.props.openModal("ChooseSocialNetwork", modalOption);
 	}
 
@@ -89,35 +68,25 @@ class PostContextMenu extends React.Component {
 		}
 		if (!this.props.item.flag) {
 			let modalOption = {
-				body: (<ConfirmFlagModal closeModal={() => {
-					this.props.closeModal("ConfirmFlagModal")
-				}}
-																 flagCallback={this.flagCallback.bind(this)}
+				body: (<ConfirmFlagModal closeModal={() => this.props.closeModal("ConfirmFlagModal")}
+					 flagCallback={this.flagCallback.bind(this)}
 				/>)
 			};
 			this.props.openModal("ConfirmFlagModal", modalOption);
 		} else {
 			this.props.toggleFlag(this.props.index);
 		}
-		this.props.closeModal("MenuModal");
 	}
 
-	flagCallback(param) {
-		if (param) {
-			this.props.toggleFlag(this.props.index);
-			this.props.closeModal("ConfirmFlagModal");
-		} else {
-			this.openFunc();
-		}
+	flagCallback() {
+		this.props.toggleFlag(this.props.index);
+		this.props.closeModal("ConfirmFlagModal");
 	}
 
-	openFunc() {
+	openMenuModal() {
 		let modalOption = {
 			body: (<Menu buttonOption={this.state.BUTTONS_OPTIONS}
-									 closeModal={() => {
-										 this.props.closeModal("MenuModal")
-									 }}
-			/>)
+									 closeModal={() => this.props.closeModal("MenuModal")}/>)
 		};
 		this.props.openModal("MenuModal", modalOption);
 	}
@@ -125,7 +94,7 @@ class PostContextMenu extends React.Component {
 	render() {
 		return (
 			<div className="container_pos-con-men" style={this.props.style}>
-				<div className="container_post-men-but" onClick={this.openFunc} style={this.props.style}>
+				<div className="container_post-men-but" onClick={this.openMenuModal} style={this.props.style}>
 					<div className="shape_post-men-but" alt="Open post menu" title="Open post menu"/>
 				</div>
 			</div>
@@ -138,7 +107,7 @@ class PostContextMenu extends React.Component {
 				img: '/images/postContextMenu/shareTrue.svg',
 				revertImg: '/images/postContextMenu/shareFalse.svg',
 				alt: 'Share',
-				callback: this.share.bind(this),
+				callback: this.sharePost.bind(this),
 				hasDelimiter: true,
 			}, {
 				img: '/images/postContextMenu/copyTrue.svg',
@@ -221,8 +190,8 @@ const mapDispatchToProps = (dispatch) => {
 		closeModal: (index) => {
 			dispatch(closeModal(index));
 		},
-		deletePost: (index) => {
-			dispatch(deletePost(index));
+		deletePost: (index, isContextMenu) => {
+			dispatch(deletePost(index, isContextMenu));
 		},
 		closeAllModals: () => {
 			dispatch(closeAllModals());
