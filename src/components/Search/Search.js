@@ -54,7 +54,7 @@ class Search extends React.Component {
 			<span>{Constants.SEARCH_HEADING_LABELS.USERS_RESULT}
 				<u>{this.props.searchValue}</u>
       </span>;
-		return <div className="g-main_i container">
+		return <div className="container">
 			<TabsBar point="search" className="g-content" style={{marginTop: 30}}>
 				<Tab name="Tag"
 						 loading={this.props.hotPostsList.loading || this.props.newPostsList.loading}
