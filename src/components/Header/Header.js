@@ -147,11 +147,9 @@ class Header extends React.Component {
 								</a>
 							</div>
 							<div className="section search">
-								<div className="wrap-search" onClick={() => {
-									this.props.setSearchPanelState(true)
-								}}>
+								<div className="wrap-search" onClick={() => this.props.setSearchPanelState(true)}>
 									<span className="lnk-search">Search</span>
-									<span className="lnk-search-mob"> </span>
+									<span className="search-mob-ico_search"> </span>
 								</div>
 							</div>
 							{browse}

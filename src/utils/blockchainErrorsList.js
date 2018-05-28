@@ -1,9 +1,18 @@
 import Constants from '../common/constants';
+import {serverErrorsList} from './serverErrorsList';
 
 export function blockchainErrorsList(error) {
   let format = '';
   if (!error.data && typeof error === 'string') {
     return error;
+  }
+  if (!error.data && error.actual && error.expected) {
+    if (error.actual === 128) {
+      return 'Invalid posting key.';
+    }
+  }
+  if (!error.data && error.status && error.statusText) {
+    return serverErrorsList(error.status.toString());
   }
   if (error.data) {
     if (error.data.stack && error.data.stack[0].format) {

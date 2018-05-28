@@ -1,5 +1,5 @@
 import {push} from 'react-router-redux';
-import {pushMessage} from "./pushMessage";
+import {pushErrorMessage, pushMessage} from "./pushMessage";
 import {hideBodyLoader, showBodyLoader} from "./bodyLoader";
 import {checkSubscribeAndUpdateSettings, removeSettings} from "./settings";
 import storage from "../utils/Storage";
@@ -18,11 +18,12 @@ function showMessage(message) {
 
 function loginError(error) {
 	return dispatch => {
-		dispatch(showMessage(error));
+    dispatch(pushErrorMessage(error));
 		dispatch({
 			type: 'LOGIN_ERROR',
 			error
-		})
+		});
+    dispatch(hideBodyLoader());
 	}
 }
 
@@ -32,42 +33,36 @@ export function login(username, postingKey) {
 		SteemService.getAccounts(username)
 			.then(response => {
 				if (response.length === 0) {
-					return dispatch(loginError('Such user doesn\'t exist'));
+					return dispatch(loginError('Such user doesn\'t exist.'));
 				}
 				let pubWif = response[0].posting.key_auths[0][0];
-				let isValid = SteemService.wifIsValid(postingKey, pubWif);
-				if (!isValid) {
-					return dispatch(loginError('Invalid username or posting key'));
-				}
-				let avatar = getAvatar(response[0]);
-				storage.user = username;
-				storage.postingKey = postingKey;
-				storage.like_power = 100;
-				storage.avatar = avatar;
-				OneSignalService.addNotificationTags(username);
-				dispatch(checkSubscribeAndUpdateSettings());
-				dispatch({
-					type: 'LOGIN_SUCCESS',
-					postingKey,
-					user: username,
-					avatar,
-					like_power: 100
-				});
-				dispatch({
-					type: 'UPDATE_VOTING_POWER',
-					voting_power: response[0].voting_power / 100
-				});
-				dispatch(push('/feed'));
-				let parseResult = JSON.parse(response[0].json_metadata);
-				dispatch(showMessage('Welcome to Steepshot, ' + (parseResult.profile.name || username) + '!'));
-				LoggingService.logLogin();
+        return SteemService.wifIsValid(postingKey, pubWif).then(() => {
+          let avatar = getAvatar(response[0]);
+          storage.user = username;
+          storage.postingKey = postingKey;
+          storage.like_power = 100;
+          storage.avatar = avatar;
+          OneSignalService.addNotificationTags(username);
+          dispatch(checkSubscribeAndUpdateSettings());
+          dispatch({
+            type: 'LOGIN_SUCCESS',
+            postingKey,
+            user: username,
+            avatar,
+            like_power: 100
+          });
+          dispatch({
+            type: 'UPDATE_VOTING_POWER',
+            voting_power: response[0].voting_power / 100
+          });
+          dispatch(push('/feed'));
+          let parseResult = JSON.parse(response[0].json_metadata);
+          dispatch(showMessage('Welcome to Steepshot, ' + (parseResult.profile.name || username) + '!'));
+          LoggingService.logLogin();
+				})
 			})
 			.catch((error) => {
-				dispatch({
-					type: "LOGIN_ERROR",
-					error
-				});
-				return dispatch(loginError('Something went wrong, please, try again later'));
+        return dispatch(loginError(error));
 			})
 	}
 }

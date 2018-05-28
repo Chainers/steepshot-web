@@ -21,7 +21,7 @@ class Settings extends React.Component {
 	}
 
 	submit() {
-		this.props.updateSettings();
+		this.props.updateSettings(true);
 		this.props.historyGoBack();
 	}
 

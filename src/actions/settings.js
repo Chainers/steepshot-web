@@ -15,11 +15,14 @@ export function checkSubscribeAndUpdateSettings() {
 	}
 }
 
-export function updateSettings() {
+export function updateSettings(clickSaveButton) {
 	return dispatch => {
 		let settings = getStore().getState().settingsFields;
 		let checkedChanges = utils.equalsObjects(settings, storage.settings);
-		dispatch(pushMessage(checkedChanges ? Constants.SETTINGS_NOT_CHANGED_MESSAGE : Constants.SETTINGS_CHANGED_MESSAGE));
+		if (clickSaveButton) {
+      dispatch(pushMessage(checkedChanges ? Constants.SETTINGS_NOT_CHANGED_MESSAGE
+				: Constants.SETTINGS_CHANGED_MESSAGE));
+		}
 		storage.settings = settings;
 		dispatch(setSubscribeOnBackend());
 		dispatch({
