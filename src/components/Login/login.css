@@ -7,7 +7,7 @@
     overflow: auto;
 }
 
-.welcome-body_login, .form-body_login {
+.welcome-body_login, .form-container_login {
     flex: 1;
 }
 

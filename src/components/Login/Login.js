@@ -70,39 +70,41 @@ class Login extends Component {
 			<div className="container_login">
 				<div className="welcome-body_login">
 				</div>
-				<div className="form-body_login">
-					<div className="title_login">
-						Sign in Steepshot
-					</div>
-					<form className="form_login">
-						<FormInput point={NAME_POINT} label="Name"/>
-						<FormInput point={PASSWORD_POINT} label="Posting Key" type="password"/>
-						<div className="btn-group_login">
-							<button className="create-acc_login" onClick={Login.openRegisterSite} type="button">Create new Steem
-								account
-							</button>
-							<button className="sign_login" onClick={this.handleLogin.bind(this)} type="submit">Log In with Steem
-							</button>
+				<div className="form-container_login">
+					<div className="form-body_login">
+						<div className="title_login">
+							Sign in Steepshot
 						</div>
-					</form>
-					<div className="how-sign_login">
-						<ShowIf show={!this.state.openVideo}>
-							Also you can check <span className="show-video-btn_login" onClick={this.openVideo.bind(this)}>
+						<form className="form_login">
+							<FormInput point={NAME_POINT} label="Name"/>
+							<FormInput point={PASSWORD_POINT} label="Posting Key" type="password"/>
+							<div className="btn-group_login">
+								<button className="create-acc_login" onClick={Login.openRegisterSite}>Create new Steem
+									account
+								</button>
+								<button className="sign_login" onClick={this.handleLogin.bind(this)} type="submit">Log In with Steem
+								</button>
+							</div>
+						</form>
+						<div className="how-sign_login">
+							<ShowIf show={!this.state.openVideo}>
+								Also you can check <span className="show-video-btn_login" onClick={this.openVideo.bind(this)}>
 							how to sign in to Steepshot
 						</span>
-						</ShowIf>
-						<ShowIf show={this.state.openVideo}>
-							<div className="video-cont_login">
-								<ReactPlayer
-									height='100%'
-									width='100%'
-									url={Constants.TUTORIAL.LINK}
-									playing={true}
-									controls={true}
-									ref={ref => this.player = ref}
-								/>
-							</div>
-						</ShowIf>
+							</ShowIf>
+							<ShowIf show={this.state.openVideo}>
+								<div className="video-cont_login">
+									<ReactPlayer
+										height='100%'
+										width='100%'
+										url={Constants.TUTORIAL.LINK}
+										playing={true}
+										controls={true}
+										ref={ref => this.player = ref}
+									/>
+								</div>
+							</ShowIf>
+						</div>
 					</div>
 				</div>
 			</div>

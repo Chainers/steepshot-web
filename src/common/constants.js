@@ -211,6 +211,10 @@ const Constants = {
 				'https://api.steemitstage.com'
 			]
 		}
+	},
+
+	WINDOW: {
+		MAX_MOBILE_SCREEN_WIDTH: 1023
 	}
 };
 

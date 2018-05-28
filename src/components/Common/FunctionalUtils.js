@@ -59,8 +59,8 @@ const mapDispatchToProps = (dispatch) => {
     updateVotingPower: (username) => {
       dispatch(updateVotingPower(username));
     },
-		resizeWindow: (width, height) => {
-    	dispatch(resizeWindow(width, height))
+		resizeWindow: () => {
+    	dispatch(resizeWindow())
 		},
 		loadSubscribeData: () => {
 			dispatch(loadSubscribeData())
