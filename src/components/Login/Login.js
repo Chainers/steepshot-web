@@ -10,9 +10,22 @@ import Constants from "../../common/constants";
 import FormInput from "../Common/FormInput/FormInput";
 import {setErrorFormInput} from "../../actions/formInput";
 import {login} from "../../actions/auth";
+import ImageGallery from "./ImageGallery/ImageGalLery";
 
 const NAME_POINT = "name_login";
 const PASSWORD_POINT = "posting-key_login";
+const images = [
+	'/images/login/1.png',
+	'/images/login/2.png',
+	'/images/login/3.png',
+	'/images/login/4.png',
+	'/images/login/5.png',
+	'/images/login/6.png',
+	'/images/login/7.png',
+	'/images/login/8.png',
+	'/images/login/9.png',
+	'/images/login/10.png'
+];
 
 class Login extends Component {
 
@@ -68,21 +81,32 @@ class Login extends Component {
 		}
 		return (
 			<div className="container_login">
-				<div className="welcome-body_login">
-				</div>
+				<ShowIf show={!this.props.isMobileScreen}>
+					<div className="welcome-container_login">
+						<ImageGallery images={images}/>
+						<div className="welcome-body_login">
+							<div className="welcome-title_login">
+								Welcome to Steepshot
+							</div>
+							<div className="welcome-description_login">
+								Platform that rewards people for sharing their lifestyle and visual experience
+							</div>
+							<button className="guidelines-btn_login">Link to our guidelines</button>
+						</div>
+					</div>
+				</ShowIf>
 				<div className="form-container_login">
 					<div className="form-body_login">
 						<div className="title_login">
-							Sign in Steepshot
+							Sign in to Steepshot
 						</div>
 						<form className="form_login">
 							<FormInput point={NAME_POINT} label="Name"/>
 							<FormInput point={PASSWORD_POINT} label="Posting Key" type="password"/>
 							<div className="btn-group_login">
-								<button className="create-acc_login" onClick={Login.openRegisterSite}>Create new Steem
-									account
+								<button className="create-acc_login" onClick={Login.openRegisterSite}>Registration
 								</button>
-								<button className="sign_login" onClick={this.handleLogin.bind(this)} type="submit">Log In with Steem
+								<button className="sign_login btn btn-default" onClick={this.handleLogin.bind(this)} type="submit">Login
 								</button>
 							</div>
 						</form>
@@ -116,7 +140,8 @@ const mapStateToProps = (state) => {
 	return {
 		user: state.auth.user,
 		nameValue: state.formInput[NAME_POINT] ? state.formInput[NAME_POINT].value : '',
-		passwordValue: state.formInput[PASSWORD_POINT] ? state.formInput[PASSWORD_POINT].value : ''
+		passwordValue: state.formInput[PASSWORD_POINT] ? state.formInput[PASSWORD_POINT].value : '',
+		isMobileScreen: state.window.isMobileScreen
 	};
 };
 

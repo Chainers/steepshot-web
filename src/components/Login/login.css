@@ -1,20 +1,49 @@
 .container_login {
-    flex: 1;
     width: 100%;
     height: 100%;
     display: flex;
     flex-direction: row;
-    overflow: auto;
+    align-items: stretch;
 }
 
-.welcome-body_login, .form-container_login {
+.welcome-container_login, .form-container_login {
     flex: 1;
+}
+
+.welcome-container_login {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.welcome-body_login {
+    position: absolute;
+    width: 510px;
+    height: 400px;
+}
+
+.welcome-title_login {
+    font-family: OpenSans-Light;
+    font-size: 52px;
+    font-weight: bold;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.17;
+    letter-spacing: normal;
+    color: #ffffff;
+}
+
+.form-body_login {
+    width: 530px;
+    height: 410px;
+    border-radius: 10px;
+    background-color: #ffffff;
 }
 
 .title_login {
     font-size: 27px;
     line-height: 1.5;
-    margin-top: 20px;
     margin-bottom: 35px;
     color: #0f181e;
     font-family: OpenSans-Light, Helvetica, Arial, sans-serif;
@@ -64,37 +93,10 @@
 }
 
 .sign_login {
-    transition: .2s all ease;
-    display: inline-block;
-    margin-bottom: 0;
-    font-family: OpenSans-SemiBold, Helvetica, Arial, sans-serif;
-    text-align: center;
-    vertical-align: middle;
-    -ms-touch-action: manipulation;
-    touch-action: manipulation;
-    cursor: pointer;
-    text-decoration: none;
-    max-width: 100%;
-    padding: 12px 40px 12px;
-    font-size: 14px;
-    line-height: 1;
-    border-radius: 21px;
-    color: #fff;
-    user-select: none;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
-    min-width: 140px;
     margin-left: 20px;
-
-    border: 1px transparent;
-    background: linear-gradient(to right, rgb(255, 121, 4), rgb(255, 22, 5));
-    box-shadow: 0 10px 20px 0 rgba(231, 72, 0, .3);
 }
 
-.sign_login:hover {
-    box-shadow: 0 5px 12px 0 rgba(231, 72, 0, .3);
-}
+
 
 .how-sign_login {
     margin: 0 0 1em;

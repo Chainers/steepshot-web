@@ -244,6 +244,11 @@ button {
     justify-content: space-between;
 }
 
+.for-space-between {
+    position: relative;
+    flex: 1;
+}
+
 .user-card {
     min-width: 297px !important;
     padding: 20px !important;
