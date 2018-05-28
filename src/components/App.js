@@ -11,8 +11,10 @@ const App = ({children}) => (
 		<Header/>
 		<FunctionalUtils/>
 		<div className="g-main">
-			{children || 'Loading'}
-			<BodyLoader/>
+			<div className="for-space-between">
+				{children}
+				<BodyLoader/>
+			</div>
 			<Footer/>
 		</div>
 	</div>
