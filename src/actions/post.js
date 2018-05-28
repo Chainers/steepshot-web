@@ -185,7 +185,9 @@ export function addSinglePost(url) {
 						dispatch(initPostsList(postOptions));
 						dispatch(addPosts({
 							[result.url]: {
-								...result, isVideo: result.media[0].url.match(/mp4$/i)
+								...result,
+								isVideo: result.media[0].url.match(/mp4$/i),
+								isGif: result.media[0].url.match(/gif$/i)
 							}
 						}));
 						dispatch(initPostModal('SinglePost', result.url));

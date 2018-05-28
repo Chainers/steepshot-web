@@ -1,4 +1,4 @@
-import constants from '../common/constants';
+import Constants from '../common/constants';
 
 export function serverErrorsList(error) {
   let errorsList = [
@@ -12,5 +12,5 @@ export function serverErrorsList(error) {
       return errorsList[i].notificationText
     }
   }
-  return constants.EMPTY_QUERY;
+  return Constants.EMPTY_QUERY;
 }

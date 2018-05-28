@@ -1,4 +1,4 @@
-import {getStore} from "../store/configureStore";
+import {getStore} from '../store/configureStore';
 import storage from '../utils/Storage';
 
 class AuthService {
