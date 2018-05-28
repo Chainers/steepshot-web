@@ -57,9 +57,7 @@ class SteemService {
 	}
 
 	static wifIsValid(postingKey, pubWif) {
-		return processRequest(() => {
-			steem.auth.wifIsValid(postingKey, pubWif);
-		})
+		return Promise.resolve(steem.auth.wifIsValid(postingKey, pubWif));
 	}
 
 	static getValidTransaction() {
@@ -120,17 +118,17 @@ function checkingNode(resolve, reject, sendRequestFunction, nodeService) {
 	processResponse(callback => {
 		return sendRequestFunction(callback)
 	})
-		.then(response => {
-			resolve(response);
-		})
-		.catch(error => {
-			if (nodeService.isMaxCountRequests()) {
-				reject(error);
-			} else {
-				nodeService.setNextNode();
-				checkingNode(resolve, reject, sendRequestFunction, nodeService);
-			}
-		})
+	.then(response => {
+		resolve(response);
+	})
+	.catch(error => {
+		if (nodeService.isMaxCountRequests()) {
+			reject(error);
+		} else {
+			nodeService.setNextNode();
+			checkingNode(resolve, reject, sendRequestFunction, nodeService);
+		}
+	})
 }
 
 function processResponse(sendingFunction) {

@@ -12,3 +12,17 @@ a.feed-browse-active_header {
     font: 14px OpenSans-Semibold;
     color: #e74800;
 }
+
+.search-mob-ico_search {
+    display: none;
+}
+
+@media (max-width: 1024px) {
+    .search-mob-ico_search {
+        background: url('/images/sprite_svg1910.svg') 12% 71% no-repeat;
+        display: block;
+        width: 21px;
+        height: 20px;
+        cursor: pointer;
+    }
+}
