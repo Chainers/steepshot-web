@@ -43,7 +43,7 @@ class Login extends Component {
 
 	openRegisterSite(event) {
 		event.preventDefault();
-		if (this.props.serviceName === Constants.SERVICES.STEEM.name) {
+		if (this.props.chooseSteem) {
 			window.open('https://steemit.com/pick_account');
 		} else {
 			window.open('https://golos.io/create_account');
@@ -63,7 +63,7 @@ class Login extends Component {
 		if (global.isServerSide) {
 			return null;
 		}
-		const {serviceName, switchService} = this.props;
+		const {chooseSteem, switchService} = this.props;
 		return (
 			<div className="container_login">
 				<ShowIf show={!this.props.isMobileScreen}>
@@ -103,8 +103,7 @@ class Login extends Component {
 								<div className="switcher_login">
 									<label className="switcher-label_login">Steem</label>
 									<div className="switcher-input_login" onClick={() => switchService()}>
-										<div className={serviceName === Constants.SERVICES.STEEM.name ? 'steem-switcher_login'
-											: 'golos-switcher_login'}/>
+										<div className={chooseSteem ? 'steem-switcher_login'	: 'golos-switcher_login'}/>
 									</div>
 									<label className="switcher-label_login">Golos</label>
 								</div>
@@ -115,7 +114,7 @@ class Login extends Component {
 						</form>
 					</div>
 					<div className="registration-block_login">
-						<label>Don’t have an Steem account?</label>
+						<label>Don’t have an {chooseSteem ? 'Steem' : 'Golos'} account?</label>
 						<button className="guidelines-btn_login create-acc_login" onClick={this.openRegisterSite.bind(this)}>
 							REGISTRATION
 						</button>
@@ -130,7 +129,7 @@ const mapStateToProps = (state) => {
 	return {
 		user: state.auth.user,
 		isMobileScreen: state.window.isMobileScreen,
-		serviceName: state.services.name
+		chooseSteem: state.services.name === Constants.SERVICES.STEEM.name
 	};
 };
 
