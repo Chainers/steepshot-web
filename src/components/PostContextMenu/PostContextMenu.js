@@ -1,6 +1,5 @@
 import * as React from 'react';
 import Menu from './Menu/Menu';
-import ConfirmDeleteModal from './ConfirmDeleteModal/ConfirmDeleteModal';
 import ChooseSocialNetwork from './ChooseSocialNetwork/ChooseSocialNetwork';
 import ConfirmFlagModal from './ConfirmFlagModal/ConfirmFlagModal';
 import {connect} from 'react-redux';

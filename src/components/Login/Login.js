@@ -11,10 +11,11 @@ import FormInput from "../Common/FormInput/FormInput";
 import {setErrorFormInput} from "../../actions/formInput";
 import {login} from "../../actions/auth";
 import ImageGallery from "./ImageGallery/ImageGalLery";
+import {push} from 'react-router-redux';
 
 const NAME_POINT = "name_login";
 const PASSWORD_POINT = "posting-key_login";
-const images = [
+const galleryImages = [
 	'/images/login/1.png',
 	'/images/login/2.png',
 	'/images/login/3.png',
@@ -83,7 +84,8 @@ class Login extends Component {
 			<div className="container_login">
 				<ShowIf show={!this.props.isMobileScreen}>
 					<div className="welcome-container_login">
-						<ImageGallery images={images}/>
+						<ImageGallery images={galleryImages}/>
+						<div className="gallery-shadow_login"/>
 						<div className="welcome-body_login">
 							<div className="welcome-title_login">
 								Welcome to Steepshot
@@ -91,7 +93,9 @@ class Login extends Component {
 							<div className="welcome-description_login">
 								Platform that rewards people for sharing their lifestyle and visual experience
 							</div>
-							<button className="guidelines-btn_login">Link to our guidelines</button>
+							<button className="guidelines-btn_login" onClick={() => {this.props.historyPush('/guide')}}>
+								LINK TO OUR GUIDELINES
+							</button>
 						</div>
 					</div>
 				</ShowIf>
@@ -152,6 +156,9 @@ const mapDispatchToProps = (dispatch) => {
 		},
 		login: (name, postingKey) => {
 			dispatch(login(name, postingKey));
+		},
+		historyPush: (path) => {
+			dispatch(push(path))
 		}
 	}
 };
