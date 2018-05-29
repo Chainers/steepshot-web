@@ -8,6 +8,9 @@ import UserService from "../services/userService";
 import OneSignalService from "../services/oneSignalService";
 import LoggingService from "../services/loggingService";
 import ChainService from "../services/chainService";
+import {setPostingKeyErrorMessage, setUsernameErrorMessage} from "./login";
+import {getStore} from "../store/configureStore";
+import Constants from "../common/constants";
 
 function showMessage(message) {
 	return dispatch => {
@@ -27,14 +30,15 @@ function loginError(error) {
 	}
 }
 
-//P5KNJQSTdzZ48P9UCmT1iipvhCRBTYXx3ULZRDrf2xnQz66N8h8T
 export function login(username, postingKey) {
 	return dispatch => {
 		dispatch(showBodyLoader());
 		ChainService.getAccounts(username)
 			.then(response => {
 				if (response.length === 0) {
-					return Promise.reject('Such user doesn\'t exist.');
+					const errorMessage = 'Such user doesn\'t exist.';
+					dispatch(setUsernameErrorMessage(errorMessage));
+					return Promise.reject(errorMessage);
 				}
 				let pubWif = response[0].posting.key_auths[0][0];
 				return ChainService.wifIsValid(postingKey, pubWif)
@@ -47,6 +51,7 @@ export function login(username, postingKey) {
 						storage.postingKey = postingKey;
 						storage.like_power = 100;
 						storage.avatar = avatar;
+						storage.service = getStore().getState().services.name || Constants.SERVICES.STEEM.name;
 						OneSignalService.addNotificationTags(username);
 						dispatch(checkSubscribeAndUpdateSettings());
 						dispatch({
@@ -71,7 +76,10 @@ export function login(username, postingKey) {
 				storage.postingKey = null;
 				storage.like_power = null;
 				storage.avatar = null;
-				return dispatch(loginError(error));
+				if (error.actual === 128) {
+					dispatch(setPostingKeyErrorMessage('Invalid posting key.'))
+				}
+				dispatch(loginError(error));
 			})
 	}
 }

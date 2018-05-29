@@ -10,6 +10,7 @@ import ImageGallery from "./ImageGallery/ImageGalLery";
 import {push} from 'react-router-redux';
 import Constants from "../../common/constants";
 import {switchService} from "../../actions/services";
+import {clearLoginErrors} from "../../actions/login";
 
 const galleryImages = [
 	'/images/login/1.png',
@@ -63,7 +64,7 @@ class Login extends Component {
 		if (global.isServerSide) {
 			return null;
 		}
-		const {chooseSteem, switchService} = this.props;
+		const {chooseSteem, switchService, usernameError, postingKeyError, clearLoginErrors} = this.props;
 		return (
 			<div className="container_login">
 				<ShowIf show={!this.props.isMobileScreen}>
@@ -93,17 +94,22 @@ class Login extends Component {
 							</div>
 							<div className="input-block_login">
 								<label className="input-label_login">Username</label>
-								<input type="text" className="input_login" ref={ref => this.name = ref}/>
-								<label className="error-msg_login">error</label>
+								<input type="text" className="input_login" ref={ref => this.name = ref}
+											 onChange={() => clearLoginErrors()}/>
+								<label className="error-msg_login">{usernameError}</label>
 								<label className="input-label_login">Posting Key</label>
-								<input type="password" className="input_login" ref={ref => this.password = ref}/>
-								<label className="error-msg_login">error</label>
+								<input type="password" className="input_login" ref={ref => this.password = ref}
+											 onChange={() => clearLoginErrors()}/>
+								<label className="error-msg_login">{postingKeyError}</label>
 							</div>
 							<div className="btn-block_login">
 								<div className="switcher_login">
 									<label className="switcher-label_login">Steem</label>
-									<div className="switcher-input_login" onClick={() => switchService()}>
-										<div className={chooseSteem ? 'steem-switcher_login'	: 'golos-switcher_login'}/>
+									<div className="switcher-input_login" onClick={() => {
+										clearLoginErrors();
+										switchService();
+									}}>
+										<div className={chooseSteem ? 'steem-switcher_login' : 'golos-switcher_login'}/>
 									</div>
 									<label className="switcher-label_login">Golos</label>
 								</div>
@@ -129,7 +135,9 @@ const mapStateToProps = (state) => {
 	return {
 		user: state.auth.user,
 		isMobileScreen: state.window.isMobileScreen,
-		chooseSteem: state.services.name === Constants.SERVICES.STEEM.name
+		chooseSteem: state.services.name === Constants.SERVICES.STEEM.name,
+		usernameError: state.login.usernameError,
+		postingKeyError: state.login.postingKeyError
 	};
 };
 
@@ -143,6 +151,9 @@ const mapDispatchToProps = (dispatch) => {
 		},
 		switchService: () => {
 			dispatch(switchService())
+		},
+		clearLoginErrors: () => {
+			dispatch(clearLoginErrors())
 		}
 	}
 };
