@@ -242,6 +242,7 @@ button {
     flex-direction: column;
     flex: 1;
     justify-content: space-between;
+    overflow-x: hidden;
 }
 
 .for-space-between {

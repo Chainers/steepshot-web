@@ -5,13 +5,12 @@ import {addMetaTags, getDefaultTags} from "../../actions/metaTags";
 import {withWrapper} from "create-react-server/wrapper";
 import './login.css';
 import ShowIf from "../Common/ShowIf";
-import {setErrorFormInput} from "../../actions/formInput";
 import {login} from "../../actions/auth";
 import ImageGallery from "./ImageGallery/ImageGalLery";
 import {push} from 'react-router-redux';
+import Constants from "../../common/constants";
+import {switchService} from "../../actions/services";
 
-const NAME_POINT = "name_login";
-const PASSWORD_POINT = "posting-key_login";
 const galleryImages = [
 	'/images/login/1.png',
 	'/images/login/2.png',
@@ -42,9 +41,13 @@ class Login extends Component {
 		return {};
 	}
 
-	static openRegisterSite(event) {
+	openRegisterSite(event) {
 		event.preventDefault();
-		window.open('https://steemit.com/pick_account');
+		if (this.props.serviceName === Constants.SERVICES.STEEM.name) {
+			window.open('https://steemit.com/pick_account');
+		} else {
+			window.open('https://golos.io/create_account');
+		}
 	}
 
 	componentDidMount() {
@@ -53,22 +56,14 @@ class Login extends Component {
 
 	handleLogin(e) {
 		e.preventDefault();
-		if (!this.props.nameValue) {
-			this.props.setErrorFormInput(NAME_POINT, 'Username is required')
-		}
-		if (!this.props.passwordValue) {
-			this.props.setErrorFormInput(PASSWORD_POINT, 'Posting key is required')
-		}
-		if (!this.props.nameValue || !this.props.passwordValue) {
-			return;
-		}
-		this.props.login(this.props.nameValue, this.props.passwordValue);
+		this.props.login(this.name.value, this.password.value);
 	}
 
 	render() {
 		if (global.isServerSide) {
 			return null;
 		}
+		const {serviceName, switchService} = this.props;
 		return (
 			<div className="container_login">
 				<ShowIf show={!this.props.isMobileScreen}>
@@ -98,16 +93,19 @@ class Login extends Component {
 							</div>
 							<div className="input-block_login">
 								<label className="input-label_login">Username</label>
-								<input type="text" className="input_login"/>
+								<input type="text" className="input_login" ref={ref => this.name = ref}/>
 								<label className="error-msg_login">error</label>
 								<label className="input-label_login">Posting Key</label>
-								<input type="password" className="input_login"/>
+								<input type="password" className="input_login" ref={ref => this.password = ref}/>
 								<label className="error-msg_login">error</label>
 							</div>
 							<div className="btn-block_login">
 								<div className="switcher_login">
 									<label className="switcher-label_login">Steem</label>
-									<div className="switcher-input_login"/>
+									<div className="switcher-input_login" onClick={() => switchService()}>
+										<div className={serviceName === Constants.SERVICES.STEEM.name ? 'steem-switcher_login'
+											: 'golos-switcher_login'}/>
+									</div>
 									<label className="switcher-label_login">Golos</label>
 								</div>
 								<button className="sign_login btn btn-default" onClick={this.handleLogin.bind(this)} type="submit">
@@ -118,7 +116,7 @@ class Login extends Component {
 					</div>
 					<div className="registration-block_login">
 						<label>Don’t have an Steem account?</label>
-						<button className="guidelines-btn_login create-acc_login" onClick={Login.openRegisterSite}>
+						<button className="guidelines-btn_login create-acc_login" onClick={this.openRegisterSite.bind(this)}>
 							REGISTRATION
 						</button>
 					</div>
@@ -131,22 +129,21 @@ class Login extends Component {
 const mapStateToProps = (state) => {
 	return {
 		user: state.auth.user,
-		nameValue: state.formInput[NAME_POINT] ? state.formInput[NAME_POINT].value : '',
-		passwordValue: state.formInput[PASSWORD_POINT] ? state.formInput[PASSWORD_POINT].value : '',
-		isMobileScreen: state.window.isMobileScreen
+		isMobileScreen: state.window.isMobileScreen,
+		serviceName: state.services.name
 	};
 };
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		setErrorFormInput: (point, message) => {
-			dispatch(setErrorFormInput(point, message));
-		},
 		login: (name, postingKey) => {
 			dispatch(login(name, postingKey));
 		},
 		historyPush: (path) => {
 			dispatch(push(path))
+		},
+		switchService: () => {
+			dispatch(switchService())
 		}
 	}
 };

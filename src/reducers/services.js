@@ -1,5 +1,5 @@
 const initialState = {
-	serviceName: null
+	name: null
 };
 
 export default function services(state = initialState, action) {

@@ -57,14 +57,12 @@ class GolosService {
 
 	getAccounts(username) {
 		return processResponse(callback => {
-			golos.api.getAccounts([username], callback);
+			 return golos.api.getAccounts([username], callback);
 		})
 	}
 
 	wifIsValid(postingKey, pubWif) {
-		return processResponse(() => {
-			golos.auth.wifIsValid(postingKey, pubWif);
-		})
+		return Promise.resolve(golos.auth.wifIsValid(postingKey, pubWif));
 	}
 
 	getValidTransaction() {
