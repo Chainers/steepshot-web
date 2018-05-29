@@ -5,9 +5,6 @@ import {addMetaTags, getDefaultTags} from "../../actions/metaTags";
 import {withWrapper} from "create-react-server/wrapper";
 import './login.css';
 import ShowIf from "../Common/ShowIf";
-import ReactPlayer from 'react-player'
-import Constants from "../../common/constants";
-import FormInput from "../Common/FormInput/FormInput";
 import {setErrorFormInput} from "../../actions/formInput";
 import {login} from "../../actions/auth";
 import ImageGallery from "./ImageGallery/ImageGalLery";
@@ -68,14 +65,6 @@ class Login extends Component {
 		this.props.login(this.props.nameValue, this.props.passwordValue);
 	}
 
-	openVideo() {
-		this.setState({
-			openVideo: true
-		}, () => {
-			//scrollToComponent(this.player, {align: 'bottom'});
-		})
-	}
-
 	render() {
 		if (global.isServerSide) {
 			return null;
@@ -93,7 +82,9 @@ class Login extends Component {
 							<div className="welcome-description_login">
 								Platform that rewards people for sharing their lifestyle and visual experience
 							</div>
-							<button className="guidelines-btn_login" onClick={() => {this.props.historyPush('/guide')}}>
+							<button className="guidelines-btn_login" onClick={() => {
+								this.props.historyPush('/guide')
+							}}>
 								LINK TO OUR GUIDELINES
 							</button>
 						</div>
@@ -101,38 +92,35 @@ class Login extends Component {
 				</ShowIf>
 				<div className="form-container_login">
 					<div className="form-body_login">
-						<div className="title_login">
-							Sign in to Steepshot
-						</div>
 						<form className="form_login">
-							<FormInput point={NAME_POINT} label="Name"/>
-							<FormInput point={PASSWORD_POINT} label="Posting Key" type="password"/>
-							<div className="btn-group_login">
-								<button className="create-acc_login" onClick={Login.openRegisterSite}>Registration
-								</button>
-								<button className="sign_login btn btn-default" onClick={this.handleLogin.bind(this)} type="submit">Login
+							<div className="title_login">
+								Sign in to Steepshot
+							</div>
+							<div className="input-block_login">
+								<label className="input-label_login">Username</label>
+								<input type="text" className="input_login"/>
+								<label className="error-msg_login">error</label>
+								<label className="input-label_login">Posting Key</label>
+								<input type="password" className="input_login"/>
+								<label className="error-msg_login">error</label>
+							</div>
+							<div className="btn-block_login">
+								<div className="switcher_login">
+									<label className="switcher-label_login">Steem</label>
+									<div className="switcher-input_login"/>
+									<label className="switcher-label_login">Golos</label>
+								</div>
+								<button className="sign_login btn btn-default" onClick={this.handleLogin.bind(this)} type="submit">
+									Login
 								</button>
 							</div>
 						</form>
-						<div className="how-sign_login">
-							<ShowIf show={!this.state.openVideo}>
-								Also you can check <span className="show-video-btn_login" onClick={this.openVideo.bind(this)}>
-							how to sign in to Steepshot
-						</span>
-							</ShowIf>
-							<ShowIf show={this.state.openVideo}>
-								<div className="video-cont_login">
-									<ReactPlayer
-										height='100%'
-										width='100%'
-										url={Constants.TUTORIAL.LINK}
-										playing={true}
-										controls={true}
-										ref={ref => this.player = ref}
-									/>
-								</div>
-							</ShowIf>
-						</div>
+					</div>
+					<div className="registration-block_login">
+						<label>Don’t have an Steem account?</label>
+						<button className="guidelines-btn_login create-acc_login" onClick={Login.openRegisterSite}>
+							REGISTRATION
+						</button>
 					</div>
 				</div>
 			</div>
