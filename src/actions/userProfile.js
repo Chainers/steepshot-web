@@ -21,7 +21,7 @@ export function getUserProfile(userName) {
 					type: 'GET_USER_PROFILE_ERROR',
 					error
 				});
-				dispatch(push('/search/' + userName));
+				dispatch(push('/UserNotFound'));
 			});
 	}
 }

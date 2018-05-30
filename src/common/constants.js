@@ -1,7 +1,7 @@
 const Constants = {
 	SERVICES: {
 		GOLOS: {
-			name: 'GOLOS',
+			name: 'golos',
 			baseUrl: 'https://golos.steepshot.org/api/v1_1',
 			loggingUrl: 'https://golos.steepshot.org/api/v1',
 			MAX_ACCEPTED_PAYOUT: '1000000.000 GBG',
@@ -12,7 +12,7 @@ const Constants = {
 			},
 		},
 		STEEM: {
-			name: 'STEEM',
+			name: 'steem',
 			baseUrl: 'https://steepshot.org/api/v1_1',
 			loggingUrl: 'https://steepshot.org/api/v1',
 			MAX_ACCEPTED_PAYOUT: '1000000.000 SBD',
