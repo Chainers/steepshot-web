@@ -135,7 +135,7 @@ const mapStateToProps = (state) => {
 	return {
 		user: state.auth.user,
 		isMobileScreen: state.window.isMobileScreen,
-		chooseSteem: state.services.name === Constants.SERVICES.STEEM.name,
+		chooseSteem: state.services.name === Constants.SERVICES.steem.name,
 		usernameError: state.login.usernameError,
 		postingKeyError: state.login.postingKeyError
 	};

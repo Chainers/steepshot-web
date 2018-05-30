@@ -3,8 +3,8 @@ import {Redirect} from 'react-router-dom';
 import {connect} from 'react-redux';
 import RouteWithService from "./RouteWithService";
 
-const PrivateRoute = ({component: Component, rest, isAuthenticated}) => (
-	isAuthenticated ?	<RouteWithService component={Component} rest={rest}/> :	<Redirect to='/signin' />
+const PrivateRoute = ({component: Component, isAuthenticated, path}) => (
+	isAuthenticated ? <RouteWithService path={path} component={Component}/> : <Redirect to='/signin'/>
 );
 
 const mapStateToProps = (state) => {

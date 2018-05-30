@@ -98,8 +98,8 @@ class SteemService {
 		let beneficiariesObject = {
 			author: AuthService.getUsername(),
 			permlink: permlink,
-			max_accepted_payout: Constants.SERVICES.STEEM.MAX_ACCEPTED_PAYOUT,
-			percent_steem_dollars: Constants.SERVICES.STEEM.PERCENT_STEEM_DOLLARS,
+			max_accepted_payout: Constants.SERVICES.steem.MAX_ACCEPTED_PAYOUT,
+			percent_steem_dollars: Constants.SERVICES.steem.PERCENT_STEEM_DOLLARS,
 			allow_votes: true,
 			allow_curation_rewards: true,
 			extensions: [[0, {beneficiaries: beneficiaries}]]

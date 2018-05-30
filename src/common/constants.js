@@ -1,6 +1,6 @@
 const Constants = {
 	SERVICES: {
-		GOLOS: {
+		golos: {
 			name: 'golos',
 			baseUrl: 'https://golos.steepshot.org/api/v1_1',
 			loggingUrl: 'https://golos.steepshot.org/api/v1',
@@ -11,7 +11,7 @@ const Constants = {
 				MAX_AMOUNT: 5
 			},
 		},
-		STEEM: {
+		steem: {
 			name: 'steem',
 			baseUrl: 'https://steepshot.org/api/v1_1',
 			loggingUrl: 'https://steepshot.org/api/v1',
@@ -196,7 +196,7 @@ const Constants = {
 	},
 
 	BLOCKCHAIN : {
-		GOLOS: {
+		golos: {
 			CONNECTION_SERVERS: [
 				"wss://ws.golos.io"
 			],
@@ -204,7 +204,7 @@ const Constants = {
 			CHAIN_ID: '782a3039b478c839e4cb0c941ff4eaeb7df40bdd68bd441afd444b9da763de12'
 		},
 
-		STEEM: {
+		steem: {
 			CONNECTION_SERVERS: [
 				//'https://steemd.steepshot.org',
 				'https://api.steemit.com',

@@ -33,17 +33,17 @@ export default function getRoutes() {
 						<Login/>
 					)
 				)}/>
-				<RouteWithService path="/browse/:filter?" component={Browse}/>
-				<RouteWithService path="/@:username" component={UserProfile}/>
-				<RouteWithService path="/post" component={SinglePost}/>
-				<RouteWithService path="/search/:searchValue" component={Search}/>
-				<RouteWithService path="/guide" component={AboutComponent}/>
-				<RouteWithService path="/dev/test" component={Testing}/>
-				<PrivateRoute path="/feed" component={Feed}/>
+				<Route path="/guide" component={AboutComponent}/>
+				<Route path="/dev/test" component={Testing}/>
+				<RouteWithService path="/:service?/browse/:filter?" component={Browse}/>
+				<RouteWithService path="/:service?/@:username" component={UserProfile}/>
+				<RouteWithService path="/:service?/post" component={SinglePost}/>
+				<RouteWithService path="/:service?/search/:searchValue" component={Search}/>
+				<PrivateRoute path="/:service?/feed" component={Feed}/>
 				<Redirect path="/createPost" to={'/editPost'}/>
-				<PrivateRoute path="/editPost/:category?/:username?/:permlink?" component={EditPost}/>
-				<PrivateRoute path="/Profile" component={UserProfile}/>
-				<PrivateRoute path="/settings" component={Settings}/>
+				<PrivateRoute path="/:service?/editPost/:category?/:username?/:permlink?" component={EditPost}/>
+				<PrivateRoute path="/:service?/Profile" component={UserProfile}/>
+				<PrivateRoute path="/:service?/settings" component={Settings}/>
 				<Route path="*" component={NotFound}/>
 			</Switch>
 		</App>

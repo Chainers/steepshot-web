@@ -3,7 +3,7 @@ import Constants from "../common/constants";
 
 const MAX_COUNT_TRY = 3;
 let currentNode = 0;
-const NODE_LIST = Constants.BLOCKCHAIN.STEEM.CONNECTION_SERVERS;
+const NODE_LIST = Constants.BLOCKCHAIN.steem.CONNECTION_SERVERS;
 
 
 class SteemNodeService {

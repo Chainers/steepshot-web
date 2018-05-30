@@ -6,9 +6,9 @@ import AuthService from "./authService";
 class GolosService {
 
 	init() {
-		golos.config.set('websocket', Constants.BLOCKCHAIN.GOLOS.CONNECTION_SERVERS[0]);
-		golos.config.set('address_prefix', Constants.BLOCKCHAIN.GOLOS.PREFIX);
-		golos.config.set('chain_id', Constants.BLOCKCHAIN.GOLOS.CHAIN_ID);
+		golos.config.set('websocket', Constants.BLOCKCHAIN.golos.CONNECTION_SERVERS[0]);
+		golos.config.set('address_prefix', Constants.BLOCKCHAIN.golos.PREFIX);
+		golos.config.set('chain_id', Constants.BLOCKCHAIN.golos.CHAIN_ID);
 	}
 
 	addCommentToBlockchain(commentOperation) {
@@ -99,8 +99,8 @@ class GolosService {
 		let beneficiariesObject = {
 			author: AuthService.getUsername(),
 			permlink: permlink,
-			max_accepted_payout: Constants.SERVICES.GOLOS.MAX_ACCEPTED_PAYOUT,
-			percent_steem_dollars: Constants.SERVICES.GOLOS.PERCENT_STEEM_DOLLARS,
+			max_accepted_payout: Constants.SERVICES.golos.MAX_ACCEPTED_PAYOUT,
+			percent_steem_dollars: Constants.SERVICES.golos.PERCENT_STEEM_DOLLARS,
 			allow_votes: true,
 			allow_curation_rewards: true,
 			extensions: [[0, {beneficiaries: beneficiaries}]]

@@ -3,7 +3,7 @@ import Constants from "../common/constants";
 import {getStore} from "../store/configureStore";
 import storage from "../utils/Storage";
 
-export function setService(serviceName = storage.service || Constants.SERVICES.STEEM.name) {
+export function setService(serviceName = storage.service || Constants.SERVICES.steem.name) {
 	RequestService.init(serviceName);
 	return {
 		type: 'SET_SERVICE',
@@ -14,10 +14,10 @@ export function setService(serviceName = storage.service || Constants.SERVICES.S
 export function switchService() {
 	const serviceName = getStore().getState().services.name;
 	return dispatch => {
-		if (serviceName === Constants.SERVICES.STEEM.name) {
-			dispatch(setService(Constants.SERVICES.GOLOS.name));
+		if (serviceName === Constants.SERVICES.steem.name) {
+			dispatch(setService(Constants.SERVICES.golos.name));
 		} else {
-			dispatch(setService(Constants.SERVICES.STEEM.name));
+			dispatch(setService(Constants.SERVICES.steem.name));
 		}
 	}
 }

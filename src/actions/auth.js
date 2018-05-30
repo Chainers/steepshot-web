@@ -51,7 +51,7 @@ export function login(username, postingKey) {
 						storage.postingKey = postingKey;
 						storage.like_power = 100;
 						storage.avatar = avatar;
-						storage.service = getStore().getState().services.name || Constants.SERVICES.STEEM.name;
+						storage.service = getStore().getState().services.name || Constants.SERVICES.steem.name;
 						OneSignalService.addNotificationTags(username);
 						dispatch(checkSubscribeAndUpdateSettings());
 						dispatch({

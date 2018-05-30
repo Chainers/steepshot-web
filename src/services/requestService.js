@@ -4,20 +4,20 @@ import ChainService from "./chainService";
 import SteemService from "./steemService";
 import GolosService from "./golosService";
 
-let config = Constants.SERVICES.STEEM;
+let config = Constants.SERVICES.steem;
 
 class RequestService {
 
 	static init(serviceName) {
 		switch(serviceName) {
-			case Constants.SERVICES.GOLOS.name:
+			case Constants.SERVICES.golos.name:
 				ChainService.init(new GolosService());
-				config = Constants.SERVICES.GOLOS;
+				config = Constants.SERVICES.golos;
 				break;
-			case Constants.SERVICES.STEEM:
+			case Constants.SERVICES.steem:
 			default:
 				ChainService.init(new SteemService());
-				config = Constants.SERVICES.STEEM;
+				config = Constants.SERVICES.steem;
 				break;
 		}
 	}
