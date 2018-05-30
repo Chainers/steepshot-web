@@ -4,11 +4,15 @@ import {connect} from 'react-redux';
 import {replace} from "react-router-redux";
 import {utils} from "../../utils/utils";
 import Constants from "../../common/constants";
+import {setService} from "../../actions/services";
 
 class RouteWithService extends React.Component {
 
 	constructor(props) {
 		super();
+		if (props.pathname.includes('/' + Constants.SERVICES.golos.name)) {
+			props.setService(Constants.SERVICES.golos.name);
+		}
 		if (!props.pathname.includes('/' + Constants.SERVICES.golos.name)
 			&& props.serviceName === Constants.SERVICES.golos.name) {
 			props.historyReplace('/golos' + props.pathname);
@@ -41,8 +45,11 @@ const mapStateToProps = (state) => {
 
 const mapDispatchTOProps = dispatch => {
 	return {
-		historyReplace: (newPath) => {
+		historyReplace: newPath => {
 			dispatch(replace(newPath))
+		},
+		setService: serviceName => {
+			dispatch(setService(serviceName));
 		}
 	}
 };
