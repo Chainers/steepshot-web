@@ -1,8 +1,8 @@
 import RequestService from "./requestService";
 import Constants from "../common/constants";
 import AuthService from "./authService";
-import SteemService from "./steemService";
 import LoggingService from "./loggingService";
+import ChainService from "./chainService";
 
 class UserService {
 
@@ -42,7 +42,7 @@ class UserService {
 			}]
 		);
 
-		return SteemService.changeFollowInBlockchain(jsonData)
+		return ChainService.changeFollowInBlockchain(jsonData)
 			.then(response => {
 				LoggingService.logFollow(status, following);
 				return Promise.resolve(response);

@@ -2,8 +2,8 @@ import RequestService from "./requestService";
 import LoggingService from "./loggingService";
 import Constants from "../common/constants";
 import AuthService from "./authService";
-import SteemService from "./steemService";
 import PostService from "./postService";
+import ChainService from "./chainService";
 
 class CommentService {
 
@@ -37,7 +37,7 @@ class CommentService {
 		};
 		const commentOperation = [Constants.OPERATIONS.COMMENT, data];
 
-		return SteemService.addCommentToBlockchain(commentOperation)
+		return ChainService.addCommentToBlockchain(commentOperation)
 			.then( response => {
 				LoggingService.logComment(postAuthor, postPermlink);
 				return Promise.resolve(response);

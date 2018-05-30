@@ -57,7 +57,7 @@ class UserProfile extends React.Component {
 		let balance = this.props.profile['estimated_balance'];
 		let avatar = this.props.profile['profile_image'];
 		return (
-			<div className="g-main_i container">
+			<div className="container">
 				<div className="g-content col-xs-12 clearfix" id="workspace">
 					<div className="row">
 						<div className="col-xs-12 col-md-4 col-lg-3">

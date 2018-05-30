@@ -1,23 +1,24 @@
-import steem from 'steem';
+import golos from 'golos-js';
 import Constants from "../common/constants";
 import PostService from "./postService";
 import AuthService from "./authService";
-import SteemNodeService from "./steemNodeService";
 
-class SteemService {
+class GolosService {
 
 	init() {
-		SteemNodeService.initConfig();
+		golos.config.set('websocket', Constants.BLOCKCHAIN.golos.CONNECTION_SERVERS[0]);
+		golos.config.set('address_prefix', Constants.BLOCKCHAIN.golos.PREFIX);
+		golos.config.set('chain_id', Constants.BLOCKCHAIN.golos.CHAIN_ID);
 	}
 
 	addCommentToBlockchain(commentOperation) {
-		return processRequest(callback => {
-			let beneficiaries = SteemService.getBeneficiaries(commentOperation[1].permlink, [{
+		return processResponse(callback => {
+			let beneficiaries = this.getBeneficiaries(commentOperation[1].permlink, [{
 				account: 'steepshot',
 				weight: 1000
 			}]);
 			const operations = [commentOperation, beneficiaries];
-			steem.broadcast.sendAsync(
+			golos.broadcast.sendAsync(
 				{operations, extensions: []},
 				{posting: AuthService.getPostingKey()},
 				callback
@@ -26,28 +27,28 @@ class SteemService {
 	}
 
 	changeVoteInBlockchain(postAuthor, permlink, power) {
-		return processRequest(callback => {
-			steem.broadcast.vote(AuthService.getPostingKey(), AuthService.getUsername(), postAuthor, permlink, power, callback);
+		return processResponse(callback => {
+			golos.broadcast.vote(AuthService.getPostingKey(), AuthService.getUsername(), postAuthor, permlink, power, callback);
 		})
 	}
 
 	deletePostFromBlockchain(permlink) {
-		return processRequest(callback => {
-			steem.broadcast.deleteComment(AuthService.getPostingKey(), AuthService.getUsername(), permlink, callback);
+		return processResponse(callback => {
+			golos.broadcast.deleteComment(AuthService.getPostingKey(), AuthService.getUsername(), permlink, callback);
 		})
 	}
 
 	changeFollowInBlockchain(jsonData) {
-		return processRequest(callback => {
-			steem.broadcast.customJson(AuthService.getPostingKey(), [], [AuthService.getUsername()], 'follow', jsonData,
+		return processResponse(callback => {
+			golos.broadcast.customJson(AuthService.getPostingKey(), [], [AuthService.getUsername()], 'follow', jsonData,
 				callback
 			);
 		})
 	}
 
 	addPostDataToBlockchain(operations) {
-		return processRequest(callback => {
-			steem.broadcast.sendAsync(
+		return processResponse(callback => {
+			golos.broadcast.sendAsync(
 				{operations, extensions: []},
 				{posting: AuthService.getPostingKey()}, callback
 			);
@@ -55,13 +56,13 @@ class SteemService {
 	}
 
 	getAccounts(username) {
-		return processRequest(callback => {
-			steem.api.getAccounts([username], callback);
+		return processResponse(callback => {
+			 return golos.api.getAccounts([username], callback);
 		})
 	}
 
 	wifIsValid(postingKey, pubWif) {
-		return Promise.resolve(steem.auth.wifIsValid(postingKey, pubWif));
+		return Promise.resolve(golos.auth.wifIsValid(postingKey, pubWif));
 	}
 
 	getValidTransaction() {
@@ -78,15 +79,15 @@ class SteemService {
 				app: 'steepshot'
 			}
 		}];
-		return processRequest(() => {
-			return steem.broadcast._prepareTransaction({
+		return processResponse(() => {
+			return golos.broadcast._prepareTransaction({
 				extensions: [],
 				operations: [operation],
 			})
 		})
 			.then(transaction => {
-				return processRequest(() => {
-					return steem.auth.signTransaction(transaction, [AuthService.getPostingKey()])
+				return processResponse(() => {
+					return golos.auth.signTransaction(transaction, [AuthService.getPostingKey()])
 				})
 			})
 			.catch(error => {
@@ -98,8 +99,8 @@ class SteemService {
 		let beneficiariesObject = {
 			author: AuthService.getUsername(),
 			permlink: permlink,
-			max_accepted_payout: Constants.SERVICES.steem.MAX_ACCEPTED_PAYOUT,
-			percent_steem_dollars: Constants.SERVICES.steem.PERCENT_STEEM_DOLLARS,
+			max_accepted_payout: Constants.SERVICES.golos.MAX_ACCEPTED_PAYOUT,
+			percent_steem_dollars: Constants.SERVICES.golos.PERCENT_STEEM_DOLLARS,
 			allow_votes: true,
 			allow_curation_rewards: true,
 			extensions: [[0, {beneficiaries: beneficiaries}]]
@@ -109,32 +110,7 @@ class SteemService {
 	}
 }
 
-export default SteemService;
-
-function processRequest(sendRequestFunction) {
-	return new Promise((resolve, reject) => {
-		const steemNodeService = new SteemNodeService();
-		checkingNode(resolve, reject, sendRequestFunction, steemNodeService);
-	});
-}
-
-function checkingNode(resolve, reject, sendRequestFunction, steemNodeService) {
-	processResponse(callback => {
-		return sendRequestFunction(callback)
-	})
-		.then(response => {
-			resolve(response);
-		})
-		.catch(error => {
-			console.log(error);
-			if (steemNodeService.isMaxCountRequests()) {
-				reject(error);
-			} else {
-				steemNodeService.setNextNode();
-				checkingNode(resolve, reject, sendRequestFunction, steemNodeService);
-			}
-		})
-}
+export default GolosService;
 
 function processResponse(sendingFunction) {
 	return new Promise((resolve, reject) => {
