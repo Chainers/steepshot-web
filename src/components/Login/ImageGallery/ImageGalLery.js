@@ -2,6 +2,9 @@ import React from "react";
 import PropTypes from 'prop-types';
 import './imageGallery.css';
 
+let swapPhotoTimeout = null;
+let fideToNextTimeout = null;
+
 class ImageGallery extends React.Component {
 
 	constructor(props) {
@@ -13,14 +16,14 @@ class ImageGallery extends React.Component {
 		};
 		this.fadeToNext = this.fadeToNext.bind(this);
 		this.startSwapPhoto = this.startSwapPhoto.bind(this);
-		setTimeout(
+		swapPhotoTimeout = setTimeout(
 			this.startSwapPhoto,
 			props.showTime
 		)
 	};
 
 	startSwapPhoto() {
-		setTimeout(this.fadeToNext, this.props.swappingSpeed)
+		fideToNextTimeout = setTimeout(this.fadeToNext, this.props.swappingSpeed)
 	}
 
 	fadeToNext() {
@@ -35,12 +38,16 @@ class ImageGallery extends React.Component {
 			currentImage
 		}, () => {
 			if (opacity !== 100) {
-				setTimeout(this.fadeToNext, this.props.swappingSpeed);
+				fideToNextTimeout = setTimeout(this.fadeToNext, this.props.swappingSpeed);
 			} else {
-				setTimeout(this.startSwapPhoto,	this.props.showTime
-				)
+				swapPhotoTimeout = setTimeout(this.startSwapPhoto,	this.props.showTime);
 			}
 		});
+	}
+
+	componentWillUnmount() {
+		clearTimeout(swapPhotoTimeout);
+		clearTimeout(fideToNextTimeout);
 	}
 
 	render() {

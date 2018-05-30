@@ -9,18 +9,15 @@ let config = Constants.SERVICES.STEEM;
 class RequestService {
 
 	static init(serviceName) {
-		console.log(serviceName);
 		switch(serviceName) {
 			case Constants.SERVICES.GOLOS.name:
 				ChainService.init(new GolosService());
 				config = Constants.SERVICES.GOLOS;
-				console.log('set golos service');
 				break;
 			case Constants.SERVICES.STEEM:
 			default:
 				ChainService.init(new SteemService());
 				config = Constants.SERVICES.STEEM;
-				console.log('set steem service');
 				break;
 		}
 	}
