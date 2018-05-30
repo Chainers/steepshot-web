@@ -14,6 +14,7 @@ import Login from './components/Login/Login';
 import {getStore} from './store/configureStore';
 import Browse from './components/Browse/Browse';
 import Settings from './components/Settings/Settings';
+import RouteWithService from "./components/Routes/RouteWithService";
 
 function isAuth() {
 	const auth = getStore().getState().auth;
@@ -32,12 +33,12 @@ export default function getRoutes() {
 						<Login/>
 					)
 				)}/>
-				<Route path="/browse/:filter?" component={Browse}/>
-				<Route path="/@:username" component={UserProfile}/>
-				<Route path="/post" component={SinglePost}/>
-				<Route path="/search/:searchValue" component={Search}/>
-				<Route path="/guide" component={AboutComponent}/>
-				<Route path="/dev/test" component={Testing}/>
+				<RouteWithService path="/browse/:filter?" component={Browse}/>
+				<RouteWithService path="/@:username" component={UserProfile}/>
+				<RouteWithService path="/post" component={SinglePost}/>
+				<RouteWithService path="/search/:searchValue" component={Search}/>
+				<RouteWithService path="/guide" component={AboutComponent}/>
+				<RouteWithService path="/dev/test" component={Testing}/>
 				<PrivateRoute path="/feed" component={Feed}/>
 				<Redirect path="/createPost" to={'/editPost'}/>
 				<PrivateRoute path="/editPost/:category?/:username?/:permlink?" component={EditPost}/>
