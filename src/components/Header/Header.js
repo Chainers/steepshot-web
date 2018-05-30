@@ -45,7 +45,7 @@ class Header extends React.Component {
 
 	searchHandleChange(e) {
 		let value = e.target.value.toLowerCase();
-		this.props.setSearchValue(value.replace(/[^\w-.]/g, ''));
+		this.props.setSearchValue(value.replace(/[^[a-zA-Zа-яА-Я0-9-.]/g, ''));
 	}
 
 	render() {
@@ -94,116 +94,117 @@ class Header extends React.Component {
 		</div>;
 
 		return (
-			<header className="g-header">
-				<div className="container">
-					<div className={'user-panel ' + (this.props.isOpened ? 'closed' : 'open')}>
-						<div className="wrap-panel clearfix">
-							{
-								isUserAuth
-									? <div className="section hamburger">
-										<div className="wrap-hamburger">
-											<Hamburger toggle={this.props.toggleMobileNavigation} pressed={this.props.openedMobileNavigation}/>
-										</div>
-									</div>
-									: null
-							}
-							{loginComponent}
-							<div className="section create">
-								<div className="wrap-create">
-									{
-										isUserAuth
-											? <div>
-												<Link to="/editPost" type="button"
-															className="btn btn-default btn-xs btn-create">
-													Create post
-												</Link>
-												<Link to="/editPost" type="button"
-															className="btn btn-default btn-create-mob"
-															onClick={this.props.closeMobileNavigation}
-												/>
+			<div className="block-in-body_header">
+				<header className="g-header" key="Header">
+					<div className="container">
+						<div className={'user-panel ' + (this.props.isOpened ? 'closed' : 'open')}>
+							<div className="wrap-panel clearfix">
+								{
+									isUserAuth
+										? <div className="section hamburger">
+											<div className="wrap-hamburger">
+												<Hamburger toggle={this.props.toggleMobileNavigation}
+																	 pressed={this.props.openedMobileNavigation}/>
 											</div>
+										</div>
+										: null
+								}
+								{loginComponent}
+								<div className="section create">
+									<div className="wrap-create">
+										{
+											isUserAuth
+												? <div>
+													<Link to="/editPost" type="button"
+																className="btn btn-default btn-xs btn-create">
+														Create post
+													</Link>
+													<Link to="/editPost" type="button"
+																className="btn btn-default btn-create-mob"
+																onClick={this.props.closeMobileNavigation}
+													/>
+												</div>
+												: null
+										}
+									</div>
+								</div>
+								<div className="section user">
+									{
+										this.props.user
+											? <Link to={authorLink} className="user-link clearfix">
+												<div className="photo">
+													<Avatar src={authorImage}
+																	powerIndicator={true}
+																	headerAvatar={true}
+													/>
+												</div>
+												<div className="name">{this.props.user}</div>
+											</Link>
 											: null
 									}
 								</div>
+								<div className="section logo">
+									<a href="/" className="wrap-logo">
+										<img src="/images/steepshotLogo@2x.svg" alt="logo"/>
+									</a>
+								</div>
+								<div className="section search">
+									<div className="wrap-search" onClick={() => this.props.setSearchPanelState(true)}>
+										<span className="lnk-search">Search</span>
+										<span className="search-mob-ico_search"> </span>
+									</div>
+								</div>
+								{browse}
 							</div>
-							<div className="section user">
-								{
-									this.props.user
-										? <Link to={authorLink} className="user-link clearfix">
-											<div className="photo">
-												<Avatar src={authorImage}
-																powerIndicator={true}
-																headerAvatar={true}
-												/>
-											</div>
-											<div className="name">{this.props.user}</div>
-										</Link>
-										: null
-								}
-							</div>
-							<div className="section logo">
-								<a href="/" className="wrap-logo">
-									<img src="/images/steepshotLogo@2x.svg" alt="logo"/>
-								</a>
-							</div>
-							<div className="section search">
-								<div className="wrap-search" onClick={() => {
-									this.props.setSearchPanelState(true)
-								}}>
-									<span className="lnk-search">Search</span>
-									<span className="lnk-search-mob"> </span>
+						</div>
+						<div className={'search-panel ' + (this.props.isOpened ? 'open' : 'closed')}>
+							<div className="wrap-panel container clearfix">
+								<div className="wrap-btn">
+									<button type="button" className="btn-close" onClick={() => {
+										this.props.setSearchValue("");
+										this.props.setSearchPanelState(false);
+									}}/>
+								</div>
+								<div className="wrap-search">
+									<form className="form-search">
+										<input
+											type="text"
+											name="search"
+											value={this.props.searchValue}
+											ref={ref => this.searchInput = ref}
+											onChange={this.searchHandleChange.bind(this)}
+											required={true}
+											placeholder={
+												this.props.sizeParam
+													? Constants.SEARCH_PLACEHOLDER_MIN
+													: Constants.SEARCH_PLACEHOLDER
+											}
+											className="input-search"
+											onKeyPress={this.searchKeyPress.bind(this)}
+										/>
+									</form>
 								</div>
 							</div>
-							{browse}
 						</div>
 					</div>
-					<div className={'search-panel ' + (this.props.isOpened ? 'open' : 'closed')}>
-						<div className="wrap-panel container clearfix">
-							<div className="wrap-btn">
-								<button type="button" className="btn-close" onClick={() => {
-									this.props.setSearchValue("");
-									this.props.setSearchPanelState(false);
-								}}/>
-							</div>
-							<div className="wrap-search">
-								<form className="form-search">
-									<input
-										type="text"
-										name="search"
-										value={this.props.searchValue}
-										ref={ref => this.searchInput = ref}
-										onChange={this.searchHandleChange.bind(this)}
-										required={true}
-										placeholder={
-											this.props.sizeParam
-												? Constants.SEARCH_PLACEHOLDER_MIN
-												: Constants.SEARCH_PLACEHOLDER
-										}
-										className="input-search"
-										onKeyPress={this.searchKeyPress.bind(this)}
-									/>
-								</form>
-							</div>
-						</div>
-					</div>
-				</div>
-			</header>
+				</header>
+			</div>
 		);
 	}
 }
 
 const mapStateToProps = (state, props) => {
 	const location = state.router.location || props.location || {};
-  return {
-    sizeParam: document.body.clientWidth < 420,
-    postingKey: state.auth.postingKey,
-    user: state.auth.user,
-    avatar: state.auth.avatar,
-    searchValue: state.search.value,
-    isOpened: state.search.isOpened,
-    currentLocation: location.pathname,
-    openedMobileNavigation: state.mobileNavigation.opened
-  };
+	return {
+		sizeParam: document.body.clientWidth < 420,
+		postingKey: state.auth.postingKey,
+		user: state.auth.user,
+		avatar: state.auth.avatar,
+		searchValue: state.search.value,
+		isOpened: state.search.isOpened,
+		currentLocation: location.pathname,
+		openedMobileNavigation: state.mobileNavigation.opened
+	};
 };
 
 const mapDispatchToProps = (dispatch) => {

@@ -1,9 +1,18 @@
 import Constants from '../common/constants';
+import {serverErrorsList} from './serverErrorsList';
 
 export function blockchainErrorsList(error) {
   let format = '';
   if (!error.data && typeof error === 'string') {
     return error;
+  }
+  if (!error.data && error.actual && error.expected) {
+    if (error.actual === 128) {
+      return 'Invalid posting key.';
+    }
+  }
+  if (!error.data && error.status && error.statusText) {
+    return serverErrorsList(error.status.toString());
   }
   if (error.data) {
     if (error.data.stack && error.data.stack[0].format) {
@@ -12,10 +21,10 @@ export function blockchainErrorsList(error) {
     let newError = `${error.data.code} ${error.data.name}: ${error.data.message}${format}`;
     let errorsList = [
       {error: '4100000 plugin_exception: plugin exception: Account: ${account} bandwidth limit exeeded. Please wait to ' + // eslint-disable-line
-      'transact or power up STEEM.', notificationText: 'Your transaction cannot be completed. Steem Power of your ' +
+      'transact or power up steem.', notificationText: 'Your transaction cannot be completed. Steem Power of your ' +
       'account is too low. For more information click <a href="https://steepshot.io/faq#not-able-to-post" target="_blank">here</a>.'},
       {error: '4100000 plugin_exception: plugin exception: Account: ${account} bandwidth limit exceeded. Please wait to ' + // eslint-disable-line
-      'transact or power up STEEM.', notificationText: 'Your transaction cannot be completed. Steem Power of your ' +
+      'transact or power up steem.', notificationText: 'Your transaction cannot be completed. Steem Power of your ' +
       'account is too low. For more information click <a href="https://steepshot.io/faq#not-able-to-post" target="_blank">here</a>.'},
       {error: '10 assert_exception: Assert Exception: ( now - auth.last_root_post ) > STEEM_MIN_ROOT_COMMENT_INTERVAL: ' +
       'You may only post once every 5 minutes.', notificationText: 'You can only create posts 5 minutes after the previous one.'},

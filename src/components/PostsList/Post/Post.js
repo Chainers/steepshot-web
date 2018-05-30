@@ -49,25 +49,6 @@ class Post extends React.Component {
 		}
 	}
 
-	longTapPLInd(timeDelay) {
-		if (this.props.vote) {
-			return;
-		}
-		if (!this.props.authUser) {
-			return;
-		}
-		if (this.props.isPLOpen) {
-			return;
-		}
-		let plTimeout = setTimeout(() => {
-			this.props.setPowerLikeInd(this.props.index, true, 'post');
-		}, timeDelay);
-		this.props.setPowerLikeTimeout(this.props.index, plTimeout);
-	}
-
-	breakLongTapPLInd() {
-		clearTimeout(this.props.plTimeout);
-	}
 
 	stopVideoPlaying() {
     this.props.stopVideo(this.props.index);

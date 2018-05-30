@@ -14,6 +14,8 @@ import {
 	RedditIcon
 } from 'react-share';
 import './ChooseSocialNetwork.css';
+import {getStore} from "../../../store/configureStore";
+import Constants from "../../../common/constants";
 
 class ChooseSocialNetwork extends React.Component {
 
@@ -23,7 +25,9 @@ class ChooseSocialNetwork extends React.Component {
 	}
 
 	render() {
-		let shareAddress = document.location.origin + '/post' + this.props.item.url;
+		const golosName = Constants.SERVICES.golos.name;
+		const isGolosService = getStore().getState().services.name === golosName;
+		let shareAddress = document.location.origin + (isGolosService ? '/' + golosName : '') + '/post' + this.props.item.url;
 		let postTitle = this.props.item.title;
 		let crossOffset = {top: 8, right: 5};
 		return (

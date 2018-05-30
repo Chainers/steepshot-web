@@ -8,11 +8,13 @@ import Modals from "../Modals/Modals";
 import {resizeWindow} from "../../actions/utils";
 import MobileNavigation from "../MobileNavigation/MobileNavigation";
 import {loadSubscribeData} from "../../actions/oneSignal";
+import {setService} from "../../actions/services";
 
 class FunctionalUtils extends React.Component {
 
 	constructor(props) {
 		super();
+		props.setService();
 		if (!global.isServerSide) {
 			props.loadSubscribeData();
 		}
@@ -35,7 +37,7 @@ class FunctionalUtils extends React.Component {
 
   render() {
     return (
-      <div className="utils-container">
+      <div className="utils-container" key="FunctionalUtils">
 				<PushNotifications/>
         <PushMessage />
 				<Clipboard/>
@@ -57,11 +59,14 @@ const mapDispatchToProps = (dispatch) => {
     updateVotingPower: (username) => {
       dispatch(updateVotingPower(username));
     },
-		resizeWindow: (width, height) => {
-    	dispatch(resizeWindow(width, height))
+		resizeWindow: () => {
+    	dispatch(resizeWindow())
 		},
 		loadSubscribeData: () => {
 			dispatch(loadSubscribeData())
+		},
+		setService: () => {
+    	dispatch(setService())
 		}
   }
 };
