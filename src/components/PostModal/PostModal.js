@@ -182,7 +182,8 @@ class PostModal extends React.Component {
 	copyLinkToClipboard(e) {
 		e.target.blur();
 		this.props.copyToClipboard(
-			document.location.origin + '/post' + this.props.post.url.replace(/\/[\w-.]+/, '')
+			document.location.origin + (this.props.isGolosService ? '/' + Constants.SERVICES.golos.name : '')
+			+ '/post' + this.props.post.url.replace(/\/[\w-.]+/, '')
 		);
 	}
 
@@ -524,7 +525,8 @@ const mapStateToProps = (state) => {
 			focusedTextInput: state.textInput[Constants.TEXT_INPUT_POINT.COMMENT] ?
 				state.textInput[Constants.TEXT_INPUT_POINT.COMMENT].focused : false,
 			window: state.window,
-			offsetTop: state.postModal.postOffset
+			offsetTop: state.postModal.postOffset,
+			isGolosService: state.services.name === Constants.SERVICES.golos.name
 		};
 	}
 };

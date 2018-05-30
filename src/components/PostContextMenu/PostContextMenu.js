@@ -51,7 +51,8 @@ class PostContextMenu extends React.Component {
 	}
 
 	copyLink() {
-		let url = document.location.origin + '/post' + this.props.item.url;
+		let url = document.location.origin + (this.props.isGolosService ? '/' + Constants.SERVICES.golos.name : '')
+			+ '/post' + this.props.item.url;
 		this.props.copyToClipboard(url);
 		this.props.closeModal("MenuModal");
 	}
@@ -172,6 +173,7 @@ const mapStateToProps = (state) => {
 	return {
 		username: state.auth.user,
 		isUserAuth: !!state.auth.user && !!state.auth.postingKey,
+		isGolosService: state.services.name === Constants.SERVICES.golos.name
 	};
 };
 

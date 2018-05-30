@@ -33,7 +33,8 @@ class RouteWithService extends React.Component {
 			<Route path={this.props.path} render={props => <Component {...props}/>}/>
 		);
 	}
-};
+
+}
 
 const mapStateToProps = (state) => {
 	return {
