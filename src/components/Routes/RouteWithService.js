@@ -37,9 +37,10 @@ class RouteWithService extends React.Component {
 }
 
 const mapStateToProps = (state) => {
+	const location = state.router.location || props.location || {};
 	return {
 		isAuthenticated: !!state.auth.user && !!state.auth.postingKey,
-		pathname: state.router.location.pathname,
+		pathname: location.pathname,
 		serviceName: state.services.name
 	}
 };
