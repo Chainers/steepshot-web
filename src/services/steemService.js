@@ -95,7 +95,7 @@ class SteemService {
 			});
 	}
 
-	getBeneficiaries(permlink, beneficiaries) {
+	static getBeneficiaries(permlink, beneficiaries) {
 		let beneficiariesObject = {
 			author: AuthService.getUsername(),
 			permlink: permlink,
@@ -105,7 +105,6 @@ class SteemService {
 			allow_curation_rewards: true,
 			extensions: [[0, {beneficiaries: beneficiaries}]]
 		};
-
 		return [Constants.OPERATIONS.COMMENT_OPTIONS, beneficiariesObject];
 	}
 }
@@ -127,7 +126,6 @@ function checkingNode(resolve, reject, sendRequestFunction, steemNodeService) {
 			resolve(response);
 		})
 		.catch(error => {
-			console.log(error);
 			if (steemNodeService.isMaxCountRequests()) {
 				reject(error);
 			} else {
