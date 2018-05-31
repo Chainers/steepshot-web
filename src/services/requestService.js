@@ -1,8 +1,8 @@
-import Constants from "../common/constants";
-import {utils} from "../utils/utils";
-import ChainService from "./chainService";
-import SteemService from "./steemService";
-import GolosService from "./golosService";
+import Constants from '../common/constants';
+import {utils} from '../utils/utils';
+import ChainService from './chainService';
+import SteemService from './steemService';
+import GolosService from './golosService';
 
 let config = Constants.SERVICES.steem;
 
@@ -31,7 +31,7 @@ class RequestService {
 		return fetch(fullUrl, {
 			method: 'GET'
 		})
-			.then(RequestService.processResponse);
+		.then(RequestService.processResponse)
 	}
 
 	static post(url, data) {

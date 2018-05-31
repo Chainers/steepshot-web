@@ -1,0 +1,34 @@
+.btn-flag_flag {
+    position: relative;
+    width: 21px;
+    height: 21px;
+    border: none;
+    display: block;
+    padding: 2px 0 0 0;
+    background: 0 0;
+}
+
+.btn-flag_flag::before {
+    content: url('/images/flagFalse.svg');
+}
+
+.btn-flag_flag.marked::before {
+    content: url('/images/flagTrue.svg');
+}
+
+.btn-flag_flag.loading::before {
+    display: block;
+    animation: flagLoading 2s infinite linear;
+}
+
+@keyframes flagLoading {
+    0% {
+        transform: scale(1)
+    }
+    50% {
+        transform: scale(.7)
+    }
+    100% {
+        transform: scale(1)
+    }
+}

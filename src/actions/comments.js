@@ -1,10 +1,11 @@
 import {getStore} from "../store/configureStore";
-import {clearTextInputState} from "./textInput";
+import {clearTextInputState, setTextInputState} from "./textInput";
 import {pushMessage} from "./pushMessage";
 import {actionLock, actionUnlock} from "./session";
 import Constants from "../common/constants";
 import CommentService from "../services/commentService";
 import PostService from "../services/postService";
+import {serverErrorsList} from "../utils/serverErrorsList";
 
 export function initPostComment(point) {
 	return {
@@ -37,7 +38,7 @@ export function getPostComments(point) {
 			point
 		});
 		CommentService.getCommentsList(post.author, post.url)
-			.then((response) => {
+			.then(response => {
 				const comments = response.results.reverse();
 				if (!comments) {
 					dispatch({
@@ -46,17 +47,19 @@ export function getPostComments(point) {
 					});
 					return;
 				}
-				let commentsUrls = comments.map((comment) => {
+				let commentsUrls = comments.map(comment => {
 					return comment.url
 				});
-
 				let commentsObjects = {};
 				for (let i = 0; i < comments.length; i++) {
 					let comment = {
 						...comments[i],
+						parent_author: comments[i].url.replace(/.+\/@([\w-.]+)\/.+/, '$1'),
+						parent_permlink: comments[i].url.replace(/.+\/@[\w-.]+\/([^/]+?)#.+/, '$1'),
 						flagLoading: false,
 						voteLoading: false,
-						postDeleting: false
+						postDeleting: false,
+						/*postEditing: false*/
 					};
 					commentsObjects[comments[i].url] = comment;
 				}
@@ -68,9 +71,11 @@ export function getPostComments(point) {
 				});
 			})
 			.catch(error => {
+				let checkedError = serverErrorsList(error.status);
 				dispatch({
 					type: 'GET_POST_COMMENTS_ERROR',
-					error
+					point,
+          checkedError
 				});
 			});
 	}
@@ -115,6 +120,31 @@ function addedNewComment(point, posts, url) {
 			url
 		})
 	}
+}
+
+function setFocusTextInput() {
+  return {
+    type: 'SET_FOCUS_TEXT_INPUT',
+    point: Constants.TEXT_INPUT_POINT.COMMENT
+  }
+}
+
+export function setCommentEditState(point, parentPost, postEditing) {
+	let commentText = getStore().getState().posts[point].body;
+  return dispatch => {
+    dispatch({
+      type: 'SET_COMMENT_EDIT_STATE',
+      editingPostPoint: point,
+      parentPost,
+      postEditing
+    });
+    dispatch(setFocusTextInput());
+    dispatch(setTextInputState('comment', {text: commentText}));
+  }
+}
+
+export function editComment(postIndex, point) {
+
 }
 
 export function sendComment(postIndex, point) {
@@ -172,9 +202,6 @@ export function replyAuthor(name) {
 				error: ''
 			}
 		});
-		dispatch({
-			type: 'SET_FOCUS_TEXT_INPUT',
-			point: Constants.TEXT_INPUT_POINT.COMMENT
-		})
+		dispatch(setFocusTextInput());
 	}
 }

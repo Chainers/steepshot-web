@@ -27,21 +27,23 @@ class CommentService {
     return postUrl.replace(/.+#(.+)/g, '$1');
 	}
 
+	static getDefaultCommentOperation(postAuthor, postPermlink, author, permlink, body) {
+		return [Constants.OPERATIONS.COMMENT, {
+							parent_author: postAuthor,
+							parent_permlink: postPermlink,
+							author: author,
+							permlink: permlink,
+							title: '',
+							body: body,
+							json_metadata: '',
+							device: 'web'
+						}];
+	}
+
 	static addComment(postAuthor, postPermlink, body) {
 		const author = AuthService.getUsername();
 		const permlink = PostService.createPostPermlink(`${author} comment`);
-		const data = {
-			parent_author: postAuthor,
-			parent_permlink: postPermlink,
-			author: author,
-			permlink: permlink,
-			title: '',
-			body: body,
-			json_metadata: '',
-			device: 'web'
-		};
-		const commentOperation = [Constants.OPERATIONS.COMMENT, data];
-
+		const commentOperation = CommentService.getDefaultCommentOperation(postAuthor, postPermlink, author, permlink, body);
 		return ChainService.addCommentToBlockchain(commentOperation)
 			.then( response => {
 				LoggingService.logComment(postAuthor, postPermlink);
