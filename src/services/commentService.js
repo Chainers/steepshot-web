@@ -9,13 +9,18 @@ class CommentService {
 
 	static getCommentsList(postAuthor, postUrl) {
 		const url = `post/${postAuthor}${postUrl}/comments`;
-		return RequestService.get(url);
+		const options = {
+			username: AuthService.getUsername(),
+		};
+		return RequestService.get(url, options);
 	}
 
 	static getComment(postUrl) {
 		const url = `comment/${CommentService.getCommentPermlinkFromUrl(postUrl)}/info`;
-
-		return RequestService.get(url);
+		const options = {
+			username: AuthService.getUsername(),
+		};
+		return RequestService.get(url, options);
 	}
 
 	static getCommentPermlinkFromUrl(postUrl) {
