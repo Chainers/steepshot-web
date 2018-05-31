@@ -19,11 +19,17 @@ export default function userProfile(state = initialState, action) {
 				loading: false
 			};
 		case 'CHANGE_FOLLOW_REQUEST':
+			if (!state.profile) {
+				return state;
+			}
 			return {
 				...state,
 				changeFollow: true
 			};
 		case 'CHANGE_FOLLOW_SUCCESS':
+			if (!state.profile) {
+				return state;
+			}
 			return {
 				...state,
 				changeFollow: false,
@@ -33,6 +39,9 @@ export default function userProfile(state = initialState, action) {
 				}
 			};
 		case 'CHANGE_FOLLOW_ERROR':
+			if (!state.profile) {
+				return state;
+			}
 			return {
 				...state,
 				changeFollow: false

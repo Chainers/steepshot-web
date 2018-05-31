@@ -2,12 +2,12 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 import Avatar from "../../Common/Avatar/Avatar";
 import {connect} from "react-redux";
-import {toggleFollow} from "../../../actions/follow";
 import ShowIf from "../../Common/ShowIf";
 import LoadingSpinner from "../../LoadingSpinner";
 import './user.css';
+import {changeFollow} from "../../../actions/userProfile";
 
-const User = ({user, authUser, toggleFollow}) => {
+const User = ({user, authUser, changeFollow}) => {
 
 	let amountMoney = null;
 	if (user.amount_sbd) {
@@ -32,7 +32,7 @@ const User = ({user, authUser, toggleFollow}) => {
 				<div className="following-toggle-wrapper_user">
 					<ShowIf show={!user.togglingFollow}>
 						<ShowIf show={!user.has_followed}>
-							<div className="follow-btn_user" onClick={() => toggleFollow(user.author)}>
+							<div className="follow-btn_user" onClick={() => changeFollow(user.author, user.has_followed)}>
 								<img src="/images/userProfile/follow.svg"
 										 alt="toggle follow"
 								/>
@@ -67,8 +67,8 @@ const mapStateToProps = (state, props) => {
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		toggleFollow: (author) => {
-			dispatch(toggleFollow(author));
+		changeFollow: (followingName, followed) => {
+			dispatch(changeFollow(followingName, followed));
 		}
 	};
 };

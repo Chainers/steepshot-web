@@ -4,21 +4,21 @@ export default function users(state = {}, action) {
 			return {
 				...state, ...action.users
 			};
-		case 'TOGGLE_FOLLOW_REQUEST':
+		case 'CHANGE_FOLLOW_REQUEST':
 			return {
 				...state, [action.author]: {
 					...state[action.author],
 					togglingFollow: true
 				}
 			};
-		case 'TOGGLE_FOLLOW_ERROR':
+		case 'CHANGE_FOLLOW_ERROR':
 			return {
 				...state, [action.author]: {
 					...state[action.author],
 					togglingFollow: false
 				}
 			};
-		case 'TOGGLE_FOLLOW_SUCCESS':
+		case 'CHANGE_FOLLOW_SUCCESS':
 			return {
 				...state, [action.author]: {
 					...state[action.author],
