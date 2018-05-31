@@ -59,14 +59,16 @@ class Search extends React.Component {
 				<Tab name="Tag"
 						 loading={this.props.hotPostsList.loading || this.props.newPostsList.loading}
 						 empty={!this.props.newPostsList.posts.length}>
-					<PostsList
-						point={insertCategory(Constants.POSTS_FILTERS.POSTS_HOT.point, this.props.searchValue)}
-						wrapperModifier="posts-list clearfix"
-						options={{limit: 4}}
-						maxPosts={4}
-						headerText={hotPost}
-						isComponentVisible={this.props.activeIndex === 0}
-					/>
+					<ShowIf show={this.props.hotPostsList.posts.length > 0} removeFromDom={false}>
+						<PostsList
+							point={insertCategory(Constants.POSTS_FILTERS.POSTS_HOT.point, this.props.searchValue)}
+							wrapperModifier="posts-list clearfix"
+							options={{limit: 4}}
+							maxPosts={4}
+							headerText={hotPost}
+							isComponentVisible={this.props.activeIndex === 0}
+						/>
+					</ShowIf>
 					<ShowIf show={this.props.newPostsList.posts.length >= 4} removeFromDom={false}>
 						<PostsList
 							point={insertCategory(Constants.POSTS_FILTERS.POSTS_NEW.point, this.props.searchValue)}
