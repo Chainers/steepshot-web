@@ -1,5 +1,6 @@
 import {getStore} from '../store/configureStore';
-import UserService from "../services/userService";
+import UserService from '../services/userService';
+import {serverErrorsList} from "../utils/serverErrorsList";
 
 export function initUsersList(options) {
 	return {
@@ -95,9 +96,11 @@ export function getUsersList(point) {
 				};
 
 				dispatch(getUsersListSuccess(pointOptions, users));
-			}).catch(error => {
-			dispatch(getUsersListError(point, error));
-		});
+			})
+			.catch(error => {
+				let checkedError = serverErrorsList(error);
+				dispatch(getUsersListError(point, checkedError));
+      });
 	};
 }
 

@@ -52,7 +52,7 @@ export function getPostsList(point) {
 		let settings = getStore().getState().settings;
 
 		PostService.getPostsList(point, statePoint.offset, settings.show_nsfw, settings.show_low_rated, LIMIT, statePoint.options)
-			.then((response) => {
+			.then(response => {
 				//TODO удалить когда будут реальные видео в ленте
 				/*if (response.results[2]) {
 					const media = response.results[2].media[0];
@@ -103,7 +103,7 @@ export function getPostsList(point) {
 				dispatch(getPostsListSuccess(pointOptions, notDeletedPosts));
 			})
 			.catch(error => {
-				let checkedError = serverErrorsList(error.message);
+				let checkedError = serverErrorsList(error.status);
 				dispatch(getPostsListError(point, checkedError));
 			});
 	};
@@ -143,6 +143,7 @@ function removeDeleted(response, posts) {
 			if (posts[i].body === Constants.DELETE.PUTATIVE_DELETED_POST) {
 				response.offset = posts[i - 1].url;
 				posts.splice(i, 1);
+				i--;
 			}
 		}
 	}

@@ -132,12 +132,6 @@ a {
     justify-content: center;
 }
 
-input.autofil--gray:-webkit-autofill:hover,
-input.autofil--gray:-webkit-autofill:focus,
-input.autofil--gray:-webkit-autofill {
-    -webkit-box-shadow: 0 0 0 1000px #fafafa inset;
-}
-
 .blur-blocker {
     pointer-events: none;
     -webkit-filter: blur(1.05px) grayscale(50%);
@@ -291,30 +285,6 @@ h2.card-field__heading {
     justify-content: space-between;
 }
 
-.btn-flag {
-    position: relative;
-    width: 21px;
-    height: 21px;
-    border: none;
-    display: block;
-    padding: 2px 0 0 0;
-    background: 0 0;
-}
-
-.btn-primary {
-    border: 1px transparent !important;
-    background: linear-gradient(to right, #85cbef, #1294f6) !important;
-}
-
-.btn-success {
-    border: 1px transparent !important;
-    background: linear-gradient(to right, #b1f369, #5ca40e) !important;
-}
-
-.btn-primary:hover {
-    box-shadow: 0 5px 15px 0 rgba(18, 148, 226, .3);
-}
-
 .btn-index, .btn-default, .name, .btn-primary {
     transition: .2s all ease;
 }
@@ -325,10 +295,6 @@ h2.card-field__heading {
 
 .btn-default:hover {
     box-shadow: 0 5px 12px 0 rgba(231, 72, 0, .3) !important;
-}
-
-.btn-flag::before {
-    content: url('/images/flagFalse.svg');
 }
 
 .btn-default:active {
@@ -344,10 +310,6 @@ h2.card-field__heading {
     border: none !important;
     padding: 9px 47px !important;
     font: 14px OpenSans-Regular !important;
-}
-
-.btn-flag.marked::before {
-    content: url('/images/flagTrue.svg');
 }
 
 .post__image-container .full-screen_item-mod {
@@ -610,42 +572,6 @@ h2.card-field__heading {
     }
 }
 
-@-webkit-keyframes flagLoading {
-    0% {
-        -webkit-transform: scale(1);
-        transform: scale(1)
-    }
-    50% {
-        -webkit-transform: scale(.7);
-        transform: scale(.7)
-    }
-    100% {
-        -webkit-transform: scale(1);
-        transform: scale(1)
-    }
-}
-
-@keyframes flagLoading {
-    0% {
-        -webkit-transform: scale(1);
-        transform: scale(1)
-    }
-    50% {
-        -webkit-transform: scale(.7);
-        transform: scale(.7)
-    }
-    100% {
-        -webkit-transform: scale(1);
-        transform: scale(1)
-    }
-}
-
-.btn-flag.loading::before {
-    display: block;
-    -webkit-animation: flagLoading 2s infinite linear;
-    animation: flagLoading 2s infinite linear;
-}
-
 .buttons-row .wrap-btn {
     padding-left: 20px;
     margin-left: 14px;
@@ -665,33 +591,6 @@ h2.card-field__heading {
 
 .upload {
     padding-top: 40px;
-}
-
-@keyframes blink {
-    0% {
-        opacity: .2;
-    }
-    20% {
-        opacity: 1;
-    }
-    100% {
-        opacity: .2;
-    }
-}
-
-.saving span {
-    animation-name: blink;
-    animation-duration: 1.4s;
-    animation-iteration-count: infinite;
-    animation-fill-mode: both;
-}
-
-.saving span:nth-child(2) {
-    animation-delay: .2s;
-}
-
-.saving span:nth-child(3) {
-    animation-delay: .4s;
 }
 
 /* NEW */
@@ -973,18 +872,6 @@ a:hover {
 
 a:active {
     outline: 0
-}
-
-.p a:not(.btn):visited, p a:not(.btn):visited {
-    color: #e74800
-}
-
-.p a:not(.btn):focus, .p a:not(.btn):hover, p a:not(.btn):focus, p a:not(.btn):hover {
-    color: #eb443d
-}
-
-.dash, .dot, .lnk, .lnk-pseudo, a {
-    transition: all .15s ease
 }
 
 figure {
@@ -5593,16 +5480,6 @@ input[type=button].btn-block, input[type=reset].btn-block, input[type=submit].bt
 .rotate-button {
     position: relative;
     height: 150px;
-}
-
-.shareWrapper {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.shareWrapper .post__image-container {
-    background-color: #ffffff;
 }
 
 .loding-spinner_create-post {

@@ -10,8 +10,8 @@ class ConfirmDeleteModal extends React.Component {
 	}
 
 	deletePost() {
-		this.props.closeAllModals();
-		this.props.deletePostAfterConfirm(this.props.postIndex);
+		!this.props.isComment ? this.props.closeAllModals() : this.props.closeModal();
+		this.props.deletePostAfterConfirm(this.props.postIndex, this.props.isComment);
 	}
 
 	render() {

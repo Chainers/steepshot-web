@@ -117,10 +117,15 @@ export function logout() {
 
 export function updateVotingPower(username) {
 	return (dispatch) => {
-		UserService.getProfile(username).then((result) => {
+		UserService.getProfile(username).then(result => {
 			dispatch({
 				type: 'UPDATE_VOTING_POWER',
 				voting_power: result.voting_power
+			})
+		}).catch(error => {
+      dispatch({
+				type: 'UPDATE_VOTING_POWER_ERROR',
+				error
 			})
 		});
 	}

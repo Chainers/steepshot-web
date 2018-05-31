@@ -4,7 +4,8 @@ import ConfirmFlagModal from '../../../PostContextMenu/ConfirmFlagModal/ConfirmF
 import Constants from '../../../../common/constants';
 import {toggleFlag} from '../../../../actions/flag';
 import {closeModal, openModal} from '../../../../actions/modal';
-import {pushMessage} from "../../../../actions/pushMessage";
+import {pushMessage} from '../../../../actions/pushMessage';
+import './flag.css';
 
 class Flag extends React.Component {
 
@@ -35,7 +36,7 @@ class Flag extends React.Component {
 	}
 
 	render() {
-		let buttonClasses = 'btn-flag';
+		let buttonClasses = 'btn-flag_flag';
 		if (this.props.flag) {
 			buttonClasses = buttonClasses + ' marked';
 		}
@@ -48,7 +49,12 @@ class Flag extends React.Component {
         flagComment = 'Unflag';
       }
       if (this.props.flagLoading) {
-        flagComment = <span className="saving">Pending<span> .</span><span> .</span><span> .</span></span>;
+        flagComment = <div className="pending-action_comment">
+												Pending
+												<span> .</span>
+												<span> .</span>
+												<span> .</span>
+											</div>;
       }
 			return (
 				<span className={this.props.flagLoading ? 'not-hover_comment' : 'flag_comment'}
@@ -89,4 +95,4 @@ const mapDispatchToProps = (dispatch) => {
 	}
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Flag);
+export default  connect(mapStateToProps, mapDispatchToProps)(Flag);
