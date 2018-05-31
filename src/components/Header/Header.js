@@ -13,7 +13,7 @@ import './header.css';
 class Header extends React.Component {
 
 	constructor(props) {
-		super(props);
+		super();
 		if (!global.isServerSide) {
 			props.setUserAuth();
 		}
@@ -50,7 +50,7 @@ class Header extends React.Component {
 
 	render() {
 		if (global.isServerSide) {
-			return null;
+			return <div className="block-in-body_header" key="Header"/>;
 		}
 		const isUserAuth = this.props.user && this.props.postingKey;
 		let browse, authorLink = '';
@@ -94,8 +94,8 @@ class Header extends React.Component {
 		</div>;
 
 		return (
-			<div className="block-in-body_header">
-				<header className="g-header" key="Header">
+			<div className="block-in-body_header" key="Header">
+				<header className="g-header">
 					<div className="container">
 						<div className={'user-panel ' + (this.props.isOpened ? 'closed' : 'open')}>
 							<div className="wrap-panel clearfix">

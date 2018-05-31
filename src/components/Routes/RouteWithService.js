@@ -10,6 +10,9 @@ class RouteWithService extends React.Component {
 
 	constructor(props) {
 		super();
+		if(!props.pathname) {
+			return;
+		}
 		if (props.pathname.includes('/' + Constants.SERVICES.golos.name)) {
 			props.setService(Constants.SERVICES.golos.name);
 		}
