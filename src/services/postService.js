@@ -4,6 +4,7 @@ import Constants from "../common/constants";
 import AuthService from "./authService";
 import ChainService from "./chainService";
 import {utils} from "../utils/utils";
+import CommentService from "./commentService";
 
 class PostService {
 
@@ -89,9 +90,6 @@ class PostService {
 				return Promise.resolve(response);
 			})
 			.catch(error => {
-				/*if (!error.data) {
-					error = blockchainErrorsList(error);
-				}*/
 				return Promise.reject(error);
 			})
 	}
@@ -117,17 +115,23 @@ class PostService {
 			})
 	}
 
-	static deletePost(post) {
+	static deletePost(post, isComment) {
 		const permlink = PostService.getPermlinkFromUrl(post.url);
 		return ChainService.deletePostFromBlockchain(permlink)
 			.catch(() => {
-				const operation = getDefaultPostOperation(post.title, post.tags, post.description, permlink);
-				operation[1].body = '*deleted*';
-				operation[1].title = '*deleted*';
-				if (post.json_metadata.tags.length > 2) {
-          post.json_metadata.tags.splice(1, post.json_metadata.tags.length - 2);
+				let operation = getDefaultPostOperation(post.title, post.tags, post.description, permlink);
+				if (!isComment) {
+          operation[1].title = '*deleted*';
+          operation[1].body = '*deleted*';
+          if (post.json_metadata.tags.length > 2) {
+            post.json_metadata.tags.splice(1, post.json_metadata.tags.length - 2);
+          }
+          operation[1].json_metadata = JSON.stringify(post.json_metadata);
 				}
-				operation[1].json_metadata = JSON.stringify(post.json_metadata);
+				if (isComment) {
+          operation = CommentService.getDefaultCommentOperation(post.parent_author, post.parent_permlink, post.author,
+						permlink, '*deleted*');
+				}
 				return ChainService.addPostDataToBlockchain([operation]);
 			})
 			.then(response => {

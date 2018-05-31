@@ -49,7 +49,8 @@ class SteemService {
 		return processRequest(callback => {
 			steem.broadcast.sendAsync(
 				{operations, extensions: []},
-				{posting: AuthService.getPostingKey()}, callback
+				{posting: AuthService.getPostingKey()},
+				callback
 			);
 		})
 	}

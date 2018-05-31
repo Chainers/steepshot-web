@@ -2,11 +2,11 @@ import React from 'react';
 import Comment from './Comment/Comment';
 import {connect} from 'react-redux';
 import LoadingSpinner from '../LoadingSpinner';
-import ShowIf from "../Common/ShowIf";
-import {getPostComments, initPostComment} from "../../actions/comments";
-import Description from "./Description/Description";
-import CommentInput from "./CommentInput/CommentInput";
-import {Scrollbars} from "react-custom-scrollbars";
+import ShowIf from '../Common/ShowIf';
+import {getPostComments, initPostComment} from '../../actions/comments';
+import Description from './Description/Description';
+import CommentInput from './CommentInput/CommentInput';
+import {Scrollbars} from 'react-custom-scrollbars';
 import './comments.css';
 
 class Comments extends React.Component {
@@ -38,6 +38,15 @@ class Comments extends React.Component {
 		if (this.props.loading && (!propsComments || !propsComments.length)) {
 			comments = <LoadingSpinner style={{marginTop: 20}}/>;
 		}
+    if (!this.props.loading && (!propsComments || !propsComments.length)) {
+      let warningMessage = '';
+      if (this.props.errorMessage) {
+        warningMessage = this.props.errorMessage;
+      }
+				comments = <div className="empty-query-message_comment">
+										 {warningMessage}
+									 </div>
+    }
 		if (propsComments && propsComments.length > 0) {
 			comments = [];
 			for (let i = 0; i < propsComments.length; i++) {

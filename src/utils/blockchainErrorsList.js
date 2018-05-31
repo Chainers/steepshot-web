@@ -12,7 +12,7 @@ export function blockchainErrorsList(error) {
     }
   }
   if (!error.data && error.status && error.statusText) {
-    return serverErrorsList(error.status.toString());
+    return serverErrorsList(error.status);
   }
   if (error.data) {
     if (error.data.stack && error.data.stack[0].format) {

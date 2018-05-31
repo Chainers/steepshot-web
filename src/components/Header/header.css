@@ -17,6 +17,10 @@ a.feed-browse-active_header {
     display: none;
 }
 
+.search-mob-ico_search:hover {
+    background: url('/images/sprite_svg1910.svg') 12% 76.7% no-repeat;
+}
+
 @media (max-width: 1024px) {
     .search-mob-ico_search {
         background: url('/images/sprite_svg1910.svg') 12% 71% no-repeat;

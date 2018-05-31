@@ -9,7 +9,7 @@ class ShowIf extends React.Component {
 		}
 		
 		let children = this.props.children.length > 1
-			? <div className="container_show-if">{this.props.children}</div>
+			? <div className="container_show-if" style={this.props.styleContainer}>{this.props.children}</div>
 			: this.props.children;
 
 		let style = this.props.show ? {} : {display: 'none'};

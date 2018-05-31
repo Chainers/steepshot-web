@@ -13,7 +13,7 @@ class Follow extends React.Component {
 		return (
 			<div className="container_follow">
 				<ShowIf show={this.props.changeFollow}>
-					<div className='saving_follow'>
+					<div className="saving_follow">
 						Pending
 						<span> .</span>
 						<span> .</span>

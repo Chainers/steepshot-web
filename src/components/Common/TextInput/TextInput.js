@@ -4,8 +4,8 @@ import ShowIf from '../ShowIf';
 import ReactResizeDetector from 'react-resize-detector';
 import {connect} from 'react-redux';
 import {
-	blurredTextInput, focusedTextInput, initTextInput, setTextInputState, setTextInputError,
-	clearTextInputState
+  blurredTextInput, focusedTextInput, initTextInput, setTextInputState, setTextInputError,
+  clearTextInputState
 } from '../../../actions/textInput';
 import './textInput.css';
 import constants from '../../../common/constants';
@@ -54,7 +54,7 @@ class TextInput extends React.Component {
 		if (nextProps.value && (this.props.value !== nextProps.value)) {
 			this._updateTextValue.call(this, nextProps.value);
 		}
-		if (this.input && (nextProps.setFocus !== this.props.setFocus)) {
+		if (this.input && nextProps.setFocus) {
 			this.input.focus();
 		}
 		return true;
