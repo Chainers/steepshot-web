@@ -13,11 +13,11 @@ class CommentInput extends React.Component {
 	sendComment(isEdit) {
 		let commentText = this.props.commentValue.comment.text;
 		if (!commentText || commentText.replace(/\s+/g, '') === '') return;
-		if (isEdit) {
+		if (!isEdit) {
       this.props.sendComment(this.props.point, Constants.TEXT_INPUT_POINT.COMMENT);
-		} else {
+		} /*else {
 			this.props.editComment(this.props.point, Constants.TEXT_INPUT_POINT.COMMENT);
-		}
+		}*/
 	}
 
 	render() {
