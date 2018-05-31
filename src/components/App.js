@@ -10,7 +10,7 @@ const App = ({children}) => (
 		<Advertising/>
 		<Header/>
 		<FunctionalUtils/>
-		<div className="g-main">
+		<div className="g-main" key="Main">
 			<div className="for-space-between">
 				{children}
 				<BodyLoader/>
