@@ -33,6 +33,7 @@ import advertising from "./advertising";
 import services from "./services";
 import login from "./login";
 import body from "./body";
+import infinityScroll from "./infinityScroll";
 
 export default combineReducers({
 	clipboard,
@@ -68,5 +69,6 @@ export default combineReducers({
 	oneSignal,
 	services,
 	login,
-	body
+	body,
+	infinityScroll
 });

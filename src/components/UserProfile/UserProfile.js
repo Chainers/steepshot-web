@@ -98,8 +98,7 @@ class UserProfile extends React.Component {
 								<Tab name={this.props.profile['post_count'] + ' ' + Constants.POSTS_FILTERS.POSTS_USER.label}>
 										<PostsList
 											point={insertUsername(Constants.POSTS_FILTERS.POSTS_USER.point, this.props.username)}
-											className="posts-list clearfix type-2"
-											wrapperModifier="clearfix"
+											wrapperModifier="posts-list clearfix type-2"
 											clearPostHeader={true}
 											isComponentVisible={this.props.activeIndex === 0}
 										/>

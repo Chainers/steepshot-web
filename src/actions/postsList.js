@@ -2,6 +2,7 @@ import {getStore} from '../store/configureStore';
 import Constants from '../common/constants';
 import {serverErrorsList} from "../utils/serverErrorsList";
 import PostService from "../services/postService";
+import {bodyShouldUpdate} from "./body";
 
 export function initPostsList(options) {
 	return {
@@ -101,6 +102,7 @@ export function getPostsList(point) {
 				}
 				notDeletedPosts = postsObject;
 				dispatch(getPostsListSuccess(pointOptions, notDeletedPosts));
+				dispatch(bodyShouldUpdate())
 			})
 			.catch(error => {
 				let checkedError = serverErrorsList(error.status);
