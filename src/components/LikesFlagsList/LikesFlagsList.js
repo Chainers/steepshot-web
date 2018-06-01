@@ -69,7 +69,7 @@ class LikesFlagsList extends React.Component {
 								 alwaysShowNavigation={true}
 					>
 					<Tab name="Likes" empty={likesCondition && !flagsCondition}>
-						<Scrollbars style={{width: '100%', height: this.props.preferredBodyHeight, marginTop: 20}}>
+						<Scrollbars style={{width: '100%', height: this.props.preferredBodyHeight, marginTop: 20}} >
 							<UsersList
 								isLikesFlags={true}
 								point={this.props.point}

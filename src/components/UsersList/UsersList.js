@@ -89,6 +89,7 @@ class UsersList extends React.Component {
 	render() {
 		return (
 			<InfinityScroll
+				point='body'
 				fetch={this.getUsersList.bind(this)}
 				hasMore={this.props.isComponentVisible && this.props.hasMore && this.props.users.length > 0}
 			>

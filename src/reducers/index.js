@@ -32,8 +32,7 @@ import settingsFields from "./settingsFields";
 import advertising from "./advertising";
 import services from "./services";
 import login from "./login";
-import body from "./body";
-import infinityScroll from "./infinityScroll";
+import scroll from './scroll';
 
 export default combineReducers({
 	clipboard,
@@ -65,10 +64,9 @@ export default combineReducers({
 	settings,
 	settingsFields,
 	mobileNavigation,
-  advertising,
+	advertising,
 	oneSignal,
 	services,
 	login,
-	body,
-	infinityScroll
+	scroll
 });

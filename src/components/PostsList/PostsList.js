@@ -101,6 +101,7 @@ class PostsList extends React.Component {
 	render() {
 		return (
 			<InfinityScroll
+				point='body'
 				fetch={this.getPostsList}
 				hasMore={this.props.isComponentVisible && this.props.hasMore && this.props.posts.length > 0}>
 				<div className="container_pos-lis">

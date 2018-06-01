@@ -1,13 +1,13 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {setInfinityScrollForFetch} from "../../actions/infinityScroll";
+import {scrollDataUpdated} from "../../actions/scroll";
 
 class InfinityScroll extends React.Component {
 
 	componentWillReceiveProps(nextProps) {
 		if (nextProps.scrollPosition >= 70 && this.props.hasMore
-			&& nextProps.currentScrollHeight !== nextProps.scrollHeightForLastFetch) {
-			this.props.setInfinityScrollForFetch(nextProps.currentScrollHeight);
+			&& nextProps.currentScrollHeight !== nextProps.dataUpdated) {
+			this.props.scrollDataUpdated(nextProps.point, nextProps.currentScrollHeight);
 			this.props.fetch();
 		}
 	}
@@ -17,18 +17,18 @@ class InfinityScroll extends React.Component {
 	}
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state, props) => {
 	return {
-		scrollPosition: state.body.position,
-		currentScrollHeight: state.body.scrollHeight,
-		scrollHeightForLastFetch: state.infinityScroll.scrollHeight
+		scrollPosition: state.scroll[props.point].position,
+		currentScrollHeight: state.scroll[props.point].scrollHeight,
+		dataUpdated: state.scroll[props.point].dataUpdated
 	};
 };
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		setInfinityScrollForFetch: height => {
-			dispatch(setInfinityScrollForFetch(height));
+		scrollDataUpdated: (point, height) => {
+			dispatch(scrollDataUpdated(point, height));
 		}
 	};
 };

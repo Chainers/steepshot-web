@@ -2,14 +2,20 @@ import React from 'react';
 import {connect} from 'react-redux';
 import Footer from "../Footer/Footer";
 import {Scrollbars} from "react-custom-scrollbars";
-import './body.css';
-import {scrollingBody} from "../../actions/body";
 import {utils} from "../../utils/utils";
 import ReactResizeDetector from 'react-resize-detector';
+import {scrollInit, scrollShouldUpdate, setScrollData} from "../../actions/scroll";
+import './body.css';
 
 const SCROLL_DELTA = 10;
+const STORE_POINT = 'body';
 
 class Body extends React.Component {
+
+	constructor(props) {
+		super();
+		props.scrollInit(STORE_POINT);
+	}
 
 	shouldComponentUpdate(nextProps) {
 		return !utils.equalsObjects(this.props, nextProps, 2)
@@ -24,12 +30,13 @@ class Body extends React.Component {
 	onScrollFrame(values) {
 		const newPosition = utils.cutNumber(values.top, 1) * 100;
 		if (Math.abs(newPosition - this.props.scrollPosition) >= SCROLL_DELTA) {
-			this.props.scrollingBody(newPosition, values.scrollTop, values.scrollHeight)
+			this.props.setScrollData('body', newPosition, values.scrollTop, values.scrollHeight)
 		}
 	}
 
 	update() {
 		this.scroll.update();
+		this.props.scrollShouldUpdate(STORE_POINT);
 	}
 
 	render() {
@@ -51,17 +58,23 @@ class Body extends React.Component {
 const mapStateToProps = (state, props) => {
 	const location = state.router.location || props.location || {};
 	return {
-		scrollPosition: state.body.position,
-		shouldUpdate: state.body.shouldUpdate,
-		scrollTop: state.body.scrollTop,
+		scrollPosition: state.scroll[STORE_POINT].position,
+		shouldUpdate: state.scroll[STORE_POINT].shouldUpdate,
+		scrollTop: state.scroll[STORE_POINT].scrollTop,
 		pathname: location.pathname
 	};
 };
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		scrollingBody: (position, scrollTop, scrollHeight) => {
-			dispatch(scrollingBody(position, scrollTop, scrollHeight))
+		scrollInit: point => {
+			dispatch(scrollInit(point))
+		},
+		scrollShouldUpdate: point => {
+			dispatch(scrollShouldUpdate(point))
+		},
+		setScrollData: (point, position, scrollTop, scrollHeight) => {
+			dispatch(setScrollData(point, position, scrollTop, scrollHeight))
 		}
 	};
 };
