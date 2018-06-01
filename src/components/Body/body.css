@@ -4,9 +4,17 @@
     position: relative;
     overflow: auto;
     overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.scroll_body {
+    min-height: calc(100%);
+    display: flex;
+    flex-direction: column;
 }
 
 .for-space-between {
     position: relative;
-    min-height: calc(100% - 60px);
+    flex: 1;
 }
