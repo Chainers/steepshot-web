@@ -227,23 +227,6 @@ button {
     outline: none !important;
 }
 
-.g-main {
-    min-height: calc(100vh - 60px);
-    height: 1px;
-    position: relative;
-    overflow: auto;
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-    justify-content: space-between;
-    overflow-x: hidden;
-}
-
-.for-space-between {
-    position: relative;
-    flex: 1;
-}
-
 .user-card {
     min-width: 297px !important;
     padding: 20px !important;
@@ -2131,13 +2114,7 @@ button.close {
 }
 
 html body {
-    background-color: #fafafa
-}
-
-.outer-bg {
-    max-width: 3000px;
-    background: #fafafa;
-    margin: 0 auto;
+    background-color: #fafafa;
     min-width: 300px;
 }
 
@@ -3019,7 +2996,7 @@ input[type=button].btn-block, input[type=reset].btn-block, input[type=submit].bt
     text-align: center
 }
 
-.outer-bg .modal-post .close {
+.modal-post .close {
     position: fixed;
     z-index: 3;
     top: 15px;
@@ -3027,7 +3004,7 @@ input[type=button].btn-block, input[type=reset].btn-block, input[type=submit].bt
     opacity: 1
 }
 
-.outer-bg .modal-post .close:before {
+.modal-post .close:before {
     background-position: -.2em -7.6000000000000005em;
     width: 1.6em;
     height: 1.6em
@@ -4904,11 +4881,6 @@ input[type=button].btn-block, input[type=reset].btn-block, input[type=submit].bt
         display: none !important
     }
 
-    .outer-bg {
-        overflow-x: hidden;
-        height: 100%
-    }
-
     .form-group .buttons-container {
         padding-left: 5px;
         padding-right: 5px
@@ -5049,7 +5021,7 @@ input[type=button].btn-block, input[type=reset].btn-block, input[type=submit].bt
         padding-right: 15px
     }
 
-    .outer-bg .modal-post .close {
+    .modal-post .close {
         right: 10px;
         top: 10px
     }
