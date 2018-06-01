@@ -32,6 +32,7 @@ import settingsFields from "./settingsFields";
 import advertising from "./advertising";
 import services from "./services";
 import login from "./login";
+import body from "./body";
 
 export default combineReducers({
 	clipboard,
@@ -66,5 +67,6 @@ export default combineReducers({
   advertising,
 	oneSignal,
 	services,
-	login
+	login,
+	body
 });

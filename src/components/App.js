@@ -1,22 +1,15 @@
 import React from 'react';
 import Header from './Header/Header';
-import Footer from './Footer/Footer';
 import FunctionalUtils from "./Common/FunctionalUtils";
-import BodyLoader from "./Common/BodyLoader/BodyLoader";
 import Advertising from "./Advertising/Advertising";
+import Body from "./Body/Body";
 
 const App = ({children}) => (
-	<div className="outer-bg">
+	<div className="container_app">
 		<Advertising/>
 		<Header/>
 		<FunctionalUtils/>
-		<div className="g-main" key="Main">
-			<div className="for-space-between">
-				{children}
-				<BodyLoader/>
-			</div>
-			<Footer/>
-		</div>
+		<Body>{children}</Body>
 	</div>
 );
 
