@@ -1,6 +1,5 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {debounce} from 'lodash';
 import InfinityScroll from "../InfinityScroll/InfinityScroll";
 import {clearUsersList, getUsersList, initUsersList} from '../../actions/usersList';
 import {documentTitle} from '../../utils/documentTitle';
@@ -8,6 +7,8 @@ import User from './User/User';
 import './usersList.css';
 import {utils} from "../../utils/utils";
 import Constants from "../../common/constants";
+import ShowIf from "../Common/ShowIf";
+import LoadingSpinner from "../LoadingSpinner";
 
 class UsersList extends React.Component {
 	static defaultProps = {
@@ -95,6 +96,9 @@ class UsersList extends React.Component {
 					{this.renderUsers()}
 					{this.props.children}
 				</div>
+				<ShowIf show={this.props.loading}>
+					<div className="spinner_use-lis" key="usersListLoader"><LoadingSpinner/></div>
+				</ShowIf>
 			</InfinityScroll>
 		);
 	}

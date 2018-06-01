@@ -7,6 +7,8 @@ import './postsList.css';
 import {utils} from '../../utils/utils';
 import Constants from '../../common/constants';
 import InfinityScroll from "../InfinityScroll/InfinityScroll";
+import ShowIf from "../Common/ShowIf";
+import LoadingSpinner from "../LoadingSpinner";
 
 class PostsList extends React.Component {
 	static defaultProps = {
@@ -106,6 +108,9 @@ class PostsList extends React.Component {
 					<div className={this.props.wrapperModifier}>
 						{this.renderPosts()}
 					</div>
+					<ShowIf show={this.props.loading}>
+						<div className="spinner_pos-lis" key="usersListLoader"><LoadingSpinner/></div>
+					</ShowIf>
 				</div>
 			</InfinityScroll>
 		);

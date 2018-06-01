@@ -7,7 +7,6 @@ class InfinityScroll extends React.Component {
 	componentWillReceiveProps(nextProps) {
 		if (nextProps.scrollPosition >= 70 && this.props.hasMore
 			&& nextProps.currentScrollHeight !== nextProps.scrollHeightForLastFetch) {
-			console.log(nextProps.currentScrollHeight, nextProps.scrollHeightForLastFetch);
 			this.props.setInfinityScrollForFetch(nextProps.currentScrollHeight);
 			this.props.fetch();
 		}
