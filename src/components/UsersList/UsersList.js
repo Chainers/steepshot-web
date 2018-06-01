@@ -15,7 +15,8 @@ class UsersList extends React.Component {
 		isComponentVisible: true,
 		useScrollView: false,
 		options: {},
-		className: ''
+		className: '',
+		scrollPoint: 'body'
 	};
 
 	constructor(props) {
@@ -89,7 +90,7 @@ class UsersList extends React.Component {
 	render() {
 		return (
 			<InfinityScroll
-				point='body'
+				point={this.props.scrollPoint}
 				fetch={this.getUsersList.bind(this)}
 				hasMore={this.props.isComponentVisible && this.props.hasMore && this.props.users.length > 0}
 			>

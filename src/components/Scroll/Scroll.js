@@ -23,7 +23,7 @@ class Scroll extends React.Component {
 	onScrollFrame(values) {
 		const newPosition = utils.cutNumber(values.top, 1) * 100;
 		if (Math.abs(newPosition - this.props.scrollPosition) >= SCROLL_DELTA) {
-			this.props.setScrollData('body', newPosition, values.scrollTop, values.scrollHeight)
+			this.props.setScrollData(this.props.point, newPosition, values.scrollTop, values.scrollHeight)
 		}
 	}
 
@@ -35,7 +35,7 @@ class Scroll extends React.Component {
 	render() {
 		const {children} = this.props;
 		return (
-			<Scrollbars onScrollFrame={this.onScrollFrame.bind(this)} ref={ref => this.scroll = ref}>
+			<Scrollbars onScrollFrame={this.onScrollFrame.bind(this)} ref={ref => this.scroll = ref} style={this.props.style}>
 				<div className={this.props.className}>
 					{children}
 					<ReactResizeDetector handleWidth handleHeight onResize={this.update.bind(this)}/>

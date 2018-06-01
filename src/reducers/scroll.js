@@ -1,5 +1,7 @@
 const initialState = {
-	body: {}
+	body: {},
+	likes: {},
+	flags: {}
 };
 
 export default function scroll(state = initialState, action) {

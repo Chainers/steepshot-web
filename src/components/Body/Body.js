@@ -3,7 +3,7 @@ import Footer from "../Footer/Footer";
 import Scroll from "../Scroll/Scroll";
 import './body.css';
 
-const STORE_POINT = 'body';
+const SCROLL_POINT = 'body';
 
 class Body extends React.Component {
 
@@ -11,7 +11,7 @@ class Body extends React.Component {
 		const {children} = this.props;
 		return (
 			<div className="container_body" key="Main">
-				<Scroll point={STORE_POINT} className="scroll_body">
+				<Scroll point={SCROLL_POINT} className="scroll_body">
 					<div className="for-space-between">
 						{children}
 					</div>
