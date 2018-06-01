@@ -160,6 +160,11 @@ export function editPost() {
 			return;
 		}
 		dispatch(editPostRequest());
+		let tagArray = tags.split(' ');
+		if (tagArray[0] !== postData.category) {
+			tagArray = [postData.category].concat(tagArray.splice(tagArray.indexOf(postData.category), 1));
+		}
+		tags = tagArray.join(' ');
 		PostService.editPost(title, tags, description, PostService.getPermlinkFromUrl(postData.url), postData.media[0])
 			.then(response => {
 				dispatch(pushMessage(Constants.POST_SUCCESSFULLY_UPDATED));

@@ -26,27 +26,27 @@ export function getUserProfile(userName) {
 	}
 }
 
-export function changeFollow() {
-	const state = getStore().getState();
-	const followed = state.userProfile.profile['has_followed'];
-	const followingName = state.userProfile.profile.username;
+export function changeFollow(followingName, followed) {
 	return dispatch => {
 		dispatch({
-			type: 'CHANGE_FOLLOW_REQUEST'
+			type: 'CHANGE_FOLLOW_REQUEST',
+			author: followingName
 		});
 		UserService.changeFollow(followingName, followed)
 			.then(response => {
 				dispatch(pushMessage(`User has been successfully ${followed ? 'un' : ''}followed`));
 				dispatch({
 					type: 'CHANGE_FOLLOW_SUCCESS',
-					response
+					response,
+					author: followingName
 				})
 			})
 			.catch(error => {
 				dispatch(pushMessage(error));
 				dispatch({
 					type: 'CHANGE_FOLLOW_ERROR',
-					error
+					error,
+					author: followingName
 				})
 			})
 	}

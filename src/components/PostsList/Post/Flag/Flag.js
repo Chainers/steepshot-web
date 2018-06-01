@@ -2,10 +2,10 @@ import React from 'react';
 import {connect} from 'react-redux';
 import ConfirmFlagModal from '../../../PostContextMenu/ConfirmFlagModal/ConfirmFlagModal';
 import Constants from '../../../../common/constants';
-import {toggleFlag} from '../../../../actions/flag';
 import {closeModal, openModal} from '../../../../actions/modal';
 import {pushMessage} from '../../../../actions/pushMessage';
 import './flag.css';
+import {toggleFlag} from "../../../../actions/flag";
 
 class Flag extends React.Component {
 
@@ -16,9 +16,7 @@ class Flag extends React.Component {
 		}
 		if (!this.props.flag) {
 			let modalOption = {
-				body: (<ConfirmFlagModal closeModal={() => {
-					this.props.closeModal("ConfirmFlagModal")
-				}} flagCallback={this.flagCallback.bind(this)}/>),
+				body: (<ConfirmFlagModal postIndex={this.props.postIndex}/>),
 			};
 			this.props.openModal("ConfirmFlagModal", modalOption);
 		} else {
@@ -26,14 +24,7 @@ class Flag extends React.Component {
 		}
 	}
 
-	flagCallback(param) {
-		if (param) {
-			this.props.closeModal("ConfirmFlagModal");
-			this.props.toggleFlag(this.props.postIndex);
-		} else {
-			this.props.closeModal("ConfirmFlagModal");
-		}
-	}
+
 
 	render() {
 		let buttonClasses = 'btn-flag_flag';
@@ -86,11 +77,11 @@ const mapDispatchToProps = (dispatch) => {
 		closeModal: (index) => {
 			dispatch(closeModal(index));
 		},
-		toggleFlag: (postIndex) => {
-			dispatch(toggleFlag(postIndex));
-		},
 		pushMessage: (message) => {
 			dispatch(pushMessage(message))
+		},
+		toggleFlag: (postIndex) => {
+			dispatch(toggleFlag(postIndex));
 		}
 	}
 };

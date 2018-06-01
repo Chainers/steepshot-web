@@ -120,7 +120,7 @@ class Login extends Component {
 						</form>
 					</div>
 					<div className="registration-block_login">
-						<label>Don’t have an {chooseSteem ? 'Steem' : 'Golos'} account?</label>
+						<label>Don’t have a {chooseSteem ? 'Steem' : 'Golos'} account?</label>
 						<button className="guidelines-btn_login create-acc_login" onClick={this.openRegisterSite.bind(this)}>
 							REGISTRATION
 						</button>

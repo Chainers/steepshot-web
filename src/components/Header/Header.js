@@ -80,7 +80,7 @@ class Header extends React.Component {
 					(isUserAuth) ? (
 						<div className="item feed-block_header">
 							<Link to="/feed"
-										className={this.props.currentLocation === '/feed' ? 'feed-browse-active_header' : null}>Feed
+										className={this.props.currentLocation.match(/\/feed/) ? 'feed-browse-active_header' : null}>Feed
 							</Link>
 						</div>
 					) : null

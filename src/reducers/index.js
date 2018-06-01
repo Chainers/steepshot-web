@@ -32,6 +32,7 @@ import settingsFields from "./settingsFields";
 import advertising from "./advertising";
 import services from "./services";
 import login from "./login";
+import scroll from './scroll';
 
 export default combineReducers({
 	clipboard,
@@ -63,8 +64,9 @@ export default combineReducers({
 	settings,
 	settingsFields,
 	mobileNavigation,
-  advertising,
+	advertising,
 	oneSignal,
 	services,
-	login
+	login,
+	scroll
 });
