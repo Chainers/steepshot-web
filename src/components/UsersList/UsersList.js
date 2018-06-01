@@ -1,8 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {debounce} from 'lodash';
-import InfiniteScroll from 'react-infinite-scroller';
-import LoadingSpinner from '../LoadingSpinner';
+import InfinityScroll from "../InfinityScroll/InfinityScroll";
 import {clearUsersList, getUsersList, initUsersList} from '../../actions/usersList';
 import {documentTitle} from '../../utils/documentTitle';
 import User from './User/User';
@@ -88,21 +87,15 @@ class UsersList extends React.Component {
 
 	render() {
 		return (
-			<InfiniteScroll
-				pageStart={0}
-				initialLoad={false}
-				loadMore={debounce(this.getUsersList.bind(this), Constants.ENDLESS_SCROLL.DEBOUNCE)}
-				hasMore={this.props.isComponentVisible && this.props.hasMore}
-				loader={<div className="spinner_use-lis" key="usersListLoader"><LoadingSpinner/></div>}
-				threshold={Constants.ENDLESS_SCROLL.OFFSET}
-				useWindow={!this.props.useScrollView}
-				useCapture={this.props.useScrollView}
+			<InfinityScroll
+				fetch={this.getUsersList.bind(this)}
+				hasMore={this.props.isComponentVisible && this.props.hasMore && this.props.users.length > 0}
 			>
 				<div className={'body_use-lis ' + this.props.className}>
 					{this.renderUsers()}
 					{this.props.children}
 				</div>
-			</InfiniteScroll>
+			</InfinityScroll>
 		);
 	}
 }
