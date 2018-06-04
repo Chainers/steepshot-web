@@ -50,13 +50,19 @@ class EditPost extends React.Component {
 	componentDidMount() {
 		window.addEventListener('drop', (e) => this.correctDragAndDropImage(e));
 		window.addEventListener('dragover', (e) => this.correctDragAndDropImage(e));
-		this.inputField.addEventListener('dragenter', (e) => this.imageSetDrag(e, true));
-    this.inputField.addEventListener('dragleave', (e) => this.imageSetDrag(e, false));
+		if (this.props.isNew) {
+      this.inputField.addEventListener('dragenter', (e) => this.imageSetDrag(e, true));
+      this.inputField.addEventListener('dragleave', (e) => this.imageSetDrag(e, false));
+		}
 		documentTitle();
 	}
 
   correctDragAndDropImage(e) {
-		if (!this.inputField) return;
+		if (!this.inputField) {
+      e.preventDefault();
+      e.stopPropagation();
+			return;
+    }
     if (!this.props.isNew || !this.inputField.contains(e.target)) {
       e.preventDefault();
       e.stopPropagation();
@@ -88,6 +94,7 @@ class EditPost extends React.Component {
 		} else {
 			return;
 		}
+    this.props.setDragAndDropHover(false);
 		reader.onloadend = () => {
 			let image = new Image();
 			image.src = reader.result;
@@ -125,7 +132,6 @@ class EditPost extends React.Component {
 			prefHeight = prefHeight * MAX_WIDTH / prefWidth;
 			prefWidth = MAX_WIDTH;
 		}
-
 		this.props.setImageContainerSize(prefWidth, prefHeight);
 	}
 
@@ -249,12 +255,13 @@ class EditPost extends React.Component {
 
 const mapStateToProps = (state, props) => {
 	const {category, username, permlink} = props.match.params;
+	const serviceName = Constants.SERVICES[state.services.name];
 	return {
     ...state.editPost,
 		postUrl: `${category}/${username}/${permlink}`,
 		isNew: !state.editPost.initData.src,
-		tagsMaxLength: Constants.SERVICES[state.services.name].TAGS.MAX_LENGTH,
-		tagsAmount: Constants.SERVICES[state.services.name].TAGS.MAX_AMOUNT
+		tagsMaxLength: serviceName ? serviceName.TAGS.MAX_LENGTH : 0,
+		tagsAmount: serviceName ? serviceName.TAGS.MAX_AMOUNT : 0
 	};
 };
 

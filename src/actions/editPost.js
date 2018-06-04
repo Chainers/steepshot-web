@@ -410,10 +410,12 @@ function isValidField(dispatch, title, photoSrc) {
 }
 
 export function setEditPostImageError(message) {
-	return {
-		type: 'EDIT_POST_SET_IMAGE_ERROR',
-		message
-	};
+	return dispatch => {
+    dispatch({
+      type: 'EDIT_POST_SET_IMAGE_ERROR',
+      message
+    });
+  }
 }
 
 export function editPostRequest() {

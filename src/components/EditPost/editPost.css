@@ -131,7 +131,8 @@
 }
 
 .drag-hover_edi-pos {
-    box-shadow: 0 0 0 3px #1294f6;
+    border: 1px solid #1294f6;
+    box-shadow: 0 0 0 2px #1294f6;
     border-radius: 6px;
 }
 
