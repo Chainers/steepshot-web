@@ -215,6 +215,10 @@ const Constants = {
 		}
 	},
 
+	GIF: {
+		SIZE_ERROR: 'Size of your *.gif should be less than 1 MB.'
+	},
+
 	WINDOW: {
 		MAX_MOBILE_SCREEN_WIDTH: 1023
 	}
