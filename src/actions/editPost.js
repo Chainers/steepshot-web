@@ -49,13 +49,22 @@ export function removeTag(index) {
 
 export function changeImage(imageSrc, image) {
 	return dispatch => {
-		if (!isValidImageSize(dispatch, image)) {
-			return;
-		}
-		dispatch({
-			type: 'EDIT_POST_CHANGE_IMAGE',
-			image: imageSrc
-		})
+    fetch(imageSrc).then(res => {
+      return res.blob()
+    })
+		.then(blob => {
+			if (imageSrc.includes("image/gif") && blob.size > Constants.IMAGE.MAX_SIZE) {
+				dispatch(setEditPostImageError(Constants.GIF.SIZE_ERROR));
+				return;
+			}
+      if (!isValidImageSize(dispatch, image)) {
+        return;
+      }
+      dispatch({
+        type: 'EDIT_POST_CHANGE_IMAGE',
+        image: imageSrc
+      })
+		});
 	}
 }
 

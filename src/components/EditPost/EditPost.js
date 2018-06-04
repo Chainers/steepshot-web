@@ -92,7 +92,7 @@ class EditPost extends React.Component {
 		} else {
 			return;
 		}
-    this.props.setDragAndDropHover(false);
+		if (this.props.dragHover) this.props.setDragAndDropHover(false);
 		reader.onloadend = () => {
 			let image = new Image();
 			image.src = reader.result;
