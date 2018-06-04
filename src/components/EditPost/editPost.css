@@ -130,6 +130,11 @@
     font: 27px OpenSans-Light;
 }
 
+.drag-hover_edi-pos {
+    box-shadow: 0 0 0 3px #1294f6;
+    border-radius: 6px;
+}
+
 @media (max-width: 750px) {
     .container_edi-pos {
         width: 90vw;

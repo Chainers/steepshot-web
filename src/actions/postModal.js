@@ -1,6 +1,9 @@
 import {openModal} from './modal';
 import {getStore} from '../store/configureStore';
 import {getPostsList} from './postsList';
+import Constants from '../common/constants';
+import {focusedTextInput, setTextInputState} from './textInput';
+import {setCommentEditState} from './comments';
 
 export function initPostModal(point, index) {
 	return {
@@ -29,15 +32,20 @@ export function setPostModalOptions(options) {
 }
 
 function swapPostModal(index, isLoading) {
-  let state = getStore().getState(), previousStyle = state.postModal.style;
-  if (Object.keys(state.postModal.style).length < 1) {
-    previousStyle = state.postModal.previousStyle;
+  let postModal = getStore().getState().postModal, previousStyle = postModal.style;
+  if (Object.keys(postModal.style).length < 1) {
+    previousStyle = postModal.previousStyle;
 	}
-	return {
-		type: 'SWAP_POST_MODAL',
-		index,
-		isLoading,
-		previousStyle
+	return dispatch => {
+    dispatch(setCommentEditState('', postModal.currentIndex, false));
+    dispatch ({
+      type: 'SWAP_POST_MODAL',
+      index,
+      isLoading,
+      previousStyle
+    });
+    dispatch(setTextInputState(Constants.OPERATIONS.COMMENT, {focusedStyle: '', text: ''}));
+    dispatch(focusedTextInput(Constants.OPERATIONS.COMMENT));
 	}
 }
 

@@ -76,7 +76,7 @@ export default function getComments(state = {}, action) {
 				...state,
         [action.parentPost]: {
           ...state[action.parentPost],
-          postEditing: action.postEditing,
+          commentEditing: action.commentEditing,
           editingPostPoint: action.editingPostPoint
         }
 			};
