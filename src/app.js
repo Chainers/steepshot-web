@@ -1,7 +1,7 @@
-import React from "react";
-import {Provider} from "react-redux";
-import {WrapperProvider} from "create-react-server/wrapper";
-import configureStore from "./store/configureStore";
+import React from 'react';
+import {Provider} from 'react-redux';
+import {WrapperProvider} from 'create-react-server/wrapper';
+import configureStore from './store/configureStore';
 import getRoutes from './routes';
 import './styles/main.css';
 import createMemoryHistory from "history/createMemoryHistory";

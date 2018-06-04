@@ -90,6 +90,13 @@ export function setImageContainerSize(width, height) {
 	}
 }
 
+export function setDragAndDropHover(dragHover) {
+	return {
+		type: 'SET_DRAG_AND_DROP_HOVER',
+		dragHover
+	}
+}
+
 export function editClearAll() {
 	return dispatch => {
 		dispatch({type: 'EDIT_POST_CLEAR_ALL'});
@@ -128,7 +135,7 @@ export function setInitDataForEditPost(postUrl) {
 			type: 'EDIT_POST_INIT_DATA_REQUEST',
 			postUrl
 		});
-		if (!username || !postUrl) {
+		if (!username || postUrl === 'undefined/undefined/undefined') {
 			dispatch(createNewPost())
 		} else {
 			PostService.getPost(postUrl)
@@ -403,10 +410,12 @@ function isValidField(dispatch, title, photoSrc) {
 }
 
 export function setEditPostImageError(message) {
-	return {
-		type: 'EDIT_POST_SET_IMAGE_ERROR',
-		message
-	};
+	return dispatch => {
+    dispatch({
+      type: 'EDIT_POST_SET_IMAGE_ERROR',
+      message
+    });
+  }
 }
 
 export function editPostRequest() {

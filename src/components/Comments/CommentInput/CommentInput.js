@@ -2,7 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import ShowIf from '../../Common/ShowIf';
 import TextInput from '../../Common/TextInput/TextInput';
-import {sendComment} from '../../../actions/comments';
+import {editComment, sendComment, setCommentEditState} from '../../../actions/comments';
 import LoadingSpinner from '../../LoadingSpinner';
 import {utils} from '../../../utils/utils';
 import './commentInput.css';
@@ -10,14 +10,20 @@ import Constants from '../../../common/constants';
 
 class CommentInput extends React.Component {
 
+	componentWillUnmount() {
+		if (this.props.commentEditing) {
+      this.props.setCommentEditState('', this.props.point, false);
+		}
+	}
+
 	sendComment(isEdit) {
 		let commentText = this.props.commentValue.comment.text;
 		if (!commentText || commentText.replace(/\s+/g, '') === '') return;
 		if (!isEdit) {
       this.props.sendComment(this.props.point, Constants.TEXT_INPUT_POINT.COMMENT);
-		} /*else {
+		} else {
 			this.props.editComment(this.props.point, Constants.TEXT_INPUT_POINT.COMMENT);
-		}*/
+		}
 	}
 
 	render() {
@@ -25,7 +31,7 @@ class CommentInput extends React.Component {
 															className={'btn_com-inp ' + (this.props.canSent ? 'btn-act_com-inp' : '')}
 															onClick={this.sendComment.bind(this, false)}> Send
 											</button>;
-		if (this.props.postEditing) {
+		if (this.props.commentEditing) {
 			buttonState = <button type="submit"
 														className={'btn_com-inp ' + (this.props.canSent ? 'btn-act_com-inp' : '')}
 														onClick={this.sendComment.bind(this, true)}> Edit
@@ -65,8 +71,14 @@ const mapStateToProps = (state, props) => {
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		sendComment: (index, point) => {
-			dispatch(sendComment(index, point));
+		sendComment: (postIndex, point) => {
+			dispatch(sendComment(postIndex, point));
+		},
+		editComment: (postIndex, point) => {
+			dispatch(editComment(postIndex, point));
+		},
+    setCommentEditState: (point, parentPost, commentEditing) => {
+			dispatch(setCommentEditState(point, parentPost, commentEditing));
 		}
 	}
 };

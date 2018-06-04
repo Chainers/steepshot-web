@@ -5,7 +5,7 @@ import Constants from '../../../../common/constants';
 import {closeModal, openModal} from '../../../../actions/modal';
 import {pushMessage} from '../../../../actions/pushMessage';
 import './flag.css';
-import {toggleFlag} from "../../../../actions/flag";
+import {toggleFlag} from '../../../../actions/flag';
 
 class Flag extends React.Component {
 

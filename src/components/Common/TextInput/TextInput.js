@@ -54,9 +54,12 @@ class TextInput extends React.Component {
 		if (nextProps.value && (this.props.value !== nextProps.value)) {
 			this._updateTextValue.call(this, nextProps.value);
 		}
-		if (this.input && nextProps.setFocus) {
+		if (this.input && (!this.props.setFocus && nextProps.setFocus)) {
 			this.input.focus();
 		}
+    if (this.input && (this.props.setFocus && !nextProps.setFocus)) {
+      this.input.blur();
+    }
 		return true;
 	}
 
@@ -139,7 +142,6 @@ class TextInput extends React.Component {
 		if (!this.props.fontSize) {
 			return null;
 		}
-
 		return (
 			<div className="container_tex-inp">
 				<div className="input-container_tex-inp">

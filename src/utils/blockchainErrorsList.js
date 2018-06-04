@@ -42,8 +42,8 @@ export function blockchainErrorsList(error) {
       'maximum number of vote changes on this comment.', notificationText: 'Sorry, you had used the maximum number of vote changes.'},
       {error: '10 assert_exception: Assert Exception: itr->num_changes < STEEMIT_MAX_VOTE_CHANGES: Voter has used ' +
       'the maximum number of vote changes on this comment.', notificationText: 'Sorry, you had used the maximum number of vote changes.'},
-      {error: '10 assert_exception: Assert Exception: abs_rshares > STEEM_VOTE_DUST_THRESHOLD || o.weight == 0: Voting ' +
-      'weight is too small, please accumulate more voting power or steem power.', notificationText: 'You cannot vote this ' +
+      {error: '10 assert_exception: Assert Exception: info->abs_rshares > STEEM_VOTE_DUST_THRESHOLD || vote_weight ' +
+      '== 0: Voting weight is too small, please accumulate more voting power or steem power.', notificationText: 'You cannot vote this ' +
       'way because you haven’t got enough Steem Power. For more information click <a href="https://steepshot.io/faq#not-able-to-post" target="_blank">here</a>.'},
       {error: '10 assert_exception: Assert Exception: abs_rshares > 30000000 || o.weight == 0: Voting weight is too ' +
       'small, please accumulate more voting power or steem power.', notificationText: 'You cannot vote this way because ' +

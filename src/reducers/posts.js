@@ -191,14 +191,6 @@ export default function posts(state = {}, action) {
           completeStatus: action.isComplete
         }
 			};
-		/*case 'SET_COMMENT_EDIT_STATE':
-      return {
-        ...state,
-        [action.editingPostPoint]: {
-          ...state[action.editingPostPoint],
-          postEditing: action.postEditing
-        }
-      };*/
 
 		default:
 			return state;

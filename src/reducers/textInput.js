@@ -44,7 +44,7 @@ export default function textInput(state = initialState, action) {
         ...state,
         [action.point]: {
           ...state[action.point],
-          setFocus: true
+          setFocus: action.isFocused
         }
 			};
 

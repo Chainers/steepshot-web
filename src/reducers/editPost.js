@@ -7,7 +7,8 @@ const initialState = {
 	loading: false,
 	waitingTime: 0,
 	canCreate: true,
-	isGif: false
+	isGif: false,
+	dragHover: false
 };
 
 export default function editPost(state = initialState, action) {
@@ -40,6 +41,12 @@ export default function editPost(state = initialState, action) {
 				...state,
 				height: action.height,
 				width: action.width
+			};
+
+		case 'SET_DRAG_AND_DROP_HOVER':
+			return {
+				...state,
+				dragHover: action.dragHover
 			};
 
 		case 'EDIT_POST_IMAGE_NOT_FOUND':

@@ -159,7 +159,9 @@ const Constants = {
 
 	DELETE: {
 		PUTATIVE_DELETED_POST: 'https://steemitimages.com/DQmd4wyZvtAUifJDLZD9vaqek17S1cUhN3PyEbFMMMgLW8o/Steepshot_footer2.PNG',
-		DELETE_SUCCESS: 'The post has been successfully deleted. If you still see your post, please give it a few minutes to sync from the blockchain.'
+		DELETE_POST_SUCCESS: 'The post has been successfully deleted. If you still see your post, please give it a few minutes to sync from the blockchain.',
+    DELETE_COMMENT_SUCCESS: 'The comment has been successfully deleted. If you still see your comment, please give' +
+		' it a few minutes to sync from the blockchain.',
 	},
 
 	POST_SUCCESSFULLY_CREATED: 'Post has been successfully created. If you don\'t see the post in your profile, '
