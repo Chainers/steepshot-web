@@ -1,6 +1,6 @@
 import {getStore} from "../store/configureStore";
 import {clearTextInputState, setTextInputState} from "./textInput";
-import {pushMessage} from "./pushMessage";
+import {pushErrorMessage, pushMessage} from "./pushMessage";
 import {actionLock, actionUnlock} from "./session";
 import Constants from "../common/constants";
 import CommentService from "../services/commentService";
@@ -194,7 +194,7 @@ export function sendComment(postIndex, point) {
 			.catch( error => {
 				dispatch(actionUnlock());
 				dispatch(addNewCommentError(postIndex, error));
-				dispatch(pushMessage(error));
+				dispatch(pushErrorMessage(error));
 			})
 	};
 }
