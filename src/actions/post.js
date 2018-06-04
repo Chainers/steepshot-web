@@ -165,10 +165,11 @@ export function deletePostAfterConfirm(postIndex, isComment) {
 				dispatch(actionUnlock());
 				if (isComment) {
           dispatch(deleteCommentSuccess(postIndex));
+          dispatch(pushMessage(Constants.DELETE.DELETE_COMMENT_SUCCESS));
 				} else {
           dispatch(deletePostSuccess(postIndex));
+          dispatch(pushMessage(Constants.DELETE.DELETE_POST_SUCCESS));
 				}
-				dispatch(pushMessage(Constants.DELETE.DELETE_SUCCESS));
 			})
 			.catch(error => {
 				dispatch(actionUnlock());

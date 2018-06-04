@@ -1,20 +1,20 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import TextInput from "../Common/TextInput/TextInput";
+import TextInput from '../Common/TextInput/TextInput';
 import {
-	addTag, changeImage, closeTimer, createPost, editClearAll, editPost, editPostClear, imageNotFound, imageRotate,
-	removeTag, setEditPostImageError, setImageContainerSize, setInitDataForEditPost
-} from "../../actions/editPost";
+  addTag, changeImage, closeTimer, createPost, editClearAll, editPost, editPostClear, imageNotFound, imageRotate,
+  removeTag, setDragAndDropHover, setEditPostImageError, setImageContainerSize, setInitDataForEditPost
+} from '../../actions/editPost';
 import EditTags from "../Common/EditTags/EditTags";
 import ShowIf from "../Common/ShowIf";
 import {utils} from "../../utils/utils";
 import LoadingSpinner from "../LoadingSpinner";
 import {documentTitle} from "../../utils/documentTitle";
 import './editPost.css';
-import Timer from "../Common/Timer/Timer";
-import {withWrapper} from "create-react-server/wrapper";
-import {addMetaTags, getDefaultTags} from "../../actions/metaTags";
-import Constants from "../../common/constants";
+import Timer from '../Common/Timer/Timer';
+import {withWrapper} from 'create-react-server/wrapper';
+import {addMetaTags, getDefaultTags} from '../../actions/metaTags';
+import Constants from '../../common/constants';
 
 class EditPost extends React.Component {
 
@@ -50,16 +50,34 @@ class EditPost extends React.Component {
 	componentDidMount() {
 		window.addEventListener('drop', (e) => this.correctDragAndDropImage(e));
 		window.addEventListener('dragover', (e) => this.correctDragAndDropImage(e));
+		if (this.props.isNew) {
+      this.inputField.addEventListener('dragenter', (e) => this.imageSetDrag(e, true));
+      this.inputField.addEventListener('dragleave', (e) => this.imageSetDrag(e, false));
+		}
 		documentTitle();
 	}
 
   correctDragAndDropImage(e) {
-		if (!this.inputField) return;
+		if (!this.inputField) {
+      e.preventDefault();
+      e.stopPropagation();
+			return;
+    }
     if (!this.props.isNew || !this.inputField.contains(e.target)) {
       e.preventDefault();
       e.stopPropagation();
     }
   }
+
+  imageSetDrag(e, isHover) {
+    e.preventDefault();
+    e.stopPropagation();
+    if (isHover) {
+      this.props.setDragAndDropHover(isHover);
+		} else {
+      this.props.setDragAndDropHover(isHover)
+		}
+	}
 
 	imageChanged(e) {
 		e.preventDefault();
@@ -76,6 +94,7 @@ class EditPost extends React.Component {
 		} else {
 			return;
 		}
+    this.props.setDragAndDropHover(false);
 		reader.onloadend = () => {
 			let image = new Image();
 			image.src = reader.result;
@@ -113,7 +132,6 @@ class EditPost extends React.Component {
 			prefHeight = prefHeight * MAX_WIDTH / prefWidth;
 			prefWidth = MAX_WIDTH;
 		}
-
 		this.props.setImageContainerSize(prefWidth, prefHeight);
 	}
 
@@ -135,7 +153,7 @@ class EditPost extends React.Component {
 					<LoadingSpinner style={{height: '100%', position: 'absolute', width: '100%'}}/>
 				</ShowIf>
 				<div className={'container_edi-pos ' + (this.props.loading ? 'blur-blocker' : '')}>
-					<div className="image-container_edi-pos"
+					<div className={'image-container_edi-pos' + (this.props.dragHover ? ' drag-hover_edi-pos' : '')}
 							 style={{
 								 height: this.props.height,
 								 cursor: this.props.isNew ? 'pointer' : 'default'
@@ -237,12 +255,13 @@ class EditPost extends React.Component {
 
 const mapStateToProps = (state, props) => {
 	const {category, username, permlink} = props.match.params;
+	const serviceName = Constants.SERVICES[state.services.name];
 	return {
+    ...state.editPost,
 		postUrl: `${category}/${username}/${permlink}`,
 		isNew: !state.editPost.initData.src,
-		...state.editPost,
-		tagsMaxLength: Constants.SERVICES[state.services.name].TAGS.MAX_LENGTH,
-		tagsAmount: Constants.SERVICES[state.services.name].TAGS.MAX_AMOUNT
+		tagsMaxLength: serviceName ? serviceName.TAGS.MAX_LENGTH : 0,
+		tagsAmount: serviceName ? serviceName.TAGS.MAX_AMOUNT : 0
 	};
 };
 
@@ -286,6 +305,9 @@ const mapDispatchToProps = (dispatch) => {
 		},
 		setEditPostImageError: (message) => {
 			dispatch(setEditPostImageError(message))
+		},
+    setDragAndDropHover: (dragHover) => {
+			dispatch(setDragAndDropHover(dragHover))
 		}
 	};
 };

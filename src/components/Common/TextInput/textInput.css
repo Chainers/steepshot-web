@@ -10,7 +10,7 @@
 
 .title_tex-inp {
     position: absolute;
-    top: calc(50% + 5px);
+    top: calc(50% + 1px);
     left: 0;
     margin: 0;
     padding: 0;

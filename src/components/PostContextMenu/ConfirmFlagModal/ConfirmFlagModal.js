@@ -2,14 +2,15 @@ import * as React from 'react';
 import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
 import './ConfirmFlagModal.css';
-import {closeModal} from "../../../actions/modal";
-import {toggleFlag} from "../../../actions/flag";
+import {closeModal} from '../../../actions/modal';
+import {toggleFlag} from '../../../actions/flag';
 
 class ConfirmFlagModal extends React.Component {
 
 	confirm() {
-			this.props.closeModal("ConfirmFlagModal");
-			this.props.toggleFlag(this.props.postIndex);
+    this.props.closeModal("ConfirmFlagModal");
+    this.props.closeModal("MenuModal");
+		this.props.toggleFlag(this.props.postIndex);
 	}
 
 	render() {
@@ -36,13 +37,13 @@ class ConfirmFlagModal extends React.Component {
 
 const mapDispatchToProps = dispatch => {
 	return {
-		closeModal: (index) => {
-			dispatch(closeModal(index));
-		},
-		toggleFlag: (postIndex) => {
-			dispatch(toggleFlag(postIndex));
+    toggleFlag: (postIndex) => {
+      dispatch(toggleFlag(postIndex));
+    },
+		closeModal: (postIndex) => {
+    	dispatch(closeModal(postIndex));
 		}
 	}
 };
 
-export default connect(state => {}, mapDispatchToProps)(ConfirmFlagModal);
+export default connect(() => {return {}}, mapDispatchToProps)(ConfirmFlagModal);

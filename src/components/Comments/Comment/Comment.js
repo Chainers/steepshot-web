@@ -3,7 +3,7 @@ import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
 import TimeAgo from 'timeago-react';
 import Avatar from '../../Common/Avatar/Avatar';
-import {replyAuthor, setCommentEditState} from '../../../actions/comments';
+import {replyAuthor, setCommentEditState, setInputForEdit} from '../../../actions/comments';
 import Likes from '../../PostsList/Post/Likes/Likes';
 import './comment.css';
 import Vote from '../../PostsList/Post/Vote/Vote';
@@ -23,16 +23,37 @@ class Comment extends React.Component {
 	}
 
 	editComment() {
-    this.props.setCommentEditState(this.props.point, this.props.parentPost, true);
+    this.props.setInputForEdit(this.props.point, this.props.parentPost, true);
   }
+
+  replyToUser() {
+		if (this.props.isCommentEditing) {
+			return;
+		}
+    this.props.replyAuthor(this.props.author);
+	}
+
+	deleteComment() {
+    if (this.props.isCommentEditing) {
+      return;
+    }
+    this.props.deleteComment(this.props.point, true);
+	}
+
+	cancelEdit() {
+		this.props.setCommentEditState('', this.props.parentPost, false);
+	}
 
 	render() {
 		if (!this.props.comment) {
 			return null;
 		}
 		let deleteCommentElement = <span className="delete_comment"
-																		 onClick={() => this.props.deleteComment(this.props.point, true)}>Delete
+																		 onClick={this.deleteComment.bind(this)}>Delete
 															 </span>;
+		let editCommentElement = <span className="edit_comment"
+																	 onClick={this.editComment.bind(this)}>Edit
+														 </span>;
 		if (this.props.comment.postDeleting) {
 			deleteCommentElement = <div className="pending-action_comment not-hover_comment">
 															 Deleting
@@ -41,25 +62,32 @@ class Comment extends React.Component {
 															 <span> .</span>
 														 </div>;
 		}
+
+		if (this.props.isCommentEditing) {
+      editCommentElement = <span className="edit_comment"
+																 onClick={this.cancelEdit.bind(this)}>Cancel
+													 </span>;
+		}
+
 		let money = this.props.comment.total_payout_reward > 0 ?
 			<span className="money_comment">{`$${this.props.comment.total_payout_reward}`}</span> : null;
 		let commentActions = !this.props.isYourComment
 			? <div className="display--flex">
 			    <span className="reply_comment"
-				   		 onClick={() => this.props.replyAuthor(this.props.author)}>Reply</span>
+				   		 onClick={this.replyToUser.bind(this)}>Reply</span>
 			    <Flag postIndex={this.props.point}
 						 		isComment={true}/>
 		    </div>
 			: <div className="display--flex">
 					{/*<ShowIf show={!this.props.isCommentDeleted && !this.props.cashoutTimeExceed}
 									styleContainer={{display: 'flex'}}>
-						<span className="edit_comment" onClick={this.editComment.bind(this)}>Edit</span>
+						{editCommentElement}
 						{deleteCommentElement}
 					</ShowIf>*/}
 				</div>;
 		const authorLink = `/@${this.props.author}`;
 		return (
-			<div className="container_comment" style={{backgroundColor: this.props.isEditing
+			<div className="container_comment" style={{backgroundColor: this.props.currentCommentEditing
 				? 'rgba(18, 148, 246, 0.05)' : ''}}>
 				<div className="head_comment">
 						<div className="date">
@@ -95,10 +123,12 @@ const mapStateToProps = (state, props) => {
 	const isCommentDeleted = comment.body === '*deleted*';
 	const cashoutTimeExceed = new Date(comment.cashout_time) < new Date();
 	const parentPost = props.point.replace(/(.+)#.+/, '$1');
-	const isEditing = props.point === state.comments[parentPost].editingPostPoint;
+	const currentCommentEditing = props.point === state.comments[parentPost].editingPostPoint;
+	const isCommentEditing = state.comments[parentPost].commentEditing;
 	return {
     comment,
-    isEditing,
+    currentCommentEditing,
+		isCommentEditing,
 		parentPost,
     isCommentDeleted,
     cashoutTimeExceed,
@@ -115,8 +145,11 @@ const mapDispatchToProps = dispatch => {
 		deleteComment: (point, isComment) => {
 			dispatch(deletePost(point, isComment))
 		},
-    setCommentEditState: (point, parentPost, isEditing) => {
-      dispatch(setCommentEditState(point, parentPost, isEditing))
+    setInputForEdit: (point, parentPost, currentCommentEditing) => {
+      dispatch(setInputForEdit(point, parentPost, currentCommentEditing))
+		},
+    setCommentEditState: (point, parentPost, commentEditing) => {
+			dispatch(setCommentEditState(point, parentPost, commentEditing));
 		}
 	}
 };

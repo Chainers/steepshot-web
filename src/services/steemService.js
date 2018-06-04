@@ -12,7 +12,7 @@ class SteemService {
 
 	addCommentToBlockchain(commentOperation) {
 		return processRequest(callback => {
-			let beneficiaries = SteemService.getBeneficiaries(commentOperation[1].permlink, [{
+			let beneficiaries = this.getBeneficiaries(commentOperation[1].permlink, [{
 				account: 'steepshot',
 				weight: 1000
 			}]);
@@ -95,7 +95,7 @@ class SteemService {
 			});
 	}
 
-	static getBeneficiaries(permlink, beneficiaries) {
+	getBeneficiaries(permlink, beneficiaries) {
 		let beneficiariesObject = {
 			author: AuthService.getUsername(),
 			permlink: permlink,

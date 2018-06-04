@@ -58,8 +58,7 @@ export function getPostComments(point) {
 						parent_permlink: comments[i].url.replace(/.+\/@[\w-.]+\/([^/]+?)#.+/, '$1'),
 						flagLoading: false,
 						voteLoading: false,
-						postDeleting: false,
-						/*postEditing: false*/
+						postDeleting: false
 					};
 					commentsObjects[comments[i].url] = comment;
 				}
@@ -122,23 +121,34 @@ function addedNewComment(point, posts, url) {
 	}
 }
 
-function setFocusTextInput() {
+function setFocusTextInput(isFocused) {
   return {
     type: 'SET_FOCUS_TEXT_INPUT',
-    point: Constants.TEXT_INPUT_POINT.COMMENT
+    point: Constants.TEXT_INPUT_POINT.COMMENT,
+		isFocused
   }
 }
 
-export function setCommentEditState(point, parentPost, postEditing) {
-	let commentText = getStore().getState().posts[point].body;
-  return dispatch => {
-    dispatch({
+export function setCommentEditState(point, parentPost, commentEditing) {
+	return dispatch => {
+		dispatch({
       type: 'SET_COMMENT_EDIT_STATE',
       editingPostPoint: point,
       parentPost,
-      postEditing
-    });
-    dispatch(setFocusTextInput());
+      commentEditing
+		});
+    if (!commentEditing) {
+      dispatch(setFocusTextInput(commentEditing));
+      dispatch(setTextInputState('comment', {text: ''}));
+    }
+	}
+}
+
+export function setInputForEdit(point, parentPost, commentEditing) {
+  let commentText = getStore().getState().posts[point].body;
+  return dispatch => {
+    dispatch(setCommentEditState(point, parentPost, commentEditing));
+    dispatch(setFocusTextInput(commentEditing));
     dispatch(setTextInputState('comment', {text: commentText}));
   }
 }
@@ -202,6 +212,6 @@ export function replyAuthor(name) {
 				error: ''
 			}
 		});
-		dispatch(setFocusTextInput());
+		dispatch(setFocusTextInput(true));
 	}
 }
