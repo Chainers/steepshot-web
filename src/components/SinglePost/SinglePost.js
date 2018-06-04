@@ -6,12 +6,13 @@ import './singlePost.css';
 import {withWrapper} from "create-react-server/wrapper";
 import {addMetaTags, getTags} from "../../actions/metaTags";
 import {utils} from "../../utils/utils";
-import LoggingService from "../../services/loggingService";
-import PostService from "../../services/postService";
+import LoggingService from '../../services/loggingService';
+import PostService from '../../services/postService';
 
 class SinglePost extends React.Component {
 
 	static async getInitialProps({location, req, res, store}) {
+		if (!global.isServerSide) return {};
 		await store.dispatch(addSinglePost(location.pathname));
 		if (!req || !store || !location) {
 			return {};

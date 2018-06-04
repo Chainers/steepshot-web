@@ -1,23 +1,42 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import ShowIf from "../../Common/ShowIf";
-import TextInput from "../../Common/TextInput/TextInput";
-import {sendComment} from "../../../actions/comments";
-import LoadingSpinner from "../../LoadingSpinner";
+import ShowIf from '../../Common/ShowIf';
+import TextInput from '../../Common/TextInput/TextInput';
+import {editComment, sendComment, setCommentEditState} from '../../../actions/comments';
+import LoadingSpinner from '../../LoadingSpinner';
 import {utils} from '../../../utils/utils';
 import './commentInput.css';
-import Constants from "../../../common/constants";
+import Constants from '../../../common/constants';
 
 class CommentInput extends React.Component {
 
-	sendComment() {
-		if (this.props.commentValue.comment.text.replace(/\s+/g, '') === '') {
-			return;
+	componentWillUnmount() {
+		if (this.props.commentEditing) {
+      this.props.setCommentEditState('', this.props.point, false);
 		}
-		this.props.sendComment(this.props.point, Constants.TEXT_INPUT_POINT.COMMENT);
+	}
+
+	sendComment(isEdit) {
+		let commentText = this.props.commentValue.comment.text;
+		if (!commentText || commentText.replace(/\s+/g, '') === '') return;
+		if (!isEdit) {
+      this.props.sendComment(this.props.point, Constants.TEXT_INPUT_POINT.COMMENT);
+		} else {
+			this.props.editComment(this.props.point, Constants.TEXT_INPUT_POINT.COMMENT);
+		}
 	}
 
 	render() {
+		let buttonState = <button type="submit"
+															className={'btn_com-inp ' + (this.props.canSent ? 'btn-act_com-inp' : '')}
+															onClick={this.sendComment.bind(this, false)}> Send
+											</button>;
+		if (this.props.commentEditing) {
+			buttonState = <button type="submit"
+														className={'btn_com-inp ' + (this.props.canSent ? 'btn-act_com-inp' : '')}
+														onClick={this.sendComment.bind(this, true)}> Edit
+										</button>;
+		}
 		return (
 			<ShowIf show={this.props.isUserAuth}>
 				<div className="container_com-inp">
@@ -29,10 +48,7 @@ class CommentInput extends React.Component {
 										 disabled={this.props.sendingNewComment}
 					/>
 					<ShowIf show={!this.props.sendingNewComment}>
-						<button type="submit"
-										className={'btn_com-inp ' + (this.props.canSent ? 'btn-act_com-inp' : '')}
-										onClick={this.sendComment.bind(this)}> Send
-						</button>
+						{buttonState}
 					</ShowIf>
 					<ShowIf show={this.props.sendingNewComment}>
 						<LoadingSpinner/>
@@ -55,8 +71,14 @@ const mapStateToProps = (state, props) => {
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		sendComment: (index, point) => {
-			dispatch(sendComment(index, point));
+		sendComment: (postIndex, point) => {
+			dispatch(sendComment(postIndex, point));
+		},
+		editComment: (postIndex, point) => {
+			dispatch(editComment(postIndex, point));
+		},
+    setCommentEditState: (point, parentPost, commentEditing) => {
+			dispatch(setCommentEditState(point, parentPost, commentEditing));
 		}
 	}
 };

@@ -13,7 +13,7 @@ class Follow extends React.Component {
 		return (
 			<div className="container_follow">
 				<ShowIf show={this.props.changeFollow}>
-					<div className='saving_follow'>
+					<div className="saving_follow">
 						Pending
 						<span> .</span>
 						<span> .</span>
@@ -22,7 +22,7 @@ class Follow extends React.Component {
 				</ShowIf>
 				<ShowIf show={!this.props.changeFollow}>
 					<div className={this.props.isFollowed ? 'unfollow-button_follow' : 'follow-button_follow'}
-							 onClick={this.props.changeFollowFunc}>
+							 onClick={() => this.props.changeFollowFunc(this.props.profileUserName, this.props.isFollowed)}>
 						{this.props.isFollowed ? 'Unfollow' : 'Follow'}
 					</div>
 				</ShowIf>
@@ -56,8 +56,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		changeFollowFunc: () => {
-			dispatch(changeFollow())
+		changeFollowFunc: (followingName, followed) => {
+			dispatch(changeFollow(followingName, followed))
 		},
 		pushMessage: (message) => {
 			dispatch(pushMessage(message))

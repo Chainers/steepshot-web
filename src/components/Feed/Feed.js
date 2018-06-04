@@ -25,7 +25,7 @@ class Feed extends React.Component {
 			return null;
 		}
 		return (
-			<div className="g-main_i container">
+			<div className="container">
 				<div id="workspace" className="g-content clearfix">
 					<PostsList
 						point={Constants.POSTS_FILTERS.POSTS_USER_FEED.point}

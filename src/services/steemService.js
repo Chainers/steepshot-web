@@ -2,13 +2,17 @@ import steem from 'steem';
 import Constants from "../common/constants";
 import PostService from "./postService";
 import AuthService from "./authService";
-import NodeService from "./nodeService";
+import SteemNodeService from "./steemNodeService";
 
 class SteemService {
 
-	static addCommentToBlockchain(commentOperation) {
+	init() {
+		SteemNodeService.initConfig();
+	}
+
+	addCommentToBlockchain(commentOperation) {
 		return processRequest(callback => {
-			let beneficiaries = SteemService.getBeneficiaries(commentOperation[1].permlink, [{
+			let beneficiaries = this.getBeneficiaries(commentOperation[1].permlink, [{
 				account: 'steepshot',
 				weight: 1000
 			}]);
@@ -21,19 +25,19 @@ class SteemService {
 		})
 	}
 
-	static changeVoteInBlockchain(postAuthor, permlink, power) {
+	changeVoteInBlockchain(postAuthor, permlink, power) {
 		return processRequest(callback => {
 			steem.broadcast.vote(AuthService.getPostingKey(), AuthService.getUsername(), postAuthor, permlink, power, callback);
 		})
 	}
 
-	static deletePostFromBlockchain(permlink) {
+	deletePostFromBlockchain(permlink) {
 		return processRequest(callback => {
 			steem.broadcast.deleteComment(AuthService.getPostingKey(), AuthService.getUsername(), permlink, callback);
 		})
 	}
 
-	static changeFollowInBlockchain(jsonData) {
+	changeFollowInBlockchain(jsonData) {
 		return processRequest(callback => {
 			steem.broadcast.customJson(AuthService.getPostingKey(), [], [AuthService.getUsername()], 'follow', jsonData,
 				callback
@@ -41,28 +45,27 @@ class SteemService {
 		})
 	}
 
-	static addPostDataToBlockchain(operations) {
+	addPostDataToBlockchain(operations) {
 		return processRequest(callback => {
 			steem.broadcast.sendAsync(
 				{operations, extensions: []},
-				{posting: AuthService.getPostingKey()}, callback
+				{posting: AuthService.getPostingKey()},
+				callback
 			);
 		})
 	}
 
-	static getAccounts(username) {
+	getAccounts(username) {
 		return processRequest(callback => {
 			steem.api.getAccounts([username], callback);
 		})
 	}
 
-	static wifIsValid(postingKey, pubWif) {
-		return processRequest(() => {
-			steem.auth.wifIsValid(postingKey, pubWif);
-		})
+	wifIsValid(postingKey, pubWif) {
+		return Promise.resolve(steem.auth.wifIsValid(postingKey, pubWif));
 	}
 
-	static getValidTransaction() {
+	getValidTransaction() {
 		const operation = [Constants.OPERATIONS.COMMENT, {
 			parent_author: '',
 			parent_permlink: '',
@@ -92,17 +95,16 @@ class SteemService {
 			});
 	}
 
-	static getBeneficiaries(permlink, beneficiaries) {
+	getBeneficiaries(permlink, beneficiaries) {
 		let beneficiariesObject = {
 			author: AuthService.getUsername(),
 			permlink: permlink,
-			max_accepted_payout: Constants.STEEM_PATLOAD.MAX_ACCEPTED_PAYOUT,
-			percent_steem_dollars: Constants.STEEM_PATLOAD.PERCENT_STEMM_DOLLARS,
+			max_accepted_payout: Constants.SERVICES.steem.MAX_ACCEPTED_PAYOUT,
+			percent_steem_dollars: Constants.SERVICES.steem.PERCENT_STEEM_DOLLARS,
 			allow_votes: true,
 			allow_curation_rewards: true,
 			extensions: [[0, {beneficiaries: beneficiaries}]]
 		};
-
 		return [Constants.OPERATIONS.COMMENT_OPTIONS, beneficiariesObject];
 	}
 }
@@ -111,12 +113,12 @@ export default SteemService;
 
 function processRequest(sendRequestFunction) {
 	return new Promise((resolve, reject) => {
-		const nodeService = new NodeService();
-		checkingNode(resolve, reject, sendRequestFunction, nodeService);
+		const steemNodeService = new SteemNodeService();
+		checkingNode(resolve, reject, sendRequestFunction, steemNodeService);
 	});
 }
 
-function checkingNode(resolve, reject, sendRequestFunction, nodeService) {
+function checkingNode(resolve, reject, sendRequestFunction, steemNodeService) {
 	processResponse(callback => {
 		return sendRequestFunction(callback)
 	})
@@ -124,11 +126,11 @@ function checkingNode(resolve, reject, sendRequestFunction, nodeService) {
 			resolve(response);
 		})
 		.catch(error => {
-			if (nodeService.isMaxCountRequests()) {
+			if (steemNodeService.isMaxCountRequests()) {
 				reject(error);
 			} else {
-				nodeService.setNextNode();
-				checkingNode(resolve, reject, sendRequestFunction, nodeService);
+				steemNodeService.setNextNode();
+				checkingNode(resolve, reject, sendRequestFunction, steemNodeService);
 			}
 		})
 }

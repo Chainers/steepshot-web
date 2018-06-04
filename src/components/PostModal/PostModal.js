@@ -27,6 +27,7 @@ import './postModal.css';
 import Constants from '../../common/constants';
 import {utils} from '../../utils/utils';
 import {setComponentSize} from '../../utils/setComponentSize';
+import {setCommentEditState} from "../../actions/comments";
 
 class PostModal extends React.Component {
 
@@ -106,7 +107,8 @@ class PostModal extends React.Component {
 	}
 
 	initKeyPress(e) {
-		if ((document.activeElement !== ReactDOM.findDOMNode(this.textArea)) && !this.props.focusedTextInput) {
+		if ((document.activeElement !== ReactDOM.findDOMNode(this.textArea))
+			&& (this.props.isCommentEditing || !this.props.focusedTextInput)) {
 			switch (e.keyCode) {
 				case 37:
 					this.previousPost();
@@ -116,7 +118,9 @@ class PostModal extends React.Component {
 					break;
 				case 27:
 					if (this.props.fullScreenMode) {
-						this.setFullScreen(false, false);
+            this.setFullScreen(false, false);
+          } else if (this.props.isCommentEditing) {
+            this.props.setCommentEditState('', this.props.currentIndex, false);
 					} else {
 						this.props.closeModal(this.props.point);
 					}
@@ -138,7 +142,7 @@ class PostModal extends React.Component {
 		let buttonColor = fullScreenMode ? {color: '#ffffff', backgroundColor: 'rgba(0, 0, 0, .96)'}
 			: {color: '#000000', backgroundColor: 'rgba(255, 255, 255, .96)'};
 		return (
-			<div>
+			<div className="container-nsfw-filter_pos-mod">
 				<ShowIf show={this.props.post['is_nsfw'] && !this.props.showAll}>
 					<div className="curtain_pos-mod" style={backgroundStyle}>
 						<p className="title-low-nsfw_pos-mod" style={colorTitleStyle}>NSFW content</p>
@@ -182,7 +186,8 @@ class PostModal extends React.Component {
 	copyLinkToClipboard(e) {
 		e.target.blur();
 		this.props.copyToClipboard(
-			document.location.origin + '/post' + this.props.post.url.replace(/\/[\w-.]+/, '')
+			document.location.origin + (this.props.isGolosService ? '/' + Constants.SERVICES.golos.name : '')
+			+ '/post' + this.props.post.url.replace(/\/[\w-.]+/, '')
 		);
 	}
 
@@ -509,11 +514,13 @@ const mapStateToProps = (state) => {
     const isFSByScreenSize = state.window.width < 1025;
 		let urlVideo = post.media[0].url;
 		let postsList = state.postsList[state.postModal.point];
+		let isCommentEditing = state.comments[currentIndex] ? state.comments[currentIndex].commentEditing : null;
 		return {
 			post,
 			postsList,
 			urlVideo,
       isFSByScreenSize,
+      isCommentEditing,
 			completeStatus: post.completeStatus,
 			...state.postModal,
 			newPostsLoading: postsList.loading,
@@ -524,7 +531,8 @@ const mapStateToProps = (state) => {
 			focusedTextInput: state.textInput[Constants.TEXT_INPUT_POINT.COMMENT] ?
 				state.textInput[Constants.TEXT_INPUT_POINT.COMMENT].focused : false,
 			window: state.window,
-			offsetTop: state.postModal.postOffset
+			offsetTop: state.postModal.postOffset,
+			isGolosService: state.services.name === Constants.SERVICES.golos.name
 		};
 	}
 };
@@ -569,7 +577,10 @@ const mapDispatchToProps = (dispatch) => {
 		},
 		openPushNot: (index, pushNotBody) => {
 			dispatch(openPushNot(index, pushNotBody));
-		}
+		},
+    setCommentEditState: (point, parentPost, commentEditing) => {
+      dispatch(setCommentEditState(point, parentPost, commentEditing));
+    }
 	};
 };
 

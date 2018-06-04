@@ -1,14 +1,14 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {getPostsList, initPostsList} from '../../actions/postsList';
-import {debounce} from 'lodash';
-import InfiniteScroll from 'react-infinite-scroller';
-import LoadingSpinner from '../LoadingSpinner';
 import Post from './Post/Post';
 import HeadingLeadComponent from '../Atoms/HeadingLeadComponent';
 import './postsList.css';
 import {utils} from '../../utils/utils';
 import Constants from '../../common/constants';
+import InfinityScroll from "../InfinityScroll/InfinityScroll";
+import ShowIf from "../Common/ShowIf";
+import LoadingSpinner from "../LoadingSpinner";
 
 class PostsList extends React.Component {
 	static defaultProps = {
@@ -30,6 +30,7 @@ class PostsList extends React.Component {
 			hasMore: true
 		};
 		props.initPostsList(postsListOptions);
+		this.getPostsList = this.getPostsList.bind(this);
 	}
 
 	componentDidMount() {
@@ -99,24 +100,20 @@ class PostsList extends React.Component {
 
 	render() {
 		return (
-			<div className={this.props.className}>
-				{this.renderHeader()}
-				<InfiniteScroll
-					pageStart={0}
-					initialLoad={false}
-					loadMore={debounce(this.getPostsList.bind(this), Constants.ENDLESS_SCROLL.DEBOUNCE)}
-					hasMore={this.props.isComponentVisible && this.props.hasMore}
-					loader={
-						<div className='spinner_pos-lis' key={this.props.point}>
-							<LoadingSpinner/>
-						</div>}
-					threshold={Constants.ENDLESS_SCROLL.OFFSET}
-				>
+			<InfinityScroll
+				point='body'
+				fetch={this.getPostsList}
+				hasMore={this.props.isComponentVisible && this.props.hasMore && this.props.posts.length > 0}>
+				<div className="container_pos-lis">
+					{this.renderHeader()}
 					<div className={this.props.wrapperModifier}>
 						{this.renderPosts()}
 					</div>
-				</InfiniteScroll>
-			</div>
+					<ShowIf show={this.props.loading}>
+						<div className="spinner_pos-lis" key="usersListLoader"><LoadingSpinner/></div>
+					</ShowIf>
+				</div>
+			</InfinityScroll>
 		);
 	}
 }
@@ -124,8 +121,7 @@ class PostsList extends React.Component {
 const mapStateToProps = (state, props) => {
 	return {
 		...state.postsList[props.point],
-		point: props.point,
-		ignored: state.postsList[props.ignored] ? state.postsList[props.ignored].posts : []
+		ignored: state.postsList[props.ignored] ? state.postsList[props.ignored].posts : [],
 	};
 };
 

@@ -34,6 +34,10 @@ class Search extends React.Component {
 		documentTitle();
 	}
 
+	documentWillMount() {
+		documentTitle();
+	}
+
 	render() {
 		if (global.isServerSide) {
 			return null;
@@ -50,19 +54,21 @@ class Search extends React.Component {
 			<span>{Constants.SEARCH_HEADING_LABELS.USERS_RESULT}
 				<u>{this.props.searchValue}</u>
       </span>;
-		return <div className="g-main_i container">
+		return <div className="container">
 			<TabsBar point="search" className="g-content" style={{marginTop: 30}}>
 				<Tab name="Tag"
 						 loading={this.props.hotPostsList.loading || this.props.newPostsList.loading}
 						 empty={!this.props.newPostsList.posts.length}>
-					<PostsList
-						point={insertCategory(Constants.POSTS_FILTERS.POSTS_HOT.point, this.props.searchValue)}
-						wrapperModifier="posts-list clearfix"
-						options={{limit: 4}}
-						maxPosts={4}
-						headerText={hotPost}
-						isComponentVisible={this.props.activeIndex === 0}
-					/>
+					<ShowIf show={this.props.hotPostsList.posts.length > 0} removeFromDom={false}>
+						<PostsList
+							point={insertCategory(Constants.POSTS_FILTERS.POSTS_HOT.point, this.props.searchValue)}
+							wrapperModifier="posts-list clearfix"
+							options={{limit: 4}}
+							maxPosts={4}
+							headerText={hotPost}
+							isComponentVisible={this.props.activeIndex === 0}
+						/>
+					</ShowIf>
 					<ShowIf show={this.props.newPostsList.posts.length >= 4} removeFromDom={false}>
 						<PostsList
 							point={insertCategory(Constants.POSTS_FILTERS.POSTS_NEW.point, this.props.searchValue)}
@@ -102,7 +108,7 @@ const mapStateToProps = (state, props) => {
 		newPostsList,
 		usersList,
 		...state.tabsBar.search,
-		searchValue,
+		searchValue
 	};
 };
 

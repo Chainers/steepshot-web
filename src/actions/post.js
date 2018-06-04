@@ -124,26 +124,35 @@ function deletePostSuccess(postIndex) {
 	}
 }
 
-function deletePostError(postIndex) {
+function deleteCommentSuccess(postIndex) {
+  return {
+    type: 'DELETE_COMMENT_SUCCESS',
+    index: postIndex
+  }
+}
+
+function deletePostError(postIndex, error) {
 	return {
 		type: 'DELETE_POST_ERROR',
-		index: postIndex
+		index: postIndex,
+		error
 	}
 }
 
-export function deletePost(postIndex) {
+export function deletePost(postIndex, isComment = false) {
 	return (dispatch) => {
     let modalOption = {
       body: (<ConfirmDeleteModal
 								closeModal={() => dispatch(closeModal("ConfirmDeleteModal"))}
 							  closeAllModals={() => dispatch(closeAllModals())}
-							  postIndex={postIndex}/>)
+							  postIndex={postIndex}
+								isComment={isComment}/>)
     };
     dispatch(openModal("ConfirmDeleteModal", modalOption));
 	}
 }
 
-export function deletePostAfterConfirm(postIndex) {
+export function deletePostAfterConfirm(postIndex, isComment) {
 	return (dispatch) => {
 		let state = getStore().getState();
 		if (state.session.actionLocked) {
@@ -151,16 +160,21 @@ export function deletePostAfterConfirm(postIndex) {
 		}
 		dispatch(actionLock());
 		dispatch(deletePostRequest(postIndex));
-		PostService.deletePost(state.posts[postIndex])
-			.then(response => {
+		PostService.deletePost(state.posts[postIndex], isComment)
+			.then(() => {
 				dispatch(actionUnlock());
-				dispatch(deletePostSuccess(postIndex, response));
-				dispatch(pushMessage(Constants.DELETE.DELETE_SUCCESS));
+				if (isComment) {
+          dispatch(deleteCommentSuccess(postIndex));
+          dispatch(pushMessage(Constants.DELETE.DELETE_COMMENT_SUCCESS));
+				} else {
+          dispatch(deletePostSuccess(postIndex));
+          dispatch(pushMessage(Constants.DELETE.DELETE_POST_SUCCESS));
+				}
 			})
 			.catch(error => {
 				dispatch(actionUnlock());
+        dispatch(pushErrorMessage(error));
 				dispatch(deletePostError(postIndex, error));
-				dispatch(pushErrorMessage(error));
 			});
 	}
 }
@@ -185,7 +199,9 @@ export function addSinglePost(url) {
 						dispatch(initPostsList(postOptions));
 						dispatch(addPosts({
 							[result.url]: {
-								...result, isVideo: result.media[0].url.match(/mp4$/i)
+								...result,
+								isVideo: result.media[0].url.match(/mp4$/i),
+								isGif: result.media[0].url.match(/gif$/i)
 							}
 						}));
 						dispatch(initPostModal('SinglePost', result.url));

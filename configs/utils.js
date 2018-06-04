@@ -110,8 +110,6 @@ function middleware(options, template, req, res) {
 			})
 		));
 
-		// console.log('Context', context);
-
 		if (context.url) {
 			res.redirect(httpCodes.redirect, context.url); //TODO Handle context.code
 			return reject(new Error('Redirect'));
@@ -135,9 +133,6 @@ function middleware(options, template, req, res) {
 	}).then(function renderApp(props) {
 
 		initialProps = props || {}; // client relies on truthy value of server-rendered props
-
-		// console.log('Setting context initial props', initialProps);
-		// console.log('Store state before rendering', context.store.getState());
 
 		return {
 			html: renderToString(React.createElement(

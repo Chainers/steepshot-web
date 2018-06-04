@@ -4,8 +4,8 @@ import ShowIf from '../ShowIf';
 import ReactResizeDetector from 'react-resize-detector';
 import {connect} from 'react-redux';
 import {
-	blurredTextInput, focusedTextInput, initTextInput, setTextInputState, setTextInputError,
-	clearTextInputState
+  blurredTextInput, focusedTextInput, initTextInput, setTextInputState, setTextInputError,
+  clearTextInputState
 } from '../../../actions/textInput';
 import './textInput.css';
 import constants from '../../../common/constants';
@@ -54,9 +54,12 @@ class TextInput extends React.Component {
 		if (nextProps.value && (this.props.value !== nextProps.value)) {
 			this._updateTextValue.call(this, nextProps.value);
 		}
-		if (this.input && (nextProps.setFocus !== this.props.setFocus)) {
+		if (this.input && (!this.props.setFocus && nextProps.setFocus)) {
 			this.input.focus();
 		}
+    if (this.input && (this.props.setFocus && !nextProps.setFocus)) {
+      this.input.blur();
+    }
 		return true;
 	}
 
@@ -139,7 +142,6 @@ class TextInput extends React.Component {
 		if (!this.props.fontSize) {
 			return null;
 		}
-
 		return (
 			<div className="container_tex-inp">
 				<div className="input-container_tex-inp">

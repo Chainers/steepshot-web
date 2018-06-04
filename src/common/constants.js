@@ -1,12 +1,29 @@
 const Constants = {
-	URLS: {
-		baseUrl_v1_1: 'https://steepshot.org/api/v1_1',
-		baseUrl_v1: 'https://steepshot.org/api/v1'
+	SERVICES: {
+		golos: {
+			name: 'golos',
+			baseUrl: 'https://golos.steepshot.org/api/v1_1',
+			loggingUrl: 'https://golos.steepshot.org/api/v1',
+			MAX_ACCEPTED_PAYOUT: '1000000.000 GBG',
+			PERCENT_STEEM_DOLLARS: 10000,
+			TAGS: {
+				MAX_LENGTH: 40,
+				MAX_AMOUNT: 5
+			},
+		},
+		steem: {
+			name: 'steem',
+			baseUrl: 'https://steepshot.org/api/v1_1',
+			loggingUrl: 'https://steepshot.org/api/v1',
+			MAX_ACCEPTED_PAYOUT: '1000000.000 SBD',
+			PERCENT_STEEM_DOLLARS: 10000,
+			TAGS: {
+				MAX_LENGTH: 40,
+				MAX_AMOUNT: 20
+			},
+		},
 	},
-	CATEGORIES: {
-		user: 'user',
-		tag: 'tag'
-	},
+
 	OPERATIONS: {
 		COMMENT: 'comment',
 		VOTE: 'vote',
@@ -15,10 +32,7 @@ const Constants = {
 		COMMENT_OPTIONS: 'comment_options',
 		FLAG: 'flag'
 	},
-	STEEM_PATLOAD: {
-		MAX_ACCEPTED_PAYOUT: '1000000.000 SBD',
-		PERCENT_STEMM_DOLLARS: 10000
-	},
+
 	NO_AVATAR: '/images/person.png',
 	NO_IMAGE: '/images/noimage.jpg',
 
@@ -43,16 +57,6 @@ const Constants = {
 		}
 	},
 
-	SETTINGS_LABELS: {
-		save: 'Save',
-		succesSave: 'Saved',
-		upToDate: 'Already up to date'
-	},
-
-	POSTS_SETTINGS: {
-		defaultLimit: 17
-	},
-
 	IMAGE: {
 		MIN_WIDTH: 640,
 		MIN_HEIGHT: 480,
@@ -62,7 +66,6 @@ const Constants = {
 	},
 
 	EMPTY_QUERY: 'It\'s very strange, but we do not have anything yet for this query. Try to look for something else...',
-	EMPTY_QUERY_VOTERS: 'Still no one has rated this post...',
 
 	SEARCH_PLACEHOLDER: 'Type your search query and press "Enter"',
 	SEARCH_PLACEHOLDER_MIN: 'To search, press "Enter"',
@@ -103,15 +106,6 @@ const Constants = {
 		}
 	},
 
-	LIKES_FILTER: {
-		LIKE: {
-			label: 'Liked by'
-		},
-		DISLIKE: {
-			label: 'Flaged by'
-		}
-	},
-
 	SEARCH_FILTERS: {
 		USERS: {
 			label: 'Users',
@@ -128,21 +122,6 @@ const Constants = {
 		NEW_POSTS_RESULT: 'New posts by tag ',
 		HOT_POSTS_RESULT: 'Hot posts by tag '
 	},
-
-	PROMISES: {
-		GET_COMMENTS: 'GET_COMMENTS_PROMISE',
-		GET_POSTS: 'GET_POSTS_PROMISE',
-		GET_FOLLOWERS: 'GET_FOLLOWERS_PROMISE',
-		GET_FOLLOWING: 'GET_FOLLOWING_PROMISE',
-		GET_USERS_SEARCH: 'GET_USERS_SEARCH',
-		GET_USERS_VOTERS: 'GET_USERS_VOTERS'
-	},
-
-	DISPLAY: {
-		DESK_BREAKPOINT: 1024
-	},
-
-	CURRENCY: '$',
 
 	ENDLESS_SCROLL: {
 		DEBOUNCE: 500,
@@ -173,11 +152,6 @@ const Constants = {
 		POSTING_KEY: 'postingKey'
 	},
 
-	TAGS: {
-		MAX_LENGTH: 40,
-		MAX_AMOUNT: 20
-	},
-
 	KEYS: {
 		SPACE: 32,
 		ENTER: 13
@@ -185,7 +159,9 @@ const Constants = {
 
 	DELETE: {
 		PUTATIVE_DELETED_POST: 'https://steemitimages.com/DQmd4wyZvtAUifJDLZD9vaqek17S1cUhN3PyEbFMMMgLW8o/Steepshot_footer2.PNG',
-		DELETE_SUCCESS: 'The post has been successfully deleted. If you still see your post, please give it a few minutes to sync from the blockchain.'
+		DELETE_POST_SUCCESS: 'The post has been successfully deleted. If you still see your post, please give it a few minutes to sync from the blockchain.',
+    DELETE_COMMENT_SUCCESS: 'The comment has been successfully deleted. If you still see your comment, please give' +
+		' it a few minutes to sync from the blockchain.',
 	},
 
 	POST_SUCCESSFULLY_CREATED: 'Post has been successfully created. If you don\'t see the post in your profile, '
@@ -219,6 +195,28 @@ const Constants = {
 			GRANTED: 'granted',
 			DENIED: 'denied'
 		}
+	},
+
+	BLOCKCHAIN : {
+		golos: {
+			CONNECTION_SERVERS: [
+				"wss://ws.golos.io"
+			],
+			PREFIX: 'GLS',
+			CHAIN_ID: '782a3039b478c839e4cb0c941ff4eaeb7df40bdd68bd441afd444b9da763de12'
+		},
+
+		steem: {
+			CONNECTION_SERVERS: [
+				//'https://steemd.steepshot.org',
+				'https://api.steemit.com',
+				'https://api.steemitstage.com'
+			]
+		}
+	},
+
+	WINDOW: {
+		MAX_MOBILE_SCREEN_WIDTH: 1023
 	}
 };
 

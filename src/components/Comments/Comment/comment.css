@@ -59,11 +59,11 @@
 }
 
 .head_comment {
-    margin: 15px 0 10px 0;
+    margin: 5px 0 10px 0;
 }
 
 .container_comment {
-    padding: 10px 0;
+    padding: 10px 15px;
 }
 
 .user p {
@@ -74,4 +74,31 @@
     font: 12px OpenSans-Regular;
     color: #979b9e;
     margin-left: 10px;
+}
+
+.pending-action_comment span {
+    animation-name: blink;
+    animation-duration: 1.4s;
+    animation-iteration-count: infinite;
+    animation-fill-mode: both;
+}
+
+.pending-action_comment span:nth-child(2) {
+    animation-delay: .2s;
+}
+
+.pending-action_comment span:nth-child(3) {
+    animation-delay: .4s;
+}
+
+@keyframes blink {
+    0% {
+        opacity: .2;
+    }
+    20% {
+        opacity: 1;
+    }
+    100% {
+        opacity: .2;
+    }
 }

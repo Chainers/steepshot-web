@@ -116,12 +116,23 @@ export default function posts(state = {}, action) {
 			delete copyState[action.index];
 			return copyState;
 
+		case 'DELETE_COMMENT_SUCCESS':
+      return {
+        ...state,
+        [action.index]: {
+          ...state[action.index],
+          postDeleting: false,
+					body: '*deleted*'
+        }
+      };
+
 		case 'DELETE_POST_ERROR':
 			return {
 				...state,
 				[action.index]: {
 					...state[action.index],
-					postDeleting: false
+					postDeleting: false,
+					error: action.error
 				}
 			};
 		case 'POWER_OF_LIKE_IND':

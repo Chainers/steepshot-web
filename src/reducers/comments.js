@@ -22,6 +22,15 @@ export default function getComments(state = {}, action) {
 					loading: false
 				}
 			};
+    case 'GET_POST_COMMENTS_ERROR':
+      return {
+        ...state,
+        [action.point]: {
+          ...state[action.point],
+          loading: false,
+          errorMessage: action.checkedError
+        },
+      };
 		case 'ADD_NEW_COMMENT_REQUEST':
 			return {
 				...state,
@@ -61,6 +70,15 @@ export default function getComments(state = {}, action) {
 					...state[action.postIndex],
 					scrollToLastComment: state[action.postIndex].scrollToLastComment + 1
 				}
+			};
+		case 'SET_COMMENT_EDIT_STATE':
+			return {
+				...state,
+        [action.parentPost]: {
+          ...state[action.parentPost],
+          commentEditing: action.commentEditing,
+          editingPostPoint: action.editingPostPoint
+        }
 			};
 		default:
 			return state;

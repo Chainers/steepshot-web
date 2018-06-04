@@ -7,7 +7,8 @@ const initialState = {
 	loading: false,
 	waitingTime: 0,
 	canCreate: true,
-	isGif: false
+	isGif: false,
+	dragHover: false
 };
 
 export default function editPost(state = initialState, action) {
@@ -42,6 +43,12 @@ export default function editPost(state = initialState, action) {
 				width: action.width
 			};
 
+		case 'SET_DRAG_AND_DROP_HOVER':
+			return {
+				...state,
+				dragHover: action.dragHover
+			};
+
 		case 'EDIT_POST_IMAGE_NOT_FOUND':
 			return {
 				...state,
@@ -53,7 +60,7 @@ export default function editPost(state = initialState, action) {
 			return {
 				...state,
 				canCreate: waitingTime === 0,
-				waitingTime
+				waitingTime,
 			};
 
 		case 'EDIT_POST_CLOSE_TIMER':
@@ -66,8 +73,11 @@ export default function editPost(state = initialState, action) {
 
 		case 'EDIT_POST_CREATE_NEW':
 		case 'EDIT_POST_CLEAR_ALL':
-			return initialState;
-
+			return {
+				...initialState,
+				waitingTime: state.waitingTime,
+				canCreate: waitingTime === 0
+			};
 		case 'EDIT_POST_CLEAR_FIELDS':
 			return {
 				...state,

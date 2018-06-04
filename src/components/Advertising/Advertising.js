@@ -1,50 +1,37 @@
 import React from 'react';
-import './advertising.css';
-import {setAdvertisingStatus} from '../../actions/advertising';
-import ShowIf from '../Common/ShowIf';
 import {connect} from 'react-redux';
-import storage from "../../utils/Storage";
+import {setAdvertisingStatus} from '../../actions/advertising';
+import './advertising.css';
 
 class Advertising extends React.Component {
 
-	componentDidMount() {
-		if (!storage.advertisingStatus) {
-			let outerElement = document.getElementsByClassName('outer-bg')[0];
-			outerElement.style.transition = '.25s all ease-in';
-			outerElement.classList.add('padding-top_advertising');
-		}
-	}
-
 	setAdvertisingStatus(status) {
 		this.props.setAdvertisingStatus(status);
-		let outerElement = document.getElementsByClassName('outer-bg')[0];
-		setTimeout(() => {
-			outerElement.style.transition = '';
-		}, 250);
-		outerElement.classList.remove('padding-top_advertising');
+		this.container.classList.add('closed_advertising');
+	}
+
+	componentDidMount() {
+		if (!this.props.advertisingStatus) {
+			this.container.classList.remove('closed_advertising')
+		}
 	}
 
 	render() {
-		if (global.isServerSide) {
-			return <div/>;
-		}
 		return (
-			<div>
-				<ShowIf show={this.props.advertisingStatus}>
-					<div className="wrapper_advertising centered--flex">
-						<div className="sub-wrapper_advertising">
-							<div className="text-wrapper_advertising">
-								<p>Your impressions can earn on Steepshot. Watch our new
-									<a href="https://youtu.be/4kCU0SRAKQg" target="_blank" rel="noopener noreferrer"> promo video</a> on
-									YouTube!</p>
-							</div>
-							<div className="close-wrapper_advertising centered--flex"
-									 onClick={this.setAdvertisingStatus.bind(this, true)}>
-								<div className="close_advertising"/>
-							</div>
+			<div key="Advertising" className="block-in-body_advertising closed_advertising" ref={ref => this.container = ref}>
+				<div className="wrapper_advertising centered--flex">
+					<div className="sub-wrapper_advertising">
+						<div className="text-wrapper_advertising">
+							<p>Your impressions can earn on Steepshot. Watch our new
+								<a href="https://youtu.be/4kCU0SRAKQg" target="_blank" rel="noopener noreferrer"> promo video</a> on
+								YouTube!</p>
+						</div>
+						<div className="close-wrapper_advertising centered--flex"
+								 onClick={this.setAdvertisingStatus.bind(this, true)}>
+							<div className="close_advertising"/>
 						</div>
 					</div>
-				</ShowIf>
+				</div>
 			</div>
 		)
 	}

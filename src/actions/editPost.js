@@ -27,17 +27,23 @@ export function addTag() {
 			return emptyAction();
 		}
 		dispatch(editPostChangeTags(getValidTagsString(editPostState.tags + ' ' + newTag.trim())));
-
 		dispatch(clearTextInputState(Constants.TEXT_INPUT_POINT.TAGS));
 	}
 }
 
 export function removeTag(index) {
-	const tagsString = getStore().getState().editPost.tags;
-	let tagsList = tagsString.toLowerCase().split(' ');
-	tagsList.splice(index, 1);
+	const editPost = getStore().getState().editPost;
+	const tagsString = editPost.tags;
+	const isEditingPost = editPost.initData.src;
+
 	return dispatch => {
-		dispatch(editPostChangeTags(tagsList.join(' ')));
+		if (isEditingPost && index === 0) {
+			dispatch(pushMessage("You can not edit the first hashtag!"));
+		} else {
+			let tagsList = tagsString.toLowerCase().split(' ');
+			tagsList.splice(index, 1);
+			dispatch(editPostChangeTags(tagsList.join(' ')));
+		}
 	}
 }
 
@@ -81,6 +87,13 @@ export function setImageContainerSize(width, height) {
 		type: 'EDIT_POST_CHANGE_IMAGE_SIZE',
 		width,
 		height
+	}
+}
+
+export function setDragAndDropHover(dragHover) {
+	return {
+		type: 'SET_DRAG_AND_DROP_HOVER',
+		dragHover
 	}
 }
 
@@ -154,6 +167,7 @@ export function editPost() {
 			return;
 		}
 		dispatch(editPostRequest());
+		tags = setCategoryTag(tags, postData);
 		PostService.editPost(title, tags, description, PostService.getPermlinkFromUrl(postData.url), postData.media[0])
 			.then(response => {
 				dispatch(pushMessage(Constants.POST_SUCCESSFULLY_UPDATED));
@@ -164,6 +178,16 @@ export function editPost() {
 				dispatch(editPostReject(error));
 				dispatch(pushErrorMessage(error));
 			})
+	}
+}
+
+function setCategoryTag(tags, postData) {
+	if (tags) {
+		let tagArray = tags.split(' ');
+		if (tagArray[0] !== postData.category) {
+			tagArray = [postData.category].concat(tagArray.splice(tagArray.indexOf(postData.category), 1));
+		}
+		return tagArray.join(' ');
 	}
 }
 
@@ -247,13 +271,14 @@ function prepareData() {
 }
 
 function getValidTagsString(str) {
+	const serviceName = getStore().getState().services.name;
 	if (str) {
 		let result = str.replace(/\bsteepshot\b/g, '');
 		result = result.trim();
 		result = result.replace(/\s+/g, ' ');
-		result = result.replace(/[^\w\s]+/g, '');
-		result = result.replace(new RegExp(`((\\s[^\\s]+){${Constants.TAGS.MAX_AMOUNT - 1}}).*`), '$1');
-		result = result.replace(new RegExp(`(([^\\s]{${Constants.TAGS.MAX_LENGTH}})[^\\s]+).*`), '$2');
+		result = result.replace(/[^a-zA-Zа-яА-Я0-9_\s-]+/g, '');
+		result = result.replace(new RegExp(`((\\s[^\\s]+){${Constants.SERVICES[serviceName].TAGS.MAX_AMOUNT - 1}}).*`), '$1');
+		result = result.replace(new RegExp(`(([^\\s]{${Constants.SERVICES[serviceName].TAGS.MAX_LENGTH}})[^\\s]+).*`), '$2');
 		return deleteSimilarTags(result);
 	}
 }
@@ -391,10 +416,12 @@ function isValidField(dispatch, title, photoSrc) {
 }
 
 export function setEditPostImageError(message) {
-	return {
-		type: 'EDIT_POST_SET_IMAGE_ERROR',
-		message
-	};
+	return dispatch => {
+    dispatch({
+      type: 'EDIT_POST_SET_IMAGE_ERROR',
+      message
+    });
+  }
 }
 
 export function editPostRequest() {

@@ -13,10 +13,14 @@
     flex-grow: 1;
 }
 
+.list_comments {
+    margin: 0 10px;
+}
+
 
 .list-scroll-view_comments {
     overflow-y: scroll;
-    padding: 20px;
+    padding: 20px 0;
     margin-right: -15px;
     margin-bottom: -15px;
     position: absolute;
@@ -55,7 +59,7 @@
 }
 
 .list-scroll-view_comments .comment-text {
-    word-break: break-all;
+    word-break: break-word;
 }
 
 .list-scroll-view_comments .user {
@@ -82,12 +86,23 @@
     display: flex;
 }
 
+.empty-query-message_comment {
+    font-family: OpenSans-Light, Helvetica, Arial, sans-serif;
+    font-size: 16px;
+    text-align: center;
+    max-width: 380px;
+    width: 80%;
+    margin: 0 auto;
+    padding-top: 40px;
+    padding-bottom: 40px
+}
+
 @media (max-width: 815px) {
     .list-scroll-view_comments {
         position: relative;
     }
     .list_comments {
-        padding: 0 20px;
+        margin: 0;
         max-width: 100vw;
     }
 }

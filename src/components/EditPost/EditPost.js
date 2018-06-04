@@ -1,20 +1,20 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import TextInput from "../Common/TextInput/TextInput";
+import TextInput from '../Common/TextInput/TextInput';
 import {
-	addTag, changeImage, closeTimer, createPost, editClearAll, editPost, editPostClear, imageNotFound, imageRotate,
-	removeTag, setEditPostImageError, setImageContainerSize, setInitDataForEditPost
-} from "../../actions/editPost";
+  addTag, changeImage, closeTimer, createPost, editClearAll, editPost, editPostClear, imageNotFound, imageRotate,
+  removeTag, setDragAndDropHover, setEditPostImageError, setImageContainerSize, setInitDataForEditPost
+} from '../../actions/editPost';
 import EditTags from "../Common/EditTags/EditTags";
 import ShowIf from "../Common/ShowIf";
 import {utils} from "../../utils/utils";
 import LoadingSpinner from "../LoadingSpinner";
 import {documentTitle} from "../../utils/documentTitle";
 import './editPost.css';
-import Timer from "../Common/Timer/Timer";
-import {withWrapper} from "create-react-server/wrapper";
-import {addMetaTags, getDefaultTags} from "../../actions/metaTags";
-import Constants from "../../common/constants";
+import Timer from '../Common/Timer/Timer';
+import {withWrapper} from 'create-react-server/wrapper';
+import {addMetaTags, getDefaultTags} from '../../actions/metaTags';
+import Constants from '../../common/constants';
 
 class EditPost extends React.Component {
 
@@ -53,13 +53,29 @@ class EditPost extends React.Component {
 		documentTitle();
 	}
 
+	preventDefaultStopPropagation(e) {
+    e.preventDefault();
+    e.stopPropagation();
+	}
+
   correctDragAndDropImage(e) {
-		if (!this.inputField) return;
+		if (!this.inputField) {
+      this.preventDefaultStopPropagation(e);
+			return;
+    }
     if (!this.props.isNew || !this.inputField.contains(e.target)) {
-      e.preventDefault();
-      e.stopPropagation();
+      this.preventDefaultStopPropagation(e);
     }
   }
+
+  imageSetDrag(e, isHover) {
+    this.preventDefaultStopPropagation(e);
+    if (isHover) {
+      this.props.setDragAndDropHover(isHover);
+		} else {
+      this.props.setDragAndDropHover(isHover)
+		}
+	}
 
 	imageChanged(e) {
 		e.preventDefault();
@@ -76,6 +92,7 @@ class EditPost extends React.Component {
 		} else {
 			return;
 		}
+    this.props.setDragAndDropHover(false);
 		reader.onloadend = () => {
 			let image = new Image();
 			image.src = reader.result;
@@ -113,7 +130,6 @@ class EditPost extends React.Component {
 			prefHeight = prefHeight * MAX_WIDTH / prefWidth;
 			prefWidth = MAX_WIDTH;
 		}
-
 		this.props.setImageContainerSize(prefWidth, prefHeight);
 	}
 
@@ -135,7 +151,7 @@ class EditPost extends React.Component {
 					<LoadingSpinner style={{height: '100%', position: 'absolute', width: '100%'}}/>
 				</ShowIf>
 				<div className={'container_edi-pos ' + (this.props.loading ? 'blur-blocker' : '')}>
-					<div className="image-container_edi-pos"
+					<div className={'image-container_edi-pos' + (this.props.dragHover ? ' drag-hover_edi-pos' : '')}
 							 style={{
 								 height: this.props.height,
 								 cursor: this.props.isNew ? 'pointer' : 'default'
@@ -178,6 +194,8 @@ class EditPost extends React.Component {
 										 type="file"
 										 onChange={this.imageChanged.bind(this)}
 										 ref={ref => this.inputField = ref}
+										 onDragEnter={(e) => this.imageSetDrag(e, true)}
+										 onDragLeave={(e) => this.imageSetDrag(e, false)}
 							/>
 						</ShowIf>
 					</div>
@@ -191,14 +209,13 @@ class EditPost extends React.Component {
 										 multiline={false}
 										 required={true}
 										 value={this.props.initData.title}
-										 noValidCharacters="[А-Яа-я]"
 										 maxLength={255}/>
 					<TextInput title="Tags"
-										 maxLength={Constants.TAGS.MAX_LENGTH}
+										 maxLength={this.props.tagsMaxLength}
 										 point={Constants.TEXT_INPUT_POINT.TAGS}
 										 multiline={false}
-										 description="Enter tags with spaces, but not more than 20"
-										 noValidCharacters="[^\w\s]"
+										 description={"Enter tags with spaces, but not more than " + this.props.tagsAmount}
+										 noValidCharacters="[^a-zA-Zа-яА-Я0-9_]"
 										 keyPressEvents={[{
 											 keys: [Constants.KEYS.SPACE, Constants.KEYS.ENTER],
 											 func: () => this.props.addTag()
@@ -237,11 +254,19 @@ class EditPost extends React.Component {
 }
 
 const mapStateToProps = (state, props) => {
-	const {category, username, permlink} = props.match.params;
+	const serviceName = Constants.SERVICES[state.services.name];
+  const location = state.router.location || props.location || {};
+  const urlArr = location.pathname.split('/');
+	let postUrl = `${urlArr[2]}/${urlArr[3]}/${urlArr[4]}`;
+	if (!urlArr[2] || !urlArr[3] || !urlArr[4]) {
+		postUrl = undefined;
+	}
 	return {
-		postUrl: `${category}/${username}/${permlink}`,
+    ...state.editPost,
+		postUrl: postUrl,
 		isNew: !state.editPost.initData.src,
-		...state.editPost
+		tagsMaxLength: serviceName ? serviceName.TAGS.MAX_LENGTH : 0,
+		tagsAmount: serviceName ? serviceName.TAGS.MAX_AMOUNT : 0
 	};
 };
 
@@ -285,6 +310,9 @@ const mapDispatchToProps = (dispatch) => {
 		},
 		setEditPostImageError: (message) => {
 			dispatch(setEditPostImageError(message))
+		},
+    setDragAndDropHover: (dragHover) => {
+			dispatch(setDragAndDropHover(dragHover))
 		}
 	};
 };

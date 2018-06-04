@@ -1,6 +1,5 @@
 import * as React from 'react';
 import Menu from './Menu/Menu';
-import ConfirmDeleteModal from './ConfirmDeleteModal/ConfirmDeleteModal';
 import ChooseSocialNetwork from './ChooseSocialNetwork/ChooseSocialNetwork';
 import ConfirmFlagModal from './ConfirmFlagModal/ConfirmFlagModal';
 import {connect} from 'react-redux';
@@ -10,8 +9,8 @@ import {closeModal, openModal, closeAllModals} from '../../actions/modal';
 import {deletePost} from '../../actions/post';
 import './postContextMenu.css';
 import {push} from 'react-router-redux';
-import {pushMessage} from "../../actions/pushMessage";
-import Constants from "../../common/constants";
+import {pushMessage} from '../../actions/pushMessage';
+import Constants from '../../common/constants';
 
 class PostContextMenu extends React.Component {
 
@@ -21,7 +20,7 @@ class PostContextMenu extends React.Component {
 		this.state = {
 			showModal: false,
 			fullScreen: false,
-			BUTTONS_OPTIONS: buttonsOptions,
+			BUTTONS_OPTIONS: buttonsOptions
 		};
 		this.openMenuModal = this.openMenuModal.bind(this);
 	}
@@ -52,7 +51,8 @@ class PostContextMenu extends React.Component {
 	}
 
 	copyLink() {
-		let url = document.location.origin + '/post' + this.props.item.url;
+		let url = document.location.origin + (this.props.isGolosService ? '/' + Constants.SERVICES.golos.name : '')
+			+ '/post' + this.props.item.url;
 		this.props.copyToClipboard(url);
 		this.props.closeModal("MenuModal");
 	}
@@ -68,19 +68,13 @@ class PostContextMenu extends React.Component {
 		}
 		if (!this.props.item.flag) {
 			let modalOption = {
-				body: (<ConfirmFlagModal closeModal={() => this.props.closeModal("ConfirmFlagModal")}
-					 flagCallback={this.flagCallback.bind(this)}
-				/>)
+				body: (<ConfirmFlagModal postIndex={this.props.index}/>)
 			};
 			this.props.openModal("ConfirmFlagModal", modalOption);
 		} else {
 			this.props.toggleFlag(this.props.index);
+			this.props.closeModal("MenuModal");
 		}
-	}
-
-	flagCallback() {
-		this.props.toggleFlag(this.props.index);
-		this.props.closeModal("ConfirmFlagModal");
 	}
 
 	openMenuModal() {
@@ -151,7 +145,7 @@ class PostContextMenu extends React.Component {
 				{
 					img: '/images/flagTrue.svg',
 					revertImg: '/images/flagFalse.svg',
-					alt: props.item.flag ? 'Unflag this' : 'Flag this',
+					alt: 'Flag/Unflag',
 					callback: this.toggleFlag.bind(this),
 					hasDelimiter: true,
 				}, /* TODO uncomment when will be implemented hide
@@ -173,6 +167,7 @@ const mapStateToProps = (state) => {
 	return {
 		username: state.auth.user,
 		isUserAuth: !!state.auth.user && !!state.auth.postingKey,
+		isGolosService: state.services.name === Constants.SERVICES.golos.name
 	};
 };
 

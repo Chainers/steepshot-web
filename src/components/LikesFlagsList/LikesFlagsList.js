@@ -4,18 +4,21 @@ import {connect} from 'react-redux';
 import {closeModal} from "../../actions/modal";
 import UsersList from "../UsersList/UsersList";
 import CloseButton from "../Common/CloseButton/CloseButton";
-import {Scrollbars} from 'react-custom-scrollbars';
 import {clearBodyHeight, setLikesFlagsListBodyHeight} from "../../actions/likesFlagsList";
 import ReactResizeDetector from 'react-resize-detector';
 import TabsBar from "../Common/TabsBar/TabsBar";
 import Tab from "../Common/TabsBar/Tab/Tab";
 import './likesFlagsList.css';
 import {utils} from "../../utils/utils";
+import Scroll from "../Scroll/Scroll";
+
+const SCROLL_POINT_LIKES = 'likes';
+const SCROLL_POINT_FLAGS = 'flags';
 
 class LikesFlagsList extends React.Component {
 
 	constructor(props) {
-		super(props);
+		super();
 		this.updateBodyHeight = this.updateBodyHeight.bind(this);
 	}
 
@@ -69,8 +72,10 @@ class LikesFlagsList extends React.Component {
 								 alwaysShowNavigation={true}
 					>
 					<Tab name="Likes" empty={likesCondition && !flagsCondition}>
-						<Scrollbars style={{width: '100%', height: this.props.preferredBodyHeight, marginTop: 20}}>
+						<Scroll style={{width: '100%', height: this.props.preferredBodyHeight, marginTop: 20}}
+												point={SCROLL_POINT_LIKES}>
 							<UsersList
+								scrollPoint={SCROLL_POINT_LIKES}
 								isLikesFlags={true}
 								point={this.props.point}
 								useScrollView={true}
@@ -80,11 +85,13 @@ class LikesFlagsList extends React.Component {
 								<ReactResizeDetector handleWidth handleHeight onResize={this.updateBodyHeight}
 																		 ref={ref => this.likes = ref}/>
 							</UsersList>
-						</Scrollbars>
+						</Scroll>
 					</Tab>
 					<Tab name="Flags" empty={flagsCondition && !likesCondition}>
-						<Scrollbars style={{width: '100%', height: this.props.preferredBodyHeight, marginTop: 20}}>
+						<Scroll style={{width: '100%', height: this.props.preferredBodyHeight, marginTop: 20}}
+												point={SCROLL_POINT_FLAGS}>
 							<UsersList
+								scrollPoint={SCROLL_POINT_FLAGS}
 								point={this.props.point}
 								useScrollView={true}
 								options={{flags: 1}}
@@ -93,7 +100,7 @@ class LikesFlagsList extends React.Component {
 								<ReactResizeDetector handleWidth handleHeight onResize={this.updateBodyHeight}
 																		 ref={ref => this.flags = ref}/>
 							</UsersList>
-						</Scrollbars>
+						</Scroll>
 					</Tab>
 				</TabsBar>
 			</div>

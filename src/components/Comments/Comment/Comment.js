@@ -3,59 +3,101 @@ import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
 import TimeAgo from 'timeago-react';
 import Avatar from '../../Common/Avatar/Avatar';
-import {replyAuthor} from '../../../actions/comments';
+import {replyAuthor, setCommentEditState, setInputForEdit} from '../../../actions/comments';
 import Likes from '../../PostsList/Post/Likes/Likes';
 import './comment.css';
 import Vote from '../../PostsList/Post/Vote/Vote';
 import Flag from '../../PostsList/Post/Flag/Flag';
+import {deletePost} from '../../../actions/post';
+import ShowIf from '../../Common/ShowIf';
+import {innerLayout} from '../../../utils/innerLayout';
 
 class Comment extends React.Component {
 
 	componentDidMount() {
-		this.commentsLayout();
+		innerLayout(this.props.comment.body, this.commentText);
 	}
 
-	commentsLayout() {
-		let safetyScript = this.props.item.body.replace(/<script>|<\/script>/g, '');
-		let newLine = safetyScript.replace(/\n/g, '<br>');
-		let deletedBotsLayout = newLine.replace(/(!)?\[([^\]]+)?\]/g, '');
-		let changeBotsLink = deletedBotsLayout.replace(/\((http(s)?:\/\/[\w\W]+?|www\.[\w\W]+?)\)/g, '$1');
-		let linkToImg = changeBotsLink.replace(
-			/(http(s)?:\/\/[^\s<>]+?(\.png|\.gif|\.jpg|\.jpeg|\.tif|\.tiff)(\?[\w\W]+?)?(?!"))/gi, '<img src="$1"/>');
-		let anyLinks = linkToImg.replace(/<a[\w\W]+?>([\w\W]+?)<\/a>/g, '$1');
-		let userLink = anyLinks.replace(/([^/]|^)(@[\w-.]+\w)/g, '$1<a href="/$2" target="_blank">$2</a>');
-		this.commentText.innerHTML = userLink;
+	componentWillReceiveProps(nextProps) {
+		if (nextProps.comment.body === '*deleted*') this.commentText.innerHTML = '*deleted*';
+	}
+
+	editComment() {
+    this.props.setInputForEdit(this.props.point, this.props.parentPost, true);
+  }
+
+  replyToUser() {
+		if (this.props.isCommentEditing) {
+			return;
+		}
+    this.props.replyAuthor(this.props.author);
+	}
+
+	deleteComment() {
+    if (this.props.isCommentEditing) {
+      return;
+    }
+    this.props.deleteComment(this.props.point, true);
+	}
+
+	cancelEdit() {
+		this.props.setCommentEditState('', this.props.parentPost, false);
 	}
 
 	render() {
-		if (!this.props.item) {
+		if (!this.props.comment) {
 			return null;
 		}
-		let money = this.props.item.total_payout_reward > 0 ?
-			<span className="money_comment">{`$${this.props.item.total_payout_reward}`}</span> : null;
+		let deleteCommentElement = <span className="delete_comment"
+																		 onClick={this.deleteComment.bind(this)}>Delete
+															 </span>;
+		let editCommentElement = <span className="edit_comment"
+																	 onClick={this.editComment.bind(this)}>Edit
+														 </span>;
+		if (this.props.comment.postDeleting) {
+			deleteCommentElement = <div className="pending-action_comment not-hover_comment">
+															 Deleting
+															 <span> .</span>
+															 <span> .</span>
+															 <span> .</span>
+														 </div>;
+		}
+
+		if (this.props.isCommentEditing) {
+      editCommentElement = <span className="edit_comment"
+																 onClick={this.cancelEdit.bind(this)}>Cancel
+													 </span>;
+		}
+
+		let money = this.props.comment.total_payout_reward > 0 ?
+			<span className="money_comment">{`$${this.props.comment.total_payout_reward}`}</span> : null;
 		let commentActions = !this.props.isYourComment
 			? <div className="display--flex">
 			    <span className="reply_comment"
-				   		 onClick={() => this.props.replyAuthor(this.props.author)}>Reply</span>
+				   		 onClick={this.replyToUser.bind(this)}>Reply</span>
 			    <Flag postIndex={this.props.point}
-						 isComment={true}/>
+						 		isComment={true}/>
 		    </div>
 			: <div className="display--flex">
-					{/*<span className="edit_comment">Edit</span>
-					<span className="delete_comment">Delete</span>*/}
+					{/*<ShowIf show={!this.props.isCommentDeleted && !this.props.cashoutTimeExceed}
+									styleContainer={{display: 'flex'}}>
+						{editCommentElement}
+						{deleteCommentElement}
+					</ShowIf>*/}
 				</div>;
 		const authorLink = `/@${this.props.author}`;
 		return (
-			<div className="container_comment">
+			<div className="container_comment" style={{backgroundColor: this.props.currentCommentEditing
+				? 'rgba(18, 148, 246, 0.05)' : ''}}>
 				<div className="head_comment">
 						<div className="date">
 							<TimeAgo
-								datetime={this.props.item.created}
+								datetime={this.props.comment.created}
 								locale='en_US'
 							/>
 						</div>
 						<Link to={authorLink} className="user">
-							<Avatar src={this.props.item.avatar}/>
+							<Avatar src={this.props.comment.avatar}/>
 							<div className="name">{this.props.author}</div>
 						</Link>
 				</div>
@@ -67,7 +109,7 @@ class Comment extends React.Component {
 				<div className="actions-buttons_comment">
 					{commentActions}
 					<div className="display--flex">
-						<Likes postIndex={this.props.item.url} commentAuthor={authorLink}/>
+						<Likes postIndex={this.props.comment.url} commentAuthor={authorLink}/>
 						{money}
 					</div>
 				</div>
@@ -78,8 +120,18 @@ class Comment extends React.Component {
 
 const mapStateToProps = (state, props) => {
 	let comment = state.posts[props.point];
+	const isCommentDeleted = comment.body === '*deleted*';
+	const cashoutTimeExceed = new Date(comment.cashout_time) < new Date();
+	const parentPost = props.point.replace(/(.+)#.+/, '$1');
+	const currentCommentEditing = props.point === state.comments[parentPost].editingPostPoint;
+	const isCommentEditing = state.comments[parentPost].commentEditing;
 	return {
-		item: comment,
+    comment,
+    currentCommentEditing,
+		isCommentEditing,
+		parentPost,
+    isCommentDeleted,
+    cashoutTimeExceed,
 		author: comment.author,
 		isYourComment: comment.author === state.auth.user
 	};
@@ -89,6 +141,15 @@ const mapDispatchToProps = dispatch => {
 	return {
 		replyAuthor: (name) => {
 			dispatch(replyAuthor(name));
+		},
+		deleteComment: (point, isComment) => {
+			dispatch(deletePost(point, isComment))
+		},
+    setInputForEdit: (point, parentPost, currentCommentEditing) => {
+      dispatch(setInputForEdit(point, parentPost, currentCommentEditing))
+		},
+    setCommentEditState: (point, parentPost, commentEditing) => {
+			dispatch(setCommentEditState(point, parentPost, commentEditing));
 		}
 	}
 };
