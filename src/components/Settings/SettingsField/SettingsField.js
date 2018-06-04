@@ -19,7 +19,7 @@ class SettingsField extends React.Component {
 		return (
 			<div className="field_settings">
 				<span>{label}</span>
-				<Switcher onClick={() => toggleSettingsField(point)} left={!active} rightColor="green"/>
+				<Switcher onClick={() => toggleSettingsField(point)} left={!active} rightColor="#ff1e00" leftColor="#d9d9d9"/>
 			</div>
 		)
 	}
