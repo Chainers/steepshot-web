@@ -14,29 +14,3 @@
     letter-spacing: normal;
     color: #0f181e;
 }
-
-.check-box_settings {
-    width: 30px;
-    height: 30px;
-    border-radius: 15px;
-    background-color: #fafafa;
-    border: solid 1px #f4f4f6;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.checked_settings {
-    width: 1px;
-    height: 1px;
-    border-radius: 10px;
-    background-image: linear-gradient(to right, #ff7700, #ff1000);
-    opacity: 0;
-    transition: .3s;
-}
-
-.active > .checked_settings {
-    opacity: 1;
-    width: 20px;
-    height: 20px;
-}

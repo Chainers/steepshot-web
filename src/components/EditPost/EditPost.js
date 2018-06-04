@@ -50,28 +50,26 @@ class EditPost extends React.Component {
 	componentDidMount() {
 		window.addEventListener('drop', (e) => this.correctDragAndDropImage(e));
 		window.addEventListener('dragover', (e) => this.correctDragAndDropImage(e));
-		if (this.props.isNew) {
-      this.inputField.addEventListener('dragenter', (e) => this.imageSetDrag(e, true));
-      this.inputField.addEventListener('dragleave', (e) => this.imageSetDrag(e, false));
-		}
 		documentTitle();
+	}
+
+	preventDefaultStopPropagation(e) {
+    e.preventDefault();
+    e.stopPropagation();
 	}
 
   correctDragAndDropImage(e) {
 		if (!this.inputField) {
-      e.preventDefault();
-      e.stopPropagation();
+      this.preventDefaultStopPropagation(e);
 			return;
     }
     if (!this.props.isNew || !this.inputField.contains(e.target)) {
-      e.preventDefault();
-      e.stopPropagation();
+      this.preventDefaultStopPropagation(e);
     }
   }
 
   imageSetDrag(e, isHover) {
-    e.preventDefault();
-    e.stopPropagation();
+    this.preventDefaultStopPropagation(e);
     if (isHover) {
       this.props.setDragAndDropHover(isHover);
 		} else {
@@ -196,6 +194,8 @@ class EditPost extends React.Component {
 										 type="file"
 										 onChange={this.imageChanged.bind(this)}
 										 ref={ref => this.inputField = ref}
+										 onDragEnter={(e) => this.imageSetDrag(e, true)}
+										 onDragLeave={(e) => this.imageSetDrag(e, false)}
 							/>
 						</ShowIf>
 					</div>
@@ -254,11 +254,16 @@ class EditPost extends React.Component {
 }
 
 const mapStateToProps = (state, props) => {
-	const {category, username, permlink} = props.match.params;
 	const serviceName = Constants.SERVICES[state.services.name];
+  const location = state.router.location || props.location || {};
+  const urlArr = location.pathname.split('/');
+	let postUrl = `${urlArr[2]}/${urlArr[3]}/${urlArr[4]}`;
+	if (!urlArr[2] || !urlArr[3] || !urlArr[4]) {
+		postUrl = undefined;
+	}
 	return {
     ...state.editPost,
-		postUrl: `${category}/${username}/${permlink}`,
+		postUrl: postUrl,
 		isNew: !state.editPost.initData.src,
 		tagsMaxLength: serviceName ? serviceName.TAGS.MAX_LENGTH : 0,
 		tagsAmount: serviceName ? serviceName.TAGS.MAX_AMOUNT : 0

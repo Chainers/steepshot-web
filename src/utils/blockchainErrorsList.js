@@ -25,6 +25,7 @@ export function blockchainErrorsList(error) {
       format = ': ' + golosErrorsData.stack[0].format;
       newError = `${golosErrorsData.code} ${golosErrorsData.name}: ${golosErrorsData.message}${format}`;
     }
+
     let errorsList = [
       {error: '4100000 plugin_exception: plugin exception: Account: ${account} bandwidth limit exeeded. Please wait to ' + // eslint-disable-line
       'transact or power up steem.', notificationText: 'Your transaction cannot be completed. Steem Power of your ' +
@@ -42,8 +43,8 @@ export function blockchainErrorsList(error) {
       'maximum number of vote changes on this comment.', notificationText: 'Sorry, you had used the maximum number of vote changes.'},
       {error: '10 assert_exception: Assert Exception: itr->num_changes < STEEMIT_MAX_VOTE_CHANGES: Voter has used ' +
       'the maximum number of vote changes on this comment.', notificationText: 'Sorry, you had used the maximum number of vote changes.'},
-      {error: '10 assert_exception: Assert Exception: info->abs_rshares > STEEM_VOTE_DUST_THRESHOLD || vote_weight ' +
-      '== 0: Voting weight is too small, please accumulate more voting power or steem power.', notificationText: 'You cannot vote this ' +
+      {error: '10 assert_exception: Assert Exception: abs_rshares > STEEM_VOTE_DUST_THRESHOLD || o.weight == 0: ' +
+      'Voting weight is too small, please accumulate more voting power or steem power.', notificationText: 'You cannot vote this ' +
       'way because you haven’t got enough Steem Power. For more information click <a href="https://steepshot.io/faq#not-able-to-post" target="_blank">here</a>.'},
       {error: '10 assert_exception: Assert Exception: abs_rshares > 30000000 || o.weight == 0: Voting weight is too ' +
       'small, please accumulate more voting power or steem power.', notificationText: 'You cannot vote this way because ' +
@@ -52,6 +53,8 @@ export function blockchainErrorsList(error) {
       ' way.', notificationText: 'You\'ve already voted in a similar way.'},
       {error: '10 assert_exception: Assert Exception: equal(com.parent_permlink, o.parent_permlink): The permlink of a ' +
       'comment cannot change.', notificationText: 'The permlink of comment can\'t change.'},
+      {error: '10 assert_exception: Assert Exception: (now - auth.last_post) > STEEM_MIN_REPLY_INTERVAL: You may only ' +
+      'comment once every 20 seconds.', notificationText: 'You may only comment once every 20 seconds.'},
       {error: '10 assert_exception: Assert Exception: (now - auth.last_post) > STEEMIT_MIN_REPLY_INTERVAL: You may ' +
       'only comment once every 20 seconds.', notificationText: 'You may only comment once every 20 seconds.'}
     ];

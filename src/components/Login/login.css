@@ -144,46 +144,6 @@
     }
 }
 
-.switcher_login {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin: 10px;
-}
-
-.switcher-input_login {
-    width: 60px;
-    height: 30px;
-    margin: 0 20px;
-    border-radius: 15px;
-    background-color: #fafafa;
-    border: solid 1px #f4f4f6;
-    padding: 5px;
-    cursor: pointer;
-}
-
-.switcher-label_login {
-    font-size: 16px;
-    color: #0f181e;
-}
-
-.steem-switcher_login, .golos-switcher_login {
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    transition: .2s;
-}
-
-.steem-switcher_login {
-    background-color: #ff1e00;
-    margin: 0;
-}
-
-.golos-switcher_login {
-    background-color: #4a90e2;
-    margin-left: 30px;
-}
-
 .sign_login {
     width: 117px;
     margin-bottom: 10px;

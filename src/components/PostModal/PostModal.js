@@ -142,7 +142,7 @@ class PostModal extends React.Component {
 		let buttonColor = fullScreenMode ? {color: '#ffffff', backgroundColor: 'rgba(0, 0, 0, .96)'}
 			: {color: '#000000', backgroundColor: 'rgba(255, 255, 255, .96)'};
 		return (
-			<div>
+			<div className="container-nsfw-filter_pos-mod">
 				<ShowIf show={this.props.post['is_nsfw'] && !this.props.showAll}>
 					<div className="curtain_pos-mod" style={backgroundStyle}>
 						<p className="title-low-nsfw_pos-mod" style={colorTitleStyle}>NSFW content</p>

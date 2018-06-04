@@ -1,0 +1,39 @@
+.container_switcher {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+container_switcher > label {
+    font-size: 16px;
+    color: #0f181e;
+}
+
+.input-container_switcher {
+    width: 60px;
+    height: 30px;
+    margin: 0 20px;
+    border-radius: 15px;
+    background-color: #fafafa;
+    border: solid 1px #f4f4f6;
+    padding: 5px;
+    cursor: pointer;
+}
+
+
+.left_switcher, .right_switcher {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    transition: .2s;
+}
+
+.left_switcher {
+    background-color: #ff1e00;
+    margin: 0;
+}
+
+.right_switcher {
+    background-color: #4a90e2;
+    margin-left: 30px;
+}

@@ -135,7 +135,7 @@ export function setInitDataForEditPost(postUrl) {
 			type: 'EDIT_POST_INIT_DATA_REQUEST',
 			postUrl
 		});
-		if (!username || postUrl === 'undefined/undefined/undefined') {
+		if (!username || !postUrl) {
 			dispatch(createNewPost())
 		} else {
 			PostService.getPost(postUrl)
@@ -167,11 +167,7 @@ export function editPost() {
 			return;
 		}
 		dispatch(editPostRequest());
-		let tagArray = tags.split(' ');
-		if (tagArray[0] !== postData.category) {
-			tagArray = [postData.category].concat(tagArray.splice(tagArray.indexOf(postData.category), 1));
-		}
-		tags = tagArray.join(' ');
+		tags = setCategoryTag(tags, postData);
 		PostService.editPost(title, tags, description, PostService.getPermlinkFromUrl(postData.url), postData.media[0])
 			.then(response => {
 				dispatch(pushMessage(Constants.POST_SUCCESSFULLY_UPDATED));
@@ -182,6 +178,16 @@ export function editPost() {
 				dispatch(editPostReject(error));
 				dispatch(pushErrorMessage(error));
 			})
+	}
+}
+
+function setCategoryTag(tags, postData) {
+	if (tags) {
+		let tagArray = tags.split(' ');
+		if (tagArray[0] !== postData.category) {
+			tagArray = [postData.category].concat(tagArray.splice(tagArray.indexOf(postData.category), 1));
+		}
+		return tagArray.join(' ');
 	}
 }
 
@@ -270,7 +276,7 @@ function getValidTagsString(str) {
 		let result = str.replace(/\bsteepshot\b/g, '');
 		result = result.trim();
 		result = result.replace(/\s+/g, ' ');
-		result = result.replace(/[^a-zA-Zа-яА-Я0-9_-\s]+/g, '');
+		result = result.replace(/[^a-zA-Zа-яА-Я0-9_\s-]+/g, '');
 		result = result.replace(new RegExp(`((\\s[^\\s]+){${Constants.SERVICES[serviceName].TAGS.MAX_AMOUNT - 1}}).*`), '$1');
 		result = result.replace(new RegExp(`(([^\\s]{${Constants.SERVICES[serviceName].TAGS.MAX_LENGTH}})[^\\s]+).*`), '$2');
 		return deleteSimilarTags(result);
