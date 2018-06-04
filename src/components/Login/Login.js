@@ -11,6 +11,7 @@ import {push} from 'react-router-redux';
 import Constants from "../../common/constants";
 import {switchService} from "../../actions/services";
 import {clearLoginErrors} from "../../actions/login";
+import Switcher from "../Switcher/Switcher";
 
 const galleryImages = [
 	'/images/login/1.png',
@@ -103,16 +104,15 @@ class Login extends Component {
 								<label className="error-msg_login">{postingKeyError}</label>
 							</div>
 							<div className="btn-block_login">
-								<div className="switcher_login">
-									<label className="switcher-label_login">Steem</label>
-									<div className="switcher-input_login" onClick={() => {
+								<Switcher
+									onClick={() => {
 										clearLoginErrors();
 										switchService();
-									}}>
-										<div className={chooseSteem ? 'steem-switcher_login' : 'golos-switcher_login'}/>
-									</div>
-									<label className="switcher-label_login">Golos</label>
-								</div>
+									}}
+									left={chooseSteem}
+									leftLabel="Steem"
+									rightLabel="Golos"
+								/>
 								<button className="sign_login btn btn-default" onClick={this.handleLogin.bind(this)} type="submit">
 									Login
 								</button>
