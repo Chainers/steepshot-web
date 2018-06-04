@@ -276,7 +276,7 @@ function getValidTagsString(str) {
 		let result = str.replace(/\bsteepshot\b/g, '');
 		result = result.trim();
 		result = result.replace(/\s+/g, ' ');
-		result = result.replace(/[^a-zA-Zа-яА-Я0-9_-\s]+/g, '');
+		result = result.replace(/[^a-zA-Zа-яА-Я0-9_\s-]+/g, '');
 		result = result.replace(new RegExp(`((\\s[^\\s]+){${Constants.SERVICES[serviceName].TAGS.MAX_AMOUNT - 1}}).*`), '$1');
 		result = result.replace(new RegExp(`(([^\\s]{${Constants.SERVICES[serviceName].TAGS.MAX_LENGTH}})[^\\s]+).*`), '$2');
 		return deleteSimilarTags(result);
