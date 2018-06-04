@@ -135,7 +135,7 @@ export function setInitDataForEditPost(postUrl) {
 			type: 'EDIT_POST_INIT_DATA_REQUEST',
 			postUrl
 		});
-		if (!username || postUrl === 'undefined/undefined/undefined') {
+		if (!username || !postUrl) {
 			dispatch(createNewPost())
 		} else {
 			PostService.getPost(postUrl)
