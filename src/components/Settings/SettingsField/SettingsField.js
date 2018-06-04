@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import {connect} from "react-redux";
 import './settingsField.css';
 import {initializeSettingsField, toggleSettingsField} from "../../../actions/settingsFields";
+import Switcher from "../../Switcher/Switcher";
 
 class SettingsField extends React.Component {
 
@@ -18,10 +19,7 @@ class SettingsField extends React.Component {
 		return (
 			<div className="field_settings">
 				<span>{label}</span>
-				<div className={'check-box_settings' + (active ? ' active' : '')}
-						 onClick={() => toggleSettingsField(point)}>
-					<div className="checked_settings"/>
-				</div>
+				<Switcher onClick={() => toggleSettingsField(point)} left={!active} rightColor="green"/>
 			</div>
 		)
 	}
