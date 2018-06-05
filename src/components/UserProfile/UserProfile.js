@@ -65,6 +65,7 @@ class UserProfile extends React.Component {
 								<div className="pic-wrap clearfix">
 									<Avatar src={avatar}
 													powerIndicator={this.props.isYourProfile}
+													sizes={Constants.USER_PROFILE_AVATAR_SIZE}
 									/>
 									<ShowIf show={!this.props.isYourProfile && this.props.isAuth}>
 										<Follow/>

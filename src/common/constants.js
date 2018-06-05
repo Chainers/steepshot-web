@@ -35,6 +35,9 @@ const Constants = {
 
 	NO_AVATAR: '/images/person.png',
 	NO_IMAGE: '/images/noimage.jpg',
+	DEF_AVATAR_SIZE: 20 + 10,
+	USER_CARD_AVATAR_SIZE: 60,
+	USER_PROFILE_AVATAR_SIZE: 100,
 
 	SETTINGS: {
 		FIELDS: {

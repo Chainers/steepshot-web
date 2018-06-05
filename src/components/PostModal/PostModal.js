@@ -13,7 +13,6 @@ import Flag from '../PostsList/Post/Flag/Flag';
 import Vote from '../PostsList/Post/Vote/Vote';
 import LoadingSpinner from '../LoadingSpinner/index';
 import {copyToClipboard} from '../../actions/clipboard';
-import ReactDOM from 'react-dom';
 import PostContextMenu from '../PostContextMenu/PostContextMenu';
 import Likes from '../PostsList/Post/Likes/Likes';
 import FullScreenButtons from './FullScreenButtons/FullScreenButtons';
@@ -453,7 +452,7 @@ class PostModal extends React.Component {
 							</ShowIf>
 						</div>
 						<Link to={authorLink} className="user_pos-mod">
-							<Avatar src={this.props.post.avatar}/>
+							<Avatar src={this.props.post.avatar} sizes={Constants.DEF_AVATAR_SIZE}/>
 							<div className="name_pos-mod">
 								{this.props.post.author}
 							</div>

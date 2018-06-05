@@ -11,6 +11,7 @@ import Flag from '../../PostsList/Post/Flag/Flag';
 import {deletePost} from '../../../actions/post';
 import ShowIf from '../../Common/ShowIf';
 import {innerLayout} from '../../../utils/innerLayout';
+import Constants from '../../../common/constants';
 
 class Comment extends React.Component {
 
@@ -97,7 +98,7 @@ class Comment extends React.Component {
 							/>
 						</div>
 						<Link to={authorLink} className="user">
-							<Avatar src={this.props.comment.avatar}/>
+							<Avatar src={this.props.comment.avatar} sizes={Constants.DEF_AVATAR_SIZE}/>
 							<div className="name">{this.props.author}</div>
 						</Link>
 				</div>
