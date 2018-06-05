@@ -2,7 +2,7 @@ import {openModal} from './modal';
 import {getStore} from '../store/configureStore';
 import {getPostsList} from './postsList';
 import Constants from '../common/constants';
-import {focusedTextInput, setTextInputState} from './textInput';
+import {blurredTextInput, setTextInputState} from './textInput';
 import {setCommentEditState} from './comments';
 
 export function initPostModal(point, index) {
@@ -45,7 +45,6 @@ function swapPostModal(index, isLoading) {
       previousStyle
     });
     dispatch(setTextInputState(Constants.OPERATIONS.COMMENT, {focusedStyle: '', text: ''}));
-    dispatch(focusedTextInput(Constants.OPERATIONS.COMMENT));
 	}
 }
 

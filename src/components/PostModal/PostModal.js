@@ -107,8 +107,7 @@ class PostModal extends React.Component {
 	}
 
 	initKeyPress(e) {
-		if ((document.activeElement !== ReactDOM.findDOMNode(this.textArea))
-			&& (this.props.isCommentEditing || !this.props.focusedTextInput)) {
+		if (this.props.isCommentEditing || !this.props.focusedTextInput) {
 			switch (e.keyCode) {
 				case 37:
 					this.previousPost();
@@ -185,10 +184,7 @@ class PostModal extends React.Component {
 
 	copyLinkToClipboard(e) {
 		e.target.blur();
-		this.props.copyToClipboard(
-			document.location.origin + (this.props.isGolosService ? '/' + Constants.SERVICES.golos.name : '')
-			+ '/post' + this.props.post.url.replace(/\/[\w-.]+/, '')
-		);
+		this.props.copyToClipboard(this.props.linkToSinglePost);
 	}
 
 	renderImage() {
@@ -510,6 +506,9 @@ class PostModal extends React.Component {
 const mapStateToProps = (state) => {
 	let currentIndex = state.postModal.currentIndex;
 	let post = state.posts[currentIndex];
+	let isGolosService = state.services.name === Constants.SERVICES.golos.name;
+	let linkToSinglePost = document.location.origin + (isGolosService ? '/' + Constants.SERVICES.golos.name : '')
+    + '/post' + post.url.replace(/\/[\w-.]+/, '');
 	if (post) {
     const isFSByScreenSize = state.window.width < 1025;
 		let urlVideo = post.media[0].url;
@@ -521,6 +520,8 @@ const mapStateToProps = (state) => {
 			urlVideo,
       isFSByScreenSize,
       isCommentEditing,
+      isGolosService,
+      linkToSinglePost,
 			completeStatus: post.completeStatus,
 			...state.postModal,
 			newPostsLoading: postsList.loading,
@@ -531,8 +532,7 @@ const mapStateToProps = (state) => {
 			focusedTextInput: state.textInput[Constants.TEXT_INPUT_POINT.COMMENT] ?
 				state.textInput[Constants.TEXT_INPUT_POINT.COMMENT].focused : false,
 			window: state.window,
-			offsetTop: state.postModal.postOffset,
-			isGolosService: state.services.name === Constants.SERVICES.golos.name
+			offsetTop: state.postModal.postOffset
 		};
 	}
 };

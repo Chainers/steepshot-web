@@ -11,7 +11,10 @@ import Tags from './Tags/Tags';
 import Vote from './Vote/Vote';
 import PostModal from '../../PostModal/PostModal';
 import {openPostModal} from '../../../actions/postModal';
-import {playVideo, setPowerLikeInd, setPowerLikeTimeout, setVideoTime, stopVideo} from '../../../actions/post';
+import {
+  playVideo, setPowerLikeInd, setPowerLikeTimeout, setVideoTime,
+  stopVideo
+} from '../../../actions/post';
 import LoadingSpinner from '../../LoadingSpinner/index';
 import Avatar from '../../Common/Avatar/Avatar';
 import Likes from './Likes/Likes';
@@ -29,6 +32,24 @@ class Post extends React.Component {
 			body: (<PostModal/>)
 		};
 		this.props.openModal(this.props.point, this.props.index, modalOption);
+	}
+
+  blockLinkToSinglePost() {
+    return (
+			<a href={this.props.linkToSinglePost}
+				 target="_blank"
+				 className="open-in-new-tab_post" onClick={(e) => Post.preventModalForNewTab(e)}/>
+    )
+  }
+
+  static preventModalForNewTab(e) {
+		if (e.ctrlKey || e.metaKey) {
+			e.stopPropagation();
+			return true;
+		}
+    let evt = e ? e : window.event;
+    (evt.preventDefault) ? evt.preventDefault() : evt.returnValue = false;
+    return false;
 	}
 
 	commentNumber() {
@@ -63,6 +84,7 @@ class Post extends React.Component {
 							 onMouseEnter={() => this.props.playVideo(this.props.index)}
 							 onMouseLeave={this.stopVideoPlaying.bind(this)}
 					>
+            {this.blockLinkToSinglePost()}
 						<ShowIf show={!this.props.playing}>
 							<div className="video-time-indicator_post">
 								{this.props.time || '00.00'}
@@ -88,6 +110,7 @@ class Post extends React.Component {
 		};
 		return (
 			<div className="card-pic" onClick={this.openPostModal.bind(this)}>
+				{this.blockLinkToSinglePost()}
 				<ShowIf show={this.props.isGallery}>
 					<div className="gallery-indicator_post"/>
 				</ShowIf>
@@ -185,6 +208,9 @@ class Post extends React.Component {
 
 const mapStateToProps = (state, props) => {
 	let post = state.posts[props.index];
+  let isGolosService = state.services.name === Constants.SERVICES.golos.name;
+  let linkToSinglePost = document.location.origin + (isGolosService ? '/' + Constants.SERVICES.golos.name : '')
+    + '/post' + post.url.replace(/\/[\w-.]+/, '');
 	if (post) {
 		const media = post.media[0];
 		let isGallery = false;
@@ -196,6 +222,7 @@ const mapStateToProps = (state, props) => {
 			...post,
 			imgUrl,
 			isGallery,
+      linkToSinglePost,
 			authUser: state.auth.user
 		};
 	}
