@@ -20,8 +20,12 @@ class Avatar extends React.Component {
 	}
 
 	pic() {
+		let avatarLink = this.props.src;
+		if (this.props.src !== Constants.NO_AVATAR) {
+			avatarLink = `https://steemitimages.com/${2 * this.props.sizes}x${2 * this.props.sizes}/${this.props.src}`;
+		}
 		return Object.assign({}, this.props.style, {
-			backgroundImage: 'url(' + this.props.src + ')'
+			backgroundImage: 'url(' + avatarLink + ')'
 		});
 	}
 

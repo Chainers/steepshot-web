@@ -136,6 +136,7 @@ class Header extends React.Component {
 													<Avatar src={authorImage}
 																	powerIndicator={true}
 																	headerAvatar={true}
+																	sizes={Constants.DEF_AVATAR_SIZE}
 													/>
 												</div>
 												<div className="name">{this.props.user}</div>

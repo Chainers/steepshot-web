@@ -52,8 +52,12 @@ export function login(username, postingKey) {
 						storage.like_power = 100;
 						storage.avatar = avatar;
 						storage.service = getStore().getState().services.name || Constants.SERVICES.steem.name;
-						OneSignalService.addNotificationTags(username);
-						dispatch(checkSubscribeAndUpdateSettings());
+						try {
+              OneSignalService.addNotificationTags(username);
+              dispatch(checkSubscribeAndUpdateSettings());
+						} catch (error) {
+							console.warn(error.name);
+						}
 						dispatch({
 							type: 'UPDATE_VOTING_POWER',
 							voting_power: response[0].voting_power / 100
@@ -71,12 +75,12 @@ export function login(username, postingKey) {
 						LoggingService.logLogin();
 					})
 			})
-			.catch((error) => {
+			.catch(error => {
 				storage.user = null;
 				storage.postingKey = null;
 				storage.like_power = null;
 				storage.avatar = null;
-				if (error.actual === 128) {
+				if (!error.data && error.actual === 128) {
 					dispatch(setPostingKeyErrorMessage('Invalid posting key.'))
 				}
 				dispatch(loginError(error));

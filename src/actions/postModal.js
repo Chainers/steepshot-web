@@ -2,7 +2,7 @@ import {openModal} from './modal';
 import {getStore} from '../store/configureStore';
 import {getPostsList} from './postsList';
 import Constants from '../common/constants';
-import {blurredTextInput, setTextInputState} from './textInput';
+import {setTextInputState} from './textInput';
 import {setCommentEditState} from './comments';
 
 export function initPostModal(point, index) {

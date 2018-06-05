@@ -36,9 +36,10 @@ class Post extends React.Component {
 
   blockLinkToSinglePost() {
     return (
-			<a href={this.props.linkToSinglePost}
-				 target="_blank"
-				 className="open-in-new-tab_post" onClick={(e) => Post.preventModalForNewTab(e)}/>
+    	<Link to={this.props.linkToSinglePost}
+						target="_blank"
+						className="open-in-new-tab_post"
+						onClick={(e) => Post.preventModalForNewTab(e)}/>
     )
   }
 
@@ -47,8 +48,8 @@ class Post extends React.Component {
 			e.stopPropagation();
 			return true;
 		}
-    let evt = e ? e : window.event;
-    (evt.preventDefault) ? evt.preventDefault() : evt.returnValue = false;
+    let event = e ? e : window.event;
+    (event.preventDefault) ? event.preventDefault() : event.returnValue = false;
     return false;
 	}
 
@@ -166,7 +167,7 @@ class Post extends React.Component {
 							</div>
 							<Link to={authorLink} className="user">
 								<div className="photo">
-									<Avatar src={authorImage}/>
+									<Avatar src={authorImage} sizes={Constants.DEF_AVATAR_SIZE}/>
 								</div>
 								<div className="name">{this.props.author}</div>
 							</Link>
@@ -209,7 +210,7 @@ class Post extends React.Component {
 const mapStateToProps = (state, props) => {
 	let post = state.posts[props.index];
   let isGolosService = state.services.name === Constants.SERVICES.golos.name;
-  let linkToSinglePost = document.location.origin + (isGolosService ? '/' + Constants.SERVICES.golos.name : '')
+  let linkToSinglePost = (isGolosService ? '/' + Constants.SERVICES.golos.name : '')
     + '/post' + post.url.replace(/\/[\w-.]+/, '');
 	if (post) {
 		const media = post.media[0];
