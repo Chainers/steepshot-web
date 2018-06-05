@@ -115,7 +115,6 @@ export default function posts(state = {}, action) {
 			let copyState = {...state};
 			delete copyState[action.index];
 			return copyState;
-
 		case 'DELETE_COMMENT_SUCCESS':
       return {
         ...state,
@@ -125,7 +124,6 @@ export default function posts(state = {}, action) {
 					body: '*deleted*'
         }
       };
-
 		case 'DELETE_POST_ERROR':
 			return {
 				...state,
