@@ -26,7 +26,7 @@ import './postModal.css';
 import Constants from '../../common/constants';
 import {utils} from '../../utils/utils';
 import {setComponentSize} from '../../utils/setComponentSize';
-import {setCommentEditState} from "../../actions/comments";
+import {setCommentEditState} from '../../actions/comments';
 
 class PostModal extends React.Component {
 
@@ -106,7 +106,7 @@ class PostModal extends React.Component {
 	}
 
 	initKeyPress(e) {
-		if (this.props.isCommentEditing || !this.props.focusedTextInput) {
+		if (!this.props.focusedTextInput) {
 			switch (e.keyCode) {
 				case 37:
 					this.previousPost();
@@ -117,9 +117,7 @@ class PostModal extends React.Component {
 				case 27:
 					if (this.props.fullScreenMode) {
             this.setFullScreen(false, false);
-          } else if (this.props.isCommentEditing) {
-            this.props.setCommentEditState('', this.props.currentIndex, false);
-					} else {
+          } else {
 						this.props.closeModal(this.props.point);
 					}
 					break;
@@ -129,7 +127,9 @@ class PostModal extends React.Component {
 				default:
 					break;
 			}
-		}
+		} else if (e.keyCode === 27 && this.props.isCommentEditing && !this.props.fullScreenMode) {
+      this.props.setCommentEditState('', this.props.currentIndex, false);
+    }
 	}
 
 	lowNSFWFilter() {
@@ -411,6 +411,7 @@ class PostModal extends React.Component {
 				visibility: 'hidden'
 			}
 		}
+
 		return (
 			<div>
 				<div className="container_pos-mod" style={hideModalFS}>

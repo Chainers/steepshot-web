@@ -1,17 +1,19 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux'
 import {documentTitle} from '../../utils/documentTitle';
-import {addMetaTags, getDefaultTags} from "../../actions/metaTags";
-import {withWrapper} from "create-react-server/wrapper";
+import {addMetaTags, getDefaultTags} from '../../actions/metaTags';
+import {withWrapper} from 'create-react-server/wrapper';
 import './login.css';
-import ShowIf from "../Common/ShowIf";
-import {login} from "../../actions/auth";
-import ImageGallery from "./ImageGallery/ImageGalLery";
+import ShowIf from '../Common/ShowIf';
+import {login} from '../../actions/auth';
+import ImageGallery from './ImageGallery/ImageGallery';
 import {push} from 'react-router-redux';
-import Constants from "../../common/constants";
-import {switchService} from "../../actions/services";
-import {clearLoginErrors} from "../../actions/login";
-import Switcher from "../Switcher/Switcher";
+import Constants from '../../common/constants';
+import {switchService} from '../../actions/services';
+import {clearLoginErrors} from '../../actions/login';
+import Switcher from '../Switcher/Switcher';
+import ChooseSteemRegModal from './ChooseSteemRegModal/ChooseSteemRegModal';
+import {openModal} from '../../actions/modal';
 
 const galleryImages = [
 	'/images/login/1.png',
@@ -46,6 +48,10 @@ class Login extends Component {
 	openRegisterSite(event) {
 		event.preventDefault();
 		if (this.props.chooseSteem) {
+      /*let modalOption = {
+        body: (<ChooseSteemRegModal/>),
+      };
+      this.props.openModal("ChooseSteemRegModal", modalOption);*/
 			window.open('https://steemit.com/pick_account');
 		} else {
 			window.open('https://golos.io/create_account');
@@ -154,6 +160,9 @@ const mapDispatchToProps = (dispatch) => {
 		},
 		clearLoginErrors: () => {
 			dispatch(clearLoginErrors())
+		},
+		openModal: (index, options) => {
+			dispatch(openModal(index, options));
 		}
 	}
 };

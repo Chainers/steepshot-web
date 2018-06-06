@@ -151,6 +151,7 @@ const Constants = {
 		TAGS: 'tags',
 		DESCRIPTION: 'description',
 		COMMENT: 'comment',
+		COMMENT_INPUT_ACTIVE_CLASS: 'focused_tex-inp',
 		NAME: 'name',
 		POSTING_KEY: 'postingKey'
 	},
@@ -174,6 +175,8 @@ const Constants = {
 
 	COMMENT_ERROR_MESSAGE: 'You can only create comments once per 20 seconds.',
 	COMMENT_SUCCESS_MESSAGE: 'Comment has been successfully added.',
+	COMMENT_EDIT_SUCCESS_MESSAGE: 'Comment has been successfully updated. If you don\'t see the updated comment in ' +
+	'this post, please give it a few minutes to sync from the blockchain.',
 
 	SETTINGS_CHANGED_MESSAGE: 'Settings has been successfully changed.',
 	SETTINGS_NOT_CHANGED_MESSAGE: 'Settings hasn\'t been changed.',
