@@ -248,5 +248,3 @@ export function setVideoTime(index, time) {
 		time
 	}
 }
-
-

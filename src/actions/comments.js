@@ -121,12 +121,13 @@ function addedNewComment(point, posts, url) {
 	}
 }
 
-function setFocusTextInput(isFocused) {
-  return {
-    type: 'SET_FOCUS_TEXT_INPUT',
-    point: Constants.TEXT_INPUT_POINT.COMMENT,
-		isFocused
-  }
+function editCommentSuccess(index, response) {
+	let newBody = response.operations[0][1].body;
+	return {
+		type: 'EDIT_COMMENT_SUCCESS',
+		index,
+    newBody
+	}
 }
 
 export function setCommentEditState(point, parentPost, commentEditing) {
@@ -144,6 +145,14 @@ export function setCommentEditState(point, parentPost, commentEditing) {
 	}
 }
 
+export function setFocusTextInput(isFocused) {
+  return {
+    type: 'SET_FOCUS_TEXT_INPUT',
+    point: Constants.TEXT_INPUT_POINT.COMMENT,
+    isFocused
+  }
+}
+
 export function setInputForEdit(point, parentPost, commentEditing) {
   let commentText = getStore().getState().posts[point].body;
   return dispatch => {
@@ -153,15 +162,38 @@ export function setInputForEdit(point, parentPost, commentEditing) {
   }
 }
 
-export function editComment(postIndex, point) {
+export function editComment(parentPost, postIndex, point) {
+  let state = getStore().getState();
+  let post = state.posts[postIndex];
+  let comment = state.textInput[point].text;
+  return dispatch => {
+    if (state.session.actionLocked) {
+      return;
+    }
+    dispatch(actionLock());
+    dispatch(addNewCommentRequest(parentPost));
 
+    CommentService.editComment(post, PostService.getPermlinkFromUrl(post.url), comment)
+      .then(response => {
+        dispatch(actionUnlock());
+        dispatch(addNewCommentSuccess(parentPost, response));
+        dispatch(setCommentEditState('', parentPost, false));
+				dispatch(editCommentSuccess(postIndex, response));
+        dispatch(pushMessage(Constants.COMMENT_EDIT_SUCCESS_MESSAGE));
+      })
+      .catch( error => {
+        dispatch(actionUnlock());
+        dispatch(addNewCommentError(parentPost, error));
+        dispatch(pushErrorMessage(error));
+      })
+	}
 }
 
 export function sendComment(postIndex, point) {
 	let state = getStore().getState();
 	let post = state.posts[postIndex];
 	let comment = state.textInput[point].text;
-	return (dispatch) => {
+	return dispatch => {
 		if (state.session.actionLocked) {
 			return;
 		}
@@ -182,6 +214,8 @@ export function sendComment(postIndex, point) {
 					total_payout_value: 0,
 					body: comment,
 					created: Date.now(),
+          parent_author: url.replace(/.+\/@([\w-.]+)\/.+/, '$1'),
+          parent_permlink: url.replace(/.+\/@[\w-.]+\/([^/]+?)#.+/, '$1'),
 					flagLoading: false,
 					voteLoading: false,
 					url

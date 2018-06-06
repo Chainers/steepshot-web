@@ -3,7 +3,7 @@ import {getStore} from '../store/configureStore';
 import {getPostsList} from './postsList';
 import Constants from '../common/constants';
 import {setTextInputState} from './textInput';
-import {setCommentEditState} from './comments';
+import {setCommentEditState, setFocusTextInput} from './comments';
 
 export function initPostModal(point, index) {
 	return {
@@ -99,6 +99,7 @@ export function previousPostModal(index, isLoading) {
 
 export function setFullScreen(isOpen, timeoutID) {
 	return (dispatch) => {
+		dispatch(setFocusTextInput(true));
 		dispatch({
 			type: 'SET_FULL_SCREEN',
 			isOpen,

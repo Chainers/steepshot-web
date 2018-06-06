@@ -13,7 +13,7 @@ import {
 	VKIcon,
 	RedditIcon
 } from 'react-share';
-import './ChooseSocialNetwork.css';
+import './chooseSocialNetwork.css';
 import {getStore} from "../../../store/configureStore";
 import Constants from "../../../common/constants";
 

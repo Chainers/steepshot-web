@@ -30,6 +30,7 @@ class EditPost extends React.Component {
 		super();
 		this.setImageContainerSize = this.setImageContainerSize.bind(this);
 		props.setInitDataForEditPost(props.postUrl);
+		this.correctDragAndDropImage = this.correctDragAndDropImage.bind(this);
 	}
 
 	componentWillReceiveProps(nextProps) {
@@ -45,11 +46,13 @@ class EditPost extends React.Component {
 
 	componentWillUnmount() {
 		this.props.editClearAll();
+    window.removeEventListener('drop', this.correctDragAndDropImage);
+    window.removeEventListener('dragover', this.correctDragAndDropImage);
 	}
 
 	componentDidMount() {
-		window.addEventListener('drop', (e) => this.correctDragAndDropImage(e));
-		window.addEventListener('dragover', (e) => this.correctDragAndDropImage(e));
+		window.addEventListener('drop', this.correctDragAndDropImage);
+		window.addEventListener('dragover', this.correctDragAndDropImage);
 		documentTitle();
 	}
 
@@ -161,7 +164,7 @@ class EditPost extends React.Component {
 							<div className="choose-container_edi-pos">
 								<div className="upload-icon_edi-pos"/>
 								<span className="upload-text_edi-pos">
-                  Click to upload a picture
+                  Click or drop here to upload a picture
                 </span>
 							</div>
 						</ShowIf>

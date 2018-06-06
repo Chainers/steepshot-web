@@ -10,7 +10,7 @@
 .poweroflike-common_vote-ind {
     position: absolute;
     height: 54px;
-    z-index: 2;
+    z-index: 3;
     background: #ffffff;
     border: 1px solid #ffffff;
     border-radius: 10px;
