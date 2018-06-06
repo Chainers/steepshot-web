@@ -5232,7 +5232,6 @@ input[type=button].btn-block, input[type=reset].btn-block, input[type=submit].bt
 
     .post__image-container-full-screen-img {
         min-width: 300px;
-        /*min-height: 100vh !important;*/
         max-width: calc(1524px - 5vw) !important;
     }
 }

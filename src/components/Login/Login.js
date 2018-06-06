@@ -48,11 +48,11 @@ class Login extends Component {
 	openRegisterSite(event) {
 		event.preventDefault();
 		if (this.props.chooseSteem) {
-      let modalOption = {
+      /*let modalOption = {
         body: (<ChooseSteemRegModal/>),
       };
-      this.props.openModal("ChooseSteemRegModal", modalOption);
-			// window.open('https://steemit.com/pick_account');
+      this.props.openModal("ChooseSteemRegModal", modalOption);*/
+			window.open('https://steemit.com/pick_account');
 		} else {
 			window.open('https://golos.io/create_account');
 		}

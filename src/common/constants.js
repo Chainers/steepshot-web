@@ -151,6 +151,7 @@ const Constants = {
 		TAGS: 'tags',
 		DESCRIPTION: 'description',
 		COMMENT: 'comment',
+		COMMENT_INPUT_ACTIVE_CLASS: 'focused_tex-inp',
 		NAME: 'name',
 		POSTING_KEY: 'postingKey'
 	},

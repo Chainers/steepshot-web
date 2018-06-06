@@ -1,5 +1,5 @@
 import {getStore} from "../store/configureStore";
-import {clearTextInputState, setTextInputState} from "./textInput";
+import {blurredTextInput, clearTextInputState, focusedTextInput, setTextInputState} from "./textInput";
 import {pushErrorMessage, pushMessage} from "./pushMessage";
 import {actionLock, actionUnlock} from "./session";
 import Constants from "../common/constants";
@@ -139,26 +139,23 @@ export function setCommentEditState(point, parentPost, commentEditing) {
       commentEditing
 		});
     if (!commentEditing) {
-      dispatch(setFocusTextInput(commentEditing));
-      dispatch(setTextInputState('comment', {text: ''}));
+      dispatch(blurredTextInput(Constants.TEXT_INPUT_POINT.COMMENT));
+      dispatch(setTextInputState(Constants.TEXT_INPUT_POINT.COMMENT, {text: '', focusedStyle: ''}));
     }
 	}
-}
-
-export function setFocusTextInput(isFocused) {
-  return {
-    type: 'SET_FOCUS_TEXT_INPUT',
-    point: Constants.TEXT_INPUT_POINT.COMMENT,
-    isFocused
-  }
 }
 
 export function setInputForEdit(point, parentPost, commentEditing) {
   let commentText = getStore().getState().posts[point].body;
   return dispatch => {
     dispatch(setCommentEditState(point, parentPost, commentEditing));
-    dispatch(setFocusTextInput(commentEditing));
-    dispatch(setTextInputState('comment', {text: commentText}));
+    if (commentEditing) {
+      dispatch(focusedTextInput(Constants.TEXT_INPUT_POINT.COMMENT));
+		} else {
+      dispatch(blurredTextInput(Constants.TEXT_INPUT_POINT.COMMENT));
+		}
+    dispatch(setTextInputState('comment', {text: commentText,
+			focusedStyle: Constants.TEXT_INPUT_POINT.COMMENT_INPUT_ACTIVE_CLASS}));
   }
 }
 
@@ -246,6 +243,6 @@ export function replyAuthor(name) {
 				error: ''
 			}
 		});
-		dispatch(setFocusTextInput(true));
+		dispatch(focusedTextInput(Constants.TEXT_INPUT_POINT.COMMENT));
 	}
 }
