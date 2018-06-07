@@ -2617,32 +2617,6 @@ output {
     background: #1294f6
 }
 
-.btn-success {
-    border-color: transparent;
-    background: #7ed321
-}
-
-.btn-success:focus, .btn-success:hover {
-    background: #7ed321
-}
-
-.btn-success.active, .btn-success:active {
-    background: #7ed321
-}
-
-.btn-danger {
-    border-color: transparent;
-    background: #eb443d
-}
-
-.btn-danger:focus, .btn-danger:hover {
-    background: #eb443d
-}
-
-.btn-danger.active, .btn-danger:active {
-    background: #eb443d
-}
-
 .btn-index {
     border-color: #e7e7e7;
     background: #fff;

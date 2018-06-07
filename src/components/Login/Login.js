@@ -48,11 +48,10 @@ class Login extends Component {
 	openRegisterSite(event) {
 		event.preventDefault();
 		if (this.props.chooseSteem) {
-      /*let modalOption = {
+      let modalOption = {
         body: (<ChooseSteemRegModal/>),
       };
-      this.props.openModal("ChooseSteemRegModal", modalOption);*/
-			window.open('https://steemit.com/pick_account');
+      this.props.openModal("ChooseSteemRegModal", modalOption);
 		} else {
 			window.open('https://golos.io/create_account');
 		}
@@ -65,6 +64,10 @@ class Login extends Component {
 	handleLogin(e) {
 		e.preventDefault();
 		this.props.login(this.name.value, this.password.value);
+	}
+
+  loginWithSteemConnect() {
+
 	}
 
 	render() {
@@ -120,10 +123,17 @@ class Login extends Component {
 									rightLabel="Golos"
 								/>
 								<button className="sign_login btn btn-default" onClick={this.handleLogin.bind(this)} type="submit">
-									Login
+									LOGIN
 								</button>
 							</div>
 						</form>
+					</div>
+					<div className={'registration-block_login login-steem-con-block_login' +
+						(chooseSteem ? '' : ' hide-log-ste-con-block_login')}>
+						<label>Don’t you trust us?</label>
+						<button className="steem-con-btn_login" onClick={this.loginWithSteemConnect.bind(this)}>
+							{(this.props.isMobileScreen ? '' : 'LOGIN WITH ') + 'STEEM CONNECT'}
+						</button>
 					</div>
 					<div className="registration-block_login">
 						<label>Don’t have a {chooseSteem ? 'Steem' : 'Golos'} account?</label>
