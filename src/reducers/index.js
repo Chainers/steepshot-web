@@ -10,29 +10,30 @@ import tabsBar from './tabsBar';
 import likesFlagsList from './likesFlagsList';
 import users from './users';
 import bodyParams from './bodyParams';
-import textInput from "./textInput";
-import metaTags from "./metaTags";
-import search from "./search";
+import textInput from './textInput';
+import metaTags from './metaTags';
+import search from './search';
 import editPost from './editPost';
 import avatar from './avatar';
-import {routerReducer} from "react-router-redux";
-import pushNotifications from "./pushNotifications";
-import comments from "./comments";
-import imagesGallery from "./imagesGallery";
-import userProfile from "./userProfile";
-import pushMessage from "./pushMessage";
-import formInput from "./formInput";
-import bodyLoader from "./bodyLoader";
-import session from "./session";
-import windowOnStore from "./windowOnStore";
-import settings from "./settings";
-import mobileNavigation from "./mobileNavigation";
-import oneSignal from "./oneSignal";
-import settingsFields from "./settingsFields";
-import advertising from "./advertising";
-import services from "./services";
-import login from "./login";
+import {routerReducer} from 'react-router-redux';
+import pushNotifications from './pushNotifications';
+import comments from './comments';
+import imagesGallery from './imagesGallery';
+import userProfile from './userProfile';
+import pushMessage from './pushMessage';
+import formInput from './formInput';
+import bodyLoader from './bodyLoader';
+import session from './session';
+import windowOnStore from './windowOnStore';
+import settings from './settings';
+import mobileNavigation from './mobileNavigation';
+import oneSignal from './oneSignal';
+import settingsFields from './settingsFields';
+import advertising from './advertising';
+import services from './services';
+import login from './login';
 import scroll from './scroll';
+import chooseSteemRegModal from './chooseSteemRegModal';
 
 export default combineReducers({
 	clipboard,
@@ -68,5 +69,6 @@ export default combineReducers({
 	oneSignal,
 	services,
 	login,
-	scroll
+	scroll,
+  chooseSteemRegModal
 });
