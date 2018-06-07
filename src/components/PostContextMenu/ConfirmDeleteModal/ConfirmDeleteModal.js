@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {connect} from 'react-redux';
 import {deletePostAfterConfirm} from '../../../actions/post';
-import './ConfirmDeleteModal.css';
+import './confirmDeleteModal.css';
 
 class ConfirmDeleteModal extends React.Component {
 

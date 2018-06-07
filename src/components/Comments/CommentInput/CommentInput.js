@@ -22,7 +22,7 @@ class CommentInput extends React.Component {
 		if (!isEdit) {
       this.props.sendComment(this.props.point, Constants.TEXT_INPUT_POINT.COMMENT);
 		} else {
-			this.props.editComment(this.props.point, Constants.TEXT_INPUT_POINT.COMMENT);
+			this.props.editComment(this.props.point, this.props.editingPostPoint, Constants.TEXT_INPUT_POINT.COMMENT);
 		}
 	}
 
@@ -51,7 +51,7 @@ class CommentInput extends React.Component {
 						{buttonState}
 					</ShowIf>
 					<ShowIf show={this.props.sendingNewComment}>
-						<LoadingSpinner/>
+						<LoadingSpinner style={{marginBottom: 4}}/>
 					</ShowIf>
 				</div>
 			</ShowIf>
@@ -74,8 +74,8 @@ const mapDispatchToProps = (dispatch) => {
 		sendComment: (postIndex, point) => {
 			dispatch(sendComment(postIndex, point));
 		},
-		editComment: (postIndex, point) => {
-			dispatch(editComment(postIndex, point));
+		editComment: (parentPost, postIndex, point) => {
+			dispatch(editComment(parentPost, postIndex, point));
 		},
     setCommentEditState: (point, parentPost, commentEditing) => {
 			dispatch(setCommentEditState(point, parentPost, commentEditing));

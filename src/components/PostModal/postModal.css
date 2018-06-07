@@ -236,6 +236,25 @@
     align-items: center;
 }
 
+.title_pos-mod {
+    margin-bottom: 20px;
+    color: #000000;
+    font: 27px OpenSans-Light
+}
+
+.message_pos-mod {
+    max-width: 80%;
+    margin-bottom: 30px;
+    color: #696969;
+    font: 14px OpenSans-Regular;
+    text-align: center
+}
+
+.before-load-curtain_pos-mod {
+    z-index: 10;
+    background-color: #e7e7e7
+}
+
 .title-low-nsfw_pos-mod {
     margin-bottom: 20px;
     font: 27px OpenSans-Light;
@@ -254,6 +273,7 @@
     height: 100%;
     z-index: 10;
     top: 0;
+    left: 0;
     background-color: #e7e7e7;
     display: flex;
     align-items: center;

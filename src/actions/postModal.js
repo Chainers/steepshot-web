@@ -2,7 +2,7 @@ import {openModal} from './modal';
 import {getStore} from '../store/configureStore';
 import {getPostsList} from './postsList';
 import Constants from '../common/constants';
-import {focusedTextInput, setTextInputState} from './textInput';
+import {setTextInputState} from './textInput';
 import {setCommentEditState} from './comments';
 
 export function initPostModal(point, index) {
@@ -16,14 +16,14 @@ export function initPostModal(point, index) {
 }
 
 export function openPostModal(point, index, options) {
-	return (dispatch) => {
+	return dispatch => {
 		dispatch(initPostModal(point, index));
 		dispatch(openModal(point, options));
 	}
 }
 
 export function setPostModalOptions(options) {
-	return (dispatch) => {
+	return dispatch => {
 		dispatch({
 			type: 'SET_POST_MODAL_OPTIONS',
 			options
@@ -44,8 +44,7 @@ function swapPostModal(index, isLoading) {
       isLoading,
       previousStyle
     });
-    dispatch(setTextInputState(Constants.OPERATIONS.COMMENT, {focusedStyle: '', text: ''}));
-    dispatch(focusedTextInput(Constants.OPERATIONS.COMMENT));
+    dispatch(setTextInputState(Constants.OPERATIONS.COMMENT, {text: '', focusedStyle: ''}));
 	}
 }
 
@@ -92,14 +91,14 @@ export function previousPostModal(index, isLoading) {
 			type: 'THE_POST_IS_FIRST'
 		}
 	}
-	return (dispatch) => {
+	return dispatch => {
 		let newIndex = postsList[positionPost - 1];
 		dispatch(swapPostModal(newIndex, isLoading))
 	}
 }
 
 export function setFullScreen(isOpen, timeoutID) {
-	return (dispatch) => {
+	return dispatch => {
 		dispatch({
 			type: 'SET_FULL_SCREEN',
 			isOpen,
@@ -109,7 +108,7 @@ export function setFullScreen(isOpen, timeoutID) {
 }
 
 export function setFSNavigation(isVisible, timeoutID) {
-	return (dispatch) => {
+	return dispatch => {
 		dispatch({
 			type: 'SET_FULL_SCREEN_NAVIGATION',
 			isVisible,
@@ -119,7 +118,7 @@ export function setFSNavigation(isVisible, timeoutID) {
 }
 
 export function setPostOffset(offset) {
-	return (dispatch) => {
+	return dispatch => {
 		dispatch({
 			type: 'SET_POST_OFFSET',
 			postOffset: offset

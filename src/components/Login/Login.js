@@ -1,17 +1,19 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux'
 import {documentTitle} from '../../utils/documentTitle';
-import {addMetaTags, getDefaultTags} from "../../actions/metaTags";
-import {withWrapper} from "create-react-server/wrapper";
+import {addMetaTags, getDefaultTags} from '../../actions/metaTags';
+import {withWrapper} from 'create-react-server/wrapper';
 import './login.css';
-import ShowIf from "../Common/ShowIf";
-import {login} from "../../actions/auth";
-import ImageGallery from "./ImageGallery/ImageGalLery";
+import ShowIf from '../Common/ShowIf';
+import {login} from '../../actions/auth';
+import ImageGallery from './ImageGallery/ImageGallery';
 import {push} from 'react-router-redux';
-import Constants from "../../common/constants";
-import {switchService} from "../../actions/services";
-import {clearLoginErrors} from "../../actions/login";
-import Switcher from "../Switcher/Switcher";
+import Constants from '../../common/constants';
+import {switchService} from '../../actions/services';
+import {clearLoginErrors} from '../../actions/login';
+import Switcher from '../Switcher/Switcher';
+import ChooseSteemRegModal from './ChooseSteemRegModal/ChooseSteemRegModal';
+import {openModal} from '../../actions/modal';
 
 const galleryImages = [
 	'/images/login/1.png',
@@ -46,7 +48,10 @@ class Login extends Component {
 	openRegisterSite(event) {
 		event.preventDefault();
 		if (this.props.chooseSteem) {
-			window.open('https://steemit.com/pick_account');
+      let modalOption = {
+        body: (<ChooseSteemRegModal/>),
+      };
+      this.props.openModal("ChooseSteemRegModal", modalOption);
 		} else {
 			window.open('https://golos.io/create_account');
 		}
@@ -58,7 +63,14 @@ class Login extends Component {
 
 	handleLogin(e) {
 		e.preventDefault();
-		this.props.login(this.name.value, this.password.value);
+		let nameValue = this.name.value;
+		nameValue = nameValue.replace(/\s+/g, '');
+		nameValue = nameValue.replace(/@([\w-.]+)/, '$1');
+		this.props.login(nameValue.toLowerCase(), this.password.value.trim());
+	}
+
+  loginWithSteemConnect() {
+
 	}
 
 	render() {
@@ -114,10 +126,17 @@ class Login extends Component {
 									rightLabel="Golos"
 								/>
 								<button className="sign_login btn btn-default" onClick={this.handleLogin.bind(this)} type="submit">
-									Login
+									LOGIN
 								</button>
 							</div>
 						</form>
+					</div>
+					<div className={'registration-block_login login-steem-con-block_login' +
+						(chooseSteem ? '' : ' hide-log-ste-con-block_login')}>
+						<label>Don’t you trust us?</label>
+						<button className="steem-con-btn_login" onClick={this.loginWithSteemConnect.bind(this)}>
+							{(this.props.isMobileScreen ? '' : 'LOGIN WITH ') + 'STEEM CONNECT'}
+						</button>
 					</div>
 					<div className="registration-block_login">
 						<label>Don’t have a {chooseSteem ? 'Steem' : 'Golos'} account?</label>
@@ -154,6 +173,9 @@ const mapDispatchToProps = (dispatch) => {
 		},
 		clearLoginErrors: () => {
 			dispatch(clearLoginErrors())
+		},
+		openModal: (index, options) => {
+			dispatch(openModal(index, options));
 		}
 	}
 };

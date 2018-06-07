@@ -6,11 +6,11 @@ import UsersList from "../UsersList/UsersList";
 import CloseButton from "../Common/CloseButton/CloseButton";
 import {clearBodyHeight, setLikesFlagsListBodyHeight} from "../../actions/likesFlagsList";
 import ReactResizeDetector from 'react-resize-detector';
-import TabsBar from "../Common/TabsBar/TabsBar";
-import Tab from "../Common/TabsBar/Tab/Tab";
+import TabsBar from '../Common/TabsBar/TabsBar';
+import Tab from '../Common/TabsBar/Tab/Tab';
 import './likesFlagsList.css';
-import {utils} from "../../utils/utils";
-import Scroll from "../Scroll/Scroll";
+import {utils} from '../../utils/utils';
+import Scroll from '../Scroll/Scroll';
 
 const SCROLL_POINT_LIKES = 'likes';
 const SCROLL_POINT_FLAGS = 'flags';
@@ -66,7 +66,7 @@ class LikesFlagsList extends React.Component {
 		}
 		return (
 			<div className="container_lik-lis">
-				<CloseButton className='close-button_lik-lis' onClick={this.props.closeModal}/>
+				<CloseButton className="close-button_lik-lis" onClick={this.props.closeModal}/>
 				<TabsBar point="likesFlags"
 								 showLoader={false}
 								 alwaysShowNavigation={true}
@@ -123,7 +123,7 @@ const mapStateToProps = (state, props) => {
 const mapDispatchToProps = (dispatch) => {
 	return {
 		closeModal: () => {
-			dispatch(closeModal('LikesFlagsList'));
+			dispatch(closeModal("LikesFlagsList"));
 		},
 		setBodyHeight: (preferredBodyHeight, fullBodyHeight) => {
 			dispatch(setLikesFlagsListBodyHeight(preferredBodyHeight, fullBodyHeight))

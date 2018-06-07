@@ -4,9 +4,10 @@
     align-items: center;
 }
 
-container_switcher > label {
+.container_switcher > label {
     font-size: 16px;
     color: #0f181e;
+    margin-bottom: 0;
 }
 
 .input-container_switcher {
@@ -30,10 +31,16 @@ container_switcher > label {
 
 .left_switcher {
     background-color: #ff1e00;
-    margin: 0;
+    margin: -1px 0 0 0;
 }
 
 .right_switcher {
     background-color: #4a90e2;
-    margin-left: 30px;
+    margin: -1px 0 0 30px;
+}
+
+@media (max-width: 385px) {
+    .container_switcher {
+        margin-bottom: 20px;
+    }
 }

@@ -11,6 +11,7 @@ import Flag from '../../PostsList/Post/Flag/Flag';
 import {deletePost} from '../../../actions/post';
 import ShowIf from '../../Common/ShowIf';
 import {innerLayout} from '../../../utils/innerLayout';
+import Constants from '../../../common/constants';
 
 class Comment extends React.Component {
 
@@ -19,7 +20,7 @@ class Comment extends React.Component {
 	}
 
 	componentWillReceiveProps(nextProps) {
-		if (nextProps.comment.body === '*deleted*') this.commentText.innerHTML = '*deleted*';
+		if (this.props.comment.body !== nextProps.comment.body) this.commentText.innerHTML = nextProps.comment.body;
 	}
 
 	editComment() {
@@ -63,7 +64,7 @@ class Comment extends React.Component {
 														 </div>;
 		}
 
-		if (this.props.isCommentEditing) {
+		if (this.props.isCommentCanceleable) {
       editCommentElement = <span className="edit_comment"
 																 onClick={this.cancelEdit.bind(this)}>Cancel
 													 </span>;
@@ -79,11 +80,11 @@ class Comment extends React.Component {
 						 		isComment={true}/>
 		    </div>
 			: <div className="display--flex">
-					{/*<ShowIf show={!this.props.isCommentDeleted && !this.props.cashoutTimeExceed}
+					<ShowIf show={!this.props.isCommentDeleted && !this.props.cashoutTimeExceed}
 									styleContainer={{display: 'flex'}}>
 						{editCommentElement}
 						{deleteCommentElement}
-					</ShowIf>*/}
+					</ShowIf>
 				</div>;
 		const authorLink = `/@${this.props.author}`;
 		return (
@@ -97,7 +98,7 @@ class Comment extends React.Component {
 							/>
 						</div>
 						<Link to={authorLink} className="user">
-							<Avatar src={this.props.comment.avatar}/>
+							<Avatar src={this.props.comment.avatar} sizes={Constants.DEF_AVATAR_SIZE}/>
 							<div className="name">{this.props.author}</div>
 						</Link>
 				</div>
@@ -125,9 +126,11 @@ const mapStateToProps = (state, props) => {
 	const parentPost = props.point.replace(/(.+)#.+/, '$1');
 	const currentCommentEditing = props.point === state.comments[parentPost].editingPostPoint;
 	const isCommentEditing = state.comments[parentPost].commentEditing;
+	const isCommentCanceleable = props.point === state.comments[parentPost].editingPostPoint;
 	return {
     comment,
     currentCommentEditing,
+    isCommentCanceleable,
 		isCommentEditing,
 		parentPost,
     isCommentDeleted,
