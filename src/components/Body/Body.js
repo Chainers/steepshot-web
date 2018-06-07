@@ -1,6 +1,6 @@
 import React from 'react';
-import Footer from "../Footer/Footer";
-import Scroll from "../Scroll/Scroll";
+import Footer from '../Footer/Footer';
+import Scroll from '../Scroll/Scroll';
 import './body.css';
 
 const SCROLL_POINT = 'body';

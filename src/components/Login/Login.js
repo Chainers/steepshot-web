@@ -63,7 +63,10 @@ class Login extends Component {
 
 	handleLogin(e) {
 		e.preventDefault();
-		this.props.login(this.name.value, this.password.value);
+		let nameValue = this.name.value;
+		nameValue = nameValue.replace(/\s+/g, '');
+		nameValue = nameValue.replace(/@([\w-.]+)/, '$1');
+		this.props.login(nameValue.toLowerCase(), this.password.value.trim());
 	}
 
   loginWithSteemConnect() {
