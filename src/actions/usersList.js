@@ -1,6 +1,6 @@
 import {getStore} from '../store/configureStore';
 import UserService from '../services/userService';
-import {serverErrorsList} from "../utils/serverErrorsList";
+import {serverErrorsList} from '../utils/serverErrorsList';
 
 export function initUsersList(options) {
 	return {

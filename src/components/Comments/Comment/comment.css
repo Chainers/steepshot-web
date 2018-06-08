@@ -102,3 +102,9 @@
         opacity: .2;
     }
 }
+
+@media (max-width: 815px) {
+    .container_comment {
+        padding: 15px;
+    }
+}
