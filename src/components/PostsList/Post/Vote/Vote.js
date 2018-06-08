@@ -26,7 +26,7 @@ class Vote extends React.Component {
       this.props.pushMessage(Constants.VOTE_ACTION_WHEN_NOT_AUTH);
       return;
     }
-		if (this.props.isPLOpen) {
+		if (this.props.isPLOpen || this.props.commentDeleted) {
 			return;
 		}
 		this.props.toggleVote(this.props.postIndex);
@@ -34,13 +34,7 @@ class Vote extends React.Component {
 	}
 
   longTapPLInd(timeDelay) {
-    if (this.props.vote) {
-      return;
-    }
-    if (!this.props.isUserAuth) {
-      return;
-    }
-    if (this.props.isPLOpen) {
+    if (this.props.vote || !this.props.isUserAuth || this.props.isPLOpen || this.props.commentDeleted) {
       return;
     }
     let plTimeout = setTimeout(() => {
@@ -52,6 +46,9 @@ class Vote extends React.Component {
   }
 
   breakLongTapPLInd(isDesktop) {
+    if (this.props.commentDeleted) {
+      return;
+    }
     if (isDesktop) {
       if (!this.powerIndicator) {
         clearTimeout(this.props.plTimeout);
@@ -120,6 +117,9 @@ class Vote extends React.Component {
 		let buttonClasses = 'btn-like_vote', wrapperClass = 'btn-like-wrapper_vote';
 		if (this.props.isComment) {
       buttonClasses = 'comment btn-like_vote';
+      if (this.props.commentDeleted) {
+        buttonClasses = `comment btn-like-inactive_vote ${this.props.vote ? 'comment-liked_vote' : 'comment-not-liked_vote'}`;
+      }
       wrapperClass = 'btn-like-wrapper-comment_vote';
 		}
 		if (this.props.vote) {

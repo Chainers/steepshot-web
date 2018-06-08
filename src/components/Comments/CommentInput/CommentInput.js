@@ -17,8 +17,7 @@ class CommentInput extends React.Component {
 	}
 
 	sendComment(isEdit) {
-		let commentText = this.props.commentValue.comment.text;
-		if (!commentText || commentText.replace(/\s+/g, '') === '') return;
+		if (!this.props.canSent) return;
 		if (!isEdit) {
       this.props.sendComment(this.props.point, Constants.TEXT_INPUT_POINT.COMMENT);
 		} else {
@@ -60,12 +59,18 @@ class CommentInput extends React.Component {
 }
 
 const mapStateToProps = (state, props) => {
+	let commentValue = state.textInput, commentBody = '';
+	let textInputData = state.textInput[Constants.TEXT_INPUT_POINT.COMMENT];
+  let newCommentText = textInputData ? textInputData.text : null;
+  let editingPostPoint = state.comments[props.point].editingPostPoint;
+  if (editingPostPoint) {
+  	commentBody = state.posts[editingPostPoint].body;
+	}
 	return {
 		isUserAuth: state.auth.user && state.auth.postingKey,
 		...state.comments[props.point],
-		commentValue: state.textInput,
-		canSent: state.textInput[Constants.TEXT_INPUT_POINT.COMMENT] &&
-		utils.isNotEmptyString(state.textInput[Constants.TEXT_INPUT_POINT.COMMENT].text)
+    commentValue,
+		canSent: textInputData && utils.isNotEmptyString(textInputData.text) && commentBody !== newCommentText
 	};
 };
 
