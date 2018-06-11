@@ -1,16 +1,16 @@
 import {push} from 'react-router-redux';
-import {pushErrorMessage, pushMessage} from "./pushMessage";
-import {hideBodyLoader, showBodyLoader} from "./bodyLoader";
-import {checkSubscribeAndUpdateSettings, removeSettings} from "./settings";
-import storage from "../utils/Storage";
-import {unsubscribe} from "./oneSignal";
-import UserService from "../services/userService";
-import OneSignalService from "../services/oneSignalService";
-import LoggingService from "../services/loggingService";
-import ChainService from "../services/chainService";
-import {setPostingKeyErrorMessage, setUsernameErrorMessage} from "./login";
-import {getStore} from "../store/configureStore";
-import Constants from "../common/constants";
+import {pushErrorMessage, pushMessage} from './pushMessage';
+import {hideBodyLoader, showBodyLoader} from './bodyLoader';
+import {checkSubscribeAndUpdateSettings, removeSettings} from './settings';
+import storage from '../utils/Storage';
+import {unsubscribe} from './oneSignal';
+import UserService from '../services/userService';
+import OneSignalService from '../services/oneSignalService';
+import LoggingService from '../services/loggingService';
+import ChainService from '../services/chainService';
+import {setPostingKeyErrorMessage, setUsernameErrorMessage} from './login';
+import {getStore} from '../store/configureStore';
+import Constants from '../common/constants';
 
 function showMessage(message) {
 	return dispatch => {
@@ -58,17 +58,14 @@ export function login(username, postingKey) {
 						} catch (error) {
 							console.warn(error.name);
 						}
-						dispatch({
-							type: 'UPDATE_VOTING_POWER',
-							voting_power: response[0].voting_power / 100
-						});
 						let parseResult = JSON.parse(response[0].json_metadata);
 						dispatch({
 							type: 'LOGIN_SUCCESS',
 							postingKey,
 							user: username,
 							avatar,
-							like_power: 100
+							like_power: 100,
+              voting_power: response[0].voting_power / 100
 						});
 						dispatch(push('/feed'));
 						dispatch(showMessage('Welcome to Steepshot, ' + (parseResult.profile.name || username) + '!'));

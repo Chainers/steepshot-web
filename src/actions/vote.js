@@ -1,9 +1,9 @@
 import {getStore} from '../store/configureStore';
 import {updatePost} from './post';
 import {updateVotingPower} from './auth';
-import {pushErrorMessage, pushMessage} from "./pushMessage";
-import {actionLock, actionUnlock} from "./session";
-import PostService from "../services/postService";
+import {pushErrorMessage, pushMessage} from './pushMessage';
+import {actionLock, actionUnlock} from './session';
+import PostService from '../services/postService';
 
 function toggleVoteRequest(postIndex) {
 	return {
