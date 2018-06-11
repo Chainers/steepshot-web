@@ -1,6 +1,7 @@
 import {getStore} from '../store/configureStore';
 import UserService from '../services/userService';
 import {serverErrorsList} from '../utils/serverErrorsList';
+import Constants from '../common/constants';
 
 export function initUsersList(options) {
 	return {
@@ -42,7 +43,8 @@ function getUsersListError(point, error) {
 
 export function getUsersList(point) {
 	const LIMIT = 16;
-	let statePoint = getStore().getState().usersList[point];
+	let state = getStore().getState();
+	let statePoint = state.usersList[point];
 	if (statePoint.loading) {
 		return {
 			type: 'EMPTY_GET_USERS'
@@ -94,8 +96,11 @@ export function getUsersList(point) {
 					users: authors,
 					offset: newUsers[newUsers.length - 1] ? newUsers[newUsers.length - 1].author : statePoint.offset,
 				};
-
 				dispatch(getUsersListSuccess(pointOptions, users));
+				if (statePoint.users.length < 17 && state.window.width > Constants.WINDOW.WIDE_SCREEN_WIDTH
+							&& state.window.height > Constants.WINDOW.MOBILE_START_WIDTH) {
+					dispatch(getUsersList(point));
+				}
 			})
 			.catch(error => {
 				let checkedError = serverErrorsList(error);

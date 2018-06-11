@@ -5,31 +5,6 @@ import {getBodyParams} from '../../actions/bodyParams';
 
 class Modals extends React.Component {
 
-	checkOpSystem(nextProps) {
-		if (!!navigator.platform && /iPad|iPhone|iPod/.test(navigator.platform)) {
-			if (Object.keys(this.props.modals).length === 0 && Object.keys(nextProps.modals).length > 0) {
-				this.props.getBodyParams(window.pageYOffset);
-			}
-			if (Object.keys(nextProps.modals).length > 0) {
-				document.body.classList.add('no-scroll-iphone');
-				document.body.style.top = -nextProps.bodyParams.offsetTop + 'px';
-			} else {
-				document.body.classList.remove('no-scroll-iphone');
-				document.body.style.top = '';
-				window.scrollTo(0, nextProps.bodyParams.offsetTop);
-			}
-		}
-	}
-
-	componentWillReceiveProps(nextProps) {
-		this.checkOpSystem(nextProps);
-		if (Object.keys(nextProps.modals).length > 0) {
-			document.body.classList.add('overflow--hidden');
-		} else {
-			document.body.classList.remove('overflow--hidden');
-		}
-	}
-
 	render() {
 		let modals = [];
 		for (let key in this.props.modals) {
