@@ -38,7 +38,13 @@ class SteemConnect {
 	}
 
 	changeFollowInBlockchain(jsonData) {
-
+		const params = {
+			required_auths: [],
+			required_posting_auths: [AuthService.getUsername()],
+			id: 'follow',
+			json: jsonData
+		};
+		return api.broadcast([['custom_json', params]]);
 	}
 
 	addPostDataToBlockchain(operations) {
