@@ -55,7 +55,7 @@ class SteemService {
 		})
 	}
 
-	static getAccounts(username) {
+	getAccounts(username) {
 		return processRequest(callback => {
 			steem.api.getAccounts([username], callback);
 		})
@@ -95,7 +95,7 @@ class SteemService {
 			});
 	}
 
-	static getBeneficiaries(permlink, beneficiaries) {
+	getBeneficiaries(permlink, beneficiaries) {
 		let beneficiariesObject = {
 			author: AuthService.getUsername(),
 			permlink: permlink,

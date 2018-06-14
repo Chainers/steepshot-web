@@ -52,7 +52,7 @@ class SteemConnect {
 	}
 
 	getAccounts(username) {
-		return SteemService.getAccounts(username);
+		return new SteemService().getAccounts(username);
 	}
 
 	wifIsValid() {
@@ -64,7 +64,7 @@ class SteemConnect {
 	}
 
 	getBeneficiaries(permlink, beneficiaries) {
-		return SteemService.getBeneficiaries(permlink, beneficiaries)
+		return new SteemService().getBeneficiaries(permlink, beneficiaries)
 	}
 }
 
