@@ -34,7 +34,7 @@ class SteemConnect {
 	}
 
 	deletePostFromBlockchain(permlink) {
-
+		//TODO implement after addPostToBlockchain
 	}
 
 	changeFollowInBlockchain(jsonData) {
@@ -48,7 +48,7 @@ class SteemConnect {
 	}
 
 	addPostDataToBlockchain(operations) {
-
+		//TODO implement after signTransaction
 	}
 
 	getAccounts(username) {
