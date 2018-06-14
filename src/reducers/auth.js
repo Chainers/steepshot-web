@@ -7,7 +7,7 @@ const initialState = global.isServerSide ? {
 	like_power: 100,
 	voting_power: null
 } : {
-	user: storage.user,
+	user: storage.username,
 	postingKey: storage.postingKey,
 	avatar: storage.avatar,
 	like_power: storage.like_power || 100,
@@ -22,7 +22,7 @@ export default function auth(state = initialState, action) {
 		case 'SET_USER_AUTH':
 			return {
 				...initialState,
-				user: storage.user,
+				user: storage.username,
 				postingKey: storage.postingKey,
 				avatar: storage.avatar,
 				isSetAuth: true

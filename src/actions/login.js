@@ -1,10 +1,10 @@
 import {push} from "react-router-redux";
 import {hideBodyLoader, showBodyLoader} from "./bodyLoader";
 import LoggingService from "../services/loggingService";
-import storage from "../utils/Storage";
 import ChainService from "../services/chainService";
 import {getAvatar, initOneSignalService, showMessage} from "./auth";
 import {pushErrorMessage} from "./pushMessage";
+import StorageService from "../services/storageService";
 
 export function setUsernameErrorMessage(message = '') {
 	return {
@@ -43,7 +43,7 @@ export function loginWithSteemConnect(params) {
 			.then(response => {
 				const service = '';
 				let avatar = getAvatar(response[0]);
-				storage.setSteemConnectData(username, expiresIn, accessToken, avatar, service);
+				StorageService.setSteemConnectData(username, expiresIn, accessToken, avatar, service);
 				initOneSignalService(username, dispatch);
 				let parseResult = JSON.parse(response[0].json_metadata);
 				dispatch({
@@ -54,7 +54,7 @@ export function loginWithSteemConnect(params) {
 				LoggingService.logLogin();
 			})
 			.catch( error => {
-				storage.clearAuthData();
+				StorageService.clearAuthData();
 				dispatch(loginError(error));
 			})
 	}

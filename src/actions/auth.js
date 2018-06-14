@@ -11,6 +11,7 @@ import ChainService from '../services/chainService';
 import {setPostingKeyErrorMessage, setUsernameErrorMessage} from './login';
 import {getStore} from '../store/configureStore';
 import Constants from '../common/constants';
+import StorageSerive from "../services/storageService";
 
 export function showMessage(message) {
 	return dispatch => {
@@ -47,7 +48,7 @@ export function login(username, postingKey) {
 							return Promise.reject({actual: 128, expected: 1});
 						}
 						let avatar = getAvatar(response[0]);
-						storage.setAuthData(username, postingKey, avatar, getStore().getState().services.name || Constants.SERVICES.steem.name);
+						StorageSerive.setAuthData(username, postingKey, avatar, getStore().getState().services.name || Constants.SERVICES.steem.name);
 						initOneSignalService(username, dispatch);
 						let parseResult = JSON.parse(response[0].json_metadata);
 						dispatch({
@@ -64,7 +65,7 @@ export function login(username, postingKey) {
 					})
 			})
 			.catch(error => {
-				storage.clearAuthData();
+				StorageSerive.clearAuthData();
 				if (!error.data && error.actual === 128) {
 					dispatch(setPostingKeyErrorMessage('Invalid posting key.'))
 				}
@@ -93,7 +94,7 @@ export function logout() {
 	return (dispatch) => {
 		dispatch(removeSettings());
 		dispatch(unsubscribe());
-		storage.clearAuthData();
+		StorageSerive.clearAuthData();
 		OneSignalService.removeNotificationTags();
 		dispatch(logoutUser());
 		dispatch(push(`/browse`));
