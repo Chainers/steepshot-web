@@ -11,23 +11,20 @@ import Search from './components/Search/Search';
 import EditPost from './components/EditPost/EditPost';
 import UserProfile from './components/UserProfile/UserProfile';
 import Login from './components/Login/Login';
-import {getStore} from './store/configureStore';
 import Browse from './components/Browse/Browse';
 import Settings from './components/Settings/Settings';
 import RouteWithService from "./components/Routes/RouteWithService";
-
-function isAuth() {
-	const auth = getStore().getState().auth;
-	return !!auth.user && !!auth.postingKey;
-}
+import SteemConnect from "./components/SteemConnect/SteemConnect";
+import AuthService from "./services/authService";
 
 export default function getRoutes() {
 	return (
 		<App>
 			<Switch>
-				<Route exact path="/" render={() => <Redirect to={"/browse"}/>}/>
+				<Route exact path="/" render={() => <Redirect to="/browse"/>}/>
+				<Route exact path="/steemConnect" component={SteemConnect}/>
 				<Route exact path="/signin" render={() => (
-					isAuth() ? (
+					AuthService.isAuth() ? (
 						<Redirect push to="/feed"/>
 					) : (
 						<Login/>
@@ -40,7 +37,7 @@ export default function getRoutes() {
 				<RouteWithService path="/:service(golos)?/@:username" component={UserProfile}/>
 				<RouteWithService path="/:service(golos)?/search/:searchValue" component={Search}/>
 				<PrivateRoute path="/:service(golos)?/feed" component={Feed}/>
-				<Redirect path="/createPost" to={'/editPost'}/>
+				<Redirect path="/createPost" to='/editPost'/>
 				<PrivateRoute path="/:service(golos)?/editPost/:category?/:username?/:permlink?" component={EditPost}/>
 				<PrivateRoute path="/:service(golos)?/Profile" component={UserProfile}/>
 				<PrivateRoute path="/:service(golos)?/settings" component={Settings}/>

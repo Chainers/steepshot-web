@@ -27,6 +27,8 @@ import Constants from '../../common/constants';
 import {utils} from '../../utils/utils';
 import {setComponentSize} from '../../utils/setComponentSize';
 import {setCommentEditState} from '../../actions/comments';
+import {getAuthUserInfo} from '../../actions/promoteModal';
+import AuthService from '../../services/authService';
 
 class PostModal extends React.Component {
 
@@ -51,6 +53,7 @@ class PostModal extends React.Component {
 	componentWillUnmount() {
 		window.removeEventListener('keydown', this.initKeyPress);
     window.removeEventListener('resize', this.resizePostModal);
+    this.props.getAuthUserInfoSuccess('');
 	}
 
 	componentWillReceiveProps(nextProps) {
@@ -377,26 +380,6 @@ class PostModal extends React.Component {
 		this.fsRightLeft(true);
 	}
 
-	longTapPLInd(timeDelay) {
-		if (this.props.post.vote) {
-			return;
-		}
-		if (!this.props.authUser) {
-			return;
-		}
-		if (this.props.post.isPLOpen) {
-			return;
-		}
-		let plTimeout = setTimeout(() => {
-			this.props.setPowerLikeInd(this.props.currentIndex, true, 'modal');
-		}, timeDelay);
-		this.props.setPowerLikeTimeout(this.props.currentIndex, plTimeout);
-	}
-
-	breakLongTapPLInd() {
-		clearTimeout(this.props.post.plTimeout);
-	}
-
 	render() {
 		const authorLink = `/@${this.props.post.author}`;
 
@@ -459,10 +442,7 @@ class PostModal extends React.Component {
 							</div>
 						</Link>
 					</div>
-					<div className="description_pos-mod"
-							 style={this.props.style.description}
-							 ref={ref => this.descPosMod = ref}
-					>
+					<div className="description_pos-mod" style={this.props.style.description}>
 						<div className="card-controls_post card-controls-border_post">
 							<Likes postIndex={this.props.currentIndex} style={{paddingLeft: 20}}/>
 							<div className="card-buttons_post">
@@ -510,7 +490,7 @@ const mapStateToProps = (state) => {
 	let linkToSinglePost = document.location.origin + (isGolosService ? '/' + Constants.SERVICES.golos.name : '')
     + '/post' + post.url.replace(/\/[\w-.]+/, '');
 	if (post) {
-    const isFSByScreenSize = state.window.width < 1025;
+    const isFSByScreenSize = state.window.width < Constants.WINDOW.MAX_MOBILE_SCREEN_WIDTH;
 		let urlVideo = post.media[0].url;
 		let postsList = state.postsList[state.postModal.point];
 		let isCommentEditing = state.comments[currentIndex] ? state.comments[currentIndex].commentEditing : null;
@@ -525,7 +505,7 @@ const mapStateToProps = (state) => {
 			completeStatus: post.completeStatus,
 			...state.postModal,
 			newPostsLoading: postsList.loading,
-			isUserAuth: state.auth.user && state.auth.postingKey,
+			isUserAuth: AuthService.isAuth(),
 			authUser: state.auth.user,
 			firstPost: postsList.posts[0] === currentIndex,
 			lastPost: postsList.offset === currentIndex,
@@ -580,7 +560,10 @@ const mapDispatchToProps = (dispatch) => {
 		},
     setCommentEditState: (point, parentPost, commentEditing) => {
       dispatch(setCommentEditState(point, parentPost, commentEditing));
-    }
+    },
+    getAuthUserInfoSuccess: (result) => {
+			dispatch(getAuthUserInfo(result));
+		}
 	};
 };
 

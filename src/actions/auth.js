@@ -1,18 +1,19 @@
 import {push} from 'react-router-redux';
-import {pushErrorMessage, pushMessage} from "./pushMessage";
-import {hideBodyLoader, showBodyLoader} from "./bodyLoader";
-import {checkSubscribeAndUpdateSettings, removeSettings} from "./settings";
-import storage from "../utils/Storage";
-import {unsubscribe} from "./oneSignal";
-import UserService from "../services/userService";
-import OneSignalService from "../services/oneSignalService";
-import LoggingService from "../services/loggingService";
-import ChainService from "../services/chainService";
-import {setPostingKeyErrorMessage, setUsernameErrorMessage} from "./login";
-import {getStore} from "../store/configureStore";
-import Constants from "../common/constants";
+import {pushErrorMessage, pushMessage} from './pushMessage';
+import {hideBodyLoader, showBodyLoader} from './bodyLoader';
+import {checkSubscribeAndUpdateSettings, removeSettings} from './settings';
+import storage from '../utils/Storage';
+import {unsubscribe} from './oneSignal';
+import UserService from '../services/userService';
+import OneSignalService from '../services/oneSignalService';
+import LoggingService from '../services/loggingService';
+import ChainService from '../services/chainService';
+import {setPostingKeyErrorMessage, setUsernameErrorMessage} from './login';
+import {getStore} from '../store/configureStore';
+import Constants from '../common/constants';
+import StorageSerive from "../services/storageService";
 
-function showMessage(message) {
+export function showMessage(message) {
 	return dispatch => {
 		dispatch(pushMessage(message));
 		dispatch(hideBodyLoader());
@@ -47,28 +48,16 @@ export function login(username, postingKey) {
 							return Promise.reject({actual: 128, expected: 1});
 						}
 						let avatar = getAvatar(response[0]);
-						storage.user = username;
-						storage.postingKey = postingKey;
-						storage.like_power = 100;
-						storage.avatar = avatar;
-						storage.service = getStore().getState().services.name || Constants.SERVICES.steem.name;
-						try {
-              OneSignalService.addNotificationTags(username);
-              dispatch(checkSubscribeAndUpdateSettings());
-						} catch (error) {
-							console.warn(error.name);
-						}
-						dispatch({
-							type: 'UPDATE_VOTING_POWER',
-							voting_power: response[0].voting_power / 100
-						});
+						StorageSerive.setAuthData(username, postingKey, avatar, getStore().getState().services.name || Constants.SERVICES.steem.name);
+						initOneSignalService(username, dispatch);
 						let parseResult = JSON.parse(response[0].json_metadata);
 						dispatch({
 							type: 'LOGIN_SUCCESS',
 							postingKey,
 							user: username,
 							avatar,
-							like_power: 100
+							like_power: 100,
+							voting_power: response[0].voting_power / 100
 						});
 						dispatch(push('/feed'));
 						dispatch(showMessage('Welcome to Steepshot, ' + (parseResult.profile.name || username) + '!'));
@@ -76,10 +65,7 @@ export function login(username, postingKey) {
 					})
 			})
 			.catch(error => {
-				storage.user = null;
-				storage.postingKey = null;
-				storage.like_power = null;
-				storage.avatar = null;
+				StorageSerive.clearAuthData();
 				if (!error.data && error.actual === 128) {
 					dispatch(setPostingKeyErrorMessage('Invalid posting key.'))
 				}
@@ -88,7 +74,7 @@ export function login(username, postingKey) {
 	}
 }
 
-function getAvatar(profileData) {
+export function getAvatar(profileData) {
 	let avatar = null;
 	try {
 		const metadata = JSON.parse(profileData.json_metadata);
@@ -108,11 +94,7 @@ export function logout() {
 	return (dispatch) => {
 		dispatch(removeSettings());
 		dispatch(unsubscribe());
-		storage.user = null;
-		storage.postingKey = null;
-		storage.settings = null;
-		storage.avatar = null;
-		storage.like_power = null;
+		StorageSerive.clearAuthData();
 		OneSignalService.removeNotificationTags();
 		dispatch(logoutUser());
 		dispatch(push(`/browse`));
@@ -121,17 +103,19 @@ export function logout() {
 
 export function updateVotingPower(username) {
 	return (dispatch) => {
-		UserService.getProfile(username).then(result => {
-			dispatch({
-				type: 'UPDATE_VOTING_POWER',
-				voting_power: result.voting_power
+		UserService.getProfile(username)
+			.then(result => {
+				dispatch({
+					type: 'UPDATE_VOTING_POWER',
+					voting_power: result.voting_power
+				})
 			})
-		}).catch(error => {
-      dispatch({
-				type: 'UPDATE_VOTING_POWER_ERROR',
-				error
-			})
-		});
+			.catch(error => {
+				dispatch({
+					type: 'UPDATE_VOTING_POWER_ERROR',
+					error
+				})
+			});
 	}
 }
 
@@ -148,5 +132,14 @@ export function setLikePower(likePower) {
 export function setUserAuth() {
 	return {
 		type: 'SET_USER_AUTH'
+	}
+}
+
+export function initOneSignalService(username, dispatch) {
+	try {
+		OneSignalService.addNotificationTags(username);
+		dispatch(checkSubscribeAndUpdateSettings());
+	} catch (error) {
+		console.warn(error.name);
 	}
 }

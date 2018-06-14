@@ -12,6 +12,7 @@ import {deletePost} from '../../../actions/post';
 import ShowIf from '../../Common/ShowIf';
 import {innerLayout} from '../../../utils/innerLayout';
 import Constants from '../../../common/constants';
+import {loadingEllipsis} from '../../../utils/loadingEllipsis';
 
 class Comment extends React.Component {
 
@@ -56,15 +57,10 @@ class Comment extends React.Component {
 																	 onClick={this.editComment.bind(this)}>Edit
 														 </span>;
 		if (this.props.comment.postDeleting) {
-			deleteCommentElement = <div className="pending-action_comment not-hover_comment">
-															 Deleting
-															 <span> .</span>
-															 <span> .</span>
-															 <span> .</span>
-														 </div>;
+			deleteCommentElement = loadingEllipsis('Deleting', 'not-hover_comment');
 		}
 
-		if (this.props.isCommentCanceleable) {
+		if (this.props.isCommentCancelable) {
       editCommentElement = <span className="edit_comment"
 																 onClick={this.cancelEdit.bind(this)}>Cancel
 													 </span>;
@@ -80,7 +76,7 @@ class Comment extends React.Component {
 						 		isComment={true}/>
 		    </div>
 			: <div className="display--flex">
-					<ShowIf show={!this.props.isCommentDeleted && !this.props.cashoutTimeExceed}
+					<ShowIf show={!this.props.commentDeleted && !this.props.cashoutTimeExceed}
 									styleContainer={{display: 'flex'}}>
 						{editCommentElement}
 						{deleteCommentElement}
@@ -105,7 +101,8 @@ class Comment extends React.Component {
 				<div className="comment-text">
 					<div ref={ref => this.commentText = ref} className="comment-text_comment"/>
 					<Vote postIndex={this.props.point}
-								powerLikeIndPlace="comment"/>
+								powerLikeIndPlace="comment"
+								commentDeleted={this.props.commentDeleted}/>
 				</div>
 				<div className="actions-buttons_comment">
 					{commentActions}
@@ -121,19 +118,19 @@ class Comment extends React.Component {
 
 const mapStateToProps = (state, props) => {
 	let comment = state.posts[props.point];
-	const isCommentDeleted = comment.body === '*deleted*';
+	const commentDeleted = comment.body === '*deleted*';
 	const cashoutTimeExceed = new Date(comment.cashout_time) < new Date();
 	const parentPost = props.point.replace(/(.+)#.+/, '$1');
 	const currentCommentEditing = props.point === state.comments[parentPost].editingPostPoint;
 	const isCommentEditing = state.comments[parentPost].commentEditing;
-	const isCommentCanceleable = props.point === state.comments[parentPost].editingPostPoint;
+	const isCommentCancelable = props.point === state.comments[parentPost].editingPostPoint;
 	return {
     comment,
     currentCommentEditing,
-    isCommentCanceleable,
+    isCommentCancelable,
 		isCommentEditing,
 		parentPost,
-    isCommentDeleted,
+    commentDeleted,
     cashoutTimeExceed,
 		author: comment.author,
 		isYourComment: comment.author === state.auth.user

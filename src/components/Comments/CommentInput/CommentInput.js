@@ -7,6 +7,7 @@ import LoadingSpinner from '../../LoadingSpinner';
 import {utils} from '../../../utils/utils';
 import './commentInput.css';
 import Constants from '../../../common/constants';
+import AuthService from "../../../services/authService";
 
 class CommentInput extends React.Component {
 
@@ -17,8 +18,7 @@ class CommentInput extends React.Component {
 	}
 
 	sendComment(isEdit) {
-		let commentText = this.props.commentValue.comment.text;
-		if (!commentText || commentText.replace(/\s+/g, '') === '') return;
+		if (!this.props.canSent) return;
 		if (!isEdit) {
       this.props.sendComment(this.props.point, Constants.TEXT_INPUT_POINT.COMMENT);
 		} else {
@@ -38,7 +38,7 @@ class CommentInput extends React.Component {
 										</button>;
 		}
 		return (
-			<ShowIf show={this.props.isUserAuth}>
+			<ShowIf show={this.props.isAuth}>
 				<div className="container_com-inp">
 					<TextInput title="Comment"
 										 point={Constants.TEXT_INPUT_POINT.COMMENT}
@@ -60,12 +60,18 @@ class CommentInput extends React.Component {
 }
 
 const mapStateToProps = (state, props) => {
+	let commentValue = state.textInput, commentBody = '';
+	let textInputData = state.textInput[Constants.TEXT_INPUT_POINT.COMMENT];
+  let newCommentText = textInputData ? textInputData.text : null;
+  let editingPostPoint = state.comments[props.point].editingPostPoint;
+  if (editingPostPoint) {
+  	commentBody = state.posts[editingPostPoint].body;
+	}
 	return {
-		isUserAuth: state.auth.user && state.auth.postingKey,
+		isAuth: AuthService.isAuth(),
 		...state.comments[props.point],
-		commentValue: state.textInput,
-		canSent: state.textInput[Constants.TEXT_INPUT_POINT.COMMENT] &&
-		utils.isNotEmptyString(state.textInput[Constants.TEXT_INPUT_POINT.COMMENT].text)
+    commentValue,
+		canSent: textInputData && utils.isNotEmptyString(textInputData.text) && commentBody !== newCommentText
 	};
 };
 

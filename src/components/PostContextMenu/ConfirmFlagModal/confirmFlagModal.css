@@ -1,7 +1,7 @@
 .wrapper_confirm-flag-mod {
     display: block;
     background: #ffffff;
-    border-radius: 4px;
+    border-radius: 10px;
     padding: 24px 30px;
 }
 
@@ -37,11 +37,11 @@
 }
 
 .buttons_holder-flag-mod button {
-    font: 14px OpenSans-Regular;
+    font: 14px OpenSans-Semibold;
 }
 
 .buttons_holder-flag-mod button:first-child {
-    margin-right: 15px;
+    margin-right: 20px;
 }
 
 @media screen and (max-width: 815px) {

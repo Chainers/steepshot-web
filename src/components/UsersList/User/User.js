@@ -1,9 +1,9 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
-import Avatar from "../../Common/Avatar/Avatar";
-import {connect} from "react-redux";
-import ShowIf from "../../Common/ShowIf";
-import LoadingSpinner from "../../LoadingSpinner";
+import Avatar from '../../Common/Avatar/Avatar';
+import {connect} from 'react-redux';
+import ShowIf from '../../Common/ShowIf';
+import LoadingSpinner from '../../LoadingSpinner';
 import './user.css';
 import {changeFollow} from "../../../actions/userProfile";
 import Constants from "../../../common/constants";

@@ -1,4 +1,4 @@
-import RequestService from "./requestService";
+import RequestService from './requestService';
 import AuthService from './authService';
 import {blockchainErrorsList} from '../utils/blockchainErrorsList';
 
@@ -59,7 +59,8 @@ function logChangVote(isFlag, permlink, postAuthor, error, event) {
 }
 
 function logCORS(url, operation, error = '') {
-	let checkedError = blockchainErrorsList(error);
+	let checkedError = error;
+	if (checkedError) checkedError = blockchainErrorsList(error);
 	const body = {
 		username: AuthService.getUsername(),
     checkedError

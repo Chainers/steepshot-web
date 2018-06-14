@@ -49,22 +49,22 @@ export function removeTag(index) {
 
 export function changeImage(imageSrc, image) {
 	return dispatch => {
-    fetch(imageSrc).then(res => {
-      return res.blob()
-    })
-		.then(blob => {
-			if (imageSrc.includes("image/gif") && blob.size > Constants.IMAGE.MAX_SIZE) {
-				dispatch(setEditPostImageError(Constants.GIF.SIZE_ERROR));
-				return;
-			}
-      if (!isValidImageSize(dispatch, image)) {
-        return;
-      }
-      dispatch({
-        type: 'EDIT_POST_CHANGE_IMAGE',
-        image: imageSrc
-      })
-		});
+		fetch(imageSrc).then(res => {
+			return res.blob()
+		})
+			.then(blob => {
+				if (imageSrc.includes("image/gif") && blob.size > Constants.IMAGE.MAX_SIZE) {
+					dispatch(setEditPostImageError(Constants.GIF.SIZE_ERROR));
+					return;
+				}
+				if (!isValidImageSize(dispatch, image)) {
+					return;
+				}
+				dispatch({
+					type: 'EDIT_POST_CHANGE_IMAGE',
+					image: imageSrc
+				})
+			});
 	}
 }
 
@@ -226,10 +226,7 @@ export function createPost() {
 								console.log("compressing...");
 								return compressJPEG(blob);
 							}
-							return new Promise(resolve => {
-								resolve(blob);
-							});
-
+							return Promise.resolve(blob);
 						})
 						.then(blob => {
 							return PostService.createPost(tags, title, description, blob)
@@ -257,7 +254,7 @@ export function createPost() {
 			})
 			.catch(error => {
 				dispatch({
-					type: 'EDIT_POST_SET_WAITING_TIME_SUCCESS',
+					type: 'EDIT_POST_SET_WAITING_TIME_ERROR',
 					waitingTime: error
 				})
 			});
@@ -330,9 +327,7 @@ function createNewPost() {
 			.catch(error => {
 				dispatch({
 					type: 'EDIT_POST_SET_WAITING_TIME_ERROR',
-					data: {
-						error
-					}
+					data: error
 				})
 			});
 
@@ -371,7 +366,8 @@ function checkTimeAfterUpdatedLastPost() {
 				return Promise.reject(waitingTime)
 			}
 			return Promise.resolve();
-		}).catch(() => {
+		})
+		.catch(() => {
 			return Promise.resolve();
 		});
 }
@@ -426,11 +422,11 @@ function isValidField(dispatch, title, photoSrc) {
 
 export function setEditPostImageError(message) {
 	return dispatch => {
-    dispatch({
-      type: 'EDIT_POST_SET_IMAGE_ERROR',
-      message
-    });
-  }
+		dispatch({
+			type: 'EDIT_POST_SET_IMAGE_ERROR',
+			message
+		});
+	}
 }
 
 export function editPostRequest() {

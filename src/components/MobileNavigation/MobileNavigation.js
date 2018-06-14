@@ -7,6 +7,7 @@ import './mobileNavigation.css';
 import {closeMobileNavigation} from "../../actions/mobileNavigation";
 import {Scrollbars} from "react-custom-scrollbars";
 import storage from "../../utils/Storage";
+import AuthService from "../../services/authService";
 
 class MobileNavigation extends React.Component {
 
@@ -81,7 +82,7 @@ MobileNavigation.defaultProps = {
 
 const mapStateToProps = (state) => {
 	return {
-		isAuth: !!state.auth.user && !!state.auth.postingKey,
+		isAuth: AuthService.isAuth(),
 		name: state.auth.user,
 		opened: state.mobileNavigation.opened
 	};

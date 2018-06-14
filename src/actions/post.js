@@ -1,4 +1,5 @@
 import {getStore} from '../store/configureStore';
+import {push} from "react-router-redux";
 import {initPostsList} from './postsList';
 import {initPostModal} from './postModal';
 import {pushErrorMessage, pushMessage} from './pushMessage';
@@ -182,9 +183,7 @@ export function deletePostAfterConfirm(postIndex, isComment) {
 export function addSinglePost(url) {
 	return async dispatch => {
 		const urlObject = url.split('/');
-		if (urlObject.length < 3) {
-			error(dispatch);
-		} else {
+		if (urlObject.length >= 3) {
 			await PostService.getPost(url)
 				.then((result) => {
 					if (result) {
@@ -205,25 +204,14 @@ export function addSinglePost(url) {
 							}
 						}));
 						dispatch(initPostModal('SinglePost', result.url));
-					} else {
-						error(dispatch);
 					}
 				});
+			return;
 		}
+		dispatch(push('/'));
+		dispatch(pushMessage(
+			'Something went wrong, please, check the URL or try again later'));
 	}
-}
-
-function error(dispatch) {
-	let state = getStore().getState();
-	dispatch(pushMessage(
-		'Something went wrong, please, check the URL or try again later'));
-	setTimeout(() => {
-		if (state.auth.name && state.auth.postingKey) {
-			//browserHistory.push('/feed');
-		} else {
-			//browserHistory.push('/browse');
-		}
-	}, 3000);
 }
 
 

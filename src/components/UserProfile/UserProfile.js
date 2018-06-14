@@ -16,6 +16,7 @@ import LoadingSpinner from "../LoadingSpinner";
 import './userProfile.css';
 import {setActiveIndex} from "../../actions/tabsBar";
 import Follow from "../Follow/Follow";
+import AuthService from "../../services/authService";
 
 class UserProfile extends React.Component {
 
@@ -75,7 +76,7 @@ class UserProfile extends React.Component {
 								<div className="location">{location}</div>
 								<p>{about}</p>
 								<p className="break--word">
-									<a href={website} target="_blank">{website}</a>
+									<a className="website_use-pro" href={website} target="_blank">{website}</a>
 								</p>
 								<div className="amount">
 									<div className="count">$ {balance}</div>
@@ -134,7 +135,7 @@ const mapStateToProps = (state, props) => {
 	const location = state.router.location || props.location || {};
 	return {
 		username,
-		isAuth: state.auth.user && state.auth.postingKey,
+		isAuth: AuthService.isAuth(),
 		profile: state.userProfile.profile,
 		loading: state.userProfile.loading,
 		pathname: location.pathname,

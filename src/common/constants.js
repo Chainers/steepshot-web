@@ -21,7 +21,7 @@ const Constants = {
 				MAX_LENGTH: 40,
 				MAX_AMOUNT: 20
 			},
-		},
+		}
 	},
 
 	OPERATIONS: {
@@ -226,7 +226,21 @@ const Constants = {
 	},
 
 	WINDOW: {
-		MAX_MOBILE_SCREEN_WIDTH: 1023
+		MAX_MOBILE_SCREEN_WIDTH: 1023,
+		MOBILE_START_WIDTH: 815,
+		WIDE_SCREEN_WIDTH: 1362
+	},
+
+	PROMOTE: {
+    SELECT_ERROR: 'Choose token',
+		INPUT_ERROR: 'Enter correct value',
+		NOT_ENOUGH_TOKENS: 'Not enough tokens',
+		MIN_AMOUNT_ERROR: 'Min bid is 0.25',
+		FIND_BOT_ERROR: 'We look, but there\'s no appropriate bot for promotion. Please, try little later.',
+		BID_TIMEOUT_ERROR: 'It\'s too late to bid to this bot, try any one.',
+		RED_TIMER: 60,
+		BLOCKED_TIMER: 21,
+		EMPTY_KEY_INPUT: 'You should enter the key'
 	}
 };
 

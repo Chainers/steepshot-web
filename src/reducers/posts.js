@@ -23,6 +23,7 @@ export default function posts(state = {}, action) {
 				[action.index]: {
 					...state[action.index],
 					flag: !state[action.index].flag,
+					vote: false,
 					flagLoading: true,
 				}
 			};
@@ -79,6 +80,7 @@ export default function posts(state = {}, action) {
 				[action.index]: {
 					...state[action.index],
 					vote: !state[action.index].vote,
+					flag: false,
 					voteLoading: true,
 				},
 			};

@@ -178,7 +178,7 @@ export function editComment(parentPost, postIndex, point) {
 				dispatch(editCommentSuccess(postIndex, response));
         dispatch(pushMessage(Constants.COMMENT_EDIT_SUCCESS_MESSAGE));
       })
-      .catch( error => {
+      .catch(error => {
         dispatch(actionUnlock());
         dispatch(addNewCommentError(parentPost, error));
         dispatch(pushErrorMessage(error));

@@ -67,7 +67,7 @@ class UsersList extends React.Component {
       if (this.props.commonLoader && !this.props.users.length) {
         return null;
       }
-      if ((!this.props.users || !this.props.users[0]) && !this.props.commonLoader) {
+      if (!this.props.users.length && (this.props.commonLoader === false)) {
         return (
 					<div className="empty-query-message">
             {Constants.EMPTY_QUERY}
