@@ -9,6 +9,7 @@ import {setSearchPanelState, setSearchValue} from '../../actions/search';
 import {closeMobileNavigation, toggleMobileNavigation} from '../../actions/mobileNavigation';
 import Hamburger from '../Hamburger/Hamburger';
 import './header.css';
+import AuthService from "../../services/authService";
 
 class Header extends React.Component {
 
@@ -52,7 +53,7 @@ class Header extends React.Component {
 		if (global.isServerSide) {
 			return <div className="block-in-body_header" key="Header"/>;
 		}
-		const isUserAuth = this.props.user && this.props.postingKey;
+		const isAuth = this.props.isAuth;
 		let browse, authorLink = '';
 		let authorImage = this.props.avatar || Constants.NO_AVATAR;
 		let loginComponent = <div className="section login">
@@ -63,7 +64,7 @@ class Header extends React.Component {
 			</div>
 		</div>;
 
-		if (isUserAuth) {
+		if (isAuth) {
 			authorLink = `/@${this.props.user}`;
 			loginComponent = <div className="section controls">
 				<div className="wrap-controls">
@@ -77,7 +78,7 @@ class Header extends React.Component {
 		browse = <div className="section menu">
 			<div>
 				{
-					(isUserAuth) ? (
+					(isAuth) ? (
 						<div className="item feed-block_header">
 							<Link to="/feed"
 										className={this.props.currentLocation.match(/\/feed/) ? 'feed-browse-active_header' : null}>Feed
@@ -100,7 +101,7 @@ class Header extends React.Component {
 						<div className={'user-panel ' + (this.props.isOpened ? 'closed' : 'open')}>
 							<div className="wrap-panel clearfix">
 								{
-									isUserAuth
+									isAuth
 										? <div className="section hamburger">
 											<div className="wrap-hamburger">
 												<Hamburger toggle={this.props.toggleMobileNavigation}
@@ -113,7 +114,7 @@ class Header extends React.Component {
 								<div className="section create">
 									<div className="wrap-create">
 										{
-											isUserAuth
+											isAuth
 												? <div>
 													<Link to="/editPost" type="button"
 																className="btn btn-default btn-xs btn-create">
@@ -198,7 +199,7 @@ const mapStateToProps = (state, props) => {
 	const location = state.router.location || props.location || {};
 	return {
 		sizeParam: document.body.clientWidth < 420,
-		postingKey: state.auth.postingKey,
+		isAuth: AuthService.isAuth(),
 		user: state.auth.user,
 		avatar: state.auth.avatar,
 		searchValue: state.search.value,

@@ -5,27 +5,30 @@ const initialState = global.isServerSide ? {
 	postingKey: 'fake_posting_key',
 	avatar: null,
 	like_power: 100,
-	voting_power: null
+	voting_power: null,
+	accessToken: null
 } : {
-	user: storage.user,
+	user: storage.username,
 	postingKey: storage.postingKey,
 	avatar: storage.avatar,
 	like_power: storage.like_power || 100,
+	accessToken: storage.accessToken,
 	voting_power: null
 };
 
 export default function auth(state = initialState, action) {
 	if (!state.hydrated) {
-		state = {...initialState, state, hydrated: true};
+		state = {...initialState, ...state, hydrated: true};
 	}
 	switch (action.type) {
 		case 'SET_USER_AUTH':
 			return {
 				...initialState,
-				user: storage.user,
+				user: storage.username,
 				postingKey: storage.postingKey,
 				avatar: storage.avatar,
-				isSetAuth: true
+				isSetAuth: true,
+				accessToken: null
 			};
 		case 'LOGIN_SUCCESS':
 		case 'SIGNUP_SUCCESS':
@@ -36,17 +39,32 @@ export default function auth(state = initialState, action) {
 				postingKey: action.postingKey,
 				avatar: action.avatar,
 				voting_power: action.voting_power,
-				like_power: action.like_power
+				like_power: action.like_power,
+				accessToken: null
 			};
 
+		case 'LOGIN_WITH_STEEM_CONNECT_ERROR':
 		case 'LOGOUT_SUCCESS':
+		case 'LOGIN_ERROR':
 			return {
 				...state,
 				user: null,
 				postingKey: null,
 				avatar: null,
 				voting_power: null,
-				like_power: null
+				like_power: null,
+				accessToken: null
+			};
+
+		case 'LOGIN_WITH_STEEM_CONNECT_SUCCESS':
+			return {
+				...state,
+				user: action.user,
+				postingKey: null,
+				avatar: action.avatar,
+				voting_power: action.voting_power,
+				like_power: action.like_power,
+				accessToken: action.accessToken
 			};
 
 		case 'UPDATE_VOTING_POWER':

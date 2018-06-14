@@ -83,20 +83,20 @@ export function setSubscribeOnBackend() {
 	const player_id = state.oneSignal.playerId;
 	const app_id = state.oneSignal.appId;
 	const username = state.auth.user;
-	const postingKey = state.auth.postingKey;
 
 	return dispatch => {
 		dispatch({
 			type: 'SET_SUBSCRIPTION_ON_BACKEND_REQUEST'
 		});
 
-		OneSignalService.setSubscribeConfiguration(username, postingKey, player_id, app_id, settings).then(() => {
-			dispatch({
-				type: 'SET_SUBSCRIBE_ON_BACKEND_SUCCESS',
-				settings,
-				player_id
-			})
-		}).catch(error => {
+		OneSignalService.setSubscribeConfiguration(username, player_id, app_id, settings)
+			.then(() => {
+				dispatch({
+					type: 'SET_SUBSCRIBE_ON_BACKEND_SUCCESS',
+					settings,
+					player_id
+				})
+			}).catch(error => {
 			dispatch({
 				type: 'SET_SUBSCRIBE_ON_BACKEND_ERROR',
 				error,
@@ -124,7 +124,7 @@ export function changeUserSubscribe() {
 			dispatch({
 				type: 'CHANGE_USER_SUBSCRIBE_SUCCESS'
 			});
-		}).catch( error => {
+		}).catch(error => {
 			dispatch(pushMessage(error));
 			dispatch({
 				type: 'CHANGE_USER_SUBSCRIBE_ERROR',

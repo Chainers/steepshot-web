@@ -27,6 +27,7 @@ import Constants from '../../common/constants';
 import {utils} from '../../utils/utils';
 import {setComponentSize} from '../../utils/setComponentSize';
 import {setCommentEditState} from '../../actions/comments';
+import AuthService from "../../services/authService";
 
 class PostModal extends React.Component {
 
@@ -525,7 +526,7 @@ const mapStateToProps = (state) => {
 			completeStatus: post.completeStatus,
 			...state.postModal,
 			newPostsLoading: postsList.loading,
-			isUserAuth: state.auth.user && state.auth.postingKey,
+			isUserAuth: AuthService.isAuth(),
 			authUser: state.auth.user,
 			firstPost: postsList.posts[0] === currentIndex,
 			lastPost: postsList.offset === currentIndex,

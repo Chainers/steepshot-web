@@ -14,6 +14,7 @@ import {clearLoginErrors} from '../../actions/login';
 import Switcher from '../Switcher/Switcher';
 import ChooseSteemRegModal from './ChooseSteemRegModal/ChooseSteemRegModal';
 import {openModal} from '../../actions/modal';
+import SteemConnect from "../../services/steemConnect";
 
 const galleryImages = [
 	'/images/login/1.png',
@@ -70,7 +71,7 @@ class Login extends Component {
 	}
 
   loginWithSteemConnect() {
-
+		window.location.replace(SteemConnect.getLoginUrl() + '&expires_in=6048000');
 	}
 
 	render() {
@@ -131,13 +132,13 @@ class Login extends Component {
 							</div>
 						</form>
 					</div>
-					<div className={'registration-block_login login-steem-con-block_login' +
+					{/*<div className={'registration-block_login login-steem-con-block_login' +
 						(chooseSteem ? '' : ' hide-log-ste-con-block_login')}>
 						<label>Don’t you trust us?</label>
 						<button className="steem-con-btn_login" onClick={this.loginWithSteemConnect.bind(this)}>
 							{(this.props.isMobileScreen ? '' : 'LOGIN WITH ') + 'STEEM CONNECT'}
 						</button>
-					</div>
+					</div>*/}
 					<div className="registration-block_login">
 						<label>Don’t have a {chooseSteem ? 'Steem' : 'Golos'} account?</label>
 						<button className="guidelines-btn_login create-acc_login" onClick={this.openRegisterSite.bind(this)}>

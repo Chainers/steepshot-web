@@ -1,5 +1,15 @@
 export const utils = {
 
+	urlParamsToObject: (urlParams) => {
+		let params = urlParams.replace('?', '').split('&');
+		params = params.reduce((acc, cur) => {
+			const field = cur.split('=');
+			acc[field[0]] = field[1];
+			return acc;
+		}, {});
+		return params;
+	},
+
 	tagPrettify: str => str.charAt(0) !== '#' ? '#' + str : str,
 
 	isNotEmptyString: str => isNotEmpty(str) && str.trim().length > 0,

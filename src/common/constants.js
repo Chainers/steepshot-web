@@ -21,7 +21,7 @@ const Constants = {
 				MAX_LENGTH: 40,
 				MAX_AMOUNT: 20
 			},
-		},
+		}
 	},
 
 	OPERATIONS: {

@@ -44,7 +44,6 @@ const mapStateToProps = (state) => {
 	const profile = state.userProfile.profile || {};
 	return {
 		username: state.auth.user,
-		postingKey: state.auth.postingKey,
 		isFollowed: profile['has_followed'],
 		isSubscribed: profile['is_subscribed'],
 		profileUserName: profile.username,

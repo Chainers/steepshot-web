@@ -226,10 +226,7 @@ export function createPost() {
 								console.log("compressing...");
 								return compressJPEG(blob);
 							}
-							return new Promise(resolve => {
-								resolve(blob);
-							});
-
+							return Promise.resolve(blob);
 						})
 						.then(blob => {
 							return PostService.createPost(tags, title, description, blob)

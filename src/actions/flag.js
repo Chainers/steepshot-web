@@ -1,11 +1,11 @@
 import {getStore} from '../store/configureStore';
 import Constants from '../common/constants';
-import {debounce} from 'lodash';
 import {updatePost} from './post';
 import {updateVotingPower} from './auth';
 import {pushErrorMessage, pushMessage} from "./pushMessage";
 import {actionLock, actionUnlock} from "./session";
 import PostService from "../services/postService";
+import AuthService from "../services/authService";
 
 function toggleFlagRequest(postIndex) {
 	return {
@@ -34,11 +34,10 @@ export function toggleFlag(postIndex) {
 	return function (dispatch) {
 		let state = getStore().getState();
 		let username = state.auth.user;
-		let postingKey = state.auth.postingKey;
 		let post = state.posts[postIndex];
 		const newFlagState = !post.flag;
-		if (!username && !postingKey) {
-			debounce(dispatch(pushMessage(Constants.VOTE_ACTION_WHEN_NOT_AUTH), Constants.VOTE_ACTION_WHEN_NOT_AUTH_DEBOUNCE));
+		if (!AuthService.isAuth()) {
+			dispatch(pushMessage(Constants.VOTE_ACTION_WHEN_NOT_AUTH));
 			return;
 		}
 		if (state.session.actionLocked) {
