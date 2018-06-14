@@ -4,6 +4,7 @@ import {updateVotingPower} from './auth';
 import {pushErrorMessage, pushMessage} from './pushMessage';
 import {actionLock, actionUnlock} from './session';
 import PostService from '../services/postService';
+import AuthService from "../services/authService";
 
 function toggleVoteRequest(postIndex) {
 	return {
@@ -32,11 +33,10 @@ export function toggleVote(postIndex) {
 	return function (dispatch) {
 		let state = getStore().getState();
 		let username = state.auth.user;
-		let postingKey = state.auth.postingKey;
 		let post = state.posts[postIndex];
 		const newVoteState = !post.vote;
 		let power = state.auth.like_power * 100;
-		if (!username && !postingKey) {
+		if (!AuthService.isAuth()) {
 			return;
 		}
 		if (state.session.actionLocked) {

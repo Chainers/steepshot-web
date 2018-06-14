@@ -11,6 +11,7 @@ import './postContextMenu.css';
 import {push} from 'react-router-redux';
 import {pushMessage} from '../../actions/pushMessage';
 import Constants from '../../common/constants';
+import AuthService from "../../services/authService";
 
 class PostContextMenu extends React.Component {
 
@@ -62,7 +63,7 @@ class PostContextMenu extends React.Component {
 	}
 
 	toggleFlag() {
-		if (!this.props.isUserAuth) {
+		if (!this.props.isAuth) {
 			this.props.pushMessage(Constants.VOTE_ACTION_WHEN_NOT_AUTH);
 			return;
 		}
@@ -166,7 +167,7 @@ class PostContextMenu extends React.Component {
 const mapStateToProps = (state) => {
 	return {
 		username: state.auth.user,
-		isUserAuth: !!state.auth.user && !!state.auth.postingKey,
+		isAuth: AuthService.isAuth(),
 		isGolosService: state.services.name === Constants.SERVICES.golos.name
 	};
 };

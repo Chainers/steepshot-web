@@ -5,6 +5,7 @@ import {replace} from "react-router-redux";
 import {utils} from "../../utils/utils";
 import Constants from "../../common/constants";
 import {setService} from "../../actions/services";
+import AuthService from "../../services/authService";
 
 class RouteWithService extends React.Component {
 
@@ -42,7 +43,7 @@ class RouteWithService extends React.Component {
 const mapStateToProps = (state, props) => {
 	const location = state.router.location || props.location || {};
 	return {
-		isAuthenticated: !!state.auth.user && !!state.auth.postingKey,
+		isAuthenticated: AuthService.isAuth(),
 		pathname: location.pathname,
 		serviceName: state.services.name
 	}

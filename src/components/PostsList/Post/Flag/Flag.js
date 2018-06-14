@@ -6,6 +6,7 @@ import {closeModal, openModal} from '../../../../actions/modal';
 import {pushMessage} from '../../../../actions/pushMessage';
 import './flag.css';
 import {toggleFlag} from '../../../../actions/flag';
+import AuthService from "../../../../services/authService";
 
 class Flag extends React.Component {
 
@@ -65,7 +66,7 @@ class Flag extends React.Component {
 const mapStateToProps = (state, props) => {
 	return {
 		...state.posts[props.postIndex],
-		isUserAuth: !!state.auth.user && !!state.auth.postingKey
+		isUserAuth: AuthService.isAuth()
 	};
 };
 

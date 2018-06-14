@@ -9,6 +9,10 @@ class AuthService {
 	static getPostingKey() {
 		return getStore().getState().auth.postingKey || storage.postingKey
 	}
+
+	static isAuth() {
+		return !!AuthService.getUsername() && !!AuthService.getPostingKey()
+	}
 }
 
 export default AuthService;

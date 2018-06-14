@@ -7,6 +7,7 @@ import {pushMessage} from '../../../../actions/pushMessage';
 import VoteIndicator from './VoteIndicator/VoteIndicator';
 import ShowIf from '../../../Common/ShowIf';
 import './vote.css';
+import AuthService from "../../../../services/authService";
 
 class Vote extends React.Component {
 
@@ -22,7 +23,7 @@ class Vote extends React.Component {
 	}
 
 	toggleVote() {
-    if (!this.props.isUserAuth) {
+    if (!this.props.isAuth) {
       this.props.pushMessage(Constants.VOTE_ACTION_WHEN_NOT_AUTH);
       return;
     }
@@ -34,7 +35,7 @@ class Vote extends React.Component {
 	}
 
   longTapPLInd(timeDelay) {
-    if (this.props.vote || !this.props.isUserAuth || this.props.isPLOpen || this.props.commentDeleted) {
+    if (this.props.vote || !this.props.isAuth || this.props.isPLOpen || this.props.commentDeleted) {
       return;
     }
     let plTimeout = setTimeout(() => {
@@ -177,7 +178,7 @@ const mapStateToProps = (state, props) => {
 		isPLOpen: post.isPLOpen,
 		plTimeout: post.plTimeout,
     hplTimeout: post.hplTimeout,
-    isUserAuth: !!state.auth.user && !!state.auth.postingKey
+    isAuth: AuthService.isAuth()
 	};
 };
 

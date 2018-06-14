@@ -11,16 +11,11 @@ import Search from './components/Search/Search';
 import EditPost from './components/EditPost/EditPost';
 import UserProfile from './components/UserProfile/UserProfile';
 import Login from './components/Login/Login';
-import {getStore} from './store/configureStore';
 import Browse from './components/Browse/Browse';
 import Settings from './components/Settings/Settings';
 import RouteWithService from "./components/Routes/RouteWithService";
 import SteemConnect from "./components/SteemConnect/SteemConnect";
-
-function isAuth() {
-	const auth = getStore().getState().auth;
-	return !!auth.user && !!auth.postingKey;
-}
+import AuthService from "./services/authService";
 
 export default function getRoutes() {
 	return (
@@ -29,7 +24,7 @@ export default function getRoutes() {
 				<Route exact path="/" render={() => <Redirect to="/browse"/>}/>
 				<Route exact path="/steemConnect" component={SteemConnect}/>
 				<Route exact path="/signin" render={() => (
-					isAuth() ? (
+					AuthService.isAuth() ? (
 						<Redirect push to="/feed"/>
 					) : (
 						<Login/>

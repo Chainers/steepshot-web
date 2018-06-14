@@ -7,6 +7,7 @@ import LoadingSpinner from '../../LoadingSpinner';
 import {utils} from '../../../utils/utils';
 import './commentInput.css';
 import Constants from '../../../common/constants';
+import AuthService from "../../../services/authService";
 
 class CommentInput extends React.Component {
 
@@ -37,7 +38,7 @@ class CommentInput extends React.Component {
 										</button>;
 		}
 		return (
-			<ShowIf show={this.props.isUserAuth}>
+			<ShowIf show={this.props.isAuth}>
 				<div className="container_com-inp">
 					<TextInput title="Comment"
 										 point={Constants.TEXT_INPUT_POINT.COMMENT}
@@ -67,7 +68,7 @@ const mapStateToProps = (state, props) => {
   	commentBody = state.posts[editingPostPoint].body;
 	}
 	return {
-		isUserAuth: state.auth.user && state.auth.postingKey,
+		isAuth: AuthService.isAuth(),
 		...state.comments[props.point],
     commentValue,
 		canSent: textInputData && utils.isNotEmptyString(textInputData.text) && commentBody !== newCommentText
