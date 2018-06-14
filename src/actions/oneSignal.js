@@ -96,14 +96,15 @@ export function setSubscribeOnBackend() {
 					settings,
 					player_id
 				})
-			}).catch(error => {
-			dispatch({
-				type: 'SET_SUBSCRIBE_ON_BACKEND_ERROR',
-				error,
-				settings,
-				player_id
 			})
-		});
+			.catch(error => {
+				dispatch({
+					type: 'SET_SUBSCRIBE_ON_BACKEND_ERROR',
+					error,
+					settings,
+					player_id
+				})
+			});
 	}
 }
 
@@ -124,13 +125,14 @@ export function changeUserSubscribe() {
 			dispatch({
 				type: 'CHANGE_USER_SUBSCRIBE_SUCCESS'
 			});
-		}).catch(error => {
-			dispatch(pushMessage(error));
-			dispatch({
-				type: 'CHANGE_USER_SUBSCRIBE_ERROR',
-				error
+		})
+			.catch(error => {
+				dispatch(pushMessage(error));
+				dispatch({
+					type: 'CHANGE_USER_SUBSCRIBE_ERROR',
+					error
+				});
 			});
-		});
 
 	}
 }

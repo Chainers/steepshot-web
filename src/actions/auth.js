@@ -57,7 +57,7 @@ export function login(username, postingKey) {
 							user: username,
 							avatar,
 							like_power: 100,
-              voting_power: response[0].voting_power / 100
+							voting_power: response[0].voting_power / 100
 						});
 						dispatch(push('/feed'));
 						dispatch(showMessage('Welcome to Steepshot, ' + (parseResult.profile.name || username) + '!'));
@@ -103,17 +103,19 @@ export function logout() {
 
 export function updateVotingPower(username) {
 	return (dispatch) => {
-		UserService.getProfile(username).then(result => {
-			dispatch({
-				type: 'UPDATE_VOTING_POWER',
-				voting_power: result.voting_power
+		UserService.getProfile(username)
+			.then(result => {
+				dispatch({
+					type: 'UPDATE_VOTING_POWER',
+					voting_power: result.voting_power
+				})
 			})
-		}).catch(error => {
-      dispatch({
-				type: 'UPDATE_VOTING_POWER_ERROR',
-				error
-			})
-		});
+			.catch(error => {
+				dispatch({
+					type: 'UPDATE_VOTING_POWER_ERROR',
+					error
+				})
+			});
 	}
 }
 

@@ -117,83 +117,88 @@ function middleware(options, template, req, res) {
 
 		resolve(initialHtml);
 
-	})).then(function getInitialPropsOfComponent() {
+	}))
+		.then(function getInitialPropsOfComponent() {
 
-		return (new Promise(function (resolve) {
-			resolve((context.getInitialProps) ? context.getInitialProps({
-				location: context.location,
-				req: req,
-				res: res,
-				store: context.store
-			}) : null);
-		}).catch(function (e) {
-			return {initialError: e.message || e.toString()};
-		}));
-
-	}).then(function renderApp(props) {
-
-		initialProps = props || {}; // client relies on truthy value of server-rendered props
-
-		return {
-			html: renderToString(React.createElement(
-				StaticRouter,
-				{location: req.url, context: context},
-				options.app({
-					props: initialProps,
+			return Promise.resolve(context.getInitialProps ? context.getInitialProps({
+					location: context.location,
 					req: req,
 					res: res,
-					state: context.store ? context.store.getState() : undefined
+					store: context.store
 				})
-			))
-		};
+				: null)
+				.catch(error => {
+					initialError: error.message || error.toString()
+				});
 
-	}).catch(function renderErrorHandler(e) {
+		})
+		.then(function renderApp(props) {
 
-		if (isRedirect(res)) throw e;
+			initialProps = props || {}; // client relies on truthy value of server-rendered props
 
-		// If we end up here it means server-side error that can't be handled by application
-		// By returning an object we are recovering from error
-		return {
-			error: e
-		};
+			return {
+				html: renderToString(React.createElement(
+					StaticRouter,
+					{location: req.url, context: context},
+					options.app({
+						props: initialProps,
+						req: req,
+						res: res,
+						state: context.store ? context.store.getState() : undefined
+					})
+				))
+			};
 
-	}).then(function renderAndSendHtml(result) {
+		})
+		.catch(error => {
 
-		if (result.error) {
-			setErrorStatus(res, result.error);
-		} else {
-			res.status(context.code || httpCodes.ok);
-		}
+			if (isRedirect(res)) throw error;
 
-		res.send(renderHTML(
-			lib.extends({
-				error: null,
-				initialProps: initialProps,
-				html: '',
+			// If we end up here it means server-side error that can't be handled by application
+			// By returning an object we are recovering from error
+			return {
+				error
+			};
+
+		})
+		.then(result => {
+
+			if (result.error) {
+				setErrorStatus(res, result.error);
+			} else {
+				res.status(context.code || httpCodes.ok);
+			}
+
+			res.send(renderHTML(
+				lib.extends({
+					error: null,
+					initialProps: initialProps,
+					html: '',
+					req: req,
+					res: res,
+					store: context.store,
+					template: template
+				}, result), // appends error or html
+				options
+			));
+
+		})
+		.catch(error => {
+
+			if (isRedirect(res)) return;
+
+			setErrorStatus(res, error);
+
+			res.send(errorTemplate({
+				error: error,
 				req: req,
 				res: res,
-				store: context.store,
 				template: template
-			}, result), // appends error or html
-			options
-		));
+			}));
 
-	}).catch(function finalErrorHandler(e) {
+			return error; // re-throw to make it unhandled?
 
-		if (isRedirect(res)) return;
-
-		setErrorStatus(res, e);
-
-		res.send(errorTemplate({
-			error: e,
-			req: req,
-			res: res,
-			template: template
-		}));
-
-		return e; // re-throw to make it unhandled?
-
-	});
+		});
 
 }
 
