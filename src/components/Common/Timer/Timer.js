@@ -21,10 +21,12 @@ class Timer extends React.Component {
 		};
 	}
 
-	componentDidMount() {
-		this.timer = setInterval(() => {
-			this.tick()
-		}, 1000);
+	componentWillReceiveProps(nextProps) {
+		if (this.state.waitingTime === 0 && nextProps.waitingTime > 0) {
+      this.timer = setInterval(() => {
+        this.tick()
+      }, 1000);
+		}
 	}
 
 	componentWillUnmount() {

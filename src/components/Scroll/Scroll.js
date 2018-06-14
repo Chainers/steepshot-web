@@ -27,13 +27,6 @@ class Scroll extends React.Component {
 		}
 	}
 
-	shouldComponentUpdate(nextProps) {
-		if (this.props.shouldUpdate !== nextProps.shouldUpdate) {
-			return true;
-		}
-		return false;
-	}
-
 	update() {
 		this.scroll.update();
 		this.props.scrollShouldUpdate(this.props.point);
