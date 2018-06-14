@@ -28,7 +28,7 @@ export function clearLoginErrors() {
 
 export function loginWithSteemConnect(params) {
 	const username = params.username;
-	const expiresIn = params['expires_in'];
+	const expiresIn = params['expires_in'] * 1000 + new Date().getTime();
 	const accessToken = params['access_token'];
 	return dispatch => {
 		dispatch(showBodyLoader());
@@ -39,6 +39,10 @@ export function loginWithSteemConnect(params) {
 				params
 			};
 		}
+		dispatch({
+			type: 'LOGIN_WITH_STEEM_CONNECT_REQUEST',
+			params
+		});
 		ChainService.getAccounts(username)
 			.then(response => {
 				const service = '';
@@ -48,6 +52,11 @@ export function loginWithSteemConnect(params) {
 				let parseResult = JSON.parse(response[0].json_metadata);
 				dispatch({
 					type: 'LOGIN_WITH_STEEM_CONNECT_SUCCESS',
+					user: username,
+					accessToken,
+					avatar,
+					like_power: 100,
+					voting_power: response[0].voting_power / 100
 				});
 				dispatch(push('/feed'));
 				dispatch(showMessage('Welcome to Steepshot, ' + (parseResult.profile.name || username) + '!'));

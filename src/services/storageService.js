@@ -7,6 +7,8 @@ class StorageService {
 		storage.like_power = 100;
 		storage.avatar = avatar;
 		storage.service = service;
+		storage.expiresIn = null;
+		storage.accessToken = null;
 	}
 
 	static setSteemConnectData(username, expiresIn, accessToken, avatar, service) {
@@ -16,6 +18,7 @@ class StorageService {
 		storage.like_power = 100;
 		storage.avatar = avatar;
 		storage.service = service;
+		storage.postingKey = null;
 	}
 
 	static clearAuthData() {
