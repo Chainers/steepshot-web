@@ -120,7 +120,7 @@ export function changeUserSubscribe() {
 			type: 'CHANGE_USER_SUBSCRIBE_REQUEST'
 		});
 		OneSignalService.changeSubscribeOnUser(subscriber, profile.username, player_id, app_id, subscribed).then(() => {
-			dispatch(pushMessage(`User has been successfully ${subscribed ? 'un' : ''}subscribed`));
+			dispatch(pushMessage(`User has been successfully ${subscribed ? 'un' : ''}subscribed.`));
 			dispatch({
 				type: 'CHANGE_USER_SUBSCRIBE_SUCCESS'
 			});

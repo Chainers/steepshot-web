@@ -76,21 +76,6 @@
     margin-left: 10px;
 }
 
-.pending-action_comment span {
-    animation-name: blink;
-    animation-duration: 1.4s;
-    animation-iteration-count: infinite;
-    animation-fill-mode: both;
-}
-
-.pending-action_comment span:nth-child(2) {
-    animation-delay: .2s;
-}
-
-.pending-action_comment span:nth-child(3) {
-    animation-delay: .4s;
-}
-
 @keyframes blink {
     0% {
         opacity: .2;

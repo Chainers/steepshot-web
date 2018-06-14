@@ -59,25 +59,10 @@
 
 .saving_follow {
     background: #f1f1f1;
+    cursor: default;
     opacity: .3;
-    cursor: not-allowed;
     color: #0f181e;
     padding: 12px 10px;
-}
-
-.saving_follow span {
-    animation-name: blink;
-    animation-duration: 1.4s;
-    animation-iteration-count: infinite;
-    animation-fill-mode: both;
-}
-
-.saving_follow span:nth-child(2) {
-    animation-delay: .2s;
-}
-
-.saving_follow span:nth-child(3) {
-    animation-delay: .4s;
 }
 
 .subscribe_follow, .unsubscribe_follow, .subscribing_follow {

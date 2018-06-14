@@ -210,10 +210,10 @@ class Post extends React.Component {
 const mapStateToProps = (state, props) => {
 	let post = state.posts[props.index];
   let isGolosService = state.services.name === Constants.SERVICES.golos.name;
-  let linkToSinglePost = (isGolosService ? '/' + Constants.SERVICES.golos.name : '')
-    + '/post' + post.url.replace(/\/[\w-.]+/, '');
 	if (post) {
 		const media = post.media[0];
+    let linkToSinglePost = (isGolosService ? '/' + Constants.SERVICES.golos.name : '')
+      + '/post' + post.url.replace(/\/[\w-.]+/, '');
 		let isGallery = false;
 		if (post.media.length > 1) {
 			isGallery = true;

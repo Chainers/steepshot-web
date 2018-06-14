@@ -1,9 +1,9 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {Scrollbars} from "react-custom-scrollbars";
-import {utils} from "../../utils/utils";
+import {Scrollbars} from 'react-custom-scrollbars';
+import {utils} from '../../utils/utils';
 import ReactResizeDetector from 'react-resize-detector';
-import {scrollInit, scrollShouldUpdate, setScrollData} from "../../actions/scroll";
+import {scrollInit, scrollShouldUpdate, setScrollData} from '../../actions/scroll';
 
 const SCROLL_DELTA = 10;
 

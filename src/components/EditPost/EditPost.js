@@ -33,6 +33,18 @@ class EditPost extends React.Component {
 		this.correctDragAndDropImage = this.correctDragAndDropImage.bind(this);
 	}
 
+  componentDidMount() {
+    window.addEventListener('drop', this.correctDragAndDropImage);
+    window.addEventListener('dragover', this.correctDragAndDropImage);
+    documentTitle();
+  }
+
+  componentWillUnmount() {
+    this.props.editClearAll();
+    window.removeEventListener('drop', this.correctDragAndDropImage);
+    window.removeEventListener('dragover', this.correctDragAndDropImage);
+  }
+
 	componentWillReceiveProps(nextProps) {
 		documentTitle();
 		if (this.props.postUrl !== nextProps.postUrl) {
@@ -42,18 +54,6 @@ class EditPost extends React.Component {
 			this.setImageContainerSize(nextProps.rotate);
 		}
 		return true;
-	}
-
-	componentWillUnmount() {
-		this.props.editClearAll();
-    window.removeEventListener('drop', this.correctDragAndDropImage);
-    window.removeEventListener('dragover', this.correctDragAndDropImage);
-	}
-
-	componentDidMount() {
-		window.addEventListener('drop', this.correctDragAndDropImage);
-		window.addEventListener('dragover', this.correctDragAndDropImage);
-		documentTitle();
 	}
 
 	preventDefaultStopPropagation(e) {
