@@ -1,11 +1,12 @@
 import sc2 from 'sc2-sdk';
 
-class SteemConnect {
+class SteemConnectV2 {
 	constructor() {
+		const callbackURL = `${document.location.origin}/steemConnect`;
 		this.api = sc2.Initialize({
-			app: 'busy.app',
-			callbackURL: 'https://steemit.github.io/example-steemconnect-angular',
-			scope: ['vote', 'comment']
+			app: 'dev.steepshot',
+			callbackURL,
+			scope: ['login', 'offline', 'vote', 'comment', 'delete_comment', 'comment_options', 'custom_json']
 		});
 	}
 
@@ -26,5 +27,5 @@ class SteemConnect {
 		})
 	}
 }
-
-export default new SteemConnect();
+const SteemConnect = new SteemConnectV2();
+export default SteemConnect;

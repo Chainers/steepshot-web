@@ -14,6 +14,7 @@ import {clearLoginErrors} from '../../actions/login';
 import Switcher from '../Switcher/Switcher';
 import ChooseSteemRegModal from './ChooseSteemRegModal/ChooseSteemRegModal';
 import {openModal} from '../../actions/modal';
+import SteemConnect from "../../services/steemConnect";
 
 const galleryImages = [
 	'/images/login/1.png',
@@ -70,7 +71,7 @@ class Login extends Component {
 	}
 
   loginWithSteemConnect() {
-
+		window.location.replace(SteemConnect.getLoginUrl() + '&expires_in=6048000');
 	}
 
 	render() {

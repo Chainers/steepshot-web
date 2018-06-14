@@ -15,6 +15,7 @@ import {getStore} from './store/configureStore';
 import Browse from './components/Browse/Browse';
 import Settings from './components/Settings/Settings';
 import RouteWithService from "./components/Routes/RouteWithService";
+import SteemConnect from "./components/SteemConnect/SteemConnect";
 
 function isAuth() {
 	const auth = getStore().getState().auth;
@@ -25,7 +26,8 @@ export default function getRoutes() {
 	return (
 		<App>
 			<Switch>
-				<Route exact path="/" render={() => <Redirect to={"/browse"}/>}/>
+				<Route exact path="/" render={() => <Redirect to="/browse"/>}/>
+				<Route exact path="/steemConnect" component={SteemConnect}/>
 				<Route exact path="/signin" render={() => (
 					isAuth() ? (
 						<Redirect push to="/feed"/>
@@ -40,7 +42,7 @@ export default function getRoutes() {
 				<RouteWithService path="/:service(golos)?/@:username" component={UserProfile}/>
 				<RouteWithService path="/:service(golos)?/search/:searchValue" component={Search}/>
 				<PrivateRoute path="/:service(golos)?/feed" component={Feed}/>
-				<Redirect path="/createPost" to={'/editPost'}/>
+				<Redirect path="/createPost" to='/editPost'/>
 				<PrivateRoute path="/:service(golos)?/editPost/:category?/:username?/:permlink?" component={EditPost}/>
 				<PrivateRoute path="/:service(golos)?/Profile" component={UserProfile}/>
 				<PrivateRoute path="/:service(golos)?/settings" component={Settings}/>

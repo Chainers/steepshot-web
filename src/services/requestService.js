@@ -35,6 +35,9 @@ class RequestService {
 	}
 
 	static post(url, data) {
+		if (!url.includes('http')) {
+			url = `${config.baseUrl}/${url}`;
+		}
 		const options = {
 			method: 'POST'
 		};
@@ -44,7 +47,7 @@ class RequestService {
 			options.headers = {'Content-Type': 'application/json'};
 			options.body = JSON.stringify(data);
 		}
-		return fetch(`${config.baseUrl}/${url}`, options)
+		return fetch(url, options)
 			.then(RequestService.processResponse);
 	}
 
