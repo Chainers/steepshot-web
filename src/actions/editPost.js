@@ -254,7 +254,7 @@ export function createPost() {
 			})
 			.catch(error => {
 				dispatch({
-					type: 'EDIT_POST_SET_WAITING_TIME_SUCCESS',
+					type: 'EDIT_POST_SET_WAITING_TIME_ERROR',
 					waitingTime: error
 				})
 			});
@@ -327,9 +327,7 @@ function createNewPost() {
 			.catch(error => {
 				dispatch({
 					type: 'EDIT_POST_SET_WAITING_TIME_ERROR',
-					data: {
-						error
-					}
+					data: error
 				})
 			});
 

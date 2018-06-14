@@ -12,6 +12,7 @@ import {deletePost} from '../../../actions/post';
 import ShowIf from '../../Common/ShowIf';
 import {innerLayout} from '../../../utils/innerLayout';
 import Constants from '../../../common/constants';
+import {loadingEllipsis} from '../../../utils/loadingEllipsis';
 
 class Comment extends React.Component {
 
@@ -56,12 +57,7 @@ class Comment extends React.Component {
 																	 onClick={this.editComment.bind(this)}>Edit
 														 </span>;
 		if (this.props.comment.postDeleting) {
-			deleteCommentElement = <div className="pending-action_comment not-hover_comment">
-															 Deleting
-															 <span> .</span>
-															 <span> .</span>
-															 <span> .</span>
-														 </div>;
+			deleteCommentElement = loadingEllipsis('Deleting', 'not-hover_comment');
 		}
 
 		if (this.props.isCommentCancelable) {

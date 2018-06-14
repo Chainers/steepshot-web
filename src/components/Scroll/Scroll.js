@@ -1,9 +1,9 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {Scrollbars} from "react-custom-scrollbars";
-import {utils} from "../../utils/utils";
+import {Scrollbars} from 'react-custom-scrollbars';
+import {utils} from '../../utils/utils';
 import ReactResizeDetector from 'react-resize-detector';
-import {scrollInit, scrollShouldUpdate, setScrollData} from "../../actions/scroll";
+import {scrollInit, scrollShouldUpdate, setScrollData} from '../../actions/scroll';
 
 const SCROLL_DELTA = 10;
 
@@ -25,6 +25,13 @@ class Scroll extends React.Component {
 		if (Math.abs(newPosition - this.props.scrollPosition) >= SCROLL_DELTA) {
 			this.props.setScrollData(this.props.point, newPosition, values.scrollTop, values.scrollHeight)
 		}
+	}
+
+	shouldComponentUpdate(nextProps) {
+		if (this.props.shouldUpdate !== nextProps.shouldUpdate) {
+			return true;
+		}
+		return false;
 	}
 
 	update() {

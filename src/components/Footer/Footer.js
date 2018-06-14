@@ -4,6 +4,10 @@ import './footer.css';
 
 class Footer extends React.Component {
 
+	shouldComponentUpdate() {
+		return false;
+	}
+
 	render() {
 		return (
 			<div className="wrapper_footer">

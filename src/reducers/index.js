@@ -34,6 +34,7 @@ import services from './services';
 import login from './login';
 import scroll from './scroll';
 import chooseSteemRegModal from './chooseSteemRegModal';
+import promoteModal from './promoteModal';
 
 export default combineReducers({
 	clipboard,
@@ -70,5 +71,6 @@ export default combineReducers({
 	services,
 	login,
 	scroll,
-  chooseSteemRegModal
+  chooseSteemRegModal,
+	promoteModal
 });

@@ -8,3 +8,7 @@
     align-items: center;
     justify-content: center;
 }
+
+.website_use-pro:hover {
+    opacity: .6;
+}

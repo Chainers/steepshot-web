@@ -76,7 +76,7 @@ class UserProfile extends React.Component {
 								<div className="location">{location}</div>
 								<p>{about}</p>
 								<p className="break--word">
-									<a href={website} target="_blank">{website}</a>
+									<a className="website_use-pro" href={website} target="_blank">{website}</a>
 								</p>
 								<div className="amount">
 									<div className="count">$ {balance}</div>

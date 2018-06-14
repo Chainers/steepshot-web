@@ -6,7 +6,8 @@ import {closeModal, openModal} from '../../../../actions/modal';
 import {pushMessage} from '../../../../actions/pushMessage';
 import './flag.css';
 import {toggleFlag} from '../../../../actions/flag';
-import AuthService from "../../../../services/authService";
+import {loadingEllipsis} from '../../../../utils/loadingEllipsis';
+import AuthService from '../../../../services/authService';
 
 class Flag extends React.Component {
 
@@ -41,12 +42,7 @@ class Flag extends React.Component {
         flagComment = 'Unflag';
       }
       if (this.props.flagLoading) {
-        flagComment = <div className="pending-action_comment">
-												Pending
-												<span> .</span>
-												<span> .</span>
-												<span> .</span>
-											</div>;
+        flagComment = loadingEllipsis('Pending');
       }
 			return (
 				<span className={this.props.flagLoading ? 'not-hover_comment' : 'flag_comment'}

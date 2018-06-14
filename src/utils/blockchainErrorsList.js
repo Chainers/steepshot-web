@@ -25,7 +25,6 @@ export function blockchainErrorsList(error) {
       format = ': ' + golosErrorsData.stack[0].format;
       newError = `${golosErrorsData.code} ${golosErrorsData.name}: ${golosErrorsData.message}${format}`;
     }
-
     let errorsList = [
       {error: ['4100000 plugin_exception: plugin exception: Account: ${account} bandwidth limit exeeded. Please wait to ' + // eslint-disable-line
         'transact or power up steem.', '4100000 plugin_exception: plugin exception: Account: ${account} bandwidth limit ' + // eslint-disable-line

@@ -1,3 +1,4 @@
+
 export function innerLayout(stuff, holdingElement) {
   let safetyScript = stuff.replace(/<script>|<\/script>/g, '');
   let newLine = safetyScript.replace(/\n/g, '<br>');
