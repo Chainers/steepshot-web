@@ -22,6 +22,10 @@ class AuthService {
 	static isAuth() {
 		return !!AuthService.getUsername() && (!!AuthService.getPostingKey() || !!AuthService.getAccessToken())
 	}
+
+	static isAuthWithToken() {
+		return !!AuthService.getAccessToken()
+	}
 }
 
 export default AuthService;

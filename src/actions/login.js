@@ -5,6 +5,7 @@ import ChainService from "../services/chainService";
 import {getAvatar, initOneSignalService, showMessage} from "./auth";
 import {pushErrorMessage} from "./pushMessage";
 import StorageService from "../services/storageService";
+import {setService} from "./services";
 
 export function setUsernameErrorMessage(message = '') {
 	return {
@@ -58,11 +59,12 @@ export function loginWithSteemConnect(params) {
 					like_power: 100,
 					voting_power: response[0].voting_power / 100
 				});
+				dispatch(setService());
 				dispatch(push('/feed'));
 				dispatch(showMessage('Welcome to Steepshot, ' + (parseResult.profile.name || username) + '!'));
 				LoggingService.logLogin();
 			})
-			.catch( error => {
+			.catch(error => {
 				StorageService.clearAuthData();
 				dispatch(loginError(error));
 			})

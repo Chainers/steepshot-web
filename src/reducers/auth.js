@@ -18,7 +18,7 @@ const initialState = global.isServerSide ? {
 
 export default function auth(state = initialState, action) {
 	if (!state.hydrated) {
-		state = {...initialState, state, hydrated: true};
+		state = {...initialState, ...state, hydrated: true};
 	}
 	switch (action.type) {
 		case 'SET_USER_AUTH':
@@ -59,7 +59,7 @@ export default function auth(state = initialState, action) {
 		case 'LOGIN_WITH_STEEM_CONNECT_SUCCESS':
 			return {
 				...state,
-				user: action.username,
+				user: action.user,
 				postingKey: null,
 				avatar: action.avatar,
 				voting_power: action.voting_power,

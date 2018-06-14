@@ -1,31 +1,65 @@
 import sc2 from 'sc2-sdk';
+import AuthService from "./authService";
+import SteemService from "./steemService";
 
-class SteemConnectV2 {
-	constructor() {
-		const callbackURL = `${document.location.origin}/steemConnect`;
-		this.api = sc2.Initialize({
-			app: 'dev.steepshot',
-			callbackURL,
-			scope: ['login', 'offline', 'vote', 'comment', 'delete_comment', 'comment_options', 'custom_json']
-		});
+const callbackURL = `${document.location.origin}/steemConnect`;
+const api = sc2.Initialize({
+	app: 'dev.steepshot',
+	callbackURL,
+	scope: ['login', 'offline', 'vote', 'comment', 'delete_comment', 'comment_options', 'custom_json']
+});
+
+class SteemConnect {
+
+	static getLoginUrl() {
+		return api.getLoginURL()
 	}
 
-	getLoginUrl() {
-		return this.api.getLoginURL()
+	init() {
+		api.setAccessToken(AuthService.getAccessToken());
 	}
 
-	setAccessToken(accessToken) {
-		this.api.setAccessToken(accessToken);
-		return new Promise((resolve, reject) => {
-			this.api.me(function (err, result) {
-				if (err) {
-					reject(err);
-				} else {
-					resolve(result);
-				}
-			})
-		})
+	addCommentToBlockchain(commentOperation) {
+		console.log('form connect');
+		let beneficiaries = this.getBeneficiaries(commentOperation[1].permlink, [{
+			account: 'steepshot',
+			weight: 1000
+		}]);
+		const operations = [commentOperation, beneficiaries];
+		return api.broadcast(operations).then(response => Promise.resolve(response.result));
+	}
+
+	changeVoteInBlockchain(postAuthor, permlink, power) {
+		return api.vote(AuthService.getUsername(), postAuthor, permlink, power);
+	}
+
+	deletePostFromBlockchain(permlink) {
+
+	}
+
+	changeFollowInBlockchain(jsonData) {
+
+	}
+
+	addPostDataToBlockchain(operations) {
+
+	}
+
+	getAccounts(username) {
+		return SteemService.getAccounts(username);
+	}
+
+	wifIsValid() {
+		throw new Error('Only for base authorization')
+	}
+
+	getValidTransaction() {
+		throw new Error('Only for base authorization')
+	}
+
+	getBeneficiaries(permlink, beneficiaries) {
+		return SteemService.getBeneficiaries(permlink, beneficiaries)
 	}
 }
-const SteemConnect = new SteemConnectV2();
+
 export default SteemConnect;

@@ -3,6 +3,8 @@ import {utils} from '../utils/utils';
 import ChainService from './chainService';
 import SteemService from './steemService';
 import GolosService from './golosService';
+import AuthService from "./authService";
+import SteemConnect from "./steemConnect";
 
 let config = Constants.SERVICES.steem;
 
@@ -16,7 +18,11 @@ class RequestService {
 				break;
 			case Constants.SERVICES.steem:
 			default:
-				ChainService.init(new SteemService());
+				let steemService = SteemService;
+				if (AuthService.isAuthWithToken()) {
+					steemService = SteemConnect;
+				}
+				ChainService.init(new steemService());
 				config = Constants.SERVICES.steem;
 				break;
 		}
