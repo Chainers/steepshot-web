@@ -52,7 +52,10 @@ class SendBidModal extends React.Component {
     let timerBlock = <div className="timer-wrapper_send-bid-mod">
                        <div className="label_send-bid-mod">Expected upvote time</div>
                        <div className={'timer_send-bid-mod' + redTimer}>
-                         <Timer waitingTime={8000} onTimeout={() => {}} onTick={this.tick.bind(this)}/>
+                         <Timer waitingTime={100}
+                                staticTimer={true}
+                                onTimeout={() => {}}
+                                onTick={this.tick.bind(this)}/>
                        </div>
                      </div>;
     if (this.props.blockedTimer) {
