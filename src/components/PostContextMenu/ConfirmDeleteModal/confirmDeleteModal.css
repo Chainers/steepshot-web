@@ -53,3 +53,9 @@
         border-radius: 0;
     }
 }
+
+@media (max-width: 400px) {
+    .buttons_holder-del-mod button {
+        padding: 12px 30px 12px;
+    }
+}

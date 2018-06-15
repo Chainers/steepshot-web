@@ -46,6 +46,10 @@ class GolosService {
 		})
 	}
 
+  sendTransferTroughBlockchain() {
+    return Promise.reject('Unneeded method.');
+  }
+
 	addPostDataToBlockchain(operations) {
 		return processResponse(callback => {
 			golos.broadcast.sendAsync(

@@ -34,7 +34,7 @@ class Description extends React.Component {
 	render() {
 		return (
 			<div className="container_description">
-				{/*<ShowIf show={this.props.isSelfPost}>
+				{/*<ShowIf show={this.props.isSelfPost && !this.props.isGolos}>
 					<div className="open-promote_description centered--flex" onClick={this.openPromoteModal.bind(this)}>
 						PROMOTE THIS POST
 					</div>
@@ -54,7 +54,9 @@ class Description extends React.Component {
 const mapStateToProps = (state) => {
 	let postIndex = state.postModal.currentIndex;
 	let isSelfPost = state.auth.user === state.posts[postIndex].author;
+	let isGolos = state.services.name === 'golos';
   return {
+  	isGolos,
 		postIndex,
 		isSelfPost
   }
