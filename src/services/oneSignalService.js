@@ -4,6 +4,13 @@ import ChainService from "./chainService";
 import AuthService from "./authService";
 
 let OneSignal = window.OneSignal;
+OneSignal.push(["addListenerForNotificationOpened", function(data) {
+	console.log("Received NotificationOpened:");
+	console.log(data);
+	console.log('_ - _ - _');
+	console.log(arguments);
+	console.log('__________');
+}]);
 
 class OneSignalService {
 
