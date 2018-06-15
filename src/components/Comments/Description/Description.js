@@ -1,6 +1,5 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {UserLinkFunc} from '../../Common/UserLinkFunc';
 import Tags from '../../PostsList/Post/Tags/Tags';
 import './description.css';
 import ShowIf from '../../Common/ShowIf';
@@ -39,7 +38,7 @@ class Description extends React.Component {
 						PROMOTE THIS POST
 					</div>
 				</ShowIf>*/}
-				<p>{UserLinkFunc(true, this.props.title)}</p>
+				<p className="word-wrap_brake-word">{renderHTML(MarkdownParser.parseTitle(this.props.title))}</p>
 				<div className={(this.state.isDescriptionOpened || (this.props.description.length < 140))
 							? 'collapse-opened' : 'collapse-closed'}>
 					{renderHTML(MarkdownParser.parse(this.props.description))}
