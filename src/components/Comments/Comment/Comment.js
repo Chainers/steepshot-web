@@ -10,19 +10,12 @@ import Vote from '../../PostsList/Post/Vote/Vote';
 import Flag from '../../PostsList/Post/Flag/Flag';
 import {deletePost} from '../../../actions/post';
 import ShowIf from '../../Common/ShowIf';
-import {innerLayout} from '../../../utils/innerLayout';
 import Constants from '../../../common/constants';
 import {loadingEllipsis} from '../../../utils/loadingEllipsis';
+import MarkdownParser from "../../../utils/markdownParser";
+import renderHTML from 'react-render-html';
 
 class Comment extends React.Component {
-
-	componentDidMount() {
-		innerLayout(this.props.comment.body, this.commentText);
-	}
-
-	componentWillReceiveProps(nextProps) {
-		if (this.props.comment.body !== nextProps.comment.body) this.commentText.innerHTML = nextProps.comment.body;
-	}
 
 	editComment() {
     this.props.setInputForEdit(this.props.point, this.props.parentPost, true);
@@ -99,7 +92,9 @@ class Comment extends React.Component {
 						</Link>
 				</div>
 				<div className="comment-text">
-					<div ref={ref => this.commentText = ref} className="comment-text_comment"/>
+					<div className="comment-text_comment">
+						{renderHTML(MarkdownParser.parse(this.props.comment.body))}
+					</div>
 					<Vote postIndex={this.props.point}
 								powerLikeIndPlace="comment"
 								commentDeleted={this.props.commentDeleted}/>

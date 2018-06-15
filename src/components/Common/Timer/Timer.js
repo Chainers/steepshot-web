@@ -21,11 +21,24 @@ class Timer extends React.Component {
 		};
 	}
 
-	componentWillReceiveProps(nextProps) {
-		if (this.state.waitingTime === 0 && nextProps.waitingTime > 0) {
+	componentDidMount() {
+		if (this.props.staticTimer) {
       this.timer = setInterval(() => {
         this.tick()
       }, 1000);
+		}
+	}
+
+	componentWillReceiveProps(nextProps) {
+		if (this.state.waitingTime !== nextProps.waitingTime) {
+      if (this.timer) {
+      	clearInterval(this.timer);
+			}
+			this.setState({targetTime: new Date().getTime() + nextProps.waitingTime * MILLISECONDS_IN_SECOND}, () => {
+        this.timer = setInterval(() => {
+          this.tick()
+        }, 1000);
+			});
 		}
 	}
 
@@ -35,7 +48,7 @@ class Timer extends React.Component {
 
 	tick() {
 		const waitingTime = this.state.targetTime - new Date().getTime();
-		if (this.props.onTick) {
+		if (this.props.staticTimer) {
 			this.props.onTick(waitingTime / 1000);
 		}
 		if (waitingTime < 0.5 * MILLISECONDS_IN_SECOND) {
