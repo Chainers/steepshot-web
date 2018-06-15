@@ -38,7 +38,7 @@ export function removeTag(index) {
 
 	return dispatch => {
 		if (isEditingPost && index === 0) {
-			dispatch(pushMessage("You can not edit the first hashtag!"));
+			dispatch(pushMessage('You can\'t edit the first hashtag.'));
 		} else {
 			let tagsList = tagsString.toLowerCase().split(' ');
 			tagsList.splice(index, 1);
@@ -127,9 +127,13 @@ export function closeTimer() {
 
 export function editPostClear() {
 	const initDataEditPost = getStore().getState().editPost.initData;
+	console.log(initDataEditPost);
 	return dispatch => {
 		if (initDataEditPost && initDataEditPost.src) {
-			dispatch({type: 'EDIT_POST_CLEAR_FIELDS'})
+			dispatch({
+				type: 'EDIT_POST_CLEAR_FIELDS',
+				firstTag: initDataEditPost.tags.split(' ')[0]
+			})
 		} else {
 			dispatch({type: 'EDIT_POST_CLEAR_ALL'});
 		}
