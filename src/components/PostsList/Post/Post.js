@@ -5,7 +5,6 @@ import TimeAgo from 'timeago-react';
 import Flag from './Flag/Flag';
 import ShowIf from '../../Common/ShowIf';
 import PostContextMenu from '../../PostContextMenu/PostContextMenu';
-import {UserLinkFunc} from '../../Common/UserLinkFunc';
 import Constants from '../../../common/constants';
 import Tags from './Tags/Tags';
 import Vote from './Vote/Vote';
@@ -20,6 +19,8 @@ import Avatar from '../../Common/Avatar/Avatar';
 import Likes from './Likes/Likes';
 import './post.css';
 import ReactPlayer from 'react-player';
+import MarkdownParser from "../../../utils/markdownParser";
+import renderHTML from 'react-render-html';
 
 class Post extends React.Component {
 
@@ -193,7 +194,7 @@ class Post extends React.Component {
 								</div>
 							</div>
 							<div className="card-preview_post">
-                {UserLinkFunc(null, this.props.title)}
+                {renderHTML(MarkdownParser.parseTitle(this.props.title))}
 								<Tags tags={this.props.tags}/>
 							</div>
 							<div className="number-of-comments_post" onClick={this.openPostModal.bind(this)}>

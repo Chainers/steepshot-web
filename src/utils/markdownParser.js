@@ -26,6 +26,12 @@ class MarkdownParser {
 		let userLink = anyLinks.replace(/([^/]|^)(@[\w-.]+\w)/g, '$1<a href="/$2" target="_blank">$2</a>');
 		return userLink;
 	}
+
+	static parseTitle(text) {
+		text = MarkdownParser.parse(text);
+		text = text.replace(/<\/?[\w]+>/g, '');
+		return text.replace(/([^/]|^)(@[\w-.]+\w)/g, '$1<a href="/$2" target="_blank">$2</a>');
+	}
 }
 
 export default MarkdownParser;
