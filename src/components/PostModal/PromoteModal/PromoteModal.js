@@ -167,8 +167,8 @@ const mapDispatchToProps = (dispatch) => {
     pushMessage: (message) => {
       dispatch(pushMessage(message));
     },
-    searchingBotRequest: () => {
-      dispatch(searchingBotRequest());
+    searchingBotRequest: (steemLink) => {
+      dispatch(searchingBotRequest(steemLink));
     }
   }
 };

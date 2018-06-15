@@ -19,7 +19,7 @@ class SendBidModal extends React.Component {
       this.props.setActiveKeyError(Constants.PROMOTE.EMPTY_KEY_INPUT);
       return;
     }
-    this.props.sendBid(this.props.steemLink);
+    this.props.sendBid(this.props.steemLink, this.input.value, this.props.botName);
   }
 
   setActiveKeyValue() {
@@ -36,11 +36,7 @@ class SendBidModal extends React.Component {
   }
 
   render() {
-    //TODO remove after bots search done
-    let botName = 'upmewhale';
-    let botAvaLink = '';
-
-
+    console.log(this.props.steemLink, this.props.botName);
     let redTimer = '', blockedTimer = '';
     let sendBid = 'SEND BID';
     if (this.props.sendingBid) {
@@ -68,7 +64,7 @@ class SendBidModal extends React.Component {
       <div className="wrapper_promote-mod">
         <p className="title_send-bid-mod">
           <span>PROMOTER FOUND!</span>
-          <a href={`https://steemit.com/@${botName}`} target="_blank">@{botName.toUpperCase()}</a>
+          <a href={`https://steemit.com/@${this.props.botName}`} target="_blank">@{this.props.botName.toUpperCase()}</a>
         </p>
         <div className="body_send-bid-mod">
           <div className="bot-logo_send-bid-mod"/>
@@ -95,6 +91,7 @@ class SendBidModal extends React.Component {
 
 const mapStateToProps = (state, props) => {
   const promoteModal = state.promoteModal;
+  const botName = 'upmewhale';
   let redTimer = false, blockedTimer = false;
   let littleScreen = state.window.width <= 400;
   if (promoteModal.leftTime) {
@@ -103,6 +100,7 @@ const mapStateToProps = (state, props) => {
   }
   return {
     ...state.promoteModal,
+    botName,
     littleScreen,
     redTimer,
     blockedTimer,
@@ -124,8 +122,8 @@ const mapDispatchToProps = (dispatch) => {
     setActiveKeyError: (error) => {
       dispatch(setActiveKeyError(error));
     },
-    sendBid: (steemLink) => {
-      dispatch(sendBid(steemLink));
+    sendBid: (steemLink, wif, botName) => {
+      dispatch(sendBid(steemLink, wif, botName));
     }
   }
 };

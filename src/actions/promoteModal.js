@@ -4,7 +4,9 @@ import UserService from '../services/userService';
 import {openModal} from './modal';
 import SendBidModal from '../components/PostModal/PromoteModal/SendBidModal/SendBidModal';
 import Constants from '../common/constants';
-import {actionLock} from './session';
+import {actionLock, actionUnlock} from './session';
+import ChainService from '../services/chainService';
+import {pushErrorMessage, pushMessage} from './pushMessage';
 
 function setAuthUserInfoLoading(param) {
   return {
@@ -20,7 +22,7 @@ function sendBotRequest(state) {
   }
 }
 
-function sendBidRequest(state) {
+function setBidRequest(state) {
   return {
     type: 'SET_BID_REQUEST',
     state
@@ -123,13 +125,32 @@ export function searchingBotRequest(steemLink) {
   }
 }
 
-export function sendBid(steemLink) {
+export function sendBid(steemLink, wif, botName) {
   let state = getStore().getState();
+  let transferInfo = {
+    wif: wif,
+    recipient: botName,
+    amount: state.promoteModal.promoteAmount,
+    postLink: steemLink
+  };
+  console.log(transferInfo);
   return dispatch => {
-    /*if (state.session.actionLocked) {
+    if (state.session.actionLocked) {
       return;
     }
-    dispatch(actionLock());*/
-    dispatch(sendBidRequest(true));
+    dispatch(actionLock());
+    dispatch(setBidRequest(true));
+    ChainService.sendTransferTroughBlockchain(transferInfo)
+      .then(response => {
+        dispatch(actionUnlock());
+        console.log(response);
+        dispatch(pushMessage(Constants.PROMOTE.BID_TO_BOT_SUCCESS));
+        dispatch(setBidRequest(false));
+      })
+      .catch(error => {
+        dispatch(actionUnlock());
+        dispatch(setBidRequest(false));
+        dispatch(pushErrorMessage(error));
+      });
   }
 }

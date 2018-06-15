@@ -26,6 +26,10 @@ class ChainService {
 		return ChainService.currentService.changeFollowInBlockchain(jsonData);
 	}
 
+	static sendTransferTroughBlockchain(tranferInfo) {
+		return ChainService.currentService.sendTransferTroughBlockchain(tranferInfo);
+	}
+
 	static addPostDataToBlockchain(operations) {
 		return ChainService.currentService.addPostDataToBlockchain(operations);
 	}
