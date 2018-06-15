@@ -16,7 +16,7 @@ class Scroll extends React.Component {
 
 	componentWillReceiveProps(nextProps) {
 		if (nextProps.shouldUpdate !== this.props.shouldUpdate) {
-			this.scroll.scrollTop(nextProps.scrollTop + 1);
+			this.scroll.scrollTop(this.scroll.getScrollTop());
 		}
 	}
 
