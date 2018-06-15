@@ -13,10 +13,12 @@ import ShowIf from '../../Common/ShowIf';
 import {innerLayout} from '../../../utils/innerLayout';
 import Constants from '../../../common/constants';
 import {loadingEllipsis} from '../../../utils/loadingEllipsis';
+import MarkdownParser from "../../../utils/markdownParser";
 
 class Comment extends React.Component {
 
 	componentDidMount() {
+		MarkdownParser.parse(this.props.comment.body);
 		innerLayout(this.props.comment.body, this.commentText);
 	}
 
