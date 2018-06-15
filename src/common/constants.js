@@ -240,7 +240,8 @@ const Constants = {
 		BID_TIMEOUT_ERROR: 'It\'s too late to bid to this bot, try any one.',
 		RED_TIMER: 60,
 		BLOCKED_TIMER: 21,
-		EMPTY_KEY_INPUT: 'You should enter the key'
+		EMPTY_KEY_INPUT: 'You should enter the key',
+		BID_TO_BOT_SUCCESS: 'Your bid has been successfully sent. Wait for upvote.'
 	}
 };
 

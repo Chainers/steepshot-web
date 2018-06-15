@@ -1,6 +1,5 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {UserLinkFunc} from '../../Common/UserLinkFunc';
 import Tags from '../../PostsList/Post/Tags/Tags';
 import './description.css';
 import ShowIf from '../../Common/ShowIf';
@@ -34,12 +33,12 @@ class Description extends React.Component {
 	render() {
 		return (
 			<div className="container_description">
-				{/*<ShowIf show={this.props.isSelfPost}>
+				{/*<ShowIf show={this.props.isSelfPost && !this.props.isGolos}>
 					<div className="open-promote_description centered--flex" onClick={this.openPromoteModal.bind(this)}>
 						PROMOTE THIS POST
 					</div>
 				</ShowIf>*/}
-				<p>{UserLinkFunc(true, this.props.title)}</p>
+				<p className="word-wrap_brake-word">{renderHTML(MarkdownParser.parseTitle(this.props.title))}</p>
 				<div className={(this.state.isDescriptionOpened || (this.props.description.length < 140))
 							? 'collapse-opened' : 'collapse-closed'}>
 					{renderHTML(MarkdownParser.parse(this.props.description))}
@@ -54,7 +53,9 @@ class Description extends React.Component {
 const mapStateToProps = (state) => {
 	let postIndex = state.postModal.currentIndex;
 	let isSelfPost = state.auth.user === state.posts[postIndex].author;
+	let isGolos = state.services.name === 'golos';
   return {
+  	isGolos,
 		postIndex,
 		isSelfPost
   }
