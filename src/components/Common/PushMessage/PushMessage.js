@@ -6,7 +6,7 @@ import './pushMessage.css';
 class PushMessage extends React.Component {
 
 	constructor(props) {
-		super(props);
+		super();
 		this.renderMessage = this.renderMessage.bind(this);
 		this.renderAllMessages = this.renderAllMessages.bind(this);
 	}

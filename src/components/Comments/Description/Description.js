@@ -6,7 +6,8 @@ import './description.css';
 import ShowIf from '../../Common/ShowIf';
 import PromoteModal from '../../PostModal/PromoteModal/PromoteModal';
 import {openModal} from '../../../actions/modal';
-import {innerLayout} from '../../../utils/innerLayout';
+import MarkdownParser from "../../../utils/markdownParser";
+import renderHTML from 'react-render-html';
 
 class Description extends React.Component {
 
@@ -15,10 +16,6 @@ class Description extends React.Component {
 		this.state = {
 			isDescriptionOpened: false
 		}
-	}
-
-	componentDidMount() {
-		innerLayout(this.props.description, this.descriptionWrapper);
 	}
 
 	openDescription() {
@@ -45,7 +42,7 @@ class Description extends React.Component {
 				<p>{UserLinkFunc(true, this.props.title)}</p>
 				<div className={(this.state.isDescriptionOpened || (this.props.description.length < 140))
 							? 'collapse-opened' : 'collapse-closed'}>
-					<div ref={ref => this.descriptionWrapper = ref}/>
+					{renderHTML(MarkdownParser.parse(this.props.description))}
 					<Tags tags={this.props.tags}/>
 					<a className="lnk-more" onClick={this.openDescription.bind(this)}>Show more</a>
 				</div>

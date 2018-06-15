@@ -9,6 +9,8 @@
 
 .collapse-opened {
     height: 100%;
+    overflow: hidden;
+    word-wrap: break-word;
 }
 
 .collapse-closed {
