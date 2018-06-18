@@ -33,11 +33,11 @@ class Description extends React.Component {
 	render() {
 		return (
 			<div className="container_description">
-				<ShowIf show={this.props.isSelfPost && !this.props.isGolos}>
+				{/*<ShowIf show={this.props.isSelfPost && !this.props.isGolos}>
 					<div className="open-promote_description centered--flex" onClick={this.openPromoteModal.bind(this)}>
 						PROMOTE THIS POST
 					</div>
-				</ShowIf>
+				</ShowIf>*/}
 				<p className="word-wrap_brake-word">{renderHTML(MarkdownParser.parseTitle(this.props.title))}</p>
 				<div className={(this.state.isDescriptionOpened || (this.props.description.length < 140))
 							? 'collapse-opened' : 'collapse-closed'}>
