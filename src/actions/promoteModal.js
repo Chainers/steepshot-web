@@ -127,14 +127,17 @@ export function searchingBotRequest(steemLink) {
 
 export function sendBid(steemLink, wif, botName) {
   let state = getStore().getState();
+  let promoteModal = state.promoteModal;
+  let promoteAmount = promoteModal.promoteAmount;
+  promoteAmount = promoteAmount.replace(/^0+(\d+)/, '$1');
   let transferInfo = {
     wif: wif,
     recipient: botName,
-    amount: state.promoteModal.promoteAmount,
+    amount: promoteAmount + ' ' + promoteModal.selectedToken,
     postLink: steemLink
   };
-  console.log(transferInfo);
   return dispatch => {
+    console.log(transferInfo);
     if (state.session.actionLocked) {
       return;
     }
