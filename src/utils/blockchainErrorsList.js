@@ -55,6 +55,8 @@ export function blockchainErrorsList(error) {
         '10 assert_exception: Assert Exception: vote.num_changes < STEEM_MAX_VOTE_CHANGES: Voter has used the maximum ' +
         'number of vote changes on this comment.'],
         notificationText: 'You\'ve already voted in a similar way. Please wait for synchronisation with blockchain.'},
+      {error: '3010000 tx_missing_active_auth: missing required active authority: Missing Active Authority ${id}', // eslint-disable-line
+        notificationText: 'It\'s wrong key. Check it and try again.'},
       {error: '10 assert_exception: Assert Exception: equal(com.parent_permlink, o.parent_permlink): The permlink of a ' +
         'comment cannot change.', notificationText: 'The permlink of comment can\'t change.'},
       {error: '10 assert_exception: Assert Exception: ( now - auth.last_root_post ) > STEEM_MIN_ROOT_COMMENT_INTERVAL: ' +

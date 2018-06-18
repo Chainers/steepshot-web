@@ -1,13 +1,12 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
-import ShowIf from "../Common/ShowIf";
-import {logout} from "../../actions/auth";
+import ShowIf from '../Common/ShowIf';
+import {logout} from '../../actions/auth';
 import './mobileNavigation.css';
-import {closeMobileNavigation} from "../../actions/mobileNavigation";
-import {Scrollbars} from "react-custom-scrollbars";
-import storage from "../../utils/Storage";
-import AuthService from "../../services/authService";
+import {closeMobileNavigation} from '../../actions/mobileNavigation';
+import {Scrollbars} from 'react-custom-scrollbars';
+import AuthService from '../../services/authService';
 
 class MobileNavigation extends React.Component {
 
@@ -19,11 +18,10 @@ class MobileNavigation extends React.Component {
 
 	render() {
 		const {isAuth, name, opened, urls, labels, closeMobileNavigation} = this.props;
-		let menuMobilePaddingTop = !storage.advertisingStatus ? {paddingTop: 160} : null;
 		return (
 			<ShowIf show={isAuth}>
 				<div className={'container_mobile' + (opened ? ' opened_mobile' : '')} onClick={this.props.closeMobileNavigation}>
-					<div className="menu_mobile" style={menuMobilePaddingTop}>
+					<div className="menu_mobile" style={this.props.menuMobilePaddingTop}>
 						<Scrollbars>
 							<div className="menu-items_mobile">
 								<Link
@@ -81,7 +79,9 @@ MobileNavigation.defaultProps = {
 };
 
 const mapStateToProps = (state) => {
+  const menuMobilePaddingTop = !state.advertising.advertisingStatus ? {paddingTop: 160} : {};
 	return {
+    menuMobilePaddingTop,
 		isAuth: AuthService.isAuth(),
 		name: state.auth.user,
 		opened: state.mobileNavigation.opened
