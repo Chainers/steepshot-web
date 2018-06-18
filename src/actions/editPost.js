@@ -10,10 +10,7 @@ import {pushErrorMessage, pushMessage} from "./pushMessage";
 import Constants from "../common/constants";
 import PostService from "../services/postService";
 import UserService from "../services/userService";
-
-const getUserName = () => {
-	return getStore().getState().auth.user;
-};
+import AuthService from "../services/authService";
 
 export function addTag() {
 	return (dispatch) => {
@@ -185,7 +182,7 @@ export function editPost() {
 			.then(response => {
 				dispatch(pushMessage(Constants.POST_SUCCESSFULLY_UPDATED));
 				dispatch(editPostSuccess(response));
-				dispatch(push(`/@${getUserName()}`))
+				dispatch(push(`/@${AuthService.getUsername()}`))
 			})
 			.catch(error => {
 				dispatch(editPostReject(error));
@@ -238,7 +235,7 @@ export function createPost() {
 						.then(() => {
 							dispatch(pushMessage(Constants.POST_SUCCESSFULLY_CREATED));
 							dispatch(editPostSuccess());
-							dispatch(push(`/@${getUserName()}`))
+							dispatch(push(`/@${AuthService.getUsername()}`))
 						})
 						.catch(error => {
 							if (error.plagiarism_author) {
@@ -321,7 +318,7 @@ function editPostChangeTags(tagsString) {
 
 function createNewPost() {
 	return dispatch => {
-		UserService.getWaitingTimeForCreate(getUserName())
+		UserService.getWaitingTimeForCreate(AuthService.getUsername())
 			.then(response => {
 				dispatch({
 					type: 'EDIT_POST_SET_WAITING_TIME_SUCCESS',
@@ -363,7 +360,7 @@ export function editPostReject(error) {
 }
 
 function checkTimeAfterUpdatedLastPost() {
-	return UserService.getWaitingTimeForCreate(getUserName())
+	return UserService.getWaitingTimeForCreate(AuthService.getUsername())
 		.then(response => {
 			const waitingTime = response['waiting_time'];
 			if (waitingTime !== 0) {
