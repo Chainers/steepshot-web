@@ -18,7 +18,7 @@ class ChooseSteemRegModal extends React.Component {
       return <div className="reg-service_choose-steem-reg-mod" key={index}>
                 <div className="reg-service-logo_choose-steem-reg-mod"
                      style={{backgroundImage: `url(${item.registrationServiceImage})`}}>
-                  <a href={item.linkToRegistrationService} target="_blank"/>
+                  <a href={item.linkToRegistrationService} target="_blank" rel="noopener noreferrer"/>
                 </div>
                 <p className="reg-service-name_choose-steem-reg-mod">Register through {item.registrationService}</p>
                 <p className="reg-service-params_choose-steem-reg-mod">

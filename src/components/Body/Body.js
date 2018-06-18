@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import {connect} from 'react-redux';
 import Footer from '../Footer/Footer';
 import Scroll from '../Scroll/Scroll';
@@ -23,11 +23,13 @@ class Body extends React.Component {
 	}
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state, props) => {
+  const location = state.router.location || props.location || {};
 	const advertisingStatus = state.advertising.advertisingStatus;
 	let bodyStyle = !advertisingStatus ? state.window.width < 740
 		? ' min-height-160_body' : ' min-height-120_body' : ' min-height-60_body';
 	return {
+		location,
 		bodyStyle
 	}
 };
