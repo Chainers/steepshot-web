@@ -63,6 +63,12 @@
     color: #979b9e;
 }
 
+.reg-service-logo_choose-steem-reg-mod a {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
 .buttons_choose-steem-reg-mod {
     text-align: right;
     padding-top: 20px;
@@ -70,10 +76,6 @@
 
 .buttons_choose-steem-reg-mod button {
     font: 12px OpenSans-Semibold;
-}
-
-.buttons_choose-steem-reg-mod button:first-child {
-    margin-right: 20px;
 }
 
 @media (max-width: 540px) {

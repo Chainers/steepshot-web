@@ -9,7 +9,7 @@ import {setSearchPanelState, setSearchValue} from '../../actions/search';
 import {closeMobileNavigation, toggleMobileNavigation} from '../../actions/mobileNavigation';
 import Hamburger from '../Hamburger/Hamburger';
 import './header.css';
-import AuthService from "../../services/authService";
+import AuthService from '../../services/authService';
 
 class Header extends React.Component {
 

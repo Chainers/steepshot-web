@@ -1,4 +1,5 @@
 import React from 'react';
+import {connect} from 'react-redux';
 import Footer from '../Footer/Footer';
 import Scroll from '../Scroll/Scroll';
 import './body.css';
@@ -10,7 +11,7 @@ class Body extends React.Component {
 	render() {
 		const {children} = this.props;
 		return (
-			<div className="container_body" key="Main">
+			<div className={'container_body' + this.props.bodyStyle} key="Main">
 				<Scroll point={SCROLL_POINT} className="scroll_body">
 					<div className="for-space-between">
 						{children}
@@ -22,4 +23,13 @@ class Body extends React.Component {
 	}
 }
 
-export default Body;
+const mapStateToProps = (state) => {
+	const advertisingStatus = state.advertising.advertisingStatus;
+	let bodyStyle = !advertisingStatus ? state.window.width < 740
+		? ' min-height-160_body' : ' min-height-120_body' : ' min-height-60_body';
+	return {
+		bodyStyle
+	}
+};
+
+export default connect(mapStateToProps)(Body);
