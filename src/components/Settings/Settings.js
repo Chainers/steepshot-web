@@ -1,15 +1,16 @@
 import React from 'react';
 import {updateSettings} from '../../actions/settings';
 import {connect} from 'react-redux';
-import {goBack} from "react-router-redux";
+import {goBack} from 'react-router-redux';
 import './settings.css';
-import Constants from "../../common/constants";
-import {withWrapper} from "create-react-server/wrapper";
-import SettingsField from "./SettingsField/SettingsField";
-import {subscribe, unsubscribe} from "../../actions/oneSignal";
-import ShowIf from "../Common/ShowIf";
-import BodyLoader from "../Common/BlockLoader/BlockLoader";
-import storage from "../../utils/Storage";
+import Constants from '../../common/constants';
+import {withWrapper} from 'create-react-server/wrapper';
+import SettingsField from './SettingsField/SettingsField';
+import {subscribe, unsubscribe} from '../../actions/oneSignal';
+import ShowIf from '../Common/ShowIf';
+import BodyLoader from '../Common/BlockLoader/BlockLoader';
+import storage from '../../utils/Storage';
+import {documentTitle} from '../../utils/documentTitle';
 
 class Settings extends React.Component {
 
@@ -18,6 +19,10 @@ class Settings extends React.Component {
 		if (!storage.settings && !global.isServerSide) {
 			props.updateSettings();
 		}
+	}
+
+	componentDidMount() {
+		documentTitle();
 	}
 
 	submit() {

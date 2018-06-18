@@ -1,4 +1,4 @@
-import {utils} from "./utils";
+import {utils} from './utils';
 
 export function documentTitle() {
 	let title = window.location.pathname.replace('/', '');

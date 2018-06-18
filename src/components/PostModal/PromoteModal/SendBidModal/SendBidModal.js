@@ -19,7 +19,8 @@ class SendBidModal extends React.Component {
       this.props.setActiveKeyError(Constants.PROMOTE.EMPTY_KEY_INPUT);
       return;
     }
-    this.props.sendBid(this.props.steemLink, this.input.value, this.props.botName);
+    let key = this.input.value.replace(/\s+/g, '');
+    this.props.sendBid(this.props.steemLink, key, this.props.botName);
   }
 
   setActiveKeyValue() {
@@ -91,7 +92,7 @@ class SendBidModal extends React.Component {
 
 const mapStateToProps = (state, props) => {
   const promoteModal = state.promoteModal;
-  const botName = 'upmewhale';
+  const botName = 'sneaky-ninja';
   let redTimer = false, blockedTimer = false;
   let littleScreen = state.window.width <= 400;
   if (promoteModal.leftTime) {

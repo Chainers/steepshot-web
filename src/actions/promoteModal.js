@@ -127,15 +127,25 @@ export function searchingBotRequest(steemLink) {
 
 export function sendBid(steemLink, wif, botName) {
   let state = getStore().getState();
+  let promoteModal = state.promoteModal;
+  let activeKey = wif.replace(/\s+/g, '');
+  let promoteAmount = promoteModal.promoteAmount.toString();
+  promoteAmount = promoteAmount.replace(/^0+(\d+)/, '$1');
+  if (/\./.test(promoteAmount)) {
+    promoteAmount = promoteAmount + '000';
+  } else {
+    promoteAmount = promoteAmount + '.000';
+  }
+  promoteAmount = promoteAmount.replace(/(\d+\.\d{3})(\d*)/, '$1');
   let transferInfo = {
-    wif: wif,
-    recipient: botName,
-    amount: state.promoteModal.promoteAmount,
+    wif: activeKey,
+    recipient: 'dmitryorelopt',
+    amount: promoteAmount + ' ' + promoteModal.selectedToken,
     postLink: steemLink
   };
   console.log(transferInfo);
   return dispatch => {
-    if (state.session.actionLocked) {
+    /*if (state.session.actionLocked) {
       return;
     }
     dispatch(actionLock());
@@ -151,6 +161,6 @@ export function sendBid(steemLink, wif, botName) {
         dispatch(actionUnlock());
         dispatch(setBidRequest(false));
         dispatch(pushErrorMessage(error));
-      });
+      });*/
   }
 }

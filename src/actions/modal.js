@@ -1,6 +1,5 @@
 import {getStore} from '../store/configureStore';
-import {setPostOffset} from "./postModal";
-import {setAdvertisingStatus as storage} from "./advertising";
+import {setPostOffset} from './postModal';
 
 export function openModal(index, options) {
 	return {
@@ -42,6 +41,7 @@ export function closeModal(index) {
 }
 
 function scrollToLastSeen(postModal) {
+	const state = getStore().getState();
 	return (dispatch) => {
 		if (postModal.postOffset) {
 			let alpha = window.pageYOffset - postModal.postOffset;
@@ -50,8 +50,8 @@ function scrollToLastSeen(postModal) {
 				return;
 			}
       const HEADER_HEIGHT = 60, DISTANCE_BETWEEN_POSTS = 20;
-			let headersCount = 1, location = getStore().getState().router.location.pathname;
-      if (!storage.advertisingStatus) {
+			let headersCount = 1, location = state.router.location.pathname;
+      if (!state.advertising.advertisingStatus) {
         headersCount = 2;
       }
 			let correctionPostOffset = postModal.postOffset - headersCount * HEADER_HEIGHT;

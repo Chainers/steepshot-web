@@ -14,7 +14,7 @@
     position: fixed;
     top: 0;
     z-index: 1002;
-    background-color: #eedd82;
+    background: url('/images/advertising/adverting-background.jpg') center;
 }
 
 .wrapper_advertising p {
@@ -22,20 +22,24 @@
 }
 
 .text-wrapper_advertising {
+    color: #ffffff;
     flex-grow: 2;
 }
 
 .text-wrapper_advertising p {
     font: 16px OpenSans-Regular;
     text-align: center;
+    padding: 0 10px;
 }
 
 .text-wrapper_advertising a {
-    color: #e74800;
+    color: #ffffff;
+    text-decoration: underline;
+    font: 16px OpenSans-Semibold;
 }
 
 .text-wrapper_advertising a:hover {
-    color: #e74800;
+    color: #979b9e;
     opacity: .6;
 }
 
@@ -57,19 +61,16 @@
 .close_advertising {
     width: 16px;
     height: 16px;
-    background: url('/images/sprite_svg1910.svg') -2px -36px  no-repeat;
+    background: url('/images/sprite_svg1910.svg') -2px -76px  no-repeat;
 }
 
 .close-wrapper_advertising:hover .close_advertising {
     background: url('/images/sprite_svg1910.svg') -2px -56px  no-repeat;
 }
 
-@media (max-width: 692px) {
+@media (max-width: 740px) {
     .wrapper_advertising, .block-in-body_advertising {
         height: 100px;
-    }
-    .text-wrapper_advertising {
-        padding: 0 30px;
     }
     .close-wrapper_advertising {
         margin-right: -5px;
@@ -79,6 +80,12 @@
 @media (max-width: 450px) {
     .close-wrapper_advertising {
         margin-right: 0;
+    }
+    .text-wrapper_advertising p {
+        font: 14px OpenSans-Regular;
+    }
+    .text-wrapper_advertising a {
+        font: 14px OpenSans-Semibold;
     }
 }
 
