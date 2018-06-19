@@ -1,11 +1,12 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
-import Avatar from "../../Common/Avatar/Avatar";
-import {connect} from "react-redux";
-import ShowIf from "../../Common/ShowIf";
-import LoadingSpinner from "../../LoadingSpinner";
+import Avatar from '../../Common/Avatar/Avatar';
+import {connect} from 'react-redux';
+import ShowIf from '../../Common/ShowIf';
+import LoadingSpinner from '../../LoadingSpinner';
 import './user.css';
 import {changeFollow} from "../../../actions/userProfile";
+import Constants from "../../../common/constants";
 
 const User = ({user, authUser, changeFollow}) => {
 
@@ -19,7 +20,9 @@ const User = ({user, authUser, changeFollow}) => {
 		<div className="container_user" >
 			<div className="ava-name-wrap_user">
 				<Link to={`/@${user.author}`}>
-					<Avatar src={user.avatar} style={{width: '60px', height: '60px', position: 'static', marginTop: '-1px'}}/>
+					<Avatar src={user.avatar}
+									style={{width: 60, height: 60, position: 'static'}}
+									sizes={Constants.USER_CARD_AVATAR_SIZE}/>
 				</Link>
 				<div className="name_user">
 					<Link to={`/@${user.author}`}>

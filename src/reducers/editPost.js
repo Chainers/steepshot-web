@@ -81,7 +81,7 @@ export default function editPost(state = initialState, action) {
 		case 'EDIT_POST_CLEAR_FIELDS':
 			return {
 				...state,
-				tags: ''
+				tags: action.firstTag
 			};
 
 		case 'EDIT_POST_INIT_DATA_REQUEST':

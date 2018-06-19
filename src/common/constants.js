@@ -21,7 +21,7 @@ const Constants = {
 				MAX_LENGTH: 40,
 				MAX_AMOUNT: 20
 			},
-		},
+		}
 	},
 
 	OPERATIONS: {
@@ -35,6 +35,9 @@ const Constants = {
 
 	NO_AVATAR: '/images/person.png',
 	NO_IMAGE: '/images/noimage.jpg',
+	DEF_AVATAR_SIZE: 20 + 10,
+	USER_CARD_AVATAR_SIZE: 60,
+	USER_PROFILE_AVATAR_SIZE: 100,
 
 	SETTINGS: {
 		FIELDS: {
@@ -148,6 +151,7 @@ const Constants = {
 		TAGS: 'tags',
 		DESCRIPTION: 'description',
 		COMMENT: 'comment',
+		COMMENT_INPUT_ACTIVE_CLASS: 'focused_tex-inp',
 		NAME: 'name',
 		POSTING_KEY: 'postingKey'
 	},
@@ -171,6 +175,8 @@ const Constants = {
 
 	COMMENT_ERROR_MESSAGE: 'You can only create comments once per 20 seconds.',
 	COMMENT_SUCCESS_MESSAGE: 'Comment has been successfully added.',
+	COMMENT_EDIT_SUCCESS_MESSAGE: 'Comment has been successfully updated. If you don\'t see the updated comment in ' +
+	'this post, please give it a few minutes to sync from the blockchain.',
 
 	SETTINGS_CHANGED_MESSAGE: 'Settings has been successfully changed.',
 	SETTINGS_NOT_CHANGED_MESSAGE: 'Settings hasn\'t been changed.',
@@ -215,8 +221,27 @@ const Constants = {
 		}
 	},
 
+	GIF: {
+		SIZE_ERROR: 'Size of your *.gif should be less than 1 MB.'
+	},
+
 	WINDOW: {
-		MAX_MOBILE_SCREEN_WIDTH: 1023
+		MAX_MOBILE_SCREEN_WIDTH: 1023,
+		MOBILE_START_WIDTH: 815,
+		WIDE_SCREEN_WIDTH: 1362
+	},
+
+	PROMOTE: {
+    SELECT_ERROR: 'Choose token',
+		INPUT_ERROR: 'Enter correct value',
+		NOT_ENOUGH_TOKENS: 'Not enough tokens',
+		MIN_AMOUNT_ERROR: 'Min bid is 0.25',
+		FIND_BOT_ERROR: 'We look, but there\'s no appropriate bot for promotion. Please, try little later.',
+		BID_TIMEOUT_ERROR: 'It\'s too late to bid to this bot, try any one.',
+		RED_TIMER: 60,
+		BLOCKED_TIMER: 21,
+		EMPTY_KEY_INPUT: 'You should enter the key',
+		BID_TO_BOT_SUCCESS: 'Your bid has been successfully sent. Wait for upvote.'
 	}
 };
 

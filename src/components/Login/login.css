@@ -78,6 +78,8 @@
     background-color: #ffffff;
     padding: 0 30px;
     max-width: 100vw;
+    box-shadow: 0 14px 32px 0 rgba(214, 214, 214, 0.5);
+    margin-top: 10px;
 }
 
 .form_login {
@@ -137,16 +139,10 @@
     border-top: 1px solid #f4f4f6;
 }
 
-@media (max-width: 385px) {
-    .btn-block_login {
-        flex-direction: column;
-        height: 95px;
-    }
-}
-
 .sign_login {
+    font: 12px OpenSans-Regular;
+    padding: 12px 30px 12px;
     width: 117px;
-    margin-bottom: 10px;
 }
 
 .registration-block_login {
@@ -160,6 +156,7 @@
     justify-content: space-between;
     align-items: center;
     max-width: 100vw;
+    box-shadow: 0 14px 32px 0 rgba(214, 214, 214, 0.5);
 }
 
 .registration-block_login > label {
@@ -180,4 +177,45 @@
 
 .create-acc_login.guidelines-btn_login:hover {
     background-color: #e7e7e7;
+}
+
+.login-steem-con-block_login {
+    transition: .2s all ease;
+    margin: 10px 0 0 0;
+}
+
+.hide-log-ste-con-block_login {
+    height: 0;
+    padding: 0;
+    opacity: 0;
+    overflow: hidden;
+}
+
+.steem-con-btn_login {
+    width: 220px;
+    height: 40px;
+    text-align: center;
+    color: #ffffff;
+    border-radius: 20px;
+    background: linear-gradient(to bottom left, rgb(74, 144, 226) 25%, rgb(130, 175, 223));;
+    font: 12px OpenSans-Regular;
+    border: none;
+    box-shadow: 0 8px 17px 0 rgba(74, 144, 226, .3);
+    transition: .2s all ease;
+}
+
+.steem-con-btn_login:hover {
+    box-shadow: 0 4px 7px 0 rgba(74, 144, 226, .3);
+}
+
+.steem-con-btn_login:active {
+    box-shadow: 0 0 0 0;
+}
+
+@media (max-width: 385px) {
+    .btn-block_login {
+        flex-direction: column;
+        height: 135px;
+        padding: 20px 0;
+    }
 }

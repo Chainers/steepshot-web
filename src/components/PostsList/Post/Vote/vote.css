@@ -20,6 +20,25 @@
     background: url('/images/sprite_svg1910.svg') 7% 38% no-repeat;
 }
 
+.btn-like-inactive_vote {
+    position: relative;
+    z-index: 2;
+    width: 23px;
+    height: 21px;
+    display: block;
+    padding: 0;
+    border: none;
+    cursor: auto;
+}
+
+.comment-not-liked_vote {
+    background: url('/images/sprite_svg1910.svg') 7% 32.5% no-repeat;
+}
+
+.comment-liked_vote {
+    background: url('/images/sprite_svg1910.svg') 7% 27% no-repeat;
+}
+
 .btn-like_vote.liked_vote, .comment.btn-like_vote.liked_vote {
     background: url('/images/sprite_svg1910.svg') 7% 43.5% no-repeat;
 }

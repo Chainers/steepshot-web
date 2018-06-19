@@ -1,16 +1,10 @@
 import React from 'react';
 import {Redirect} from 'react-router-dom';
-import {connect} from 'react-redux';
 import RouteWithService from "./RouteWithService";
+import AuthService from "../../services/authService";
 
-const PrivateRoute = ({component: Component, isAuthenticated, path}) => (
-	isAuthenticated ? <RouteWithService path={path} component={Component}/> : <Redirect to='/signin'/>
+const PrivateRoute = ({component: Component, path}) => (
+	AuthService.isAuth() ? <RouteWithService path={path} component={Component}/> : <Redirect to='/signin'/>
 );
 
-const mapStateToProps = (state) => {
-	return {
-		isAuthenticated: !!state.auth.user && !!state.auth.postingKey
-	}
-};
-
-export default connect(mapStateToProps)(PrivateRoute);
+export default PrivateRoute;

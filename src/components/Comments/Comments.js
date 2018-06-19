@@ -8,6 +8,7 @@ import Description from './Description/Description';
 import CommentInput from './CommentInput/CommentInput';
 import {Scrollbars} from 'react-custom-scrollbars';
 import './comments.css';
+import AuthService from "../../services/authService";
 
 class Comments extends React.Component {
 
@@ -86,7 +87,7 @@ class Comments extends React.Component {
 
 const mapStateToProps = (state, props) => {
 	return {
-		isUserAuth: state.auth.user && state.auth.postingKey,
+		isUserAuth: AuthService.isAuth(),
 		post: state.posts[props.point],
 		...state.comments[props.point]
 	};

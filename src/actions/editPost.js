@@ -10,10 +10,7 @@ import {pushErrorMessage, pushMessage} from "./pushMessage";
 import Constants from "../common/constants";
 import PostService from "../services/postService";
 import UserService from "../services/userService";
-
-const getUserName = () => {
-	return getStore().getState().auth.user;
-};
+import AuthService from "../services/authService";
 
 export function addTag() {
 	return (dispatch) => {
@@ -38,7 +35,7 @@ export function removeTag(index) {
 
 	return dispatch => {
 		if (isEditingPost && index === 0) {
-			dispatch(pushMessage("You can not edit the first hashtag!"));
+			dispatch(pushMessage('You can\'t edit the first hashtag.'));
 		} else {
 			let tagsList = tagsString.toLowerCase().split(' ');
 			tagsList.splice(index, 1);
@@ -49,13 +46,22 @@ export function removeTag(index) {
 
 export function changeImage(imageSrc, image) {
 	return dispatch => {
-		if (!isValidImageSize(dispatch, image)) {
-			return;
-		}
-		dispatch({
-			type: 'EDIT_POST_CHANGE_IMAGE',
-			image: imageSrc
+		fetch(imageSrc).then(res => {
+			return res.blob()
 		})
+			.then(blob => {
+				if (imageSrc.includes("image/gif") && blob.size > Constants.IMAGE.MAX_SIZE) {
+					dispatch(setEditPostImageError(Constants.GIF.SIZE_ERROR));
+					return;
+				}
+				if (!isValidImageSize(dispatch, image)) {
+					return;
+				}
+				dispatch({
+					type: 'EDIT_POST_CHANGE_IMAGE',
+					image: imageSrc
+				})
+			});
 	}
 }
 
@@ -118,9 +124,13 @@ export function closeTimer() {
 
 export function editPostClear() {
 	const initDataEditPost = getStore().getState().editPost.initData;
+	console.log(initDataEditPost);
 	return dispatch => {
 		if (initDataEditPost && initDataEditPost.src) {
-			dispatch({type: 'EDIT_POST_CLEAR_FIELDS'})
+			dispatch({
+				type: 'EDIT_POST_CLEAR_FIELDS',
+				firstTag: initDataEditPost.tags.split(' ')[0]
+			})
 		} else {
 			dispatch({type: 'EDIT_POST_CLEAR_ALL'});
 		}
@@ -172,7 +182,7 @@ export function editPost() {
 			.then(response => {
 				dispatch(pushMessage(Constants.POST_SUCCESSFULLY_UPDATED));
 				dispatch(editPostSuccess(response));
-				dispatch(push(`/@${getUserName()}`))
+				dispatch(push(`/@${AuthService.getUsername()}`))
 			})
 			.catch(error => {
 				dispatch(editPostReject(error));
@@ -217,10 +227,7 @@ export function createPost() {
 								console.log("compressing...");
 								return compressJPEG(blob);
 							}
-							return new Promise(resolve => {
-								resolve(blob);
-							});
-
+							return Promise.resolve(blob);
 						})
 						.then(blob => {
 							return PostService.createPost(tags, title, description, blob)
@@ -228,7 +235,7 @@ export function createPost() {
 						.then(() => {
 							dispatch(pushMessage(Constants.POST_SUCCESSFULLY_CREATED));
 							dispatch(editPostSuccess());
-							dispatch(push(`/@${getUserName()}`))
+							dispatch(push(`/@${AuthService.getUsername()}`))
 						})
 						.catch(error => {
 							if (error.plagiarism_author) {
@@ -248,7 +255,7 @@ export function createPost() {
 			})
 			.catch(error => {
 				dispatch({
-					type: 'EDIT_POST_SET_WAITING_TIME_SUCCESS',
+					type: 'EDIT_POST_SET_WAITING_TIME_ERROR',
 					waitingTime: error
 				})
 			});
@@ -311,7 +318,7 @@ function editPostChangeTags(tagsString) {
 
 function createNewPost() {
 	return dispatch => {
-		UserService.getWaitingTimeForCreate(getUserName())
+		UserService.getWaitingTimeForCreate(AuthService.getUsername())
 			.then(response => {
 				dispatch({
 					type: 'EDIT_POST_SET_WAITING_TIME_SUCCESS',
@@ -321,9 +328,7 @@ function createNewPost() {
 			.catch(error => {
 				dispatch({
 					type: 'EDIT_POST_SET_WAITING_TIME_ERROR',
-					data: {
-						error
-					}
+					data: error
 				})
 			});
 
@@ -355,14 +360,15 @@ export function editPostReject(error) {
 }
 
 function checkTimeAfterUpdatedLastPost() {
-	return UserService.getWaitingTimeForCreate(getUserName())
+	return UserService.getWaitingTimeForCreate(AuthService.getUsername())
 		.then(response => {
 			const waitingTime = response['waiting_time'];
 			if (waitingTime !== 0) {
 				return Promise.reject(waitingTime)
 			}
 			return Promise.resolve();
-		}).catch(() => {
+		})
+		.catch(() => {
 			return Promise.resolve();
 		});
 }
@@ -417,11 +423,11 @@ function isValidField(dispatch, title, photoSrc) {
 
 export function setEditPostImageError(message) {
 	return dispatch => {
-    dispatch({
-      type: 'EDIT_POST_SET_IMAGE_ERROR',
-      message
-    });
-  }
+		dispatch({
+			type: 'EDIT_POST_SET_IMAGE_ERROR',
+			message
+		});
+	}
 }
 
 export function editPostRequest() {

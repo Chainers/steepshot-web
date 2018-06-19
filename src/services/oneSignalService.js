@@ -1,6 +1,7 @@
 import Constants from "../common/constants";
 import RequestService from "./requestService";
 import ChainService from "./chainService";
+import AuthService from "./authService";
 
 let OneSignal = window.OneSignal;
 
@@ -25,8 +26,8 @@ class OneSignalService {
 		OneSignal.deleteTags(['username', 'player_id']);
 	}
 
-	static async setSubscribeConfiguration(username, postingKey, player_id, app_id, settings) {
-		if (!username || !postingKey) {
+	static async setSubscribeConfiguration(username, player_id, app_id, settings) {
+		if (!AuthService.isAuth()) {
 			return;
 		}
 

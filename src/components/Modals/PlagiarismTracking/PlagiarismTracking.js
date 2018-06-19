@@ -2,12 +2,8 @@ import * as React from 'react';
 import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
 import {closeModal} from '../../../actions/modal';
-import {editPostReject, editPostRequest, editPostSuccess} from '../../../actions/editPost';
-import constants from '../../../common/constants';
-import {push} from 'react-router-redux';
+import {continuePublishing} from "../../../actions/plagiarismTracking";
 import './plagiarismTracking.css';
-import {pushErrorMessage, pushMessage} from '../../../actions/pushMessage';
-import PostService from '../../../services/postService';
 
 class PlagiarismTracking extends React.Component {
 
@@ -23,22 +19,6 @@ class PlagiarismTracking extends React.Component {
 
 	closeModal() {
 		this.props.closeModal('PlagiarismTrackingModal');
-	}
-
-	continuePublishing() {
-		let data = this.props.data;
-		PostService.afterCheckingPlagiarism(data.operations)
-			.then(() => {
-				this.props.pushMessage(constants.POST_SUCCESSFULLY_CREATED);
-				this.props.editPostSuccess();
-				this.props.historyPush(`/@${this.props.authUser}`);
-			})
-			.catch(error => {
-				this.props.editPostReject(error);
-				this.props.pushErrorMessage(error);
-			});
-		this.props.closeModal('PlagiarismTrackingModal');
-		this.props.editPostRequest();
 	}
 
 	plagiarismAuthor() {
@@ -92,7 +72,7 @@ class PlagiarismTracking extends React.Component {
 				</p>
 				<div className="buttons_plag-track">
 					<button className="btn btn-index" onClick={this.closeModal.bind(this)}>NO, CANCEL PUBLISHING</button>
-					<button className="btn btn-default" onClick={this.continuePublishing.bind(this)}>YES, CONTINUE PUBLISHING
+					<button className="btn btn-default" onClick={this.props.continuePublishing(this.props.data)}>YES, CONTINUE PUBLISHING
 					</button>
 				</div>
 			</div>
@@ -112,24 +92,9 @@ const mapDispatchToProps = (dispatch) => {
 		closeModal: (index) => {
 			dispatch(closeModal(index));
 		},
-		editPostRequest: () => {
-			dispatch(editPostRequest());
-		},
-		editPostSuccess: () => {
-			dispatch(editPostSuccess());
-		},
-		editPostReject: (error) => {
-			dispatch(editPostReject(error));
-		},
-		historyPush: (path) => {
-			dispatch(push(path))
-		},
-		pushMessage: (message) => {
-			dispatch(pushMessage(message))
-		},
-    pushErrorMessage: (message) => {
-      dispatch(pushErrorMessage(message))
-    },
+		continuePublishing: (data) => {
+			dispatch(continuePublishing(data));
+		}
 	};
 };
 

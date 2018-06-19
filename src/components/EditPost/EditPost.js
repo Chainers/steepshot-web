@@ -30,7 +30,20 @@ class EditPost extends React.Component {
 		super();
 		this.setImageContainerSize = this.setImageContainerSize.bind(this);
 		props.setInitDataForEditPost(props.postUrl);
+		this.correctDragAndDropImage = this.correctDragAndDropImage.bind(this);
 	}
+
+  componentDidMount() {
+    window.addEventListener('drop', this.correctDragAndDropImage);
+    window.addEventListener('dragover', this.correctDragAndDropImage);
+    documentTitle();
+  }
+
+  componentWillUnmount() {
+    this.props.editClearAll();
+    window.removeEventListener('drop', this.correctDragAndDropImage);
+    window.removeEventListener('dragover', this.correctDragAndDropImage);
+  }
 
 	componentWillReceiveProps(nextProps) {
 		documentTitle();
@@ -41,16 +54,6 @@ class EditPost extends React.Component {
 			this.setImageContainerSize(nextProps.rotate);
 		}
 		return true;
-	}
-
-	componentWillUnmount() {
-		this.props.editClearAll();
-	}
-
-	componentDidMount() {
-		window.addEventListener('drop', (e) => this.correctDragAndDropImage(e));
-		window.addEventListener('dragover', (e) => this.correctDragAndDropImage(e));
-		documentTitle();
 	}
 
 	preventDefaultStopPropagation(e) {
@@ -92,7 +95,7 @@ class EditPost extends React.Component {
 		} else {
 			return;
 		}
-    this.props.setDragAndDropHover(false);
+		if (this.props.dragHover) this.props.setDragAndDropHover(false);
 		reader.onloadend = () => {
 			let image = new Image();
 			image.src = reader.result;
@@ -161,7 +164,7 @@ class EditPost extends React.Component {
 							<div className="choose-container_edi-pos">
 								<div className="upload-icon_edi-pos"/>
 								<span className="upload-text_edi-pos">
-                  Click to upload a picture
+                  Click or drop here to upload a picture
                 </span>
 							</div>
 						</ShowIf>
@@ -247,7 +250,9 @@ class EditPost extends React.Component {
 
 	getButtonText() {
 		if (!this.props.canCreate) {
-			return (<Timer waitingTime={this.props.waitingTime} onTimeout={this.props.closeTimer}/>)
+			return (<Timer waitingTime={this.props.waitingTime}
+										 staticTimer={false}
+										 onTimeout={this.props.closeTimer}/>)
 		}
 		return this.props.isNew ? 'Create new post' : 'Update post'
 	}

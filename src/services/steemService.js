@@ -55,6 +55,13 @@ class SteemService {
 		})
 	}
 
+	sendTransferTroughBlockchain(transferInfo) {
+		return processRequest(callback => {
+			steem.broadcast.transfer(transferInfo.wif, AuthService.getUsername(), transferInfo.recipient, transferInfo.amount,
+				transferInfo.postLink, callback);
+		});
+	}
+
 	getAccounts(username) {
 		return processRequest(callback => {
 			steem.api.getAccounts([username], callback);

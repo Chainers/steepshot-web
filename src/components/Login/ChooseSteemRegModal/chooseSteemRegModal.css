@@ -1,0 +1,93 @@
+.wrapper_choose-steem-reg-mod {
+    display: block;
+    background: #ffffff;
+    border-radius: 10px;
+    padding: 25px 30px 20px 30px;
+}
+
+.close-button_choose-steem-reg-mod {
+    margin-left: 20px;
+}
+
+.title_choose-steem-reg-mod {
+    display: flex;
+    align-items: center;
+    font: 16px OpenSans-Regular;
+    margin: 0;
+    padding-bottom: 25px;
+    border-bottom: 1px solid #f4f4f6;
+}
+
+.reg-services-items_choose-steem-reg-mod {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid #f4f4f6;
+}
+
+.reg-service_choose-steem-reg-mod {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 30px 0;
+    width: 140px;
+}
+
+.reg-service_choose-steem-reg-mod:nth-child(2) {
+    margin: 0 18px;
+}
+
+.reg-service-logo_choose-steem-reg-mod {
+    width: 140px;
+    height: 140px;
+    background: center no-repeat;
+    background-size: cover;
+    border: 1px solid #f4f4f6;
+    border-radius: 16px;
+}
+
+.reg-service-logo_choose-steem-reg-mod:hover {
+    border: 1px solid #e74800;
+    cursor: pointer;
+}
+
+.reg-service-name_choose-steem-reg-mod {
+    text-align: center;
+    margin-top: 16px;
+    font: 12px OpenSans-Semibold;
+    color: #333333;
+}
+
+.reg-service-params_choose-steem-reg-mod {
+    margin: 0;
+    font: 12px OpenSans-Regular;
+    color: #979b9e;
+}
+
+.reg-service-logo_choose-steem-reg-mod a {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.buttons_choose-steem-reg-mod {
+    text-align: right;
+    padding-top: 20px;
+}
+
+.buttons_choose-steem-reg-mod button {
+    font: 12px OpenSans-Semibold;
+}
+
+@media (max-width: 540px) {
+    .reg-services-items_choose-steem-reg-mod {
+        flex-direction: column;
+        align-items: center;
+        padding-bottom: 15px;
+    }
+    .reg-service_choose-steem-reg-mod {
+        padding: 15px 0 0 0;
+    }
+    .buttons_choose-steem-reg-mod button {
+        padding: 10px 30px;
+    }
+}

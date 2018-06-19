@@ -13,7 +13,6 @@ import Flag from '../PostsList/Post/Flag/Flag';
 import Vote from '../PostsList/Post/Vote/Vote';
 import LoadingSpinner from '../LoadingSpinner/index';
 import {copyToClipboard} from '../../actions/clipboard';
-import ReactDOM from 'react-dom';
 import PostContextMenu from '../PostContextMenu/PostContextMenu';
 import Likes from '../PostsList/Post/Likes/Likes';
 import FullScreenButtons from './FullScreenButtons/FullScreenButtons';
@@ -27,7 +26,9 @@ import './postModal.css';
 import Constants from '../../common/constants';
 import {utils} from '../../utils/utils';
 import {setComponentSize} from '../../utils/setComponentSize';
-import {setCommentEditState} from "../../actions/comments";
+import {setCommentEditState} from '../../actions/comments';
+import {getAuthUserInfo} from '../../actions/promoteModal';
+import AuthService from '../../services/authService';
 
 class PostModal extends React.Component {
 
@@ -52,6 +53,7 @@ class PostModal extends React.Component {
 	componentWillUnmount() {
 		window.removeEventListener('keydown', this.initKeyPress);
     window.removeEventListener('resize', this.resizePostModal);
+    this.props.getAuthUserInfoSuccess('');
 	}
 
 	componentWillReceiveProps(nextProps) {
@@ -107,8 +109,7 @@ class PostModal extends React.Component {
 	}
 
 	initKeyPress(e) {
-		if ((document.activeElement !== ReactDOM.findDOMNode(this.textArea))
-			&& (this.props.isCommentEditing || !this.props.focusedTextInput)) {
+		if (!this.props.focusedTextInput) {
 			switch (e.keyCode) {
 				case 37:
 					this.previousPost();
@@ -119,9 +120,7 @@ class PostModal extends React.Component {
 				case 27:
 					if (this.props.fullScreenMode) {
             this.setFullScreen(false, false);
-          } else if (this.props.isCommentEditing) {
-            this.props.setCommentEditState('', this.props.currentIndex, false);
-					} else {
+          } else {
 						this.props.closeModal(this.props.point);
 					}
 					break;
@@ -131,7 +130,9 @@ class PostModal extends React.Component {
 				default:
 					break;
 			}
-		}
+		} else if (e.keyCode === 27 && this.props.isCommentEditing && !this.props.fullScreenMode) {
+      this.props.setCommentEditState('', this.props.currentIndex, false);
+    }
 	}
 
 	lowNSFWFilter() {
@@ -185,10 +186,7 @@ class PostModal extends React.Component {
 
 	copyLinkToClipboard(e) {
 		e.target.blur();
-		this.props.copyToClipboard(
-			document.location.origin + (this.props.isGolosService ? '/' + Constants.SERVICES.golos.name : '')
-			+ '/post' + this.props.post.url.replace(/\/[\w-.]+/, '')
-		);
+		this.props.copyToClipboard(this.props.linkToSinglePost);
 	}
 
 	renderImage() {
@@ -382,26 +380,6 @@ class PostModal extends React.Component {
 		this.fsRightLeft(true);
 	}
 
-	longTapPLInd(timeDelay) {
-		if (this.props.post.vote) {
-			return;
-		}
-		if (!this.props.authUser) {
-			return;
-		}
-		if (this.props.post.isPLOpen) {
-			return;
-		}
-		let plTimeout = setTimeout(() => {
-			this.props.setPowerLikeInd(this.props.currentIndex, true, 'modal');
-		}, timeDelay);
-		this.props.setPowerLikeTimeout(this.props.currentIndex, plTimeout);
-	}
-
-	breakLongTapPLInd() {
-		clearTimeout(this.props.post.plTimeout);
-	}
-
 	render() {
 		const authorLink = `/@${this.props.post.author}`;
 
@@ -416,6 +394,7 @@ class PostModal extends React.Component {
 				visibility: 'hidden'
 			}
 		}
+
 		return (
 			<div>
 				<div className="container_pos-mod" style={hideModalFS}>
@@ -457,16 +436,13 @@ class PostModal extends React.Component {
 							</ShowIf>
 						</div>
 						<Link to={authorLink} className="user_pos-mod">
-							<Avatar src={this.props.post.avatar}/>
+							<Avatar src={this.props.post.avatar} sizes={Constants.DEF_AVATAR_SIZE}/>
 							<div className="name_pos-mod">
 								{this.props.post.author}
 							</div>
 						</Link>
 					</div>
-					<div className="description_pos-mod"
-							 style={this.props.style.description}
-							 ref={ref => this.descPosMod = ref}
-					>
+					<div className="description_pos-mod" style={this.props.style.description}>
 						<div className="card-controls_post card-controls-border_post">
 							<Likes postIndex={this.props.currentIndex} style={{paddingLeft: 20}}/>
 							<div className="card-buttons_post">
@@ -510,8 +486,11 @@ class PostModal extends React.Component {
 const mapStateToProps = (state) => {
 	let currentIndex = state.postModal.currentIndex;
 	let post = state.posts[currentIndex];
+	let isGolosService = state.services.name === Constants.SERVICES.golos.name;
+	let linkToSinglePost = document.location.origin + (isGolosService ? '/' + Constants.SERVICES.golos.name : '')
+    + '/post' + post.url.replace(/\/[\w-.]+/, '');
 	if (post) {
-    const isFSByScreenSize = state.window.width < 1025;
+    const isFSByScreenSize = state.window.width < Constants.WINDOW.MAX_MOBILE_SCREEN_WIDTH;
 		let urlVideo = post.media[0].url;
 		let postsList = state.postsList[state.postModal.point];
 		let isCommentEditing = state.comments[currentIndex] ? state.comments[currentIndex].commentEditing : null;
@@ -521,18 +500,19 @@ const mapStateToProps = (state) => {
 			urlVideo,
       isFSByScreenSize,
       isCommentEditing,
+      isGolosService,
+      linkToSinglePost,
 			completeStatus: post.completeStatus,
 			...state.postModal,
 			newPostsLoading: postsList.loading,
-			isUserAuth: state.auth.user && state.auth.postingKey,
+			isUserAuth: AuthService.isAuth(),
 			authUser: state.auth.user,
 			firstPost: postsList.posts[0] === currentIndex,
 			lastPost: postsList.offset === currentIndex,
 			focusedTextInput: state.textInput[Constants.TEXT_INPUT_POINT.COMMENT] ?
 				state.textInput[Constants.TEXT_INPUT_POINT.COMMENT].focused : false,
 			window: state.window,
-			offsetTop: state.postModal.postOffset,
-			isGolosService: state.services.name === Constants.SERVICES.golos.name
+			offsetTop: state.postModal.postOffset
 		};
 	}
 };
@@ -580,7 +560,10 @@ const mapDispatchToProps = (dispatch) => {
 		},
     setCommentEditState: (point, parentPost, commentEditing) => {
       dispatch(setCommentEditState(point, parentPost, commentEditing));
-    }
+    },
+    getAuthUserInfoSuccess: (result) => {
+			dispatch(getAuthUserInfo(result));
+		}
 	};
 };
 

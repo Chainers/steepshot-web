@@ -4,7 +4,6 @@ import Constants from '../../common/constants';
 import Avatar from '../Common/Avatar/Avatar';
 import PostsList from '../PostsList/PostsList';
 import UsersList from '../UsersList/UsersList';
-import {UserLinkFunc} from '../Common/UserLinkFunc';
 import {withWrapper} from "create-react-server/wrapper";
 import {addMetaTags, getDefaultTags} from "../../actions/metaTags";
 import {push, replace} from 'react-router-redux';
@@ -16,6 +15,9 @@ import LoadingSpinner from "../LoadingSpinner";
 import './userProfile.css';
 import {setActiveIndex} from "../../actions/tabsBar";
 import Follow from "../Follow/Follow";
+import AuthService from "../../services/authService";
+import renderHTML from 'react-render-html';
+import MarkdownParser from "../../utils/markdownParser";
 
 class UserProfile extends React.Component {
 
@@ -52,7 +54,6 @@ class UserProfile extends React.Component {
 
 		let name = this.props.profile.name || `@${this.props.profile.username}`;
 		let website = this.props.profile['website'];
-		let about = UserLinkFunc(null, this.props.profile.about);
 		let location = this.props.profile.location;
 		let balance = this.props.profile['estimated_balance'];
 		let avatar = this.props.profile['profile_image'];
@@ -65,6 +66,7 @@ class UserProfile extends React.Component {
 								<div className="pic-wrap clearfix">
 									<Avatar src={avatar}
 													powerIndicator={this.props.isYourProfile}
+													sizes={Constants.USER_PROFILE_AVATAR_SIZE}
 									/>
 									<ShowIf show={!this.props.isYourProfile && this.props.isAuth}>
 										<Follow/>
@@ -72,9 +74,9 @@ class UserProfile extends React.Component {
 								</div>
 								<div className="name">{name}</div>
 								<div className="location">{location}</div>
-								<p>{about}</p>
+								<p className="word-wrap_brake-word">{renderHTML(MarkdownParser.parseTitle(this.props.profile.about))}</p>
 								<p className="break--word">
-									<a href={website} target="_blank">{website}</a>
+									<a className="website_use-pro" href={website} target="_blank">{website}</a>
 								</p>
 								<div className="amount">
 									<div className="count">$ {balance}</div>
@@ -133,7 +135,7 @@ const mapStateToProps = (state, props) => {
 	const location = state.router.location || props.location || {};
 	return {
 		username,
-		isAuth: state.auth.user && state.auth.postingKey,
+		isAuth: AuthService.isAuth(),
 		profile: state.userProfile.profile,
 		loading: state.userProfile.loading,
 		pathname: location.pathname,

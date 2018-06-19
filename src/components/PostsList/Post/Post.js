@@ -5,18 +5,22 @@ import TimeAgo from 'timeago-react';
 import Flag from './Flag/Flag';
 import ShowIf from '../../Common/ShowIf';
 import PostContextMenu from '../../PostContextMenu/PostContextMenu';
-import {UserLinkFunc} from '../../Common/UserLinkFunc';
 import Constants from '../../../common/constants';
 import Tags from './Tags/Tags';
 import Vote from './Vote/Vote';
 import PostModal from '../../PostModal/PostModal';
 import {openPostModal} from '../../../actions/postModal';
-import {playVideo, setPowerLikeInd, setPowerLikeTimeout, setVideoTime, stopVideo} from '../../../actions/post';
+import {
+  playVideo, setPowerLikeInd, setPowerLikeTimeout, setVideoTime,
+  stopVideo
+} from '../../../actions/post';
 import LoadingSpinner from '../../LoadingSpinner/index';
 import Avatar from '../../Common/Avatar/Avatar';
 import Likes from './Likes/Likes';
 import './post.css';
 import ReactPlayer from 'react-player';
+import MarkdownParser from "../../../utils/markdownParser";
+import renderHTML from 'react-render-html';
 
 class Post extends React.Component {
 
@@ -29,6 +33,25 @@ class Post extends React.Component {
 			body: (<PostModal/>)
 		};
 		this.props.openModal(this.props.point, this.props.index, modalOption);
+	}
+
+  blockLinkToSinglePost() {
+    return (
+    	<Link to={this.props.linkToSinglePost}
+						target="_blank"
+						className="open-in-new-tab_post"
+						onClick={(e) => Post.preventModalForNewTab(e)}/>
+    )
+  }
+
+  static preventModalForNewTab(e) {
+		if (e.ctrlKey || e.metaKey) {
+			e.stopPropagation();
+			return true;
+		}
+    let event = e ? e : window.event;
+    (event.preventDefault) ? event.preventDefault() : event.returnValue = false;
+    return false;
 	}
 
 	commentNumber() {
@@ -63,6 +86,7 @@ class Post extends React.Component {
 							 onMouseEnter={() => this.props.playVideo(this.props.index)}
 							 onMouseLeave={this.stopVideoPlaying.bind(this)}
 					>
+            {this.blockLinkToSinglePost()}
 						<ShowIf show={!this.props.playing}>
 							<div className="video-time-indicator_post">
 								{this.props.time || '00.00'}
@@ -88,6 +112,7 @@ class Post extends React.Component {
 		};
 		return (
 			<div className="card-pic" onClick={this.openPostModal.bind(this)}>
+				{this.blockLinkToSinglePost()}
 				<ShowIf show={this.props.isGallery}>
 					<div className="gallery-indicator_post"/>
 				</ShowIf>
@@ -143,7 +168,7 @@ class Post extends React.Component {
 							</div>
 							<Link to={authorLink} className="user">
 								<div className="photo">
-									<Avatar src={authorImage}/>
+									<Avatar src={authorImage} sizes={Constants.DEF_AVATAR_SIZE}/>
 								</div>
 								<div className="name">{this.props.author}</div>
 							</Link>
@@ -169,7 +194,7 @@ class Post extends React.Component {
 								</div>
 							</div>
 							<div className="card-preview_post">
-                {UserLinkFunc(null, this.props.title)}
+                {renderHTML(MarkdownParser.parseTitle(this.props.title))}
 								<Tags tags={this.props.tags}/>
 							</div>
 							<div className="number-of-comments_post" onClick={this.openPostModal.bind(this)}>
@@ -185,8 +210,11 @@ class Post extends React.Component {
 
 const mapStateToProps = (state, props) => {
 	let post = state.posts[props.index];
+  let isGolosService = state.services.name === Constants.SERVICES.golos.name;
 	if (post) {
 		const media = post.media[0];
+    let linkToSinglePost = (isGolosService ? '/' + Constants.SERVICES.golos.name : '')
+      + '/post' + post.url.replace(/\/[\w-.]+/, '');
 		let isGallery = false;
 		if (post.media.length > 1) {
 			isGallery = true;
@@ -196,6 +224,7 @@ const mapStateToProps = (state, props) => {
 			...post,
 			imgUrl,
 			isGallery,
+      linkToSinglePost,
 			authUser: state.auth.user
 		};
 	}

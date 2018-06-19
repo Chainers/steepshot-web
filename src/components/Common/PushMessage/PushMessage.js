@@ -1,25 +1,23 @@
 import React from 'react';
 import {connect} from 'react-redux';
+import renderHTML from 'react-render-html';
 import './pushMessage.css';
 
 class PushMessage extends React.Component {
 
 	constructor(props) {
-		super(props);
+		super();
 		this.renderMessage = this.renderMessage.bind(this);
 		this.renderAllMessages = this.renderAllMessages.bind(this);
 	}
 
 	renderMessage(message, index) {
-		if (this.textWrap) {
-      this.textWrap.innerHTML = message.message;
-		}
 		return (
 			<div key={index} className={'body_push-msg' + (message.willClose ? ' will-close_push-msg' : '')}
 					 style={{marginBottom: message.up ? 0 : -200}}
 			>
-				<div className="text-wrap_push-msg" ref={ref => this.textWrap = ref}>
-
+				<div className="text-wrap_push-msg">
+          {renderHTML(message.message)}
 				</div>
 			</div>
 		);

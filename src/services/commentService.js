@@ -54,6 +54,12 @@ class CommentService {
 				return Promise.reject(error);
 			});
 	}
+
+	static editComment(post, postPermlink, body) {
+    let operation = CommentService.getDefaultCommentOperation(post.parent_author, post.parent_permlink, post.author,
+      postPermlink, body);
+    return ChainService.addPostDataToBlockchain([operation]);
+	}
 }
 
 export default CommentService;

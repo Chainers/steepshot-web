@@ -7,6 +7,7 @@ import {pushMessage} from '../../../../actions/pushMessage';
 import VoteIndicator from './VoteIndicator/VoteIndicator';
 import ShowIf from '../../../Common/ShowIf';
 import './vote.css';
+import AuthService from "../../../../services/authService";
 
 class Vote extends React.Component {
 
@@ -22,11 +23,11 @@ class Vote extends React.Component {
 	}
 
 	toggleVote() {
-    if (!this.props.isUserAuth) {
+    if (!this.props.isAuth) {
       this.props.pushMessage(Constants.VOTE_ACTION_WHEN_NOT_AUTH);
       return;
     }
-		if (this.props.isPLOpen) {
+		if (this.props.isPLOpen || this.props.commentDeleted) {
 			return;
 		}
 		this.props.toggleVote(this.props.postIndex);
@@ -34,13 +35,7 @@ class Vote extends React.Component {
 	}
 
   longTapPLInd(timeDelay) {
-    if (this.props.vote) {
-      return;
-    }
-    if (!this.props.isUserAuth) {
-      return;
-    }
-    if (this.props.isPLOpen) {
+    if (this.props.vote || !this.props.isAuth || this.props.isPLOpen || this.props.commentDeleted) {
       return;
     }
     let plTimeout = setTimeout(() => {
@@ -52,6 +47,9 @@ class Vote extends React.Component {
   }
 
   breakLongTapPLInd(isDesktop) {
+    if (this.props.commentDeleted) {
+      return;
+    }
     if (isDesktop) {
       if (!this.powerIndicator) {
         clearTimeout(this.props.plTimeout);
@@ -120,6 +118,9 @@ class Vote extends React.Component {
 		let buttonClasses = 'btn-like_vote', wrapperClass = 'btn-like-wrapper_vote';
 		if (this.props.isComment) {
       buttonClasses = 'comment btn-like_vote';
+      if (this.props.commentDeleted) {
+        buttonClasses = `comment btn-like-inactive_vote ${this.props.vote ? 'comment-liked_vote' : 'comment-not-liked_vote'}`;
+      }
       wrapperClass = 'btn-like-wrapper-comment_vote';
 		}
 		if (this.props.vote) {
@@ -177,7 +178,7 @@ const mapStateToProps = (state, props) => {
 		isPLOpen: post.isPLOpen,
 		plTimeout: post.plTimeout,
     hplTimeout: post.hplTimeout,
-    isUserAuth: !!state.auth.user && !!state.auth.postingKey
+    isAuth: AuthService.isAuth()
 	};
 };
 

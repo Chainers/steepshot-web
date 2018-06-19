@@ -3,6 +3,8 @@ import {utils} from '../utils/utils';
 import ChainService from './chainService';
 import SteemService from './steemService';
 import GolosService from './golosService';
+import AuthService from "./authService";
+import SteemConnect from "./steemConnect";
 
 let config = Constants.SERVICES.steem;
 
@@ -16,7 +18,11 @@ class RequestService {
 				break;
 			case Constants.SERVICES.steem:
 			default:
-				ChainService.init(new SteemService());
+				let steemService = SteemService;
+				if (AuthService.isAuthWithToken()) {
+					steemService = SteemConnect;
+				}
+				ChainService.init(new steemService());
 				config = Constants.SERVICES.steem;
 				break;
 		}
@@ -35,6 +41,9 @@ class RequestService {
 	}
 
 	static post(url, data) {
+		if (!url.includes('http')) {
+			url = `${config.baseUrl}/${url}`;
+		}
 		const options = {
 			method: 'POST'
 		};
@@ -44,7 +53,7 @@ class RequestService {
 			options.headers = {'Content-Type': 'application/json'};
 			options.body = JSON.stringify(data);
 		}
-		return fetch(`${config.baseUrl}/${url}`, options)
+		return fetch(url, options)
 			.then(RequestService.processResponse);
 	}
 

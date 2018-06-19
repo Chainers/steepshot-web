@@ -23,6 +23,7 @@ export default function posts(state = {}, action) {
 				[action.index]: {
 					...state[action.index],
 					flag: !state[action.index].flag,
+					vote: false,
 					flagLoading: true,
 				}
 			};
@@ -79,6 +80,7 @@ export default function posts(state = {}, action) {
 				[action.index]: {
 					...state[action.index],
 					vote: !state[action.index].vote,
+					flag: false,
 					voteLoading: true,
 				},
 			};
@@ -126,6 +128,15 @@ export default function posts(state = {}, action) {
         }
       };
 
+		case 'EDIT_COMMENT_SUCCESS':
+			return {
+				...state,
+				[action.index]: {
+					...state[action.index],
+					body: action.newBody
+				}
+			};
+
 		case 'DELETE_POST_ERROR':
 			return {
 				...state,
@@ -135,6 +146,7 @@ export default function posts(state = {}, action) {
 					error: action.error
 				}
 			};
+
 		case 'POWER_OF_LIKE_IND':
 			return {
 				...state,
@@ -143,6 +155,7 @@ export default function posts(state = {}, action) {
 					isPLOpen: action.isPLOpen
 				}
 			};
+
 		case 'POWER_OF_LIKE_TIMEOUT':
 			return {
 				...state,
@@ -151,6 +164,7 @@ export default function posts(state = {}, action) {
 					plTimeout: action.plTimeout
 				}
 			};
+
 		case 'HIDE_POWER_OF_LIKE_TIMEOUT':
 			return {
 				...state,
@@ -159,6 +173,7 @@ export default function posts(state = {}, action) {
 					hplTimeout: action.hplTimeout
 				}
 			};
+
 		case 'SET_SLIDER_TIMEOUT':
 			return {
         ...state,
@@ -167,6 +182,7 @@ export default function posts(state = {}, action) {
           sliderWidth: action.sliderWidth
         }
 			};
+
 		case 'POWER_OF_LIKE_CHANGE_STATUS':
 			return {
         ...state,
@@ -175,6 +191,7 @@ export default function posts(state = {}, action) {
           changeStatus: action.changeStatus
         }
 			};
+
 		case 'SET_GALLERY_IMG':
 			return {
         ...state,
@@ -183,6 +200,7 @@ export default function posts(state = {}, action) {
           imageNumberInGallery: action.imageNumberInGallery
         }
 			};
+
 		case 'SET_IMAGE_COMPLETE_STATUS':
 			return {
         ...state,

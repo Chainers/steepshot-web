@@ -1,11 +1,22 @@
 .container_body {
-    min-height: calc(100vh - 60px);
     height: 1px;
     position: relative;
     overflow: auto;
     overflow-x: hidden;
     display: flex;
     flex-direction: column;
+}
+
+.min-height-60_body {
+    min-height: calc(100vh - 60px);
+}
+
+.min-height-120_body {
+    min-height: calc(100vh - 120px);
+}
+
+.min-height-160_body {
+    min-height: calc(100vh - 160px);
 }
 
 .scroll_body {

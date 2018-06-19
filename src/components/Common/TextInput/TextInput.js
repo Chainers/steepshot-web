@@ -8,7 +8,7 @@ import {
   clearTextInputState
 } from '../../../actions/textInput';
 import './textInput.css';
-import constants from '../../../common/constants';
+import Constants from '../../../common/constants';
 
 class TextInput extends React.Component {
 	static MARGIN_TEXT = 21;
@@ -41,11 +41,10 @@ class TextInput extends React.Component {
 			minAreaHeight: lineHeight * 2,
 			prefAreaHeight: lineHeight,
 			error: '',
-			focusedStyle: props.value ? 'focused_tex-inp' : '',
+			focusedStyle: props.value ? Constants.TEXT_INPUT_POINT.COMMENT_INPUT_ACTIVE_CLASS : '',
 			text: props.value,
 			maxHeight,
-			focused: false,
-			setFocus: false
+			focused: false
 		};
 		props.initTextInput(this.props.point, state);
 	}
@@ -54,10 +53,10 @@ class TextInput extends React.Component {
 		if (nextProps.value && (this.props.value !== nextProps.value)) {
 			this._updateTextValue.call(this, nextProps.value);
 		}
-		if (this.input && (!this.props.setFocus && nextProps.setFocus)) {
+		if (this.input && nextProps.focused) {
 			this.input.focus();
 		}
-    if (this.input && (this.props.setFocus && !nextProps.setFocus)) {
+    if (this.input && !nextProps.focused) {
       this.input.blur();
     }
 		return true;
@@ -71,7 +70,7 @@ class TextInput extends React.Component {
 		let newValue = utils.cloneObject(event.target.value);
 		newValue = this._removeInvalidCharacters(newValue);
 		if (this.props.error) {
-      this.props.setTextInputError(constants.TEXT_INPUT_POINT.TITLE, '');
+      this.props.setTextInputError(Constants.TEXT_INPUT_POINT.TITLE, '');
 		}
 		if (newValue !== this.props.text) {
 			this._updateTextValue(newValue);

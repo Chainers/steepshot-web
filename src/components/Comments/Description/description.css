@@ -1,5 +1,5 @@
 .container_description {
-    padding: 0 20px 15px 20px;
+    padding: 20px 20px 15px 20px;
     font: 14px OpenSans-Light
 }
 
@@ -9,6 +9,8 @@
 
 .collapse-opened {
     height: 100%;
+    overflow: hidden;
+    word-wrap: break-word;
 }
 
 .collapse-closed {
@@ -54,8 +56,28 @@
     background: white;
 }
 
+.open-promote_description {
+    height: 40px;
+    background: #ff1e00;
+    font: 12px OpenSans-Semibold;
+    text-align: center;
+    color: #ffffff;
+    border: 0;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-bottom: 15px;
+}
+
+.open-promote_description:hover {
+    background-color: #ff3c00;
+}
+
+.open-promote_description:active {
+    background-color: #cc1a00;
+}
+
 @media (max-width: 815px) {
     .container_description {
-        padding: 0 20px 15px 20px;
+        padding: 0 35px 15px 20px;
     }
 }

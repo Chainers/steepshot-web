@@ -17,6 +17,7 @@
     line-height: 1.48;
     font: 14px OpenSans-Light, Helvetica, Arial, sans-serif;
     padding: 0 20px;
+    word-wrap: break-word;
 }
 
 .number-of-comments_post {
@@ -160,4 +161,13 @@
     height: 55px;
     -webkit-animation: spin 2s linear infinite;
     animation: spin 2s linear infinite;
+}
+
+.open-in-new-tab_post {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    width: 100%;
+    height: 100%;
 }
