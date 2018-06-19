@@ -183,6 +183,9 @@ const Constants = {
 
 	VOTE_ACTION_WHEN_NOT_AUTH: 'This action is only available for logged-in users',
 	VOTE_ACTION_WHEN_NOT_AUTH_DEBOUNCE: 500,
+	AUTH_WRONG_USER: 'Such user doesn\'t exist.',
+	AUTH_WRONG_POSTING_KEY: 'Invalid posting key.',
+  NON_BASE58_CHARACTER: 'Non-base58 character',
 
 	FOLLOW_REQUEST_ERROR: 'Something went wrong, please, try again later.',
 	OOOPS_SOMETHING_WRONG: 'Ooops, something went wrong.',
@@ -241,7 +244,8 @@ const Constants = {
 		RED_TIMER: 60,
 		BLOCKED_TIMER: 21,
 		EMPTY_KEY_INPUT: 'You should enter the key',
-		BID_TO_BOT_SUCCESS: 'Your bid has been successfully sent. Wait for upvote.'
+		BID_TO_BOT_SUCCESS: 'Your bid has been successfully sent. Wait for upvote.',
+		INVALID_ACTIVE_KEY: 'Invalid active key.'
 	}
 };
 

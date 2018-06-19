@@ -1,5 +1,5 @@
 import {getStore} from '../store/configureStore';
-import {push} from "react-router-redux";
+import {push} from 'react-router-redux';
 import {initPostsList} from './postsList';
 import {initPostModal} from './postModal';
 import {pushErrorMessage, pushMessage} from './pushMessage';

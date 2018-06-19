@@ -1,10 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {connect} from 'react-redux';
-import {closeModal} from "../../actions/modal";
-import UsersList from "../UsersList/UsersList";
-import CloseButton from "../Common/CloseButton/CloseButton";
-import {clearBodyHeight, setLikesFlagsListBodyHeight} from "../../actions/likesFlagsList";
+import {closeModal} from '../../actions/modal';
+import UsersList from '../UsersList/UsersList';
+import CloseButton from '../Common/CloseButton/CloseButton';
+import {clearBodyHeight, setLikesFlagsListBodyHeight} from '../../actions/likesFlagsList';
 import ReactResizeDetector from 'react-resize-detector';
 import TabsBar from '../Common/TabsBar/TabsBar';
 import Tab from '../Common/TabsBar/Tab/Tab';
