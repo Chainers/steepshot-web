@@ -1,12 +1,9 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {Scrollbars} from 'react-custom-scrollbars';
-import {utils} from '../../utils/utils';
 import ReactResizeDetector from 'react-resize-detector';
-import {scrollInit, scrollShouldUpdate, setScrollData} from '../../actions/scroll';
+import {scrollInit, scrollShouldUpdate, shouldFetch} from '../../actions/scroll';
 import './scroll.css';
-
-const SCROLL_DELTA = 10;
 
 class Scroll extends React.Component {
 
@@ -22,9 +19,9 @@ class Scroll extends React.Component {
 	}
 
 	onScrollFrame(values) {
-		const newPosition = utils.cutNumber(values.top, 1) * 100;
-		if (Math.abs(newPosition - this.props.scrollPosition) >= SCROLL_DELTA) {
-			this.props.setScrollData(this.props.point, newPosition, values.scrollHeight)
+		const {shouldFetch, shouldUpdate, point, deltaForFetch} = this.props;
+		if (shouldFetch === shouldUpdate && values.scrollHeight - values.scrollTop < deltaForFetch) {
+			this.props.shouldFetchFunc(point);
 		}
 	}
 
@@ -51,10 +48,15 @@ class Scroll extends React.Component {
 	}
 }
 
+Scroll.defaultProps = {
+	deltaForFetch: 0
+};
+
 const mapStateToProps = (state, props) => {
+	const {shouldUpdate, shouldFetch} = state.scroll[props.point];
 	return {
-		scrollPosition: state.scroll[props.point].position,
-		shouldUpdate: state.scroll[props.point].shouldUpdate
+		shouldUpdate,
+		shouldFetch
 	};
 };
 
@@ -66,8 +68,8 @@ const mapDispatchToProps = (dispatch) => {
 		scrollShouldUpdate: point => {
 			dispatch(scrollShouldUpdate(point))
 		},
-		setScrollData: (point, position, scrollHeight) => {
-			dispatch(setScrollData(point, position, scrollHeight))
+		shouldFetchFunc: (point) => {
+			dispatch(shouldFetch(point))
 		}
 	};
 };

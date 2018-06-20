@@ -22,11 +22,6 @@ export const utils = {
 
 	getFirstObjectField: (obj) => obj[Object.keys(obj)[0]],
 
-	cutNumber: (number = 0, amount = 1) => {
-		amount = Math.pow(10, amount);
-		return (parseInt(number * amount, 10)) / amount
-	},
-
 	getWindowDimension: () => {
 		return {
 			width: document.documentElement.clientWidth,

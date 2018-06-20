@@ -13,7 +13,7 @@ class Body extends React.Component {
 		const {children} = this.props;
 		return (
 			<div className={'container_body' + this.props.bodyStyle} key="Main">
-				<Scroll point={SCROLL_POINT} className="scroll_body" customScrollStyle="body_scroll">
+				<Scroll point={SCROLL_POINT} className="scroll_body" customScrollStyle="body_scroll" deltaForFetch={1000}>
 					<div className="for-space-between">
 						{children}
 					</div>
