@@ -5,11 +5,10 @@ export function scrollInit(point) {
 	}
 }
 
-export function setScrollData(point, position, scrollTop, scrollHeight) {
+export function setScrollData(point, position, scrollHeight) {
 	return {
 		type: 'SET_SCROLL_DATA',
 		position,
-		scrollTop,
 		scrollHeight,
 		point
 	}

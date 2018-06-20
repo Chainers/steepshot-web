@@ -11,7 +11,6 @@ export default function scroll(state = initialState, action) {
 				...state,
 				[action.point]: {
 					position: 0,
-					scrollTop: 0,
 					scrollHeight: 0,
 					shouldUpdate: 0,
 					dataUpdated: 0
@@ -23,7 +22,6 @@ export default function scroll(state = initialState, action) {
 				[action.point]: {
 					...state[action.point],
 					position: action.position,
-					scrollTop: action.scrollTop,
 					scrollHeight: action.scrollHeight
 				}
 			};
