@@ -6,11 +6,6 @@ export function blockchainErrorsList(error) {
   if (!error.data && typeof error === 'string') {
     return error;
   }
-  if (!error.data && error.actual && error.expected) {
-    if (error.actual === 128) {
-      return 'Invalid posting key.';
-    }
-  }
   if (!error.data && error.status && error.statusText) {
     return serverErrorsList(error.status);
   }

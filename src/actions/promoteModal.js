@@ -159,6 +159,10 @@ export function sendBid(steemLink, wif, botName) {
       .catch(error => {
         dispatch(actionUnlock());
         dispatch(setBidRequest(false));
+        if (!error.data && (error.actual === 128 || error.message === Constants.NON_BASE58_CHARACTER)) {
+          dispatch(setActiveKeyError(Constants.PROMOTE.INVALID_ACTIVE_KEY));
+          return dispatch(pushErrorMessage(Constants.PROMOTE.INVALID_ACTIVE_KEY));
+        }
         dispatch(pushErrorMessage(error));
       });
   }
