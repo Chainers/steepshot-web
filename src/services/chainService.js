@@ -50,7 +50,7 @@ class ChainService {
 		return ChainService.currentService.getBeneficiaries(permlink, beneficiaries);
 	}
 
-	static getTransactionHistory(username, from = -1, limit = 20) {
+	static getTransactionHistory(username, from = -1, limit = 10000) {
 		return ChainService.currentService.getTransactionHistory(username, from, limit)
 	}
 	

@@ -1,6 +1,8 @@
 import {getStore} from "../store/configureStore";
 import AuthService from "../services/authService";
-import ChainService from "../services/chainService";
+import TransactionService from "../services/transactionService";
+
+const COUNT_TRANSACTION = 20;
 
 export function getTransactionHistory() {
 	const transactionHistory = getStore().getState().transactionHistory;
@@ -16,11 +18,12 @@ export function getTransactionHistory() {
 			type: 'GET_TRANSACTION_HISTORY_REQUEST',
 			username
 		});
-		ChainService.getTransactionHistory(username, numberLastTransaction - 1)
+		TransactionService.getWalletTransaction(username, numberLastTransaction - 1, COUNT_TRANSACTION)
 			.then(response => {
 				dispatch({
 					type: 'GET_TRANSACTION_HISTORY_SUCCESS',
-					transactions: response
+					transactions: response,
+					hasMore: response.length < COUNT_TRANSACTION
 				});
 			})
 			.catch(error => {

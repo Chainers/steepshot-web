@@ -1,6 +1,7 @@
 const initialState = {
 	loading: false,
-	transactions: []
+	transactions: [],
+	hasMore: true
 };
 
 export default function transactionHistory(state = initialState, action) {
@@ -14,7 +15,8 @@ export default function transactionHistory(state = initialState, action) {
 			return {
 				...state,
 				transactions: [...action.transactions, ...state.transactions],
-				loading: false
+				loading: false,
+				hasMore: action.hasMore
 			};
 		case 'GET_TRANSACTION_HISTORY_ERROR':
 			return {

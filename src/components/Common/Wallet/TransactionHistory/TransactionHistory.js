@@ -5,6 +5,7 @@ import LoadingSpinner from "../../../LoadingSpinner";
 import {getTransactionHistory} from "../../../../actions/transactionHistory";
 import InfinityScroll from "../../../InfinityScroll/InfinityScroll";
 import ShowIf from "../../ShowIf";
+import Transaction from "./Transaction/Transaction";
 
 class TransactionHistory extends React.Component {
 
@@ -14,13 +15,17 @@ class TransactionHistory extends React.Component {
 	}
 
 	render() {
+		const {getTransactionHistory, hasMore, transactions, loading} = this.props;
 		return (
 			<InfinityScroll
 				point='body'
-				fetch={this.props.getTransactionHistory}
-				hasMore={this.props.hasMore && this.props.transactions.length > 0}>
+				fetch={getTransactionHistory}
+				hasMore={hasMore && transactions.length > 0}>
 				<div className="container_trx-history">
-					<ShowIf show={this.props.loading}>
+					{transactions.map((trx, index) => {
+						<Transaction trx={trx} index={index}/>
+					})}
+					<ShowIf show={loading}>
 						<LoadingSpinner/>
 					</ShowIf>
 				</div>
@@ -30,11 +35,11 @@ class TransactionHistory extends React.Component {
 }
 
 const mapStateToProps = state => {
-	const {loading, transactions} = state.transactionHistory;
+	const {loading, transactions, hasMore} = state.transactionHistory;
 	return {
 		loading,
 		transactions,
-		hasMore: true
+		hasMore
 	}
 };
 
