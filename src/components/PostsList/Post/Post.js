@@ -19,14 +19,24 @@ import Avatar from '../../Common/Avatar/Avatar';
 import Likes from './Likes/Likes';
 import './post.css';
 import ReactPlayer from 'react-player';
-import MarkdownParser from "../../../utils/markdownParser";
+import MarkdownParser from '../../../utils/markdownParser';
 import renderHTML from 'react-render-html';
+import ImagesService from '../../../services/imagesService';
+import PostImgBackground from './PostImgBackground';
 
 class Post extends React.Component {
 
 	static defaultProps = {
 		clearPostHeader: false,
 	};
+
+	constructor(props) {
+		super(props);
+    if (this.props.imageUrl && this.props.imageUrl !== Constants.NO_IMAGE) {
+      ImagesService.getImagesWithProxy(this.props.imageUrl,
+				`https://steemitimages.com/${2 * Constants.DEF_POST_SIZE}x${2 * Constants.DEF_POST_SIZE}/`);
+    }
+	}
 
 	openPostModal() {
 		let modalOption = {
@@ -94,7 +104,7 @@ class Post extends React.Component {
 							<div className="video-indicator_post"/>
 						</ShowIf>
 						<ReactPlayer
-							url={this.props.imgUrl}
+							url={this.props.imageUrl}
 							height='100%'
 							loop={true}
 							playing={this.props.playing}
@@ -106,10 +116,6 @@ class Post extends React.Component {
 				</div>
 			)
 		}
-		let itemImage = this.props.imgUrl || Constants.NO_IMAGE;
-		const cardPhotoStyles = {
-			backgroundImage: 'url(' + itemImage + ')',
-		};
 		return (
 			<div className="card-pic" onClick={this.openPostModal.bind(this)}>
 				{this.blockLinkToSinglePost()}
@@ -129,13 +135,13 @@ class Post extends React.Component {
 						<p>Low rated content</p>
 					</div>
 				</ShowIf>
-				<a style={cardPhotoStyles} className="img" alt="User"> </a>
+				<PostImgBackground src={this.props.imageUrl} sizes={Constants.DEF_POST_SIZE}/>
 			</div>
 		)
 	}
 
 	render() {
-		if (!this.props || !this.props.imgUrl) {
+		if (!this.props || !this.props.imageUrl) {
 			return null;
 		}
 		let authorImage = this.props.avatar || Constants.NO_AVATAR;
@@ -158,13 +164,11 @@ class Post extends React.Component {
 								<TimeAgo
 									datetime={this.props.created}
 									locale='en_US'
-									style={{float: 'left'}}
-								/>
+									style={{float: 'left'}}/>
 								<PostContextMenu style={{float: 'right', height: '22px', width: '22px', marginLeft: '10px'}}
 																 className="post-context-menu_post"
 																 item={this.props}
-																 index={this.props.index}
-								/>
+																 index={this.props.index}/>
 							</div>
 							<Link to={authorLink} className="user">
 								<div className="photo">
@@ -219,10 +223,10 @@ const mapStateToProps = (state, props) => {
 		if (post.media.length > 1) {
 			isGallery = true;
 		}
-		let imgUrl = media['thumbnails'] ? media['thumbnails'][1024] : media.url;
+		let imageUrl = media.url || Constants.NO_IMAGE;
 		return {
 			...post,
-			imgUrl,
+			imageUrl,
 			isGallery,
       linkToSinglePost,
 			authUser: state.auth.user

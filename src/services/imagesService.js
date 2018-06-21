@@ -1,21 +1,26 @@
+import {getStore} from '../store/configureStore';
+import {addImageLink} from '../actions/images';
+
 const hash = {};
 
 class ImagesService {
 
-  static getImagesWithProxy(dataUrl, proxy) {
-    const fullUrl = proxy + dataUrl;
-    if (Object.keys(hash).includes(fullUrl)) {
-      return hash[fullUrl];
+  static getImagesWithProxy(originalUrl, proxy) {
+    const fullUrl = proxy + originalUrl;
+    if (Object.keys(hash).includes(originalUrl)) {
+      return;
     }
     const newImg = new Image();
     newImg.src = fullUrl;
-    newImg.onerror = () => {
-      newImg.src = dataUrl;
-      newImg.onerror = undefined;
+    newImg.onload = () => {
+      // getStore().dispatch(addImageLink(originalUrl, true, point));
     };
-    hash[dataUrl] = newImg;
-    return newImg;
+    newImg.onerror = () => {
+      getStore().dispatch(addImageLink(originalUrl, false));
+    };
+    hash[originalUrl] = newImg;
   }
+
 }
 
 export default ImagesService;

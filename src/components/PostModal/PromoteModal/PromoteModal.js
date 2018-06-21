@@ -132,10 +132,10 @@ const mapStateToProps = (state, props) => {
   let promoteModal = state.promoteModal;
   let tokenNumber = '';
   if (promoteModal.selectedToken === 'STEEM') {
-    tokenNumber = promoteModal.userInfo.followers_count;
+    tokenNumber = promoteModal.userInfo.balance;
   }
   if (promoteModal.selectedToken === 'SBD') {
-    tokenNumber = promoteModal.userInfo.following_count;
+    tokenNumber = promoteModal.userInfo.sbd_balance;
   }
   return {
     steemLink,

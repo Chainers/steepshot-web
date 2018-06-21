@@ -5,12 +5,22 @@ import ShowIf from '../ShowIf';
 import './avatar.css';
 import {setAvatarTip, setAvatarTipTimeout} from '../../../actions/avatar';
 import ImagesService from '../../../services/imagesService';
+import {utils} from '../../../utils/utils';
+import AvaImgBackground from './AvaImgBackground';
 
 class Avatar extends React.Component {
 
 	static defaultProps = {
 		style: {}
 	};
+
+	constructor(props) {
+		super(props);
+    if (this.props.src && this.props.src !== Constants.NO_AVATAR) {
+      ImagesService.getImagesWithProxy(this.props.src,
+				`https://steemitimages.com/${2 * this.props.sizes}x${2 * this.props.sizes}/`);
+    }
+	}
 
 	componentDidMount() {
     this.powerIndicator(this.props.votingPower);
@@ -20,24 +30,10 @@ class Avatar extends React.Component {
 		this.powerIndicator(nextProps.votingPower);
 	}
 
-	pic() {
-		let avatarLink = this.props.src;
-		if (this.props.src && this.props.src !== Constants.NO_AVATAR) {
-			avatarLink = `https://steemitimages.com/${2 * this.props.sizes}x${2 * this.props.sizes}/${this.props.src}`;
-      /*avatarLink = ImagesService.getImagesWithProxy(this.props.src,
-				`https://steemitimages.com/${2 * this.props.sizes}x${2 * this.props.sizes}/`);
-      avatarLink = avatarLink.src;*/
-		}
-		return Object.assign({}, this.props.style, {
-			backgroundImage: 'url(' + avatarLink + ')'
-		});
-	}
-
-	picError() {
-		return Object.assign({}, this.props.style, {
-			backgroundImage: 'url(' + Constants.NO_AVATAR + ')'
-		});
-	}
+  shouldComponentUpdate(nextProps) {
+    if (utils.equalsObjects(nextProps, this.props)) return false;
+    return true;
+  }
 
 	powerIndicator(votingPower) {
 		if (this.canvas) {
@@ -124,9 +120,9 @@ class Avatar extends React.Component {
 						</div>
 					</ShowIf>
 				</ShowIf>
-				<div className="pic_ava-com" style={this.picError()}>
-					<div className="pic_ava-com" style={this.pic()}/>
-				</div>
+				<AvaImgBackground style={this.props.style}
+												  src={this.props.src}
+												  sizes={this.props.sizes}/>
 			</div>
 		)
 	}
