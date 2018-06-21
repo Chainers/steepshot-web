@@ -22,9 +22,7 @@ class TransactionHistory extends React.Component {
 				fetch={getTransactionHistory}
 				hasMore={hasMore && transactions.length > 0}>
 				<div className="container_trx-history">
-					{transactions.map((trx, index) => {
-						<Transaction trx={trx} index={index}/>
-					})}
+					{transactions.map((trx, index) => <Transaction operation={trx[1].op[0]} data={trx[1].op[1]} key={index}/>)}
 					<ShowIf show={loading}>
 						<LoadingSpinner/>
 					</ShowIf>
