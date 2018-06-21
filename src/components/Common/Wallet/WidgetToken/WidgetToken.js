@@ -2,8 +2,8 @@ import React from 'react';
 import ShowIf from "../../ShowIf";
 import './widgetToken.css';
 
-const WidgetToken = ({icon, token, value, description, textButton, onClick = () => {}}) => (
-	<div className="container_widget-token">
+const WidgetToken = ({icon, token, value, description, textButton, onClick = () => {}, backgroundImage}) => (
+	<div className="container_widget-token" style={{backgroundImage: `url(${backgroundImage})`}}>
 		<div className="header_widget-token">
 			<div className="icon_widget-token"/>
 		</div>
@@ -12,7 +12,7 @@ const WidgetToken = ({icon, token, value, description, textButton, onClick = () 
 				{token}
 			</div>
 			<div className="value_widget-token">
-				{value}
+				{parseFloat(value).toFixed(1)}
 			</div>
 		</div>
 		<div className="description_widget-token">

@@ -1,0 +1,62 @@
+.container_widget-token {
+    width: 300px;
+    height: 270px;
+    position: relative;
+    background: no-repeat center;
+    background-size: 100% 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 30px;
+    color: #ffffff;
+    font-family: OpenSans-Light, serif;
+}
+
+.header_widget-token {
+    height: 30px;
+}
+
+.icon_widget-token {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: white;
+}
+
+.balance_widget-token {
+    height: 30px;
+    padding-top: 30px;
+    font-size: 22px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.token_widget-token {
+    font-weight: 600;
+    line-height: 1.23;
+}
+
+.value_widget-token {
+    font-size: 26px;
+    font-weight: 100;
+    line-height: 1.79;
+}
+
+.description_widget-token {
+    flex-grow: 1;
+    font: 13px OpenSans-Light;
+    line-height: normal;
+    text-align: justify;
+    padding-top: 30px;
+}
+
+.button_widget-token {
+    height: 40px;
+    background: rgba(255, 255, 255, 0.3);
+    border: none;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: bold;
+    letter-spacing: 1px;
+}

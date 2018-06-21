@@ -7,10 +7,11 @@ import LoadingSpinner from "../../LoadingSpinner";
 import {utils} from '../../../utils/utils';
 
 const DESCRIPTION = {
-	COST: "",
-	STEEM: "",
-	SP: "",
-	SBD: ""
+	COST: "The estimated value is based on an average value of Steem in US dollars.",
+	STEEM: `Tradeable tokens that may be transferred anywhere at anytime.
+Steem can be converted to STEEM POWER in a process called powering up.`,
+	SP: "Influence tokens which give you more control over post payouts and allow you to earn on curation rewards.",
+	SBD: "Tradeable tokens that may be transferred anywhere at anytime."
 };
 
 class Wallet extends React.Component {
@@ -29,12 +30,17 @@ class Wallet extends React.Component {
 		return (
 			<div className="container_wallet">
 				<div className="header_wallet">
+					Wallets
 				</div>
 				<div className="body_wallet">
-					<WidgetToken icon="" token="Account cost" value={cost} description={DESCRIPTION.COST} />
-					<WidgetToken icon="" token="Steem" value={steem} description={DESCRIPTION.STEEM} textButton="Transfer" onClick={() => {}}/>
-					<WidgetToken icon="" token="Steem Power" value={sp} description={DESCRIPTION.SP}/>
-					<WidgetToken icon="" token="SBD" value={sbd} description={DESCRIPTION.SBD} textButton="Transfer" onClick={() => {}}/>
+					<WidgetToken backgroundImage="/images/wallet/cost.png" icon="" token="Account cost"
+											 value={cost} description={DESCRIPTION.COST} />
+					<WidgetToken backgroundImage="/images/wallet/steem.png" icon="" token="Steem"
+											 value={steem} description={DESCRIPTION.STEEM} textButton="TRANSFER" onClick={() => {}}/>
+					<WidgetToken backgroundImage="/images/wallet/sp.png" icon="" token="Steem Power"
+											 value={sp} description={DESCRIPTION.SP}/>
+					<WidgetToken backgroundImage="/images/wallet/sbd.png" icon="" token="SBD"
+											 value={sbd} description={DESCRIPTION.SBD} textButton="TRANSFER" onClick={() => {}}/>
 				</div>
 				<div className="transaction-history_wallet">
 				</div>
