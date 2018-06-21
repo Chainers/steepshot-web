@@ -1,0 +1,20 @@
+.container_wallet {
+    display: flex;
+    flex-direction: column;
+}
+
+.container_wallet > div {
+    border: 1px solid;
+}
+
+.header_wallet {
+    height: 100px;
+}
+
+.body_wallet {
+    height: 300px;
+}
+
+.transaction-history_wallet {
+    height: 400px;
+}

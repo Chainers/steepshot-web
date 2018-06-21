@@ -2,6 +2,7 @@ import {push} from 'react-router-redux';
 import {getStore} from '../store/configureStore';
 import {pushMessage} from './pushMessage';
 import UserService from '../services/userService';
+import AuthService from "../services/authService";
 
 function getUserProfileSuccess(result) {
   return {
@@ -10,7 +11,7 @@ function getUserProfileSuccess(result) {
   }
 }
 
-export function getUserProfile(userName) {
+export function getUserProfile(userName = AuthService.getUsername()) {
 	let settings = getStore().getState().settings;
 	return dispatch => {
 		dispatch({

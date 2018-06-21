@@ -1,5 +1,6 @@
 import React from 'react';
 import './testing.css';
+import Wallet from "../Wallet/Wallet";
 
 class Testing extends React.Component {
 
@@ -8,7 +9,7 @@ class Testing extends React.Component {
 			return null;
 		}
 		return (
-			null
+			<Wallet />
 		);
 	}
 }
