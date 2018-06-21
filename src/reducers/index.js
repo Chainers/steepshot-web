@@ -34,6 +34,7 @@ import services from './services';
 import login from './login';
 import scroll from './scroll';
 import promoteModal from './promoteModal';
+import images from './images';
 
 export default combineReducers({
 	clipboard,
@@ -70,5 +71,6 @@ export default combineReducers({
 	services,
 	login,
 	scroll,
-	promoteModal
+	promoteModal,
+  images
 });

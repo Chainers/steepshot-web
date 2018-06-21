@@ -40,6 +40,13 @@
     opacity: .6;
 }
 
+.img_post {
+    width: 100%;
+    height: 100%;
+    background: center no-repeat;
+    background-size: cover;
+}
+
 @keyframes comment_arrow {
     0% {
         background-position: 100% 50%;
