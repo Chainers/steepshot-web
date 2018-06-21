@@ -35,7 +35,7 @@ class PromoteModal extends React.Component {
         this.props.setPromoteInputError(Constants.PROMOTE.NOT_ENOUGH_TOKENS);
         return false;
       }
-      if (this.props.promoteAmount < 0.25) {
+      if (this.props.promoteAmount < Constants.SERVICES.BOTS.MIN_BID_VALUE) {
         this.props.setPromoteInputError(Constants.PROMOTE.MIN_AMOUNT_ERROR);
         return false;
       }
@@ -109,7 +109,7 @@ class PromoteModal extends React.Component {
             <span className="balance-value_promote-mod">{this.props.tokenNumber} {this.props.selectedToken}</span>
           </div>
         </div>
-        <p className="label_promote-mod">Promotion bid (not less than 0.25)</p>
+        <p className="label_promote-mod">Promotion bid (not less than {Constants.SERVICES.BOTS.MIN_BID_VALUE})</p>
         <div className="position--relative">
           <input ref={ref => this.input = ref}
                  placeholder="e.g. 100"
@@ -132,7 +132,7 @@ const mapStateToProps = (state, props) => {
   let promoteModal = state.promoteModal;
   let tokenNumber = '';
   if (promoteModal.selectedToken === 'STEEM') {
-    tokenNumber = promoteModal.userInfo.balance;
+    tokenNumber = promoteModal.userInfo.steem_balance;
   }
   if (promoteModal.selectedToken === 'SBD') {
     tokenNumber = promoteModal.userInfo.sbd_balance;

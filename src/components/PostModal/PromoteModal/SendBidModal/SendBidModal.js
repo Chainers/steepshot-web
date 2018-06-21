@@ -48,7 +48,7 @@ class SendBidModal extends React.Component {
     let timerBlock = <div className="timer-wrapper_send-bid-mod">
                        <div className="label_send-bid-mod">Expected upvote time</div>
                        <div className={'timer_send-bid-mod' + redTimer}>
-                         <Timer waitingTime={100}
+                         <Timer waitingTime={this.props.upvoteTime}
                                 staticTimer={true}
                                 onTimeout={() => {}}
                                 onTick={this.tick.bind(this)}/>
@@ -91,7 +91,9 @@ class SendBidModal extends React.Component {
 
 const mapStateToProps = (state, props) => {
   const promoteModal = state.promoteModal;
-  const botName = 'sneaky-ninja';
+  const suitableBot = promoteModal.suitableBot;
+  const botName = suitableBot.name;
+  const upvoteTime = suitableBot.next / 1000;
   let redTimer = false, blockedTimer = false;
   let littleScreen = state.window.width <= 400;
   if (promoteModal.leftTime) {
@@ -100,6 +102,7 @@ const mapStateToProps = (state, props) => {
   }
   return {
     ...state.promoteModal,
+    upvoteTime,
     botName,
     littleScreen,
     redTimer,

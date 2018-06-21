@@ -21,6 +21,10 @@ const Constants = {
 				MAX_LENGTH: 40,
 				MAX_AMOUNT: 20
 			},
+		},
+		BOTS: {
+      BOTS_INFO: 'https://steembottracker.net/bid_bots',
+			MIN_BID_VALUE: 0.5
 		}
 	},
 
@@ -240,7 +244,7 @@ const Constants = {
     SELECT_ERROR: 'Choose token',
 		INPUT_ERROR: 'Enter correct value',
 		NOT_ENOUGH_TOKENS: 'Not enough tokens',
-		MIN_AMOUNT_ERROR: 'Min bid is 0.25',
+		MIN_AMOUNT_ERROR: 'Min bid is 0.5',
 		FIND_BOT_ERROR: 'We look, but there\'s no appropriate bot for promotion. Please, try little later.',
 		BID_TIMEOUT_ERROR: 'It\'s too late to bid to this bot, try any one.',
 		RED_TIMER: 60,

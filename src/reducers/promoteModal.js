@@ -1,5 +1,7 @@
+import Constants from '../common/constants';
+
 const initialState = {
-  promoteAmount: 0.25,
+  promoteAmount: Constants.SERVICES.BOTS.MIN_BID_VALUE,
   selectedToken: '',
   activeIndex: 0,
   infoLoading: false,
@@ -68,6 +70,12 @@ export default function promoteModal(state = initialState, action) {
       return {
         ...state,
         sendingBid: action.state
+      };
+
+    case 'ADD_BOT':
+      return {
+        ...state,
+        suitableBot: action.bot
       };
 
     default:
