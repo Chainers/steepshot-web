@@ -33,7 +33,12 @@ class RequestService {
 	}
 
 	static get(url, options) {
-		const fullUrl = config.baseUrl + '/' + url + convertOptionsToRequestString(options);
+		let fullUrl;
+    if (!url.includes('http')) {
+      fullUrl = `${config.baseUrl}/${url}${convertOptionsToRequestString(options)}`;
+    } else {
+      fullUrl = `${url}${convertOptionsToRequestString(options)}`;
+		}
 		return fetch(fullUrl, {
 			method: 'GET'
 		})

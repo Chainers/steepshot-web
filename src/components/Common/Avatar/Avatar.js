@@ -17,8 +17,12 @@ class Avatar extends React.Component {
 	constructor(props) {
 		super(props);
     if (this.props.src && this.props.src !== Constants.NO_AVATAR) {
+    	let sendImageAction = false;
+    	if (this.props.headerAvatar || this.props.sizes === Constants.USER_PROFILE_AVATAR_SIZE) {
+        sendImageAction = true;
+			}
       ImagesService.getImagesWithProxy(this.props.src,
-				`https://steemitimages.com/${2 * this.props.sizes}x${2 * this.props.sizes}/`, this.props.headerAvatar);
+				`https://steemitimages.com/${2 * this.props.sizes}x${2 * this.props.sizes}/`, sendImageAction);
     }
 	}
 

@@ -7,6 +7,7 @@ import Constants from '../common/constants';
 import {actionLock, actionUnlock} from './session';
 import ChainService from '../services/chainService';
 import {pushErrorMessage, pushMessage} from './pushMessage';
+import BotsService from '../services/botsService';
 
 function setAuthUserInfoLoading(param) {
   return {
@@ -84,8 +85,11 @@ export function getAuthUserInfo() {
   return dispatch => {
     dispatch(setAuthUserInfoLoading(true));
     UserService.getProfile(state.auth.user, state.settings.show_nsfw, state.settings.show_low_rated)
-      .then( result => {
-        dispatch(getAuthUserInfoSuccess(result));
+      .then(result => {
+        dispatch(getAuthUserInfoSuccess({
+          sbd_balance: result.sbd_balance,
+          steem_balance: result.balance,
+        }));
         dispatch(setAuthUserInfoLoading(false));
       })
       .catch(error => {
@@ -104,24 +108,29 @@ export function setActiveKeyError(activeKeyError) {
   }
 }
 
+export function addBot(bot) {
+  return {
+    type: 'ADD_BOT',
+    bot
+  }
+}
+
 export function searchingBotRequest(steemLink) {
-  let state = getStore().getState();
   return dispatch => {
-    /*if (state.session.actionLocked) {
-      return;
-    }
-    dispatch(actionLock());*/
     dispatch(sendBotRequest(true));
-    if (true) {
-      let modalOption = {
-        body: (<SendBidModal steemLink={steemLink}/>)
-      };
-      dispatch(openModal("SendBidModal", modalOption));
-      dispatch(sendBotRequest(false));
-    } else {
-      this.props.pushMessage(Constants.PROMOTE.FIND_BOT_ERROR);
-      dispatch(sendBotRequest(false));
-    }
+    BotsService.getBotsList()
+      .then(() => {
+        let modalOption = {
+          body: (<SendBidModal steemLink={steemLink}/>)
+        };
+        dispatch(openModal("SendBidModal", modalOption));
+        dispatch(sendBotRequest(false));
+      })
+      .catch(error => {
+        dispatch(pushErrorMessage(Constants.PROMOTE.FIND_BOT_ERROR));
+        dispatch(sendBotRequest(false));
+        console.log(error);
+      });
   }
 }
 
