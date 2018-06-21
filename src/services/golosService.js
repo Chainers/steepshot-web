@@ -2,6 +2,7 @@ import golos from 'golos-js';
 import Constants from "../common/constants";
 import PostService from "./postService";
 import AuthService from "./authService";
+import steem from "steem";
 
 class GolosService {
 

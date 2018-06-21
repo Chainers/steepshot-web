@@ -4,13 +4,6 @@ import PostService from "./postService";
 import AuthService from "./authService";
 import SteemNodeService from "./steemNodeService";
 
-let dynamicProps = [];
-steem.api.getDynamicGlobalProperties((err, result) => {
-	if (result) {
-		dynamicProps = result;
-	}
-});
-
 class SteemService {
 
 	init() {
@@ -130,14 +123,6 @@ class SteemService {
 			steem.api.getAccountHistory(username, from, limit, callback);
 		})
 	}
-
-	static vestsToSp(vesting_shares) {
-		const vests = parseFloat(vesting_shares.split(' ')[0]);
-		const total_vests = parseFloat(dynamicProps['total_vesting_shares'].split(' ')[0]);
-		const total_vest_steem = parseFloat(dynamicProps['total_vesting_fund_steem'].split(' ')[0]);
-		return (total_vest_steem * (vests / total_vests)).toFixed(3) + ' STEEM POWER';
-	}
-
 }
 
 export default SteemService;
