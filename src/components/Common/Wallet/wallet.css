@@ -17,11 +17,18 @@
 }
 
 .body_wallet {
-    height: 300px;
     display: flex;
     justify-content: space-between;
+    flex-wrap: wrap;
+    align-content: flex-start;
 }
 
 .transaction-history_wallet {
     height: 400px;
+}
+
+@media (max-width: 650px) {
+    .body_wallet {
+        justify-content: center;
+    }
 }
