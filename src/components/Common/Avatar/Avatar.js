@@ -18,7 +18,7 @@ class Avatar extends React.Component {
 		super(props);
     if (this.props.src && this.props.src !== Constants.NO_AVATAR) {
       ImagesService.getImagesWithProxy(this.props.src,
-				`https://steemitimages.com/${2 * this.props.sizes}x${2 * this.props.sizes}/`);
+				`https://steemitimages.com/${2 * this.props.sizes}x${2 * this.props.sizes}/`, this.props.headerAvatar);
     }
 	}
 

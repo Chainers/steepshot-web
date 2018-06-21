@@ -29,7 +29,6 @@ export default function images(state = {}, action) {
           [userProfAvaSize]: `https://steemitimages.com/${2 * userProfAvaSize}x${2 * userProfAvaSize}/` + avatarUrl,
         }
       }
-      delete proxysUrls[''];
       return {
         ...state,
         ...proxysUrls
@@ -45,10 +44,23 @@ export default function images(state = {}, action) {
           [userProfAvaSize]: `https://steemitimages.com/${2 * userProfAvaSize}x${2 * userProfAvaSize}/` + avatarUrl,
         }
       }
-      delete proxysUrls[''];
       return {
         ...state,
         ...proxysAvaUrls
+      };
+
+    case 'LOGIN_SUCCESS':
+      let avatarHeaderUrl = action.avatar;
+      let proxyHeaderAvaUrl = {
+        [avatarHeaderUrl]: {
+          [defaultAvaSize]: `https://steemitimages.com/${2 * defaultAvaSize}x${2 * defaultAvaSize}/` + avatarHeaderUrl,
+          [userCardAvaSize]: `https://steemitimages.com/${2 * userCardAvaSize}x${2 * userCardAvaSize}/` + avatarHeaderUrl,
+          [userProfAvaSize]: `https://steemitimages.com/${2 * userProfAvaSize}x${2 * userProfAvaSize}/` + avatarHeaderUrl,
+        }
+      };
+      return {
+        ...state,
+        ...proxyHeaderAvaUrl
       };
 
     default:
