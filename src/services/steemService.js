@@ -114,6 +114,15 @@ class SteemService {
 		};
 		return [Constants.OPERATIONS.COMMENT_OPTIONS, beneficiariesObject];
 	}
+
+	getTransactionHistory(username, from, limit) {
+		if (from !== -1 && from < limit) {
+			limit = from
+		}
+		return processResponse(callback => {
+			steem.api.getAccountHistory(username, from, limit, callback);
+		})
+	}
 }
 
 export default SteemService;

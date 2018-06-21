@@ -2,6 +2,7 @@ import golos from 'golos-js';
 import Constants from "../common/constants";
 import PostService from "./postService";
 import AuthService from "./authService";
+import steem from "steem";
 
 class GolosService {
 
@@ -111,6 +112,15 @@ class GolosService {
 		};
 
 		return [Constants.OPERATIONS.COMMENT_OPTIONS, beneficiariesObject];
+	}
+
+	getTransactionHistory(username, from, limit) {
+		if (from !== -1 && from < limit) {
+			limit = from
+		}
+		return processResponse(callback => {
+			golos.api.getAccountHistory(username, from, limit, callback);
+		})
 	}
 }
 

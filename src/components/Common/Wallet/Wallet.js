@@ -5,6 +5,7 @@ import {getUserProfile} from "../../../actions/userProfile";
 import WidgetToken from "./WidgetToken/WidgetToken";
 import LoadingSpinner from "../../LoadingSpinner";
 import {utils} from '../../../utils/utils';
+import TransactionHistory from "./TransactionHistory/TransactionHistory";
 
 const DESCRIPTION = {
 	COST: "The estimated value is based on an average value of Steem in US dollars.",
@@ -23,7 +24,6 @@ class Wallet extends React.Component {
 
 	render() {
 		const {cost, steem, sp, sbd} = this.props;
-		console.log(this.props);
 		if (!utils.isNotEmpty(cost) || !utils.isNotEmpty(steem) || !utils.isNotEmpty(sp) || !utils.isNotEmpty(sbd)) {
 			return <LoadingSpinner/>
 		}
@@ -45,8 +45,7 @@ class Wallet extends React.Component {
 												 value={sbd} description={DESCRIPTION.SBD} textButton="TRANSFER" onClick={() => {
 						}}/>
 					</div>
-					<div className="transaction-history_wallet">
-					</div>
+					<TransactionHistory />
 				</div>
 			</div>
 		);

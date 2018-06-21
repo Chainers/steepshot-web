@@ -32,3 +32,8 @@
         justify-content: center;
     }
 }
+
+.trx-history_wallet {
+    border-radius: 10px;
+    background-color: #ffffff;
+}
