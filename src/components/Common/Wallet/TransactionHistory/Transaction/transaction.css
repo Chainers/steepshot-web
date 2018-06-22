@@ -3,7 +3,7 @@
     display: flex;
 }
 
-.container_trx.odd_trx {
+.container_trx.even_trx {
     background-color: #fbfbfb;
 }
 
@@ -13,27 +13,47 @@
     justify-content: flex-start;
     padding-top: 25px;
     padding-bottom: 25px;
+    overflow: hidden;
+    word-wrap: break-spaces;
 }
 
 .type_trx {
-    min-width: 150px;
+    width: 150px;
     padding-left: 30px;
+    flex-shrink: 0;
 }
 
 .info_trx {
-    min-width: 200px;
+    width: 220px;
+    flex-shrink: 0;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.type_trx, .info_trx {
+    color: #0f181e;
+    font: 14px OpenSans-Semibold;
 }
 
 .memo_trx {
     flex-grow: 1;
-    text-align: justify;
+    color: #333333;
+    font: 14px OpenSans-Light;
 }
 
 .date_trx {
-    min-width: 120px;
+    width: 120px;
     padding-right: 30px;
+    line-height: 22px;
+    color: #0f181e;
+    font: 14px OpenSans-Light;
+    flex-shrink: 0;
 }
 
 .container_trx > div.date_trx {
     justify-content: flex-end;
+}
+
+.container_trx span {
+    white-space: nowrap;
 }

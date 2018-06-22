@@ -137,6 +137,7 @@ class SteemService {
 		const total_vest_steem = parseFloat(dynamicProps['total_vesting_fund_steem'].split(' ')[0]);
 		return (total_vest_steem * (vests / total_vests)).toFixed(3) + ' STEEM POWER';
 	}
+
 }
 
 export default SteemService;

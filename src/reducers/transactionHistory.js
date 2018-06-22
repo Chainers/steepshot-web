@@ -14,7 +14,7 @@ export default function transactionHistory(state = initialState, action) {
 		case 'GET_TRANSACTION_HISTORY_SUCCESS':
 			return {
 				...state,
-				transactions: [...action.transactions, ...state.transactions],
+				transactions: action.transactions.concat(state.transactions),
 				loading: false,
 				hasMore: action.hasMore
 			};

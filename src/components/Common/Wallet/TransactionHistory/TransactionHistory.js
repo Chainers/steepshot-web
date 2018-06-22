@@ -22,14 +22,14 @@ class TransactionHistory extends React.Component {
 				fetch={getTransactionHistory}
 				hasMore={hasMore && transactions.length > 0}>
 				<div className="container_trx-history">
-					{transactions.reverse().map((trx, index) =>
+					{transactions.map((trx, index) =>
 						<Transaction operation={trx[1].op[0]}
 												 data={trx[1].op[1]}
 												 key={index}
 												 index={index}
 												 date={trx[1].timestamp}
 						/>
-					)}
+					).reverse()}
 					<ShowIf show={loading}>
 						<LoadingSpinner/>
 					</ShowIf>
