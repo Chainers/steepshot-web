@@ -24,7 +24,9 @@ const Constants = {
 		},
 		BOTS: {
       BOTS_INFO: 'https://steembottracker.net/bid_bots',
-			MIN_BID_VALUE: 0.5
+			MIN_BID_VALUE: 0.5,
+			SUPPORTABLE_BOTS_LIST: ['promobot', 'upme', 'therising', 'upmewhale', 'sneaky-ninja', 'rocky1', 'boomerang',
+        'appreciator', 'postpromoter', 'smartsteem', 'spydo', 'booster', 'emperorofnaps', 'jerrybanfield']
 		}
 	},
 

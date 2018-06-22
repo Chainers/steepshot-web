@@ -60,6 +60,7 @@ class SendBidModal extends React.Component {
                      <div className="load-instead-timer_send-bid-mod">{loadingEllipsis('Looking for a new bot')}</div>
                    </div>
     }
+    let botAvatarStyle = {backgroundImage: 'url(' + this.props.botAvatar + ')'};
     return (
       <div className="wrapper_promote-mod">
         <p className="title_send-bid-mod">
@@ -67,7 +68,7 @@ class SendBidModal extends React.Component {
           <a href={`https://steemit.com/@${this.props.botName}`} target="_blank">@{this.props.botName.toUpperCase()}</a>
         </p>
         <div className="body_send-bid-mod">
-          <div className="bot-logo_send-bid-mod"/>
+          <div className="bot-logo_send-bid-mod" style={botAvatarStyle}/>
           {timerBlock}
         </div>
         <div className="position--relative">
@@ -92,8 +93,6 @@ class SendBidModal extends React.Component {
 const mapStateToProps = (state, props) => {
   const promoteModal = state.promoteModal;
   const suitableBot = promoteModal.suitableBot;
-  const botName = suitableBot.name;
-  const upvoteTime = suitableBot.next / 1000;
   let redTimer = false, blockedTimer = false;
   let littleScreen = state.window.width <= 400;
   if (promoteModal.leftTime) {
@@ -102,8 +101,9 @@ const mapStateToProps = (state, props) => {
   }
   return {
     ...state.promoteModal,
-    upvoteTime,
-    botName,
+    upvoteTime: suitableBot.next,
+    botName: suitableBot.name,
+    botAvatar: suitableBot.avatar,
     littleScreen,
     redTimer,
     blockedTimer,

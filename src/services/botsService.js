@@ -3,8 +3,7 @@ import Constants from '../common/constants';
 import {getStore} from '../store/configureStore';
 import {addBot} from '../actions/promoteModal';
 
-const supportableBots = ['promobot', 'upme', 'therising', 'upmewhale', 'sneaky-ninja', 'rocky1', 'boomerang',
-  'appreciator', 'postpromoter', 'smartsteem', 'spydo', 'booster', 'emperorofnaps', 'jerrybanfield'];
+const supportableBots = Constants.SERVICES.BOTS.SUPPORTABLE_BOTS_LIST;
 
 class BotsService {
 
@@ -23,6 +22,11 @@ class BotsService {
           }
         }
         //TODO checking for a one bot instead random arrayBots[0]
+        let promoteModalInfo = getStore().getState().promoteModal;
+        for (let i = 0; i < suitableBots.length; i++) {
+
+        }
+
         let suitableBot = suitableBots[0];
         const options = {
           username: suitableBot.name,
@@ -30,6 +34,8 @@ class BotsService {
         return RequestService.get(`user/${suitableBot.name}/info`, options)
                 .then(response => {
                   suitableBot.avatar = response.profile_image;
+                  suitableBot.last = (suitableBot.last / 1000).toFixed(0);
+                  suitableBot.next = (suitableBot.next / 1000).toFixed(0);
                   getStore().dispatch(addBot(suitableBot));
                   return Promise.resolve();
                 });
