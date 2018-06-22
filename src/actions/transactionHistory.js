@@ -11,6 +11,7 @@ export function getTransactionHistory() {
 			type: "EMPTY_GET_TRANSACTION_HISTORY"
 		}
 	}
+	const operationTypes = transactionHistory.operationTypes[transactionHistory.currentOperation];
 	const numberLastTransaction = transactionHistory.transactions[0] ? transactionHistory.transactions[0][0] : 0;
 	const username = AuthService.getUsername();
 	return dispatch => {
@@ -18,7 +19,7 @@ export function getTransactionHistory() {
 			type: 'GET_TRANSACTION_HISTORY_REQUEST',
 			username
 		});
-		TransactionService.getWalletTransaction(username, numberLastTransaction - 1, COUNT_TRANSACTION)
+		TransactionService.getWalletTransaction(username, numberLastTransaction - 1, COUNT_TRANSACTION, operationTypes)
 			.then(response => {
 				dispatch({
 					type: 'GET_TRANSACTION_HISTORY_SUCCESS',
@@ -32,7 +33,18 @@ export function getTransactionHistory() {
 					error
 				});
 			});
+	}
+}
 
+export function changeTransactionFilter(currentOperation) {
+	return {
+		type: 'CHANGE_TRANSACTION_FILTER',
+		currentOperation
+	}
+}
 
+export function clearHistory() {
+	return {
+		type: 'CLEAR_TRANSACTION_HISTORY'
 	}
 }

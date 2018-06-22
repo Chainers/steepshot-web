@@ -1,7 +1,7 @@
 import ChainService from "./chainService";
 
 class TransactionService {
-	static getWalletTransaction(username, from, amount) {
+	static getWalletTransaction(username, from, amount, operationTypes = []) {
 		return ChainService.getTransactionHistory(username, from)
 			.then(response => {
 				const result = [];
@@ -10,8 +10,11 @@ class TransactionService {
 						break;
 					}
 					let operationType = response[i][1].op[0];
-					if (operationType === 'transfer' || operationType === 'claim_reward_balance') {
-						result.unshift(response[i])
+					for(let type of operationTypes) {
+						if (operationType === type) {
+							result.unshift(response[i]);
+							break;
+						}
 					}
 				}
 				return result;
