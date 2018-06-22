@@ -1,18 +1,61 @@
 import React from 'react';
 import './transaction.css';
+import AuthService from "../../../../../services/authService";
+import SteemService from "../../../../../services/steemService";
+import DateFormatter from "../../../../../utils/DateFormatter";
 
-const Transaction = ({operation, data}) => (
-	<div className="container_trx">
+const Transaction = ({operation, data, date, index}) => (
+	<div className={'container_trx ' + (index % 2 === 0 ? '' : 'odd_trx')}>
 		<div className="type_trx">
-			{operation}
+			{getOperationText(operation)}
 		</div>
-		<div className="info_trx">
-			{data.amount}
-		</div>
+		{getOperationBody(operation, data)}
 		<div className="memo_trx">
 			{data.memo}
+		</div>
+		<div className="date_trx">
+			{DateFormatter.converISOtoCustom(date)}
 		</div>
 	</div>
 );
 
 export default Transaction;
+
+function getOperationText(operation) {
+	switch (operation) {
+		case 'transfer':
+			return 'Transfer';
+		case 'claim_reward_balance':
+			return 'Claim rewards';
+		default:
+			return 'Transaction'
+	}
+}
+
+function getOperationBody(operation, data) {
+	switch (operation) {
+		case 'transfer':
+			const isFrom = data.from === AuthService.getUsername();
+			return (
+				<div className="info_trx">
+					{wrap(data.amount)}&nbsp;{isFrom ? 'to' : 'from'}&nbsp;{wrap(isFrom ? data.to : data.from)}
+				</div>
+			);
+		case 'claim_reward_balance':
+			const isEmptySteem = data.reward_steem.includes('0.000');
+			const isEmptySP = data.reward_vests.includes('0.000');
+			const isEmptySBD = data.reward_sbd.includes('0.000');
+			return (
+				<div className="info_trx">
+					{wrap(data.reward_steem)} {wrap(data.reward_sbd)} {wrap(SteemService.vestsToSp(data.reward_vests))}
+				</div>
+			);
+		default:
+			return 'Transaction'
+	}
+}
+
+function wrap(data) {
+	if (data.includes('0.000')) return '';
+	return (<span>{data}</span>);
+}

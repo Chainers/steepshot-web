@@ -10,7 +10,7 @@ class TransactionService {
 						break;
 					}
 					let operationType = response[i][1].op[0];
-					if (operationType === 'transfer' || operationType === 'fill_vesting_withdraw' || operationType === 'claim_reward_balance') {
+					if (operationType === 'transfer' || operationType === 'claim_reward_balance') {
 						result.unshift(response[i])
 					}
 				}

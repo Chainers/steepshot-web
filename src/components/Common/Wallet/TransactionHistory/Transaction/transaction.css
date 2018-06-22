@@ -1,0 +1,39 @@
+.container_trx {
+    width: 100%;
+    display: flex;
+}
+
+.container_trx.odd_trx {
+    background-color: #fbfbfb;
+}
+
+.container_trx > div {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding-top: 25px;
+    padding-bottom: 25px;
+}
+
+.type_trx {
+    min-width: 150px;
+    padding-left: 30px;
+}
+
+.info_trx {
+    min-width: 200px;
+}
+
+.memo_trx {
+    flex-grow: 1;
+    text-align: justify;
+}
+
+.date_trx {
+    min-width: 120px;
+    padding-right: 30px;
+}
+
+.container_trx > div.date_trx {
+    justify-content: flex-end;
+}
