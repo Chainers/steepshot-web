@@ -5,11 +5,11 @@ import {
   addTag, changeImage, closeTimer, createPost, editClearAll, editPost, editPostClear, imageNotFound, imageRotate,
   removeTag, setDragAndDropHover, setEditPostImageError, setImageContainerSize, setInitDataForEditPost
 } from '../../actions/editPost';
-import EditTags from "../Common/EditTags/EditTags";
-import ShowIf from "../Common/ShowIf";
-import {utils} from "../../utils/utils";
-import LoadingSpinner from "../LoadingSpinner";
-import {documentTitle} from "../../utils/documentTitle";
+import EditTags from '../Common/EditTags/EditTags';
+import ShowIf from '../Common/ShowIf';
+import {utils} from '../../utils/utils';
+import LoadingSpinner from '../LoadingSpinner';
+import {documentTitle} from '../../utils/documentTitle';
 import './editPost.css';
 import Timer from '../Common/Timer/Timer';
 import {withWrapper} from 'create-react-server/wrapper';

@@ -1,10 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {connect} from 'react-redux';
-import {closeModal} from "../../actions/modal";
-import UsersList from "../UsersList/UsersList";
-import CloseButton from "../Common/CloseButton/CloseButton";
-import {clearBodyHeight, setLikesFlagsListBodyHeight} from "../../actions/likesFlagsList";
+import {closeModal} from '../../actions/modal';
+import UsersList from '../UsersList/UsersList';
+import CloseButton from '../Common/CloseButton/CloseButton';
+import {clearBodyHeight, setLikesFlagsListBodyHeight} from '../../actions/likesFlagsList';
 import ReactResizeDetector from 'react-resize-detector';
 import TabsBar from '../Common/TabsBar/TabsBar';
 import Tab from '../Common/TabsBar/Tab/Tab';
@@ -22,6 +22,15 @@ class LikesFlagsList extends React.Component {
 		this.updateBodyHeight = this.updateBodyHeight.bind(this);
 	}
 
+	static permLink(url, commentAuthor) {
+		if (commentAuthor) {
+			let correctPermlink = url.replace(/(@[\w-.]+\/)[^/]+\//, '$1');
+			return correctPermlink.replace(/\/@[\w-.]+/, commentAuthor);
+		}
+		let urlObject = url.split('/');
+		return `/${urlObject[urlObject.length - 2]}/${urlObject[urlObject.length - 1]}`;
+	}
+
 	componentWillReceiveProps(nextProps) {
 		if (!utils.equalsObjects(nextProps.window, this.props.window)) {
 			this.updateBodyHeight()
@@ -31,15 +40,6 @@ class LikesFlagsList extends React.Component {
 	componentDidUpdate() {
 		let currentBody = this.props.activeIndex ? this.flags : this.likes;
 		this.updateBodyHeight(undefined, ReactDOM.findDOMNode(currentBody).clientHeight);
-	}
-
-	static permLink(url, commentAuthor) {
-		if (commentAuthor) {
-			let correctPermlink = url.replace(/(@[\w-.]+\/)[^/]+\//, '$1');
-			return correctPermlink.replace(/\/@[\w-.]+/, commentAuthor);
-		}
-		let urlObject = url.split('/');
-		return `/${urlObject[urlObject.length - 2]}/${urlObject[urlObject.length - 1]}`;
 	}
 
 	updateBodyHeight(width, height) {
@@ -61,7 +61,7 @@ class LikesFlagsList extends React.Component {
 		let commonLoader = true;
 		if (this.props.likes && this.props.flags) {
 			if (!this.props.likes.loading && !this.props.flags.loading) {
-        commonLoader = false;
+				commonLoader = false;
 			}
 		}
 		return (
@@ -70,10 +70,11 @@ class LikesFlagsList extends React.Component {
 				<TabsBar point="likesFlags"
 								 showLoader={false}
 								 alwaysShowNavigation={true}
-					>
+				>
 					<Tab name="Likes" empty={likesCondition && !flagsCondition}>
 						<Scroll style={{width: '100%', height: this.props.preferredBodyHeight, marginTop: 20}}
-												point={SCROLL_POINT_LIKES}>
+										point={SCROLL_POINT_LIKES}
+										deltaForFetch={1000}>
 							<UsersList
 								scrollPoint={SCROLL_POINT_LIKES}
 								isLikesFlags={true}
@@ -89,7 +90,8 @@ class LikesFlagsList extends React.Component {
 					</Tab>
 					<Tab name="Flags" empty={flagsCondition && !likesCondition}>
 						<Scroll style={{width: '100%', height: this.props.preferredBodyHeight, marginTop: 20}}
-												point={SCROLL_POINT_FLAGS}>
+										point={SCROLL_POINT_FLAGS}
+										deltaForFetch={1000}>
 							<UsersList
 								scrollPoint={SCROLL_POINT_FLAGS}
 								point={this.props.point}

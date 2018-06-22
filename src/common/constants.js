@@ -21,6 +21,10 @@ const Constants = {
 				MAX_LENGTH: 40,
 				MAX_AMOUNT: 20
 			},
+		},
+		BOTS: {
+      BOTS_INFO: 'https://steembottracker.net/bid_bots',
+			MIN_BID_VALUE: 0.5
 		}
 	},
 
@@ -34,10 +38,12 @@ const Constants = {
 	},
 
 	NO_AVATAR: '/images/person.png',
-	NO_IMAGE: '/images/noimage.jpg',
-	DEF_AVATAR_SIZE: 20 + 10,
+	DEF_AVATAR_SIZE: 30,
 	USER_CARD_AVATAR_SIZE: 60,
 	USER_PROFILE_AVATAR_SIZE: 100,
+
+  NO_IMAGE: '/images/noimage.jpg',
+  DEF_POST_SIZE: 300,
 
 	SETTINGS: {
 		FIELDS: {
@@ -183,6 +189,9 @@ const Constants = {
 
 	VOTE_ACTION_WHEN_NOT_AUTH: 'This action is only available for logged-in users',
 	VOTE_ACTION_WHEN_NOT_AUTH_DEBOUNCE: 500,
+	AUTH_WRONG_USER: 'Such user doesn\'t exist.',
+	AUTH_WRONG_POSTING_KEY: 'Invalid posting key.',
+  NON_BASE58_CHARACTER: 'Non-base58 character',
 
 	FOLLOW_REQUEST_ERROR: 'Something went wrong, please, try again later.',
 	OOOPS_SOMETHING_WRONG: 'Ooops, something went wrong.',
@@ -235,13 +244,14 @@ const Constants = {
     SELECT_ERROR: 'Choose token',
 		INPUT_ERROR: 'Enter correct value',
 		NOT_ENOUGH_TOKENS: 'Not enough tokens',
-		MIN_AMOUNT_ERROR: 'Min bid is 0.25',
+		MIN_AMOUNT_ERROR: 'Min bid is 0.5',
 		FIND_BOT_ERROR: 'We look, but there\'s no appropriate bot for promotion. Please, try little later.',
 		BID_TIMEOUT_ERROR: 'It\'s too late to bid to this bot, try any one.',
 		RED_TIMER: 60,
 		BLOCKED_TIMER: 21,
 		EMPTY_KEY_INPUT: 'You should enter the key',
-		BID_TO_BOT_SUCCESS: 'Your bid has been successfully sent. Wait for upvote.'
+		BID_TO_BOT_SUCCESS: 'Your bid has been successfully sent. Wait for upvote.',
+		INVALID_ACTIVE_KEY: 'Invalid active key.'
 	}
 };
 

@@ -77,12 +77,12 @@ function logCORS(url, operation, error = '') {
 	};
 	try {
 		fetch(url, options)
-			.then((response) => {
+			.then(response => {
 				if (response.ok && response.status !== 200) {
 					notify(`logCORS, ${operation}. Response is OK but something went wrong`, response, true);
 				}
 			})
-			.catch((error) => {
+			.catch(error => {
 				notify(`logCORS, ${operation}. Error`, error, true);
 			});
 	}

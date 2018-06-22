@@ -5,12 +5,9 @@ export function scrollInit(point) {
 	}
 }
 
-export function setScrollData(point, position, scrollTop, scrollHeight) {
+export function shouldFetch(point) {
 	return {
-		type: 'SET_SCROLL_DATA',
-		position,
-		scrollTop,
-		scrollHeight,
+		type: 'SCROLL_SHOULD_FETCH',
 		point
 	}
 }
@@ -19,13 +16,5 @@ export function scrollShouldUpdate(point) {
 	return {
 		type: 'SCROLL_SHOULD_UPDATE',
 		point
-	}
-}
-
-export function scrollDataUpdated(point, height) {
-	return {
-		type: 'SCROLL_DATA_UPDATED',
-		point,
-		height
 	}
 }

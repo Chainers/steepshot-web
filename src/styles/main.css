@@ -1669,11 +1669,6 @@ tbody.collapse.in {
     width: 100%
 }
 
-.post-card .card-pic .img {
-    background: center no-repeat;
-    background-size: cover;
-}
-
 .post-card .card-wrap {
     background: #fff;
     border: 1px solid #e7e7e7;
