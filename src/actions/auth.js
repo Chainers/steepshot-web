@@ -49,7 +49,6 @@ export function login(username, postingKey) {
 						let avatar = getAvatar(response[0]);
 						StorageSerive.setAuthData(username, postingKey, avatar, getStore().getState().services.name || Constants.SERVICES.steem.name);
 						initOneSignalService(username, dispatch);
-						let parseResult = JSON.parse(response[0].json_metadata);
 						dispatch({
 							type: 'LOGIN_SUCCESS',
 							postingKey,
@@ -59,7 +58,7 @@ export function login(username, postingKey) {
 							voting_power: response[0].voting_power / 100
 						});
 						dispatch(push('/feed'));
-						dispatch(showMessage('Welcome to Steepshot, ' + (parseResult.profile.name || username) + '!'));
+						dispatch(showMessage(`Welcome to Steepshot, ${username}!`));
 						LoggingService.logLogin();
 					})
 			})

@@ -7,6 +7,7 @@ import PromoteModal from '../../PostModal/PromoteModal/PromoteModal';
 import {openModal} from '../../../actions/modal';
 import MarkdownParser from "../../../utils/markdownParser";
 import renderHTML from 'react-render-html';
+import Constants from "../../../common/constants";
 
 class Description extends React.Component {
 
@@ -33,7 +34,7 @@ class Description extends React.Component {
 	render() {
 		return (
 			<div className="container_description">
-				<ShowIf show={this.props.isSelfPost && !this.props.isGolos}>
+				<ShowIf show={this.props.isSelfPost && !this.props.isGolos && !this.props.oldForPromote}>
 					<div className="open-promote_description centered--flex" onClick={this.openPromoteModal.bind(this)}>
 						PROMOTE THIS POST
 					</div>
@@ -51,13 +52,13 @@ class Description extends React.Component {
 
 
 const mapStateToProps = (state) => {
-	let postIndex = state.postModal.currentIndex;
-	let isSelfPost = state.auth.user === state.posts[postIndex].author;
-	let isGolos = state.services.name === 'golos';
+	const postIndex = state.postModal.currentIndex;
+	const post = state.posts[postIndex];
   return {
-  	isGolos,
-		postIndex,
-		isSelfPost
+    postIndex,
+  	isGolos: state.services.name === 'golos',
+		isSelfPost: state.auth.user === post.author,
+		oldForPromote: post.postAge > 4
   }
 };
 

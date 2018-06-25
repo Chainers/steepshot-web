@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import './promoteModal.css';
 import {closeModal} from '../../../actions/modal';
 import {
-  getAuthUserInfo, searchingBotRequest, setPromoteInputError, setPromoteValue, setSelectedIndex,
+  getAuthUserInfo, getAuthUserInfoSuccess, searchingBotRequest, setPromoteInputError, setPromoteValue, setSelectedIndex,
   setSelectError
 } from '../../../actions/promoteModal';
 import Constants from '../../../common/constants';
@@ -13,7 +13,7 @@ import {pushMessage} from '../../../actions/pushMessage';
 class PromoteModal extends React.Component {
 
   componentDidMount() {
-    if (!this.props.userInfo) {
+    if (!this.props.userInfo || !Object.keys(this.props.userInfo).length) {
       this.props.getAuthUserInfo();
     }
   }
@@ -21,11 +21,12 @@ class PromoteModal extends React.Component {
   componentWillUnmount() {
     this.props.setPromoteInputError('');
     this.props.setSelectError('');
+    this.props.getAuthUserInfoSuccess({});
   }
 
   promotePost() {
     if (this.validPromoteInfo()) {
-      this.props.searchingBotRequest(this.props.steemLink);
+      this.props.searchingBotRequest(this.props.postIndex);
     }
   }
 
@@ -128,7 +129,6 @@ class PromoteModal extends React.Component {
 }
 
 const mapStateToProps = (state, props) => {
-  const steemLink = `https://steemit.com${props.postIndex}`;
   let promoteModal = state.promoteModal;
   let tokenNumber = '';
   if (promoteModal.selectedToken === 'STEEM') {
@@ -138,7 +138,7 @@ const mapStateToProps = (state, props) => {
     tokenNumber = promoteModal.userInfo.sbd_balance;
   }
   return {
-    steemLink,
+    postIndex: props.postIndex,
     ...promoteModal,
     tokenNumber
   }
@@ -167,8 +167,11 @@ const mapDispatchToProps = (dispatch) => {
     pushMessage: (message) => {
       dispatch(pushMessage(message));
     },
-    searchingBotRequest: (steemLink) => {
-      dispatch(searchingBotRequest(steemLink));
+    searchingBotRequest: (postIndex) => {
+      dispatch(searchingBotRequest(postIndex));
+    },
+    getAuthUserInfoSuccess: (result) => {
+      dispatch(getAuthUserInfoSuccess(result));
     }
   }
 };

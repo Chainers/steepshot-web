@@ -78,6 +78,12 @@ export default function promoteModal(state = initialState, action) {
         suitableBot: action.bot
       };
 
+    case 'ADD_ACTIVE_KEY':
+      return {
+        ...state,
+        activeKey: action.key
+      };
+
     default:
       return state;
   }

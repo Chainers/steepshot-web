@@ -5,8 +5,10 @@ import {closeModal} from '../../../../actions/modal';
 import Timer from '../../../Common/Timer/Timer';
 import Constants from '../../../../common/constants';
 import {pushMessage} from '../../../../actions/pushMessage';
-import {sendBid, setActiveKeyError, setTimerState} from '../../../../actions/promoteModal';
+import {addActiveKey, sendBid, setActiveKeyError, setTimerState} from '../../../../actions/promoteModal';
 import {loadingEllipsis} from '../../../../utils/loadingEllipsis';
+import ShowIf from '../../../Common/ShowIf';
+import storage from '../../../../utils/Storage';
 
 class SendBidModal extends React.Component {
 
@@ -15,12 +17,17 @@ class SendBidModal extends React.Component {
   }
 
   sendBid() {
-    if (!this.input.value) {
-      this.props.setActiveKeyError(Constants.PROMOTE.EMPTY_KEY_INPUT);
-      return;
+    if (this.input) {
+      if (!this.input.value) {
+        this.props.setActiveKeyError(Constants.PROMOTE.EMPTY_KEY_INPUT);
+        return;
+      }
+      let activeKey = this.input.value.replace(/\s+/g, '');
+      this.props.addActiveKey(activeKey);
+      this.props.sendBid(this.props.steemLink, activeKey, this.props.botName);
+    } else {
+      this.props.sendBid(this.props.steemLink, storage.activeKey, this.props.botName);
     }
-    let key = this.input.value.replace(/\s+/g, '');
-    this.props.sendBid(this.props.steemLink, key, this.props.botName);
   }
 
   setActiveKeyValue() {
@@ -71,14 +78,16 @@ class SendBidModal extends React.Component {
           <div className="bot-logo_send-bid-mod" style={botAvatarStyle}/>
           {timerBlock}
         </div>
-        <div className="position--relative">
-          <input type="password"
-                 placeholder={this.props.littleScreen ? 'Private active key' : 'Put hear your private active key'}
-                 className="input_promote-mod"
-                 ref={ref => this.input = ref}
-                 onChange={this.setActiveKeyValue.bind(this)}/>
-          <div className="error_promote-mod">{this.props.activeKeyError}</div>
-        </div>
+        <ShowIf show={!storage.activeKey}>
+          <div className="position--relative">
+            <input type="password"
+                   placeholder={this.props.littleScreen ? 'Private active key' : 'Put hear your private active key'}
+                   className="input_promote-mod"
+                   ref={ref => this.input = ref}
+                   onChange={this.setActiveKeyValue.bind(this)}/>
+            <div className="error_promote-mod">{this.props.activeKeyError}</div>
+          </div>
+        </ShowIf>
         <div className="buttons_promote-mod">
           <button className="btn btn-index" onClick={() => this.props.closeModal()}>CANCEL</button>
           <button className={'btn btn-default' + blockedTimer}
@@ -125,8 +134,11 @@ const mapDispatchToProps = (dispatch) => {
     setActiveKeyError: (error) => {
       dispatch(setActiveKeyError(error));
     },
-    sendBid: (steemLink, wif, botName) => {
-      dispatch(sendBid(steemLink, wif, botName));
+    sendBid: (steemLink, activeKey, botName) => {
+      dispatch(sendBid(steemLink, activeKey, botName));
+    },
+    addActiveKey: (activeKey) => {
+      dispatch(addActiveKey(activeKey));
     }
   }
 };

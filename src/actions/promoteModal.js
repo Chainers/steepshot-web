@@ -1,13 +1,14 @@
 import * as React from 'react';
 import {getStore} from '../store/configureStore';
 import UserService from '../services/userService';
-import {openModal} from './modal';
+import {closeModal, openModal} from './modal';
 import SendBidModal from '../components/PostModal/PromoteModal/SendBidModal/SendBidModal';
 import Constants from '../common/constants';
 import {actionLock, actionUnlock} from './session';
 import ChainService from '../services/chainService';
 import {pushErrorMessage, pushMessage} from './pushMessage';
 import BotsService from '../services/botsService';
+import storage from '../utils/Storage';
 
 function setAuthUserInfoLoading(param) {
   return {
@@ -27,6 +28,13 @@ function setBidRequest(state) {
   return {
     type: 'SET_BID_REQUEST',
     state
+  }
+}
+
+export function addActiveKey(key) {
+  return {
+    type: 'ADD_ACTIVE_KEY',
+    key
   }
 }
 
@@ -115,10 +123,11 @@ export function addBot(bot) {
   }
 }
 
-export function searchingBotRequest(steemLink) {
+export function searchingBotRequest(postIndex) {
   return dispatch => {
+    const steemLink = `https://steemit.com${postIndex}`;
     dispatch(sendBotRequest(true));
-    BotsService.getBotsList()
+    BotsService.getBotsList(postIndex)
       .then(() => {
         let modalOption = {
           body: (<SendBidModal steemLink={steemLink}/>)
@@ -134,10 +143,9 @@ export function searchingBotRequest(steemLink) {
   }
 }
 
-export function sendBid(steemLink, wif, botName) {
+export function sendBid(steemLink, activeKey, botName) {
   let state = getStore().getState();
   let promoteModal = state.promoteModal;
-  let activeKey = wif.replace(/\s+/g, '');
   let promoteAmount = promoteModal.promoteAmount.toString();
   promoteAmount = promoteAmount.replace(/^0+(\d+)/, '$1');
   if (/\./.test(promoteAmount)) {
@@ -148,7 +156,7 @@ export function sendBid(steemLink, wif, botName) {
   promoteAmount = promoteAmount.replace(/(\d+\.\d{3})(\d*)/, '$1');
   let transferInfo = {
     wif: activeKey,
-    recipient: botName,
+    recipient: 'dmitryorelopt',
     amount: promoteAmount + ' ' + promoteModal.selectedToken,
     postLink: steemLink
   };
@@ -159,11 +167,29 @@ export function sendBid(steemLink, wif, botName) {
     dispatch(actionLock());
     dispatch(setBidRequest(true));
     ChainService.sendTransferTroughBlockchain(transferInfo)
-      .then(response => {
-        dispatch(actionUnlock());
+      .then((response) => {
         console.log(response);
+        dispatch(actionUnlock());
         dispatch(pushMessage(Constants.PROMOTE.BID_TO_BOT_SUCCESS));
         dispatch(setBidRequest(false));
+        if (!storage.activeKey) {
+          storage.activeKey = promoteModal.activeKey;
+        }
+        let newValue;
+        if (promoteModal.selectedToken === 'STEEM') {
+          newValue = {
+            steem_balance: state.userInfo.steem_balance - promoteModal.promoteAmount,
+            sbd_balance: promoteModal.userInfo.sbd_balance
+          }
+        }
+        if (promoteModal.selectedToken === 'SBD') {
+          newValue = {
+            sbd_balance: promoteModal.sbd_balance - promoteModal.promoteAmount,
+            steem_balance: promoteModal.userInfo.steem_balance
+          }
+        }
+        dispatch(getAuthUserInfo(newValue));
+        dispatch(closeModal("SendBidModal"));
       })
       .catch(error => {
         dispatch(actionUnlock());
