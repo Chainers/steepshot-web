@@ -1,8 +1,8 @@
-import React from "react";
+import React from 'react';
 import PropTypes from 'prop-types';
-import {connect} from "react-redux";
-import ShowIf from "../ShowIf";
-import {blurFormInput, changeFormInput, createFormInput, focusFormInput} from "../../../actions/formInput";
+import {connect} from 'react-redux';
+import ShowIf from '../ShowIf';
+import {blurFormInput, changeFormInput, createFormInput, focusFormInput} from '../../../actions/formInput';
 import './formInput.css';
 
 class FormInput extends React.Component {

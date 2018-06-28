@@ -3,8 +3,8 @@ import {connect} from 'react-redux';
 import './promoteModal.css';
 import {closeModal} from '../../../actions/modal';
 import {
-  getAuthUserInfo, getAuthUserInfoSuccess, searchingBotRequest, setPromoteInputError, setPromoteValue, setSelectedIndex,
-  setSelectError
+  addPostIndex, getAuthUserInfo, getAuthUserInfoSuccess, searchingBotRequest, setPromoteInputError, setPromoteValue,
+  setSelectedIndex, setSelectError
 } from '../../../actions/promoteModal';
 import Constants from '../../../common/constants';
 import {loadingEllipsis} from '../../../utils/loadingEllipsis';
@@ -16,12 +16,18 @@ class PromoteModal extends React.Component {
     if (!this.props.userInfo || !Object.keys(this.props.userInfo).length) {
       this.props.getAuthUserInfo();
     }
+    this.props.addPostIndex(this.props.postIndex);
   }
 
   componentWillUnmount() {
+    this.clearPromoteModalInfo();
+  }
+
+  clearPromoteModalInfo() {
     this.props.setPromoteInputError('');
     this.props.setSelectError('');
     this.props.getAuthUserInfoSuccess({});
+    this.props.setSelectedIndex(0);
   }
 
   promotePost() {
@@ -65,6 +71,9 @@ class PromoteModal extends React.Component {
     if (this.props.selectError) {
       this.props.setSelectError('');
     }
+    if (this.props.inputError) {
+      this.props.setPromoteInputError('');
+    }
     this.props.setSelectedIndex(e.target.selectedIndex);
   }
 
@@ -82,7 +91,7 @@ class PromoteModal extends React.Component {
   render() {
     let loadingDataOrError = this.props.selectError;
     if (this.props.infoLoading) {
-      loadingDataOrError = loadingEllipsis('Loading data');
+      loadingDataOrError = this.props.userInfoErrorStatus ? this.props.userInfoErrorStatus : loadingEllipsis('Loading data');
     }
     let findText = 'FIND PROMOTER';
     if (this.props.searchingBot) {
@@ -172,6 +181,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     getAuthUserInfoSuccess: (result) => {
       dispatch(getAuthUserInfoSuccess(result));
+    },
+    addPostIndex: (postIndex) => {
+      dispatch(addPostIndex(postIndex));
     }
   }
 };

@@ -1831,15 +1831,6 @@ output {
 .btn-default {
     border-color: transparent;
     background: #e74800;
-    box-shadow: 0 10px 20px 0 rgba(231, 72, 0, .3);
-}
-
-.btn-default:focus, .btn-default:hover {
-    background: #e74800
-}
-
-.btn-default.active, .btn-default:active {
-    background: #e74800
 }
 
 .btn-primary {

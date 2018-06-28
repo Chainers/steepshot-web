@@ -7,7 +7,6 @@ import PromoteModal from '../../PostModal/PromoteModal/PromoteModal';
 import {openModal} from '../../../actions/modal';
 import MarkdownParser from "../../../utils/markdownParser";
 import renderHTML from 'react-render-html';
-import Constants from "../../../common/constants";
 
 class Description extends React.Component {
 

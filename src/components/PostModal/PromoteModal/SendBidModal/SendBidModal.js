@@ -5,15 +5,25 @@ import {closeModal} from '../../../../actions/modal';
 import Timer from '../../../Common/Timer/Timer';
 import Constants from '../../../../common/constants';
 import {pushMessage} from '../../../../actions/pushMessage';
-import {addActiveKey, sendBid, setActiveKeyError, setTimerState} from '../../../../actions/promoteModal';
+import {
+  addActiveKey, searchingNewBot, sendBid, setActiveKeyError, setBlockedTimer, setRedTimer
+} from '../../../../actions/promoteModal';
 import {loadingEllipsis} from '../../../../utils/loadingEllipsis';
 import ShowIf from '../../../Common/ShowIf';
 import storage from '../../../../utils/Storage';
 
 class SendBidModal extends React.Component {
 
+  componentDidMount() {
+    this.bidTimer = setTimeout(() => {
+      this.props.searchingNewBot();
+    }, 80 * Constants.MILLISECONDS_IN_SECOND);
+  }
+
   componentWillUnmount() {
-    this.props.setTimerState('');
+    this.props.setRedTimer(false);
+    this.props.setBlockedTimer(false);
+    clearTimeout(this.bidTimer);
   }
 
   sendBid() {
@@ -37,9 +47,12 @@ class SendBidModal extends React.Component {
   }
 
   tick(time) {
-    let leftTime = +time.toFixed(0);
-    if (leftTime === Constants.PROMOTE.RED_TIMER || leftTime === Constants.PROMOTE.BLOCKED_TIMER) {
-      this.props.setTimerState(leftTime);
+    let leftTime = time.toFixed(0) / 1;
+    if (leftTime === Constants.PROMOTE.RED_TIMER) {
+      this.props.setRedTimer(true);
+    }
+    if (leftTime === Constants.PROMOTE.BLOCKED_TIMER) {
+      this.props.setBlockedTimer(true);
     }
   }
 
@@ -57,7 +70,6 @@ class SendBidModal extends React.Component {
                        <div className={'timer_send-bid-mod' + redTimer}>
                          <Timer waitingTime={this.props.upvoteTime}
                                 staticTimer={true}
-                                onTimeout={() => {}}
                                 onTick={this.tick.bind(this)}/>
                        </div>
                      </div>;
@@ -80,8 +92,9 @@ class SendBidModal extends React.Component {
         </div>
         <ShowIf show={!storage.activeKey}>
           <div className="position--relative">
+            <p className="label_promote-mod">Put hear your private active key</p>
             <input type="password"
-                   placeholder={this.props.littleScreen ? 'Private active key' : 'Put hear your private active key'}
+                   placeholder="e.g. STG52aKIcG9..."
                    className="input_promote-mod"
                    ref={ref => this.input = ref}
                    onChange={this.setActiveKeyValue.bind(this)}/>
@@ -99,24 +112,16 @@ class SendBidModal extends React.Component {
   }
 }
 
-const mapStateToProps = (state, props) => {
+const mapStateToProps = (state) => {
   const promoteModal = state.promoteModal;
   const suitableBot = promoteModal.suitableBot;
-  let redTimer = false, blockedTimer = false;
-  let littleScreen = state.window.width <= 400;
-  if (promoteModal.leftTime) {
-    redTimer = promoteModal.leftTime <= Constants.PROMOTE.RED_TIMER;
-    blockedTimer = promoteModal.leftTime <= Constants.PROMOTE.BLOCKED_TIMER;
-  }
+  const steemLink = `https://steemit.com${promoteModal.postIndex}`;
   return {
     ...state.promoteModal,
+    steemLink,
     upvoteTime: suitableBot.next,
     botName: suitableBot.name,
-    botAvatar: suitableBot.avatar,
-    littleScreen,
-    redTimer,
-    blockedTimer,
-    steemLink: props.steemLink
+    botAvatar: suitableBot.avatar
   }
 };
 
@@ -128,9 +133,6 @@ const mapDispatchToProps = (dispatch) => {
     pushMessage: (message) => {
       dispatch(pushMessage(message));
     },
-    setTimerState: (leftTime) => {
-      dispatch(setTimerState(leftTime));
-    },
     setActiveKeyError: (error) => {
       dispatch(setActiveKeyError(error));
     },
@@ -139,6 +141,15 @@ const mapDispatchToProps = (dispatch) => {
     },
     addActiveKey: (activeKey) => {
       dispatch(addActiveKey(activeKey));
+    },
+    searchingNewBot: () => {
+      dispatch(searchingNewBot());
+    },
+    setRedTimer: (param) => {
+      dispatch(setRedTimer(param));
+    },
+    setBlockedTimer: (param) => {
+      dispatch(setBlockedTimer(param));
     }
   }
 };

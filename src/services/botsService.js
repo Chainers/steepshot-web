@@ -4,11 +4,10 @@ import {getStore} from '../store/configureStore';
 import {addBot} from '../actions/promoteModal';
 
 const SUPPORTABLE_BOTS = Constants.SERVICES.BOTS.SUPPORTABLE_BOTS_LIST;
-const MILISECONDS_IN_SECONDS = 1000;
 
 class BotsService {
 
-  static getBotsList(postIndex) {
+  static getBotsList() {
     return RequestService.get(Constants.SERVICES.BOTS.BOTS_INFO)
       .then(response => {
         let suitableBots = [];
@@ -26,15 +25,18 @@ class BotsService {
           .then(courses => {
             const steemToUSD = courses['steem_price'].toFixed(2);
             const sbdToUSD = courses['sbd_price'].toFixed(2);
-            const postAge = getStore().getState().posts[postIndex].postAge;
-
-            let promoteModalInfo = getStore().getState().promoteModal;
+            const state = getStore().getState();
+            const promoteModalInfo = state.promoteModal;
             let promoteAmount = +promoteModalInfo.promoteAmount;
             let muchSuitableBots = [];
             for (let i = 0; i < suitableBots.length; i++) {
               if (suitableBots[i]['min_bid'] <= promoteAmount) {
-                if (suitableBots[i].next <= 60 * MILISECONDS_IN_SECONDS || postAge >= suitableBots[i]['max_post_age'] ||
-                  !BotsService.checkAmount(promoteAmount, steemToUSD, sbdToUSD, promoteModalInfo.selectedToken, suitableBots[i])) {
+                if (
+                  suitableBots[i].next <= 100 * Constants.MILLISECONDS_IN_SECOND ||
+                  (!suitableBots[i]['accepts_steem'] && promoteModalInfo.selectedToken === 'STEEM') ||
+                  state.posts[promoteModalInfo.postIndex].postAge >= suitableBots[i]['max_post_age'] ||
+                  !BotsService.checkAmount(promoteAmount, steemToUSD, sbdToUSD, promoteModalInfo.selectedToken, suitableBots[i])
+                ) {
                   continue;
                 }
                 if (muchSuitableBots.length >= 1) {
@@ -56,8 +58,8 @@ class BotsService {
             return RequestService.get(`user/${suitableBot.name}/info`, options)
               .then(response => {
                 suitableBot.avatar = response['profile_image'];
-                suitableBot.last = suitableBot.last / MILISECONDS_IN_SECONDS;
-                suitableBot.next = suitableBot.next / MILISECONDS_IN_SECONDS;
+                suitableBot.last = suitableBot.last / Constants.MILLISECONDS_IN_SECOND;
+                suitableBot.next = suitableBot.next / Constants.MILLISECONDS_IN_SECOND;
                 getStore().dispatch(addBot(suitableBot));
                 return Promise.resolve();
               });

@@ -31,6 +31,27 @@ function setBidRequest(state) {
   }
 }
 
+export function setRedTimer(param) {
+  return {
+    type: 'SET_RED_TIMER',
+    param
+  }
+}
+
+export function setBlockedTimer(param) {
+  return {
+    type: 'SET_BLOCKED_TIMER',
+    param
+  }
+}
+
+export function addPostIndex(postIndex) {
+  return {
+    type: 'ADD_POST_INDEX',
+    postIndex
+  }
+}
+
 export function addActiveKey(key) {
   return {
     type: 'ADD_ACTIVE_KEY',
@@ -42,13 +63,6 @@ export function getAuthUserInfoSuccess(result) {
   return {
     type: 'GET_AUTH_USER_INFO_SUCCESS',
     result
-  }
-}
-
-export function setTimerState(leftTime) {
-  return {
-    type: 'SET_TIMER_STATE',
-    leftTime
   }
 }
 
@@ -74,7 +88,7 @@ export function setPromoteValue(value) {
 }
 
 export function setSelectedIndex(index) {
-  let token = 0;
+  let token = '';
   if (index === 1) {
     token = 'STEEM';
   }
@@ -103,8 +117,8 @@ export function getAuthUserInfo() {
       .catch(error => {
         dispatch({
           type: 'GET_AUTH_USER_INFO_ERROR',
-          error
-        })
+          error: error.statusText
+        });
       })
   }
 }
@@ -123,22 +137,40 @@ export function addBot(bot) {
   }
 }
 
-export function searchingBotRequest(postIndex) {
+export function searchingBotRequest() {
   return dispatch => {
-    const steemLink = `https://steemit.com${postIndex}`;
     dispatch(sendBotRequest(true));
-    BotsService.getBotsList(postIndex)
+    BotsService.getBotsList()
       .then(() => {
         let modalOption = {
-          body: (<SendBidModal steemLink={steemLink}/>)
+          body: (<SendBidModal/>)
         };
         dispatch(openModal("SendBidModal", modalOption));
         dispatch(sendBotRequest(false));
       })
-      .catch(error => {
+      .catch(() => {
         dispatch(pushErrorMessage(Constants.PROMOTE.FIND_BOT_ERROR));
         dispatch(sendBotRequest(false));
-        console.log(error);
+      });
+  }
+}
+
+export function searchingNewBot() {
+  return dispatch => {
+    dispatch(setBlockedTimer(true));
+    BotsService.getBotsList()
+      .then(() => {
+        dispatch(setRedTimer(false));
+        dispatch(setBlockedTimer(false));
+        setTimeout(() => {
+          dispatch(searchingNewBot());
+        }, 80 * Constants.MILLISECONDS_IN_SECOND);
+      })
+      .catch(() => {
+        dispatch(pushErrorMessage(Constants.PROMOTE.FIND_BOT_ERROR));
+        dispatch(setRedTimer(false));
+        dispatch(setBlockedTimer(false));
+        dispatch(closeModal("SendBidModal"));
       });
   }
 }
@@ -156,7 +188,7 @@ export function sendBid(steemLink, activeKey, botName) {
   promoteAmount = promoteAmount.replace(/(\d+\.\d{3})(\d*)/, '$1');
   let transferInfo = {
     wif: activeKey,
-    recipient: 'dmitryorelopt',
+    recipient: botName,
     amount: promoteAmount + ' ' + promoteModal.selectedToken,
     postLink: steemLink
   };
