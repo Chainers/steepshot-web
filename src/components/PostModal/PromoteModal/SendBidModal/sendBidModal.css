@@ -24,8 +24,9 @@
     height: 100px;
     border-radius: 50%;
     border: 7px solid #ffffff;
-    background-color: #f5f5f5;
     margin-right: 20px;
+    background: center no-repeat;
+    background-size: cover;
 }
 
 .bot-logo_send-bid-mod::after {

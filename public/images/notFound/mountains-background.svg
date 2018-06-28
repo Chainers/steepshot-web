@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1440px" height="840px" viewBox="0 0 1440 840" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: sketchtool 49.2 (51160) - http://www.bohemiancoding.com/sketch -->
+    <title>C2FFBA5F-173E-47CB-B686-1B6F338D33BF</title>
+    <desc>Created with sketchtool.</desc>
+    <defs></defs>
+    <g id="Website" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="7_1_Errors-page" transform="translate(0.000000, -60.000000)" fill-rule="nonzero">
+            <g id="landing-04" transform="translate(623.000000, 641.500000) scale(-1, 1) translate(-623.000000, -641.500000) translate(-549.000000, 60.000000)">
+                <g id="Group">
+                    <rect id="sky_overlay_off_for_lighter_sky_" fill="#FAFAFA" x="355" y="0" width="1440" height="780"></rect>
+                    <circle id="moon" fill="#FFFFFF" cx="494.12" cy="679.58" r="278.28"></circle>
+                    <path d="M318.75,831.85 C318.75,831.85 918,207 966.81,249.79 C1002.48,281.06 1282,551 1282,551 C1282,551 1368.85,444.81 1398.86,459.81 C1428.87,474.81 1899.91,891 1899.91,891 L318.75,831.85 Z" id="mountains-2" fill="#F2F2F2"></path>
+                    <g id="mountains_shadow-2" transform="translate(697.000000, 264.000000)" fill="#FFFFFF">
+                        <g id="Group">
+                            <polygon id="mountains_shadow-3" points="285.59 0.04 207.6 133.54 257.1 114.04 140.1 346.53 275.1 289.53 206.1 354.03 285.59 354.03 48.61 565.52 0.61 657.01 589.84 690.01 378.59 618.01 626.8 320.32"></polygon>
+                            <polygon id="mountains_shadow-4" points="700.57 195.03 736.57 289.53 669.08 369.02 736.57 351.35 643.58 487.52 766.57 462.02 726.07 487.52 867.07 553.52 703.57 627.01 799.57 673.01 1308.04 697.51"></polygon>
+                        </g>
+                    </g>
+                    <path d="M2138.77,822.66 C2138.77,822.66 1809.89,465.66 1758.89,462.66 C1707.89,459.66 1371.89,711.66 1371.89,711.66 C1371.89,711.66 1134.89,603.66 1053.89,597.66 C972.89,591.66 768.89,765.66 768.89,765.66 C768.89,765.66 696.89,714.66 639.89,714.66 C582.89,714.66 318.89,912.66 318.89,912.66 L555.89,975.66 L2194.05,1005.66 L2138.77,822.66 Z" id="mountains-3" fill="#E4E4E4"></path>
+                    <g id="mountains_shadow-5" transform="translate(484.000000, 463.000000)" fill="#DBDBDB">
+                        <g id="Group">
+                            <polygon id="mountains_shadow-6" points="1277.04 0 1211.04 62 1277.04 46 1095.04 238 1291.04 200 1223.04 250 1299.04 250 1073.04 410 1299.04 358 981.04 490 815.18 538.53 714.88 700 1859.04 598 1719.04 88"></polygon>
+                            <polygon id="mountains_shadow-7" transform="translate(619.229220, 352.370438) rotate(-10.000000) translate(-619.229220, -352.370438) " points="659.427585 149.650809 560.409268 191.000068 599.739268 191.000068 478.409268 287.000068 622.409268 235.000068 578.409268 287.000068 650.409268 304.150068 450.409268 461.000068 650.409268 419.000068 336.539268 550.040068 612.369268 555.090068 901.919172 296.655318 704.904794 173.916494"></polygon>
+                            <polygon id="mountains_shadow-8" points="38.04 542.71 12.04 474 79.82 448 0.04 422.68 132.04 352 94.04 352 142.67 312.05 136.04 256 202.04 232 285.29 302.66"></polygon>
+                        </g>
+                    </g>
+                    <circle id="star" fill="#000000" opacity="0.1" cx="901.5" cy="137.5" r="6.5"></circle>
+                    <circle id="star-4" fill="#000000" opacity="0.1" cx="431.5" cy="304.5" r="6.5"></circle>
+                    <circle id="star-5" fill="#000000" opacity="0.1" cx="658.33" cy="319.33" r="3.33"></circle>
+                    <circle id="star-6" fill="#000000" opacity="0.1" cx="598.33" cy="91.33" r="3.33"></circle>
+                    <circle id="star-7" fill="#000000" opacity="0.1" cx="1331.33" cy="325.33" r="3.33"></circle>
+                    <circle id="star-8" fill="#000000" opacity="0.1" cx="1450" cy="74.95" r="3.33"></circle>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

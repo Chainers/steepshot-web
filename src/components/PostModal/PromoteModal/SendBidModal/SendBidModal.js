@@ -5,22 +5,39 @@ import {closeModal} from '../../../../actions/modal';
 import Timer from '../../../Common/Timer/Timer';
 import Constants from '../../../../common/constants';
 import {pushMessage} from '../../../../actions/pushMessage';
-import {sendBid, setActiveKeyError, setTimerState} from '../../../../actions/promoteModal';
+import {
+  addActiveKey, searchingNewBot, sendBid, setActiveKeyError, setBlockedTimer, setRedTimer
+} from '../../../../actions/promoteModal';
 import {loadingEllipsis} from '../../../../utils/loadingEllipsis';
+import ShowIf from '../../../Common/ShowIf';
+import storage from '../../../../utils/Storage';
 
 class SendBidModal extends React.Component {
 
+  componentDidMount() {
+    this.bidTimer = setTimeout(() => {
+      this.props.searchingNewBot();
+    }, 80 * Constants.MILLISECONDS_IN_SECOND);
+  }
+
   componentWillUnmount() {
-    this.props.setTimerState('');
+    this.props.setRedTimer(false);
+    this.props.setBlockedTimer(false);
+    clearTimeout(this.bidTimer);
   }
 
   sendBid() {
-    if (!this.input.value) {
-      this.props.setActiveKeyError(Constants.PROMOTE.EMPTY_KEY_INPUT);
-      return;
+    if (this.input) {
+      if (!this.input.value) {
+        this.props.setActiveKeyError(Constants.PROMOTE.EMPTY_KEY_INPUT);
+        return;
+      }
+      let activeKey = this.input.value.replace(/\s+/g, '');
+      this.props.addActiveKey(activeKey);
+      this.props.sendBid(this.props.steemLink, activeKey, this.props.botName);
+    } else {
+      this.props.sendBid(this.props.steemLink, storage.activeKey, this.props.botName);
     }
-    let key = this.input.value.replace(/\s+/g, '');
-    this.props.sendBid(this.props.steemLink, key, this.props.botName);
   }
 
   setActiveKeyValue() {
@@ -30,9 +47,12 @@ class SendBidModal extends React.Component {
   }
 
   tick(time) {
-    let leftTime = +time.toFixed(0);
-    if (leftTime === Constants.PROMOTE.RED_TIMER || leftTime === Constants.PROMOTE.BLOCKED_TIMER) {
-      this.props.setTimerState(leftTime);
+    let leftTime = time.toFixed(0) / 1;
+    if (leftTime === Constants.PROMOTE.RED_TIMER) {
+      this.props.setRedTimer(true);
+    }
+    if (leftTime === Constants.PROMOTE.BLOCKED_TIMER) {
+      this.props.setBlockedTimer(true);
     }
   }
 
@@ -50,7 +70,6 @@ class SendBidModal extends React.Component {
                        <div className={'timer_send-bid-mod' + redTimer}>
                          <Timer waitingTime={this.props.upvoteTime}
                                 staticTimer={true}
-                                onTimeout={() => {}}
                                 onTick={this.tick.bind(this)}/>
                        </div>
                      </div>;
@@ -60,6 +79,7 @@ class SendBidModal extends React.Component {
                      <div className="load-instead-timer_send-bid-mod">{loadingEllipsis('Looking for a new bot')}</div>
                    </div>
     }
+    let botAvatarStyle = {backgroundImage: 'url(' + this.props.botAvatar + ')'};
     return (
       <div className="wrapper_promote-mod">
         <p className="title_send-bid-mod">
@@ -67,17 +87,20 @@ class SendBidModal extends React.Component {
           <a href={`https://steemit.com/@${this.props.botName}`} target="_blank">@{this.props.botName.toUpperCase()}</a>
         </p>
         <div className="body_send-bid-mod">
-          <div className="bot-logo_send-bid-mod"/>
+          <div className="bot-logo_send-bid-mod" style={botAvatarStyle}/>
           {timerBlock}
         </div>
-        <div className="position--relative">
-          <input type="password"
-                 placeholder={this.props.littleScreen ? 'Private active key' : 'Put hear your private active key'}
-                 className="input_promote-mod"
-                 ref={ref => this.input = ref}
-                 onChange={this.setActiveKeyValue.bind(this)}/>
-          <div className="error_promote-mod">{this.props.activeKeyError}</div>
-        </div>
+        <ShowIf show={!storage.activeKey}>
+          <div className="position--relative">
+            <p className="label_promote-mod">Put hear your private active key</p>
+            <input type="password"
+                   placeholder="e.g. STG52aKIcG9..."
+                   className="input_promote-mod"
+                   ref={ref => this.input = ref}
+                   onChange={this.setActiveKeyValue.bind(this)}/>
+            <div className="error_promote-mod">{this.props.activeKeyError}</div>
+          </div>
+        </ShowIf>
         <div className="buttons_promote-mod">
           <button className="btn btn-index" onClick={() => this.props.closeModal()}>CANCEL</button>
           <button className={'btn btn-default' + blockedTimer}
@@ -89,25 +112,16 @@ class SendBidModal extends React.Component {
   }
 }
 
-const mapStateToProps = (state, props) => {
+const mapStateToProps = (state) => {
   const promoteModal = state.promoteModal;
   const suitableBot = promoteModal.suitableBot;
-  const botName = suitableBot.name;
-  const upvoteTime = suitableBot.next / 1000;
-  let redTimer = false, blockedTimer = false;
-  let littleScreen = state.window.width <= 400;
-  if (promoteModal.leftTime) {
-    redTimer = promoteModal.leftTime <= Constants.PROMOTE.RED_TIMER;
-    blockedTimer = promoteModal.leftTime <= Constants.PROMOTE.BLOCKED_TIMER;
-  }
+  const steemLink = `https://steemit.com${promoteModal.postIndex}`;
   return {
     ...state.promoteModal,
-    upvoteTime,
-    botName,
-    littleScreen,
-    redTimer,
-    blockedTimer,
-    steemLink: props.steemLink
+    steemLink,
+    upvoteTime: suitableBot.next,
+    botName: suitableBot.name,
+    botAvatar: suitableBot.avatar
   }
 };
 
@@ -119,14 +133,23 @@ const mapDispatchToProps = (dispatch) => {
     pushMessage: (message) => {
       dispatch(pushMessage(message));
     },
-    setTimerState: (leftTime) => {
-      dispatch(setTimerState(leftTime));
-    },
     setActiveKeyError: (error) => {
       dispatch(setActiveKeyError(error));
     },
-    sendBid: (steemLink, wif, botName) => {
-      dispatch(sendBid(steemLink, wif, botName));
+    sendBid: (steemLink, activeKey, botName) => {
+      dispatch(sendBid(steemLink, activeKey, botName));
+    },
+    addActiveKey: (activeKey) => {
+      dispatch(addActiveKey(activeKey));
+    },
+    searchingNewBot: () => {
+      dispatch(searchingNewBot());
+    },
+    setRedTimer: (param) => {
+      dispatch(setRedTimer(param));
+    },
+    setBlockedTimer: (param) => {
+      dispatch(setBlockedTimer(param));
     }
   }
 };

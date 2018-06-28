@@ -1,7 +1,7 @@
 import React from 'react';
 import {Redirect, Route, Switch} from 'react-router-dom';
 import App from './components/App';
-import NotFound from './components/NotFound';
+import NotFound from './components/NotFound/NotFound';
 import PrivateRoute from './components/Routes/PrivateRoute';
 import Feed from './components/Feed/Feed';
 import AboutComponent from './components/About/AboutComponent';

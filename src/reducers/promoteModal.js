@@ -11,6 +11,12 @@ const initialState = {
 
 export default function promoteModal(state = initialState, action) {
   switch (action.type) {
+    case 'ADD_POST_INDEX' :
+      return {
+        ...state,
+        postIndex: action.postIndex
+      };
+
     case 'SET_PROMOTE_VALUE':
       return {
         ...state,
@@ -48,12 +54,6 @@ export default function promoteModal(state = initialState, action) {
         selectError: action.error
       };
 
-    case 'SET_TIMER_STATE':
-      return {
-        ...state,
-        leftTime: action.leftTime
-      };
-
     case 'SET_ACTIVE_KEY_ERROR':
       return {
         ...state,
@@ -77,6 +77,31 @@ export default function promoteModal(state = initialState, action) {
         ...state,
         suitableBot: action.bot
       };
+
+    case 'ADD_ACTIVE_KEY':
+      return {
+        ...state,
+        activeKey: action.key
+      };
+
+    case 'GET_AUTH_USER_INFO_ERROR':
+      return {
+        ...state,
+        userInfoErrorStatus: action.error
+      };
+
+    case 'SET_RED_TIMER':
+      return {
+        ...state,
+        redTimer: action.param
+      };
+
+    case 'SET_BLOCKED_TIMER':
+      return {
+        ...state,
+        blockedTimer: action.param
+      };
+
 
     default:
       return state;

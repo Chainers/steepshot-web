@@ -27,7 +27,6 @@ import Constants from '../../common/constants';
 import {utils} from '../../utils/utils';
 import {setComponentSize} from '../../utils/setComponentSize';
 import {setCommentEditState} from '../../actions/comments';
-import {getAuthUserInfo} from '../../actions/promoteModal';
 import AuthService from '../../services/authService';
 
 class PostModal extends React.Component {
@@ -53,7 +52,6 @@ class PostModal extends React.Component {
 	componentWillUnmount() {
 		window.removeEventListener('keydown', this.initKeyPress);
     window.removeEventListener('resize', this.resizePostModal);
-    this.props.getAuthUserInfoSuccess('');
 	}
 
 	componentWillReceiveProps(nextProps) {
@@ -560,9 +558,6 @@ const mapDispatchToProps = (dispatch) => {
 		},
     setCommentEditState: (point, parentPost, commentEditing) => {
       dispatch(setCommentEditState(point, parentPost, commentEditing));
-    },
-    getAuthUserInfoSuccess: (result) => {
-			dispatch(getAuthUserInfo(result));
 		}
 	};
 };

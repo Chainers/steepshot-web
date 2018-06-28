@@ -3,8 +3,8 @@ import {connect} from 'react-redux';
 import './promoteModal.css';
 import {closeModal} from '../../../actions/modal';
 import {
-  getAuthUserInfo, searchingBotRequest, setPromoteInputError, setPromoteValue, setSelectedIndex,
-  setSelectError
+  addPostIndex, getAuthUserInfo, getAuthUserInfoSuccess, searchingBotRequest, setPromoteInputError, setPromoteValue,
+  setSelectedIndex, setSelectError
 } from '../../../actions/promoteModal';
 import Constants from '../../../common/constants';
 import {loadingEllipsis} from '../../../utils/loadingEllipsis';
@@ -13,19 +13,26 @@ import {pushMessage} from '../../../actions/pushMessage';
 class PromoteModal extends React.Component {
 
   componentDidMount() {
-    if (!this.props.userInfo) {
+    if (!this.props.userInfo || !Object.keys(this.props.userInfo).length) {
       this.props.getAuthUserInfo();
     }
+    this.props.addPostIndex(this.props.postIndex);
   }
 
   componentWillUnmount() {
+    this.clearPromoteModalInfo();
+  }
+
+  clearPromoteModalInfo() {
     this.props.setPromoteInputError('');
     this.props.setSelectError('');
+    this.props.getAuthUserInfoSuccess({});
+    this.props.setSelectedIndex(0);
   }
 
   promotePost() {
     if (this.validPromoteInfo()) {
-      this.props.searchingBotRequest(this.props.steemLink);
+      this.props.searchingBotRequest(this.props.postIndex);
     }
   }
 
@@ -64,6 +71,9 @@ class PromoteModal extends React.Component {
     if (this.props.selectError) {
       this.props.setSelectError('');
     }
+    if (this.props.inputError) {
+      this.props.setPromoteInputError('');
+    }
     this.props.setSelectedIndex(e.target.selectedIndex);
   }
 
@@ -81,7 +91,7 @@ class PromoteModal extends React.Component {
   render() {
     let loadingDataOrError = this.props.selectError;
     if (this.props.infoLoading) {
-      loadingDataOrError = loadingEllipsis('Loading data');
+      loadingDataOrError = this.props.userInfoErrorStatus ? this.props.userInfoErrorStatus : loadingEllipsis('Loading data');
     }
     let findText = 'FIND PROMOTER';
     if (this.props.searchingBot) {
@@ -128,7 +138,6 @@ class PromoteModal extends React.Component {
 }
 
 const mapStateToProps = (state, props) => {
-  const steemLink = `https://steemit.com${props.postIndex}`;
   let promoteModal = state.promoteModal;
   let tokenNumber = '';
   if (promoteModal.selectedToken === 'STEEM') {
@@ -138,7 +147,7 @@ const mapStateToProps = (state, props) => {
     tokenNumber = promoteModal.userInfo.sbd_balance;
   }
   return {
-    steemLink,
+    postIndex: props.postIndex,
     ...promoteModal,
     tokenNumber
   }
@@ -167,8 +176,14 @@ const mapDispatchToProps = (dispatch) => {
     pushMessage: (message) => {
       dispatch(pushMessage(message));
     },
-    searchingBotRequest: (steemLink) => {
-      dispatch(searchingBotRequest(steemLink));
+    searchingBotRequest: (postIndex) => {
+      dispatch(searchingBotRequest(postIndex));
+    },
+    getAuthUserInfoSuccess: (result) => {
+      dispatch(getAuthUserInfoSuccess(result));
+    },
+    addPostIndex: (postIndex) => {
+      dispatch(addPostIndex(postIndex));
     }
   }
 };

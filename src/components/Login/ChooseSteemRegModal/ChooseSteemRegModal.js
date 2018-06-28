@@ -16,10 +16,10 @@ class ChooseSteemRegModal extends React.Component {
       ];
     let registrationVariants = variantsArr.map( (item, index) => {
       return <div className="reg-service_choose-steem-reg-mod" key={index}>
-                <div className="reg-service-logo_choose-steem-reg-mod"
-                     style={{backgroundImage: `url(${item.registrationServiceImage})`}}>
-                  <a href={item.linkToRegistrationService} target="_blank" rel="noopener noreferrer"/>
-                </div>
+                <a href={item.linkToRegistrationService} target="_blank" rel="noopener noreferrer">
+                  <div className="reg-service-logo_choose-steem-reg-mod"
+                       style={{backgroundImage: `url(${item.registrationServiceImage})`}}/>
+                </a>
                 <p className="reg-service-name_choose-steem-reg-mod">Register through {item.registrationService}</p>
                 <p className="reg-service-params_choose-steem-reg-mod">
                   {item.free ? 'free' : 'chargeable'}, {item.instant ? 'instant' : 'not instant'}

@@ -1,4 +1,4 @@
-import storage from "../utils/Storage";
+import storage from '../utils/Storage';
 
 class StorageService {
 	static setAuthData(username, postingKey, avatar, service) {
@@ -19,6 +19,7 @@ class StorageService {
 		storage.avatar = avatar;
 		storage.service = service;
 		storage.postingKey = null;
+		storage.activeKey = null;
 	}
 
 	static clearAuthData() {
@@ -30,6 +31,7 @@ class StorageService {
 		storage.settings = null;
 		storage.expiresIn = null;
 		storage.accessToken = null;
+		storage.activeKey = null;
 	}
 }
 

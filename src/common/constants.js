@@ -24,7 +24,10 @@ const Constants = {
 		},
 		BOTS: {
       BOTS_INFO: 'https://steembottracker.net/bid_bots',
-			MIN_BID_VALUE: 0.5
+			BOOTS_TOKENS_COURSES: 'https://postpromoter.net/api/prices',
+			MIN_BID_VALUE: 0.5,
+			SUPPORTABLE_BOTS_LIST: ['promobot', 'upme', 'therising', 'upmewhale', 'sneaky-ninja', 'rocky1', 'boomerang',
+        'appreciator', 'postpromoter', 'smartsteem', 'spydo', 'booster', 'emperorofnaps', 'jerrybanfield']
 		}
 	},
 
@@ -187,7 +190,7 @@ const Constants = {
 	SETTINGS_CHANGED_MESSAGE: 'Settings has been successfully changed.',
 	SETTINGS_NOT_CHANGED_MESSAGE: 'Settings hasn\'t been changed.',
 
-	VOTE_ACTION_WHEN_NOT_AUTH: 'This action is only available for logged-in users',
+	VOTE_ACTION_WHEN_NOT_AUTH: 'This action is only available for logged-in users.',
 	VOTE_ACTION_WHEN_NOT_AUTH_DEBOUNCE: 500,
 	AUTH_WRONG_USER: 'Such user doesn\'t exist.',
 	AUTH_WRONG_POSTING_KEY: 'Invalid posting key.',
@@ -252,7 +255,11 @@ const Constants = {
 		EMPTY_KEY_INPUT: 'You should enter the key',
 		BID_TO_BOT_SUCCESS: 'Your bid has been successfully sent. Wait for upvote.',
 		INVALID_ACTIVE_KEY: 'Invalid active key.'
-	}
+	},
+
+	MILLISECONDS_IN_DAY: 24 * 60 * 60 * 1000,
+  MILLISECONDS_IN_SECOND: 1000,
+	CASHOUT_PERIOD: 7
 };
 
 
