@@ -31,6 +31,21 @@ function setBidRequest(state) {
   }
 }
 
+export function getAuthUserInfoError(error) {
+  return {
+    type: 'GET_AUTH_USER_INFO_ERROR',
+    error: error.statusText
+  }
+
+}
+
+export function setActiveKeyInputSecurity(state) {
+  return {
+    type: 'SET_ACTIVE_KEY_INPUT_SECURITY',
+    state: !state
+  }
+}
+
 export function setRedTimer(param) {
   return {
     type: 'SET_RED_TIMER',
@@ -52,9 +67,9 @@ export function addPostIndex(postIndex) {
   }
 }
 
-export function addActiveKey(key) {
+export function setActiveKey(key) {
   return {
-    type: 'ADD_ACTIVE_KEY',
+    type: 'SET_ACTIVE_KEY',
     key
   }
 }
@@ -115,10 +130,7 @@ export function getAuthUserInfo() {
         dispatch(setAuthUserInfoLoading(false));
       })
       .catch(error => {
-        dispatch({
-          type: 'GET_AUTH_USER_INFO_ERROR',
-          error: error.statusText
-        });
+        dispatch(getAuthUserInfoError(error));
       })
   }
 }
@@ -162,9 +174,6 @@ export function searchingNewBot() {
       .then(() => {
         dispatch(setRedTimer(false));
         dispatch(setBlockedTimer(false));
-        setTimeout(() => {
-          dispatch(searchingNewBot());
-        }, 80 * Constants.MILLISECONDS_IN_SECOND);
       })
       .catch(() => {
         dispatch(pushErrorMessage(Constants.PROMOTE.FIND_BOT_ERROR));
@@ -199,8 +208,7 @@ export function sendBid(steemLink, activeKey, botName) {
     dispatch(actionLock());
     dispatch(setBidRequest(true));
     ChainService.sendTransferTroughBlockchain(transferInfo)
-      .then((response) => {
-        console.log(response);
+      .then(() => {
         dispatch(actionUnlock());
         dispatch(pushMessage(Constants.PROMOTE.BID_TO_BOT_SUCCESS));
         dispatch(setBidRequest(false));
@@ -220,7 +228,7 @@ export function sendBid(steemLink, activeKey, botName) {
             steem_balance: promoteModal.userInfo.steem_balance
           }
         }
-        dispatch(getAuthUserInfo(newValue));
+        dispatch(getAuthUserInfoSuccess(newValue));
         dispatch(closeModal("SendBidModal"));
       })
       .catch(error => {

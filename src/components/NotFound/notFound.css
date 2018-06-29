@@ -1,5 +1,4 @@
 .for-background_not-found {
-    width: 100vw;
     height: calc(100vh - 120px);
     background: url('/images/notFound/mountains-background.svg') center no-repeat;
     background-size: cover;
@@ -49,12 +48,12 @@
     }
 
     .title_not-found {
-        font: 52px OpenSans-Semibold;
-        margin: 0 0 20px 0;
+        font: 48px OpenSans-Semibold;
+        margin: 0 0 15px 0;
     }
 
     .subtitle_not-found {
-        font: 22px OpenSans-Light;
+        font: 20px OpenSans-Light;
         margin: 0 0 30px 0;
     }
 
@@ -62,5 +61,6 @@
         font: 11px OpenSans-Regular;
         width: 200px;
         height: 35px;
+        margin-bottom: 20px;
     }
 }

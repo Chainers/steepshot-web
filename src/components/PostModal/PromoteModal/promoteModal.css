@@ -114,7 +114,8 @@
 
 @media (max-width: 510px) {
     .wrapper_promote-mod {
-        max-width: 100vw;
+        max-width: 90vw;
+        min-width: 90vw;
     }
     .body_promote-mod {
         flex-direction: column;
@@ -131,9 +132,16 @@
     }
 }
 
-@media (max-width: 400px) {
+@media (max-width: 390px) {
     .buttons_promote-mod button {
         font: 10px OpenSans-Semibold;
-        padding: 12px 27px 12px;
+        padding: 12px 20px 12px;
+    }
+}
+
+@media (min-width: 390px) and (max-width: 430px) {
+    .buttons_promote-mod button {
+        font: 12px OpenSans-Semibold;
+        padding: 12px 22px 12px;
     }
 }

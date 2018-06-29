@@ -51,6 +51,9 @@ class BotsService {
               }
             }
 
+            if (!muchSuitableBots.length) {
+              return Promise.reject(Constants.PROMOTE.FIND_BOT_ERROR);
+            }
             let suitableBot = muchSuitableBots[0];
             const options = {
               username: suitableBot.name,

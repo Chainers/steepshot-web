@@ -79,7 +79,7 @@ class UserProfile extends React.Component {
 									<a className="website_use-pro" href={website} target="_blank">{website}</a>
 								</p>
 								<div className="amount">
-									<div className="count">$ {balance}</div>
+									<div className="balance_use-pro">$ {balance}</div>
 									<ShowIf show={this.props.isYourProfile}>
 										<div className="description">This is the current amount of
 											funds in your account in the
