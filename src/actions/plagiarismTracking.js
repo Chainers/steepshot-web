@@ -7,17 +7,18 @@ import {editPostReject, editPostRequest, editPostSuccess} from './editPost';
 import {pushErrorMessage, pushMessage} from './pushMessage';
 
 export function continuePublishing(data) {
-	closeModal('PlagiarismTrackingModal');
-	editPostRequest();
-	PostService.afterCheckingPlagiarism(data.operations)
-		.then(() => {
-			pushMessage(Constants.POST_SUCCESSFULLY_CREATED);
-			editPostSuccess();
-			push(`/@${AuthService.getUsername()}`);
-		})
-		.catch(error => {
-			editPostReject(error);
-			pushErrorMessage(error);
-		});
-
+	return dispatch => {
+    dispatch(closeModal('PlagiarismTrackingModal'));
+    dispatch(editPostRequest());
+    PostService.afterCheckingPlagiarism(data.operations)
+      .then(() => {
+        dispatch(pushMessage(Constants.POST_SUCCESSFULLY_CREATED));
+        dispatch(editPostSuccess());
+        push(`/@${AuthService.getUsername()}`);
+      })
+      .catch(error => {
+        dispatch(editPostReject(error));
+        dispatch(pushErrorMessage(error));
+      });
+	}
 }
