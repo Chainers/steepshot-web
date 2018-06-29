@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React from 'react';
 import {connect} from 'react-redux'
 import {documentTitle} from '../../utils/documentTitle';
 import {addMetaTags, getDefaultTags} from '../../actions/metaTags';
@@ -14,7 +14,8 @@ import {clearLoginErrors} from '../../actions/login';
 import Switcher from '../Switcher/Switcher';
 import ChooseSteemRegModal from './ChooseSteemRegModal/ChooseSteemRegModal';
 import {openModal} from '../../actions/modal';
-import SteemConnect from "../../services/steemConnect";
+import SteemConnect from '../../services/steemConnect';
+import LoadingSpinner from '../LoadingSpinner/index';
 
 const galleryImages = [
 	'/images/login/1.png',
@@ -29,7 +30,7 @@ const galleryImages = [
 	'/images/login/10.png'
 ];
 
-class Login extends Component {
+class Login extends React.Component {
 
 	constructor(props) {
 		super(props);
@@ -76,76 +77,86 @@ class Login extends Component {
 		window.location.replace(SteemConnect.getLoginUrl() + '&expires_in=6048000');
 	}
 
+	clearLoginErrors() {
+		if (!this.props.usernameError && !this.props.postingKeyError) {
+			return;
+		}
+		this.props.clearLoginErrors();
+	}
+
 	render() {
 		if (global.isServerSide) {
 			return null;
 		}
-		const {chooseSteem, switchService, usernameError, postingKeyError, clearLoginErrors} = this.props;
+		const {chooseSteem, switchService, usernameError, postingKeyError} = this.props;
 		return (
-			<div className="container_login">
-				<ShowIf show={!this.props.isMobileScreen}>
-					<div className="welcome-container_login">
-						<ImageGallery images={galleryImages}/>
-						<div className="gallery-shadow_login"/>
-						<div className="welcome-body_login">
-							<div className="welcome-title_login">
-								Welcome to Steepshot
-							</div>
-							<div className="welcome-description_login">
-								Platform that rewards people for sharing their lifestyle and visual experience
-							</div>
-							<button className="guidelines-btn_login" onClick={() => {
-								this.props.historyPush('/guide')
-							}}>
-								LINK TO OUR GUIDELINES
-							</button>
-						</div>
-					</div>
+			<div>
+				<ShowIf show={this.props.loading}>
+					<LoadingSpinner style={{height: '100%', position: 'absolute', width: '100%'}}/>
 				</ShowIf>
-				<div className="form-container_login">
-					<div className="form-body_login">
-						<form className="form_login">
-							<div className="title_login">
-								Sign in to Steepshot
-							</div>
-							<div className="input-block_login">
-								<label className="input-label_login">Username</label>
-								<input type="text" className="input_login" ref={ref => this.name = ref}
-											 onChange={() => clearLoginErrors()}/>
-								<label className="error-msg_login">{usernameError}</label>
-								<label className="input-label_login">Posting Key</label>
-								<input type="password" className="input_login" ref={ref => this.password = ref}
-											 onChange={() => clearLoginErrors()}/>
-								<label className="error-msg_login">{postingKeyError}</label>
-							</div>
-							<div className="btn-block_login">
-								<Switcher
-									onClick={() => {
-										clearLoginErrors();
-										switchService();
-									}}
-									left={chooseSteem}
-									leftLabel="Steem"
-									rightLabel="Golos"
-								/>
-								<button className="sign_login btn btn-default" onClick={this.handleLogin.bind(this)} type="submit">
-									LOGIN
+				<div className={'container_login' + (this.props.loading ? ' blur-blocker_login' : '')}>
+					<ShowIf show={!this.props.isMobileScreen}>
+						<div className="welcome-container_login">
+							<ImageGallery images={galleryImages}/>
+							<div className="gallery-shadow_login"/>
+							<div className="welcome-body_login">
+								<div className="welcome-title_login">
+									Welcome to Steepshot
+								</div>
+								<div className="welcome-description_login">
+									Platform that rewards people for sharing their lifestyle and visual experience
+								</div>
+								<button className="guidelines-btn_login" onClick={() => {this.props.historyPush('/guide')}}>
+									LINK TO OUR GUIDELINES
 								</button>
 							</div>
-						</form>
-					</div>
-					{/*<div className={'registration-block_login login-steem-con-block_login' +
-						(chooseSteem ? '' : ' hide-log-ste-con-block_login')}>
-						<label>Don’t you trust us?</label>
-						<button className="steem-con-btn_login" onClick={this.loginWithSteemConnect.bind(this)}>
-							{(this.props.isMobileScreen ? '' : 'LOGIN WITH ') + 'STEEM CONNECT'}
-						</button>
-					</div>*/}
-					<div className="registration-block_login">
-						<label>Don’t have a {chooseSteem ? 'Steem' : 'Golos'} account?</label>
-						<button className="guidelines-btn_login create-acc_login" onClick={this.openRegisterSite.bind(this)}>
-							REGISTRATION
-						</button>
+						</div>
+					</ShowIf>
+					<div className="form-container_login">
+						<div className="form-body_login">
+							<form className="form_login">
+								<div className="title_login">
+									Sign in to Steepshot
+								</div>
+								<div className="input-block_login">
+									<label className="input-label_login">Username</label>
+									<input type="text" className="input_login" ref={ref => this.name = ref}
+												 onChange={() => this.clearLoginErrors()}/>
+									<label className="error-msg_login">{usernameError}</label>
+									<label className="input-label_login">Posting Key</label>
+									<input type="password" className="input_login" ref={ref => this.password = ref}
+												 onChange={() => this.clearLoginErrors()}/>
+									<label className="error-msg_login">{postingKeyError}</label>
+								</div>
+								<div className="btn-block_login">
+									<Switcher
+										onClick={() => {
+											this.clearLoginErrors();
+											switchService();
+										}}
+										left={chooseSteem}
+										leftLabel="Steem"
+										rightLabel="Golos"
+									/>
+									<button className="sign_login btn btn-default" onClick={this.handleLogin.bind(this)} type="submit">
+										LOGIN
+									</button>
+								</div>
+							</form>
+						</div>
+						{/*<div className={'registration-block_login login-steem-con-block_login' +
+							(chooseSteem ? '' : ' hide-log-ste-con-block_login')}>
+							<label>Don’t you trust us?</label>
+							<button className="steem-con-btn_login" onClick={this.loginWithSteemConnect.bind(this)}>
+								{(this.props.isMobileScreen ? '' : 'LOGIN WITH ') + 'STEEM CONNECT'}
+							</button>
+						</div>*/}
+						<div className="registration-block_login">
+							<label>Don’t have a {chooseSteem ? 'Steem' : 'Golos'} account?</label>
+							<button className="guidelines-btn_login create-acc_login" onClick={this.openRegisterSite.bind(this)}>
+								REGISTRATION
+							</button>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -156,6 +167,7 @@ class Login extends Component {
 const mapStateToProps = (state) => {
 	return {
 		user: state.auth.user,
+		loading: state.bodyLoader,
 		isMobileScreen: state.window.isMobileScreen,
 		chooseSteem: state.services.name === Constants.SERVICES.steem.name,
 		usernameError: state.login.usernameError,

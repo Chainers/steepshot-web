@@ -3,10 +3,12 @@ import Constants from '../common/constants';
 const initialState = {
   promoteAmount: Constants.SERVICES.BOTS.MIN_BID_VALUE,
   selectedToken: '',
+  inputError: '',
+  selectError: '',
+  activeKey: '',
   activeIndex: 0,
   infoLoading: false,
-  inputError: '',
-  selectError: ''
+  showActiveKey: false,
 };
 
 export default function promoteModal(state = initialState, action) {
@@ -78,10 +80,16 @@ export default function promoteModal(state = initialState, action) {
         suitableBot: action.bot
       };
 
-    case 'ADD_ACTIVE_KEY':
+    case 'SET_ACTIVE_KEY':
       return {
         ...state,
         activeKey: action.key
+      };
+
+    case 'SET_ACTIVE_KEY_INPUT_SECURITY':
+      return {
+        ...state,
+        showActiveKey: action.state
       };
 
     case 'GET_AUTH_USER_INFO_ERROR':
@@ -102,6 +110,8 @@ export default function promoteModal(state = initialState, action) {
         blockedTimer: action.param
       };
 
+    case 'LOGOUT_SUCCESS':
+      return initialState;
 
     default:
       return state;

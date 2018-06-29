@@ -50,11 +50,6 @@ function swapPostModal(index, isLoading) {
 
 export function nextPostModal(index, isLoading) {
 	let state = getStore().getState();
-	if (Object.keys(state.modals).length >= 2) {
-		return {
-			type: 'CONFIRM_ACTION_IN_MODAL'
-		}
-	}
 	let point = state.postModal.point;
 	let postsList = state.postsList[point].posts;
 	let positionPost = postsList.indexOf(index);
@@ -78,11 +73,6 @@ export function nextPostModal(index, isLoading) {
 
 export function previousPostModal(index, isLoading) {
 	let state = getStore().getState();
-	if (Object.keys(state.modals).length >= 2) {
-		return {
-			type: 'CONFIRM_ACTION_IN_MODAL'
-		}
-	}
 	let point = state.postModal.point;
 	let postsList = state.postsList[point].posts;
 	let positionPost = postsList.indexOf(index);
