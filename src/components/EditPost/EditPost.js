@@ -153,7 +153,7 @@ class EditPost extends React.Component {
 				<ShowIf show={this.props.loading}>
 					<LoadingSpinner style={{height: '100%', position: 'absolute', width: '100%'}}/>
 				</ShowIf>
-				<div className={'container_edi-pos ' + (this.props.loading ? 'blur-blocker' : '')}>
+				<div className={'container_edi-pos' + (this.props.loading ? ' blur-blocker_edi-pos' : '')}>
 					<div className={'image-container_edi-pos' + (this.props.dragHover ? ' drag-hover_edi-pos' : '')}
 							 style={{
 								 height: this.props.height,

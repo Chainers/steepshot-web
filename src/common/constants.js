@@ -14,7 +14,7 @@ const Constants = {
 		steem: {
 			name: 'steem',
 			baseUrl: 'https://qa.steepshot.org/api/v1_1',
-			loggingUrl: 'https://steepshot.org/api/v1',
+			loggingUrl: 'https://qa.steepshot.org/api/v1',
 			MAX_ACCEPTED_PAYOUT: '1000000.000 SBD',
 			PERCENT_STEEM_DOLLARS: 10000,
 			TAGS: {
@@ -24,7 +24,12 @@ const Constants = {
 		},
 		BOTS: {
       BOTS_INFO: 'https://steembottracker.net/bid_bots',
-			MIN_BID_VALUE: 0.5
+			BOOTS_TOKENS_COURSES: 'https://postpromoter.net/api/prices',
+			MIN_BID_VALUE: 0.5,
+			MAX_BID_VALUE: 100,
+      BOT_UPDATE_TIME: 80,
+			SUPPORTABLE_BOTS_LIST: ['promobot', 'upme', 'therising', 'upmewhale', 'sneaky-ninja', 'rocky1', 'boomerang',
+        'appreciator', 'postpromoter', 'smartsteem', 'spydo', 'booster', 'emperorofnaps', 'jerrybanfield']
 		}
 	},
 
@@ -187,7 +192,7 @@ const Constants = {
 	SETTINGS_CHANGED_MESSAGE: 'Settings has been successfully changed.',
 	SETTINGS_NOT_CHANGED_MESSAGE: 'Settings hasn\'t been changed.',
 
-	VOTE_ACTION_WHEN_NOT_AUTH: 'This action is only available for logged-in users',
+	VOTE_ACTION_WHEN_NOT_AUTH: 'This action is only available for logged-in users.',
 	VOTE_ACTION_WHEN_NOT_AUTH_DEBOUNCE: 500,
 	AUTH_WRONG_USER: 'Such user doesn\'t exist.',
 	AUTH_WRONG_POSTING_KEY: 'Invalid posting key.',
@@ -245,6 +250,7 @@ const Constants = {
 		INPUT_ERROR: 'Enter correct value',
 		NOT_ENOUGH_TOKENS: 'Not enough tokens',
 		MIN_AMOUNT_ERROR: 'Min bid is 0.5',
+    MAX_AMOUNT_ERROR: 'Max bid is 100',
 		FIND_BOT_ERROR: 'We look, but there\'s no appropriate bot for promotion. Please, try little later.',
 		BID_TIMEOUT_ERROR: 'It\'s too late to bid to this bot, try any one.',
 		RED_TIMER: 60,
@@ -252,7 +258,11 @@ const Constants = {
 		EMPTY_KEY_INPUT: 'You should enter the key',
 		BID_TO_BOT_SUCCESS: 'Your bid has been successfully sent. Wait for upvote.',
 		INVALID_ACTIVE_KEY: 'Invalid active key.'
-	}
+	},
+
+	MILLISECONDS_IN_DAY: 24 * 60 * 60 * 1000,
+  MILLISECONDS_IN_SECOND: 1000,
+	CASHOUT_PERIOD: 7
 };
 
 

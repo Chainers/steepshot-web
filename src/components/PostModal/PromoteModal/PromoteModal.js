@@ -3,8 +3,8 @@ import {connect} from 'react-redux';
 import './promoteModal.css';
 import {closeModal} from '../../../actions/modal';
 import {
-  getAuthUserInfo, searchingBotRequest, setPromoteInputError, setPromoteValue, setSelectedIndex,
-  setSelectError
+  addPostIndex, getAuthUserInfo, getAuthUserInfoError, getAuthUserInfoSuccess, searchingBotRequest, setPromoteValue,
+  setPromoteInputError, setSelectedIndex, setSelectError
 } from '../../../actions/promoteModal';
 import Constants from '../../../common/constants';
 import {loadingEllipsis} from '../../../utils/loadingEllipsis';
@@ -12,20 +12,41 @@ import {pushMessage} from '../../../actions/pushMessage';
 
 class PromoteModal extends React.Component {
 
+  constructor(props) {
+    super(props);
+    this.promoteByEnter = this.promoteByEnter.bind(this);
+  }
+
   componentDidMount() {
-    if (!this.props.userInfo) {
+    if (!this.props.userInfo || !Object.keys(this.props.userInfo).length) {
       this.props.getAuthUserInfo();
     }
+    this.props.addPostIndex(this.props.index);
+    this.input.addEventListener('keypress', this.promoteByEnter);
   }
 
   componentWillUnmount() {
+    this.clearPromoteModalInfo();
+    this.input.removeEventListener('keypress', this.promoteByEnter);
+    this.props.getAuthUserInfoError('');
+  }
+
+  clearPromoteModalInfo() {
     this.props.setPromoteInputError('');
     this.props.setSelectError('');
+    this.props.getAuthUserInfoSuccess({});
+    this.props.setSelectedIndex(0);
+  }
+
+  promoteByEnter(e) {
+    if (e.keyCode === 13) {
+      this.promotePost();
+    }
   }
 
   promotePost() {
     if (this.validPromoteInfo()) {
-      this.props.searchingBotRequest(this.props.steemLink);
+      this.props.searchingBotRequest();
     }
   }
 
@@ -37,6 +58,10 @@ class PromoteModal extends React.Component {
       }
       if (this.props.promoteAmount < Constants.SERVICES.BOTS.MIN_BID_VALUE) {
         this.props.setPromoteInputError(Constants.PROMOTE.MIN_AMOUNT_ERROR);
+        return false;
+      }
+      if (this.props.promoteAmount > Constants.SERVICES.BOTS.MAX_BID_VALUE) {
+        this.props.setPromoteInputError(Constants.PROMOTE.MAX_AMOUNT_ERROR);
         return false;
       }
       let amount = this.props.promoteAmount.toString();
@@ -64,6 +89,9 @@ class PromoteModal extends React.Component {
     if (this.props.selectError) {
       this.props.setSelectError('');
     }
+    if (this.props.inputError) {
+      this.props.setPromoteInputError('');
+    }
     this.props.setSelectedIndex(e.target.selectedIndex);
   }
 
@@ -81,7 +109,7 @@ class PromoteModal extends React.Component {
   render() {
     let loadingDataOrError = this.props.selectError;
     if (this.props.infoLoading) {
-      loadingDataOrError = loadingEllipsis('Loading data');
+      loadingDataOrError = this.props.userInfoErrorStatus ? this.props.userInfoErrorStatus : loadingEllipsis('Loading data');
     }
     let findText = 'FIND PROMOTER';
     if (this.props.searchingBot) {
@@ -90,7 +118,7 @@ class PromoteModal extends React.Component {
     return (
       <div className="wrapper_promote-mod">
         <p className="title_promote-mod">PROMOTE POST</p>
-        <p className="label_promote-mod">Using token</p>
+        <p className="label_promote-mod">Token</p>
         <div className="body_promote-mod">
           <div className="select-wrapper_promote-mod">
             <select className="select_promote-mod"
@@ -109,7 +137,7 @@ class PromoteModal extends React.Component {
             <span className="balance-value_promote-mod">{this.props.tokenNumber} {this.props.selectedToken}</span>
           </div>
         </div>
-        <p className="label_promote-mod">Promotion bid (not less than {Constants.SERVICES.BOTS.MIN_BID_VALUE})</p>
+        <p className="label_promote-mod">Promotion amount (minimum {Constants.SERVICES.BOTS.MIN_BID_VALUE})</p>
         <div className="position--relative">
           <input ref={ref => this.input = ref}
                  placeholder="e.g. 100"
@@ -127,8 +155,7 @@ class PromoteModal extends React.Component {
   }
 }
 
-const mapStateToProps = (state, props) => {
-  const steemLink = `https://steemit.com${props.postIndex}`;
+const mapStateToProps = (state) => {
   let promoteModal = state.promoteModal;
   let tokenNumber = '';
   if (promoteModal.selectedToken === 'STEEM') {
@@ -138,7 +165,6 @@ const mapStateToProps = (state, props) => {
     tokenNumber = promoteModal.userInfo.sbd_balance;
   }
   return {
-    steemLink,
     ...promoteModal,
     tokenNumber
   }
@@ -167,8 +193,17 @@ const mapDispatchToProps = (dispatch) => {
     pushMessage: (message) => {
       dispatch(pushMessage(message));
     },
-    searchingBotRequest: (steemLink) => {
-      dispatch(searchingBotRequest(steemLink));
+    searchingBotRequest: () => {
+      dispatch(searchingBotRequest());
+    },
+    getAuthUserInfoSuccess: (result) => {
+      dispatch(getAuthUserInfoSuccess(result));
+    },
+    addPostIndex: (postIndex) => {
+      dispatch(addPostIndex(postIndex));
+    },
+    getAuthUserInfoError: (error) => {
+      dispatch(getAuthUserInfoError(error));
     }
   }
 };

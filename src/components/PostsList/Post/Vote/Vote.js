@@ -7,7 +7,7 @@ import {pushMessage} from '../../../../actions/pushMessage';
 import VoteIndicator from './VoteIndicator/VoteIndicator';
 import ShowIf from '../../../Common/ShowIf';
 import './vote.css';
-import AuthService from "../../../../services/authService";
+import AuthService from '../../../../services/authService';
 
 class Vote extends React.Component {
 
@@ -35,6 +35,9 @@ class Vote extends React.Component {
 	}
 
   longTapPLInd(timeDelay) {
+    if (!this.props.isUserAuth) {
+      return;
+    }
     if (this.props.vote || !this.props.isAuth || this.props.isPLOpen || this.props.commentDeleted) {
       return;
     }
@@ -64,6 +67,9 @@ class Vote extends React.Component {
 	}
 
   hideWithDelay() {
+    if (!this.props.isUserAuth) {
+      return;
+    }
     let hidePLIndTimeout = setTimeout(() => {
       this.fluidHide();
     }, 1400);
@@ -174,6 +180,7 @@ const mapStateToProps = (state, props) => {
     isComment,
     isPost,
     isPopup,
+    isUserAuth: state.auth.user !== null,
 		isModalOpen: Object.keys(state.modals).length > 0,
 		isPLOpen: post.isPLOpen,
 		plTimeout: post.plTimeout,

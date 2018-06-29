@@ -27,7 +27,6 @@ import Constants from '../../common/constants';
 import {utils} from '../../utils/utils';
 import {setComponentSize} from '../../utils/setComponentSize';
 import {setCommentEditState} from '../../actions/comments';
-import {getAuthUserInfo} from '../../actions/promoteModal';
 import AuthService from '../../services/authService';
 
 class PostModal extends React.Component {
@@ -53,7 +52,6 @@ class PostModal extends React.Component {
 	componentWillUnmount() {
 		window.removeEventListener('keydown', this.initKeyPress);
     window.removeEventListener('resize', this.resizePostModal);
-    this.props.getAuthUserInfoSuccess('');
 	}
 
 	componentWillReceiveProps(nextProps) {
@@ -125,7 +123,9 @@ class PostModal extends React.Component {
 					}
 					break;
 				case 13:
-					this.props.toggleVote(this.props.currentIndex);
+					if (this.props.onlyPostModalOpen) {
+            this.props.toggleVote(this.props.currentIndex);
+					}
 					break;
 				default:
 					break;
@@ -489,6 +489,7 @@ const mapStateToProps = (state) => {
 	let isGolosService = state.services.name === Constants.SERVICES.golos.name;
 	let linkToSinglePost = document.location.origin + (isGolosService ? '/' + Constants.SERVICES.golos.name : '')
     + '/post' + post.url.replace(/\/[\w-.]+/, '');
+	let onlyPostModalOpen = Object.keys(state.modals).length === 1;
 	if (post) {
     const isFSByScreenSize = state.window.width < Constants.WINDOW.MAX_MOBILE_SCREEN_WIDTH;
 		let urlVideo = post.media[0].url;
@@ -502,6 +503,7 @@ const mapStateToProps = (state) => {
       isCommentEditing,
       isGolosService,
       linkToSinglePost,
+      onlyPostModalOpen,
 			completeStatus: post.completeStatus,
 			...state.postModal,
 			newPostsLoading: postsList.loading,
@@ -560,9 +562,6 @@ const mapDispatchToProps = (dispatch) => {
 		},
     setCommentEditState: (point, parentPost, commentEditing) => {
       dispatch(setCommentEditState(point, parentPost, commentEditing));
-    },
-    getAuthUserInfoSuccess: (result) => {
-			dispatch(getAuthUserInfo(result));
 		}
 	};
 };

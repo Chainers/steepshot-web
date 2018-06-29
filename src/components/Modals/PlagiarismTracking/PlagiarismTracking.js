@@ -2,7 +2,7 @@ import * as React from 'react';
 import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
 import {closeModal} from '../../../actions/modal';
-import {continuePublishing} from "../../../actions/plagiarismTracking";
+import {continuePublishing} from '../../../actions/plagiarismTracking';
 import './plagiarismTracking.css';
 
 class PlagiarismTracking extends React.Component {
@@ -72,7 +72,8 @@ class PlagiarismTracking extends React.Component {
 				</p>
 				<div className="buttons_plag-track">
 					<button className="btn btn-index" onClick={this.closeModal.bind(this)}>NO, CANCEL PUBLISHING</button>
-					<button className="btn btn-default" onClick={this.props.continuePublishing(this.props.data)}>YES, CONTINUE PUBLISHING
+					<button className="btn btn-default" onClick={() => this.props.continuePublishing(this.props.data)}>
+						YES, CONTINUE PUBLISHING
 					</button>
 				</div>
 			</div>

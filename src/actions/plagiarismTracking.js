@@ -1,23 +1,24 @@
-import PostService from "../services/postService";
-import constants from "../common/constants";
-import AuthService from "../services/authService";
+import PostService from '../services/postService';
+import Constants from '../common/constants';
+import AuthService from '../services/authService';
 import {push} from 'react-router-redux';
-import {closeModal} from "./modal";
-import {editPostReject, editPostRequest, editPostSuccess} from "./editPost";
-import {pushErrorMessage, pushMessage} from "./pushMessage";
+import {closeModal} from './modal';
+import {editPostReject, editPostRequest, editPostSuccess} from './editPost';
+import {pushErrorMessage, pushMessage} from './pushMessage';
 
 export function continuePublishing(data) {
-	closeModal('PlagiarismTrackingModal');
-	editPostRequest();
-	PostService.afterCheckingPlagiarism(data.operations)
-		.then(() => {
-			pushMessage(constants.POST_SUCCESSFULLY_CREATED);
-			editPostSuccess();
-			push(`/@${AuthService.getUsername()}`);
-		})
-		.catch(error => {
-			editPostReject(error);
-			pushErrorMessage(error);
-		});
-
+	return dispatch => {
+    dispatch(closeModal('PlagiarismTrackingModal'));
+    dispatch(editPostRequest());
+    PostService.afterCheckingPlagiarism(data.operations)
+      .then(() => {
+        dispatch(pushMessage(Constants.POST_SUCCESSFULLY_CREATED));
+        dispatch(editPostSuccess());
+        push(`/@${AuthService.getUsername()}`);
+      })
+      .catch(error => {
+        dispatch(editPostReject(error));
+        dispatch(pushErrorMessage(error));
+      });
+	}
 }

@@ -3,14 +3,22 @@ import Constants from '../common/constants';
 const initialState = {
   promoteAmount: Constants.SERVICES.BOTS.MIN_BID_VALUE,
   selectedToken: '',
+  inputError: '',
+  selectError: '',
+  activeKey: '',
   activeIndex: 0,
   infoLoading: false,
-  inputError: '',
-  selectError: ''
+  showActiveKey: false,
 };
 
 export default function promoteModal(state = initialState, action) {
   switch (action.type) {
+    case 'ADD_POST_INDEX' :
+      return {
+        ...state,
+        postIndex: action.postIndex
+      };
+
     case 'SET_PROMOTE_VALUE':
       return {
         ...state,
@@ -48,12 +56,6 @@ export default function promoteModal(state = initialState, action) {
         selectError: action.error
       };
 
-    case 'SET_TIMER_STATE':
-      return {
-        ...state,
-        leftTime: action.leftTime
-      };
-
     case 'SET_ACTIVE_KEY_ERROR':
       return {
         ...state,
@@ -77,6 +79,39 @@ export default function promoteModal(state = initialState, action) {
         ...state,
         suitableBot: action.bot
       };
+
+    case 'SET_ACTIVE_KEY':
+      return {
+        ...state,
+        activeKey: action.key
+      };
+
+    case 'SET_ACTIVE_KEY_INPUT_SECURITY':
+      return {
+        ...state,
+        showActiveKey: action.state
+      };
+
+    case 'GET_AUTH_USER_INFO_ERROR':
+      return {
+        ...state,
+        userInfoErrorStatus: action.error
+      };
+
+    case 'SET_RED_TIMER':
+      return {
+        ...state,
+        redTimer: action.param
+      };
+
+    case 'SET_BLOCKED_TIMER':
+      return {
+        ...state,
+        blockedTimer: action.param
+      };
+
+    case 'LOGOUT_SUCCESS':
+      return initialState;
 
     default:
       return state;

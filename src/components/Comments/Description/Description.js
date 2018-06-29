@@ -25,7 +25,7 @@ class Description extends React.Component {
 
   openPromoteModal() {
     let modalOption = {
-      body: (<PromoteModal postIndex={this.props.postIndex}/>),
+      body: (<PromoteModal index={this.props.postIndex}/>),
     };
     this.props.openModal("PromoteModal", modalOption);
   }
@@ -33,11 +33,11 @@ class Description extends React.Component {
 	render() {
 		return (
 			<div className="container_description">
-				{/*<ShowIf show={this.props.isSelfPost && !this.props.isGolos}>
+				<ShowIf show={this.props.isSelfPost && !this.props.isGolos && !this.props.oldForPromote}>
 					<div className="open-promote_description centered--flex" onClick={this.openPromoteModal.bind(this)}>
 						PROMOTE THIS POST
 					</div>
-				</ShowIf>*/}
+				</ShowIf>
 				<p className="word-wrap_brake-word">{renderHTML(MarkdownParser.parseTitle(this.props.title))}</p>
 				<div className={(this.state.isDescriptionOpened || (this.props.description.length < 140))
 							? 'collapse-opened' : 'collapse-closed'}>
@@ -51,13 +51,13 @@ class Description extends React.Component {
 
 
 const mapStateToProps = (state) => {
-	let postIndex = state.postModal.currentIndex;
-	let isSelfPost = state.auth.user === state.posts[postIndex].author;
-	let isGolos = state.services.name === 'golos';
+	const postIndex = state.postModal.currentIndex;
+	const post = state.posts[postIndex];
   return {
-  	isGolos,
-		postIndex,
-		isSelfPost
+    postIndex,
+  	isGolos: state.services.name === 'golos',
+		isSelfPost: state.auth.user === post.author,
+		oldForPromote: post.postAge > 4
   }
 };
 
