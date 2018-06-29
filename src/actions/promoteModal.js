@@ -160,7 +160,8 @@ export function searchingBotRequest() {
         dispatch(openModal("SendBidModal", modalOption));
         dispatch(sendBotRequest(false));
       })
-      .catch(() => {
+      .catch((error) => {
+        console.log(error);
         dispatch(pushErrorMessage(Constants.PROMOTE.FIND_BOT_ERROR));
         dispatch(sendBotRequest(false));
       });
@@ -175,7 +176,8 @@ export function searchingNewBot() {
         dispatch(setRedTimer(false));
         dispatch(setBlockedTimer(false));
       })
-      .catch(() => {
+      .catch((error) => {
+        console.log(error);
         dispatch(pushErrorMessage(Constants.PROMOTE.FIND_BOT_ERROR));
         dispatch(setRedTimer(false));
         dispatch(setBlockedTimer(false));

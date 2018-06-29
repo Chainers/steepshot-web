@@ -106,6 +106,7 @@
 
 .buttons_promote-mod button {
     font: 12px OpenSans-Semibold;
+    transition: .2s;
 }
 
 .buttons_promote-mod button:first-child {

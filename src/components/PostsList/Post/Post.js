@@ -231,6 +231,8 @@ const mapStateToProps = (state, props) => {
       linkToSinglePost,
 			authUser: state.auth.user
 		};
+	} else {
+		return {}
 	}
 };
 
