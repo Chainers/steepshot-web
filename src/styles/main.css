@@ -832,7 +832,7 @@ input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer
 .btn {
     display: inline-block;
     margin-bottom: 0;
-    font: 12px OpenSans-Regular;
+    font: 14px OpenSans-Regular;
     text-align: center;
     vertical-align: middle;
     -ms-touch-action: manipulation;
