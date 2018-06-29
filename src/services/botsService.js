@@ -2,6 +2,7 @@ import RequestService from './requestService';
 import Constants from '../common/constants';
 import {getStore} from '../store/configureStore';
 import {addBot} from '../actions/promoteModal';
+import {closeModal} from '../actions/modal';
 
 const SUPPORTABLE_BOTS = Constants.SERVICES.BOTS.SUPPORTABLE_BOTS_LIST;
 
@@ -50,8 +51,10 @@ class BotsService {
                 }
               }
             }
-
             if (!muchSuitableBots.length) {
+              if (state.modals['SendBidModal']) {
+                getStore().dispatch(closeModal("SendBidModal"));
+              }
               return Promise.reject(Constants.PROMOTE.FIND_BOT_ERROR);
             }
             let suitableBot = muchSuitableBots[0];

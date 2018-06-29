@@ -47,9 +47,9 @@
 
 .save_settings {
     margin: 20px;
-    transition: .2s all ease;
+    transition: .2s;
     display: inline-block;
-    font-family: OpenSans-SemiBold, Helvetica, Arial, sans-serif;
+    font: 14px OpenSans-SemiBold;
     text-align: center;
     vertical-align: middle;
     -ms-touch-action: manipulation;
@@ -57,10 +57,9 @@
     cursor: pointer;
     text-decoration: none;
     padding: 12px 40px;
-    font-size: 14px;
     line-height: 1;
     border-radius: 21px;
-    color: #fff;
+    color: #ffffff;
     user-select: none;
     text-overflow: ellipsis;
     overflow: hidden;
@@ -68,7 +67,6 @@
 
     border: 1px transparent;
     background: linear-gradient(to right, rgb(255, 121, 4), rgb(255, 22, 5));
-    box-shadow: 0 10px 20px 0 rgba(231, 72, 0, .3);
 }
 
 .save_settings:hover {
