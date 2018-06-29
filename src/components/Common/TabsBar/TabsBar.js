@@ -1,9 +1,10 @@
 import React from 'react';
-import {connect} from "react-redux";
-import {pageLoaded, setActiveIndex} from "../../../actions/tabsBar";
-import LoadingSpinner from "../../LoadingSpinner";
-import ShowIf from "../ShowIf";
-import Constants from "../../../common/constants";
+import {connect} from 'react-redux';
+import {pageLoaded, setActiveIndex} from '../../../actions/tabsBar';
+import LoadingSpinner from '../../LoadingSpinner';
+import ShowIf from '../ShowIf';
+import Constants from '../../../common/constants';
+import './tabsBar.css';
 
 class TabsBar extends React.Component {
 	static defaultProps = {
@@ -79,6 +80,12 @@ class TabsBar extends React.Component {
 				}));
 		});
 		if (allChildrenHide) {
+			if (this.props.point === 'search') {
+        return (
+					<div className="empty-search_tabs-bar">
+            {Constants.EMPTY_QUERY}
+					</div>);
+			}
 			return (
 				<div className="empty-query-message">
 					{Constants.EMPTY_QUERY}

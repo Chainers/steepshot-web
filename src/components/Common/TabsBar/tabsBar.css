@@ -1,0 +1,5 @@
+.empty-search_tabs-bar {
+    background: url('/images/tabsBar/lighthouse-background.png') center no-repeat;
+    background-size: cover;
+    height: calc(100vh - 120px);
+}
