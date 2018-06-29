@@ -47,6 +47,7 @@
     top: 20px;
     right: 20px;
     z-index: 5;
+    transition: .2s;
 }
 
 .image-container_pos-mod:hover > button {

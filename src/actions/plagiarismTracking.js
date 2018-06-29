@@ -14,7 +14,7 @@ export function continuePublishing(data) {
       .then(() => {
         dispatch(pushMessage(Constants.POST_SUCCESSFULLY_CREATED));
         dispatch(editPostSuccess());
-        push(`/@${AuthService.getUsername()}`);
+        dispatch(push(`/@${AuthService.getUsername()}`));
       })
       .catch(error => {
         dispatch(editPostReject(error));
