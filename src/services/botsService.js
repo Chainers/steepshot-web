@@ -36,6 +36,7 @@ class BotsService {
                   suitableBots[i].next <= 100 * Constants.MILLISECONDS_IN_SECOND ||
                   (!suitableBots[i]['accepts_steem'] && promoteModalInfo.selectedToken === 'STEEM') ||
                   state.posts[promoteModalInfo.postIndex].postAge >= suitableBots[i]['max_post_age'] ||
+                  suitableBots[i]['is_disabled'] ||
                   !BotsService.checkAmount(promoteAmount, steemToUSD, sbdToUSD, promoteModalInfo.selectedToken, suitableBots[i])
                 ) {
                   continue;
@@ -86,7 +87,7 @@ class BotsService {
     if (token === 'SBD') {
       userBidInUSD = promoteAmount * sbdToUSD;
     }
-    return (userBidInUSD + bidsAmountInBot) < amountLimit;
+    return (userBidInUSD + bidsAmountInBot) < amountLimit - (amountLimit * 0.25);
   }
 
 }
