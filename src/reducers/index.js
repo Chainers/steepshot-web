@@ -34,6 +34,7 @@ import services from './services';
 import login from './login';
 import scroll from './scroll';
 import promoteModal from './promoteModal';
+import emptyRequestError from './emptyRequestError';
 import transactionHistory from "./transactionHistory";
 import images from './images';
 
@@ -73,6 +74,7 @@ export default combineReducers({
 	login,
 	scroll,
 	promoteModal,
+  emptyRequestError,
 	transactionHistory,
   images
 });
