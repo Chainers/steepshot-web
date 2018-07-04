@@ -2,6 +2,7 @@
     height: calc(100vh - 120px);
     background: url('/images/notFound/mountains-background.svg') center no-repeat;
     background-size: cover;
+    min-height: 300px;
 }
 
 .wrapper_not-found {
@@ -43,12 +44,17 @@
 }
 
 @media (max-width: 650px) {
+    .for-background_not-found {
+        background: url('/images/notFound/mountains-background.svg') center bottom no-repeat;
+        background-size: 100vw;
+    }
+
     .wrapper_not-found {
         max-width: 80vw;
     }
 
     .title_not-found {
-        font: 48px OpenSans-Semibold;
+        font: 46px OpenSans-Semibold;
         margin: 0 0 15px 0;
     }
 
@@ -61,6 +67,5 @@
         font: 11px OpenSans-Regular;
         width: 200px;
         height: 35px;
-        margin-bottom: 20px;
     }
 }

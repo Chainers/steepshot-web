@@ -839,13 +839,12 @@ input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer
     touch-action: manipulation;
     cursor: pointer;
     background-image: none;
-    border: 1px solid transparent;
     text-decoration: none;
     max-width: 100%;
     padding: 12px 40px 12px;
     line-height: 1;
     border-radius: 21px;
-    color: #fff;
+    color: #ffffff;
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;

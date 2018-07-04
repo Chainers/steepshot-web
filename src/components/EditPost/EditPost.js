@@ -234,7 +234,7 @@ class EditPost extends React.Component {
 										 description="Description is limited to 2048 characters"/>
 					<div className="buttons-container_edi-pos">
 						<button onClick={this.props.editPostClear}
-										className="btn btn-index">Clear
+										className="btn btn-index">CLEAR
 						</button>
 						<button onClick={this.submit.bind(this)}
 										className="btn btn-default"
@@ -252,9 +252,10 @@ class EditPost extends React.Component {
 		if (!this.props.canCreate) {
 			return (<Timer waitingTime={this.props.waitingTime}
 										 staticTimer={false}
-										 onTimeout={this.props.closeTimer}/>)
+										 onTimeout={this.props.closeTimer}
+										 style={{fontSize: 13}}/>)
 		}
-		return this.props.isNew ? 'Create new post' : 'Update post'
+		return this.props.isNew ? 'CREATE NEW POST' : 'UPDATE POST'
 	}
 }
 

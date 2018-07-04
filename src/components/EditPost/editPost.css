@@ -84,7 +84,8 @@
     text-align: right;
 }
 
-.buttons-container_edi-pos .btn {
+.buttons-container_edi-pos button {
+    font: 12px OpenSans-Semibold;
     margin: 15px;
 }
 

@@ -1,9 +1,11 @@
 import React from 'react';
-import {connect} from "react-redux";
-import {pageLoaded, setActiveIndex} from "../../../actions/tabsBar";
-import LoadingSpinner from "../../LoadingSpinner";
-import ShowIf from "../ShowIf";
-import Constants from "../../../common/constants";
+import {connect} from 'react-redux';
+import {pageLoaded, setActiveIndex} from '../../../actions/tabsBar';
+import LoadingSpinner from '../../LoadingSpinner';
+import ShowIf from '../ShowIf';
+import Constants from '../../../common/constants';
+import './tabsBar.css';
+import {setEmptyRequestError} from '../../../actions/emptyRequestError';
 
 class TabsBar extends React.Component {
 	static defaultProps = {
@@ -12,6 +14,16 @@ class TabsBar extends React.Component {
 		showLoader: true,
 		changeIndex: () => {}
 	};
+
+	componentWillUnmount() {
+		this.props.setEmptyRequestError('');
+	}
+
+	componentWillReceiveProps(nextProps) {
+		if (nextProps.showLoader && this.props.emptyRequestError) {
+      this.props.setEmptyRequestError('');
+		}
+	}
 
 	componentDidUpdate() {
 		let navItems = [];
@@ -79,6 +91,15 @@ class TabsBar extends React.Component {
 				}));
 		});
 		if (allChildrenHide) {
+			if (this.props.point === 'search') {
+				this.props.setEmptyRequestError(this.props.point);
+        return (
+					<div className="empty-search_tabs-bar">
+						We don't have anything for query
+						<span> {this.props.searchQuery} </span>
+						yet. Try to look for something else...
+					</div>);
+			}
 			return (
 				<div className="empty-query-message">
 					{Constants.EMPTY_QUERY}
@@ -101,8 +122,11 @@ class TabsBar extends React.Component {
 }
 
 const mapStateToProps = (state, props) => {
+	const searchQuery  = state.router.location.pathname.replace(/\/search\/([\w-.]+)/, '$1');
 	return {
 		...state.tabsBar[props.point],
+		emptyRequestError: state.emptyRequestError.point,
+		searchQuery
 	};
 };
 
@@ -113,6 +137,9 @@ const mapDispatchToProps = (dispatch) => {
 		},
 		pageIsLoaded: (point) => {
 			dispatch(pageLoaded(point));
+		},
+    setEmptyRequestError: (point) => {
+			dispatch(setEmptyRequestError(point));
 		}
 	};
 };
