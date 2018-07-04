@@ -24,7 +24,7 @@ export function getTransactionHistory() {
         dispatch({
           type: 'GET_TRANSACTION_HISTORY_SUCCESS',
           transactions: response,
-          hasMore: response.length === COUNT_TRANSACTION
+          hasMore: response.length < COUNT_TRANSACTION
         });
       })
       .catch(error => {

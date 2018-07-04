@@ -34,7 +34,7 @@ class TransactionHistory extends React.Component {
       <InfinityScroll
         point='body'
         fetch={getTransactionHistory}
-        hasMore={hasMore && (transactions.length > 0)}>
+        hasMore={hasMore && transactions.length > 0}>
         <div className="container_trx-history">
           <div className="header_trx-history">
             <div className="info_trx-history">
@@ -42,8 +42,7 @@ class TransactionHistory extends React.Component {
                 Transaction history
               </div>
               <div className="description_trx-history">
-                Beware of spam and phishing links in programs. Do not open links from users you do not
-                trust. Do not
+                Beware of spam and phishing links in programs. Do not open links from users you do not trust. Do not
                 provide your personal keys to third parties.
               </div>
             </div>
@@ -58,7 +57,7 @@ class TransactionHistory extends React.Component {
                          date={trx[1].timestamp}
             />
           ).reverse()}
-          <ShowIf show={hasMore}>
+          <ShowIf show={loading}>
             <LoadingSpinner style={{padding: '20px'}}/>
           </ShowIf>
         </div>

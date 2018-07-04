@@ -228,9 +228,9 @@ const Constants = {
 
 		steem: {
 			CONNECTION_SERVERS: [
-				//'https://steemd.steepshot.org',
+				//'https://steemd.steepshot.org', don't working
 				'https://api.steemit.com',
-				'https://api.steemitstage.com'
+				//'https://api.steemitstage.com' don't working
 			]
 		}
 	},
