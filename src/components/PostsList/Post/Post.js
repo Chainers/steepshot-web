@@ -180,7 +180,7 @@ class Post extends React.Component {
 					</ShowIf>
 					<div className="card-body">
 						{this.renderImage()}
-						<div className="card-wrap">
+						<div className="card-wrap_post">
 							<div className="card-controls_post">
 								<Likes postIndex={this.props.index} style={{paddingLeft: 20}}/>
 								<div className="card-buttons_post">

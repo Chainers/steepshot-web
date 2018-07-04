@@ -21,6 +21,10 @@ a.feed-browse-active_header {
     background: url('/images/sprite_svg1910.svg') 12% 76.7% no-repeat;
 }
 
+.wrap-controls_header {
+    border-left: 1px solid #f4f4f6
+}
+
 @media (max-width: 1024px) {
     .search-mob-ico_search {
         background: url('/images/sprite_svg1910.svg') 12% 71% no-repeat;
