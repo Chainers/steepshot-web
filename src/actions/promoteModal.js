@@ -31,6 +31,13 @@ function setBidRequest(state) {
   }
 }
 
+function searchingNewBotError(error) {
+  return {
+    type: 'SEARCHING_NEW_BOR_ERROR',
+    error
+  }
+}
+
 export function getAuthUserInfoError(error) {
   return {
     type: 'GET_AUTH_USER_INFO_ERROR',
@@ -177,7 +184,7 @@ export function searchingNewBot() {
         dispatch(setBlockedTimer(false));
       })
       .catch((error) => {
-        console.log(error);
+        dispatch(searchingNewBotError(error));
         dispatch(pushErrorMessage(Constants.PROMOTE.FIND_BOT_ERROR));
         dispatch(setRedTimer(false));
         dispatch(setBlockedTimer(false));
@@ -220,14 +227,14 @@ export function sendBid(steemLink, activeKey, botName) {
         let newValue;
         if (promoteModal.selectedToken === 'STEEM') {
           newValue = {
-            steem_balance: state.userInfo.steem_balance - promoteModal.promoteAmount,
+            steem_balance: (promoteModal.userInfo.steem_balance - promoteModal.promoteAmount).toFixed(3) / 1,
             sbd_balance: promoteModal.userInfo.sbd_balance
           }
         }
         if (promoteModal.selectedToken === 'SBD') {
           newValue = {
-            sbd_balance: promoteModal.sbd_balance - promoteModal.promoteAmount,
-            steem_balance: promoteModal.userInfo.steem_balance
+            steem_balance: promoteModal.userInfo.steem_balance,
+            sbd_balance: (promoteModal.userInfo.sbd_balance - promoteModal.promoteAmount).toFixed(3) / 1
           }
         }
         dispatch(getAuthUserInfoSuccess(newValue));

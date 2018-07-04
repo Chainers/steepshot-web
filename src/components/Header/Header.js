@@ -67,7 +67,7 @@ class Header extends React.Component {
 		if (isAuth) {
 			authorLink = `/@${this.props.user}`;
 			loginComponent = <div className="section controls">
-				<div className="wrap-controls">
+				<div className="wrap-controls_header">
 					<Link to="/settings" className="btn-control settings"/>
 					<a onClick={this.handleLogout.bind(this)}
 						 className="btn-control logout"> </a>
