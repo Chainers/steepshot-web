@@ -23,7 +23,9 @@ export default function transactionHistory(state = initialState, action) {
     case 'CHANGE_TRANSACTION_FILTER':
       return {
         ...state,
-        currentOperation: action.currentOperation
+        currentOperation: action.currentOperation,
+        hasMore: true,
+        transactions: []
       };
     case 'GET_TRANSACTION_HISTORY_ERROR':
       return {
