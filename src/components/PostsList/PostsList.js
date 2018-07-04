@@ -99,17 +99,18 @@ class PostsList extends React.Component {
 	}
 
 	render() {
+		const {isComponentVisible, hasMore, posts, wrapperModifier} = this.props;
 		return (
 			<InfinityScroll
 				point='body'
 				fetch={this.getPostsList}
-				hasMore={this.props.isComponentVisible && this.props.hasMore && this.props.posts.length > 0}>
+				hasMore={isComponentVisible && hasMore && posts.length > 0}>
 				<div className="container_pos-lis">
 					{this.renderHeader()}
-					<div className={this.props.wrapperModifier}>
+					<div className={wrapperModifier}>
 						{this.renderPosts()}
 					</div>
-					<ShowIf show={this.props.loading}>
+					<ShowIf show={hasMore}>
 						<div className="spinner_pos-lis" key="usersListLoader"><LoadingSpinner/></div>
 					</ShowIf>
 				</div>

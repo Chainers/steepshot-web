@@ -7,71 +7,65 @@ import './scroll.css';
 
 class Scroll extends React.Component {
 
-	constructor(props) {
-		super();
-		props.scrollInit(props.point);
-	}
+    constructor(props) {
+        super();
+        props.scrollInit(props.point);
+    }
 
-	componentWillReceiveProps(nextProps) {
-		if (nextProps.shouldUpdate !== this.props.shouldUpdate) {
-			this.scroll.scrollTop(this.scroll.getScrollTop());
-		}
-	}
+    onScrollFrame(values) {
+        const {shouldFetch, shouldUpdate, point, deltaForFetch} = this.props;
+        if (shouldFetch === shouldUpdate && values.scrollHeight - values.scrollTop < deltaForFetch) {
+            this.props.shouldFetchFunc(point);
+        }
+    }
 
-	onScrollFrame(values) {
-		const {shouldFetch, shouldUpdate, point, deltaForFetch} = this.props;
-		if (shouldFetch === shouldUpdate && values.scrollHeight - values.scrollTop < deltaForFetch) {
-			this.props.shouldFetchFunc(point);
-		}
-	}
+    update() {
+        this.scroll.update();
+        this.props.scrollShouldUpdate(this.props.point);
+    }
 
-	update() {
-		this.scroll.update();
-		this.props.scrollShouldUpdate(this.props.point);
-	}
-
-	render() {
-		const {children, customScrollStyle} = this.props;
-		return (
-			<Scrollbars onScrollFrame={this.onScrollFrame.bind(this)}
-									ref={ref => this.scroll = ref}
-									style={this.props.style}
-									renderTrackVertical={() => {
-										return (<div className={'default_scroll ' + (customScrollStyle || '')}/> )
-									}}>
-				<div className={this.props.className}>
-					{children}
-					<ReactResizeDetector handleWidth handleHeight onResize={this.update.bind(this)}/>
-				</div>
-			</Scrollbars>
-		);
-	}
+    render() {
+        const {children, customScrollStyle} = this.props;
+        return (
+            <Scrollbars onScrollFrame={this.onScrollFrame.bind(this)}
+                        ref={ref => this.scroll = ref}
+                        style={this.props.style}
+                        renderTrackVertical={() => {
+                            return (<div className={'default_scroll ' + (customScrollStyle || '')}/>)
+                        }}>
+                <div className={this.props.className}>
+                    {children}
+                    <ReactResizeDetector handleWidth handleHeight onResize={this.update.bind(this)}/>
+                </div>
+            </Scrollbars>
+        );
+    }
 }
 
 Scroll.defaultProps = {
-	deltaForFetch: 0
+    deltaForFetch: 0
 };
 
 const mapStateToProps = (state, props) => {
-	const {shouldUpdate, shouldFetch} = state.scroll[props.point];
-	return {
-		shouldUpdate,
-		shouldFetch
-	};
+    const {shouldUpdate, shouldFetch} = state.scroll[props.point];
+    return {
+        shouldUpdate,
+        shouldFetch
+    };
 };
 
 const mapDispatchToProps = (dispatch) => {
-	return {
-		scrollInit: point => {
-			dispatch(scrollInit(point))
-		},
-		scrollShouldUpdate: point => {
-			dispatch(scrollShouldUpdate(point))
-		},
-		shouldFetchFunc: (point) => {
-			dispatch(shouldFetch(point))
-		}
-	};
+    return {
+        scrollInit: point => {
+            dispatch(scrollInit(point))
+        },
+        scrollShouldUpdate: point => {
+            dispatch(scrollShouldUpdate(point))
+        },
+        shouldFetchFunc: (point) => {
+            dispatch(shouldFetch(point))
+        }
+    };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Scroll);

@@ -17,7 +17,7 @@ const SCROLL_POINT_FLAGS = 'flags';
 
 class LikesFlagsList extends React.Component {
 
-	constructor(props) {
+	constructor() {
 		super();
 		this.updateBodyHeight = this.updateBodyHeight.bind(this);
 	}
@@ -36,6 +36,10 @@ class LikesFlagsList extends React.Component {
 			this.updateBodyHeight()
 		}
 	}
+
+  componentWillUnmount() {
+    this.props.clearBodyHeight();
+  }
 
 	componentDidUpdate() {
 		let currentBody = this.props.activeIndex ? this.flags : this.likes;
@@ -56,14 +60,14 @@ class LikesFlagsList extends React.Component {
 	}
 
 	render() {
-		let likesCondition = !this.props.likes || !this.props.likes.users.length;
-		let flagsCondition = !this.props.flags || !this.props.flags.users.length;
+		const {likes, flags, preferredBodyHeight, point} = this.props;
+
+		let likesCondition = !likes.users || !likes.users.length;
+		let flagsCondition = !flags.users || !flags.users.length;
 		let commonLoader = true;
-		if (this.props.likes && this.props.flags) {
-			if (!this.props.likes.loading && !this.props.flags.loading) {
-				commonLoader = false;
-			}
-		}
+    if (!likes.loading && !flags.loading) {
+      commonLoader = false;
+    }
 		return (
 			<div className="container_lik-lis">
 				<CloseButton className="close-button_lik-lis" onClick={this.props.closeModal}/>
@@ -72,7 +76,7 @@ class LikesFlagsList extends React.Component {
 								 alwaysShowNavigation={true}
 				>
 					<Tab name="Likes" empty={likesCondition && !flagsCondition}>
-						<Scroll style={{width: '100%', height: this.props.preferredBodyHeight, marginTop: 20}}
+						<Scroll style={{width: '100%', height: preferredBodyHeight, marginTop: 20}}
 										point={SCROLL_POINT_LIKES}
 										deltaForFetch={1000}>
 							<UsersList
@@ -89,12 +93,12 @@ class LikesFlagsList extends React.Component {
 						</Scroll>
 					</Tab>
 					<Tab name="Flags" empty={flagsCondition && !likesCondition}>
-						<Scroll style={{width: '100%', height: this.props.preferredBodyHeight, marginTop: 20}}
+						<Scroll style={{width: '100%', height: preferredBodyHeight, marginTop: 20}}
 										point={SCROLL_POINT_FLAGS}
 										deltaForFetch={1000}>
 							<UsersList
 								scrollPoint={SCROLL_POINT_FLAGS}
-								point={this.props.point}
+								point={point}
 								useScrollView={true}
 								options={{flags: 1}}
 								commonLoader={commonLoader}
@@ -114,8 +118,8 @@ const mapStateToProps = (state, props) => {
 	let point = `post${LikesFlagsList.permLink(state.posts[props.postIndex].url, props.commentAuthor)}/voters`;
 	return {
 		point,
-		flags: state.usersList[point + 'JSON_OPTIONS:{"flags":1}'],
-		likes: state.usersList[point + 'JSON_OPTIONS:{"likes":1}'],
+		flags: state.usersList[point + 'JSON_OPTIONS:{"flags":1}'] || {},
+		likes: state.usersList[point + 'JSON_OPTIONS:{"likes":1}'] || {},
 		...state.likesFlagsList,
 		...state.tabsBar.likesFlags,
 		window: state.window
