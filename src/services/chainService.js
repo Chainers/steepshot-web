@@ -1,6 +1,6 @@
 class ChainService {
 	static currentService = null;
-	
+
 	static init(service) {
 		ChainService.currentService = service;
 		ChainService.currentService.init();
@@ -53,7 +53,7 @@ class ChainService {
 	static getTransactionHistory(username, from = -1, limit = 10000) {
 		return ChainService.currentService.getTransactionHistory(username, from, limit)
 	}
-	
+
 }
 
 export default ChainService;

@@ -30,10 +30,10 @@ class TransactionHistory extends React.Component {
 	renderTransaction(transactions) {
 		let result = transactions.map((trx, index) =>
 			<Transaction operation={trx[1].op[0]}
-									 data={trx[1].op[1]}
-									 key={index}
-									 index={index}
-									 date={trx[1].timestamp}
+			             data={trx[1].op[1]}
+			             key={index}
+			             index={index}
+			             date={trx[1].timestamp}
 			/>
 		);
 		return result;
@@ -58,7 +58,7 @@ class TransactionHistory extends React.Component {
 							</div>
 						</div>
 						<TransactionFilter filter={FILTER} current={currentOperation}
-															 onChange={this.props.changeTransactionFilter}/>
+						                   onChange={this.props.changeTransactionFilter}/>
 					</div>
 					{this.renderTransaction(transactions)}
 					<ShowIf show={loading}>

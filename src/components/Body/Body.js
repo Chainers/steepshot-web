@@ -26,18 +26,18 @@ class Body extends React.Component {
 }
 
 const mapStateToProps = (state, props) => {
-  const location = state.router.location || props.location || {};
+	const location = state.router.location || props.location || {};
 	const advertisingStatus = state.advertising.advertisingStatus;
 	let emptyErrorClass = '';
 	if (state.emptyRequestError.point) {
-    emptyErrorClass = ` ${state.emptyRequestError.point}-empty-request-error_body`;
+		emptyErrorClass = ` ${state.emptyRequestError.point}-empty-request-error_body`;
 	}
 	let bodyStyle = !advertisingStatus ? state.window.width < 740
 		? ' min-height-160_body' : ' min-height-120_body' : ' min-height-60_body';
 	return {
 		location,
 		bodyStyle,
-    emptyErrorClass
+		emptyErrorClass
 	}
 };
 

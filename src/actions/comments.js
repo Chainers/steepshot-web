@@ -74,7 +74,7 @@ export function getPostComments(point) {
 				dispatch({
 					type: 'GET_POST_COMMENTS_ERROR',
 					point,
-          checkedError
+					checkedError
 				});
 			});
 	}
@@ -126,63 +126,65 @@ function editCommentSuccess(index, response) {
 	return {
 		type: 'EDIT_COMMENT_SUCCESS',
 		index,
-    newBody
+		newBody
 	}
 }
 
 export function setCommentEditState(point, parentPost, commentEditing) {
 	return dispatch => {
 		dispatch({
-      type: 'SET_COMMENT_EDIT_STATE',
-      editingPostPoint: point,
-      parentPost,
-      commentEditing
+			type: 'SET_COMMENT_EDIT_STATE',
+			editingPostPoint: point,
+			parentPost,
+			commentEditing
 		});
-    if (!commentEditing) {
-      dispatch(blurredTextInput(Constants.TEXT_INPUT_POINT.COMMENT));
-      dispatch(setTextInputState(Constants.TEXT_INPUT_POINT.COMMENT, {text: '', focusedStyle: ''}));
-    }
+		if (!commentEditing) {
+			dispatch(blurredTextInput(Constants.TEXT_INPUT_POINT.COMMENT));
+			dispatch(setTextInputState(Constants.TEXT_INPUT_POINT.COMMENT, {text: '', focusedStyle: ''}));
+		}
 	}
 }
 
 export function setInputForEdit(point, parentPost, commentEditing) {
-  let commentText = getStore().getState().posts[point].body;
-  return dispatch => {
-    dispatch(setCommentEditState(point, parentPost, commentEditing));
-    if (commentEditing) {
-      dispatch(focusedTextInput(Constants.TEXT_INPUT_POINT.COMMENT));
+	let commentText = getStore().getState().posts[point].body;
+	return dispatch => {
+		dispatch(setCommentEditState(point, parentPost, commentEditing));
+		if (commentEditing) {
+			dispatch(focusedTextInput(Constants.TEXT_INPUT_POINT.COMMENT));
 		} else {
-      dispatch(blurredTextInput(Constants.TEXT_INPUT_POINT.COMMENT));
+			dispatch(blurredTextInput(Constants.TEXT_INPUT_POINT.COMMENT));
 		}
-    dispatch(setTextInputState('comment', {text: commentText,
-			focusedStyle: Constants.TEXT_INPUT_POINT.COMMENT_INPUT_ACTIVE_CLASS}));
-  }
+		dispatch(setTextInputState('comment', {
+			text: commentText,
+			focusedStyle: Constants.TEXT_INPUT_POINT.COMMENT_INPUT_ACTIVE_CLASS
+		}));
+	}
 }
 
 export function editComment(parentPost, postIndex, point) {
-  let state = getStore().getState();
-  let post = state.posts[postIndex];
-  let comment = state.textInput[point].text;
-  return dispatch => {
-    if (state.session.actionLocked) {
-      return;
-    }
-    dispatch(actionLock());
-    dispatch(addNewCommentRequest(parentPost));
+	let state = getStore().getState();
+	let post = state.posts[postIndex];
+	let comment = state.textInput[point].text;
+	return dispatch => {
+		if (state.session.actionLocked) {
+			return;
+		}
+		dispatch(actionLock());
+		dispatch(addNewCommentRequest(parentPost));
 
-    CommentService.editComment(post, PostService.getPermlinkFromUrl(post.url), comment)
-      .then(response => {
-        dispatch(actionUnlock());
-        dispatch(addNewCommentSuccess(parentPost, response));
-        dispatch(setCommentEditState('', parentPost, false));
+		CommentService.editComment(post, PostService.getPermlinkFromUrl(post.url), comment)
+			.then(response => {
+				dispatch(actionUnlock());
+				dispatch(addNewCommentSuccess(parentPost, response));
+				dispatch(setCommentEditState('', parentPost, false));
 				dispatch(editCommentSuccess(postIndex, response));
-        dispatch(pushMessage(Constants.COMMENT_EDIT_SUCCESS_MESSAGE));
-      })
-      .catch(error => {
-        dispatch(actionUnlock());
-        dispatch(addNewCommentError(parentPost, error));
-        dispatch(pushErrorMessage(error));
-      })
+				dispatch(pushMessage(Constants.COMMENT_EDIT_SUCCESS_MESSAGE));
+			})
+			.catch(error => {
+				dispatch(actionUnlock());
+				dispatch(addNewCommentError(parentPost, error));
+				dispatch(pushErrorMessage(error));
+			})
 	}
 }
 
@@ -211,8 +213,8 @@ export function sendComment(postIndex, point) {
 					total_payout_value: 0,
 					body: comment,
 					created: Date.now(),
-          parent_author: url.replace(/.+\/@([\w-.]+)\/.+/, '$1'),
-          parent_permlink: url.replace(/.+\/@[\w-.]+\/([^/]+?)#.+/, '$1'),
+					parent_author: url.replace(/.+\/@([\w-.]+)\/.+/, '$1'),
+					parent_permlink: url.replace(/.+\/@[\w-.]+\/([^/]+?)#.+/, '$1'),
 					flagLoading: false,
 					voteLoading: false,
 					url
@@ -222,7 +224,7 @@ export function sendComment(postIndex, point) {
 				dispatch(scrollToLastComment(postIndex));
 				dispatch(pushMessage(Constants.COMMENT_SUCCESS_MESSAGE));
 			})
-			.catch( error => {
+			.catch(error => {
 				dispatch(actionUnlock());
 				dispatch(addNewCommentError(postIndex, error));
 				dispatch(pushErrorMessage(error));

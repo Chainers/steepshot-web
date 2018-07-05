@@ -43,9 +43,9 @@ class Settings extends React.Component {
 							<span>SETTINGS</span>
 						</div>
 						<SettingsField label="Show low rated posts" point={fields.show_low_rated}
-													 default={this.props[fields.show_low_rated]}/>
+						               default={this.props[fields.show_low_rated]}/>
 						<SettingsField label="Show NSFW posts" point={fields.show_nsfw}
-													 default={this.props[fields.show_nsfw]}/>
+						               default={this.props[fields.show_nsfw]}/>
 					</div>
 					<div className="block_settings">
 						<div className="header_settings">
@@ -60,15 +60,15 @@ class Settings extends React.Component {
 						<div className="blocked-block_settings">
 							<BodyLoader show={!this.props.notificationEnabled} withLoader={false}/>
 							<SettingsField label="Comment" point={fields.comment}
-														 default={this.props[fields.comment]}/>
+							               default={this.props[fields.comment]}/>
 							<SettingsField label="Upvote" point={fields.upvote}
-														 default={this.props[fields.upvote]}/>
+							               default={this.props[fields.upvote]}/>
 							<SettingsField label="Upvote comment" point={fields.upvote_comment}
-														 default={this.props[fields.upvote_comment]}/>
+							               default={this.props[fields.upvote_comment]}/>
 							<SettingsField label="Follow" point={fields.follow}
-														 default={this.props[fields.follow]}/>
+							               default={this.props[fields.follow]}/>
 							<SettingsField label="Post" point={fields.post}
-														 default={this.props[fields.post]}/>
+							               default={this.props[fields.post]}/>
 						</div>
 					</div>
 				</div>

@@ -8,8 +8,8 @@ import {toggleFlag} from '../../../actions/flag';
 class ConfirmFlagModal extends React.Component {
 
 	confirm() {
-    this.props.closeModal("ConfirmFlagModal");
-    this.props.closeModal("MenuModal");
+		this.props.closeModal("ConfirmFlagModal");
+		this.props.closeModal("MenuModal");
 		this.props.toggleFlag(this.props.postIndex);
 	}
 
@@ -37,13 +37,15 @@ class ConfirmFlagModal extends React.Component {
 
 const mapDispatchToProps = dispatch => {
 	return {
-    toggleFlag: (postIndex) => {
-      dispatch(toggleFlag(postIndex));
-    },
+		toggleFlag: (postIndex) => {
+			dispatch(toggleFlag(postIndex));
+		},
 		closeModal: (postIndex) => {
-    	dispatch(closeModal(postIndex));
+			dispatch(closeModal(postIndex));
 		}
 	}
 };
 
-export default connect(() => {return {}}, mapDispatchToProps)(ConfirmFlagModal);
+export default connect(() => {
+	return {}
+}, mapDispatchToProps)(ConfirmFlagModal);

@@ -36,33 +36,37 @@ class Modal extends React.Component {
 		})
 	}
 
-  render() {
-    let styleBack = {backgroundColor: 'rgba(0, 0, 0, .7)'};
-    if (this.props.fullScreenMode) {
-        styleBack = {backgroundColor: '#000000'};
-    }
+	render() {
+		let styleBack = {backgroundColor: 'rgba(0, 0, 0, .7)'};
+		if (this.props.fullScreenMode) {
+			styleBack = {backgroundColor: '#000000'};
+		}
 		styleBack.alignItems = 'center';
 		if (this.body && this.container && (this.body.clientHeight >= this.container.clientHeight)) {
 			styleBack.alignItems = 'flex-start';
 		}
-    styleBack.zIndex = 1005;
-    return (
-      <div className="back_mods before-load-back_modal ov-scroll_modal"
-           onClick={this.clickOutside.bind(this)}
-           style={styleBack}
-           ref={ref => {this.container = ref}}
-      >
-        <div className="body_modal before-load_modal"
-             ref={ref => {this.body = ref}}
-        >
-          {this.props.body}
-        </div>
-        <ShowIf show={!mobileSize}>
-           <ReactResizeDetector handleWidth handleHeight onResize={this.update.bind(this)} />
-        </ShowIf>
-      </div>
-    );
-  }
+		styleBack.zIndex = 1005;
+		return (
+			<div className="back_mods before-load-back_modal ov-scroll_modal"
+			     onClick={this.clickOutside.bind(this)}
+			     style={styleBack}
+			     ref={ref => {
+				     this.container = ref
+			     }}
+			>
+				<div className="body_modal before-load_modal"
+				     ref={ref => {
+					     this.body = ref
+				     }}
+				>
+					{this.props.body}
+				</div>
+				<ShowIf show={!mobileSize}>
+					<ReactResizeDetector handleWidth handleHeight onResize={this.update.bind(this)}/>
+				</ShowIf>
+			</div>
+		);
+	}
 }
 
 const mapStateToProps = (state, props) => {

@@ -35,17 +35,17 @@ class Wallet extends React.Component {
 					</div>
 					<div className="body_wallet">
 						<WidgetToken backgroundImage="/images/wallet/cost.png" icon="" token="Account cost"
-												 value={cost} description={DESCRIPTION.COST}/>
+						             value={cost} description={DESCRIPTION.COST}/>
 						<WidgetToken backgroundImage="/images/wallet/steem.png" icon="" token="Steem"
-												 value={steem} description={DESCRIPTION.STEEM} textButton="TRANSFER" onClick={() => {
+						             value={steem} description={DESCRIPTION.STEEM} textButton="TRANSFER" onClick={() => {
 						}}/>
 						<WidgetToken backgroundImage="/images/wallet/sp.png" icon="" token="Steem Power"
-												 value={sp} description={DESCRIPTION.SP}/>
+						             value={sp} description={DESCRIPTION.SP}/>
 						<WidgetToken backgroundImage="/images/wallet/sbd.png" icon="" token="SBD"
-												 value={sbd} description={DESCRIPTION.SBD} textButton="TRANSFER" onClick={() => {
+						             value={sbd} description={DESCRIPTION.SBD} textButton="TRANSFER" onClick={() => {
 						}}/>
 					</div>
-					<TransactionHistory />
+					<TransactionHistory/>
 				</div>
 			</div>
 		);

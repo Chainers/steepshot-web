@@ -9,7 +9,7 @@ class Testing extends React.Component {
 			return null;
 		}
 		return (
-			<Wallet />
+			<Wallet/>
 		);
 	}
 }

@@ -74,7 +74,7 @@ export default combineReducers({
 	login,
 	scroll,
 	promoteModal,
-  images,
-  emptyRequestError,
+	images,
+	emptyRequestError,
 	transactionHistory
 });

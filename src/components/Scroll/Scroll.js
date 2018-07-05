@@ -22,10 +22,10 @@ class Scroll extends React.Component {
 		const {children, customScrollStyle} = this.props;
 		return (
 			<Scrollbars onScrollFrame={this.onScrollFrame.bind(this)}
-									style={this.props.style}
-									renderTrackVertical={() => {
-										return (<div className={'default_scroll ' + (customScrollStyle || '')}/>)
-									}}>
+			            style={this.props.style}
+			            renderTrackVertical={() => {
+				            return (<div className={'default_scroll ' + (customScrollStyle || '')}/>)
+			            }}>
 				<div className={this.props.className}>
 					{children}
 					<ReactResizeDetector handleHeight onResize={this.update.bind(this)}/>
@@ -39,7 +39,9 @@ Scroll.defaultProps = {
 	deltaForFetch: 0
 };
 
-const mapStateToProps = () => { return {}};
+const mapStateToProps = () => {
+	return {}
+};
 
 const mapDispatchToProps = (dispatch) => {
 	return {

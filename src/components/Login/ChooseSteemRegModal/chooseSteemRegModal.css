@@ -76,14 +76,17 @@
     .wrapper_choose-steem-reg-mod {
         max-width: 90vw;
     }
+
     .reg-services-items_choose-steem-reg-mod {
         flex-direction: column;
         align-items: center;
         padding-bottom: 15px;
     }
+
     .reg-service_choose-steem-reg-mod {
         padding: 15px 0 0 0;
     }
+
     .buttons_choose-steem-reg-mod button {
         padding: 10px 30px;
     }

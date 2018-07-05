@@ -83,7 +83,7 @@ class Menu extends React.Component {
 				<div className={this.state.fullScreen
 					? 'full-screen-content_menu'
 					: 'content_menu'}
-						 style={{height: this.state.contentHeight}}>
+				     style={{height: this.state.contentHeight}}>
 					{this.getItems()}
 				</div>
 				<ShowIf show={this.state.fullScreen}>

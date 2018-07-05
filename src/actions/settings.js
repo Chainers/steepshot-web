@@ -20,7 +20,7 @@ export function updateSettings(clickSaveButton) {
 		let settings = getStore().getState().settingsFields;
 		let checkedChanges = utils.equalsObjects(settings, storage.settings);
 		if (clickSaveButton) {
-      dispatch(pushMessage(checkedChanges ? Constants.SETTINGS_NOT_CHANGED_MESSAGE
+			dispatch(pushMessage(checkedChanges ? Constants.SETTINGS_NOT_CHANGED_MESSAGE
 				: Constants.SETTINGS_CHANGED_MESSAGE));
 		}
 		storage.settings = settings;

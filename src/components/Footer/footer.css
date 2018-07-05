@@ -70,13 +70,13 @@
 }
 
 @media (min-width: 561px) {
-    .sub-wraper_footer  {
+    .sub-wraper_footer {
         width: 720px;
     }
 }
 
 @media (min-width: 768px) {
-    .sub-wraper_footer  {
+    .sub-wraper_footer {
         width: 740px;
     }
 }
@@ -103,12 +103,15 @@
     .wrapper_footer {
         justify-content: center;
     }
+
     .copyright_footer {
         display: none;
     }
+
     .social-links_footer a {
         margin-left: 15px;
     }
+
     .social-links_footer .link-guidelines_footer {
         margin-left: 0;
     }

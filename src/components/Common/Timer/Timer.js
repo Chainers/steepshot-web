@@ -8,8 +8,10 @@ const MINUTES_IN_HOUR = 60;
 class Timer extends React.Component {
 
 	static defaultProps = {
-		onTimeout: () => {},
-		onTick: () => {},
+		onTimeout: () => {
+		},
+		onTick: () => {
+		},
 		waitingTime: 0
 	};
 
@@ -24,19 +26,19 @@ class Timer extends React.Component {
 
 	componentDidMount() {
 		if (this.props.staticTimer) {
-      this.timer = setInterval(() => {
-        this.tick()
-      }, 1000);
+			this.timer = setInterval(() => {
+				this.tick()
+			}, 1000);
 		}
 	}
 
 	componentWillReceiveProps(nextProps) {
 		if (this.state.waitingTime !== nextProps.waitingTime && !this.props.staticTimer) {
-      if (this.timer) clearInterval(this.timer);
+			if (this.timer) clearInterval(this.timer);
 			this.setState({targetTime: new Date().getTime() + nextProps.waitingTime * Constants.MILLISECONDS_IN_SECOND}, () => {
-        this.timer = setInterval(() => {
-          this.tick()
-        }, 1000);
+				this.timer = setInterval(() => {
+					this.tick()
+				}, 1000);
 			});
 		}
 	}

@@ -37,9 +37,9 @@ class LikesFlagsList extends React.Component {
 		}
 	}
 
-  componentWillUnmount() {
-    this.props.clearBodyHeight();
-  }
+	componentWillUnmount() {
+		this.props.clearBodyHeight();
+	}
 
 	componentDidUpdate() {
 		let currentBody = this.props.activeIndex ? this.flags : this.likes;
@@ -65,20 +65,20 @@ class LikesFlagsList extends React.Component {
 		let likesCondition = !likes.users || !likes.users.length;
 		let flagsCondition = !flags.users || !flags.users.length;
 		let commonLoader = true;
-    if (!likes.loading && !flags.loading) {
-      commonLoader = false;
-    }
+		if (!likes.loading && !flags.loading) {
+			commonLoader = false;
+		}
 		return (
 			<div className="container_lik-lis">
 				<CloseButton className="close-button_lik-lis" onClick={this.props.closeModal}/>
 				<TabsBar point="likesFlags"
-								 showLoader={false}
-								 alwaysShowNavigation={true}
+				         showLoader={false}
+				         alwaysShowNavigation={true}
 				>
 					<Tab name="Likes" empty={likesCondition && !flagsCondition}>
 						<Scroll style={{width: '100%', height: preferredBodyHeight, marginTop: 20}}
-										point={SCROLL_POINT_LIKES}
-										deltaForFetch={1000}>
+						        point={SCROLL_POINT_LIKES}
+						        deltaForFetch={1000}>
 							<UsersList
 								scrollPoint={SCROLL_POINT_LIKES}
 								isLikesFlags={true}
@@ -88,14 +88,14 @@ class LikesFlagsList extends React.Component {
 								commonLoader={commonLoader}
 							>
 								<ReactResizeDetector handleWidth handleHeight onResize={this.updateBodyHeight}
-																		 ref={ref => this.likes = ref}/>
+								                     ref={ref => this.likes = ref}/>
 							</UsersList>
 						</Scroll>
 					</Tab>
 					<Tab name="Flags" empty={flagsCondition && !likesCondition}>
 						<Scroll style={{width: '100%', height: preferredBodyHeight, marginTop: 20}}
-										point={SCROLL_POINT_FLAGS}
-										deltaForFetch={1000}>
+						        point={SCROLL_POINT_FLAGS}
+						        deltaForFetch={1000}>
 							<UsersList
 								scrollPoint={SCROLL_POINT_FLAGS}
 								point={point}
@@ -104,7 +104,7 @@ class LikesFlagsList extends React.Component {
 								commonLoader={commonLoader}
 							>
 								<ReactResizeDetector handleWidth handleHeight onResize={this.updateBodyHeight}
-																		 ref={ref => this.flags = ref}/>
+								                     ref={ref => this.flags = ref}/>
 							</UsersList>
 						</Scroll>
 					</Tab>

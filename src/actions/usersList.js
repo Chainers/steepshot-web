@@ -60,9 +60,9 @@ export function getUsersList(point) {
 
 	return (dispatch) => {
 		if (statePoint.options.query) {
-      if (statePoint.options.query.length < 3) {
-        return {type: 'EMPTY_GET_USERS'};
-      }
+			if (statePoint.options.query.length < 3) {
+				return {type: 'EMPTY_GET_USERS'};
+			}
 		}
 		dispatch(getUsersListRequest(point, statePoint.offset));
 		UserService.getUsersList(point.substr(0, point.indexOf('JSON_OPTIONS:')), statePoint.offset, LIMIT, statePoint.options)
@@ -100,14 +100,14 @@ export function getUsersList(point) {
 				};
 				dispatch(getUsersListSuccess(pointOptions, users));
 				if (statePoint.users.length < 17 && state.window.width > Constants.WINDOW.WIDE_SCREEN_WIDTH
-							&& state.window.height > Constants.WINDOW.MOBILE_START_WIDTH) {
+					&& state.window.height > Constants.WINDOW.MOBILE_START_WIDTH) {
 					dispatch(getUsersList(point));
 				}
 			})
 			.catch(error => {
 				let checkedError = serverErrorsList(error);
 				dispatch(getUsersListError(point, checkedError));
-      });
+			});
 	};
 }
 
@@ -134,7 +134,7 @@ export function updateUser(author) {
 				let updatedUser = {[author]: {...response.results[0], togglingFollow: false}};
 				dispatch(updateUserSuccess(updatedUser));
 			})
-			.catch( error => {
+			.catch(error => {
 				dispatch({
 					type: 'UPDATE_USER_ERROR',
 					error

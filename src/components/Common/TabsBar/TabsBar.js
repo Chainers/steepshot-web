@@ -11,7 +11,8 @@ class TabsBar extends React.Component {
 		className: '',
 		alwaysShowNavigation: false,
 		showLoader: true,
-		changeIndex: () => {}
+		changeIndex: () => {
+		}
 	};
 
 	componentDidUpdate() {
@@ -48,7 +49,7 @@ class TabsBar extends React.Component {
 				navItems.push(
 					<li role="presentation" key={index} className={styles}>
 						<a onClick={() => this.setIndex(index)}
-							 className="nav-link tab-head">
+						   className="nav-link tab-head">
 							{item.props.name}
 						</a>
 					</li>

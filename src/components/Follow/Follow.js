@@ -17,14 +17,14 @@ class Follow extends React.Component {
 				</ShowIf>
 				<ShowIf show={!this.props.changeFollow}>
 					<div className={this.props.isFollowed ? 'unfollow-button_follow' : 'follow-button_follow'}
-							 onClick={() => this.props.changeFollowFunc(this.props.profileUserName, this.props.isFollowed)}>
+					     onClick={() => this.props.changeFollowFunc(this.props.profileUserName, this.props.isFollowed)}>
 						{this.props.isFollowed ? 'Unfollow' : 'Follow'}
 					</div>
 				</ShowIf>
 				<ShowIf show={this.props.notificationEnabled}>
 					<ShowIf show={!this.props.changeSubscribe}>
-					<div className={this.props.isSubscribed ? 'unsubscribe_follow' : 'subscribe_follow'}
-							 onClick={this.props.changeSubscribeFunc}/>
+						<div className={this.props.isSubscribed ? 'unsubscribe_follow' : 'subscribe_follow'}
+						     onClick={this.props.changeSubscribeFunc}/>
 					</ShowIf>
 					<ShowIf show={this.props.changeSubscribe}>
 						<div className="subscribing_follow"/>

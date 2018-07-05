@@ -14,8 +14,8 @@ const TransactionFilter = ({filter, current, onChange}) => {
 			<div className="container_trx-filter">
 				{filter.map((operation, index) =>
 					<div className={'operation_trx-filter ' + (index === current ? 'active_trx-filter' : '')}
-							 key={index}
-							 onClick={() => onClick(index)}
+					     key={index}
+					     onClick={() => onClick(index)}
 					/>
 				)}
 			</div>

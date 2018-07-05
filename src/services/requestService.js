@@ -11,7 +11,7 @@ let config = Constants.SERVICES.steem;
 class RequestService {
 
 	static init(serviceName) {
-		switch(serviceName) {
+		switch (serviceName) {
 			case Constants.SERVICES.golos.name:
 				ChainService.init(new GolosService());
 				config = Constants.SERVICES.golos;
@@ -34,15 +34,15 @@ class RequestService {
 
 	static get(url, options) {
 		let fullUrl;
-    if (!url.includes('http')) {
-      fullUrl = `${config.baseUrl}/${url}${convertOptionsToRequestString(options)}`;
-    } else {
-      fullUrl = `${url}${convertOptionsToRequestString(options)}`;
+		if (!url.includes('http')) {
+			fullUrl = `${config.baseUrl}/${url}${convertOptionsToRequestString(options)}`;
+		} else {
+			fullUrl = `${url}${convertOptionsToRequestString(options)}`;
 		}
 		return fetch(fullUrl, {
 			method: 'GET'
 		})
-		.then(RequestService.processResponse)
+			.then(RequestService.processResponse)
 	}
 
 	static post(url, data) {

@@ -14,7 +14,7 @@ export function compressJPEG(blob, quality = 1) {
 				success(result) {
 					if (result.size > Constants.IMAGE.MAX_SIZE && quality.toFixed(1) > 0.1) {
 						quality -= 0.1;
-						compressJPEG(blob, quality).then( newResult => {
+						compressJPEG(blob, quality).then(newResult => {
 							resolve(newResult);
 						});
 					} else {

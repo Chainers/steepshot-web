@@ -1,6 +1,6 @@
 class DateFormatter {
 	static convertISOtoCustom(date) {
-		let monthNames = [ "",
+		let monthNames = ["",
 			"Jan", "Feb", "Mar",
 			"Apr", "May", "Jun", "Jul",
 			"Aug", "Sept", "Oct",

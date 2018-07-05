@@ -65,8 +65,8 @@ class UserProfile extends React.Component {
 							<div className="user-information">
 								<div className="pic-wrap clearfix">
 									<Avatar src={avatarSrc}
-													powerIndicator={this.props.isYourProfile}
-													sizes={Constants.USER_PROFILE_AVATAR_SIZE}
+									        powerIndicator={this.props.isYourProfile}
+									        sizes={Constants.USER_PROFILE_AVATAR_SIZE}
 									/>
 									<ShowIf show={!this.props.isYourProfile && this.props.isAuth}>
 										<Follow/>
@@ -74,7 +74,8 @@ class UserProfile extends React.Component {
 								</div>
 								<div className="name">{name}</div>
 								<div className="location">{location}</div>
-								<p className="word-wrap_brake-word">{renderHTML(MarkdownParser.parseTitle(this.props.profile.about))}</p>
+								<p
+									className="word-wrap_brake-word">{renderHTML(MarkdownParser.parseTitle(this.props.profile.about))}</p>
 								<p className="break--word">
 									<a className="website_use-pro" href={website} target="_blank">{website}</a>
 								</p>
@@ -98,26 +99,26 @@ class UserProfile extends React.Component {
 						<div className="col-xs-12 col-md-8 col-lg-9 position--unset">
 							<TabsBar point="userProfile" showLoader={false}>
 								<Tab name={this.props.profile['post_count'] + ' ' + Constants.POSTS_FILTERS.POSTS_USER.label}>
-										<PostsList
-											point={insertUsername(Constants.POSTS_FILTERS.POSTS_USER.point, this.props.username)}
-											wrapperModifier="posts-list clearfix type-2"
-											clearPostHeader={true}
-											isComponentVisible={this.props.activeIndex === 0}
-										/>
+									<PostsList
+										point={insertUsername(Constants.POSTS_FILTERS.POSTS_USER.point, this.props.username)}
+										wrapperModifier="posts-list clearfix type-2"
+										clearPostHeader={true}
+										isComponentVisible={this.props.activeIndex === 0}
+									/>
 								</Tab>
 								<Tab name={this.props.profile['following_count'] + ' ' + Constants.USERS_FILTERS.FOLLOWING.label}>
-										<UsersList
-											point={insertUsername(Constants.USERS_FILTERS.FOLLOWING.point, this.props.username)}
-											className="posts-list clearfix type-2"
-											isComponentVisible={this.props.activeIndex === 1}
-										/>
+									<UsersList
+										point={insertUsername(Constants.USERS_FILTERS.FOLLOWING.point, this.props.username)}
+										className="posts-list clearfix type-2"
+										isComponentVisible={this.props.activeIndex === 1}
+									/>
 								</Tab>
 								<Tab name={this.props.profile['followers_count'] + ' ' + Constants.USERS_FILTERS.FOLLOWERS.label}>
-										<UsersList
-											point={insertUsername(Constants.USERS_FILTERS.FOLLOWERS.point, this.props.username)}
-											className="posts-list clearfix type-2"
-											isComponentVisible={this.props.activeIndex === 2}
-										/>
+									<UsersList
+										point={insertUsername(Constants.USERS_FILTERS.FOLLOWERS.point, this.props.username)}
+										className="posts-list clearfix type-2"
+										isComponentVisible={this.props.activeIndex === 2}
+									/>
 								</Tab>
 							</TabsBar>
 						</div>

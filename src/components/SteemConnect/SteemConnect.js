@@ -22,4 +22,5 @@ const mapDispatchToProps = (dispatch) => {
 	}
 };
 
-export default connect(() => {}, mapDispatchToProps)(SteemConnect);
+export default connect(() => {
+}, mapDispatchToProps)(SteemConnect);
