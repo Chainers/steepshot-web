@@ -237,6 +237,10 @@
     align-items: center;
 }
 
+.curtain_pos-mod button {
+    font: 14px OpenSans-Semibold;
+}
+
 .title_pos-mod {
     margin-bottom: 20px;
     color: #000000;

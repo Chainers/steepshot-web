@@ -28,49 +28,59 @@ class BotsService {
             const sbdToUSD = courses['sbd_price'].toFixed(2);
             const state = getStore().getState();
             const promoteModalInfo = state.promoteModal;
-            let promoteAmount = +promoteModalInfo.promoteAmount;
-            let muchSuitableBots = [];
-            for (let i = 0; i < suitableBots.length; i++) {
-              if (suitableBots[i]['min_bid'] <= promoteAmount) {
-                if (
-                  suitableBots[i].next <= 100 * Constants.MILLISECONDS_IN_SECOND ||
-                  (!suitableBots[i]['accepts_steem'] && promoteModalInfo.selectedToken === 'STEEM') ||
-                  state.posts[promoteModalInfo.postIndex].postAge >= suitableBots[i]['max_post_age'] ||
-                  suitableBots[i]['is_disabled'] ||
-                  !BotsService.checkAmount(promoteAmount, steemToUSD, sbdToUSD, promoteModalInfo.selectedToken, suitableBots[i])
-                ) {
-                  continue;
-                }
-                if (muchSuitableBots.length >= 1) {
-                  if (muchSuitableBots[0].next > suitableBots[i].next) {
-                    muchSuitableBots.unshift(suitableBots[i]);
-                  } else {
-                    muchSuitableBots.push(suitableBots[i]);
-                  }
-                } else {
-                  muchSuitableBots.push(suitableBots[i]);
-                }
-              }
-            }
-            if (!muchSuitableBots.length) {
-              if (state.modals['SendBidModal']) {
-                getStore().dispatch(closeModal("SendBidModal"));
-              }
-              return Promise.reject(Constants.PROMOTE.FIND_BOT_ERROR);
-            }
-            let suitableBot = muchSuitableBots[0];
-            const options = {
-              username: suitableBot.name,
+            const permlink = promoteModalInfo.postIndex.replace(/\/[a-z\d-]+\/(.+)/, '$1');
+            const usersOptions = {
+              limit: state.posts[promoteModalInfo.postIndex].net_votes,
+              username: state.auth.user,
+              likes: 1
             };
-            return RequestService.get(`user/${suitableBot.name}/info`, options)
-              .then(response => {
-                suitableBot.avatar = response['profile_image'];
-                suitableBot.last = suitableBot.last / Constants.MILLISECONDS_IN_SECOND;
-                suitableBot.next = suitableBot.next / Constants.MILLISECONDS_IN_SECOND;
-                getStore().dispatch(addBot(suitableBot));
-                return Promise.resolve();
-              });
-          })
+            return RequestService.get(`post/${permlink}/voters`, usersOptions)
+              .then(usersResult => {
+                let promoteAmount = +promoteModalInfo.promoteAmount;
+                let muchSuitableBots = [];
+                for (let i = 0; i < suitableBots.length; i++) {
+                  if (suitableBots[i]['min_bid'] <= promoteAmount) {
+                    if (
+                      BotsService.checkUpvotedUsers(suitableBots[i].name, usersResult.results) ||
+                      suitableBots[i].next <= 100 * Constants.MILLISECONDS_IN_SECOND ||
+                      (!suitableBots[i]['accepts_steem'] && promoteModalInfo.selectedToken === 'STEEM') ||
+                      state.posts[promoteModalInfo.postIndex].postAge >= suitableBots[i]['max_post_age'] ||
+                      suitableBots[i]['is_disabled'] ||
+                      !BotsService.checkAmount(promoteAmount, steemToUSD, sbdToUSD, promoteModalInfo.selectedToken, suitableBots[i])
+                    ) {
+                      continue;
+                    }
+                    if (muchSuitableBots.length >= 1) {
+                      if (muchSuitableBots[0].next > suitableBots[i].next) {
+                        muchSuitableBots.unshift(suitableBots[i]);
+                      } else {
+                        muchSuitableBots.push(suitableBots[i]);
+                      }
+                    } else {
+                      muchSuitableBots.push(suitableBots[i]);
+                    }
+                  }
+                }
+                if (!muchSuitableBots.length) {
+                  if (state.modals['SendBidModal']) {
+                    getStore().dispatch(closeModal("SendBidModal"));
+                  }
+                  return Promise.reject(Constants.PROMOTE.FIND_BOT_ERROR);
+                }
+                let suitableBot = muchSuitableBots[0];
+                const botOptions = {
+                  username: suitableBot.name,
+                };
+                return RequestService.get(`user/${suitableBot.name}/info`, botOptions)
+                  .then(response => {
+                    suitableBot.avatar = response['profile_image'];
+                    suitableBot.last = suitableBot.last / Constants.MILLISECONDS_IN_SECOND;
+                    suitableBot.next = suitableBot.next / Constants.MILLISECONDS_IN_SECOND;
+                    getStore().dispatch(addBot(suitableBot));
+                    return Promise.resolve();
+                  });
+              })
+            });
       })
       .catch(error => {
         return Promise.reject(error);
@@ -90,6 +100,14 @@ class BotsService {
     return (userBidInUSD + bidsAmountInBot) < amountLimit - (amountLimit * 0.25);
   }
 
+  static checkUpvotedUsers(probablySuitableBot, usersArr) {
+    for (let i = 0; i < usersArr.length; i++) {
+      console.log(probablySuitableBot, usersArr[i].author);
+      if (probablySuitableBot === usersArr[i].author) {
+        return true;
+      }
+    }
+  }
 }
 
 export default BotsService;

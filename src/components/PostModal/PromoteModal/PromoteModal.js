@@ -35,7 +35,6 @@ class PromoteModal extends React.Component {
     this.props.setPromoteInputError('');
     this.props.setSelectError('');
     this.props.getAuthUserInfoSuccess({});
-    this.props.setSelectedIndex(0);
   }
 
   promoteByEnter(e) {
@@ -45,7 +44,7 @@ class PromoteModal extends React.Component {
   }
 
   promotePost() {
-    if (this.validPromoteInfo()) {
+    if (this.validPromoteInfo() && !this.props.searchingBot) {
       this.props.searchingBotRequest();
     }
   }
@@ -96,11 +95,9 @@ class PromoteModal extends React.Component {
   }
 
   renderOptions() {
-    let optionsArr = ['Choose token', 'STEEM', 'SBD'];
+    let optionsArr = ['STEEM', 'SBD'];
     return optionsArr.map( (item, index) => {
       return <option key={index}
-                     disabled={index === 0 ? 'disabled' : ''}
-                     style={index !== 0 ? {color: '#e74800'} : {}}
                      selected={index === this.props.activeIndex ? 'selected' : ''}>{item}
              </option>
     });
@@ -158,11 +155,13 @@ class PromoteModal extends React.Component {
 const mapStateToProps = (state) => {
   let promoteModal = state.promoteModal;
   let tokenNumber = '';
-  if (promoteModal.selectedToken === 'STEEM') {
-    tokenNumber = promoteModal.userInfo.steem_balance;
-  }
-  if (promoteModal.selectedToken === 'SBD') {
-    tokenNumber = promoteModal.userInfo.sbd_balance;
+  if (promoteModal.userInfo) {
+    if (promoteModal.selectedToken === 'STEEM') {
+      tokenNumber = promoteModal.userInfo.steem_balance;
+    }
+    if (promoteModal.selectedToken === 'SBD') {
+      tokenNumber = promoteModal.userInfo.sbd_balance;
+    }
   }
   return {
     ...promoteModal,

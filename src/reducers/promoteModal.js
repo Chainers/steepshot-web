@@ -2,7 +2,7 @@ import Constants from '../common/constants';
 
 const initialState = {
   promoteAmount: Constants.SERVICES.BOTS.MIN_BID_VALUE,
-  selectedToken: '',
+  selectedToken: 'STEEM',
   inputError: '',
   selectError: '',
   activeKey: '',
