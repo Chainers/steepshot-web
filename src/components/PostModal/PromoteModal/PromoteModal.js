@@ -1,10 +1,10 @@
-import * as React from 'react';
+import React from 'react';
 import {connect} from 'react-redux';
 import './promoteModal.css';
 import {closeModal} from '../../../actions/modal';
 import {
   addPostIndex, getAuthUserInfo, getAuthUserInfoError, getAuthUserInfoSuccess, searchingBotRequest, setPromoteValue,
-  setPromoteInputError, setSelectedIndex, setSelectError
+  setPromoteInputError, setSelectedIndex, setSelectError, setNoTokensForPomote
 } from '../../../actions/promoteModal';
 import Constants from '../../../common/constants';
 import {loadingEllipsis} from '../../../utils/loadingEllipsis';
@@ -35,6 +35,7 @@ class PromoteModal extends React.Component {
     this.props.setPromoteInputError('');
     this.props.setSelectError('');
     this.props.getAuthUserInfoSuccess({});
+    this.props.setNoTokensForPomote(false);
   }
 
   promoteByEnter(e) {
@@ -44,7 +45,7 @@ class PromoteModal extends React.Component {
   }
 
   promotePost() {
-    if (this.validPromoteInfo() && !this.props.searchingBot) {
+    if (!this.props.searchingBot && !this.props.infoLoading && this.validPromoteInfo()) {
       this.props.searchingBotRequest();
     }
   }
@@ -105,6 +106,7 @@ class PromoteModal extends React.Component {
 
   render() {
     let loadingDataOrError = this.props.selectError;
+    let closeText = 'CANCEL', noTokensBlock = null;
     if (this.props.infoLoading) {
       loadingDataOrError = this.props.userInfoErrorStatus ? this.props.userInfoErrorStatus : loadingEllipsis('Loading data');
     }
@@ -112,9 +114,18 @@ class PromoteModal extends React.Component {
     if (this.props.searchingBot) {
       findText = loadingEllipsis('LOOKING');
     }
+    let findBotButton = <button className="btn btn-default" onClick={this.promotePost.bind(this)}>{findText}</button>;
+    if (this.props.noTokensForPromote) {
+      closeText = 'OK';
+      noTokensBlock = <div className="no-tokens_promote-mod centered--flex">
+                        There's not enough tokens for promote in your wallet.
+                      </div>;
+      findBotButton = null;
+    }
     return (
       <div className="wrapper_promote-mod">
         <p className="title_promote-mod">PROMOTE POST</p>
+        {noTokensBlock}
         <p className="label_promote-mod">Token</p>
         <div className="body_promote-mod">
           <div className="select-wrapper_promote-mod">
@@ -144,8 +155,10 @@ class PromoteModal extends React.Component {
           <div className="error_promote-mod">{this.props.inputError}</div>
         </div>
         <div className="buttons_promote-mod">
-          <button className="btn btn-index" onClick={() => this.props.closeModal()}>CANCEL</button>
-          <button className="btn btn-default" onClick={this.promotePost.bind(this)}>{findText}</button>
+          <button className="btn btn-index"
+                  style={{marginRight: this.props.noTokensForPromote ? 10 : 20}}
+                  onClick={() => this.props.closeModal()}>{closeText}</button>
+          {findBotButton}
         </div>
       </div>
     );
@@ -203,6 +216,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     getAuthUserInfoError: (error) => {
       dispatch(getAuthUserInfoError(error));
+    },
+    setNoTokensForPomote: (param) => {
+      dispatch(setNoTokensForPomote(param));
     }
   }
 };

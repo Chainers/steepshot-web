@@ -110,6 +110,12 @@ export default function promoteModal(state = initialState, action) {
         blockedTimer: action.param
       };
 
+    case 'SET_NO_TOKENS_FOR_PROMOTE':
+      return {
+        ...state,
+        noTokensForPromote: action.param
+      };
+
     case 'LOGOUT_SUCCESS':
       return initialState;
 

@@ -41,12 +41,13 @@ class BotsService {
                 for (let i = 0; i < suitableBots.length; i++) {
                   if (suitableBots[i]['min_bid'] <= promoteAmount) {
                     if (
-                      BotsService.checkUpvotedUsers(suitableBots[i].name, usersResult.results) ||
                       suitableBots[i].next <= 100 * Constants.MILLISECONDS_IN_SECOND ||
                       (!suitableBots[i]['accepts_steem'] && promoteModalInfo.selectedToken === 'STEEM') ||
                       state.posts[promoteModalInfo.postIndex].postAge >= suitableBots[i]['max_post_age'] ||
                       suitableBots[i]['is_disabled'] ||
-                      !BotsService.checkAmount(promoteAmount, steemToUSD, sbdToUSD, promoteModalInfo.selectedToken, suitableBots[i])
+                      !BotsService.checkAmount(promoteAmount, steemToUSD, sbdToUSD, promoteModalInfo.selectedToken,
+                        suitableBots[i]) ||
+                      BotsService.checkUpvotedUsers(suitableBots[i].name, usersResult.results)
                     ) {
                       continue;
                     }
@@ -69,7 +70,7 @@ class BotsService {
                 }
                 let suitableBot = muchSuitableBots[0];
                 const botOptions = {
-                  username: suitableBot.name,
+                  username: suitableBot.name
                 };
                 return RequestService.get(`user/${suitableBot.name}/info`, botOptions)
                   .then(response => {
@@ -102,7 +103,6 @@ class BotsService {
 
   static checkUpvotedUsers(probablySuitableBot, usersArr) {
     for (let i = 0; i < usersArr.length; i++) {
-      console.log(probablySuitableBot, usersArr[i].author);
       if (probablySuitableBot === usersArr[i].author) {
         return true;
       }
