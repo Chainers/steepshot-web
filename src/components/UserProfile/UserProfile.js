@@ -56,7 +56,7 @@ class UserProfile extends React.Component {
 		let website = this.props.profile['website'];
 		let location = this.props.profile.location;
 		let balance = this.props.profile['estimated_balance'];
-		let avatar = this.props.profile['profile_image'];
+		let avatarSrc = this.props.profile['profile_image'] || Constants.NO_AVATAR;
 		return (
 			<div className="container">
 				<div className="g-content col-xs-12 clearfix" id="workspace">
@@ -64,7 +64,7 @@ class UserProfile extends React.Component {
 						<div className="col-xs-12 col-md-4 col-lg-3">
 							<div className="user-information">
 								<div className="pic-wrap clearfix">
-									<Avatar src={avatar}
+									<Avatar src={avatarSrc}
 													powerIndicator={this.props.isYourProfile}
 													sizes={Constants.USER_PROFILE_AVATAR_SIZE}
 									/>

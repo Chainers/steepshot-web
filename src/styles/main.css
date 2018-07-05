@@ -109,59 +109,10 @@ a {
     cursor: pointer;
 }
 
-.loader-blocker {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 3;
-}
-
-.loader {
-    border: 5px solid #f3f3f3;
-    border-radius: 50%;
-    border-top: 5px solid #e74800;
-    width: 40px;
-    height: 40px;
-    -webkit-animation: spin 2s linear infinite;
-    animation: spin 2s linear infinite;
-}
-
-.full-screen-loader {
-    width: 22px;
-    height: 22px;
-    border: 3px solid #f3f3f3;
-    border-top: 3px solid #d0021b;
-    border-radius: 50%;
-    -webkit-animation: spin 2s linear infinite;
-    animation: spin 2s linear infinite;
-}
-
-@-webkit-keyframes spin {
-    0% {
-        -webkit-transform: rotate(0deg);
-    }
-    100% {
-        -webkit-transform: rotate(360deg);
-    }
-}
-
-@keyframes spin {
-    0% {
-        transform: rotate(0deg);
-    }
-    100% {
-        transform: rotate(360deg);
-    }
-}
-
 .card-field {
     background: rgba(255, 255, 255, 1);
     box-shadow: 0 30px 30px 0 rgba(204, 204, 204, .5);
     margin-bottom: 40px;
-}
-
-.btn-index:hover {
-    color: #e74800 !important;
 }
 
 .btn-default:hover {
@@ -176,10 +127,6 @@ a {
     transition: .2s;
     border: 1px transparent;
     background: linear-gradient(to right, rgb(255, 121, 4), rgb(255, 22, 5)) !important;
-}
-
-.card-wrap {
-    min-width: 257px !important;
 }
 
 @media screen and (max-width: 767px) {
@@ -771,14 +718,6 @@ i {
     width: 100%
 }
 
-.post-card .card-wrap {
-    background: #fff;
-    border: 1px solid #e7e7e7;
-    border-top: none;
-    border-bottom-left-radius: 4px;
-    border-bottom-right-radius: 4px;
-}
-
 .amount {
     font-size: 12px;
 }
@@ -851,37 +790,36 @@ input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer
     user-select: none;
     text-overflow: ellipsis;
     overflow: hidden;
-    white-space: nowrap
+    white-space: nowrap;
+    transition: .2s;
 }
 
 .btn.focus, .btn:focus, .btn:hover {
     outline: 0;
-    color: #fff;
+    color: #ffffff;
     text-decoration: none
 }
 
 .btn.active, .btn:active {
     outline: 0;
-    box-shadow: inset 0 1px 3px rgba(0, 0, 0, .1)
 }
 
-.btn-index {
+.btn-index, .btn-index:focus {
     border-color: #e7e7e7;
-    background: #fff;
-    color: #0f181e
+    background: #ffffff;
+    color: #0f181e;
 }
 
-.btn-index:focus, .btn-index:hover {
-    background: #fff;
-    color: #0f181e
+.btn-index:hover {
+    color: #e74800 !important;
 }
 
-.btn-index.active, .btn-index:active {
-    background: #fff;
-    color: #0f181e
+.btn-index:active {
+    border: 1px solid #e7e7e7;
+    box-shadow: inset 0 1px 3px 0 #e7e7e7;
 }
 
-.btn-index.disabled, .btn-index[disabled] {
+.btn-index[disabled] {
     background: #f1f1f1;
     opacity: .3
 }
@@ -1089,29 +1027,6 @@ input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer
     margin-bottom: 25px;
     display: flex;
     align-items: center;
-}
-
-.user-information .pic_ava-com {
-    position: relative;
-    width: 100px;
-    height: 100px;
-    overflow: hidden;
-    border-radius: 50%;
-    float: left;
-    margin-right: 25px;
-}
-
-.user-information .pic_ava-com img {
-    display: block;
-    position: absolute;
-    max-width: 100%;
-    max-height: 100%;
-    width: auto;
-    height: auto;
-    top: 50%;
-    left: 50%;
-    -webkit-transform: translate(-50%, -50%);
-    transform: translate(-50%, -50%)
 }
 
 .user-information .btn-wrap {
@@ -1330,10 +1245,6 @@ input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer
 .user-panel .controls {
     float: right;
     margin-left: 30px
-}
-
-.user-panel .controls .wrap-controls {
-    border-left: 1px solid #f4f4f6
 }
 
 .user-panel .controls .btn-control {
@@ -1881,6 +1792,10 @@ input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer
 }
 
 .post__image-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #e7e7e7;
     min-width: 90vw;
     z-index: 3;
 }
@@ -1969,13 +1884,6 @@ input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer
         min-height: 100%;
         max-width: calc(1024px - 10vw);
     }
-}
-
-.post__image-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: #e7e7e7;
 }
 
 .posts-list.type-2 {

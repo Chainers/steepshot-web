@@ -2,7 +2,7 @@ import Constants from '../common/constants';
 
 const initialState = {
   promoteAmount: Constants.SERVICES.BOTS.MIN_BID_VALUE,
-  selectedToken: '',
+  selectedToken: 'STEEM',
   inputError: '',
   selectError: '',
   activeKey: '',
@@ -108,6 +108,12 @@ export default function promoteModal(state = initialState, action) {
       return {
         ...state,
         blockedTimer: action.param
+      };
+
+    case 'SET_NO_TOKENS_FOR_PROMOTE':
+      return {
+        ...state,
+        noTokensForPromote: action.param
       };
 
     case 'LOGOUT_SUCCESS':

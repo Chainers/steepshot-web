@@ -10,6 +10,29 @@
     margin-right: 10px;
 }
 
+.user-information .pic_ava-com {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    overflow: hidden;
+    border-radius: 50%;
+    float: left;
+    margin-right: 25px;
+}
+
+.user-information .pic_ava-com img {
+    display: block;
+    position: absolute;
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%)
+}
+
 .border-indicator_ava-com {
     position: absolute;
     transform: rotate(-90deg);

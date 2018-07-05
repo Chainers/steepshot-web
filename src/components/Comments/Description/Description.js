@@ -25,7 +25,7 @@ class Description extends React.Component {
 
   openPromoteModal() {
     let modalOption = {
-      body: (<PromoteModal index={this.props.postIndex}/>),
+      body: <PromoteModal index={this.props.postIndex}/>
     };
     this.props.openModal("PromoteModal", modalOption);
   }

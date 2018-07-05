@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import {connect} from 'react-redux';
 import './sendBidModal.css';
 import {closeModal} from '../../../../actions/modal';
@@ -36,6 +36,9 @@ class SendBidModal extends React.Component {
   }
 
   sendBid() {
+    if (this.props.sendingBid) {
+      return;
+    }
     if (this.input) {
       if (!this.props.activeKey) {
         this.props.setActiveKeyError(Constants.PROMOTE.EMPTY_KEY_INPUT);
@@ -116,8 +119,8 @@ class SendBidModal extends React.Component {
             </div>
             <div className="error_promote-mod">{this.props.activeKeyError}</div>
           </div>
-          <div className="promise-about-key_promote-mod centered--flex">
-            We store your key in the browser. We never send it to the server.
+          <div className="promise-about-key_send-bid-mod centered--flex">
+            Your key is securely used to sign the transfer transaction. It is never sent to any server, including Steepshot servers.
           </div>
         </ShowIf>
         <div className="buttons_promote-mod">

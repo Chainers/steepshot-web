@@ -28,6 +28,7 @@ import {utils} from '../../utils/utils';
 import {setComponentSize} from '../../utils/setComponentSize';
 import {setCommentEditState} from '../../actions/comments';
 import AuthService from '../../services/authService';
+import LowNSFWFilter from './LowNSFWFilter';
 
 class PostModal extends React.Component {
 
@@ -135,45 +136,6 @@ class PostModal extends React.Component {
     }
 	}
 
-	lowNSFWFilter() {
-		let fullScreenMode = this.props.fullScreenMode;
-		let backgroundStyle = {backgroundColor: fullScreenMode ? 'rgba(0, 0, 0, .96)' : 'rgba(255, 255, 255, .96)'};
-		let colorTitleStyle = {color: fullScreenMode ? '#ffffff' : '#000000'};
-		let colorMessageStyle = {color: fullScreenMode ? '#f3f3f2' : '#696969'};
-		let buttonColor = fullScreenMode ? {color: '#ffffff', backgroundColor: 'rgba(0, 0, 0, .96)'}
-			: {color: '#000000', backgroundColor: 'rgba(255, 255, 255, .96)'};
-		return (
-			<div className="container-nsfw-filter_pos-mod">
-				<ShowIf show={this.props.post['is_nsfw'] && !this.props.showAll}>
-					<div className="curtain_pos-mod" style={backgroundStyle}>
-						<p className="title-low-nsfw_pos-mod" style={colorTitleStyle}>NSFW content</p>
-						<p className="message-low-nsfw_pos-mod"
-							 style={colorMessageStyle}
-						>This content is for adults only. Not recommended for children or sensitive individuals.</p>
-						<button className="btn btn-index"
-										onClick={() => this.props.setPostModalOptions({showAll: true})}
-										style={buttonColor}
-						>Show me
-						</button>
-					</div>
-				</ShowIf>
-				<ShowIf show={this.props.post['is_low_rated'] && !this.props.showAll && !this.props.post['is_nsfw']}>
-					<div className="curtain_pos-mod" style={backgroundStyle}>
-						<p className="title-low-nsfw_pos-mod" style={colorTitleStyle}>Low rated content</p>
-						<p className="message-low-nsfw_pos-mod"
-							 style={colorMessageStyle}
-						>This content is hidden due to low ratings.</p>
-						<button className="btn btn-index"
-										onClick={() => this.props.setPostModalOptions({showAll: true})}
-										style={buttonColor}
-						>Show me
-						</button>
-					</div>
-				</ShowIf>
-			</div>
-		)
-	}
-
 	loadingFilter(isFullScreen) {
     let holderClass = isFullScreen ? 'before-load-full-screen_pos-mod' : 'before-load-curtain_pos-mod';
     if (!this.props.newImageLoading) return null;
@@ -198,7 +160,9 @@ class PostModal extends React.Component {
 			<div className="image-container_pos-mod"
 					 style={this.props.style.imgCont || previousImageWidth}
 					 onDoubleClick={(e) => this.setFullScreen(!this.props.fullScreenMode, e)}>
-				{this.lowNSFWFilter()}
+				<LowNSFWFilter post={this.props.post}
+											 showAll={this.props.showAll}
+											 fullScreenMode={this.props.fullScreenMode}/>
 				{this.loadingFilter(false)}
 				<button className="btn btn-default btn-xs"
 								onClick={(e) => this.copyLinkToClipboard(e)}>Copy link
@@ -242,7 +206,9 @@ class PostModal extends React.Component {
 				<div className="full-image-wrap_pos-mod"
 						 style={this.props.style.imgCont || previousImageWidth}
 						 onDoubleClick={(e) => this.setFullScreen(!this.props.fullScreenMode, e)}>
-					{this.lowNSFWFilter()}
+					<LowNSFWFilter post={this.props.post}
+												 showAll={this.props.showAll}
+												 fullScreenMode={this.props.fullScreenMode}/>
           {this.loadingFilter(true)}
 					<button className="btn btn-default btn-xs full-screen-share_pos-mod"
 									onClick={(e) => this.copyLinkToClipboard(e)}>Copy link

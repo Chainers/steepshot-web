@@ -49,14 +49,15 @@
     background-color: #fafafa;
 }
 
-.promise-about-key_promote-mod {
-    height: 30px;
-    padding: 0 10px;
+.promise-about-key_send-bid-mod {
+    padding: 5px 10px;
     border-radius: 6px;
     background-color: #fafafa;
     font: 10px OpenSans-Regular;
     color: #979b9e;
     margin-bottom: 20px;
+    max-width: 440px;
+    text-align: center;
 }
 
 .red-timer_send-bid-mod {

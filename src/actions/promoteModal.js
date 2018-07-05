@@ -31,6 +31,20 @@ function setBidRequest(state) {
   }
 }
 
+function searchingNewBotError(error) {
+  return {
+    type: 'SEARCHING_NEW_BOR_ERROR',
+    error
+  }
+}
+
+export function setNoTokensForPomote(param) {
+  return {
+    type: 'SET_NO_TOKENS_FOR_PROMOTE',
+    param
+  }
+}
+
 export function getAuthUserInfoError(error) {
   return {
     type: 'GET_AUTH_USER_INFO_ERROR',
@@ -103,11 +117,8 @@ export function setPromoteValue(value) {
 }
 
 export function setSelectedIndex(index) {
-  let token = '';
+  let token = 'STEEM';
   if (index === 1) {
-    token = 'STEEM';
-  }
-  if (index === 2) {
     token = 'SBD';
   }
   return {
@@ -128,6 +139,9 @@ export function getAuthUserInfo() {
           steem_balance: result.balance,
         }));
         dispatch(setAuthUserInfoLoading(false));
+        if (result.sbd_balance <= 0.5 || result.balance <= 0.5) {
+          dispatch(setNoTokensForPomote(true));
+        }
       })
       .catch(error => {
         dispatch(getAuthUserInfoError(error));
@@ -177,7 +191,7 @@ export function searchingNewBot() {
         dispatch(setBlockedTimer(false));
       })
       .catch((error) => {
-        console.log(error);
+        dispatch(searchingNewBotError(error));
         dispatch(pushErrorMessage(Constants.PROMOTE.FIND_BOT_ERROR));
         dispatch(setRedTimer(false));
         dispatch(setBlockedTimer(false));
@@ -220,14 +234,14 @@ export function sendBid(steemLink, activeKey, botName) {
         let newValue;
         if (promoteModal.selectedToken === 'STEEM') {
           newValue = {
-            steem_balance: state.userInfo.steem_balance - promoteModal.promoteAmount,
+            steem_balance: (promoteModal.userInfo.steem_balance - promoteModal.promoteAmount).toFixed(3) / 1,
             sbd_balance: promoteModal.userInfo.sbd_balance
           }
         }
         if (promoteModal.selectedToken === 'SBD') {
           newValue = {
-            sbd_balance: promoteModal.sbd_balance - promoteModal.promoteAmount,
-            steem_balance: promoteModal.userInfo.steem_balance
+            steem_balance: promoteModal.userInfo.steem_balance,
+            sbd_balance: (promoteModal.userInfo.sbd_balance - promoteModal.promoteAmount).toFixed(3) / 1
           }
         }
         dispatch(getAuthUserInfoSuccess(newValue));

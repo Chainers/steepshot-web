@@ -51,6 +51,10 @@
     border: solid 1px #f4f4f6;
 }
 
+.select_promote-mod option {
+    color: #e74800;
+}
+
 .select-wrapper_promote-mod::before {
     content: '';
     position: absolute;
@@ -109,8 +113,15 @@
     transition: .2s;
 }
 
-.buttons_promote-mod button:first-child {
-    margin-right: 20px;
+.no-tokens_promote-mod {
+    padding: 7px 10px;
+    border-radius: 6px;
+    background-color: #fafafa;
+    font: 10px OpenSans-Regular;
+    color: #979b9e;
+    margin-bottom: 10px;
+    max-width: 440px;
+    text-align: center;
 }
 
 @media (max-width: 510px) {

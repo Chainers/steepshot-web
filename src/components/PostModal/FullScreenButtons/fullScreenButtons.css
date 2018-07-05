@@ -65,3 +65,13 @@
 .post__image-container:hover .buttons-wrapper_fsf {
     opacity: 1;
 }
+
+.full-screen-loader_fsf {
+    width: 22px;
+    height: 22px;
+    border: 3px solid #f3f3f3;
+    border-top: 3px solid #d0021b;
+    border-radius: 50%;
+    -webkit-animation: spin 2s linear infinite;
+    animation: spin 2s linear infinite;
+}
