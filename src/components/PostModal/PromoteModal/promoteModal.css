@@ -51,6 +51,10 @@
     border: solid 1px #f4f4f6;
 }
 
+.select_promote-mod option {
+    color: #e74800;
+}
+
 .select-wrapper_promote-mod::before {
     content: '';
     position: absolute;

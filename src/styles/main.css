@@ -811,7 +811,7 @@ input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer
 }
 
 .btn-index:hover {
-    color: #e74800;
+    color: #e74800 !important;
 }
 
 .btn-index:active {

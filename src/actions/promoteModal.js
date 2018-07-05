@@ -110,11 +110,8 @@ export function setPromoteValue(value) {
 }
 
 export function setSelectedIndex(index) {
-  let token = '';
+  let token = 'STEEM';
   if (index === 1) {
-    token = 'STEEM';
-  }
-  if (index === 2) {
     token = 'SBD';
   }
   return {
