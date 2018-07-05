@@ -70,7 +70,7 @@ export default function auth(state = initialState, action) {
 		case 'UPDATE_VOTING_POWER':
 			let checkedVotingPower = action.voting_power;
 			if (checkedVotingPower > 100) {
-        checkedVotingPower = 100
+				checkedVotingPower = 100
 			}
 			return {
 				...state,

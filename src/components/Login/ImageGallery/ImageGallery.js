@@ -40,7 +40,7 @@ class ImageGallery extends React.Component {
 			if (opacity !== 100) {
 				fideToNextTimeout = setTimeout(this.fadeToNext, this.props.swappingSpeed);
 			} else {
-				swapPhotoTimeout = setTimeout(this.startSwapPhoto,	this.props.showTime);
+				swapPhotoTimeout = setTimeout(this.startSwapPhoto, this.props.showTime);
 			}
 		});
 	}
@@ -57,8 +57,8 @@ class ImageGallery extends React.Component {
 			<div className="container_img-gal">
 				<img src={images[currentImage]} className="image_img-gal" style={{opacity: opacity / 100}} alt=""/>
 				<img src={images[(currentImage + 1) % 10]} className="image_img-gal"
-						 style={{opacity: (100 - opacity) / 100}}
-						 alt=""/>
+				     style={{opacity: (100 - opacity) / 100}}
+				     alt=""/>
 			</div>
 		)
 	}

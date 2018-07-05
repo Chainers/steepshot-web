@@ -119,14 +119,14 @@ export default function posts(state = {}, action) {
 			return copyState;
 
 		case 'DELETE_COMMENT_SUCCESS':
-      return {
-        ...state,
-        [action.index]: {
-          ...state[action.index],
-          postDeleting: false,
+			return {
+				...state,
+				[action.index]: {
+					...state[action.index],
+					postDeleting: false,
 					body: '*deleted*'
-        }
-      };
+				}
+			};
 
 		case 'EDIT_COMMENT_SUCCESS':
 			return {
@@ -176,38 +176,38 @@ export default function posts(state = {}, action) {
 
 		case 'SET_SLIDER_TIMEOUT':
 			return {
-        ...state,
-        [action.index]: {
-          ...state[action.index],
-          sliderWidth: action.sliderWidth
-        }
+				...state,
+				[action.index]: {
+					...state[action.index],
+					sliderWidth: action.sliderWidth
+				}
 			};
 
 		case 'POWER_OF_LIKE_CHANGE_STATUS':
 			return {
-        ...state,
-        [action.index]: {
-          ...state[action.index],
-          changeStatus: action.changeStatus
-        }
+				...state,
+				[action.index]: {
+					...state[action.index],
+					changeStatus: action.changeStatus
+				}
 			};
 
 		case 'SET_GALLERY_IMG':
 			return {
-        ...state,
-        [action.postIndex]: {
-          ...state[action.postIndex],
-          imageNumberInGallery: action.imageNumberInGallery
-        }
+				...state,
+				[action.postIndex]: {
+					...state[action.postIndex],
+					imageNumberInGallery: action.imageNumberInGallery
+				}
 			};
 
 		case 'SET_IMAGE_COMPLETE_STATUS':
 			return {
-        ...state,
-        [action.postIndex]: {
-          ...state[action.postIndex],
-          completeStatus: action.isComplete
-        }
+				...state,
+				[action.postIndex]: {
+					...state[action.postIndex],
+					completeStatus: action.isComplete
+				}
 			};
 
 		default:

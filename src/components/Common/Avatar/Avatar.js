@@ -16,28 +16,28 @@ class Avatar extends React.Component {
 
 	constructor(props) {
 		super(props);
-    if (this.props.src && this.props.src !== Constants.NO_AVATAR) {
-    	let sendImageAction = false;
-    	if (this.props.headerAvatar || this.props.sizes === Constants.USER_PROFILE_AVATAR_SIZE) {
-        sendImageAction = true;
+		if (this.props.src && this.props.src !== Constants.NO_AVATAR) {
+			let sendImageAction = false;
+			if (this.props.headerAvatar || this.props.sizes === Constants.USER_PROFILE_AVATAR_SIZE) {
+				sendImageAction = true;
 			}
-      ImagesService.getImagesWithProxy(this.props.src,
+			ImagesService.getImagesWithProxy(this.props.src,
 				`https://steemitimages.com/${2 * this.props.sizes}x${2 * this.props.sizes}/`, sendImageAction);
-    }
+		}
 	}
 
 	componentDidMount() {
-    this.powerIndicator(this.props.votingPower);
+		this.powerIndicator(this.props.votingPower);
 	}
 
 	componentWillReceiveProps(nextProps) {
 		this.powerIndicator(nextProps.votingPower);
 	}
 
-  shouldComponentUpdate(nextProps) {
-    if (utils.equalsObjects(nextProps, this.props)) return false;
-    return true;
-  }
+	shouldComponentUpdate(nextProps) {
+		if (utils.equalsObjects(nextProps, this.props)) return false;
+		return true;
+	}
 
 	powerIndicator(votingPower) {
 		if (this.canvas) {
@@ -108,25 +108,27 @@ class Avatar extends React.Component {
 			<div className={this.props.powerIndicator ? 'position--relative' : ''}>
 				<ShowIf show={this.props.powerIndicator}>
 					<canvas ref={ref => this.canvas = ref}
-									className="border-indicator_ava-com"
-									onTouchStart={this.showTip.bind(this)}
-									onTouchEnd={this.hideTip.bind(this)}
-									onMouseEnter={this.showTip.bind(this)}
+					        className="border-indicator_ava-com"
+					        onTouchStart={this.showTip.bind(this)}
+					        onTouchEnd={this.hideTip.bind(this)}
+					        onMouseEnter={this.showTip.bind(this)}
 					/>
 					<ShowIf show={!this.props.headerAvatar && this.props.isTip}>
 						<div ref={ref => this.tipVotingPower = ref}
-								 className="tip-voting-power_ava-com prevent--selection"
-								 onTouchStart={() => {}}
-								 onMouseEnter={() => {}}
-								 onMouseLeave={this.hideTip.bind(this)}
+						     className="tip-voting-power_ava-com prevent--selection"
+						     onTouchStart={() => {
+						     }}
+						     onMouseEnter={() => {
+						     }}
+						     onMouseLeave={this.hideTip.bind(this)}
 						>
 							<p>Power of like: {this.props.votingPower}%</p>
 						</div>
 					</ShowIf>
 				</ShowIf>
 				<AvaImgBackground style={this.props.style}
-												  src={this.props.src}
-												  sizes={this.props.sizes}/>
+				                  src={this.props.src}
+				                  sizes={this.props.sizes}/>
 			</div>
 		)
 	}

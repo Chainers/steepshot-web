@@ -35,6 +35,8 @@ import login from './login';
 import scroll from './scroll';
 import promoteModal from './promoteModal';
 import images from './images';
+import emptyRequestError from './emptyRequestError';
+import transactionHistory from "./transactionHistory";
 
 export default combineReducers({
 	clipboard,
@@ -72,5 +74,7 @@ export default combineReducers({
 	login,
 	scroll,
 	promoteModal,
-  images
+	images,
+	emptyRequestError,
+	transactionHistory
 });

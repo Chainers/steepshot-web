@@ -6,12 +6,12 @@ import Body from './Body/Body';
 
 const App = ({children}) => global.isServerSide ?
 	(<div className="container_app">{children}</div>)
-	:(<div className="container_app">
-		<Advertising/>
-		<Header/>
-		<FunctionalUtils/>
-		<Body>{children}</Body>
-	</div>
-);
+	: (<div className="container_app">
+			<Advertising/>
+			<Header/>
+			<FunctionalUtils/>
+			<Body>{children}</Body>
+		</div>
+	);
 
 export default App;

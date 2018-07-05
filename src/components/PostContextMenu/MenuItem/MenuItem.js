@@ -36,16 +36,16 @@ class MenuItem extends React.Component {
 		};
 		return (
 			<div className="wrapper_men-ite"
-					 onClick={this.props.callback}
-					 onMouseEnter={this.onMouseEnter.bind(this)}
-					 onMouseLeave={this.onMouseLeave.bind(this)}>
+			     onClick={this.props.callback}
+			     onMouseEnter={this.onMouseEnter.bind(this)}
+			     onMouseLeave={this.onMouseLeave.bind(this)}>
 				<Delimiter hasDelimiter={this.props.hasDelimiter}
-									 fullScreen={this.props.fullScreen}>
+				           fullScreen={this.props.fullScreen}>
 					<div className="box_men-ite" style={boxStyle}>
 						<img src={this.state.mouseEnter ? this.props.revertImg : this.props.img}
-								 className="img_men_ite" style={contentStyle} alt={this.props.alt}/>
+						     className="img_men_ite" style={contentStyle} alt={this.props.alt}/>
 						<span className="text-menu_men-ite"
-									style={contentStyle}>{this.props.alt}</span>
+						      style={contentStyle}>{this.props.alt}</span>
 					</div>
 				</Delimiter>
 			</div>

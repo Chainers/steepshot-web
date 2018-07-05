@@ -22,10 +22,9 @@ class Flag extends React.Component {
 			};
 			this.props.openModal("ConfirmFlagModal", modalOption);
 		} else {
- 			this.props.toggleFlag(this.props.postIndex);
+			this.props.toggleFlag(this.props.postIndex);
 		}
 	}
-
 
 
 	render() {
@@ -38,16 +37,16 @@ class Flag extends React.Component {
 		}
 		if (this.props.isComment) {
 			let flagComment = 'Flag';
-      if (this.props.flag) {
-        flagComment = 'Unflag';
-      }
-      if (this.props.flagLoading) {
-        flagComment = loadingEllipsis('Pending');
-      }
+			if (this.props.flag) {
+				flagComment = 'Unflag';
+			}
+			if (this.props.flagLoading) {
+				flagComment = loadingEllipsis('Pending');
+			}
 			return (
 				<span className={this.props.flagLoading ? 'not-hover_comment' : 'flag_comment'}
-							style={{marginRight: 18}}
-							onClick={this.toggleFlag.bind(this)}>{flagComment}</span>
+				      style={{marginRight: 18}}
+				      onClick={this.toggleFlag.bind(this)}>{flagComment}</span>
 			)
 		}
 		return (
@@ -83,4 +82,4 @@ const mapDispatchToProps = (dispatch) => {
 	}
 };
 
-export default  connect(mapStateToProps, mapDispatchToProps)(Flag);
+export default connect(mapStateToProps, mapDispatchToProps)(Flag);

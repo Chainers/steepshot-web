@@ -8,17 +8,17 @@ import {pushErrorMessage, pushMessage} from './pushMessage';
 
 export function continuePublishing(data) {
 	return dispatch => {
-    dispatch(closeModal('PlagiarismTrackingModal'));
-    dispatch(editPostRequest());
-    PostService.afterCheckingPlagiarism(data.operations)
-      .then(() => {
-        dispatch(pushMessage(Constants.POST_SUCCESSFULLY_CREATED));
-        dispatch(editPostSuccess());
-        dispatch(push(`/@${AuthService.getUsername()}`));
-      })
-      .catch(error => {
-        dispatch(editPostReject(error));
-        dispatch(pushErrorMessage(error));
-      });
+		dispatch(closeModal('PlagiarismTrackingModal'));
+		dispatch(editPostRequest());
+		PostService.afterCheckingPlagiarism(data.operations)
+			.then(() => {
+				dispatch(pushMessage(Constants.POST_SUCCESSFULLY_CREATED));
+				dispatch(editPostSuccess());
+				dispatch(push(`/@${AuthService.getUsername()}`));
+			})
+			.catch(error => {
+				dispatch(editPostReject(error));
+				dispatch(pushErrorMessage(error));
+			});
 	}
 }

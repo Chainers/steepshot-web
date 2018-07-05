@@ -10,10 +10,7 @@ import Tags from './Tags/Tags';
 import Vote from './Vote/Vote';
 import PostModal from '../../PostModal/PostModal';
 import {openPostModal} from '../../../actions/postModal';
-import {
-  playVideo, setPowerLikeInd, setPowerLikeTimeout, setVideoTime,
-  stopVideo
-} from '../../../actions/post';
+import {playVideo, setPowerLikeInd, setPowerLikeTimeout, setVideoTime, stopVideo} from '../../../actions/post';
 import LoadingSpinner from '../../LoadingSpinner/index';
 import Avatar from '../../Common/Avatar/Avatar';
 import Likes from './Likes/Likes';
@@ -32,10 +29,10 @@ class Post extends React.Component {
 
 	constructor(props) {
 		super(props);
-    if (this.props.imageUrl && this.props.imageUrl !== Constants.NO_IMAGE) {
-      ImagesService.getImagesWithProxy(this.props.imageUrl,
+		if (this.props.imageUrl && this.props.imageUrl !== Constants.NO_IMAGE) {
+			ImagesService.getImagesWithProxy(this.props.imageUrl,
 				`https://steemitimages.com/${2 * Constants.DEF_POST_SIZE}x${2 * Constants.DEF_POST_SIZE}/`);
-    }
+		}
 	}
 
 	openPostModal() {
@@ -45,23 +42,23 @@ class Post extends React.Component {
 		this.props.openModal(this.props.point, this.props.index, modalOption);
 	}
 
-  blockLinkToSinglePost() {
-    return (
-    	<Link to={this.props.linkToSinglePost}
-						target="_blank"
-						className="open-in-new-tab_post"
-						onClick={(e) => Post.preventModalForNewTab(e)}/>
-    )
-  }
+	blockLinkToSinglePost() {
+		return (
+			<Link to={this.props.linkToSinglePost}
+			      target="_blank"
+			      className="open-in-new-tab_post"
+			      onClick={(e) => Post.preventModalForNewTab(e)}/>
+		)
+	}
 
-  static preventModalForNewTab(e) {
+	static preventModalForNewTab(e) {
 		if (e.ctrlKey || e.metaKey) {
 			e.stopPropagation();
 			return true;
 		}
-    let event = e ? e : window.event;
-    (event.preventDefault) ? event.preventDefault() : event.returnValue = false;
-    return false;
+		let event = e ? e : window.event;
+		(event.preventDefault) ? event.preventDefault() : event.returnValue = false;
+		return false;
 	}
 
 	commentNumber() {
@@ -84,8 +81,8 @@ class Post extends React.Component {
 
 
 	stopVideoPlaying() {
-    this.props.stopVideo(this.props.index);
-    this.player.seekTo(0);
+		this.props.stopVideo(this.props.index);
+		this.player.seekTo(0);
 	}
 
 	renderImage() {
@@ -93,10 +90,10 @@ class Post extends React.Component {
 			return (
 				<div className="video-cont-wrap_vid-con">
 					<div className="card-pic post_vid-con" onClick={this.openPostModal.bind(this)}
-							 onMouseEnter={() => this.props.playVideo(this.props.index)}
-							 onMouseLeave={this.stopVideoPlaying.bind(this)}
+					     onMouseEnter={() => this.props.playVideo(this.props.index)}
+					     onMouseLeave={this.stopVideoPlaying.bind(this)}
 					>
-            {this.blockLinkToSinglePost()}
+						{this.blockLinkToSinglePost()}
 						<ShowIf show={!this.props.playing}>
 							<div className="video-time-indicator_post">
 								{this.props.time || '00.00'}
@@ -153,7 +150,7 @@ class Post extends React.Component {
 				<div className="post-card position--relative">
 					<ShowIf show={this.props.postDeleting}>
 						<div className="delete-loader_post"
-								 style={{height: this.props.clearPostHeader ? '496px' : '536px'}}
+						     style={{height: this.props.clearPostHeader ? '496px' : '536px'}}
 						>
 							<LoadingSpinner style={{position: 'absolute'}} loaderClass='deleting-loader'/>
 						</div>
@@ -166,9 +163,9 @@ class Post extends React.Component {
 									locale='en_US'
 									style={{float: 'left'}}/>
 								<PostContextMenu style={{float: 'right', height: '22px', width: '22px', marginLeft: '10px'}}
-																 className="post-context-menu_post"
-																 item={this.props}
-																 index={this.props.index}/>
+								                 className="post-context-menu_post"
+								                 item={this.props}
+								                 index={this.props.index}/>
 							</div>
 							<Link to={authorLink} className="user">
 								<div className="photo">
@@ -193,12 +190,12 @@ class Post extends React.Component {
 									<div className="position--relative">
 										<div className="card-control-stop"/>
 										<Vote postIndex={this.props.index}
-                          powerLikeIndPlace="post"/>
+										      powerLikeIndPlace="post"/>
 									</div>
 								</div>
 							</div>
 							<div className="card-preview_post">
-                {renderHTML(MarkdownParser.parseTitle(this.props.title))}
+								{renderHTML(MarkdownParser.parseTitle(this.props.title))}
 								<Tags tags={this.props.tags}/>
 							</div>
 							<div className="number-of-comments_post" onClick={this.openPostModal.bind(this)}>
@@ -214,11 +211,11 @@ class Post extends React.Component {
 
 const mapStateToProps = (state, props) => {
 	let post = state.posts[props.index];
-  let isGolosService = state.services.name === Constants.SERVICES.golos.name;
+	let isGolosService = state.services.name === Constants.SERVICES.golos.name;
 	if (post) {
 		const media = post.media[0];
-    let linkToSinglePost = (isGolosService ? '/' + Constants.SERVICES.golos.name : '')
-      + '/post' + post.url.replace(/\/[\w-.]+/, '');
+		let linkToSinglePost = (isGolosService ? '/' + Constants.SERVICES.golos.name : '')
+			+ '/post' + post.url.replace(/\/[\w-.]+/, '');
 		let isGallery = false;
 		if (post.media.length > 1) {
 			isGallery = true;
@@ -228,7 +225,7 @@ const mapStateToProps = (state, props) => {
 			...post,
 			imageUrl,
 			isGallery,
-      linkToSinglePost,
+			linkToSinglePost,
 			authUser: state.auth.user
 		};
 	} else {

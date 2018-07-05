@@ -64,41 +64,42 @@ class UsersList extends React.Component {
 
 	renderUsers() {
 		if (this.props.users) {
-      if (this.props.commonLoader && !this.props.users.length) {
-        return null;
-      }
-      if (!this.props.users.length && (this.props.commonLoader === false)) {
-        return (
+			if (this.props.commonLoader && !this.props.users.length) {
+				return null;
+			}
+			if (!this.props.users.length && (this.props.commonLoader === false)) {
+				return (
 					<div className="empty-query-message">
-            {Constants.EMPTY_QUERY}
+						{Constants.EMPTY_QUERY}
 					</div>
-        );
-      }
-      let users = [];
-      this.props.users.forEach((user, index) => {
-        users.push(
+				);
+			}
+			let users = [];
+			this.props.users.forEach((user, index) => {
+				users.push(
 					<User
 						key={index}
 						index={this.props.users[index]}
 					/>,
-        );
-      });
-      return users;
-    }
+				);
+			});
+			return users;
+		}
 	}
 
 	render() {
+		const {scrollPoint, isComponentVisible, hasMore, users, className, children, loading} = this.props;
 		return (
 			<InfinityScroll
-				point={this.props.scrollPoint}
+				point={scrollPoint}
 				fetch={this.getUsersList.bind(this)}
-				hasMore={this.props.isComponentVisible && this.props.hasMore && this.props.users.length > 0}
+				hasMore={isComponentVisible && hasMore && users.length > 0}
 			>
-				<div className={'body_use-lis ' + this.props.className}>
+				<div className={'body_use-lis ' + className}>
 					{this.renderUsers()}
-					{this.props.children}
+					{children}
 				</div>
-				<ShowIf show={this.props.loading}>
+				<ShowIf show={loading}>
 					<div className="spinner_use-lis" key="usersListLoader"><LoadingSpinner/></div>
 				</ShowIf>
 			</InfinityScroll>

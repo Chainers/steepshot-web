@@ -121,15 +121,15 @@ class PostService {
 			.catch(() => {
 				let operation = getDefaultPostOperation(post.title, post.tags, post.description, permlink);
 				if (!isComment) {
-          operation[1].title = '*deleted*';
-          operation[1].body = '*deleted*';
-          if (post.json_metadata.tags.length > 2) {
-            post.json_metadata.tags.splice(1, post.json_metadata.tags.length - 2);
-          }
-          operation[1].json_metadata = JSON.stringify(post.json_metadata);
+					operation[1].title = '*deleted*';
+					operation[1].body = '*deleted*';
+					if (post.json_metadata.tags.length > 2) {
+						post.json_metadata.tags.splice(1, post.json_metadata.tags.length - 2);
+					}
+					operation[1].json_metadata = JSON.stringify(post.json_metadata);
 				}
 				if (isComment) {
-          operation = CommentService.getDefaultCommentOperation(post.parent_author, post.parent_permlink, post.author,
+					operation = CommentService.getDefaultCommentOperation(post.parent_author, post.parent_permlink, post.author,
 						permlink, '*deleted*');
 				}
 				return ChainService.addPostDataToBlockchain([operation]);

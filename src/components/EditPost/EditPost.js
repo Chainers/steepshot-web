@@ -2,8 +2,20 @@ import React from 'react';
 import {connect} from 'react-redux';
 import TextInput from '../Common/TextInput/TextInput';
 import {
-  addTag, changeImage, closeTimer, createPost, editClearAll, editPost, editPostClear, imageNotFound, imageRotate,
-  removeTag, setDragAndDropHover, setEditPostImageError, setImageContainerSize, setInitDataForEditPost
+	addTag,
+	changeImage,
+	closeTimer,
+	createPost,
+	editClearAll,
+	editPost,
+	editPostClear,
+	imageNotFound,
+	imageRotate,
+	removeTag,
+	setDragAndDropHover,
+	setEditPostImageError,
+	setImageContainerSize,
+	setInitDataForEditPost
 } from '../../actions/editPost';
 import EditTags from '../Common/EditTags/EditTags';
 import ShowIf from '../Common/ShowIf';
@@ -33,17 +45,17 @@ class EditPost extends React.Component {
 		this.correctDragAndDropImage = this.correctDragAndDropImage.bind(this);
 	}
 
-  componentDidMount() {
-    window.addEventListener('drop', this.correctDragAndDropImage);
-    window.addEventListener('dragover', this.correctDragAndDropImage);
-    documentTitle();
-  }
+	componentDidMount() {
+		window.addEventListener('drop', this.correctDragAndDropImage);
+		window.addEventListener('dragover', this.correctDragAndDropImage);
+		documentTitle();
+	}
 
-  componentWillUnmount() {
-    this.props.editClearAll();
-    window.removeEventListener('drop', this.correctDragAndDropImage);
-    window.removeEventListener('dragover', this.correctDragAndDropImage);
-  }
+	componentWillUnmount() {
+		this.props.editClearAll();
+		window.removeEventListener('drop', this.correctDragAndDropImage);
+		window.removeEventListener('dragover', this.correctDragAndDropImage);
+	}
 
 	componentWillReceiveProps(nextProps) {
 		documentTitle();
@@ -57,26 +69,26 @@ class EditPost extends React.Component {
 	}
 
 	preventDefaultStopPropagation(e) {
-    e.preventDefault();
-    e.stopPropagation();
+		e.preventDefault();
+		e.stopPropagation();
 	}
 
-  correctDragAndDropImage(e) {
+	correctDragAndDropImage(e) {
 		if (!this.inputField) {
-      this.preventDefaultStopPropagation(e);
+			this.preventDefaultStopPropagation(e);
 			return;
-    }
-    if (!this.props.isNew || !this.inputField.contains(e.target)) {
-      this.preventDefaultStopPropagation(e);
-    }
-  }
+		}
+		if (!this.props.isNew || !this.inputField.contains(e.target)) {
+			this.preventDefaultStopPropagation(e);
+		}
+	}
 
-  imageSetDrag(e, isHover) {
-    this.preventDefaultStopPropagation(e);
-    if (isHover) {
-      this.props.setDragAndDropHover(isHover);
+	imageSetDrag(e, isHover) {
+		this.preventDefaultStopPropagation(e);
+		if (isHover) {
+			this.props.setDragAndDropHover(isHover);
 		} else {
-      this.props.setDragAndDropHover(isHover)
+			this.props.setDragAndDropHover(isHover)
 		}
 	}
 
@@ -155,10 +167,10 @@ class EditPost extends React.Component {
 				</ShowIf>
 				<div className={'container_edi-pos' + (this.props.loading ? ' blur-blocker_edi-pos' : '')}>
 					<div className={'image-container_edi-pos' + (this.props.dragHover ? ' drag-hover_edi-pos' : '')}
-							 style={{
-								 height: this.props.height,
-								 cursor: this.props.isNew ? 'pointer' : 'default'
-							 }}
+					     style={{
+						     height: this.props.height,
+						     cursor: this.props.isNew ? 'pointer' : 'default'
+					     }}
 					>
 						<ShowIf show={utils.isEmptyString(this.props.src)}>
 							<div className="choose-container_edi-pos">
@@ -170,20 +182,20 @@ class EditPost extends React.Component {
 						</ShowIf>
 						<ShowIf show={utils.isNotEmptyString(this.props.src)}>
 							<img className="image_edi-pos"
-									 src={this.props.src}
-									 style={{
-										 transform: `rotate(${this.props.rotate}deg)`,
-										 maxHeight: this.props.rotate % 180 ? this.props.width : '100%',
-										 maxWidth: this.props.rotate % 180 ? '100%' : this.props.width,
-									 }}
-									 alt='current'
-									 ref={ref => this.image = ref}
-									 onLoad={() => this.setImageContainerSize(0)}
-									 onError={this.props.setImageNotFound}
+							     src={this.props.src}
+							     style={{
+								     transform: `rotate(${this.props.rotate}deg)`,
+								     maxHeight: this.props.rotate % 180 ? this.props.width : '100%',
+								     maxWidth: this.props.rotate % 180 ? '100%' : this.props.width,
+							     }}
+							     alt='current'
+							     ref={ref => this.image = ref}
+							     onLoad={() => this.setImageContainerSize(0)}
+							     onError={this.props.setImageNotFound}
 							/>
 							<ShowIf show={this.props.isNew && !this.props.isGif}>
 								<div className="rotate-button_edi-pos"
-										 onClick={() => this.props.imageRotate(this.image)}
+								     onClick={() => this.props.imageRotate(this.image)}
 								/>
 							</ShowIf>
 							<ShowIf show={this.props.imageNotFound}>
@@ -194,11 +206,11 @@ class EditPost extends React.Component {
 						</ShowIf>
 						<ShowIf show={this.props.isNew}>
 							<input className="file-input_edi-pos"
-										 type="file"
-										 onChange={this.imageChanged.bind(this)}
-										 ref={ref => this.inputField = ref}
-										 onDragEnter={(e) => this.imageSetDrag(e, true)}
-										 onDragLeave={(e) => this.imageSetDrag(e, false)}
+							       type="file"
+							       onChange={this.imageChanged.bind(this)}
+							       ref={ref => this.inputField = ref}
+							       onDragEnter={(e) => this.imageSetDrag(e, true)}
+							       onDragLeave={(e) => this.imageSetDrag(e, false)}
 							/>
 						</ShowIf>
 					</div>
@@ -208,37 +220,37 @@ class EditPost extends React.Component {
 						</div>
 					</ShowIf>
 					<TextInput title="Title"
-										 point={Constants.TEXT_INPUT_POINT.TITLE}
-										 multiline={false}
-										 required={true}
-										 value={this.props.initData.title}
-										 maxLength={255}/>
+					           point={Constants.TEXT_INPUT_POINT.TITLE}
+					           multiline={false}
+					           required={true}
+					           value={this.props.initData.title}
+					           maxLength={255}/>
 					<TextInput title="Tags"
-										 maxLength={this.props.tagsMaxLength}
-										 point={Constants.TEXT_INPUT_POINT.TAGS}
-										 multiline={false}
-										 description={"Enter tags with spaces, but not more than " + this.props.tagsAmount}
-										 noValidCharacters="[^a-zA-Zа-яА-Я0-9_]"
-										 keyPressEvents={[{
-											 keys: [Constants.KEYS.SPACE, Constants.KEYS.ENTER],
-											 func: () => this.props.addTag()
-										 }]}>
+					           maxLength={this.props.tagsMaxLength}
+					           point={Constants.TEXT_INPUT_POINT.TAGS}
+					           multiline={false}
+					           description={"Enter tags with spaces, but not more than " + this.props.tagsAmount}
+					           noValidCharacters="[^a-zA-Zа-яА-Я0-9_]"
+					           keyPressEvents={[{
+						           keys: [Constants.KEYS.SPACE, Constants.KEYS.ENTER],
+						           func: () => this.props.addTag()
+					           }]}>
 						<EditTags value={this.props.tags}
-											onChange={this.props.removeTag}/>
+						          onChange={this.props.removeTag}/>
 					</TextInput>
 					<TextInput title="Description"
-										 point={Constants.TEXT_INPUT_POINT.DESCRIPTION}
-										 multiline={true}
-										 maxHeight={50000}
-										 value={this.props.initData.description}
-										 description="Description is limited to 2048 characters"/>
+					           point={Constants.TEXT_INPUT_POINT.DESCRIPTION}
+					           multiline={true}
+					           maxHeight={50000}
+					           value={this.props.initData.description}
+					           description="Description is limited to 2048 characters"/>
 					<div className="buttons-container_edi-pos">
 						<button onClick={this.props.editPostClear}
-										className="btn btn-index">CLEAR
+						        className="btn btn-index">CLEAR
 						</button>
 						<button onClick={this.submit.bind(this)}
-										className="btn btn-default"
-										disabled={this.props.isNew && !this.props.canCreate}
+						        className="btn btn-default"
+						        disabled={this.props.isNew && !this.props.canCreate}
 						>
 							{this.getButtonText()}
 						</button>
@@ -251,9 +263,9 @@ class EditPost extends React.Component {
 	getButtonText() {
 		if (!this.props.canCreate) {
 			return (<Timer waitingTime={this.props.waitingTime}
-										 staticTimer={false}
-										 onTimeout={this.props.closeTimer}
-										 style={{fontSize: 13}}/>)
+			               staticTimer={false}
+			               onTimeout={this.props.closeTimer}
+			               style={{fontSize: 13}}/>)
 		}
 		return this.props.isNew ? 'CREATE NEW POST' : 'UPDATE POST'
 	}
@@ -261,14 +273,14 @@ class EditPost extends React.Component {
 
 const mapStateToProps = (state, props) => {
 	const serviceName = Constants.SERVICES[state.services.name];
-  const location = state.router.location || props.location || {};
-  const urlArr = location.pathname.split('/');
+	const location = state.router.location || props.location || {};
+	const urlArr = location.pathname.split('/');
 	let postUrl = `${urlArr[2]}/${urlArr[3]}/${urlArr[4]}`;
 	if (!urlArr[2] || !urlArr[3] || !urlArr[4]) {
 		postUrl = undefined;
 	}
 	return {
-    ...state.editPost,
+		...state.editPost,
 		postUrl: postUrl,
 		isNew: !state.editPost.initData.src,
 		tagsMaxLength: serviceName ? serviceName.TAGS.MAX_LENGTH : 0,
@@ -317,7 +329,7 @@ const mapDispatchToProps = (dispatch) => {
 		setEditPostImageError: (message) => {
 			dispatch(setEditPostImageError(message))
 		},
-    setDragAndDropHover: (dragHover) => {
+		setDragAndDropHover: (dragHover) => {
 			dispatch(setDragAndDropHover(dragHover))
 		}
 	};

@@ -56,7 +56,8 @@
     "sc2-sdk": "^1.0.2",
     "slick-carousel": "^1.8.1",
     "steem": "^0.7.1",
-    "timeago-react": "^2.0.0"
+    "timeago-react": "^2.0.0",
+    "why-did-you-update": "^0.1.1"
   },
   "devDependencies": {
     "babel-plugin-transform-ensure-ignore": "^0.1.0",

@@ -23,12 +23,12 @@ class Description extends React.Component {
 		});
 	}
 
-  openPromoteModal() {
-    let modalOption = {
-      body: <PromoteModal index={this.props.postIndex}/>
-    };
-    this.props.openModal("PromoteModal", modalOption);
-  }
+	openPromoteModal() {
+		let modalOption = {
+			body: <PromoteModal index={this.props.postIndex}/>
+		};
+		this.props.openModal("PromoteModal", modalOption);
+	}
 
 	render() {
 		return (
@@ -40,7 +40,7 @@ class Description extends React.Component {
 				</ShowIf>
 				<p className="word-wrap_brake-word">{renderHTML(MarkdownParser.parseTitle(this.props.title))}</p>
 				<div className={(this.state.isDescriptionOpened || (this.props.description.length < 140))
-							? 'collapse-opened' : 'collapse-closed'}>
+					? 'collapse-opened' : 'collapse-closed'}>
 					{renderHTML(MarkdownParser.parse(this.props.description))}
 					<Tags tags={this.props.tags}/>
 					<a className="lnk-more" onClick={this.openDescription.bind(this)}>Show more</a>
@@ -53,20 +53,20 @@ class Description extends React.Component {
 const mapStateToProps = (state) => {
 	const postIndex = state.postModal.currentIndex;
 	const post = state.posts[postIndex];
-  return {
-    postIndex,
-  	isGolos: state.services.name === 'golos',
+	return {
+		postIndex,
+		isGolos: state.services.name === 'golos',
 		isSelfPost: state.auth.user === post.author,
 		oldForPromote: post.postAge > 4
-  }
+	}
 };
 
 const mapDispatchToProps = (dispatch) => {
-  return {
-    openModal: (index, option) => {
-    	dispatch(openModal(index, option));
+	return {
+		openModal: (index, option) => {
+			dispatch(openModal(index, option));
 		}
-  }
+	}
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Description);

@@ -33,10 +33,12 @@ class ConfirmDeleteModal extends React.Component {
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-    deletePostAfterConfirm: (postIndex, startDeleting) => {
-    	dispatch(deletePostAfterConfirm(postIndex, startDeleting))
+		deletePostAfterConfirm: (postIndex, startDeleting) => {
+			dispatch(deletePostAfterConfirm(postIndex, startDeleting))
 		}
 	}
 };
 
-export default connect(() => {return {}}, mapDispatchToProps)(ConfirmDeleteModal);
+export default connect(() => {
+	return {}
+}, mapDispatchToProps)(ConfirmDeleteModal);

@@ -9,7 +9,7 @@
     position: absolute;
     left: 0;
     margin: 0;
-    transition: top .2s ease,font .2s ease;
+    transition: top .2s ease, font .2s ease;
     color: #979b9e;
     line-height: 1.6;
     top: 10px;

@@ -4,8 +4,12 @@ import ShowIf from '../ShowIf';
 import ReactResizeDetector from 'react-resize-detector';
 import {connect} from 'react-redux';
 import {
-  blurredTextInput, focusedTextInput, initTextInput, setTextInputState, setTextInputError,
-  clearTextInputState
+	blurredTextInput,
+	clearTextInputState,
+	focusedTextInput,
+	initTextInput,
+	setTextInputError,
+	setTextInputState
 } from '../../../actions/textInput';
 import './textInput.css';
 import Constants from '../../../common/constants';
@@ -56,9 +60,9 @@ class TextInput extends React.Component {
 		if (this.input && nextProps.focused) {
 			this.input.focus();
 		}
-    if (this.input && !nextProps.focused) {
-      this.input.blur();
-    }
+		if (this.input && !nextProps.focused) {
+			this.input.blur();
+		}
 		return true;
 	}
 
@@ -70,7 +74,7 @@ class TextInput extends React.Component {
 		let newValue = utils.cloneObject(event.target.value);
 		newValue = this._removeInvalidCharacters(newValue);
 		if (this.props.error) {
-      this.props.setTextInputError(Constants.TEXT_INPUT_POINT.TITLE, '');
+			this.props.setTextInputError(Constants.TEXT_INPUT_POINT.TITLE, '');
 		}
 		if (newValue !== this.props.text) {
 			this._updateTextValue(newValue);
@@ -130,11 +134,11 @@ class TextInput extends React.Component {
 	}
 
 	_keyUp(e) {
-    let keyCode = e.keyCode || e.which;
-    if (keyCode === 0 || keyCode === 229) {
-      keyCode = this.input.value.charCodeAt(this.input.value.length - 1);
-    }
-    this._callFunctionsFromProps(keyCode);
+		let keyCode = e.keyCode || e.which;
+		if (keyCode === 0 || keyCode === 229) {
+			keyCode = this.input.value.charCodeAt(this.input.value.length - 1);
+		}
+		this._callFunctionsFromProps(keyCode);
 	}
 
 	render() {
@@ -145,36 +149,36 @@ class TextInput extends React.Component {
 			<div className="container_tex-inp">
 				<div className="input-container_tex-inp">
           <textarea className={'area_tex-inp input-text_tex-inp' + this.areaModifier}
-										onChange={this.onChange.bind(this)}
-										onKeyUp={this._keyUp.bind(this)}
-										value={this.props.text}
-										maxLength={this.props.maxLength}
-										ref={ref => this.input = ref}
-										style={{
-											padding: this.props.areaPadding + 'px 0',
-											fontSize: this.props.fontSize + 'px',
-											height: this.props.prefAreaHeight,
-											minHeight: this.props.minAreaHeight
-										}}
-										onFocus={() => this.props.focusedTextInput(this.props.point)}
-										onBlur={() => this.props.blurredTextInput(this.props.point)}
-										disabled={this.props.disabled}
-					/>
+                    onChange={this.onChange.bind(this)}
+                    onKeyUp={this._keyUp.bind(this)}
+                    value={this.props.text}
+                    maxLength={this.props.maxLength}
+                    ref={ref => this.input = ref}
+                    style={{
+	                    padding: this.props.areaPadding + 'px 0',
+	                    fontSize: this.props.fontSize + 'px',
+	                    height: this.props.prefAreaHeight,
+	                    minHeight: this.props.minAreaHeight
+                    }}
+                    onFocus={() => this.props.focusedTextInput(this.props.point)}
+                    onBlur={() => this.props.blurredTextInput(this.props.point)}
+                    disabled={this.props.disabled}
+          />
 					<label className={'title_tex-inp ' + this.props.focusedStyle}
-								 onClick={() => this.input.focus()}
-								 style={this.props.smallFont ? {fontSize: '12px'} : {}}>
+					       onClick={() => this.input.focus()}
+					       style={this.props.smallFont ? {fontSize: '12px'} : {}}>
 						{this.props.title}
 						<ShowIf show={this.props.required}>
 							<span className="required_tex-inp"> *</span>
 						</ShowIf>
 					</label>
 					<div className={'hidden-div_tex-inp' + this.areaModifier}
-							 ref={ref => this.hiddenDiv = ref}
-							 style={{
-								 fontSize: this.props.fontSize + 'px',
-								 lineHeight: this.props.lineHeight + 'px',
-								 minHeight: this.props.lineHeight
-							 }}
+					     ref={ref => this.hiddenDiv = ref}
+					     style={{
+						     fontSize: this.props.fontSize + 'px',
+						     lineHeight: this.props.lineHeight + 'px',
+						     minHeight: this.props.lineHeight
+					     }}
 					>
 						{this.props.text + '\n'}
 						<ReactResizeDetector handleWidth handleHeight onResize={this.resizeHiddenDiv.bind(this)}/>
@@ -215,7 +219,7 @@ const mapDispatchToProps = (dispatch) => {
 		setTextInputState: (point, state) => {
 			dispatch(setTextInputState(point, state));
 		},
-    setTextInputError: (point, message) => {
+		setTextInputError: (point, message) => {
 			dispatch(setTextInputError(point, message));
 		},
 		focusedTextInput: (point) => {

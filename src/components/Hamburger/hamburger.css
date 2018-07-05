@@ -33,10 +33,9 @@
 }
 
 .pressed_hamburger .icon_hamburger {
-    transform: scale3d(.8,.8,.8);
+    transform: scale3d(.8, .8, .8);
     background: 0 0;
 }
-
 
 .pressed_hamburger .icon_hamburger:after, .pressed_hamburger .icon_hamburger:before {
     transform-origin: 50% 50%;

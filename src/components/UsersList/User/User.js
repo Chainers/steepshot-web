@@ -18,12 +18,12 @@ const User = ({user, authUser, changeFollow}) => {
 									</span>;
 	}
 	return (
-		<div className="container_user" >
+		<div className="container_user">
 			<div className="ava-name-wrap_user">
 				<Link to={`/@${user.author}`}>
 					<Avatar src={avatarSrc}
-									style={{width: 60, height: 60, position: 'static'}}
-									sizes={Constants.USER_CARD_AVATAR_SIZE}/>
+					        style={{width: 60, height: 60, position: 'static'}}
+					        sizes={Constants.USER_CARD_AVATAR_SIZE}/>
 				</Link>
 				<div className="name_user">
 					<Link to={`/@${user.author}`}>
@@ -38,14 +38,14 @@ const User = ({user, authUser, changeFollow}) => {
 						<ShowIf show={!user.has_followed}>
 							<div className="follow-btn_user" onClick={() => changeFollow(user.author, user.has_followed)}>
 								<img src="/images/userProfile/follow.svg"
-										 alt="toggle follow"
+								     alt="toggle follow"
 								/>
 							</div>
 						</ShowIf>
 						<ShowIf show={user.has_followed}>
 							<div className="following_user">
 								<img src="/images/userProfile/followed.svg"
-										 alt="toggle follow"
+								     alt="toggle follow"
 								/>
 							</div>
 						</ShowIf>

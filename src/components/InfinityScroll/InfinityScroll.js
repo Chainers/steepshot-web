@@ -4,7 +4,7 @@ import {connect} from 'react-redux';
 class InfinityScroll extends React.Component {
 
 	componentWillReceiveProps(nextProps) {
-		if (nextProps.shouldFetch !== this.props.shouldFetch) {
+		if (nextProps.shouldFetch !== this.props.shouldFetch && this.props.hasMore) {
 			this.props.fetch();
 		}
 	}

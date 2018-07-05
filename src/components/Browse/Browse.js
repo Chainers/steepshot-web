@@ -57,7 +57,7 @@ class Browse extends React.Component {
 		}
 		return (
 			<div className="container">
-				<div id="workspace" className="g-content clearfix">
+				<div id="workspace" className="g-content">
 					<TabsBar point="browser" showLoader={false} changeIndex={this.changeIndex.bind(this)}>
 						<Tab name="Hot">
 							<PostsList

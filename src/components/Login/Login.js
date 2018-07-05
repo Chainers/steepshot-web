@@ -50,10 +50,10 @@ class Login extends React.Component {
 	openRegisterSite(event) {
 		event.preventDefault();
 		if (this.props.chooseSteem) {
-      let modalOption = {
-        body: (<ChooseSteemRegModal/>),
-      };
-      this.props.openModal("ChooseSteemRegModal", modalOption);
+			let modalOption = {
+				body: (<ChooseSteemRegModal/>),
+			};
+			this.props.openModal("ChooseSteemRegModal", modalOption);
 		} else {
 			window.open('https://golos.io/create_account');
 		}
@@ -69,11 +69,11 @@ class Login extends React.Component {
 		let passwordValue = this.password.value;
 		nameValue = nameValue.replace(/\s+/g, '');
 		nameValue = nameValue.replace(/@([\w-.]+)/, '$1');
-    passwordValue = passwordValue.replace(/\s+/g, '');
+		passwordValue = passwordValue.replace(/\s+/g, '');
 		this.props.login(nameValue.toLowerCase(), passwordValue);
 	}
 
-  loginWithSteemConnect() {
+	loginWithSteemConnect() {
 		window.location.replace(SteemConnect.getLoginUrl() + '&expires_in=6048000');
 	}
 
@@ -106,7 +106,9 @@ class Login extends React.Component {
 								<div className="welcome-description_login">
 									Platform that rewards people for sharing their lifestyle and visual experience
 								</div>
-								<button className="guidelines-btn_login" onClick={() => {this.props.historyPush('/guide')}}>
+								<button className="guidelines-btn_login" onClick={() => {
+									this.props.historyPush('/guide')
+								}}>
 									LINK TO OUR GUIDELINES
 								</button>
 							</div>
@@ -121,11 +123,11 @@ class Login extends React.Component {
 								<div className="input-block_login">
 									<label className="input-label_login">Username</label>
 									<input type="text" className="input_login" ref={ref => this.name = ref}
-												 onChange={() => this.clearLoginErrors()}/>
+									       onChange={() => this.clearLoginErrors()}/>
 									<label className="error-msg_login">{usernameError}</label>
 									<label className="input-label_login">Posting Key</label>
 									<input type="password" className="input_login" ref={ref => this.password = ref}
-												 onChange={() => this.clearLoginErrors()}/>
+									       onChange={() => this.clearLoginErrors()}/>
 									<label className="error-msg_login">{postingKeyError}</label>
 								</div>
 								<div className="btn-block_login">

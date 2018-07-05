@@ -5,7 +5,7 @@ import './pushMessage.css';
 
 class PushMessage extends React.Component {
 
-	constructor(props) {
+	constructor() {
 		super();
 		this.renderMessage = this.renderMessage.bind(this);
 		this.renderAllMessages = this.renderAllMessages.bind(this);
@@ -14,10 +14,10 @@ class PushMessage extends React.Component {
 	renderMessage(message, index) {
 		return (
 			<div key={index} className={'body_push-msg' + (message.willClose ? ' will-close_push-msg' : '')}
-					 style={{marginBottom: message.up ? 0 : -200}}
+			     style={{marginBottom: message.up ? 0 : -200}}
 			>
 				<div className="text-wrap_push-msg">
-          {renderHTML(message.message)}
+					{renderHTML(message.message)}
 				</div>
 			</div>
 		);

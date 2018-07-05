@@ -57,8 +57,8 @@ class Search extends React.Component {
 		return <div className="container">
 			<TabsBar point="search" className="g-content" style={{marginTop: 30}}>
 				<Tab name="Tag"
-						 loading={this.props.hotPostsList.loading || this.props.newPostsList.loading}
-						 empty={!this.props.newPostsList.posts.length}>
+				     loading={this.props.hotPostsList.loading || this.props.newPostsList.loading}
+				     empty={!this.props.newPostsList.posts.length}>
 					<ShowIf show={this.props.hotPostsList.posts.length > 0} removeFromDom={false}>
 						<PostsList
 							point={insertCategory(Constants.POSTS_FILTERS.POSTS_HOT.point, this.props.searchValue)}
@@ -80,8 +80,8 @@ class Search extends React.Component {
 					</ShowIf>
 				</Tab>
 				<Tab name="Users"
-						 loading={this.props.usersList.loading}
-						 empty={!this.props.usersList.users.length}>
+				     loading={this.props.usersList.loading}
+				     empty={!this.props.usersList.users.length}>
 					<HeadingLeadComponent text={userResult}/>
 					<UsersList
 						point={Constants.SEARCH_FILTERS.USERS.point}

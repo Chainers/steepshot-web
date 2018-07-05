@@ -5,7 +5,7 @@ import ConfirmFlagModal from './ConfirmFlagModal/ConfirmFlagModal';
 import {connect} from 'react-redux';
 import {toggleFlag} from '../../actions/flag';
 import {copyToClipboard} from '../../actions/clipboard';
-import {closeModal, openModal, closeAllModals} from '../../actions/modal';
+import {closeAllModals, closeModal, openModal} from '../../actions/modal';
 import {deletePost} from '../../actions/post';
 import './postContextMenu.css';
 import {push} from 'react-router-redux';
@@ -44,8 +44,8 @@ class PostContextMenu extends React.Component {
 			body: (<ChooseSocialNetwork closeModal={() => {
 				this.props.closeModal("ChooseSocialNetwork")
 			}}
-				url={this.props.index}
-				item={this.props.item}
+			                            url={this.props.index}
+			                            item={this.props.item}
 			/>)
 		};
 		this.props.openModal("ChooseSocialNetwork", modalOption);
@@ -81,7 +81,7 @@ class PostContextMenu extends React.Component {
 	openMenuModal() {
 		let modalOption = {
 			body: (<Menu buttonOption={this.state.BUTTONS_OPTIONS}
-									 closeModal={() => this.props.closeModal("MenuModal")}/>)
+			             closeModal={() => this.props.closeModal("MenuModal")}/>)
 		};
 		this.props.openModal("MenuModal", modalOption);
 	}

@@ -12,7 +12,7 @@ class VoteIndicator extends React.Component {
 		this.props.setSliderWidth(this.props.index, this.slider.clientWidth);
 	}
 
-  boundingToPartClick(e) {
+	boundingToPartClick(e) {
 		if (e.target.className === 'rangeslider__handle') {
 			return;
 		}
@@ -23,23 +23,23 @@ class VoteIndicator extends React.Component {
 			installingValue = 1;
 		}
 		if (targetDot <= 37.5 && targetDot >= 13.6) {
-      installingValue = 25;
+			installingValue = 25;
 		}
-    if (targetDot <= 62.5 && targetDot >= 37.6) {
-      installingValue = 50;
-    }
-    if (targetDot <= 87.5 && targetDot >= 62.6) {
-      installingValue = 75;
-    }
-    if (targetDot >= 87.6) {
-      installingValue = 100;
-    }
+		if (targetDot <= 62.5 && targetDot >= 37.6) {
+			installingValue = 50;
+		}
+		if (targetDot <= 87.5 && targetDot >= 62.6) {
+			installingValue = 75;
+		}
+		if (targetDot >= 87.6) {
+			installingValue = 100;
+		}
 		this.props.setLikePower(installingValue);
 	}
 
 	toggleVote() {
 		this.props.toggleVote(this.props.index, this.props.likePower);
-    this.props.fluidHide();
+		this.props.fluidHide();
 	}
 
 	sliderHandleChange = (power) => {
@@ -48,16 +48,18 @@ class VoteIndicator extends React.Component {
 
 	renderDistributionDots() {
 		if (this.props.sliderWidth) {
-      const NUMBER_OF_PARTS = 4, DOT_DIAMETER = 6, LINE_WIDTH = this.props.sliderWidth;
-      let dots = [];
-      let dotOffset = LINE_WIDTH / NUMBER_OF_PARTS - DOT_DIAMETER / NUMBER_OF_PARTS;
-      for (let i = 0; i < NUMBER_OF_PARTS + 1; i++) {
-        dots.push(
-					<div key={i} className="circle_vote-ind" style={{left: i * dotOffset,
-						background: this.props.likePower > i * (99 / NUMBER_OF_PARTS) ? '#ff7500' : '#e6e6e6'}}/>
+			const NUMBER_OF_PARTS = 4, DOT_DIAMETER = 6, LINE_WIDTH = this.props.sliderWidth;
+			let dots = [];
+			let dotOffset = LINE_WIDTH / NUMBER_OF_PARTS - DOT_DIAMETER / NUMBER_OF_PARTS;
+			for (let i = 0; i < NUMBER_OF_PARTS + 1; i++) {
+				dots.push(
+					<div key={i} className="circle_vote-ind" style={{
+						left: i * dotOffset,
+						background: this.props.likePower > i * (99 / NUMBER_OF_PARTS) ? '#ff7500' : '#e6e6e6'
+					}}/>
 				)
-      }
-      return dots;
+			}
+			return dots;
 		}
 	}
 
@@ -111,7 +113,7 @@ const mapDispatchToProps = (dispatch) => {
 		setSliderWidth: (postIndex, width) => {
 			dispatch(setSliderWidth(postIndex, width))
 		},
-    setChangeStatus: (postIndex, param) => {
+		setChangeStatus: (postIndex, param) => {
 			dispatch(setChangeStatus(postIndex, param))
 		}
 	}

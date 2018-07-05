@@ -9,28 +9,28 @@ class Likes extends React.Component {
 	openLikesModal() {
 		let modalOption = {
 			body: (<LikesFlagsList postIndex={this.props.postIndex}
-														 commentAuthor={this.props.commentAuthor}/>),
+			                       commentAuthor={this.props.commentAuthor}/>),
 		};
 		this.props.openModal('LikesFlagsList', modalOption);
 	}
 
 	render() {
 		if (this.props.likes === 0 && !this.props.flags) {
-			if (this.props.commentAuthor) return <div> </div>;
+			if (this.props.commentAuthor) return <div></div>;
 			return <div className="no-likes-flags_likes centered--flex"
-									style={this.props.style}>Not rated yet
-						 </div>;
+			            style={this.props.style}>Not rated yet
+			</div>;
 		}
 		let likeFlag;
 		if (this.props.likes > 0 || this.props.votes > 0) {
-      likeFlag = <span>{this.props.likes} {this.props.likes > 1 ? ' likes' : ' like'}</span>;
+			likeFlag = <span>{this.props.likes} {this.props.likes > 1 ? ' likes' : ' like'}</span>;
 		} else {
-      likeFlag = <span>{this.props.flags} {this.props.flags > 1 ? ' flags' : ' flag'}</span>;
+			likeFlag = <span>{this.props.flags} {this.props.flags > 1 ? ' flags' : ' flag'}</span>;
 		}
 		return (
 			<div className="container_likes centered--flex"
-					 onClick={this.openLikesModal.bind(this)}
-					 style={this.props.style}>
+			     onClick={this.openLikesModal.bind(this)}
+			     style={this.props.style}>
 				{likeFlag}
 			</div>
 		);

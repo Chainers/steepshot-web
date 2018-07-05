@@ -76,9 +76,9 @@ class PostsList extends React.Component {
 		this.props.posts.forEach((postIndex, index) => {
 			if (this.props.ignored.indexOf(postIndex) === -1) {
 				posts.push(<Post key={index}
-												 index={postIndex}
-												 point={this.props.point}
-												 clearPostHeader={this.props.clearPostHeader}
+				                 index={postIndex}
+				                 point={this.props.point}
+				                 clearPostHeader={this.props.clearPostHeader}
 				/>);
 			}
 		});
@@ -99,21 +99,23 @@ class PostsList extends React.Component {
 	}
 
 	render() {
+		const {isComponentVisible, hasMore, posts, wrapperModifier, loading} = this.props;
 		return (
-			<InfinityScroll
-				point='body'
-				fetch={this.getPostsList}
-				hasMore={this.props.isComponentVisible && this.props.hasMore && this.props.posts.length > 0}>
-				<div className="container_pos-lis">
-					{this.renderHeader()}
-					<div className={this.props.wrapperModifier}>
+			<div className="container_pos-lis">
+				{this.renderHeader()}
+				<div className={wrapperModifier}>
+					<InfinityScroll
+						point='body'
+						fetch={this.getPostsList}
+						hasMore={isComponentVisible && hasMore && posts.length > 0}>
 						{this.renderPosts()}
-					</div>
-					<ShowIf show={this.props.loading}>
-						<div className="spinner_pos-lis" key="usersListLoader"><LoadingSpinner/></div>
-					</ShowIf>
+					</InfinityScroll>
 				</div>
-			</InfinityScroll>
+				<ShowIf show={loading}>
+					<div className="spinner_pos-lis" key="usersListLoader"><LoadingSpinner/></div>
+				</ShowIf>
+			</div>
+
 		);
 	}
 }

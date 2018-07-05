@@ -7,14 +7,14 @@ const Switcher = ({onClick, leftLabel = '', rightLabel = '', left, leftColor, ri
 	<div className="container_switcher">
 		<label>{leftLabel}</label>
 		<div className="input-container_switcher" onClick={onClick}
-				 style={{
-					 marginLeft: utils.isNotEmptyString(leftLabel) ? '20px' : 0,
-					 marginRight: utils.isNotEmptyString(rightLabel) ? '20px' : 0
-				 }}>
+		     style={{
+			     marginLeft: utils.isNotEmptyString(leftLabel) ? '20px' : 0,
+			     marginRight: utils.isNotEmptyString(rightLabel) ? '20px' : 0
+		     }}>
 			<div className={left ? 'left_switcher' : 'right_switcher'}
-					 style={{
-						 backgroundColor: left ? leftColor : rightColor
-					 }}/>
+			     style={{
+				     backgroundColor: left ? leftColor : rightColor
+			     }}/>
 		</div>
 		<label>{rightLabel}</label>
 	</div>
