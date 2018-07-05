@@ -3,7 +3,8 @@ const initialState = {
   transactions: [],
   hasMore: true,
   operationTypes: [['transfer', 'claim_reward_balance'], ['transfer'], ['claim_reward_balance']],
-  currentOperation: 0
+  currentOperation: 0,
+	lastId: 0
 };
 
 export default function transactionHistory(state = initialState, action) {
@@ -14,28 +15,25 @@ export default function transactionHistory(state = initialState, action) {
         loading: true
       };
     case 'GET_TRANSACTION_HISTORY_SUCCESS':
+      const newTransactions = action.transactions.reverse();
+      const transactions = action.changedFilter ?  newTransactions : state.transactions.concat(newTransactions);
       return {
         ...state,
-        transactions: action.transactions.concat(state.transactions),
+        transactions,
         loading: false,
-        hasMore: action.hasMore
+        hasMore: action.hasMore,
+        lastId: transactions.length ? transactions[transactions.length - 1][0] : 0
       };
     case 'CHANGE_TRANSACTION_FILTER':
       return {
         ...state,
         currentOperation: action.currentOperation,
-        hasMore: true,
-        transactions: []
+        hasMore: true
       };
     case 'GET_TRANSACTION_HISTORY_ERROR':
       return {
         ...state,
         loading: false
-      };
-    case 'CLEAR_TRANSACTION_HISTORY':
-      return {
-        ...state,
-        transactions: []
       };
     default:
       return state;

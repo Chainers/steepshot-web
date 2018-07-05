@@ -90,7 +90,7 @@ class TabsBar extends React.Component {
 
 	render() {
 		return (
-			<div className={"clearfix" + this.props.className}>
+			<div className={this.props.className}>
 				{this.renderNavigation()}
 				{this.renderChildren()}
 				<ShowIf show={!this.props.pageLoaded && this.props.showLoader}>

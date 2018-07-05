@@ -4,8 +4,12 @@ import ShowIf from '../ShowIf';
 import ReactResizeDetector from 'react-resize-detector';
 import {connect} from 'react-redux';
 import {
-  blurredTextInput, focusedTextInput, initTextInput, setTextInputState, setTextInputError,
-  clearTextInputState
+	blurredTextInput,
+	clearTextInputState,
+	focusedTextInput,
+	initTextInput,
+	setTextInputError,
+	setTextInputState
 } from '../../../actions/textInput';
 import './textInput.css';
 import Constants from '../../../common/constants';
@@ -56,9 +60,9 @@ class TextInput extends React.Component {
 		if (this.input && nextProps.focused) {
 			this.input.focus();
 		}
-    if (this.input && !nextProps.focused) {
-      this.input.blur();
-    }
+		if (this.input && !nextProps.focused) {
+			this.input.blur();
+		}
 		return true;
 	}
 
@@ -70,7 +74,7 @@ class TextInput extends React.Component {
 		let newValue = utils.cloneObject(event.target.value);
 		newValue = this._removeInvalidCharacters(newValue);
 		if (this.props.error) {
-      this.props.setTextInputError(Constants.TEXT_INPUT_POINT.TITLE, '');
+			this.props.setTextInputError(Constants.TEXT_INPUT_POINT.TITLE, '');
 		}
 		if (newValue !== this.props.text) {
 			this._updateTextValue(newValue);
@@ -130,11 +134,11 @@ class TextInput extends React.Component {
 	}
 
 	_keyUp(e) {
-    let keyCode = e.keyCode || e.which;
-    if (keyCode === 0 || keyCode === 229) {
-      keyCode = this.input.value.charCodeAt(this.input.value.length - 1);
-    }
-    this._callFunctionsFromProps(keyCode);
+		let keyCode = e.keyCode || e.which;
+		if (keyCode === 0 || keyCode === 229) {
+			keyCode = this.input.value.charCodeAt(this.input.value.length - 1);
+		}
+		this._callFunctionsFromProps(keyCode);
 	}
 
 	render() {
@@ -215,7 +219,7 @@ const mapDispatchToProps = (dispatch) => {
 		setTextInputState: (point, state) => {
 			dispatch(setTextInputState(point, state));
 		},
-    setTextInputError: (point, message) => {
+		setTextInputError: (point, message) => {
 			dispatch(setTextInputError(point, message));
 		},
 		focusedTextInput: (point) => {
