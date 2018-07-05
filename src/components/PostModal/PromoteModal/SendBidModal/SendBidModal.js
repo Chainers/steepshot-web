@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import {connect} from 'react-redux';
 import './sendBidModal.css';
 import {closeModal} from '../../../../actions/modal';
@@ -119,7 +119,7 @@ class SendBidModal extends React.Component {
             </div>
             <div className="error_promote-mod">{this.props.activeKeyError}</div>
           </div>
-          <div className="promise-about-key_promote-mod centered--flex">
+          <div className="promise-about-key_send-bid-mod centered--flex">
             Your key is securely used to sign the transfer transaction. It is never sent to any server, including Steepshot servers.
           </div>
         </ShowIf>

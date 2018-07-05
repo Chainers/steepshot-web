@@ -55,7 +55,7 @@ class Header extends React.Component {
 		}
 		const isAuth = this.props.isAuth;
 		let browse, authorLink = '';
-		let authorImage = this.props.avatar || Constants.NO_AVATAR;
+		let avatarSrc = this.props.avatar || Constants.NO_AVATAR;
 		let loginComponent = <div className="section login">
 			<div className="wrap-login">
 				<Link to="/signin" className="btn btn-default btn-xs">
@@ -134,7 +134,7 @@ class Header extends React.Component {
 										this.props.user
 											? <Link to={authorLink} className="user-link clearfix">
 												<div className="photo">
-													<Avatar src={authorImage}
+													<Avatar src={avatarSrc}
 																	powerIndicator={true}
 																	headerAvatar={true}
 																	sizes={Constants.DEF_AVATAR_SIZE}
