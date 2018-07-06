@@ -5,7 +5,7 @@ import WidgetToken from "./WidgetToken/WidgetToken";
 import TransactionHistory from "./TransactionHistory/TransactionHistory";
 import LoadingSpinner from "../LoadingSpinner";
 import {getUserProfile} from "../../actions/userProfile";
-import {utils} from "../../utils/utils";
+import Utils from "../../utils/Utils";
 
 const DESCRIPTION = {
 	COST: "The estimated value is based on an average value of Steem in US dollars.",
@@ -24,7 +24,7 @@ class Wallet extends React.Component {
 
 	render() {
 		const {cost, steem, sp, sbd} = this.props;
-		if (!utils.isNotEmpty(cost) || !utils.isNotEmpty(steem) || !utils.isNotEmpty(sp) || !utils.isNotEmpty(sbd)) {
+		if (!Utils.isNotEmpty(cost) || !Utils.isNotEmpty(steem) || !Utils.isNotEmpty(sp) || !Utils.isNotEmpty(sbd)) {
 			return <LoadingSpinner/>
 		}
 		return (

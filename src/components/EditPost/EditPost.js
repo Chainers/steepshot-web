@@ -19,7 +19,7 @@ import {
 } from '../../actions/editPost';
 import EditTags from '../Common/EditTags/EditTags';
 import ShowIf from '../Common/ShowIf';
-import {utils} from '../../utils/utils';
+import Utils from '../../utils/Utils';
 import LoadingSpinner from '../LoadingSpinner';
 import {documentTitle} from '../../utils/documentTitle';
 import './editPost.css';
@@ -172,7 +172,7 @@ class EditPost extends React.Component {
 						     cursor: this.props.isNew ? 'pointer' : 'default'
 					     }}
 					>
-						<ShowIf show={utils.isEmptyString(this.props.src)}>
+						<ShowIf show={Utils.isEmptyString(this.props.src)}>
 							<div className="choose-container_edi-pos">
 								<div className="upload-icon_edi-pos"/>
 								<span className="upload-text_edi-pos">
@@ -180,7 +180,7 @@ class EditPost extends React.Component {
                 </span>
 							</div>
 						</ShowIf>
-						<ShowIf show={utils.isNotEmptyString(this.props.src)}>
+						<ShowIf show={Utils.isNotEmptyString(this.props.src)}>
 							<img className="image_edi-pos"
 							     src={this.props.src}
 							     style={{

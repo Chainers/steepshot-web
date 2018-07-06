@@ -4,7 +4,7 @@ import ShowIf from '../../Common/ShowIf';
 import TextInput from '../../Common/TextInput/TextInput';
 import {editComment, sendComment, setCommentEditState} from '../../../actions/comments';
 import LoadingSpinner from '../../LoadingSpinner';
-import {utils} from '../../../utils/utils';
+import Utils from '../../../utils/Utils';
 import './commentInput.css';
 import Constants from '../../../common/constants';
 import AuthService from "../../../services/authService";
@@ -71,7 +71,7 @@ const mapStateToProps = (state, props) => {
 		isAuth: AuthService.isAuth(),
 		...state.comments[props.point],
 		commentValue,
-		canSent: textInputData && utils.isNotEmptyString(textInputData.text) && commentBody !== newCommentText
+		canSent: textInputData && Utils.isNotEmptyString(textInputData.text) && commentBody !== newCommentText
 	};
 };
 

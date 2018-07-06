@@ -3,8 +3,8 @@ import LoggingService from "./loggingService";
 import Constants from "../common/constants";
 import AuthService from "./authService";
 import ChainService from "./chainService";
-import {utils} from "../utils/utils";
 import CommentService from "./commentService";
+import Utils from "../utils/Utils";
 
 class PostService {
 
@@ -148,7 +148,7 @@ class PostService {
 		const today = new Date();
 		const permlinkHeadLimit = 30;
 		permlinkHead = permlinkHead.toLowerCase();
-		permlinkHead = utils.detransliterate(permlinkHead, true);
+		permlinkHead = Utils.detransliterate(permlinkHead, true);
 		if (permlinkHead.length > permlinkHeadLimit) {
 			permlinkHead = permlinkHead.slice(0, permlinkHeadLimit + 1);
 		}
@@ -190,7 +190,7 @@ function getValidTags(tags) {
 	}
 	tags = tags.split(' ');
 	tags = removeEmptyTags(tags);
-	tags = tags.map(tag => utils.detransliterate(tag, true));
+	tags = tags.map(tag => Utils.detransliterate(tag, true));
 	return tags;
 }
 

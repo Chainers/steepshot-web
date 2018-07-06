@@ -29,7 +29,7 @@ import ReactPlayer from 'react-player'
 import Comments from '../Comments/Comments';
 import './postModal.css';
 import Constants from '../../common/constants';
-import {utils} from '../../utils/utils';
+import Utils from '../../utils/Utils';
 import {setComponentSize} from '../../utils/setComponentSize';
 import {setCommentEditState} from '../../actions/comments';
 import AuthService from '../../services/authService';
@@ -72,7 +72,7 @@ class PostModal extends React.Component {
 	}
 
 	shouldComponentUpdate(nextProps) {
-		if (utils.equalsObjects(nextProps, this.props)) return false;
+		if (Utils.equalsObjects(nextProps, this.props)) return false;
 		return true;
 	}
 

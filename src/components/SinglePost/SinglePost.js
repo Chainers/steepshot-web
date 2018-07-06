@@ -5,7 +5,7 @@ import PostModal from '../PostModal/PostModal';
 import './singlePost.css';
 import {withWrapper} from "create-react-server/wrapper";
 import {addMetaTags, getTags} from "../../actions/metaTags";
-import {utils} from "../../utils/utils";
+import Utils from "../../utils/Utils";
 import LoggingService from '../../services/loggingService';
 import PostService from '../../services/postService';
 
@@ -17,7 +17,7 @@ class SinglePost extends React.Component {
 		if (!req || !store || !location) {
 			return {};
 		}
-		const post = utils.getFirstObjectField(store.getState().posts);
+		const post = Utils.getFirstObjectField(store.getState().posts);
 		await store.dispatch(addMetaTags(getTags(post.title, req.hostname + location.pathname, post.media[0].url)));
 		return {};
 	}

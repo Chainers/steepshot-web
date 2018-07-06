@@ -1,5 +1,5 @@
 import React from 'react';
-import {utils} from '../../../utils/utils';
+import Utils from '../../../utils/Utils';
 import ShowIf from '../ShowIf';
 import ReactResizeDetector from 'react-resize-detector';
 import {connect} from 'react-redux';
@@ -71,7 +71,7 @@ class TextInput extends React.Component {
 	}
 
 	onChange(event) {
-		let newValue = utils.cloneObject(event.target.value);
+		let newValue = Utils.cloneObject(event.target.value);
 		newValue = this._removeInvalidCharacters(newValue);
 		if (this.props.error) {
 			this.props.setTextInputError(Constants.TEXT_INPUT_POINT.TITLE, '');
@@ -91,7 +91,7 @@ class TextInput extends React.Component {
 	}
 
 	_updateTextValue(newValue) {
-		const focusedStyle = utils.isNotEmptyString(newValue) ? 'focused_tex-inp' : '';
+		const focusedStyle = Utils.isNotEmptyString(newValue) ? 'focused_tex-inp' : '';
 		const state = {
 			focusedStyle,
 			text: newValue

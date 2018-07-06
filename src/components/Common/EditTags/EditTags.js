@@ -1,11 +1,11 @@
 import React from 'react';
-import {utils} from '../../../utils/utils';
 import './editTags.css';
+import Utils from "../../../utils/Utils";
 
 class EditTags extends React.Component {
 
 	onChange(event) {
-		let newValue = utils.cloneObject(event.target.value);
+		let newValue = Utils.cloneObject(event.target.value);
 		this.props.onChange(newValue);
 	}
 
@@ -22,7 +22,7 @@ class EditTags extends React.Component {
 			return (
 				<div className="tag_edi-tag" key={index}>
 					<div className="text_edi-tag">
-						{utils.detransliterate(tag)}
+						{Utils.detransliterate(tag)}
 					</div>
 					<div className="remove-btn_edi-tag" onClick={this.removeTag.bind(this, index)}/>
 				</div>
@@ -31,7 +31,7 @@ class EditTags extends React.Component {
 	}
 
 	render() {
-		if (utils.isEmptyString(this.props.value) || this.props.value === 'steepshot') {
+		if (Utils.isEmptyString(this.props.value) || this.props.value === 'steepshot') {
 			return null;
 		}
 		return (

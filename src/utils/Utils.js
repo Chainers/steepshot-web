@@ -1,35 +1,47 @@
-export const utils = {
+export default class Utils {
 
-	urlParamsToObject: (urlParams) => {
+	static urlParamsToObject(urlParams) {
 		let params = urlParams.replace('?', '').split('&');
 		params = params.reduce((acc, cur) => {
 			const field = cur.split('=');
 			acc[field[0]] = field[1];
 			return acc;
 		}, {});
-		return params;
-	},
+		return params
+	};
 
-	tagPrettify: str => str.charAt(0) !== '#' ? '#' + str : str,
+	static tagPrettify(str) {
+		return str.charAt(0) !== '#' ? '#' + str : str
+	}
 
-	isNotEmptyString: str => isNotEmpty(str) && str.trim().length > 0,
+	static isNotEmptyString(str) {
+		return Utils.isNotEmpty(str) && str.trim().length > 0
+	}
 
-	isEmptyString: str => !utils.isNotEmptyString(str),
+	static isEmptyString(str) {
+		return !Utils.isNotEmptyString(str)
+	}
 
-	isNotEmpty: isNotEmpty,
+	static isNotEmpty(variable) {
+		return variable !== undefined && variable !== null;
+	}
 
-	cloneObject: (object) => JSON.parse(JSON.stringify(object)),
+	static cloneObject(object) {
+		return JSON.parse(JSON.stringify(object))
+	}
 
-	getFirstObjectField: (obj) => obj[Object.keys(obj)[0]],
+	static getFirstObjectField(obj) {
+		return obj[Object.keys(obj)[0]]
+	}
 
-	getWindowDimension: () => {
+	static getWindowDimension() {
 		return {
 			width: document.documentElement.clientWidth,
 			height: document.documentElement.clientHeight
 		}
-	},
+	}
 
-	equalsObjects: (a, b, depth = 5) => {
+	static equalsObjects(a, b, depth = 5) {
 		if (depth < 0) {
 			return true;
 		}
@@ -52,15 +64,15 @@ export const utils = {
 		for (let i = 0; i < aProps.length; i++) {
 			let propName = aProps[i];
 			if (propName === 'key') continue;
-			if (!utils.equalsObjects(a[propName], b[propName], depth - 1)) {
+			if (!Utils.equalsObjects(a[propName], b[propName], depth - 1)) {
 				return false;
 			}
 		}
 
 		return true;
-	},
+	}
 
-	detransliterate: (str, reverse) => {
+	static detransliterate(str, reverse) {
 		if (!str) return str;
 		if (!reverse && str.substring(0, 4) !== 'ru--') return str;
 		if (!reverse) {
@@ -118,10 +130,6 @@ export const utils = {
 
 		return prefix + str;
 	}
-};
-
-function isNotEmpty(variable) {
-	return variable !== undefined && variable !== null;
 }
 
 

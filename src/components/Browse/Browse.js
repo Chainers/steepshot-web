@@ -8,9 +8,9 @@ import {push, replace} from "react-router-redux";
 import TabsBar from "../Common/TabsBar/TabsBar";
 import Tab from "../Common/TabsBar/Tab/Tab";
 import {setActiveIndex} from "../../actions/tabsBar";
-import {utils} from "../../utils/utils";
 import Constants from "../../common/constants";
 import storage from "../../utils/Storage";
+import Utils from "../../utils/Utils";
 
 class Browse extends React.Component {
 
@@ -28,7 +28,7 @@ class Browse extends React.Component {
 	}
 
 	componentWillReceiveProps(nextProps) {
-		if (utils.equalsObjects(nextProps.pathname, '/browse')) {
+		if (Utils.equalsObjects(nextProps.pathname, '/browse')) {
 			this.setUrlPath.call(this);
 		}
 	}
