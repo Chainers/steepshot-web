@@ -38,7 +38,7 @@ function searchingNewBotError(error) {
 	}
 }
 
-export function setNoTokensForPomote(param) {
+export function setNoTokensForPromote(param) {
 	return {
 		type: 'SET_NO_TOKENS_FOR_PROMOTE',
 		param
@@ -139,8 +139,8 @@ export function getAuthUserInfo() {
 					steem_balance: result.balance,
 				}));
 				dispatch(setAuthUserInfoLoading(false));
-				if (result.sbd_balance <= 0.5 || result.balance <= 0.5) {
-					dispatch(setNoTokensForPomote(true));
+				if (result.sbd_balance <= 0.5 && result.balance <= 0.5) {
+					dispatch(setNoTokensForPromote(true));
 				}
 			})
 			.catch(error => {

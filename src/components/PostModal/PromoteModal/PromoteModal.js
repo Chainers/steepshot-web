@@ -8,7 +8,7 @@ import {
 	getAuthUserInfoError,
 	getAuthUserInfoSuccess,
 	searchingBotRequest,
-	setNoTokensForPomote,
+	setNoTokensForPromote,
 	setPromoteInputError,
 	setPromoteValue,
 	setSelectedIndex,
@@ -43,7 +43,7 @@ class PromoteModal extends React.Component {
 		this.props.setPromoteInputError('');
 		this.props.setSelectError('');
 		this.props.getAuthUserInfoSuccess({});
-		this.props.setNoTokensForPomote(false);
+		this.props.setNoTokensForPromote(false);
 	}
 
 	promoteByEnter(e) {
@@ -103,15 +103,6 @@ class PromoteModal extends React.Component {
 		this.props.setSelectedIndex(e.target.selectedIndex);
 	}
 
-	renderOptions() {
-		let optionsArr = ['STEEM', 'SBD'];
-		return optionsArr.map((item, index) => {
-			return <option key={index}
-			               selected={index === this.props.activeIndex ? 'selected' : ''}>{item}
-			</option>
-		});
-	}
-
 	render() {
 		let loadingDataOrError = this.props.selectError;
 		let closeText = 'CANCEL', noTokensBlock = null;
@@ -142,7 +133,8 @@ class PromoteModal extends React.Component {
 						        style={this.props.selectedToken ? {color: '#e74800'} : this.props.infoLoading
 							        ? {} : {cursor: 'pointer'}}
 						        disabled={this.props.infoLoading ? 'disabled' : ''}>
-							{this.renderOptions()}
+							<option selected={this.props.activeIndex === 0 ? 'selected' : ''}>STEEM</option>
+							<option selected={this.props.activeIndex === 1 ? 'selected' : ''}>SBD</option>no-tokens_promote-mod centered--flex
 						</select>
 						<div className="error_promote-mod"
 						     style={this.props.infoLoading ? {color: '#979b9e', bottom: -23} : {bottom: -23}}>{loadingDataOrError}
@@ -225,8 +217,8 @@ const mapDispatchToProps = (dispatch) => {
 		getAuthUserInfoError: (error) => {
 			dispatch(getAuthUserInfoError(error));
 		},
-		setNoTokensForPomote: (param) => {
-			dispatch(setNoTokensForPomote(param));
+		setNoTokensForPromote: (param) => {
+			dispatch(setNoTokensForPromote(param));
 		}
 	}
 };
