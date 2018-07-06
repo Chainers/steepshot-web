@@ -1,12 +1,14 @@
-.button_trx-filter {
-    width: 40px;
-    height: 40px;
-    background-color: black;
+.component_trx-filter {
     position: relative;
 }
 
+.open-btn_trx-filter {
+    width: 40px;
+    height: 40px;
+    background-color: #000;
+}
+
 .container_trx-filter {
-    position: absolute;
     width: 200px;
     height: 210px;
     border-radius: 10px;
@@ -23,7 +25,6 @@
 .operation_trx-filter {
     border: 1px solid black;
     flex: 1;
-
 }
 
 .operation_trx-filter.active_trx-filter {

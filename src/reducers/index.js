@@ -37,6 +37,7 @@ import promoteModal from './promoteModal';
 import images from './images';
 import emptyRequestError from './emptyRequestError';
 import transactionHistory from "./transactionHistory";
+import contextMenu from "./contextMenu";
 
 export default combineReducers({
 	clipboard,
@@ -76,5 +77,6 @@ export default combineReducers({
 	promoteModal,
 	images,
 	emptyRequestError,
-	transactionHistory
+	transactionHistory,
+	contextMenu
 });
