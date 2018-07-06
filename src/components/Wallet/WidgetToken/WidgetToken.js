@@ -1,6 +1,6 @@
 import React from 'react';
-import ShowIf from "../../ShowIf";
 import './widgetToken.css';
+import ShowIf from "../../Common/ShowIf";
 
 const WidgetToken = ({icon, token, value, description, textButton, onClick = () => {}, backgroundImage}) => (
 	<div className="container_widget-token" style={{backgroundImage: `url(${backgroundImage})`}}>

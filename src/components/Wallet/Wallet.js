@@ -1,11 +1,11 @@
 import React from 'react';
 import {connect} from "react-redux";
 import './wallet.css';
-import {getUserProfile} from "../../../actions/userProfile";
 import WidgetToken from "./WidgetToken/WidgetToken";
-import LoadingSpinner from "../../LoadingSpinner";
-import {utils} from '../../../utils/utils';
 import TransactionHistory from "./TransactionHistory/TransactionHistory";
+import LoadingSpinner from "../LoadingSpinner";
+import {getUserProfile} from "../../actions/userProfile";
+import {utils} from "../../utils/utils";
 
 const DESCRIPTION = {
 	COST: "The estimated value is based on an average value of Steem in US dollars.",

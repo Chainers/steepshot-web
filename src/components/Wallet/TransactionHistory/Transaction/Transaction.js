@@ -1,9 +1,9 @@
 import React from 'react';
 import './transaction.css';
-import AuthService from "../../../../../services/authService";
-import SteemService from "../../../../../services/steemService";
-import DateFormatter from "../../../../../utils/DateFormatter";
 import TimeAgo from 'timeago-react';
+import DateFormatter from "../../../../utils/DateFormatter";
+import SteemService from "../../../../services/steemService";
+import AuthService from "../../../../services/authService";
 
 const Transaction = ({operation, data, date, index}) => {
 	let memo = /^#/.test(data.memo) ? (<div className="encoded-memo_trx">data.memo</div>) : data.memo;
