@@ -2,12 +2,6 @@
     position: relative;
 }
 
-.open-btn_trx-filter {
-    width: 40px;
-    height: 40px;
-    background-color: #000;
-}
-
 .container_trx-filter {
     width: 200px;
     height: 210px;

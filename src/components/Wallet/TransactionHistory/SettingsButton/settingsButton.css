@@ -1,0 +1,13 @@
+.container_settings-button {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #fafafa url('/images/wallet/buttons/settings.png') no-repeat center;
+    background-size: 14px 12px;
+    cursor: pointer;
+}
+
+.container_settings-button.active_settings-button, .container_settings-button:hover {
+    background: #ff2400 url('/images/wallet/buttons/activeSettings.png') no-repeat center;
+    background-size: 14px 12px;
+}

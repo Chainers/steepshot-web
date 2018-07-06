@@ -8,7 +8,6 @@ import {getUserProfile} from "../../actions/userProfile";
 import Utils from "../../utils/Utils";
 
 const DESCRIPTION = {
-	COST: "The estimated value is based on an average value of Steem in US dollars.",
 	STEEM: `Tradeable tokens that may be transferred anywhere at anytime.
 Steem can be converted to STEEM POWER in a process called powering up.`,
 	SP: "Influence tokens which give you more control over post payouts and allow you to earn on curation rewards.",
@@ -31,11 +30,14 @@ class Wallet extends React.Component {
 			<div className="container">
 				<div className="container_wallet">
 					<div className="header_wallet">
-						Wallets
+						<div className="title_wallet">
+							Account balance
+						</div>
+						<div className="account-balance_wallet">
+							{cost} $
+						</div>
 					</div>
 					<div className="body_wallet">
-						<WidgetToken backgroundImage="/images/wallet/cost.png" icon="" token="Account cost"
-						             value={cost} description={DESCRIPTION.COST}/>
 						<WidgetToken backgroundImage="/images/wallet/steem.png" icon="" token="Steem"
 						             value={steem} description={DESCRIPTION.STEEM} textButton="TRANSFER" onClick={() => {
 						}}/>
