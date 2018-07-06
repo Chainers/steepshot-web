@@ -22,7 +22,7 @@ class TransactionHistory extends React.Component {
 	}
 
 	componentWillReceiveProps(nextProps) {
-		if (nextProps.currentOperation !== this.props.currentOperation) {
+		if (nextProps.indexOperation !== this.props.indexOperation) {
 			this.props.getTransactionHistory(true);
 		}
 	}
@@ -40,7 +40,7 @@ class TransactionHistory extends React.Component {
 	}
 
 	render() {
-		const {getTransactionHistory, hasMore, transactions, loading, currentOperation} = this.props;
+		const {getTransactionHistory, hasMore, transactions, loading, indexOperation} = this.props;
 		return (
 			<InfinityScroll
 				point='body'
@@ -57,7 +57,7 @@ class TransactionHistory extends React.Component {
 								provide your personal keys to third parties.
 							</div>
 						</div>
-						<TransactionFilter filter={FILTER} current={currentOperation}
+						<TransactionFilter filter={FILTER} current={indexOperation}
 						                   onChange={this.props.changeTransactionFilter}/>
 					</div>
 					{this.renderTransaction(transactions)}
@@ -71,12 +71,12 @@ class TransactionHistory extends React.Component {
 }
 
 const mapStateToProps = state => {
-	const {loading, transactions, hasMore, currentOperation} = state.transactionHistory;
+	const {loading, transactions, hasMore, indexOperation} = state.transactionHistory;
 	return {
 		loading,
 		transactions,
 		hasMore,
-		currentOperation
+		indexOperation
 	}
 };
 
@@ -85,8 +85,8 @@ const mapDispatchToProps = dispatch => {
 		getTransactionHistory: (changedFilter) => {
 			dispatch(getTransactionHistory(changedFilter))
 		},
-		changeTransactionFilter: (currentOperation) => {
-			dispatch(changeTransactionFilter(currentOperation))
+		changeTransactionFilter: (indexOperation) => {
+			dispatch(changeTransactionFilter(indexOperation))
 		}
 	}
 };

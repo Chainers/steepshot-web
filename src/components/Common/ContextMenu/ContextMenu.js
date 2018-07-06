@@ -29,7 +29,6 @@ class ContextMenu extends React.Component {
 	}
 
 	render() {
-		console.log('render');
 		const {containerStyle, children, show} = this.props;
 		return (
 			<ShowIf show={show}>

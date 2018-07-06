@@ -2,8 +2,8 @@ const initialState = {
 	loading: false,
 	transactions: [],
 	hasMore: true,
-	operationTypes: [['transfer', 'claim_reward_balance'], ['transfer'], ['claim_reward_balance']],
-	currentOperation: 0,
+	operationTypes: ['all', 'transfer', 'claim_reward_balance'],
+	indexOperation: 0,
 	lastId: 0
 };
 
@@ -27,7 +27,7 @@ export default function transactionHistory(state = initialState, action) {
 		case 'CHANGE_TRANSACTION_FILTER':
 			return {
 				...state,
-				currentOperation: action.currentOperation,
+				indexOperation: action.indexOperation,
 				hasMore: true
 			};
 		case 'GET_TRANSACTION_HISTORY_ERROR':

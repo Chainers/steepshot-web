@@ -11,7 +11,14 @@ export function getTransactionHistory(changedFilter = false) {
 			type: "EMPTY_GET_TRANSACTION_HISTORY"
 		}
 	}
-	const operationTypes = transactionHistory.operationTypes[transactionHistory.currentOperation];
+	let operationTypes = transactionHistory.operationTypes[transactionHistory.indexOperation];
+	console.log(operationTypes);
+	if (operationTypes === 'all') {
+		operationTypes = transactionHistory.operationTypes.slice(1);
+		console.log(operationTypes);
+	} else {
+		operationTypes = [operationTypes];
+	}
 	const lastId = changedFilter ? 0 : transactionHistory.lastId;
 	const username = AuthService.getUsername();
 	return dispatch => {
@@ -37,9 +44,9 @@ export function getTransactionHistory(changedFilter = false) {
 	}
 }
 
-export function changeTransactionFilter(currentOperation) {
+export function changeTransactionFilter(indexOperation) {
 	return {
 		type: 'CHANGE_TRANSACTION_FILTER',
-		currentOperation
+		indexOperation
 	}
 }
