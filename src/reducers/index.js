@@ -9,7 +9,6 @@ import postModal from './postModal';
 import tabsBar from './tabsBar';
 import likesFlagsList from './likesFlagsList';
 import users from './users';
-import bodyParams from './bodyParams';
 import textInput from './textInput';
 import metaTags from './metaTags';
 import search from './search';
@@ -49,7 +48,6 @@ export default combineReducers({
 	modals,
 	postModal,
 	users,
-	bodyParams,
 	likesFlagsList,
 	editPost,
 	textInput,
