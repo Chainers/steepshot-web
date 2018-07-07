@@ -6,6 +6,8 @@ import TransactionHistory from "./TransactionHistory/TransactionHistory";
 import LoadingSpinner from "../LoadingSpinner";
 import {getUserProfile} from "../../actions/userProfile";
 import Utils from "../../utils/Utils";
+import {openModal} from "../../actions/modal";
+import Transfer from "../Modals/Transfer/Transfer";
 
 const DESCRIPTION = {
 	STEEM: `Tradeable tokens that may be transferred anywhere at anytime.
@@ -19,6 +21,21 @@ class Wallet extends React.Component {
 	constructor(props) {
 		super();
 		props.getUserProfile();
+	}
+
+	transfer(isSteem) {
+		let modalOption = {
+			body: (<Transfer isSteem={isSteem}/>)
+		};
+		this.props.openModal("transfer", modalOption);
+	}
+
+	transferSteem() {
+		this.transfer(true)
+	}
+
+	transferSbd() {
+		this.transfer(false)
 	}
 
 	render() {
@@ -52,8 +69,7 @@ class Wallet extends React.Component {
 								[{
 									label: 'Transfer',
 									icon: '',
-									onClick: () => {
-									}
+									onClick: this.transferSteem.bind(this)
 								}]
 							}
 						/>
@@ -96,8 +112,7 @@ class Wallet extends React.Component {
 								[{
 									label: 'Transfer',
 									icon: '',
-									onClick: () => {
-									}
+									onClick: this.transferSbd.bind(this)
 								}]
 							}
 						/>
@@ -126,6 +141,9 @@ const mapDispatchToProps = dispatch => {
 	return {
 		getUserProfile: username => {
 			dispatch(getUserProfile(username))
+		},
+		openModal: (index, options) => {
+			dispatch(openModal(index, options));
 		}
 	}
 };
