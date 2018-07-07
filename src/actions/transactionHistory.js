@@ -12,10 +12,8 @@ export function getTransactionHistory(changedFilter = false) {
 		}
 	}
 	let operationTypes = transactionHistory.operationTypes[transactionHistory.indexOperation];
-	console.log(operationTypes);
 	if (operationTypes === 'all') {
 		operationTypes = transactionHistory.operationTypes.slice(1);
-		console.log(operationTypes);
 	} else {
 		operationTypes = [operationTypes];
 	}

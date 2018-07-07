@@ -3,6 +3,7 @@ const initialState = {
 	transactions: [],
 	hasMore: true,
 	operationTypes: ['all', 'transfer', 'claim_reward_balance'],
+	operationLabel: ['ALL', 'TRANSFER', 'REWARDS'],
 	indexOperation: 0,
 	lastId: 0
 };

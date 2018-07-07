@@ -2,31 +2,32 @@ import React from 'react';
 import {connect} from "react-redux";
 import './transactionFilter.css';
 import ContextMenu from "../../../Common/ContextMenu/ContextMenu";
-import {openContextMenu} from "../../../../actions/contextMenu";
+import {closeContextMenu, openContextMenu} from "../../../../actions/contextMenu";
 import SettingsButton from "../SettingsButton/SettingsButton";
+import FilterRow from "./FilterRow/FilterRow";
 
-const TransactionFilter = ({filter, current, onChange, pointContextMenu, openContextMenu, show}) => {
-
-	const onClick = (number) => {
-		if (current !== number) {
-			onChange(number);
-		}
-	};
-
+const TransactionFilter = ({filter, current, onChange, pointContextMenu, openContextMenu, closeContextMenu, show}) => {
 	return (
 		<div className="component_trx-filter">
 			<SettingsButton active={show}
-				onClick={(e) => {
-					e.stopPropagation();
-					openContextMenu(pointContextMenu)
-				}}
+			                onClick={(e) => {
+				                e.stopPropagation();
+				                openContextMenu(pointContextMenu)
+			                }}
 			/>
 			<ContextMenu point={pointContextMenu} left="-160px" top="5px">
 				<div className="container_trx-filter">
 					{filter.map((operation, index) =>
-						<div className={'operation_trx-filter ' + (index === current ? 'active_trx-filter' : '')}
-						     key={index}
-						     onClick={() => onClick(index)}
+						<FilterRow
+							key={index}
+							isActive={index === current}
+							label={operation}
+							onClick={() => {
+								closeContextMenu(pointContextMenu);
+								if (current !== index) {
+									onChange(index);
+								}
+							}}
 						/>
 					)}
 				</div>
@@ -41,7 +42,8 @@ const mapStateToProps = (state) => {
 	const {show} = contextMenuState;
 	return {
 		pointContextMenu,
-		show
+		show,
+		filter: state.transactionHistory.operationLabel
 	}
 };
 
@@ -49,6 +51,9 @@ const mapDispatchToProps = dispatch => {
 	return {
 		openContextMenu: (point) => {
 			dispatch(openContextMenu(point))
+		},
+		closeContextMenu: (point) => {
+			dispatch(closeContextMenu(point))
 		}
 	}
 };

@@ -4,9 +4,7 @@
 
 .container_trx-filter {
     width: 200px;
-    height: 210px;
     border-radius: 10px;
-    border: 1px solid #f00000;
     top: 50px;
     left: -160px;
     display: flex;
@@ -14,13 +12,4 @@
     justify-content: space-around;
     background-color: white;
     overflow: hidden;
-}
-
-.operation_trx-filter {
-    border: 1px solid black;
-    flex: 1;
-}
-
-.operation_trx-filter.active_trx-filter {
-    background-color: #979b9e;
 }

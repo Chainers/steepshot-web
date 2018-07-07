@@ -8,12 +8,6 @@ import ShowIf from "../../Common/ShowIf";
 import LoadingSpinner from "../../LoadingSpinner";
 import {changeTransactionFilter, getTransactionHistory} from "../../../actions/transactionHistory";
 
-const FILTER = [
-	'ALL',
-	'REWARDS',
-	'TRANSFER'
-];
-
 class TransactionHistory extends React.Component {
 
 	constructor(props) {
@@ -57,8 +51,7 @@ class TransactionHistory extends React.Component {
 								provide your personal keys to third parties.
 							</div>
 						</div>
-						<TransactionFilter filter={FILTER} current={indexOperation}
-						                   onChange={this.props.changeTransactionFilter}/>
+						<TransactionFilter current={indexOperation} onChange={this.props.changeTransactionFilter}/>
 					</div>
 					{this.renderTransaction(transactions)}
 					<ShowIf show={loading}>
