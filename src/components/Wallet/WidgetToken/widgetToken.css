@@ -2,26 +2,47 @@
     width: 300px;
     height: 270px;
     position: relative;
-    background: no-repeat center;
-    background-size: 100% 100%;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    padding: 30px;
+    padding: 20px;
     color: #ffffff;
     font-family: OpenSans-Light, serif;
     margin: 30px 10px;
+    background: no-repeat top;
+    background-size: 300px auto;
+    border-radius: 15px;
 }
 
 .header_widget-token {
     height: 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
 }
 
 .icon_widget-token {
-    width: 30px;
-    height: 30px;
+    width: 22px;
+    height: 22px;
     border-radius: 50%;
     background-color: white;
+}
+
+.actions-btn_widget-token {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: rgba(1, 1, 1, 0.1) url('/images/wallet/whitedots.png') no-repeat center;
+    background-size: 14px 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.actions-btn_widget-token:hover, .actions-btn_widget-token.active {
+    background: #ffffff url('/images/wallet/blackdots.png') no-repeat center;
+    background-size: 14px 4px;
 }
 
 .balance_widget-token {
@@ -59,4 +80,8 @@
     font-size: 12px;
     font-weight: bold;
     letter-spacing: 1px;
+}
+
+.button_widget-token:hover {
+    background: rgba(255, 255, 255, 0.4);
 }

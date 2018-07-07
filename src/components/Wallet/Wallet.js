@@ -38,14 +38,63 @@ class Wallet extends React.Component {
 						</div>
 					</div>
 					<div className="body_wallet">
-						<WidgetToken backgroundImage="/images/wallet/steem.png" icon="" token="Steem"
-						             value={steem} description={DESCRIPTION.STEEM} textButton="TRANSFER" onClick={() => {
-						}}/>
-						<WidgetToken backgroundImage="/images/wallet/sp.png" icon="" token="Steem Power"
-						             value={sp} description={DESCRIPTION.SP}/>
-						<WidgetToken backgroundImage="/images/wallet/sbd.png" icon="" token="SBD"
-						             value={sbd} description={DESCRIPTION.SBD} textButton="TRANSFER" onClick={() => {
-						}}/>
+						<WidgetToken
+							background={{
+								image: "/images/wallet/steem.png",
+								color: 'rgb(74, 144, 226)'
+							}}
+							token="Steem"
+							value={steem}
+							description={DESCRIPTION.STEEM}
+							actions={
+								[{
+									label: 'Transfer',
+									icon: '',
+									onClick: () => {
+									}
+								}]
+							}
+						/>
+						<WidgetToken
+							background={{
+								image: "/images/wallet/sp.png",
+								color: 'rgb(103, 184, 47)'
+							}}
+							token="Steem Power"
+							value={sp}
+							description={DESCRIPTION.SP}
+							actions={
+								[{
+									label: 'Power up',
+									icon: '',
+									onClick: () => {
+									}
+								}, {
+									label: 'Power down',
+									icon: '',
+									onClick: () => {
+									}
+								}]
+							}
+						/>
+						<WidgetToken
+							background={{
+								image: "/images/wallet/sbd.png",
+								color: 'rgb(218, 146, 44)'
+							}}
+							token="SBD"
+							value={sbd}
+							description={DESCRIPTION.SBD}
+							textButton="TRANSFER"
+							actions={
+								[{
+									label: 'Transfer',
+									icon: '',
+									onClick: () => {
+									}
+								}]
+							}
+						/>
 					</div>
 					<TransactionHistory/>
 				</div>

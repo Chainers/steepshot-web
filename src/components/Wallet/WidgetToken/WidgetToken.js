@@ -2,10 +2,17 @@ import React from 'react';
 import './widgetToken.css';
 import ShowIf from "../../Common/ShowIf";
 
-const WidgetToken = ({icon, token, value, description, textButton, onClick = () => {}, backgroundImage}) => (
-	<div className="container_widget-token" style={{backgroundImage: `url(${backgroundImage})`}}>
+const WidgetToken = ({background, token, value, description, actions}) => (
+	<div className="container_widget-token"
+	     style={{
+	     	backgroundImage: `url(${background.image})`,
+		    backgroundColor: background.color
+	     }}>
 		<div className="header_widget-token">
 			<div className="icon_widget-token"/>
+			<ShowIf show={actions.length > 1}>
+				<div className="actions-btn_widget-token"/>
+			</ShowIf>
 		</div>
 		<div className="balance_widget-token">
 			<div className="token_widget-token">
@@ -18,8 +25,8 @@ const WidgetToken = ({icon, token, value, description, textButton, onClick = () 
 		<div className="description_widget-token">
 			{description}
 		</div>
-		<ShowIf show={!!textButton}>
-			<button className="button_widget-token" onClick={onClick}>{textButton}</button>
+		<ShowIf show={!!actions.length}>
+			<button className="button_widget-token" onClick={actions[0].onClick}>{actions[0].label.toUpperCase()}</button>
 		</ShowIf>
 	</div>
 );
