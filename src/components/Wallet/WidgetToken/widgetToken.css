@@ -1,6 +1,5 @@
 .container_widget-token {
     width: 300px;
-    height: 270px;
     position: relative;
     display: flex;
     flex-direction: column;
@@ -16,6 +15,7 @@
 
 .header_widget-token {
     height: 30px;
+    min-height: 30px;
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
@@ -46,17 +46,21 @@
 }
 
 .balance_widget-token {
-    height: 30px;
-    padding-top: 30px;
-    font-size: 22px;
+    height: 57px;
+    min-height: 57px;
+    font-size: 32px;
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     align-items: center;
+    padding-bottom: 7px;
+    border-bottom: 1px solid #fafafa;
 }
 
 .token_widget-token {
+    height: 27px;
     font-weight: 600;
-    line-height: 1.23;
+    line-height: 1.69;
+    font-size: 16px;
 }
 
 .value_widget-token {
@@ -69,7 +73,7 @@
     flex-grow: 1;
     font: 13px OpenSans-Light;
     line-height: normal;
-    padding-top: 30px;
+    padding: 16px 0;
 }
 
 .button_widget-token {

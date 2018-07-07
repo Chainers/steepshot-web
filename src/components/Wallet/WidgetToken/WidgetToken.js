@@ -2,7 +2,7 @@ import React from 'react';
 import './widgetToken.css';
 import ShowIf from "../../Common/ShowIf";
 
-const WidgetToken = ({background, token, value, description, actions}) => (
+const WidgetToken = ({background, fullName, coin, value, description, actions}) => (
 	<div className="container_widget-token"
 	     style={{
 	     	backgroundImage: `url(${background.image})`,
@@ -14,12 +14,12 @@ const WidgetToken = ({background, token, value, description, actions}) => (
 				<div className="actions-btn_widget-token"/>
 			</ShowIf>
 		</div>
+		<div className="token_widget-token">
+			{fullName}
+		</div>
 		<div className="balance_widget-token">
-			<div className="token_widget-token">
-				{token}
-			</div>
 			<div className="value_widget-token">
-				{parseFloat(value).toFixed(1)}
+				{parseFloat(value).toFixed(1) + ' ' + coin}
 			</div>
 		</div>
 		<div className="description_widget-token">

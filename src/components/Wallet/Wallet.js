@@ -43,7 +43,8 @@ class Wallet extends React.Component {
 								image: "/images/wallet/steem.png",
 								color: 'rgb(74, 144, 226)'
 							}}
-							token="Steem"
+							fullName="STEEM"
+							coin="STEEM"
 							value={steem}
 							description={DESCRIPTION.STEEM}
 							actions={
@@ -60,7 +61,8 @@ class Wallet extends React.Component {
 								image: "/images/wallet/sp.png",
 								color: 'rgb(103, 184, 47)'
 							}}
-							token="Steem Power"
+							fullName="STEEM POWER"
+							coin="STEEM"
 							value={sp}
 							description={DESCRIPTION.SP}
 							actions={
@@ -82,7 +84,8 @@ class Wallet extends React.Component {
 								image: "/images/wallet/sbd.png",
 								color: 'rgb(218, 146, 44)'
 							}}
-							token="SBD"
+							fullName="STEEM DOLLARS"
+							coin="SBD"
 							value={sbd}
 							description={DESCRIPTION.SBD}
 							textButton="TRANSFER"
