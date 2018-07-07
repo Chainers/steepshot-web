@@ -45,6 +45,13 @@
     background-size: 14px 4px;
 }
 
+.container-actions_context-menu {
+    width: 200px;
+    border-radius: 10px;
+    background-color: #ffffff;
+    overflow: hidden;
+}
+
 .balance_widget-token {
     height: 57px;
     min-height: 57px;

@@ -44,6 +44,7 @@ class Wallet extends React.Component {
 								color: 'rgb(74, 144, 226)'
 							}}
 							fullName="STEEM"
+							point="steem"
 							coin="STEEM"
 							value={steem}
 							description={DESCRIPTION.STEEM}
@@ -62,18 +63,19 @@ class Wallet extends React.Component {
 								color: 'rgb(103, 184, 47)'
 							}}
 							fullName="STEEM POWER"
+							point="sp"
 							coin="STEEM"
 							value={sp}
 							description={DESCRIPTION.SP}
 							actions={
 								[{
 									label: 'Power up',
-									icon: '',
+									icon: '/images/wallet/buttons/powerUp.png',
 									onClick: () => {
 									}
 								}, {
 									label: 'Power down',
-									icon: '',
+									icon: '/images/wallet/buttons/powerDown.png',
 									onClick: () => {
 									}
 								}]
@@ -85,6 +87,7 @@ class Wallet extends React.Component {
 								color: 'rgb(218, 146, 44)'
 							}}
 							fullName="STEEM DOLLARS"
+							point="sbd"
 							coin="SBD"
 							value={sbd}
 							description={DESCRIPTION.SBD}

@@ -2,7 +2,6 @@ import React from 'react';
 import './filterRow.css';
 
 const FilterRow = ({label, isActive, onClick}) => {
-	console.log('render');
 	return (
 		<div className={'container_filter-row ' + (isActive ? 'active' : '')}
 		     onClick={onClick}
