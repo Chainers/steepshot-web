@@ -30,10 +30,28 @@
     color: white;
 }
 
+.btn-default:hover {
+    background-color: #ce1800;
+}
+
+.btn-default:active {
+    background-color: #9c1200;
+}
+
 .btn-cancel {
     background: #ffffff;
     color: #0f181e;
     border: 1px solid #e7e7e7;
+}
+
+.btn-cancel:hover {
+    background-color: #ffffff;
+    border: solid 1px #e2e2e2;
+}
+
+.btn-cancel:active {
+    background-color: #f1f1f1;
+    border: solid 1px #e2e2e2;
 }
 
 .btn-cancel:disabled {
@@ -49,6 +67,14 @@
 
 .btn.btn-create {
     background-color: #1294f6;
+}
+
+.btn.btn-create:hover {
+    background-color: #1083da;
+}
+
+.btn.btn-create:active {
+    background-color: #0f72be;
 }
 
 .btn-close {
@@ -120,6 +146,49 @@
 }
 
 
-@media (max-width: 1023px) {
+.btn-control {
+    position: relative;
+    display: inline-block;
+    vertical-align: top;
+    text-decoration: none;
+    height: 22px;
+    width: 22px;
+    margin-left: 26px
+}
 
+.btn-control:before {
+    content: ' ';
+    font-size: 10px;
+    background: url('/images/sprite_svg1910.svg') no-repeat;
+    background-size: 4.4em 47.2em;
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%)
+}
+
+.btn-control.settings:before {
+    background-position: -.2em -38.6em;
+    width: 1.6em;
+    height: 1.6em
+}
+
+.btn-control.settings:hover:before {
+    background-position: -.2em -40.6em;
+    width: 1.6em;
+    height: 1.6em
+}
+
+.btn-control.logout:before {
+    background-position: -.2em -22.2em;
+    width: 1.6em;
+    height: 1.6em
+}
+
+.btn-control.logout:hover:before {
+    background-position: -.2em -24.2em;
+    width: 1.6em;
+    height: 1.6em
 }
