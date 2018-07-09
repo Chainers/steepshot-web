@@ -1,0 +1,125 @@
+.btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 40px;
+    min-width: 140px;
+    padding: 0 20px;
+    border-radius: 6px;
+    border: none;
+    font: 14px OpenSans-SemiBold;
+    line-height: 1;
+    cursor: pointer;
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+    background-image: none;
+    text-decoration: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    transition: .2s;
+}
+
+.btn-default {
+    border: 1px transparent;
+    background-color: #ff1e00;
+    color: white;
+}
+
+.btn-cancel {
+    background: #ffffff;
+    color: #0f181e;
+    border: 1px solid #e7e7e7;
+}
+
+.btn-cancel:disabled {
+    background: #f1f1f1;
+    opacity: .3
+}
+
+.btn.btn-xs {
+    min-width: 120px;
+    height: 34px;
+    font-size: 12px;
+}
+
+.btn.btn-create {
+    background-color: #1294f6;
+}
+
+.btn-close {
+    border: none;
+    vertical-align: middle;
+    margin-left: 8px;
+    margin-top: -1px;
+    padding: 0;
+    background: 0 0;
+    position: relative;
+    display: block;
+    width: 16px;
+    height: 30px;
+    line-height: 30px;
+}
+
+.btn-close:before {
+    content: ' ';
+    font-size: 10px;
+    background: url('/images/sprite_svg1910.svg') -.2em -42.6em no-repeat;
+    background-size: 4.4em 47.2em;
+    width: .8em;
+    height: .8em;
+    display: block
+}
+
+.btn-close:before {
+    content: ' ';
+    font-size: 10px;
+    background: url('/images/sprite_svg1910.svg') no-repeat -.2em -3.6em;
+    background-size: 4.4em 47.2em;
+    width: 1.6em;
+    height: 1.6em;
+    display: block;
+}
+
+.btn-close:hover:before {
+    background-position: -.2em -5.6000000000000005em;
+    width: 1.6em;
+    height: 1.6em;
+}
+
+.btn-create-mob {
+    position: relative;
+    display: none;
+    padding: 0;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%
+}
+
+.btn-create-mob:before {
+    content: ' ';
+    font-size: 10px;
+    background: url('/images/sprite_svg1910.svg') -.2em -9.6em no-repeat;
+    background-size: 4.4em 47.2em;
+    width: 2.2em;
+    height: 2.2em;
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%)
+}
+
+.btn-create-mob:before {
+    background-image: url('/images/sprite_svg1910.svg')
+}
+
+
+@media (max-width: 1023px) {
+
+}

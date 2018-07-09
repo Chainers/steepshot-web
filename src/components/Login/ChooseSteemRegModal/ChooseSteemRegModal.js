@@ -40,7 +40,7 @@ class ChooseSteemRegModal extends React.Component {
 					{registrationVariants}
 				</div>
 				<div className="buttons_choose-steem-reg-mod">
-					<button className="btn btn-index" onClick={() => this.props.closeModal()}>CANCEL</button>
+					<button className="btn btn-cancel" onClick={() => this.props.closeModal()}>CANCEL</button>
 				</div>
 			</div>
 		);

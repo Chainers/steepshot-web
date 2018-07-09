@@ -5,20 +5,16 @@
     align-items: flex-start;
 }
 
-.follow-button_follow, .unfollow-button_follow, .saving_follow {
-    width: 105px;
-    cursor: pointer;
-    display: inline-block;
-    margin-bottom: 0;
-    font-family: OpenSans-SemiBold, Helvetica, Arial, sans-serif;
-    text-align: center;
-    vertical-align: middle;
+.saving_follow {
+    width: 140px;
+    font: 14px OpenSans-SemiBold;
     border: 1px solid transparent;
-    padding: 12px 10px;
-    font-size: 14px;
     line-height: 1;
-    border-radius: 21px;
+    border-radius: 6px;
     transition: .2s all ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .follow-button_follow {

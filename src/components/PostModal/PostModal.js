@@ -34,6 +34,7 @@ import {setComponentSize} from '../../utils/setComponentSize';
 import {setCommentEditState} from '../../actions/comments';
 import AuthService from '../../services/authService';
 import LowNSFWFilter from './LowNSFWFilter';
+import CopyLink from "./CopyLink/CopyLink";
 
 class PostModal extends React.Component {
 
@@ -48,6 +49,7 @@ class PostModal extends React.Component {
 		this.fsCheckButtons = this.fsCheckButtons.bind(this);
 		this.initKeyPress = this.initKeyPress.bind(this);
 		this.resizePostModal = this.resizePostModal.bind(this);
+		this.copyLinkToClipboard = this.copyLinkToClipboard.bind(this);
 	}
 
 	componentDidMount() {
@@ -151,8 +153,7 @@ class PostModal extends React.Component {
 		)
 	}
 
-	copyLinkToClipboard(e) {
-		e.target.blur();
+	copyLinkToClipboard() {
 		this.props.copyToClipboard(this.props.linkToSinglePost);
 	}
 
@@ -169,9 +170,7 @@ class PostModal extends React.Component {
 				               showAll={this.props.showAll}
 				               fullScreenMode={this.props.fullScreenMode}/>
 				{this.loadingFilter(false)}
-				<button className="btn btn-default btn-xs"
-				        onClick={(e) => this.copyLinkToClipboard(e)}>Copy link
-				</button>
+				<CopyLink onClick={this.copyLinkToClipboard} />
 				<ShowIf show={!this.props.isFSByScreenSize && !this.props.fullScreenMode && !this.props.singlePost}>
 					<div className="full-screen-button_pos-mod"
 					     onClick={this.setFullScreen.bind(this, true, false)}
@@ -215,9 +214,7 @@ class PostModal extends React.Component {
 					               showAll={this.props.showAll}
 					               fullScreenMode={this.props.fullScreenMode}/>
 					{this.loadingFilter(true)}
-					<button className="btn btn-default btn-xs full-screen-share_pos-mod"
-					        onClick={(e) => this.copyLinkToClipboard(e)}>Copy link
-					</button>
+					<CopyLink className="full-screen-share_pos-mod" onClick={this.copyLinkToClipboard} />
 					<ShowIf show={!this.props.post.isVideo}>
 						<ImagesGallery index={this.props.currentIndex}
 						               styles={this.props.style.image}

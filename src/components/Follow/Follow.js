@@ -16,7 +16,7 @@ class Follow extends React.Component {
 					{loadingEllipsis('Pending', 'saving_follow')}
 				</ShowIf>
 				<ShowIf show={!this.props.changeFollow}>
-					<div className={this.props.isFollowed ? 'unfollow-button_follow' : 'follow-button_follow'}
+					<div className={this.props.isFollowed ? 'btn btn-cancel' : 'btn btn-default'}
 					     onClick={() => this.props.changeFollowFunc(this.props.profileUserName, this.props.isFollowed)}>
 						{this.props.isFollowed ? 'Unfollow' : 'Follow'}
 					</div>

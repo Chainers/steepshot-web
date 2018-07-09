@@ -71,7 +71,7 @@ class PlagiarismTracking extends React.Component {
 					<a href={`https://steepshot.org/ipfs/${this.props.data.ipfs}`} target="_blank">IPFS link</a>
 				</p>
 				<div className="buttons_plag-track">
-					<button className="btn btn-index" onClick={this.closeModal.bind(this)}>NO, CANCEL PUBLISHING</button>
+					<button className="btn btn-cancel" onClick={this.closeModal.bind(this)}>NO, CANCEL PUBLISHING</button>
 					<button className="btn btn-default" onClick={() => this.props.continuePublishing(this.props.data)}>
 						YES, CONTINUE PUBLISHING
 					</button>

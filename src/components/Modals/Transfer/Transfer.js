@@ -19,8 +19,8 @@ class Transfer extends React.Component {
 						TRANSFER TO ACCOUNT
 					</div>
 				</div>
-				<div className="body_transfer">
 
+				<div className="body_transfer">
 					<div className="form-line_transfer">
 						<div className="label_transfer">
 							From
@@ -46,6 +46,9 @@ class Transfer extends React.Component {
 					</div>
 
 					<div className="form-line_transfer">
+						<div className="label_transfer">
+							Token
+						</div>
 						<ChooseToken selectedToken={selectedToken}
 						             amount={amountToken}
 						             onChange={this.changeToken.bind(this)}/>
@@ -56,22 +59,16 @@ class Transfer extends React.Component {
 							Amount
 						</div>
 						<div className="field_transfer">
-							<input className="input_transfer" ref={ref => this.amount = ref} pattern="[0-9.]" placeholder="Amount"/>
+							<input className="input_transfer" ref={ref => this.amount = ref} pattern="[0-9.]" placeholder="e.g. 100"/>
 						</div>
 					</div>
-					<div className="account-balance_transfer">
-						Balance: 2345 STEEM
-					</div>
 
-					<div className="field-description_transfer">
-						This memo is public
-					</div>
 					<div className="form-line_transfer">
 						<div className="label_transfer">
 							Memo
 						</div>
 						<div className="field_transfer">
-							<input className="input_transfer" ref={ref => this.memo = ref} placeholder="memo"/>
+							<input className="input_transfer" ref={ref => this.memo = ref} placeholder="This memo is public"/>
 						</div>
 					</div>
 
@@ -80,11 +77,13 @@ class Transfer extends React.Component {
 							Active key
 						</div>
 						<div className="field_transfer">
-							<input className="input_transfer" ref={ref => this.activeKey = ref} placeholder="Active Key"/>
+							<input type="password" className="input_transfer" ref={ref => this.activeKey = ref} placeholder="Active Key"/>
 						</div>
 					</div>
-
-					<button>Ok</button>
+				</div>
+				<div className="buttons_transfer clearfix">
+					<button className="btn btn-default">OK</button>
+					<button className="btn btn-cancel">CANCEL</button>
 				</div>
 			</div>
 		);
@@ -93,13 +92,14 @@ class Transfer extends React.Component {
 
 
 const mapStateToProps = state => {
-	const {balance, sbd_balance} = state.userProfile.profile || {};
+	const {balance, sbd_balance, } = state.userProfile.profile || {};
 	const {token} = state.transfer;
 	return {
 		steem: balance,
 		sbd: sbd_balance,
 		selectedToken: token,
-		amountToken: '323.01'
+		amountToken: '323.01',
+		username: state.auth.user
 	}
 };
 

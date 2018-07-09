@@ -246,7 +246,7 @@ class EditPost extends React.Component {
 					           description="Description is limited to 2048 characters"/>
 					<div className="buttons-container_edi-pos">
 						<button onClick={this.props.editPostClear}
-						        className="btn btn-index">CLEAR
+						        className="btn btn-cancel">CLEAR
 						</button>
 						<button onClick={this.submit.bind(this)}
 						        className="btn btn-default"

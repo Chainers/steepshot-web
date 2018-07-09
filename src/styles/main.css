@@ -115,20 +115,6 @@ a {
     margin-bottom: 40px;
 }
 
-.btn-default:hover {
-    box-shadow: 0 5px 12px 0 rgba(231, 72, 0, .3) !important;
-}
-
-.btn-default:active {
-    box-shadow: none !important;
-}
-
-.btn-default {
-    transition: .2s;
-    border: 1px transparent;
-    background: linear-gradient(to right, rgb(255, 121, 4), rgb(255, 22, 5)) !important;
-}
-
 @media screen and (max-width: 767px) {
     header .container {
         margin: 0;
@@ -168,22 +154,10 @@ a {
     }
 }
 
-.buttons-row .wrap-btn {
-    padding-left: 20px;
-    margin-left: 14px;
-}
-
 .nav-tabs {
     border-bottom-color: #f4f4f6;
 }
 
-/* NEW */
-
-/*!
- * Etalon v0.0.1
- * 2015-2017 Dmitry Sachko ()
- * Based on Bootstrap 3.3.0
- */
 @font-face {
     font-family: OpenSans-Regular;
     font-style: normal;
@@ -768,118 +742,6 @@ input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer
     margin: 0
 }
 
-.btn {
-    display: inline-block;
-    margin-bottom: 0;
-    font: 14px OpenSans-Regular;
-    text-align: center;
-    vertical-align: middle;
-    -ms-touch-action: manipulation;
-    touch-action: manipulation;
-    cursor: pointer;
-    background-image: none;
-    text-decoration: none;
-    max-width: 100%;
-    padding: 12px 40px 12px;
-    line-height: 1;
-    border-radius: 21px;
-    color: #ffffff;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
-    transition: .2s;
-}
-
-.btn.focus, .btn:focus, .btn:hover {
-    outline: 0;
-    color: #ffffff;
-    text-decoration: none
-}
-
-.btn.active, .btn:active {
-    outline: 0;
-}
-
-.btn-index, .btn-index:focus {
-    border-color: #e7e7e7;
-    background: #ffffff;
-    color: #0f181e;
-}
-
-.btn-index:hover {
-    color: #e74800 !important;
-}
-
-.btn-index:active {
-    border: 1px solid #e7e7e7;
-    box-shadow: inset 0 1px 3px 0 #e7e7e7;
-}
-
-.btn-index[disabled] {
-    background: #f1f1f1;
-    opacity: .3
-}
-
-.btn-xs {
-    padding: 8px 28px;
-    font-size: 12px;
-    border-radius: 15px;
-}
-
-.tags-list {
-    margin-left: -5px;
-    margin-right: -5px;
-    padding: 10px 0 5px
-}
-
-.tags-list .tag {
-    display: block;
-    float: left;
-    margin: 0 5px 5px;
-    font-family: OpenSans-SemiBold, Helvetica, Arial, sans-serif;
-    font-size: 12px;
-    border: 1px solid #e7e7e7;
-    background: #fff;
-    height: 28px;
-    line-height: 26px;
-    padding: 0 10px;
-    border-radius: 15px
-}
-
-.tags-list .tag .btn-close {
-    border: none;
-    display: inline-block;
-    vertical-align: middle;
-    margin-left: 8px;
-    margin-top: -1px;
-    padding: 0;
-    background: 0 0
-}
-
-.tags-list .tag .btn-close:before {
-    content: ' ';
-    font-size: 10px;
-    background: url('/images/sprite_svg1910.svg') -.2em -42.6em no-repeat;
-    background-size: 4.4em 47.2em;
-    width: .8em;
-    height: .8em;
-    display: block
-}
-
-.no-svg .tags-list .tag .btn-close:before {
-    background-image: url('/images/sprite_svg1910.svg')
-}
-
-.tags-list .tag .btn-close:hover:before {
-    background-position: -.2em -43.800000000000004em;
-    width: .8em;
-    height: .8em
-}
-
 .nav {
     margin: 0 0 30px;
     padding-left: 0;
@@ -1029,18 +891,6 @@ input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer
     align-items: center;
 }
 
-.user-information .btn-wrap {
-    padding-top: 30px;
-    padding-bottom: 30px;
-    margin-left: 125px
-}
-
-.user-information .btn-wrap .btn {
-    width: 125px;
-    padding-left: 10px;
-    padding-right: 10px
-}
-
 .user-information .name {
     font: 20px OpenSans-SemiBold;
     line-height: 1.4
@@ -1138,7 +988,7 @@ input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer
     margin-right: 10px
 }
 
-.no-svg .user-panel .search .lnk-search:before {
+.user-panel .search .lnk-search:before {
     background-image: url('/images/sprite_svg1910.svg')
 }
 
@@ -1214,34 +1064,6 @@ input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer
     padding: 0
 }
 
-.user-panel .create .btn-create-mob {
-    position: relative;
-    display: none;
-    padding: 0;
-    width: 30px;
-    height: 30px;
-    border-radius: 50%
-}
-
-.user-panel .create .btn-create-mob:before {
-    content: ' ';
-    font-size: 10px;
-    background: url('/images/sprite_svg1910.svg') -.2em -9.6em no-repeat;
-    background-size: 4.4em 47.2em;
-    width: 2.2em;
-    height: 2.2em;
-    display: block;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    -webkit-transform: translate(-50%, -50%);
-    transform: translate(-50%, -50%)
-}
-
-.no-svg .user-panel .create .btn-create-mob:before {
-    background-image: url('/images/sprite_svg1910.svg')
-}
-
 .user-panel .controls {
     float: right;
     margin-left: 30px
@@ -1270,7 +1092,7 @@ input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer
     transform: translate(-50%, -50%)
 }
 
-.no-svg .user-panel .controls .btn-control:before {
+.user-panel .controls .btn-control:before {
     background-image: url('/images/sprite_svg1910.svg')
 }
 
@@ -1300,7 +1122,6 @@ input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer
 
 .user-panel .hamburger {
     float: right;
-    margin-left: 30px
 }
 
 .user-panel .hamburger .wrap-hamburger {
@@ -1349,37 +1170,6 @@ input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer
 .search-panel .wrap-btn {
     float: right;
     margin-left: 30px
-}
-
-.search-panel .wrap-btn .btn-close {
-    position: relative;
-    display: block;
-    width: 16px;
-    height: 30px;
-    border: none;
-    padding: 0;
-    line-height: 30px;
-    background: 0 0
-}
-
-.search-panel .wrap-btn .btn-close:hover:before {
-    background-position: -.2em -5.6000000000000005em;
-    width: 1.6em;
-    height: 1.6em
-}
-
-.search-panel .wrap-btn .btn-close:before {
-    content: ' ';
-    font-size: 10px;
-    background: url('/images/sprite_svg1910.svg') no-repeat -.2em -3.6em;
-    background-size: 4.4em 47.2em;
-    width: 1.6em;
-    height: 1.6em;
-    display: block
-}
-
-.no-svg .search-panel .wrap-btn .btn-close:before {
-    background-image: url('/images/sprite_svg1910.svg')
 }
 
 .search-panel .wrap-search {
@@ -1650,6 +1440,21 @@ input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer
     }
 }
 
+@media (max-width: 450px) {
+    .section.logo {
+        display: none;
+    }
+
+    .section.create {
+        float: left;
+        margin: 0;
+    }
+
+    .section.hamburger {
+        margin-left: 10px;
+    }
+}
+
 @media (max-width: 1023px) {
     .g-header {
         position: fixed;
@@ -1705,14 +1510,6 @@ input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer
 
     .user-panel .user {
         display: none
-    }
-
-    .user-panel .create .btn-create {
-        display: none
-    }
-
-    .user-panel .create .btn-create-mob {
-        display: block
     }
 
     .user-panel .controls {

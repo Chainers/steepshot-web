@@ -50,14 +50,12 @@
     padding: 10px;
     border: solid 1px #f4f4f6;
     cursor: pointer;
+    color: #e74800;
+    font: 14px OpenSans-Bold;
 }
 
 .select_choose-token select.disabled {
     cursor: unset;
-}
-
-.select_choose-token option {
-    color: #e74800;
 }
 
 .balance_choose-token {

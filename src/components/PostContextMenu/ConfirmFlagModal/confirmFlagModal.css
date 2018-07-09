@@ -36,10 +36,6 @@
     padding-top: 10px;
 }
 
-.buttons_holder-flag-mod button {
-    font: 14px OpenSans-Semibold;
-}
-
 .buttons_holder-flag-mod button:first-child {
     margin-right: 20px;
 }
