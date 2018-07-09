@@ -1,19 +1,22 @@
 import React from 'react';
 import {connect} from "react-redux";
 import './transfer.css';
+import ChooseToken from "../../Common/ChooseToken/ChooseToken";
+import {setToken} from "../../../actions/transfer";
 
 class Transfer extends React.Component {
 
+	changeToken(e) {
+		this.props.setToken(e.target.value);
+	}
+
 	render() {
-		const {username} = this.props;
+		const {username, selectedToken, amountToken} = this.props;
 		return (
 			<div className="container_transfer">
 				<div className="header_transfer">
 					<div className="title_transfer">
-						Transfer to Account
-					</div>
-					<div className="description_transfer">
-						Move funds to another Steem account.
+						TRANSFER TO ACCOUNT
 					</div>
 				</div>
 				<div className="body_transfer">
@@ -43,15 +46,17 @@ class Transfer extends React.Component {
 					</div>
 
 					<div className="form-line_transfer">
+						<ChooseToken selectedToken={selectedToken}
+						             amount={amountToken}
+						             onChange={this.changeToken.bind(this)}/>
+					</div>
+
+					<div className="form-line_transfer">
 						<div className="label_transfer">
 							Amount
 						</div>
 						<div className="field_transfer">
 							<input className="input_transfer" ref={ref => this.amount = ref} pattern="[0-9.]" placeholder="Amount"/>
-							<select className="select-coin_transfer">
-								<option>STEEM</option>
-								<option>SBD</option>
-							</select>
 						</div>
 					</div>
 					<div className="account-balance_transfer">
@@ -88,15 +93,22 @@ class Transfer extends React.Component {
 
 
 const mapStateToProps = state => {
-	const {balance, sbd_balance} = state.userProfile.profile;
+	const {balance, sbd_balance} = state.userProfile.profile || {};
+	const {token} = state.transfer;
 	return {
 		steem: balance,
-		sbd: sbd_balance
+		sbd: sbd_balance,
+		selectedToken: token,
+		amountToken: '323.01'
 	}
 };
 
 const mapDispatchToProps = dispatch => {
-	return {}
+	return {
+		setToken: token => {
+			dispatch(setToken(token))
+		}
+	}
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Transfer);

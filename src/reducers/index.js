@@ -37,6 +37,7 @@ import images from './images';
 import emptyRequestError from './emptyRequestError';
 import transactionHistory from "./transactionHistory";
 import contextMenu from "./contextMenu";
+import transfer from "./transfer";
 
 export default combineReducers({
 	clipboard,
@@ -76,5 +77,6 @@ export default combineReducers({
 	images,
 	emptyRequestError,
 	transactionHistory,
-	contextMenu
+	contextMenu,
+	transfer
 });

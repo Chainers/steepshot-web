@@ -8,6 +8,7 @@ import {getUserProfile} from "../../actions/userProfile";
 import Utils from "../../utils/Utils";
 import {openModal} from "../../actions/modal";
 import Transfer from "../Modals/Transfer/Transfer";
+import {setToken} from "../../actions/transfer";
 
 const DESCRIPTION = {
 	STEEM: `Tradeable tokens that may be transferred anywhere at anytime.
@@ -23,26 +24,28 @@ class Wallet extends React.Component {
 		props.getUserProfile();
 	}
 
-	transfer(isSteem) {
+	transfer() {
 		let modalOption = {
-			body: (<Transfer isSteem={isSteem}/>)
+			body: (<Transfer />)
 		};
 		this.props.openModal("transfer", modalOption);
 	}
 
 	transferSteem() {
-		this.transfer(true)
+		this.props.setToken('STEEM');
+		this.transfer()
 	}
 
 	transferSbd() {
-		this.transfer(false)
+		this.props.setToken('SBD');
+		this.transfer()
 	}
 
 	render() {
 		const {cost, steem, sp, sbd} = this.props;
-		if (!Utils.isNotEmpty(cost) || !Utils.isNotEmpty(steem) || !Utils.isNotEmpty(sp) || !Utils.isNotEmpty(sbd)) {
-			return <LoadingSpinner/>
-		}
+		// if (!Utils.isNotEmpty(cost) || !Utils.isNotEmpty(steem) || !Utils.isNotEmpty(sp) || !Utils.isNotEmpty(sbd)) {
+		// 	return <LoadingSpinner/>
+		// }
 		return (
 			<div className="container">
 				<div className="container_wallet">
@@ -144,6 +147,9 @@ const mapDispatchToProps = dispatch => {
 		},
 		openModal: (index, options) => {
 			dispatch(openModal(index, options));
+		},
+		setToken: token => {
+			dispatch(setToken(token))
 		}
 	}
 };
