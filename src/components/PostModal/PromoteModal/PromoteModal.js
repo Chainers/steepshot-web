@@ -17,6 +17,8 @@ import {
 import Constants from '../../../common/constants';
 import {loadingEllipsis} from '../../../utils/loadingEllipsis';
 import {pushMessage} from '../../../actions/pushMessage';
+import ChooseToken from "../../Common/ChooseToken/ChooseToken";
+import ShowIf from "../../Common/ShowIf";
 
 class PromoteModal extends React.Component {
 
@@ -104,11 +106,8 @@ class PromoteModal extends React.Component {
 	}
 
 	render() {
-		let loadingDataOrError = this.props.selectError;
 		let closeText = 'CANCEL', noTokensBlock = null;
-		if (this.props.infoLoading) {
-			loadingDataOrError = this.props.userInfoErrorStatus ? this.props.userInfoErrorStatus : loadingEllipsis('Loading data');
-		}
+
 		let findText = 'FIND PROMOTER';
 		if (this.props.searchingBot) {
 			findText = loadingEllipsis('LOOKING');
@@ -126,25 +125,20 @@ class PromoteModal extends React.Component {
 				<p className="title_promote-mod">PROMOTE POST</p>
 				{noTokensBlock}
 				<p className="label_promote-mod">Token</p>
-				<div className="body_promote-mod">
-					<div className="select-wrapper_promote-mod">
-						<select className="select_promote-mod"
-						        onChange={this.setSelectedValue.bind(this)}
-						        style={this.props.selectedToken ? {color: '#e74800'} : this.props.infoLoading
-							        ? {} : {cursor: 'pointer'}}
-						        disabled={this.props.infoLoading ? 'disabled' : ''}>
-							<option selected={this.props.activeIndex === 0 ? 'selected' : ''}>STEEM</option>
-							<option selected={this.props.activeIndex === 1 ? 'selected' : ''}>SBD</option>no-tokens_promote-mod centered--flex
-						</select>
-						<div className="error_promote-mod"
-						     style={this.props.infoLoading ? {color: '#979b9e', bottom: -23} : {bottom: -23}}>{loadingDataOrError}
-						</div>
-					</div>
-					<div className="balance_promote-mod">
-						<span>Balance</span>
-						<span className="balance-value_promote-mod">{this.props.tokenNumber} {this.props.selectedToken}</span>
-					</div>
+				<ChooseToken selectedToken={this.props.selectedToken}
+				             amount={this.props.tokenNumber}
+				             onChange={this.setSelectedValue.bind(this)}
+				             disabled={this.props.infoLoading}/>
+				<div className="error_promote-mod">
+					{this.props.selectError}
 				</div>
+
+				<div className="loading_promote-mod">
+					<ShowIf show={this.props.infoLoading}>
+						{loadingEllipsis('Loading data')}
+					</ShowIf>
+				</div>
+
 				<p className="label_promote-mod">Promotion amount (minimum {Constants.SERVICES.BOTS.MIN_BID_VALUE})</p>
 				<div className="position--relative">
 					<input ref={ref => this.input = ref}
