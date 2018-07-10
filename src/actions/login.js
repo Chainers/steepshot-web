@@ -50,7 +50,6 @@ export function loginWithSteemConnect(params) {
 				let avatar = getAvatar(response[0]);
 				StorageService.setSteemConnectData(username, expiresIn, accessToken, avatar, service);
 				initOneSignalService(username, dispatch);
-				let parseResult = JSON.parse(response[0].json_metadata);
 				dispatch({
 					type: 'LOGIN_WITH_STEEM_CONNECT_SUCCESS',
 					user: username,
