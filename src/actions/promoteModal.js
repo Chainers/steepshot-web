@@ -215,7 +215,7 @@ export function sendBid(steemLink, activeKey, botName) {
 		wif: activeKey,
 		recipient: botName,
 		amount: promoteAmount + ' ' + promoteModal.selectedToken,
-		postLink: steemLink
+		memo: steemLink
 	};
 	return dispatch => {
 		if (state.session.actionLocked) {

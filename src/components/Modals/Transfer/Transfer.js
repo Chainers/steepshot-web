@@ -2,7 +2,16 @@ import React from 'react';
 import {connect} from "react-redux";
 import './transfer.css';
 import ChooseToken from "../../Common/ChooseToken/ChooseToken";
-import {setToken} from "../../../actions/transfer";
+import {
+	changeActiveKey,
+	changeAmount,
+	changeMemo,
+	changeSaveKey,
+	changeUsername, clearTransfer,
+	setToken,
+	showMemo
+} from "../../../actions/transfer";
+import ShowIf from "../../Common/ShowIf";
 
 class Transfer extends React.Component {
 
@@ -10,8 +19,28 @@ class Transfer extends React.Component {
 		this.props.setToken(e.target.value);
 	}
 
+	changeUsername(e) {
+		this.props.changeUsername(e.target.value);
+	}
+
+	changeAmount(e) {
+		this.props.changeAmount(e.target.value);
+	}
+
+	changeMemo(e) {
+		this.props.changeMemo(e.target.value);
+	}
+
+	changeActiveKey(e) {
+		this.props.changeActiveKey(e.target.value);
+	}
+
+	changeSaveKey() {
+		this.props.changeSaveKey();
+	}
+
 	render() {
-		const {username, selectedToken, amountToken} = this.props;
+		const {username, selectedToken, amountToken, memoOpened, saveKey} = this.props;
 		return (
 			<div className="container_transfer">
 				<div className="header_transfer">
@@ -23,17 +52,15 @@ class Transfer extends React.Component {
 					</div>
 				</div>
 
-				<div className="body_transfer">
+				<form className="body_transfer" autoComplete="off">
 
 					<div className="form-line_transfer">
 						<div className="label_transfer">
 							To
 						</div>
 						<div className="field_transfer">
-							<div className="at_transfer">
-								@
-							</div>
-							<input className="input_transfer" ref={ref => this.recipient = ref}/>
+							<div className="at_transfer"/>
+							<input placeholder="username" onChange={this.changeUsername.bind(this)} maxLength={16}/>
 						</div>
 					</div>
 
@@ -51,29 +78,39 @@ class Transfer extends React.Component {
 							Amount
 						</div>
 						<div className="field_transfer">
-							<input className="input_transfer" ref={ref => this.amount = ref} pattern="[0-9.]" placeholder="e.g. 100"/>
+							<input type="number" onChange={this.changeAmount.bind(this)} placeholder="0.001"/>
 						</div>
 					</div>
 
-					<div className="form-line_transfer">
+					<ShowIf show={!memoOpened}>
+						<div className="add-memo_transfer">
+							<span onClick={this.props.showMemo}>
+								+ Add memo
+							</span>
+						</div>
+					</ShowIf>
+
+					<ShowIf show={memoOpened}>
 						<div className="label_transfer">
 							Memo
 						</div>
-						<div className="field_transfer">
-							<input className="input_transfer" ref={ref => this.memo = ref} placeholder="This memo is public"/>
-						</div>
-					</div>
+						<textarea onChange={this.changeMemo.bind(this)} placeholder="This memo is public"/>
+					</ShowIf>
 
 					<div className="form-line_transfer">
 						<div className="label_transfer">
 							Active key
 						</div>
 						<div className="field_transfer">
-							<input type="password" className="input_transfer" ref={ref => this.activeKey = ref}
-							       placeholder="Active Key"/>
+							<input type="password" onChange={this.changeActiveKey.bind(this)} />
 						</div>
 					</div>
-				</div>
+					<div className="checkbox-field_transfer">
+						<div className={'checkbox_transfer ' + (saveKey ? 'save_transfer' : '')}
+					     onClick={this.changeSaveKey.bind(this)}/>
+						Save your key?
+					</div>
+				</form>
 				<div className="buttons_transfer clearfix">
 					<button className="btn btn-default">OK</button>
 					<button className="btn btn-cancel">CANCEL</button>
@@ -86,13 +123,15 @@ class Transfer extends React.Component {
 
 const mapStateToProps = state => {
 	const {balance, sbd_balance,} = state.userProfile.profile || {};
-	const {token} = state.transfer;
+	const {token, showMemo, saveKey} = state.transfer;
 	return {
 		steem: balance,
 		sbd: sbd_balance,
 		selectedToken: token,
 		amountToken: '323.01',
-		username: state.auth.user
+		username: state.auth.user,
+		memoOpened: showMemo,
+		saveKey
 	}
 };
 
@@ -100,6 +139,27 @@ const mapDispatchToProps = dispatch => {
 	return {
 		setToken: token => {
 			dispatch(setToken(token))
+		},
+		showMemo: () => {
+			dispatch(showMemo())
+		},
+		changeUsername: value => {
+			dispatch(changeUsername(value))
+		},
+		changeAmount: value => {
+			dispatch(changeAmount(value))
+		},
+		changeMemo: value => {
+			dispatch(changeMemo(value))
+		},
+		changeActiveKey: value => {
+			dispatch(changeActiveKey(value))
+		},
+		changeSaveKey: () => {
+			dispatch(changeSaveKey())
+		},
+		clear: () => {
+			dispatch(clearTransfer())
 		}
 	}
 };

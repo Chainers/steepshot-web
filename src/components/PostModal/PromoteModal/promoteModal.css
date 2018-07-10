@@ -54,6 +54,10 @@
     border-top: 1px solid #f4f4f6;
 }
 
+.buttons_promote-mod > button {
+    margin-left: 10px;
+}
+
 .buttons_promote-mod button {
     font: 12px OpenSans-Semibold;
     transition: .2s;
