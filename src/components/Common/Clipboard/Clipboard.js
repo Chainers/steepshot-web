@@ -9,7 +9,6 @@ class Clipboard extends React.Component {
 	componentDidUpdate() {
 		try {
 			this.button.click();
-			this.props.pushMessage("URL has been copied in your clipboard");
 		} catch (e) {
 			this.props.pushMessage("Oops, unable to copy");
 		}

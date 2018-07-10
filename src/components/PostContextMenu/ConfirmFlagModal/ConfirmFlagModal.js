@@ -27,7 +27,7 @@ class ConfirmFlagModal extends React.Component {
 					</p>
 				</div>
 				<div className="buttons_holder-flag-mod">
-					<button className="btn btn-index" onClick={() => this.props.closeModal("ConfirmFlagModal")}>CANCEL</button>
+					<button className="btn btn-cancel" onClick={() => this.props.closeModal("ConfirmFlagModal")}>CANCEL</button>
 					<button className="btn btn-default" onClick={this.confirm.bind(this)}>FLAG</button>
 				</div>
 			</div>

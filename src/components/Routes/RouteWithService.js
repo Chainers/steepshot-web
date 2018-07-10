@@ -2,7 +2,7 @@ import React from 'react';
 import {Route} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {replace} from "react-router-redux";
-import {utils} from "../../utils/utils";
+import Utils from "../../utils/Utils";
 import Constants from "../../common/constants";
 import {setService} from "../../actions/services";
 import AuthService from "../../services/authService";
@@ -24,7 +24,7 @@ class RouteWithService extends React.Component {
 	}
 
 	componentWillReceiveProps(nextProps) {
-		if (!utils.equalsObjects(nextProps.pathname, this.props.pathname)
+		if (!Utils.equalsObjects(nextProps.pathname, this.props.pathname)
 			&& nextProps.serviceName === Constants.SERVICES.golos.name
 			&& !nextProps.pathname.includes('/' + Constants.SERVICES.golos.name)) {
 			this.props.historyReplace('/golos' + nextProps.pathname);

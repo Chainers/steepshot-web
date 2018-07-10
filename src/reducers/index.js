@@ -9,7 +9,6 @@ import postModal from './postModal';
 import tabsBar from './tabsBar';
 import likesFlagsList from './likesFlagsList';
 import users from './users';
-import bodyParams from './bodyParams';
 import textInput from './textInput';
 import metaTags from './metaTags';
 import search from './search';
@@ -37,6 +36,8 @@ import promoteModal from './promoteModal';
 import images from './images';
 import emptyRequestError from './emptyRequestError';
 import transactionHistory from "./transactionHistory";
+import contextMenu from "./contextMenu";
+import transfer from "./transfer";
 
 export default combineReducers({
 	clipboard,
@@ -48,7 +49,6 @@ export default combineReducers({
 	modals,
 	postModal,
 	users,
-	bodyParams,
 	likesFlagsList,
 	editPost,
 	textInput,
@@ -76,5 +76,7 @@ export default combineReducers({
 	promoteModal,
 	images,
 	emptyRequestError,
-	transactionHistory
+	transactionHistory,
+	contextMenu,
+	transfer
 });

@@ -1,0 +1,22 @@
+.container_action-row {
+    flex: 1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    height: 68px;
+    border-bottom: 1px solid #f4f4f6;
+    cursor: pointer;
+    color: #333333;
+    font: 12px OpenSans-Light;
+}
+
+.container_action-row:hover {
+    background-color: #fafafc;
+}
+
+.icon_action-row {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+}

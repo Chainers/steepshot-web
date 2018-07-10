@@ -18,7 +18,7 @@ const LowNSFWFilter = (props) => {
 					<p className="message-low-nsfw_pos-mod"
 					   style={colorMessageStyle}
 					>This content is for adults only. Not recommended for children or sensitive individuals.</p>
-					<button className="btn btn-index"
+					<button className="btn btn-cancel"
 					        onClick={() => props.setPostModalOptions({showAll: true})}
 					        style={buttonColor}
 					>Show me
@@ -31,7 +31,7 @@ const LowNSFWFilter = (props) => {
 					<p className="message-low-nsfw_pos-mod"
 					   style={colorMessageStyle}
 					>This content is hidden due to low ratings.</p>
-					<button className="btn btn-index"
+					<button className="btn btn-cancel"
 					        onClick={() => props.setPostModalOptions({showAll: true})}
 					        style={buttonColor}
 					>Show me

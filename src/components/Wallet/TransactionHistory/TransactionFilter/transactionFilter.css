@@ -1,0 +1,15 @@
+.component_trx-filter {
+    position: relative;
+}
+
+.container_trx-filter {
+    width: 200px;
+    border-radius: 10px;
+    top: 50px;
+    left: -160px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    background-color: white;
+    overflow: hidden;
+}

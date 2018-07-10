@@ -1,10 +1,10 @@
 import Constants from '../common/constants';
-import {utils} from '../utils/utils';
 import ChainService from './chainService';
 import SteemService from './steemService';
 import GolosService from './golosService';
 import AuthService from "./authService";
 import SteemConnect from "./steemConnect";
+import Utils from "../utils/Utils";
 
 let config = Constants.SERVICES.steem;
 
@@ -81,7 +81,7 @@ function convertOptionsToRequestString(options) {
 
 	let optionsArray = [];
 	for (let key in options) {
-		if (utils.isNotEmpty(options[key])) optionsArray.push(key + '=' + convertIfBool(options[key]));
+		if (Utils.isNotEmpty(options[key])) optionsArray.push(key + '=' + convertIfBool(options[key]));
 	}
 	return '?' + optionsArray.join('&');
 }

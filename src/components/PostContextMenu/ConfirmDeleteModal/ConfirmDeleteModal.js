@@ -23,7 +23,7 @@ class ConfirmDeleteModal extends React.Component {
 						undo this action.</p>
 				</div>
 				<div className="buttons_holder-del-mod">
-					<button className="btn btn-index" onClick={this.cancelDeleting.bind(this)}>CANCEL</button>
+					<button className="btn btn-cancel" onClick={this.cancelDeleting.bind(this)}>CANCEL</button>
 					<button className="btn btn-default" onClick={this.deletePost.bind(this)}>DELETE</button>
 				</div>
 			</div>

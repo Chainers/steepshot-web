@@ -9,10 +9,11 @@ const mobileSize = document.documentElement.clientWidth < 815;
 
 class Modal extends React.Component {
 
-
 	componentDidMount() {
-		this.container.classList.remove('before-load-back_modal');
-		this.body.classList.remove('before-load_modal');
+		setTimeout(() => {
+			this.container.classList.remove('before-load-back_modal');
+			this.body.classList.remove('before-load_modal');
+		}, 1);
 	}
 
 	shouldComponentUpdate(nextProps) {

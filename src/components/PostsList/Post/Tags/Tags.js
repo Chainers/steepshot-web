@@ -1,6 +1,6 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
-import {utils} from '../../../../utils/utils';
+import Utils from '../../../../utils/Utils';
 import './tags.css';
 
 class Tags extends React.Component {
@@ -16,9 +16,9 @@ class Tags extends React.Component {
 			if (tag === 'steepshot' || tag === '#steepshot') {
 				return null;
 			}
-			tag = utils.detransliterate(tag);
+			tag = Utils.detransliterate(tag);
 			return <Link key={index} to={`/search/${this.checkFirst(tag)}`}>
-				{utils.tagPrettify(tag) + ' '}
+				{Utils.tagPrettify(tag) + ' '}
 			</Link>
 		})
 	}

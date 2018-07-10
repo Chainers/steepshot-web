@@ -1,12 +1,12 @@
 import React from "react";
 import {connect} from 'react-redux'
-import {utils} from "../../utils/utils";
+import Utils from "../../utils/Utils";
 import {loginWithSteemConnect} from "../../actions/login";
 
 class SteemConnect extends React.Component {
 	constructor(props) {
 		super();
-		props.loginWithSteemConnect(utils.urlParamsToObject(props.location.search));
+		props.loginWithSteemConnect(Utils.urlParamsToObject(props.location.search));
 	}
 
 	render() {

@@ -9,7 +9,7 @@ import ReactResizeDetector from 'react-resize-detector';
 import TabsBar from '../Common/TabsBar/TabsBar';
 import Tab from '../Common/TabsBar/Tab/Tab';
 import './likesFlagsList.css';
-import {utils} from '../../utils/utils';
+import Utils from '../../utils/Utils';
 import Scroll from '../Scroll/Scroll';
 
 const SCROLL_POINT_LIKES = 'likes';
@@ -32,7 +32,7 @@ class LikesFlagsList extends React.Component {
 	}
 
 	componentWillReceiveProps(nextProps) {
-		if (!utils.equalsObjects(nextProps.window, this.props.window)) {
+		if (!Utils.equalsObjects(nextProps.window, this.props.window)) {
 			this.updateBodyHeight()
 		}
 	}

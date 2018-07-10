@@ -51,10 +51,10 @@ class Settings extends React.Component {
 						<div className="header_settings">
 							<span>PUSH NOTIFICATIONS</span>
 							<ShowIf show={!this.props.notificationEnabled}>
-								<button className="subscribe-btn_settings" onClick={this.props.subscribe}>SUBSCRIBE</button>
+								<button className="btn btn-default" onClick={this.props.subscribe}>SUBSCRIBE</button>
 							</ShowIf>
 							<ShowIf show={this.props.notificationEnabled}>
-								<button className="unsubscribe-btn_settings" onClick={this.props.unsubscribe}>UNSUBSCRIBE</button>
+								<button className="btn btn-cancel" onClick={this.props.unsubscribe}>UNSUBSCRIBE</button>
 							</ShowIf>
 						</div>
 						<div className="blocked-block_settings">
@@ -72,7 +72,7 @@ class Settings extends React.Component {
 						</div>
 					</div>
 				</div>
-				<button className="save_settings" onClick={this.submit.bind(this)}>
+				<button className="btn btn-default save-btn" onClick={this.submit.bind(this)}>
 					SAVE
 				</button>
 			</div>

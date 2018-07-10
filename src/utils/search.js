@@ -1,8 +1,8 @@
-import {utils} from "./utils";
+import Utils from "./Utils";
 
 export function insertCategory(point, category) {
 	if (category === undefined) return point;
-	category = utils.detransliterate(category, true);
+	category = Utils.detransliterate(category, true);
 	let path = point.split('/');
 	return `${path[0]}/${category}/${path[1]}`;
 }

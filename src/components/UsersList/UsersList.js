@@ -5,7 +5,7 @@ import {clearUsersList, getUsersList, initUsersList} from '../../actions/usersLi
 import {documentTitle} from '../../utils/documentTitle';
 import User from './User/User';
 import './usersList.css';
-import {utils} from "../../utils/utils";
+import Utils from "../../utils/Utils";
 import Constants from "../../common/constants";
 import ShowIf from "../Common/ShowIf";
 import LoadingSpinner from "../LoadingSpinner";
@@ -35,7 +35,7 @@ class UsersList extends React.Component {
 	}
 
 	shouldComponentUpdate(nextProps) {
-		return !utils.equalsObjects(nextProps, this.props);
+		return !Utils.equalsObjects(nextProps, this.props);
 	}
 
 	static userListOptions(props) {

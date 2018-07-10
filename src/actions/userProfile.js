@@ -1,4 +1,3 @@
-import {push} from 'react-router-redux';
 import {getStore} from '../store/configureStore';
 import {pushMessage} from './pushMessage';
 import UserService from '../services/userService';
@@ -26,7 +25,6 @@ export function getUserProfile(userName = AuthService.getUsername()) {
 					type: 'GET_USER_PROFILE_ERROR',
 					error
 				});
-				dispatch(push('/UserNotFound'));
 			});
 	}
 }

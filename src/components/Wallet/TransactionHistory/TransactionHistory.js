@@ -1,18 +1,12 @@
 import React from 'react';
 import './transactionHistory.css';
 import {connect} from "react-redux";
-import LoadingSpinner from "../../../LoadingSpinner";
-import {changeTransactionFilter, getTransactionHistory} from "../../../../actions/transactionHistory";
-import InfinityScroll from "../../../InfinityScroll/InfinityScroll";
-import ShowIf from "../../ShowIf";
 import Transaction from "./Transaction/Transaction";
 import TransactionFilter from "./TransactionFilter/TransactionFilter";
-
-const FILTER = [
-	'ALL',
-	'REWARDS',
-	'TRANSFER'
-];
+import InfinityScroll from "../../InfinityScroll/InfinityScroll";
+import ShowIf from "../../Common/ShowIf";
+import LoadingSpinner from "../../LoadingSpinner";
+import {changeTransactionFilter, getTransactionHistory} from "../../../actions/transactionHistory";
 
 class TransactionHistory extends React.Component {
 
@@ -22,7 +16,7 @@ class TransactionHistory extends React.Component {
 	}
 
 	componentWillReceiveProps(nextProps) {
-		if (nextProps.currentOperation !== this.props.currentOperation) {
+		if (nextProps.indexOperation !== this.props.indexOperation) {
 			this.props.getTransactionHistory(true);
 		}
 	}
@@ -40,7 +34,7 @@ class TransactionHistory extends React.Component {
 	}
 
 	render() {
-		const {getTransactionHistory, hasMore, transactions, loading, currentOperation} = this.props;
+		const {getTransactionHistory, hasMore, transactions, loading, indexOperation} = this.props;
 		return (
 			<InfinityScroll
 				point='body'
@@ -57,8 +51,7 @@ class TransactionHistory extends React.Component {
 								provide your personal keys to third parties.
 							</div>
 						</div>
-						<TransactionFilter filter={FILTER} current={currentOperation}
-						                   onChange={this.props.changeTransactionFilter}/>
+						<TransactionFilter current={indexOperation} onChange={this.props.changeTransactionFilter}/>
 					</div>
 					{this.renderTransaction(transactions)}
 					<ShowIf show={loading}>
@@ -71,12 +64,12 @@ class TransactionHistory extends React.Component {
 }
 
 const mapStateToProps = state => {
-	const {loading, transactions, hasMore, currentOperation} = state.transactionHistory;
+	const {loading, transactions, hasMore, indexOperation} = state.transactionHistory;
 	return {
 		loading,
 		transactions,
 		hasMore,
-		currentOperation
+		indexOperation
 	}
 };
 
@@ -85,8 +78,8 @@ const mapDispatchToProps = dispatch => {
 		getTransactionHistory: (changedFilter) => {
 			dispatch(getTransactionHistory(changedFilter))
 		},
-		changeTransactionFilter: (currentOperation) => {
-			dispatch(changeTransactionFilter(currentOperation))
+		changeTransactionFilter: (indexOperation) => {
+			dispatch(changeTransactionFilter(indexOperation))
 		}
 	}
 };

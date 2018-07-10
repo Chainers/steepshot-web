@@ -133,7 +133,7 @@ class SendBidModal extends React.Component {
 					</div>
 				</ShowIf>
 				<div className="buttons_promote-mod">
-					<button className="btn btn-index" onClick={() => this.props.closeModal()}>CANCEL</button>
+					<button className="btn btn-cancel" onClick={() => this.props.closeModal()}>CANCEL</button>
 					<button className={'btn btn-default' + blockedTimer}
 					        onClick={this.sendBid.bind(this)}>{sendBid}
 					</button>

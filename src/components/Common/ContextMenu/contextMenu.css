@@ -1,0 +1,7 @@
+.container_context-menu {
+    position: absolute;
+    z-index: 1100;
+    box-shadow: 0 10px 30px 0 rgba(0, 0, 0, 0.1);
+    background-color: rgba(0, 0, 0, 0) ;
+}
+

@@ -1,0 +1,26 @@
+.container_filter-row {
+    flex: 1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    height: 68px;
+    border-bottom: 1px solid #f4f4f6;
+    cursor: pointer;
+}
+
+.container_filter-row:hover {
+    background-color: #fafafc;
+}
+
+.container_filter-row.active .circle_filter-row {
+    background-color: #ff2400;
+}
+
+.circle_filter-row {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background-color: #f4f4f6;
+
+}

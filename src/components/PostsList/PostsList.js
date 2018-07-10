@@ -4,7 +4,7 @@ import {getPostsList, initPostsList} from '../../actions/postsList';
 import Post from './Post/Post';
 import HeadingLeadComponent from '../Atoms/HeadingLeadComponent';
 import './postsList.css';
-import {utils} from '../../utils/utils';
+import Utils from '../../utils/Utils';
 import Constants from '../../common/constants';
 import InfinityScroll from "../InfinityScroll/InfinityScroll";
 import ShowIf from "../Common/ShowIf";
@@ -54,7 +54,7 @@ class PostsList extends React.Component {
 	}
 
 	shouldComponentUpdate(nextProps) {
-		if (utils.equalsObjects(nextProps, this.props)) {
+		if (Utils.equalsObjects(nextProps, this.props)) {
 			return false;
 		}
 		return true;

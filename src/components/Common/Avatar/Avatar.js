@@ -5,8 +5,8 @@ import ShowIf from '../ShowIf';
 import './avatar.css';
 import {setAvatarTip, setAvatarTipTimeout} from '../../../actions/avatar';
 import ImagesService from '../../../services/imagesService';
-import {utils} from '../../../utils/utils';
 import AvaImgBackground from './AvaImgBackground';
+import Utils from "../../../utils/Utils";
 
 class Avatar extends React.Component {
 
@@ -35,7 +35,7 @@ class Avatar extends React.Component {
 	}
 
 	shouldComponentUpdate(nextProps) {
-		if (utils.equalsObjects(nextProps, this.props)) return false;
+		if (Utils.equalsObjects(nextProps, this.props)) return false;
 		return true;
 	}
 

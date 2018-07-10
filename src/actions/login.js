@@ -61,7 +61,7 @@ export function loginWithSteemConnect(params) {
 				});
 				dispatch(setService());
 				dispatch(push('/feed'));
-				dispatch(showMessage('Welcome to Steepshot, ' + (parseResult.profile.name || username) + '!'));
+				dispatch(showMessage('Welcome to Steepshot, ' + username + '!'));
 				LoggingService.logLogin();
 			})
 			.catch(error => {

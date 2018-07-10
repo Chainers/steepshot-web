@@ -8,7 +8,7 @@ import {
 	getAuthUserInfoError,
 	getAuthUserInfoSuccess,
 	searchingBotRequest,
-	setNoTokensForPomote,
+	setNoTokensForPromote,
 	setPromoteInputError,
 	setPromoteValue,
 	setSelectedIndex,
@@ -17,6 +17,8 @@ import {
 import Constants from '../../../common/constants';
 import {loadingEllipsis} from '../../../utils/loadingEllipsis';
 import {pushMessage} from '../../../actions/pushMessage';
+import ChooseToken from "../../Common/ChooseToken/ChooseToken";
+import ShowIf from "../../Common/ShowIf";
 
 class PromoteModal extends React.Component {
 
@@ -43,7 +45,7 @@ class PromoteModal extends React.Component {
 		this.props.setPromoteInputError('');
 		this.props.setSelectError('');
 		this.props.getAuthUserInfoSuccess({});
-		this.props.setNoTokensForPomote(false);
+		this.props.setNoTokensForPromote(false);
 	}
 
 	promoteByEnter(e) {
@@ -103,21 +105,9 @@ class PromoteModal extends React.Component {
 		this.props.setSelectedIndex(e.target.selectedIndex);
 	}
 
-	renderOptions() {
-		let optionsArr = ['STEEM', 'SBD'];
-		return optionsArr.map((item, index) => {
-			return <option key={index}
-			               selected={index === this.props.activeIndex ? 'selected' : ''}>{item}
-			</option>
-		});
-	}
-
 	render() {
-		let loadingDataOrError = this.props.selectError;
 		let closeText = 'CANCEL', noTokensBlock = null;
-		if (this.props.infoLoading) {
-			loadingDataOrError = this.props.userInfoErrorStatus ? this.props.userInfoErrorStatus : loadingEllipsis('Loading data');
-		}
+
 		let findText = 'FIND PROMOTER';
 		if (this.props.searchingBot) {
 			findText = loadingEllipsis('LOOKING');
@@ -135,24 +125,20 @@ class PromoteModal extends React.Component {
 				<p className="title_promote-mod">PROMOTE POST</p>
 				{noTokensBlock}
 				<p className="label_promote-mod">Token</p>
-				<div className="body_promote-mod">
-					<div className="select-wrapper_promote-mod">
-						<select className="select_promote-mod"
-						        onChange={this.setSelectedValue.bind(this)}
-						        style={this.props.selectedToken ? {color: '#e74800'} : this.props.infoLoading
-							        ? {} : {cursor: 'pointer'}}
-						        disabled={this.props.infoLoading ? 'disabled' : ''}>
-							{this.renderOptions()}
-						</select>
-						<div className="error_promote-mod"
-						     style={this.props.infoLoading ? {color: '#979b9e', bottom: -23} : {bottom: -23}}>{loadingDataOrError}
-						</div>
-					</div>
-					<div className="balance_promote-mod">
-						<span>Balance</span>
-						<span className="balance-value_promote-mod">{this.props.tokenNumber} {this.props.selectedToken}</span>
-					</div>
+				<ChooseToken selectedToken={this.props.selectedToken}
+				             amount={this.props.tokenNumber}
+				             onChange={this.setSelectedValue.bind(this)}
+				             disabled={this.props.infoLoading}/>
+				<div className="error_promote-mod">
+					{this.props.selectError}
 				</div>
+
+				<div className="loading_promote-mod">
+					<ShowIf show={this.props.infoLoading}>
+						{loadingEllipsis('Loading data')}
+					</ShowIf>
+				</div>
+
 				<p className="label_promote-mod">Promotion amount (minimum {Constants.SERVICES.BOTS.MIN_BID_VALUE})</p>
 				<div className="position--relative">
 					<input ref={ref => this.input = ref}
@@ -163,7 +149,7 @@ class PromoteModal extends React.Component {
 					<div className="error_promote-mod">{this.props.inputError}</div>
 				</div>
 				<div className="buttons_promote-mod">
-					<button className="btn btn-index"
+					<button className="btn btn-cancel"
 					        style={{marginRight: this.props.noTokensForPromote ? 10 : 20}}
 					        onClick={() => this.props.closeModal()}>{closeText}</button>
 					{findBotButton}
@@ -225,8 +211,8 @@ const mapDispatchToProps = (dispatch) => {
 		getAuthUserInfoError: (error) => {
 			dispatch(getAuthUserInfoError(error));
 		},
-		setNoTokensForPomote: (param) => {
-			dispatch(setNoTokensForPomote(param));
+		setNoTokensForPromote: (param) => {
+			dispatch(setNoTokensForPromote(param));
 		}
 	}
 };
