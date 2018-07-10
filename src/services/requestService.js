@@ -1,17 +1,17 @@
 import Constants from '../common/constants';
-import {utils} from '../utils/utils';
 import ChainService from './chainService';
 import SteemService from './steemService';
 import GolosService from './golosService';
 import AuthService from "./authService";
 import SteemConnect from "./steemConnect";
+import Utils from "../utils/Utils";
 
 let config = Constants.SERVICES.steem;
 
 class RequestService {
 
 	static init(serviceName) {
-		switch(serviceName) {
+		switch (serviceName) {
 			case Constants.SERVICES.golos.name:
 				ChainService.init(new GolosService());
 				config = Constants.SERVICES.golos;
@@ -34,15 +34,15 @@ class RequestService {
 
 	static get(url, options) {
 		let fullUrl;
-    if (!url.includes('http')) {
-      fullUrl = `${config.baseUrl}/${url}${convertOptionsToRequestString(options)}`;
-    } else {
-      fullUrl = `${url}${convertOptionsToRequestString(options)}`;
+		if (!url.includes('http')) {
+			fullUrl = `${config.baseUrl}/${url}${convertOptionsToRequestString(options)}`;
+		} else {
+			fullUrl = `${url}${convertOptionsToRequestString(options)}`;
 		}
 		return fetch(fullUrl, {
 			method: 'GET'
 		})
-		.then(RequestService.processResponse)
+			.then(RequestService.processResponse)
 	}
 
 	static post(url, data) {
@@ -81,7 +81,7 @@ function convertOptionsToRequestString(options) {
 
 	let optionsArray = [];
 	for (let key in options) {
-		if (utils.isNotEmpty(options[key])) optionsArray.push(key + '=' + convertIfBool(options[key]));
+		if (Utils.isNotEmpty(options[key])) optionsArray.push(key + '=' + convertIfBool(options[key]));
 	}
 	return '?' + optionsArray.join('&');
 }

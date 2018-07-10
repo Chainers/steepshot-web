@@ -47,6 +47,7 @@
     "react-router-dom": "^4.3.1",
     "react-router-redux": "^5.0.0-alpha.9",
     "react-share": "^2.1.1",
+    "recompose": "^0.27.1",
     "redux": "^3.7.2",
     "redux-logger": "^3.0.6",
     "redux-promise": "^0.5.3",
@@ -56,7 +57,8 @@
     "sc2-sdk": "^1.0.2",
     "slick-carousel": "^1.8.1",
     "steem": "^0.7.1",
-    "timeago-react": "^2.0.0"
+    "timeago-react": "^2.0.0",
+    "why-did-you-update": "^0.1.1"
   },
   "devDependencies": {
     "babel-plugin-transform-ensure-ignore": "^0.1.0",

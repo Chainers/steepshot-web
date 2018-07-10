@@ -1,0 +1,44 @@
+.header_wallet {
+    width: 100%;
+    height: 84px;
+    margin-top: 30px;
+    border-bottom: 1px solid #f4f4f6;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.title_wallet {
+    font: 22px OpenSans-SemiBold;
+    color: #0f181e;
+}
+
+.account-balance_wallet {
+    font: 32px OpenSans-Light;
+    color: #000000;
+    line-height: 1.56;
+}
+
+.body_wallet {
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    margin-bottom: 30px;
+    border-bottom: 1px solid #f4f4f6;
+}
+
+.transaction-history_wallet {
+    height: 400px;
+}
+
+@media (max-width: 650px) {
+    .body_wallet {
+        justify-content: center;
+    }
+}
+
+.trx-history_wallet {
+    border-radius: 10px;
+    background-color: #ffffff;
+}

@@ -7,7 +7,7 @@ class ShowIf extends React.Component {
 		if (this.props.removeFromDom && !this.props.show) {
 			return null;
 		}
-		
+
 		let children = this.props.children.length > 1
 			? <div className="container_show-if" style={this.props.styleContainer}>{this.props.children}</div>
 			: this.props.children;

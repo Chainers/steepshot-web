@@ -9,7 +9,6 @@ class Clipboard extends React.Component {
 	componentDidUpdate() {
 		try {
 			this.button.click();
-			this.props.pushMessage("URL has been copied in your clipboard");
 		} catch (e) {
 			this.props.pushMessage("Oops, unable to copy");
 		}
@@ -17,10 +16,7 @@ class Clipboard extends React.Component {
 
 	render() {
 		return (
-			<CopyToClipboard text={this.props.text}
-											 onCopy={() => {
-											 }}
-											 className="clipboard">
+			<CopyToClipboard text={this.props.text} onCopy={() => {}} className="clipboard">
 				<span ref={ref => this.button = ref}>Copy to clipboard</span>
 			</CopyToClipboard>
 		)

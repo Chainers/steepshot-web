@@ -11,7 +11,7 @@ class SettingsField extends React.Component {
 		this.props.initializeSettingsField(this.props.point, this.props.default);
 	};
 
-	render(){
+	render() {
 		if (!this.props.initialized) {
 			return null;
 		}

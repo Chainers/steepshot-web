@@ -82,6 +82,9 @@
 .buttons-container_edi-pos {
     margin: 40px 0 20px;
     text-align: right;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
 }
 
 .buttons-container_edi-pos button {
@@ -145,6 +148,7 @@
         text-align: center;
         margin-bottom: 40px;
     }
+
     .buttons-container_edi-pos .btn-default {
         margin: 0;
     }

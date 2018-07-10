@@ -18,21 +18,21 @@ import renderHTML from 'react-render-html';
 class Comment extends React.Component {
 
 	editComment() {
-    this.props.setInputForEdit(this.props.point, this.props.parentPost, true);
-  }
+		this.props.setInputForEdit(this.props.point, this.props.parentPost, true);
+	}
 
-  replyToUser() {
+	replyToUser() {
 		if (this.props.isCommentEditing) {
 			return;
 		}
-    this.props.replyAuthor(this.props.author);
+		this.props.replyAuthor(this.props.author);
 	}
 
 	deleteComment() {
-    if (this.props.isCommentEditing) {
-      return;
-    }
-    this.props.deleteComment(this.props.point, true);
+		if (this.props.isCommentEditing) {
+			return;
+		}
+		this.props.deleteComment(this.props.point, true);
 	}
 
 	cancelEdit() {
@@ -44,18 +44,18 @@ class Comment extends React.Component {
 			return null;
 		}
 		let deleteCommentElement = <span className="delete_comment"
-																		 onClick={this.deleteComment.bind(this)}>Delete
+		                                 onClick={this.deleteComment.bind(this)}>Delete
 															 </span>;
 		let editCommentElement = <span className="edit_comment"
-																	 onClick={this.editComment.bind(this)}>Edit
+		                               onClick={this.editComment.bind(this)}>Edit
 														 </span>;
 		if (this.props.comment.postDeleting) {
 			deleteCommentElement = loadingEllipsis('Deleting', 'not-hover_comment');
 		}
 
 		if (this.props.isCommentCancelable) {
-      editCommentElement = <span className="edit_comment"
-																 onClick={this.cancelEdit.bind(this)}>Cancel
+			editCommentElement = <span className="edit_comment"
+			                           onClick={this.cancelEdit.bind(this)}>Cancel
 													 </span>;
 		}
 
@@ -64,40 +64,42 @@ class Comment extends React.Component {
 		let commentActions = !this.props.isYourComment
 			? <div className="display--flex">
 			    <span className="reply_comment"
-				   		 onClick={this.replyToUser.bind(this)}>Reply</span>
-			    <Flag postIndex={this.props.point}
-						 		isComment={true}/>
-		    </div>
+			          onClick={this.replyToUser.bind(this)}>Reply</span>
+				<Flag postIndex={this.props.point}
+				      isComment={true}/>
+			</div>
 			: <div className="display--flex">
-					<ShowIf show={!this.props.commentDeleted && !this.props.cashoutTimeExceed}
-									styleContainer={{display: 'flex'}}>
-						{editCommentElement}
-						{deleteCommentElement}
-					</ShowIf>
-				</div>;
+				<ShowIf show={!this.props.commentDeleted && !this.props.cashoutTimeExceed}
+				        styleContainer={{display: 'flex'}}>
+					{editCommentElement}
+					{deleteCommentElement}
+				</ShowIf>
+			</div>;
 		const authorLink = `/@${this.props.author}`;
 		return (
-			<div className="container_comment" style={{backgroundColor: this.props.currentCommentEditing
-				? 'rgba(18, 148, 246, 0.05)' : ''}}>
+			<div className="container_comment" style={{
+				backgroundColor: this.props.currentCommentEditing
+					? 'rgba(18, 148, 246, 0.05)' : ''
+			}}>
 				<div className="head_comment">
-						<div className="date">
-							<TimeAgo
-								datetime={this.props.comment.created}
-								locale='en_US'
-							/>
-						</div>
-						<Link to={authorLink} className="user">
-							<Avatar src={this.props.comment.avatar} sizes={Constants.DEF_AVATAR_SIZE}/>
-							<div className="name">{this.props.author}</div>
-						</Link>
+					<div className="date">
+						<TimeAgo
+							datetime={this.props.comment.created}
+							locale='en_US'
+						/>
+					</div>
+					<Link to={authorLink} className="user">
+						<Avatar src={this.props.comment.avatar} sizes={Constants.DEF_AVATAR_SIZE}/>
+						<div className="name">{this.props.author}</div>
+					</Link>
 				</div>
 				<div className="comment-text">
 					<div className="comment-text_comment">
 						{renderHTML(MarkdownParser.parse(this.props.comment.body))}
 					</div>
 					<Vote postIndex={this.props.point}
-								powerLikeIndPlace="comment"
-								commentDeleted={this.props.commentDeleted}/>
+					      powerLikeIndPlace="comment"
+					      commentDeleted={this.props.commentDeleted}/>
 				</div>
 				<div className="actions-buttons_comment">
 					{commentActions}
@@ -120,13 +122,13 @@ const mapStateToProps = (state, props) => {
 	const isCommentEditing = state.comments[parentPost].commentEditing;
 	const isCommentCancelable = props.point === state.comments[parentPost].editingPostPoint;
 	return {
-    comment,
-    currentCommentEditing,
-    isCommentCancelable,
+		comment,
+		currentCommentEditing,
+		isCommentCancelable,
 		isCommentEditing,
 		parentPost,
-    commentDeleted,
-    cashoutTimeExceed,
+		commentDeleted,
+		cashoutTimeExceed,
 		author: comment.author,
 		isYourComment: comment.author === state.auth.user
 	};
@@ -140,10 +142,10 @@ const mapDispatchToProps = dispatch => {
 		deleteComment: (point, isComment) => {
 			dispatch(deletePost(point, isComment))
 		},
-    setInputForEdit: (point, parentPost, currentCommentEditing) => {
-      dispatch(setInputForEdit(point, parentPost, currentCommentEditing))
+		setInputForEdit: (point, parentPost, currentCommentEditing) => {
+			dispatch(setInputForEdit(point, parentPost, currentCommentEditing))
 		},
-    setCommentEditState: (point, parentPost, commentEditing) => {
+		setCommentEditState: (point, parentPost, commentEditing) => {
 			dispatch(setCommentEditState(point, parentPost, commentEditing));
 		}
 	}

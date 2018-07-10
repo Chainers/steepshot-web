@@ -63,7 +63,7 @@ function logCORS(url, operation, error = '') {
 	if (checkedError) checkedError = blockchainErrorsList(error);
 	const body = {
 		username: AuthService.getUsername(),
-    checkedError
+		checkedError
 	};
 	const options = {
 		method: 'POST',

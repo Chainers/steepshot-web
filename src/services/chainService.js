@@ -1,6 +1,6 @@
 class ChainService {
 	static currentService = null;
-	
+
 	static init(service) {
 		ChainService.currentService = service;
 		ChainService.currentService.init();
@@ -49,7 +49,11 @@ class ChainService {
 	static getBeneficiaries(permlink, beneficiaries) {
 		return ChainService.currentService.getBeneficiaries(permlink, beneficiaries);
 	}
-	
+
+	static getTransactionHistory(username, from = -1, limit = 10000) {
+		return ChainService.currentService.getTransactionHistory(username, from, limit)
+	}
+
 }
 
 export default ChainService;

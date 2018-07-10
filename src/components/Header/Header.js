@@ -10,6 +10,7 @@ import {closeMobileNavigation, toggleMobileNavigation} from '../../actions/mobil
 import Hamburger from '../Hamburger/Hamburger';
 import './header.css';
 import AuthService from '../../services/authService';
+import ShowIf from "../Common/ShowIf";
 
 class Header extends React.Component {
 
@@ -56,6 +57,7 @@ class Header extends React.Component {
 		const isAuth = this.props.isAuth;
 		let browse, authorLink = '';
 		let avatarSrc = this.props.avatar || Constants.NO_AVATAR;
+
 		let loginComponent = <div className="section login">
 			<div className="wrap-login">
 				<Link to="/signin" className="btn btn-default btn-xs">
@@ -70,7 +72,7 @@ class Header extends React.Component {
 				<div className="wrap-controls_header">
 					<Link to="/settings" className="btn-control settings"/>
 					<a onClick={this.handleLogout.bind(this)}
-						 className="btn-control logout"> </a>
+					   className="btn-control logout"> </a>
 				</div>
 			</div>;
 		}
@@ -81,14 +83,14 @@ class Header extends React.Component {
 					(isAuth) ? (
 						<div className="item feed-block_header">
 							<Link to="/feed"
-										className={this.props.currentLocation.match(/\/feed/) ? 'feed-browse-active_header' : null}>Feed
+							      className={this.props.currentLocation.match(/\/feed/) ? 'feed-browse-active_header' : null}>Feed
 							</Link>
 						</div>
 					) : null
 				}
 				<div className="item browse-block_header">
 					<Link to="/browse"
-								className={this.props.currentLocation.match(/\/browse\/\w+/) ? 'feed-browse-active_header' : null}>Browse
+					      className={this.props.currentLocation.match(/\/browse\/\w+/) ? 'feed-browse-active_header' : null}>Browse
 					</Link>
 				</div>
 			</div>
@@ -100,33 +102,22 @@ class Header extends React.Component {
 					<div className="container">
 						<div className={'user-panel ' + (this.props.isOpened ? 'closed' : 'open')}>
 							<div className="wrap-panel clearfix">
-								{
-									isAuth
-										? <div className="section hamburger">
-											<div className="wrap-hamburger">
-												<Hamburger toggle={this.props.toggleMobileNavigation}
-																	 pressed={this.props.openedMobileNavigation}/>
-											</div>
+								<ShowIf show={isAuth}>
+									<div className="section hamburger">
+										<div className="wrap-hamburger">
+											<Hamburger toggle={this.props.toggleMobileNavigation}
+											           pressed={this.props.openedMobileNavigation}/>
 										</div>
-										: null
-								}
+									</div>
+								</ShowIf>
 								{loginComponent}
 								<div className="section create">
 									<div className="wrap-create">
-										{
-											isAuth
-												? <div>
-													<Link to="/editPost" type="button"
-																className="btn btn-default btn-xs btn-create">
-														Create post
-													</Link>
-													<Link to="/editPost" type="button"
-																className="btn btn-default btn-create-mob"
-																onClick={this.props.closeMobileNavigation}
-													/>
-												</div>
-												: null
-										}
+										<ShowIf show={isAuth}>
+											<Link to="/editPost" type="button" className="btn btn-default btn-xs btn-create">
+												CREATE POST
+											</Link>
+										</ShowIf>
 									</div>
 								</div>
 								<div className="section user">
@@ -135,9 +126,9 @@ class Header extends React.Component {
 											? <Link to={authorLink} className="user-link clearfix">
 												<div className="photo">
 													<Avatar src={avatarSrc}
-																	powerIndicator={true}
-																	headerAvatar={true}
-																	sizes={Constants.DEF_AVATAR_SIZE}
+													        powerIndicator={true}
+													        headerAvatar={true}
+													        sizes={Constants.DEF_AVATAR_SIZE}
 													/>
 												</div>
 												<div className="name">{this.props.user}</div>

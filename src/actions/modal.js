@@ -49,14 +49,14 @@ function scrollToLastSeen(postModal) {
 			if (delta) {
 				return;
 			}
-      const HEADER_HEIGHT = 60, DISTANCE_BETWEEN_POSTS = 20;
+			const HEADER_HEIGHT = 60, DISTANCE_BETWEEN_POSTS = 20;
 			let headersCount = 1, location = state.router.location.pathname;
-      if (!state.advertising.advertisingStatus) {
-        headersCount = 2;
-      }
+			if (!state.advertising.advertisingStatus) {
+				headersCount = 2;
+			}
 			let correctionPostOffset = postModal.postOffset - headersCount * HEADER_HEIGHT;
-      if (location.match(/\/@[\w-.]+/)) {
-      	correctionPostOffset = correctionPostOffset + 120 - DISTANCE_BETWEEN_POSTS;
+			if (location.match(/\/@[\w-.]+/)) {
+				correctionPostOffset = correctionPostOffset + 120 - DISTANCE_BETWEEN_POSTS;
 			}
 			window.scrollTo(0, correctionPostOffset);
 			dispatch(setPostOffset(null));

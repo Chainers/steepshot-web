@@ -8,8 +8,8 @@ import {toggleFlag} from '../../../actions/flag';
 class ConfirmFlagModal extends React.Component {
 
 	confirm() {
-    this.props.closeModal("ConfirmFlagModal");
-    this.props.closeModal("MenuModal");
+		this.props.closeModal("ConfirmFlagModal");
+		this.props.closeModal("MenuModal");
 		this.props.toggleFlag(this.props.postIndex);
 	}
 
@@ -27,7 +27,7 @@ class ConfirmFlagModal extends React.Component {
 					</p>
 				</div>
 				<div className="buttons_holder-flag-mod">
-					<button className="btn btn-index" onClick={() => this.props.closeModal("ConfirmFlagModal")}>CANCEL</button>
+					<button className="btn btn-cancel" onClick={() => this.props.closeModal("ConfirmFlagModal")}>CANCEL</button>
 					<button className="btn btn-default" onClick={this.confirm.bind(this)}>FLAG</button>
 				</div>
 			</div>
@@ -37,13 +37,15 @@ class ConfirmFlagModal extends React.Component {
 
 const mapDispatchToProps = dispatch => {
 	return {
-    toggleFlag: (postIndex) => {
-      dispatch(toggleFlag(postIndex));
-    },
+		toggleFlag: (postIndex) => {
+			dispatch(toggleFlag(postIndex));
+		},
 		closeModal: (postIndex) => {
-    	dispatch(closeModal(postIndex));
+			dispatch(closeModal(postIndex));
 		}
 	}
 };
 
-export default connect(() => {return {}}, mapDispatchToProps)(ConfirmFlagModal);
+export default connect(() => {
+	return {}
+}, mapDispatchToProps)(ConfirmFlagModal);

@@ -45,7 +45,7 @@ export default function usersList(state = {}, action) {
 				[action.point]: {
 					...state[action.point],
 					loading: false,
-          errorMessage: action.error
+					errorMessage: action.error
 				}
 			};
 

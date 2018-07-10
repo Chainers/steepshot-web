@@ -1,5 +1,5 @@
 const storage = new Proxy({}, {
-	get: function(target, name) {
+	get: function (target, name) {
 		try {
 			return JSON.parse(localStorage.getItem(name));
 		} catch (e) {
@@ -7,7 +7,7 @@ const storage = new Proxy({}, {
 			return null;
 		}
 	},
-	set: function(target, name, value) {
+	set: function (target, name, value) {
 		localStorage.setItem(name, JSON.stringify(value));
 		target[name] = value;
 		return true;

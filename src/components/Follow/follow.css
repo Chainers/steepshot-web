@@ -5,27 +5,23 @@
     align-items: flex-start;
 }
 
-.follow-button_follow, .unfollow-button_follow, .saving_follow {
-    width: 105px;
-    cursor: pointer;
-    display: inline-block;
-    margin-bottom: 0;
-    font-family: OpenSans-SemiBold, Helvetica, Arial, sans-serif;
-    text-align: center;
-    vertical-align: middle;
+.saving_follow {
+    width: 140px;
+    font: 14px OpenSans-SemiBold;
     border: 1px solid transparent;
-    padding: 12px 10px;
-    font-size: 14px;
     line-height: 1;
-    border-radius: 21px;
+    border-radius: 6px;
     transition: .2s all ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .follow-button_follow {
-    background: linear-gradient(90deg,#ff7904,#ff1605);
+    background: linear-gradient(90deg, #ff7904, #ff1605);
     border: 1px transparent;
     color: #fff;
-    box-shadow: 0 10px 20px 0 rgba(231,72,0,.3);
+    box-shadow: 0 10px 20px 0 rgba(231, 72, 0, .3);
 }
 
 .follow-button_follow:active {
@@ -35,7 +31,7 @@
 }
 
 .follow-button_follow:hover {
-    box-shadow: 0 5px 12px 0 rgba(231,72,0,.3);
+    box-shadow: 0 5px 12px 0 rgba(231, 72, 0, .3);
 }
 
 .unfollow-button_follow {
@@ -48,7 +44,7 @@
 .unfollow-button_follow:active {
     color: #0f181e;
     outline: 0;
-    box-shadow: inset 0 1px 3px rgba(0,0,0,.1);
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, .1);
 }
 
 .unfollow-button_follow:hover {

@@ -46,9 +46,9 @@ class GolosService {
 		})
 	}
 
-  sendTransferTroughBlockchain() {
-    return Promise.reject('Unneeded method.');
-  }
+	sendTransferTroughBlockchain() {
+		return Promise.reject('Unneeded method.');
+	}
 
 	addPostDataToBlockchain(operations) {
 		return processResponse(callback => {
@@ -61,7 +61,7 @@ class GolosService {
 
 	getAccounts(username) {
 		return processResponse(callback => {
-			 return golos.api.getAccounts([username], callback);
+			return golos.api.getAccounts([username], callback);
 		})
 	}
 
@@ -111,6 +111,15 @@ class GolosService {
 		};
 
 		return [Constants.OPERATIONS.COMMENT_OPTIONS, beneficiariesObject];
+	}
+
+	getTransactionHistory(username, from, limit) {
+		if (from !== -1 && from < limit) {
+			limit = from
+		}
+		return processResponse(callback => {
+			golos.api.getAccountHistory(username, from, limit, callback);
+		})
 	}
 }
 

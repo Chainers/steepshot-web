@@ -66,7 +66,7 @@ export function login(username, postingKey) {
 				StorageSerive.clearAuthData();
 				if (!error.data && (error.actual === 128 || error.message === Constants.NON_BASE58_CHARACTER)) {
 					dispatch(setPostingKeyErrorMessage(Constants.AUTH_WRONG_POSTING_KEY));
-          return dispatch(loginError(Constants.AUTH_WRONG_POSTING_KEY));
+					return dispatch(loginError(Constants.AUTH_WRONG_POSTING_KEY));
 				}
 				dispatch(loginError(error));
 			})
