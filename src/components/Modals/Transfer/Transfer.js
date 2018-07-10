@@ -18,20 +18,12 @@ class Transfer extends React.Component {
 					<div className="title_transfer">
 						TRANSFER TO ACCOUNT
 					</div>
+					<div className="username_transfer">
+						@{username}
+					</div>
 				</div>
 
 				<div className="body_transfer">
-					<div className="form-line_transfer">
-						<div className="label_transfer">
-							From
-						</div>
-						<div className="field_transfer">
-							<div className="at_transfer">
-								@
-							</div>
-							<input className="input_transfer" value={username} disabled={true}/>
-						</div>
-					</div>
 
 					<div className="form-line_transfer">
 						<div className="label_transfer">
@@ -77,7 +69,8 @@ class Transfer extends React.Component {
 							Active key
 						</div>
 						<div className="field_transfer">
-							<input type="password" className="input_transfer" ref={ref => this.activeKey = ref} placeholder="Active Key"/>
+							<input type="password" className="input_transfer" ref={ref => this.activeKey = ref}
+							       placeholder="Active Key"/>
 						</div>
 					</div>
 				</div>
@@ -92,7 +85,7 @@ class Transfer extends React.Component {
 
 
 const mapStateToProps = state => {
-	const {balance, sbd_balance, } = state.userProfile.profile || {};
+	const {balance, sbd_balance,} = state.userProfile.profile || {};
 	const {token} = state.transfer;
 	return {
 		steem: balance,

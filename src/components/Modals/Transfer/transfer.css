@@ -10,6 +10,13 @@
     border-bottom: 1px solid #f4f4f6;
     font: 14px OpenSans-Bold;
     color: #0f181e;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.username_transfer {
+    color: #e74800;
 }
 
 .body_transfer {

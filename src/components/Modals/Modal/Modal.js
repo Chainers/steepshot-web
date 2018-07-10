@@ -38,7 +38,7 @@ class Modal extends React.Component {
 	}
 
 	render() {
-		let styleBack = {backgroundColor: 'rgba(0, 0, 0, .7)'};
+		let styleBack = {backgroundColor: 'rgba(0, 0, 0, .85)'};
 		if (this.props.fullScreenMode) {
 			styleBack = {backgroundColor: '#000000'};
 		}
