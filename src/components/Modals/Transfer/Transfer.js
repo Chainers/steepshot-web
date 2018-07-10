@@ -9,11 +9,17 @@ import {
 	changeSaveKey,
 	changeUsername, clearTransfer,
 	setToken,
-	showMemo
+	showMemo,
+	transfer
 } from "../../../actions/transfer";
 import ShowIf from "../../Common/ShowIf";
+import {closeModal} from "../../../actions/modal";
 
 class Transfer extends React.Component {
+
+	componentWillUnmount() {
+		this.props.clearTransfer();
+	}
 
 	changeToken(e) {
 		this.props.setToken(e.target.value);
@@ -39,8 +45,12 @@ class Transfer extends React.Component {
 		this.props.changeSaveKey();
 	}
 
+	componentDidMount() {
+		this.activeKey.value = this.props.activeKey;
+	}
+
 	render() {
-		const {username, selectedToken, amountToken, memoOpened, saveKey} = this.props;
+		const {username, selectedToken, balance, memoOpened, saveKey} = this.props;
 		return (
 			<div className="container_transfer">
 				<div className="header_transfer">
@@ -69,7 +79,7 @@ class Transfer extends React.Component {
 							Token
 						</div>
 						<ChooseToken selectedToken={selectedToken}
-						             amount={amountToken}
+						             amount={balance}
 						             onChange={this.changeToken.bind(this)}/>
 					</div>
 
@@ -102,7 +112,7 @@ class Transfer extends React.Component {
 							Active key
 						</div>
 						<div className="field_transfer">
-							<input type="password" onChange={this.changeActiveKey.bind(this)} />
+							<input type="password" onChange={this.changeActiveKey.bind(this)} ref={ref => this.activeKey = ref}/>
 						</div>
 					</div>
 					<div className="checkbox-field_transfer">
@@ -112,8 +122,8 @@ class Transfer extends React.Component {
 					</div>
 				</form>
 				<div className="buttons_transfer clearfix">
-					<button className="btn btn-default">OK</button>
-					<button className="btn btn-cancel">CANCEL</button>
+					<button className="btn btn-default" onClick={this.props.transfer}>OK</button>
+					<button className="btn btn-cancel" onClick={this.props.closeTransferModal}>CANCEL</button>
 				</div>
 			</div>
 		);
@@ -122,16 +132,15 @@ class Transfer extends React.Component {
 
 
 const mapStateToProps = state => {
-	const {balance, sbd_balance,} = state.userProfile.profile || {};
-	const {token, showMemo, saveKey} = state.transfer;
+	const {balance, sbd_balance} = state.userProfile.profile || {};
+	const {token, showMemo, activeKey, saveKey} = state.transfer;
 	return {
-		steem: balance,
-		sbd: sbd_balance,
+		balance: token === 'STEEM' ? balance : sbd_balance,
 		selectedToken: token,
-		amountToken: '323.01',
 		username: state.auth.user,
 		memoOpened: showMemo,
-		saveKey
+		saveKey,
+		activeKey
 	}
 };
 
@@ -160,6 +169,15 @@ const mapDispatchToProps = dispatch => {
 		},
 		clear: () => {
 			dispatch(clearTransfer())
+		},
+		transfer: () => {
+			dispatch(transfer())
+		},
+		clearTransfer: () => {
+			dispatch(clearTransfer())
+		},
+		closeTransferModal: () => {
+			dispatch(closeModal("transfer"))
 		}
 	}
 };

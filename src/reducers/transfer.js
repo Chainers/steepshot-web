@@ -7,7 +7,8 @@ const initialState = {
 	amount: 0,
 	memo: '',
 	activeKey: storage.activeKey,
-	saveKey: !!storage.activeKey
+	saveKey: !!storage.activeKey,
+	loader: false
 };
 
 export default function transfer(state = initialState, action) {
@@ -46,6 +47,16 @@ export default function transfer(state = initialState, action) {
 			return {
 				...state,
 				saveKey: !state.saveKey
+			};
+		case 'TRANSFER_SHOW_LOADER':
+			return {
+				...state,
+				loader: true
+			};
+		case 'TRANSFER_HIDE_LOADER':
+			return {
+				...state,
+				loader: false
 			};
 		case 'TRANSFER_CLEAR':
 			return initialState;

@@ -1407,7 +1407,7 @@ input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer
 @media (max-width: 1023px) {
     .g-header {
         position: fixed;
-        z-index: 1010;
+        z-index: 14;
         left: 0;
         width: 100%;
         min-width: 300px
@@ -1645,7 +1645,7 @@ input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer
     position: fixed;
     width: 100vw;
     padding-right: 0;
-    z-index: 1005;
+    z-index: 13;
     box-shadow: 0 0 3px 0 rgba(0, 0, 0, .1);
 }
 

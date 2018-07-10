@@ -145,7 +145,7 @@
 }
 
 .delete-loader_post {
-    z-index: 1000;
+    z-index: 10;
     position: absolute;
     width: calc(100% + 8px);
     top: -4px;

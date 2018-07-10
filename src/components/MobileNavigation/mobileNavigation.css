@@ -11,7 +11,7 @@
 }
 
 .container_mobile.opened_mobile {
-    z-index: 1000;
+    z-index: 10;
     opacity: 1;
 }
 
@@ -21,7 +21,7 @@
     max-width: 400px;
     background: #fff;
     transition: transform .5s;
-    z-index: 1001;
+    z-index: 11;
     padding: 60px 0 0;
     margin: 0;
     overflow: auto;
