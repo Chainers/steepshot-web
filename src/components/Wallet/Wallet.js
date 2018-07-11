@@ -9,12 +9,19 @@ import Utils from "../../utils/Utils";
 import {openModal} from "../../actions/modal";
 import Transfer from "../Modals/Transfer/Transfer";
 import {setToken} from "../../actions/transfer";
+import Constants from "../../common/constants";
+import {getStore} from "../../store/configureStore";
 
 const DESCRIPTION = {
 	STEEM: `Tradeable tokens that may be transferred anywhere at anytime.
 Steem can be converted to STEEM POWER in a process called powering up.`,
 	SP: "Influence tokens which give you more control over post payouts and allow you to earn on curation rewards.",
-	SBD: "Tradeable tokens that may be transferred anywhere at anytime."
+	SBD: "Tradeable tokens that may be transferred anywhere at anytime.",
+	GOLOS: `Перемещаемые цифровые токены, которые могут переданы куда угодно в любой момент.
+Голос может быть конвертирован в Силу Голоса, этот процесс называется "увеличение Силы Голоса".`,
+	SG: `Сила Голоса неперемещаемая, её количество увеличивается при долгосрочном хранении.
+Чем больше у Вас Силы Голоса, тем сильней вы влияете на вознаграждения за пост и тем больше зарабатываете за голосование.`,
+	GBG: `Перемещаемые цифровые токены, цена которых равна ~1 мг золота в GOLOS.`
 };
 
 class Wallet extends React.Component {
@@ -42,10 +49,10 @@ class Wallet extends React.Component {
 	}
 
 	render() {
-		const {cost, steem, sp, sbd} = this.props;
-		// if (!Utils.isNotEmpty(cost) || !Utils.isNotEmpty(steem) || !Utils.isNotEmpty(sp) || !Utils.isNotEmpty(sbd)) {
-		// 	return <LoadingSpinner/>
-		// }
+		const {cost, steem, sp, sbd, isGolosService} = this.props;
+		if (!Utils.isNotEmpty(cost) || !Utils.isNotEmpty(steem) || !Utils.isNotEmpty(sp) || !Utils.isNotEmpty(sbd)) {
+			return <LoadingSpinner/>
+		}
 		return (
 			<div className="container">
 				<div className="container_wallet">
@@ -63,11 +70,11 @@ class Wallet extends React.Component {
 								image: "/images/wallet/steem.png",
 								color: 'rgb(74, 144, 226)'
 							}}
-							fullName="STEEM"
+							fullName={isGolosService ? "ГОЛОС" : "STEEM"}
 							point="steem"
-							coin="STEEM"
+							coin={isGolosService ? "GOLOS" : "STEEM"}
 							value={steem}
-							description={DESCRIPTION.STEEM}
+							description={isGolosService ? DESCRIPTION.GOLOS : DESCRIPTION.STEEM}
 							actions={
 								[{
 									label: 'Transfer',
@@ -81,11 +88,11 @@ class Wallet extends React.Component {
 								image: "/images/wallet/sp.png",
 								color: 'rgb(103, 184, 47)'
 							}}
-							fullName="STEEM POWER"
+							fullName={isGolosService ? "СИЛА ГОЛОСА" : "STEEM POWER"}
 							point="sp"
-							coin="STEEM"
+							coin={isGolosService ? "GOLOS" : "STEEM"}
 							value={sp}
-							description={DESCRIPTION.SP}
+							description={isGolosService ? DESCRIPTION.SG : DESCRIPTION.STEEM}
 							actions={
 								[{
 									label: 'Power up',
@@ -105,11 +112,11 @@ class Wallet extends React.Component {
 								image: "/images/wallet/sbd.png",
 								color: 'rgb(218, 146, 44)'
 							}}
-							fullName="STEEM DOLLARS"
+							fullName={isGolosService ? "ЗОЛОТОЙ" : "STEEM DOLLARS"}
 							point="sbd"
-							coin="SBD"
+							coin={isGolosService ? "GBG" : "SBD"}
 							value={sbd}
-							description={DESCRIPTION.SBD}
+							description={isGolosService ? DESCRIPTION.GBG : DESCRIPTION.SBD}
 							textButton="TRANSFER"
 							actions={
 								[{
@@ -132,11 +139,14 @@ const mapStateToProps = state => {
 		return {}
 	}
 	const {balance, sbd_balance, total_steem_power_steem, estimated_balance} = state.userProfile.profile;
+	const golosName = Constants.SERVICES.golos.name;
+	const isGolosService = getStore().getState().services.name === golosName;
 	return {
 		cost: estimated_balance,
 		steem: balance,
 		sp: total_steem_power_steem,
-		sbd: sbd_balance
+		sbd: sbd_balance,
+		isGolosService
 	}
 };
 
