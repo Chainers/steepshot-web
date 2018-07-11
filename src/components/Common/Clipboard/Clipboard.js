@@ -16,7 +16,7 @@ class Clipboard extends React.Component {
 
 	render() {
 		return (
-			<CopyToClipboard text={this.props.text} onCopy={() => {}} className="clipboard">
+			<CopyToClipboard text={this.props.text} className="clipboard">
 				<span ref={ref => this.button = ref}>Copy to clipboard</span>
 			</CopyToClipboard>
 		)

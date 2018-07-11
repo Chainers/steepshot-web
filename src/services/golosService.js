@@ -46,8 +46,11 @@ class GolosService {
 		})
 	}
 
-	sendTransferTroughBlockchain() {
-		return Promise.reject('Unneeded method.');
+	sendTransferTroughBlockchain(transferInfo) {
+		return processResponse(callback => {
+			golos.broadcast.transfer(transferInfo.wif, AuthService.getUsername(), transferInfo.recipient, transferInfo.amount,
+				transferInfo.memo, callback);
+		})
 	}
 
 	addPostDataToBlockchain(operations) {

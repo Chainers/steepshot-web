@@ -89,7 +89,7 @@
 
 .buttons-container_edi-pos button {
     font: 12px OpenSans-Semibold;
-    margin: 15px;
+    margin: 10px 0 0 10px ;
 }
 
 .buttons-container_edi-pos .btn[disabled] {
@@ -114,7 +114,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    z-index: 15;
+    z-index: 8;
     background-color: #e7e7e7;
     display: flex;
     align-items: center;
@@ -147,9 +147,5 @@
         flex-direction: column;
         text-align: center;
         margin-bottom: 40px;
-    }
-
-    .buttons-container_edi-pos .btn-default {
-        margin: 0;
     }
 }

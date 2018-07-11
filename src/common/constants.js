@@ -260,6 +260,11 @@ const Constants = {
 		INVALID_ACTIVE_KEY: 'Invalid active key.'
 	},
 
+	TRANSFER: {
+		INVALID_ACTIVE_KEY: 'Invalid active key.',
+		BID_TO_BOT_SUCCESS: 'Your bid has been successfully sent.'
+	},
+
 	MILLISECONDS_IN_DAY: 24 * 60 * 60 * 1000,
 	MILLISECONDS_IN_SECOND: 1000,
 	CASHOUT_PERIOD: 7

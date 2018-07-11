@@ -71,3 +71,7 @@
 .balance-value_choose-token {
     color: #e74800;
 }
+
+.pointer_choose-token {
+    cursor: pointer;
+}

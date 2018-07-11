@@ -5,10 +5,10 @@ import {closeModal, openModal} from './modal';
 import SendBidModal from '../components/PostModal/PromoteModal/SendBidModal/SendBidModal';
 import Constants from '../common/constants';
 import {actionLock, actionUnlock} from './session';
-import ChainService from '../services/chainService';
 import {pushErrorMessage, pushMessage} from './pushMessage';
 import BotsService from '../services/botsService';
 import storage from '../utils/Storage';
+import TransferService from "../services/transferService";
 
 function setAuthUserInfoLoading(param) {
 	return {
@@ -202,28 +202,14 @@ export function searchingNewBot() {
 
 export function sendBid(steemLink, activeKey, botName) {
 	let state = getStore().getState();
-	let promoteModal = state.promoteModal;
-	let promoteAmount = promoteModal.promoteAmount.toString();
-	promoteAmount = promoteAmount.replace(/^0+(\d+)/, '$1');
-	if (/\./.test(promoteAmount)) {
-		promoteAmount = promoteAmount + '000';
-	} else {
-		promoteAmount = promoteAmount + '.000';
-	}
-	promoteAmount = promoteAmount.replace(/(\d+\.\d{3})(\d*)/, '$1');
-	let transferInfo = {
-		wif: activeKey,
-		recipient: botName,
-		amount: promoteAmount + ' ' + promoteModal.selectedToken,
-		postLink: steemLink
-	};
 	return dispatch => {
 		if (state.session.actionLocked) {
 			return;
 		}
+		let promoteModal = state.promoteModal;
 		dispatch(actionLock());
 		dispatch(setBidRequest(true));
-		ChainService.sendTransferTroughBlockchain(transferInfo)
+		TransferService.transfer(activeKey, promoteModal.promoteAmount, promoteModal.selectedToken, botName, steemLink)
 			.then(() => {
 				dispatch(actionUnlock());
 				dispatch(pushMessage(Constants.PROMOTE.BID_TO_BOT_SUCCESS));

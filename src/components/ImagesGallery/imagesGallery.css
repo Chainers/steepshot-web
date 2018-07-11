@@ -93,7 +93,7 @@
     width: 40px;
     height: 40px;
     top: 50%;
-    z-index: 100;
+    z-index: 9;
     cursor: pointer;
     opacity: .6;
 }
@@ -120,7 +120,7 @@
     position: absolute;
     bottom: 25px;
     left: 50%;
-    z-index: 100;
+    z-index: 9;
     transform: translateX(-50%);
 }
 

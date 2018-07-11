@@ -8,7 +8,7 @@ import {withWrapper} from 'create-react-server/wrapper';
 import SettingsField from './SettingsField/SettingsField';
 import {subscribe, unsubscribe} from '../../actions/oneSignal';
 import ShowIf from '../Common/ShowIf';
-import BodyLoader from '../Common/BlockLoader/BlockLoader';
+import BlockLoader from '../Common/BlockLoader/BlockLoader';
 import storage from '../../utils/Storage';
 import {documentTitle} from '../../utils/documentTitle';
 
@@ -58,7 +58,7 @@ class Settings extends React.Component {
 							</ShowIf>
 						</div>
 						<div className="blocked-block_settings">
-							<BodyLoader show={!this.props.notificationEnabled} withLoader={false}/>
+							<BlockLoader show={!this.props.notificationEnabled} withLoader={false}/>
 							<SettingsField label="Comment" point={fields.comment}
 							               default={this.props[fields.comment]}/>
 							<SettingsField label="Upvote" point={fields.upvote}

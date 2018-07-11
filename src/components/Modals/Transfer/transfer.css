@@ -1,5 +1,6 @@
 .container_transfer {
     width: 500px;
+    max-width: 100vw;
     background-color: white;
     border-radius: 10px;
     padding: 25px 30px;
@@ -10,6 +11,13 @@
     border-bottom: 1px solid #f4f4f6;
     font: 14px OpenSans-Bold;
     color: #0f181e;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.username_transfer {
+    color: #e74800;
 }
 
 .body_transfer {
@@ -17,11 +25,13 @@
     border-bottom: 1px solid #f4f4f6;
 }
 
+.body_transfer > div {
+    margin-top: 15px;
+}
+
 .form-line_transfer {
     width: 100%;
-    height: 65px;
     overflow: hidden;
-    margin-top: 15px;
 }
 
 .label_transfer {
@@ -43,35 +53,90 @@
 }
 
 .at_transfer {
-    width: 50px;
-    background-color: #f5f5f5;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font: 20px OpenSans-Bold;
-    color: #0f181e;
+    width: 40px;
+    background: #ffffff url('/images/wallet/@.png') no-repeat center;
+    background-size: 14px 14px;
 }
 
 .field_transfer > input {
     flex-grow: 1;
     border: solid 1px #f4f4f6;
     padding-left: 10px;
+    background-color: #fafafa;
+    font: 14px OpenSans-Light;
+    color: #979b9e;
 }
 
 .field_transfer > input:disabled {
     background-color: #f4f4f6;
 }
 
-.field_transfer > input::placeholder {
+.field_transfer > input::placeholder, .body_transfer textarea::placeholder  {
+    font: 12px OpenSans-Light;
+    color: #979b9e;
+}
+
+.body_transfer textarea {
+    width: 100%;
+    height: 80px;
+    resize: none;
+    overflow: hidden;
+    border-radius: 6px;
+    background-color: #fafafa;
+    border: solid 1px #f4f4f6;
+    padding: 10px;
     font: 14px OpenSans-Light;
     color: #979b9e;
+    transition: .3s;
 }
 
 .buttons_transfer {
     padding-top: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-end;
 }
 
 .buttons_transfer > button {
-    float: right;
-    margin-left: 10px;
+    margin: 10px 0 0 10px;
+}
+
+.add-memo_transfer > span {
+    font: 12px OpenSans-Light;
+    color: #d0021b;
+    cursor: pointer;
+}
+
+.checkbox-field_transfer {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.checkbox-field_transfer {
+    font: 12px OpenSans-Light;
+    color: #979b9e;
+}
+
+.checkbox_transfer {
+    width: 20px;
+    height: 20px;
+    border: solid 1px #979b9e;
+    cursor: pointer;
+    margin-right: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.checkbox_transfer .save_transfer {
+    width: 16px;
+    height: 16px;
+    background-color: #d0021b;
+}
+
+@media (max-width: 400px) {
+    .buttons_transfer {
+        justify-content: center;
+    }
 }

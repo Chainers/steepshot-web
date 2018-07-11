@@ -9,6 +9,7 @@ class StorageService {
 		storage.service = service;
 		storage.expiresIn = null;
 		storage.accessToken = null;
+		storage.transferActiveKey = null;
 	}
 
 	static setSteemConnectData(username, expiresIn, accessToken, avatar, service) {
@@ -20,6 +21,7 @@ class StorageService {
 		storage.service = service;
 		storage.postingKey = null;
 		storage.activeKey = null;
+		storage.transferActiveKey = null;
 	}
 
 	static clearAuthData() {
@@ -32,6 +34,7 @@ class StorageService {
 		storage.expiresIn = null;
 		storage.accessToken = null;
 		storage.activeKey = null;
+		storage.transferActiveKey = null;
 	}
 }
 
