@@ -6,8 +6,8 @@ const initialState = {
 	to: '',
 	amount: 0.001,
 	memo: '',
-	activeKey: storage.activeKey || '',
-	saveKey: !!storage.activeKey,
+	activeKey: storage.transferActiveKey || '',
+	saveKey: !!storage.transferActiveKey,
 	loader: false
 };
 
@@ -59,7 +59,16 @@ export default function transfer(state = initialState, action) {
 				loader: false
 			};
 		case 'TRANSFER_CLEAR':
-			return initialState;
+			return {
+				token: 'SBD',
+				showMemo: false,
+				to: '',
+				amount: 0.001,
+				memo: '',
+				activeKey: storage.transferActiveKey || '',
+				saveKey: !!storage.transferActiveKey,
+				loader: false
+			};
 		default:
 			return state;
 	}

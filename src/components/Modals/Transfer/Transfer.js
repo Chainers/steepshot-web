@@ -132,9 +132,12 @@ class Transfer extends React.Component {
 						</div>
 					</div>
 					<div className="checkbox-field_transfer">
-						<div className={'checkbox_transfer ' + (saveKey ? 'save_transfer' : '')}
-						     onClick={this.changeSaveKey.bind(this)}/>
-						Save your key?
+						<div className="checkbox_transfer" onClick={this.changeSaveKey.bind(this)}>
+							<ShowIf show={saveKey}>
+								<div className="save_transfer"/>
+							</ShowIf>
+						</div>
+						<span>Save the key for transferring.</span>
 					</div>
 				</form>
 				<div className="buttons_transfer clearfix">

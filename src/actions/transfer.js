@@ -5,6 +5,7 @@ import Constants from "../common/constants";
 import {pushErrorMessage, pushMessage} from "./pushMessage";
 import {closeModal} from "./modal";
 import {hideBodyLoader, showBodyLoader} from "./bodyLoader";
+import storage from "../utils/Storage";
 
 export function setToken(token) {
 	return {
@@ -82,6 +83,11 @@ export function transfer() {
 			return;
 		}
 		const transfer = state.transfer;
+		if (transfer.saveKey) {
+			storage.transferActiveKey = transfer.activeKey;
+		} else {
+			storage.transferActiveKey = null;
+		}
 		dispatch(actionLock());
 		dispatch(showBodyLoader());
 		TransferService.transfer(transfer.activeKey, transfer.amount, transfer.token, transfer.to, transfer.memo)

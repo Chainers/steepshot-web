@@ -113,15 +113,26 @@
     justify-content: flex-start;
 }
 
+.checkbox-field_transfer {
+    font: 12px OpenSans-Light;
+    color: #979b9e;
+}
+
 .checkbox_transfer {
     width: 20px;
     height: 20px;
-    border: 1px solid;
+    border: solid 1px #979b9e;
     cursor: pointer;
+    margin-right: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-.checkbox_transfer.save_transfer {
-    background-color: black;
+.checkbox_transfer .save_transfer {
+    width: 16px;
+    height: 16px;
+    background-color: #d0021b;
 }
 
 @media (max-width: 400px) {
