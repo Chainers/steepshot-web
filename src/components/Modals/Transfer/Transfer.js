@@ -133,14 +133,13 @@ class Transfer extends React.Component {
 					</div>
 				</form>
 				<div className="buttons_transfer clearfix">
-					<button className="btn btn-default" onClick={this.props.transfer}>OK</button>
 					<button className="btn btn-cancel" onClick={this.props.closeTransferModal}>CANCEL</button>
+					<button className="btn btn-default" onClick={this.props.transfer}>OK</button>
 				</div>
 			</div>
 		);
 	}
 }
-
 
 const mapStateToProps = state => {
 	const {balance, sbd_balance} = state.userProfile.profile || {};
