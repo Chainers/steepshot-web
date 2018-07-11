@@ -11,6 +11,7 @@ import Transfer from "../Modals/Transfer/Transfer";
 import {setToken} from "../../actions/transfer";
 import Constants from "../../common/constants";
 import {getStore} from "../../store/configureStore";
+import ShowIf from "../Common/ShowIf";
 
 const DESCRIPTION = {
 	STEEM: `Tradeable tokens that may be transferred anywhere at anytime.
@@ -33,7 +34,7 @@ class Wallet extends React.Component {
 
 	transfer() {
 		let modalOption = {
-			body: (<Transfer />)
+			body: (<Transfer/>)
 		};
 		this.props.openModal("transfer", modalOption);
 	}
@@ -93,7 +94,7 @@ class Wallet extends React.Component {
 							coin={isGolosService ? "GOLOS" : "STEEM"}
 							value={sp}
 							description={isGolosService ? DESCRIPTION.SG : DESCRIPTION.STEEM}
-							actions={
+							/*actions={
 								[{
 									label: 'Power up',
 									icon: '/images/wallet/buttons/powerUp.png',
@@ -105,7 +106,7 @@ class Wallet extends React.Component {
 									onClick: () => {
 									}
 								}]
-							}
+							}*/
 						/>
 						<WidgetToken
 							background={{
@@ -127,7 +128,9 @@ class Wallet extends React.Component {
 							}
 						/>
 					</div>
-					<TransactionHistory/>
+					<ShowIf show={!isGolosService}>
+						<TransactionHistory/>
+					</ShowIf>
 				</div>
 			</div>
 		);
