@@ -6,7 +6,7 @@ import {connect} from "react-redux";
 import {closeContextMenu, openContextMenu} from "../../../actions/contextMenu";
 import ActionRow from "./ActionRow/ActionRow";
 
-const WidgetToken = ({background, fullName, coin, value, description, actions, pointContextMenu, closeContextMenu, openContextMenu, show}) => (
+const WidgetToken = ({background, fullName, coin, value, description, actions = [], pointContextMenu, closeContextMenu, openContextMenu, show}) => (
 	<div className="container_widget-token"
 	     style={{
 		     backgroundImage: `url(${background.image})`,
@@ -48,7 +48,9 @@ const WidgetToken = ({background, fullName, coin, value, description, actions, p
 			{description}
 		</div>
 		<ShowIf show={!!actions.length}>
-			<button className="button_widget-token" onClick={actions[0].onClick}>{actions[0].label.toUpperCase()}</button>
+			<button className="button_widget-token" onClick={(actions[0] || {}).onClick}>
+				{(actions[0] || {label: ''}).label.toUpperCase()}
+			</button>
 		</ShowIf>
 	</div>
 );

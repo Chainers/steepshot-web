@@ -3,7 +3,7 @@
     position: fixed;
     left: 20px;
     bottom: 40px;
-    z-index: 10;
+    z-index: 7;
 }
 .wrapper_push-not > div {
     margin-bottom: 10px;

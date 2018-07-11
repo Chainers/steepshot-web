@@ -74,6 +74,11 @@ export function blockchainErrorsList(error) {
 				error: '10 assert_exception: Assert Exception: ( now - auth.last_root_post ) > STEEM_MIN_ROOT_COMMENT_INTERVAL: ' +
 				'You may only post once every 5 minutes.',
 				notificationText: 'You can only create posts 5 minutes after the previous one.'
+			},
+			{
+				error: '10 assert_exception: Assert Exception: _db.get_balance( o.from, o.amount.symbol ) >= o.amount: Account' +
+				' does not have sufficient funds for transfer.',
+				notificationText: ' Insufficient funds!'
 			}
 		];
 		for (let i = 0; i < errorsList.length; i++) {

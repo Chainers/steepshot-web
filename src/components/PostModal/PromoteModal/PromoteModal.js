@@ -149,9 +149,7 @@ class PromoteModal extends React.Component {
 					<div className="error_promote-mod">{this.props.inputError}</div>
 				</div>
 				<div className="buttons_promote-mod">
-					<button className="btn btn-cancel"
-					        style={{marginRight: this.props.noTokensForPromote ? 10 : 20}}
-					        onClick={() => this.props.closeModal()}>{closeText}</button>
+					<button className="btn btn-cancel" onClick={this.props.closeModal}>{closeText}</button>
 					{findBotButton}
 				</div>
 			</div>

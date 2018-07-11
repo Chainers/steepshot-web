@@ -4,7 +4,7 @@ import LoadingSpinner from "../../LoadingSpinner";
 import PropTypes from "prop-types";
 import './blockLoader.css';
 
-const BodyLoader = ({show, withLoader}) => (
+const BlockLoader = ({show, withLoader}) => (
 	<ShowIf show={show}>
 		<div className="container_block-loader">
 			<ShowIf show={withLoader}>
@@ -14,13 +14,13 @@ const BodyLoader = ({show, withLoader}) => (
 	</ShowIf>
 );
 
-BodyLoader.propTypes = {
+BlockLoader.propTypes = {
 	show: PropTypes.bool.isRequired,
 	withLoader: PropTypes.bool
 };
 
-BodyLoader.defaultProps = {
+BlockLoader.defaultProps = {
 	withLoader: true
 };
 
-export default BodyLoader;
+export default BlockLoader;

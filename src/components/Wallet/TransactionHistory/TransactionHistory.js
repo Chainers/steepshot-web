@@ -28,6 +28,8 @@ class TransactionHistory extends React.Component {
 			             key={index}
 			             index={index}
 			             date={trx[1].timestamp}
+			             isMobileScreen={this.props.isMobileScreen}
+			             isExtraSmall={this.props.isExtraSmall}
 			/>
 		);
 		return result;
@@ -55,7 +57,7 @@ class TransactionHistory extends React.Component {
 					</div>
 					{this.renderTransaction(transactions)}
 					<ShowIf show={loading}>
-						<LoadingSpinner style={{padding: '20px'}}/>
+						<LoadingSpinner style={{padding: '20px', backgroundColor: '#fbfbfb'}}/>
 					</ShowIf>
 				</div>
 			</InfinityScroll>
@@ -69,7 +71,9 @@ const mapStateToProps = state => {
 		loading,
 		transactions,
 		hasMore,
-		indexOperation
+		indexOperation,
+		isMobileScreen: state.window.isMobileScreen,
+		isExtraSmall: state.window.width <= 530
 	}
 };
 

@@ -10,12 +10,12 @@ const SCROLL_POINT = 'body';
 class Body extends React.Component {
 
 	render() {
-		const {children} = this.props;
+		const {children, bodyStyle, emptyErrorClass} = this.props;
 
 		return (
-			<div className={'container_body' + this.props.bodyStyle} key="Main">
+			<div className={'container_body' + bodyStyle} key="Main">
 				<Scroll point={SCROLL_POINT} className="scroll_body" customScrollStyle="body_scroll" deltaForFetch={1000}>
-					<div className={'for-space-between' + this.props.emptyErrorClass}>
+					<div className={'for-space-between' + emptyErrorClass}>
 						{children}
 					</div>
 					<Footer/>
@@ -32,8 +32,13 @@ const mapStateToProps = (state, props) => {
 	if (state.emptyRequestError.point) {
 		emptyErrorClass = ` ${state.emptyRequestError.point}-empty-request-error_body`;
 	}
-	let bodyStyle = !advertisingStatus ? state.window.width < 740
-		? ' min-height-160_body' : ' min-height-120_body' : ' min-height-60_body';
+	let bodyStyle = ' min-height-60_body';
+	if (!advertisingStatus) {
+		bodyStyle = state.window.width < 740 ? ' min-height-160_body' : ' min-height-120_body';
+	}
+	if (state.window.isMobileScreen) {
+		bodyStyle += ' mobile-screen';
+	}
 	return {
 		location,
 		bodyStyle,

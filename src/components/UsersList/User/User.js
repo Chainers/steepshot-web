@@ -32,9 +32,9 @@ const User = ({user, authUser, changeFollow}) => {
 					{amountMoney}
 				</div>
 			</div>
-			<ShowIf show={user.author !== authUser}>
+			<ShowIf show={!!authUser && (user.author !== authUser)}>
 				<div className="following-toggle-wrapper_user">
-					<ShowIf show={!user.togglingFollow}>
+					<ShowIf show={!user.togglingFollow }>
 						<ShowIf show={!user.has_followed}>
 							<div className="follow-btn_user" onClick={() => changeFollow(user.author, user.has_followed)}>
 								<img src="/images/userProfile/follow.svg"
@@ -65,7 +65,7 @@ const mapStateToProps = (state, props) => {
 	const user = state.users[props.index];
 	return {
 		user: user ? user : {},
-		authUser: state.auth.user,
+		authUser: state.auth.user
 	};
 };
 

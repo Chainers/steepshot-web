@@ -38,7 +38,7 @@ class Modal extends React.Component {
 	}
 
 	render() {
-		let styleBack = {backgroundColor: 'rgba(0, 0, 0, .7)'};
+		let styleBack = {backgroundColor: 'rgba(0, 0, 0, .85)'};
 		if (this.props.fullScreenMode) {
 			styleBack = {backgroundColor: '#000000'};
 		}
@@ -46,7 +46,7 @@ class Modal extends React.Component {
 		if (this.body && this.container && (this.body.clientHeight >= this.container.clientHeight)) {
 			styleBack.alignItems = 'flex-start';
 		}
-		styleBack.zIndex = 1005;
+		styleBack.zIndex = 14;
 		return (
 			<div className="back_mods before-load-back_modal ov-scroll_modal"
 			     onClick={this.clickOutside.bind(this)}

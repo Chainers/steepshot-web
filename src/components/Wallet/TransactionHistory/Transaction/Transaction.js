@@ -4,21 +4,35 @@ import TimeAgo from 'timeago-react';
 import DateFormatter from "../../../../utils/DateFormatter";
 import SteemService from "../../../../services/steemService";
 import AuthService from "../../../../services/authService";
+import ShowIf from "../../../Common/ShowIf";
+import Utils from "../../../../utils/Utils";
 
-const Transaction = ({operation, data, date, index}) => {
+const Transaction = ({operation, data, date, index, isMobileScreen, isExtraSmall}) => {
 	let memo = /^#/.test(data.memo) ? (<div className="encoded-memo_trx">data.memo</div>) : data.memo;
 	return (
-		<div className={'container_trx ' + (index % 2 !== 0 ? '' : 'even_trx')}>
+		<div className={'container_trx' + (index % 2 !== 0 ? '' : ' even_trx ') + (isExtraSmall ? ' extra-small_trx' : '')}>
 			<div className="type_trx">
 				{getOperationText(operation)}
 			</div>
-			{getOperationBody(operation, data)}
-			<div className="memo_trx">
-				{memo}
-			</div>
-			<div className="date_trx">
+			<ShowIf show={!isExtraSmall}>
+				{getOperationBody(operation, data)}
+			</ShowIf>
+			<ShowIf show={!isMobileScreen} key={1}>
+				<div className="memo_trx">
+					{memo}
+				</div>
+			</ShowIf>
+			<div className="date_trx" key={2}>
 				{getFormattedDate(date)}
 			</div>
+			<ShowIf show={isExtraSmall}>
+				{getOperationBody(operation, data)}
+			</ShowIf>
+			<ShowIf show={isMobileScreen && Utils.isNotEmptyString(data.memo)} key={3}>
+				<div className="memo_trx">
+					{memo}
+				</div>
+			</ShowIf>
 		</div>
 	)
 };

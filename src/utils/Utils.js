@@ -26,6 +26,10 @@ export default class Utils {
 		return variable !== undefined && variable !== null;
 	}
 
+	static isEmpty(variable) {
+		return !Utils.isNotEmpty(variable)
+	}
+
 	static cloneObject(object) {
 		return JSON.parse(JSON.stringify(object))
 	}

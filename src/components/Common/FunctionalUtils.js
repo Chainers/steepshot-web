@@ -9,6 +9,7 @@ import {resizeWindow} from "../../actions/utils";
 import MobileNavigation from "../MobileNavigation/MobileNavigation";
 import {loadSubscribeData} from "../../actions/oneSignal";
 import {setService} from "../../actions/services";
+import BodyLoader from "./BodyLoader/BodyLoader";
 
 class FunctionalUtils extends React.Component {
 
@@ -43,6 +44,7 @@ class FunctionalUtils extends React.Component {
 				<Clipboard/>
 				<Modals/>
 				<MobileNavigation/>
+				<BodyLoader />
 			</div>
 		);
 	}
