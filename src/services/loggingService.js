@@ -59,11 +59,9 @@ function logChangVote(isFlag, permlink, postAuthor, error, event) {
 }
 
 function logCORS(url, operation, error = '') {
-	let checkedError = error;
-	if (checkedError) checkedError = blockchainErrorsList(error);
 	const body = {
 		username: AuthService.getUsername(),
-		checkedError
+		checkedError: JSON.stringify(error)
 	};
 	const options = {
 		method: 'POST',

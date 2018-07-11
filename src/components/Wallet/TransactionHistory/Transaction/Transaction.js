@@ -28,7 +28,7 @@ const Transaction = ({operation, data, date, index, isMobileScreen, isExtraSmall
 			<ShowIf show={isExtraSmall}>
 				{getOperationBody(operation, data)}
 			</ShowIf>
-			<ShowIf show={isMobileScreen && Utils.isNotEmptyString(memo)} key={3}>
+			<ShowIf show={isMobileScreen && Utils.isNotEmptyString(data.memo)} key={3}>
 				<div className="memo_trx">
 					{memo}
 				</div>

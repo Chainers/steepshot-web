@@ -7,13 +7,16 @@ import {
 	changeAmount,
 	changeMemo,
 	changeSaveKey,
-	changeUsername, clearTransfer,
+	changeUsername,
+	clearTransfer,
 	setToken,
 	showMemo,
 	transfer
 } from "../../../actions/transfer";
 import ShowIf from "../../Common/ShowIf";
 import {closeModal} from "../../../actions/modal";
+import Constants from "../../../common/constants";
+import {getStore} from "../../../store/configureStore";
 
 class Transfer extends React.Component {
 
@@ -58,7 +61,7 @@ class Transfer extends React.Component {
 	}
 
 	render() {
-		const {username, selectedToken, balance, memoOpened, saveKey, activeKey, to, amount, memo} = this.props;
+		const {username, selectedToken, balance, memoOpened, saveKey, activeKey, to, amount, memo, isGolosService} = this.props;
 		return (
 			<div className="container_transfer">
 				<div className="header_transfer">
@@ -89,7 +92,9 @@ class Transfer extends React.Component {
 						<ChooseToken selectedToken={selectedToken}
 						             amount={balance}
 						             onChange={this.changeToken.bind(this)}
-						             balanceOnClick={this.setAllAmount.bind(this)}/>
+						             balanceOnClick={this.setAllAmount.bind(this)}
+						             isGolosService={isGolosService}
+						/>
 					</div>
 
 					<div className="form-line_transfer">
@@ -128,7 +133,7 @@ class Transfer extends React.Component {
 					</div>
 					<div className="checkbox-field_transfer">
 						<div className={'checkbox_transfer ' + (saveKey ? 'save_transfer' : '')}
-					     onClick={this.changeSaveKey.bind(this)}/>
+						     onClick={this.changeSaveKey.bind(this)}/>
 						Save your key?
 					</div>
 				</form>
@@ -144,6 +149,8 @@ class Transfer extends React.Component {
 const mapStateToProps = state => {
 	const {balance, sbd_balance} = state.userProfile.profile || {};
 	const {token, showMemo, activeKey, saveKey, to, amount, memo} = state.transfer;
+	const golosName = Constants.SERVICES.golos.name;
+	const isGolosService = getStore().getState().services.name === golosName;
 	return {
 		balance: token === 'STEEM' ? balance : sbd_balance,
 		selectedToken: token,
@@ -153,7 +160,8 @@ const mapStateToProps = state => {
 		activeKey: activeKey,
 		to,
 		amount,
-		memo
+		memo,
+		isGolosService
 	}
 };
 
