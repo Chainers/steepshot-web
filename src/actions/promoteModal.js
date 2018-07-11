@@ -5,7 +5,6 @@ import {closeModal, openModal} from './modal';
 import SendBidModal from '../components/PostModal/PromoteModal/SendBidModal/SendBidModal';
 import Constants from '../common/constants';
 import {actionLock, actionUnlock} from './session';
-import ChainService from '../services/chainService';
 import {pushErrorMessage, pushMessage} from './pushMessage';
 import BotsService from '../services/botsService';
 import storage from '../utils/Storage';

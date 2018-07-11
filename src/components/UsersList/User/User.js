@@ -7,7 +7,6 @@ import LoadingSpinner from '../../LoadingSpinner';
 import './user.css';
 import {changeFollow} from '../../../actions/userProfile';
 import Constants from '../../../common/constants';
-import UserService from "../../../services/userService";
 
 const User = ({user, authUser, changeFollow}) => {
 

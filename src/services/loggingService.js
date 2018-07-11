@@ -1,6 +1,5 @@
 import RequestService from './requestService';
 import AuthService from './authService';
-import {blockchainErrorsList} from '../utils/blockchainErrorsList';
 
 class LoggingService {
 

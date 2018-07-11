@@ -78,6 +78,9 @@ export function clearTransfer() {
 
 export function transfer() {
 	let state = getStore().getState();
+
+	const golosName = Constants.SERVICES.golos.name;
+	const isGolosService = state.services.name === golosName;
 	return dispatch => {
 		if (state.session.actionLocked) {
 			return;
@@ -90,7 +93,11 @@ export function transfer() {
 		}
 		dispatch(actionLock());
 		dispatch(showBodyLoader());
-		TransferService.transfer(transfer.activeKey, transfer.amount, transfer.token, transfer.to, transfer.memo)
+		TransferService.transfer(transfer.activeKey,
+			transfer.amount,
+			isGolosService ? (transfer.token === "STEEM" ? "GOLOS" : "GBG") : transfer.token,
+			transfer.to,
+			transfer.memo)
 			.then(() => {
 				dispatch(actionUnlock());
 				dispatch(hideBodyLoader());

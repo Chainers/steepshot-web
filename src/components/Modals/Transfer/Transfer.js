@@ -153,7 +153,7 @@ const mapStateToProps = state => {
 	const {balance, sbd_balance} = state.userProfile.profile || {};
 	const {token, showMemo, activeKey, saveKey, to, amount, memo} = state.transfer;
 	const golosName = Constants.SERVICES.golos.name;
-	const isGolosService = getStore().getState().services.name === golosName;
+	const isGolosService = state.services.name === golosName;
 	return {
 		balance: token === 'STEEM' ? balance : sbd_balance,
 		selectedToken: token,
