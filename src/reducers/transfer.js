@@ -4,9 +4,9 @@ const initialState = {
 	token: 'SBD',
 	showMemo: false,
 	to: '',
-	amount: 0,
+	amount: 0.001,
 	memo: '',
-	activeKey: storage.activeKey,
+	activeKey: storage.activeKey || '',
 	saveKey: !!storage.activeKey,
 	loader: false
 };

@@ -45,12 +45,20 @@ class Transfer extends React.Component {
 		this.props.changeSaveKey();
 	}
 
-	componentDidMount() {
-		this.activeKey.value = this.props.activeKey;
+	setAmountRef(ref) {
+		this.amount = ref;
+	}
+
+	amountFocused() {
+		this.amount.select();
+	}
+
+	setAllAmount() {
+		this.props.changeAmount(this.props.balance);
 	}
 
 	render() {
-		const {username, selectedToken, balance, memoOpened, saveKey} = this.props;
+		const {username, selectedToken, balance, memoOpened, saveKey, activeKey, to, amount, memo} = this.props;
 		return (
 			<div className="container_transfer">
 				<div className="header_transfer">
@@ -70,7 +78,7 @@ class Transfer extends React.Component {
 						</div>
 						<div className="field_transfer">
 							<div className="at_transfer"/>
-							<input placeholder="username" onChange={this.changeUsername.bind(this)} maxLength={16}/>
+							<input placeholder="username" onChange={this.changeUsername.bind(this)} maxLength={16} value={to}/>
 						</div>
 					</div>
 
@@ -80,7 +88,8 @@ class Transfer extends React.Component {
 						</div>
 						<ChooseToken selectedToken={selectedToken}
 						             amount={balance}
-						             onChange={this.changeToken.bind(this)}/>
+						             onChange={this.changeToken.bind(this)}
+						             balanceOnClick={this.setAllAmount.bind(this)}/>
 					</div>
 
 					<div className="form-line_transfer">
@@ -88,7 +97,9 @@ class Transfer extends React.Component {
 							Amount
 						</div>
 						<div className="field_transfer">
-							<input type="number" onChange={this.changeAmount.bind(this)} placeholder="0.001"/>
+							<input onChange={this.changeAmount.bind(this)} placeholder="0.001"
+							       value={amount} ref={this.setAmountRef.bind(this)}
+							       onFocus={this.amountFocused.bind(this)}/>
 						</div>
 					</div>
 
@@ -104,7 +115,7 @@ class Transfer extends React.Component {
 						<div className="label_transfer">
 							Memo
 						</div>
-						<textarea onChange={this.changeMemo.bind(this)} placeholder="This memo is public"/>
+						<textarea onChange={this.changeMemo.bind(this)} placeholder="This memo is public" value={memo}/>
 					</ShowIf>
 
 					<div className="form-line_transfer">
@@ -112,7 +123,7 @@ class Transfer extends React.Component {
 							Active key
 						</div>
 						<div className="field_transfer">
-							<input type="password" onChange={this.changeActiveKey.bind(this)} ref={ref => this.activeKey = ref}/>
+							<input type="password" onChange={this.changeActiveKey.bind(this)} value={activeKey}/>
 						</div>
 					</div>
 					<div className="checkbox-field_transfer">
@@ -133,14 +144,17 @@ class Transfer extends React.Component {
 
 const mapStateToProps = state => {
 	const {balance, sbd_balance} = state.userProfile.profile || {};
-	const {token, showMemo, activeKey, saveKey} = state.transfer;
+	const {token, showMemo, activeKey, saveKey, to, amount, memo} = state.transfer;
 	return {
 		balance: token === 'STEEM' ? balance : sbd_balance,
 		selectedToken: token,
 		username: state.auth.user,
 		memoOpened: showMemo,
 		saveKey,
-		activeKey
+		activeKey: activeKey,
+		to,
+		amount,
+		memo
 	}
 };
 

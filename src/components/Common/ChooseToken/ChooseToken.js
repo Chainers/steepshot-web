@@ -1,7 +1,7 @@
 import React from 'react';
 import './chooseToken.css';
 
-const ChooseToken = ({selectedToken, amount, onChange, disabled = false}) => (
+const ChooseToken = ({selectedToken, amount, onChange, balanceOnClick, disabled = false}) => (
 	<div className="container_choose-token">
 		<div className="select_choose-token">
 			<select className={disabled ? ' disabled' : ''}
@@ -14,7 +14,10 @@ const ChooseToken = ({selectedToken, amount, onChange, disabled = false}) => (
 		</div>
 		<div className="balance_choose-token">
 			<span>Balance</span>
-			<span className="balance-value_choose-token">{amount} {selectedToken}</span>
+			<span className={'balance-value_choose-token ' +(!!balanceOnClick ? 'pointer_choose-token' : '')}
+			      onClick={balanceOnClick}>
+				{amount} {selectedToken}
+				</span>
 		</div>
 	</div>
 );
