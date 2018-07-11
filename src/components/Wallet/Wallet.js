@@ -51,8 +51,8 @@ class Wallet extends React.Component {
 
 	render() {
 		const {cost, steem, sp, sbd, isGolosService} = this.props;
-		if (!Utils.isNotEmpty(cost) || !Utils.isNotEmpty(steem) || !Utils.isNotEmpty(sp) || !Utils.isNotEmpty(sbd)) {
-			return <LoadingSpinner/>
+		if (Utils.isEmpty(cost) || Utils.isEmpty(steem) || Utils.isEmpty(sp) || Utils.isEmpty(sbd)) {
+			return <LoadingSpinner style={{display: '20px'}} center={true}/>
 		}
 		return (
 			<div className="container">
