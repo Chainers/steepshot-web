@@ -5,7 +5,7 @@ import ShowIf from "../ShowIf";
 import {changeActiveKey, changeSavingKey} from "../../../actions/activeKey";
 
 const InputActiveKey = ({className, activeKey, saveKey, changeSaveKey, changeActiveKey}) => (
-	<div className={'container_input-active-key' + (className || '')}>
+	<div className={'container_input-active-key ' + (className || '')}>
 		<div className="label_input-active-key">
 			Active key
 		</div>

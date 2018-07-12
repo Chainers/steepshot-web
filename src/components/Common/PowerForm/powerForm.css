@@ -42,3 +42,7 @@
 .key-field_power-form > input {
     width: 100%;
 }
+
+.input-active-key_power-form {
+    margin-top: 20px;
+}
