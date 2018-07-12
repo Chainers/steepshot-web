@@ -11,6 +11,8 @@ import Transfer from "../Modals/Transfer/Transfer";
 import {setToken} from "../../actions/transfer";
 import Constants from "../../common/constants";
 import ShowIf from "../Common/ShowIf";
+import PowerUp from "../Modals/PowerUp/PowerUp";
+import PowerDown from "../Modals/PowerDown/PowerDown";
 
 const DESCRIPTION = {
 	STEEM: `Tradeable tokens that may be transferred anywhere at anytime.
@@ -49,6 +51,20 @@ class Wallet extends React.Component {
 	transferSbd() {
 		this.props.setToken('SBD');
 		this.transfer()
+	}
+
+	powerUp() {
+		let modalOption = {
+			body: (<PowerUp/>)
+		};
+		this.props.openModal("powerUp", modalOption);
+	}
+
+	powerDown() {
+		let modalOption = {
+			body: (<PowerDown/>)
+		};
+		this.props.openModal("powerDown", modalOption);
 	}
 
 	render() {
@@ -96,19 +112,17 @@ class Wallet extends React.Component {
 							coin={isGolosService ? "GOLOS" : "STEEM"}
 							value={sp}
 							description={isGolosService ? DESCRIPTION.SG : DESCRIPTION.SP}
-							/*actions={
+							actions={
 								[{
 									label: 'Power up',
 									icon: '/images/wallet/buttons/powerUp.png',
-									onClick: () => {
-									}
+									onClick: this.powerUp.bind(this)
 								}, {
 									label: 'Power down',
 									icon: '/images/wallet/buttons/powerDown.png',
-									onClick: () => {
-									}
+									onClick: this.powerDown.bind(this)
 								}]
-							}*/
+							}
 						/>
 						<WidgetToken
 							background={{

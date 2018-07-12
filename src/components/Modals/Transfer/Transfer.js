@@ -16,6 +16,7 @@ import {
 import ShowIf from "../../Common/ShowIf";
 import {closeModal} from "../../../actions/modal";
 import Constants from "../../../common/constants";
+import WalletPopupTemplate from "../WalletPopupTemplate/WalletPopupTemplate";
 
 class Transfer extends React.Component {
 
@@ -62,18 +63,12 @@ class Transfer extends React.Component {
 	render() {
 		const {username, selectedToken, balance, memoOpened, saveKey, activeKey, to, amount, memo, isGolosService} = this.props;
 		return (
-			<div className="container_transfer">
-				<div className="header_transfer">
-					<div className="title_transfer">
-						TRANSFER TO ACCOUNT
-					</div>
-					<div className="username_transfer">
-						@{username}
-					</div>
-				</div>
-
+			<WalletPopupTemplate title="TRANSFER TO ACCOUNT"
+			                     username={username}
+			                     textButton="OK"
+			                     cancel={this.props.closeTransferModal}
+			                     ok={this.props.transfer}>
 				<form className="body_transfer" autoComplete="off">
-
 					<div className="form-line_transfer">
 						<div className="label_transfer">
 							To
@@ -139,11 +134,7 @@ class Transfer extends React.Component {
 						<span>Save the key for transferring.</span>
 					</div>
 				</form>
-				<div className="buttons_transfer clearfix">
-					<button className="btn btn-cancel" onClick={this.props.closeTransferModal}>CANCEL</button>
-					<button className="btn btn-default" onClick={this.props.transfer}>OK</button>
-				</div>
-			</div>
+			</WalletPopupTemplate>
 		);
 	}
 }
