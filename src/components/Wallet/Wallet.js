@@ -97,8 +97,12 @@ class Wallet extends React.Component {
 							actions={
 								[{
 									label: 'Transfer',
-									icon: '',
+									icon: '/images/wallet/buttons/transfer.png',
 									onClick: this.transferSteem.bind(this)
+								},{
+									label: 'Power up',
+									icon: '/images/wallet/buttons/powerUp.png',
+									onClick: this.powerUp.bind(this)
 								}]
 							}
 						/>
@@ -114,10 +118,6 @@ class Wallet extends React.Component {
 							description={isGolosService ? DESCRIPTION.SG : DESCRIPTION.SP}
 							actions={
 								[{
-									label: 'Power up',
-									icon: '/images/wallet/buttons/powerUp.png',
-									onClick: this.powerUp.bind(this)
-								}, {
 									label: 'Power down',
 									icon: '/images/wallet/buttons/powerDown.png',
 									onClick: this.powerDown.bind(this)
