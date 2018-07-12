@@ -16,7 +16,6 @@ import {
 import ShowIf from "../../Common/ShowIf";
 import {closeModal} from "../../../actions/modal";
 import Constants from "../../../common/constants";
-import {getStore} from "../../../store/configureStore";
 
 class Transfer extends React.Component {
 

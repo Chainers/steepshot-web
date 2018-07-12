@@ -16,12 +16,15 @@ import ShowIf from "../Common/ShowIf";
 const DESCRIPTION = {
 	STEEM: `Tradeable tokens that may be transferred anywhere at anytime.
 Steem can be converted to STEEM POWER in a process called powering up.`,
-	SP: "Influence tokens which give you more control over post payouts and allow you to earn on curation rewards.",
-	SBD: "Tradeable tokens that may be transferred anywhere at anytime.",
-	GOLOS: `Перемещаемые цифровые токены, которые могут переданы куда угодно в любой момент.
-Голос может быть конвертирован в Силу Голоса, этот процесс называется "увеличение Силы Голоса".`,
-	SG: `Сила Голоса неперемещаемая, её количество увеличивается при долгосрочном хранении.
-Чем больше у Вас Силы Голоса, тем сильней вы влияете на вознаграждения за пост и тем больше зарабатываете за голосование.`,
+	SP: `Influence tokens which give you more control over post payouts 
+	and allow you to earn on curation rewards.`,
+	SBD: `Tradeable tokens that may be transferred anywhere at anytime.`,
+	GOLOS: `Перемещаемые цифровые токены, которые могут переданы куда угодно 
+	в любой момент. Голос может быть конвертирован в Силу Голоса, этот процесс 
+	называется "увеличение Силы Голоса".`,
+	SG: `Сила Голоса неперемещаемая, её количество увеличивается при долгосрочном 
+	хранении. Чем больше у Вас Силы Голоса, тем сильней вы влияете на вознаграждения 
+	за пост и тем больше зарабатываете за голосование.`,
 	GBG: `Перемещаемые цифровые токены, цена которых равна ~1 мг золота в GOLOS.`
 };
 
@@ -93,7 +96,7 @@ class Wallet extends React.Component {
 							point="sp"
 							coin={isGolosService ? "GOLOS" : "STEEM"}
 							value={sp}
-							description={isGolosService ? DESCRIPTION.SG : DESCRIPTION.STEEM}
+							description={isGolosService ? DESCRIPTION.SG : DESCRIPTION.SP}
 							/*actions={
 								[{
 									label: 'Power up',

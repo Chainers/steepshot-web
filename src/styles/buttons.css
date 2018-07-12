@@ -67,6 +67,7 @@
 
 .btn.btn-create {
     background-color: #1294f6;
+    margin-top: -4px;
 }
 
 .btn.btn-create:hover {
