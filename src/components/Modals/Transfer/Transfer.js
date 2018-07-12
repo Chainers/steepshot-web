@@ -3,10 +3,8 @@ import {connect} from "react-redux";
 import './transfer.css';
 import ChooseToken from "../../Common/ChooseToken/ChooseToken";
 import {
-	changeActiveKey,
 	changeAmount,
 	changeMemo,
-	changeSaveKey,
 	changeUsername,
 	clearTransfer,
 	setToken,
@@ -17,6 +15,7 @@ import ShowIf from "../../Common/ShowIf";
 import {closeModal} from "../../../actions/modal";
 import Constants from "../../../common/constants";
 import WalletPopupTemplate from "../WalletPopupTemplate/WalletPopupTemplate";
+import InputActiveKey from "../../Common/InputActiveKey/InputActiveKey";
 
 class Transfer extends React.Component {
 
@@ -40,14 +39,6 @@ class Transfer extends React.Component {
 		this.props.changeMemo(e.target.value);
 	}
 
-	changeActiveKey(e) {
-		this.props.changeActiveKey(e.target.value);
-	}
-
-	changeSaveKey() {
-		this.props.changeSaveKey();
-	}
-
 	setAmountRef(ref) {
 		this.amount = ref;
 	}
@@ -61,7 +52,7 @@ class Transfer extends React.Component {
 	}
 
 	render() {
-		const {username, selectedToken, balance, memoOpened, saveKey, activeKey, to, amount, memo, isGolosService} = this.props;
+		const {username, selectedToken, balance, memoOpened, to, amount, memo, isGolosService} = this.props;
 		return (
 			<WalletPopupTemplate title="TRANSFER TO ACCOUNT"
 			                     username={username}
@@ -117,22 +108,8 @@ class Transfer extends React.Component {
 						<textarea onChange={this.changeMemo.bind(this)} placeholder="This memo is public" value={memo}/>
 					</ShowIf>
 
-					<div className="form-line_transfer">
-						<div className="label_transfer">
-							Active key
-						</div>
-						<div className="field_transfer">
-							<input type="password" onChange={this.changeActiveKey.bind(this)} value={activeKey}/>
-						</div>
-					</div>
-					<div className="checkbox-field_transfer">
-						<div className="checkbox_transfer" onClick={this.changeSaveKey.bind(this)}>
-							<ShowIf show={saveKey}>
-								<div className="save_transfer"/>
-							</ShowIf>
-						</div>
-						<span>Save the key for transferring.</span>
-					</div>
+					<InputActiveKey/>
+
 				</form>
 			</WalletPopupTemplate>
 		);
@@ -141,7 +118,7 @@ class Transfer extends React.Component {
 
 const mapStateToProps = state => {
 	const {balance, sbd_balance} = state.userProfile.profile || {};
-	const {token, showMemo, activeKey, saveKey, to, amount, memo} = state.transfer;
+	const {token, showMemo, to, amount, memo} = state.transfer;
 	const golosName = Constants.SERVICES.golos.name;
 	const isGolosService = state.services.name === golosName;
 	return {
@@ -149,8 +126,6 @@ const mapStateToProps = state => {
 		selectedToken: token,
 		username: state.auth.user,
 		memoOpened: showMemo,
-		saveKey,
-		activeKey: activeKey,
 		to,
 		amount,
 		memo,
@@ -174,12 +149,6 @@ const mapDispatchToProps = dispatch => {
 		},
 		changeMemo: value => {
 			dispatch(changeMemo(value))
-		},
-		changeActiveKey: value => {
-			dispatch(changeActiveKey(value))
-		},
-		changeSaveKey: () => {
-			dispatch(changeSaveKey())
 		},
 		clear: () => {
 			dispatch(clearTransfer())

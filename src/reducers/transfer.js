@@ -1,13 +1,9 @@
-import storage from '../utils/Storage';
-
 const initialState = {
 	token: 'SBD',
 	showMemo: false,
 	to: '',
 	amount: 0.001,
 	memo: '',
-	activeKey: storage.transferActiveKey || '',
-	saveKey: !!storage.transferActiveKey,
 	loader: false
 };
 
@@ -38,16 +34,6 @@ export default function transfer(state = initialState, action) {
 				...state,
 				memo: action.value
 			};
-		case 'TRANSFER_CHANGE_ACTIVE_KEY':
-			return {
-				...state,
-				activeKey: action.value
-			};
-		case 'TRANSFER_CHANGE_SAVE_KEY':
-			return {
-				...state,
-				saveKey: !state.saveKey
-			};
 		case 'TRANSFER_SHOW_LOADER':
 			return {
 				...state,
@@ -65,8 +51,6 @@ export default function transfer(state = initialState, action) {
 				to: '',
 				amount: 0.001,
 				memo: '',
-				activeKey: storage.transferActiveKey || '',
-				saveKey: !!storage.transferActiveKey,
 				loader: false
 			};
 		default:

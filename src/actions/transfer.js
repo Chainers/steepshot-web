@@ -57,19 +57,6 @@ export function changeMemo(value) {
 	}
 }
 
-export function changeActiveKey(value) {
-	return {
-		type: 'TRANSFER_CHANGE_ACTIVE_KEY',
-		value
-	}
-}
-
-export function changeSaveKey() {
-	return {
-		type: 'TRANSFER_CHANGE_SAVE_KEY'
-	}
-}
-
 export function clearTransfer() {
 	return {
 		type: 'TRANSFER_CLEAR'
@@ -86,14 +73,15 @@ export function transfer() {
 			return;
 		}
 		const transfer = state.transfer;
+		const activeKey = state.activeKey.activeKey;
 		if (transfer.saveKey) {
-			storage.transferActiveKey = transfer.activeKey;
+			storage.transferActiveKey = activeKey;
 		} else {
 			storage.transferActiveKey = null;
 		}
 		dispatch(actionLock());
 		dispatch(showBodyLoader());
-		TransferService.transfer(transfer.activeKey,
+		TransferService.transfer(activeKey,
 			transfer.amount,
 			isGolosService ? (transfer.token === "STEEM" ? "GOLOS" : "GBG") : transfer.token,
 			transfer.to,
