@@ -10,7 +10,6 @@ import {openModal} from "../../actions/modal";
 import Transfer from "../Modals/Transfer/Transfer";
 import {setToken} from "../../actions/transfer";
 import Constants from "../../common/constants";
-import {getStore} from "../../store/configureStore";
 import ShowIf from "../Common/ShowIf";
 
 const DESCRIPTION = {
@@ -146,7 +145,7 @@ const mapStateToProps = state => {
 	}
 	const {balance, sbd_balance, total_steem_power_steem, estimated_balance} = state.userProfile.profile;
 	const golosName = Constants.SERVICES.golos.name;
-	const isGolosService = getStore().getState().services.name === golosName;
+	const isGolosService = state.services.name === golosName;
 	return {
 		cost: estimated_balance,
 		steem: balance,
