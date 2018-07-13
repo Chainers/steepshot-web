@@ -16,8 +16,20 @@ import {closeModal} from "../../../actions/modal";
 import Constants from "../../../common/constants";
 import WalletPopupTemplate from "../WalletPopupTemplate/WalletPopupTemplate";
 import InputActiveKey from "../../Common/InputActiveKey/InputActiveKey";
+import GrayInput from "../../Common/GrayInput/GrayInput";
 
 class Transfer extends React.Component {
+
+	constructor() {
+		super();
+		this.amountFocused = this.amountFocused.bind(this);
+		this.changeUsername = this.changeUsername.bind(this);
+		this.changeToken = this.changeToken.bind(this);
+		this.setAllAmount = this.setAllAmount.bind(this);
+		this.changeMemo = this.changeMemo.bind(this);
+		this.changeAmount = this.changeAmount.bind(this);
+		this.setAmountRef = this.setAmountRef.bind(this);
+	}
 
 	componentWillUnmount() {
 		this.props.clearTransfer();
@@ -66,7 +78,7 @@ class Transfer extends React.Component {
 						</p>
 						<div className="field_transfer">
 							<div className="at_transfer"/>
-							<input placeholder="username" onChange={this.changeUsername.bind(this)} maxLength={16} value={to}/>
+							<input placeholder="username" onChange={this.changeUsername} maxLength={16} value={to}/>
 						</div>
 					</div>
 
@@ -76,22 +88,16 @@ class Transfer extends React.Component {
 						</p>
 						<ChooseToken selectedToken={selectedToken}
 						             amount={balance}
-						             onChange={this.changeToken.bind(this)}
-						             balanceOnClick={this.setAllAmount.bind(this)}
+						             onChange={this.changeToken}
+						             balanceOnClick={this.setAllAmount}
 						             isGolosService={isGolosService}
 						/>
 					</div>
 
-					<div className="form-line_transfer">
-						<p className="inputs-label">
-							Amount
-						</p>
-						<div className="field_transfer">
-							<input onChange={this.changeAmount.bind(this)} placeholder="0.001"
-							       value={amount} ref={this.setAmountRef.bind(this)}
-							       onFocus={this.amountFocused.bind(this)}/>
-						</div>
-					</div>
+					<GrayInput label="Amount" className="form-line_transfer" onChange={this.changeAmount}
+					           placeholder="0.001" value={amount} ref={this.setAmountRef}
+					           onFocus={this.amountFocused}/>
+
 
 					<ShowIf show={!memoOpened}>
 						<div className="add-memo_transfer">
@@ -105,11 +111,9 @@ class Transfer extends React.Component {
 						<p className="inputs-label">
 							Memo
 						</p>
-						<textarea onChange={this.changeMemo.bind(this)} placeholder="This memo is public" value={memo}/>
+						<textarea onChange={this.changeMemo} placeholder="This memo is public" value={memo}/>
 					</ShowIf>
-
 					<InputActiveKey/>
-
 				</form>
 			</WalletPopupTemplate>
 		);

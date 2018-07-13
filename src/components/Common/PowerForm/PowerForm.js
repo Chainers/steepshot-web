@@ -2,14 +2,12 @@ import React from 'react';
 import BalanceInfo from "../BalanceInfo/BalanceInfo";
 import InputActiveKey from "../InputActiveKey/InputActiveKey";
 import './powerForm.css';
+import GrayInput from "../GrayInput/GrayInput";
 
 const PowerForm = ({amount, amountOnChange, countToken, token, className}) => (
 	<form className={className || ''} autoComplete="off">
-		<div className="inputs-label">
-			Amount
-		</div>
 		<div className="balance-group_power-form">
-			<input value={amount} onChange={(e) => amountOnChange(e.target.value)} name="amount"/>
+			<GrayInput label="amount" value={amount} onChange={(e) => amountOnChange(e.target.value)} name="amount"/>
 			<BalanceInfo token={token} amount={countToken}/>
 		</div>
 		<span onClick={() => amountOnChange(countToken)} className="using-max_power-form">Using maximum</span>

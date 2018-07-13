@@ -8,6 +8,10 @@ class GrayInput extends React.PureComponent {
 		return this.field.value;
 	}
 
+	select() {
+		this.field.select();
+	}
+
 	render() {
 		return (
 			<div className={'container_gray-input ' + (this.props.className || '')}>
