@@ -14,7 +14,7 @@ import {clearLoginErrors} from '../../actions/login';
 import Switcher from '../Switcher/Switcher';
 import ChooseSteemRegModal from './ChooseSteemRegModal/ChooseSteemRegModal';
 import {openModal} from '../../actions/modal';
-import SteemConnect from '../../services/steemConnect';
+import SteemConnect from '../../services/SteemConnect';
 
 const galleryImages = [
 	'/images/login/1.png',

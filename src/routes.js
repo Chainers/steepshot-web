@@ -15,7 +15,7 @@ import Browse from './components/Browse/Browse';
 import Settings from './components/Settings/Settings';
 import RouteWithService from "./components/Routes/RouteWithService";
 import SteemConnect from "./components/SteemConnect/SteemConnect";
-import AuthService from "./services/authService";
+import AuthService from "./services/AuthService";
 
 export default function getRoutes() {
 	return (

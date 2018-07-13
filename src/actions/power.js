@@ -1,5 +1,14 @@
+import {getStore} from "../store/configureStore";
+import {actionLock} from "./session";
+
 export function powerUp() {
-	
+	let state = getStore().getState();
+	return dispatch => {
+		if (state.session.actionLocked) {
+			return;
+		}
+		dispatch(actionLock());
+	}
 }
 
 export function powerDown() {

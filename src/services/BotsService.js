@@ -1,4 +1,4 @@
-import RequestService from './requestService';
+import RequestService from './RequestService';
 import Constants from '../common/constants';
 import {getStore} from '../store/configureStore';
 import {addBot} from '../actions/promoteModal';

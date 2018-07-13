@@ -3,8 +3,8 @@ import {blurredTextInput, clearTextInputState, focusedTextInput, setTextInputSta
 import {pushErrorMessage, pushMessage} from "./pushMessage";
 import {actionLock, actionUnlock} from "./session";
 import Constants from "../common/constants";
-import CommentService from "../services/commentService";
-import PostService from "../services/postService";
+import CommentService from "../services/CommentService";
+import PostService from "../services/PostService";
 import {serverErrorsList} from "../utils/serverErrorsList";
 
 export function initPostComment(point) {

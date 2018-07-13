@@ -32,7 +32,7 @@ import Constants from '../../common/constants';
 import Utils from '../../utils/Utils';
 import {setComponentSize} from '../../utils/setComponentSize';
 import {setCommentEditState} from '../../actions/comments';
-import AuthService from '../../services/authService';
+import AuthService from '../../services/AuthService';
 import LowNSFWFilter from './LowNSFWFilter';
 import CopyLink from "./CopyLink/CopyLink";
 

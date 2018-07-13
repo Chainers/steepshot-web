@@ -2,8 +2,8 @@ import React from 'react';
 import './transaction.css';
 import TimeAgo from 'timeago-react';
 import DateFormatter from "../../../../utils/DateFormatter";
-import SteemService from "../../../../services/steemService";
-import AuthService from "../../../../services/authService";
+import SteemService from "../../../../services/SteemService";
+import AuthService from "../../../../services/AuthService";
 import ShowIf from "../../../Common/ShowIf";
 import Utils from "../../../../utils/Utils";
 

@@ -1,9 +1,9 @@
-import RequestService from "./requestService";
-import LoggingService from "./loggingService";
+import RequestService from "./RequestService";
+import LoggingService from "./LoggingService";
 import Constants from "../common/constants";
-import AuthService from "./authService";
-import ChainService from "./chainService";
-import CommentService from "./commentService";
+import AuthService from "./AuthService";
+import ChainService from "./ChainService";
+import CommentService from "./CommentService";
 import Utils from "../utils/Utils";
 
 class PostService {

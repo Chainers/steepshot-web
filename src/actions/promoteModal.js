@@ -1,14 +1,14 @@
 import * as React from 'react';
 import {getStore} from '../store/configureStore';
-import UserService from '../services/userService';
+import UserService from '../services/UserService';
 import {closeModal, openModal} from './modal';
 import SendBidModal from '../components/PostModal/PromoteModal/SendBidModal/SendBidModal';
 import Constants from '../common/constants';
 import {actionLock, actionUnlock} from './session';
 import {pushErrorMessage, pushMessage} from './pushMessage';
-import BotsService from '../services/botsService';
+import BotsService from '../services/BotsService';
 import storage from '../utils/Storage';
-import TransferService from "../services/transferService";
+import WalletService from "../services/WalletService";
 
 function setAuthUserInfoLoading(param) {
 	return {
@@ -209,7 +209,7 @@ export function sendBid(steemLink, activeKey, botName) {
 		let promoteModal = state.promoteModal;
 		dispatch(actionLock());
 		dispatch(setBidRequest(true));
-		TransferService.transfer(activeKey, promoteModal.promoteAmount, promoteModal.selectedToken, botName, steemLink)
+		WalletService.transfer(activeKey, promoteModal.promoteAmount, promoteModal.selectedToken, botName, steemLink)
 			.then(() => {
 				dispatch(actionUnlock());
 				dispatch(pushMessage(Constants.PROMOTE.BID_TO_BOT_SUCCESS));

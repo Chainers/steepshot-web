@@ -11,7 +11,7 @@ import './postContextMenu.css';
 import {push} from 'react-router-redux';
 import {pushMessage} from '../../actions/pushMessage';
 import Constants from '../../common/constants';
-import AuthService from '../../services/authService';
+import AuthService from '../../services/AuthService';
 
 class PostContextMenu extends React.Component {
 

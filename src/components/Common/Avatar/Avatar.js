@@ -4,7 +4,7 @@ import Constants from '../../../common/constants';
 import ShowIf from '../ShowIf';
 import './avatar.css';
 import {setAvatarTip, setAvatarTipTimeout} from '../../../actions/avatar';
-import ImagesService from '../../../services/imagesService';
+import ImagesService from '../../../services/ImagesService';
 import AvaImgBackground from './AvaImgBackground';
 import Utils from "../../../utils/Utils";
 

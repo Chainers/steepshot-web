@@ -4,14 +4,14 @@ import {hideBodyLoader, showBodyLoader} from './bodyLoader';
 import {checkSubscribeAndUpdateSettings, removeSettings} from './settings';
 import storage from '../utils/Storage';
 import {unsubscribe} from './oneSignal';
-import UserService from '../services/userService';
-import OneSignalService from '../services/oneSignalService';
-import LoggingService from '../services/loggingService';
-import ChainService from '../services/chainService';
+import UserService from '../services/UserService';
+import OneSignalService from '../services/OneSignalService';
+import LoggingService from '../services/LoggingService';
+import ChainService from '../services/ChainService';
 import {setPostingKeyErrorMessage, setUsernameErrorMessage} from './login';
 import {getStore} from '../store/configureStore';
 import Constants from '../common/constants';
-import StorageSerive from '../services/storageService';
+import StorageSerive from '../services/StorageService';
 
 export function showMessage(message) {
 	return dispatch => {

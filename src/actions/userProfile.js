@@ -1,7 +1,7 @@
 import {getStore} from '../store/configureStore';
 import {pushMessage} from './pushMessage';
-import UserService from '../services/userService';
-import AuthService from "../services/authService";
+import UserService from '../services/UserService';
+import AuthService from "../services/AuthService";
 
 function getUserProfileSuccess(result) {
 	return {

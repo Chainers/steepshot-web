@@ -3,8 +3,8 @@ import {updatePost} from './post';
 import {updateVotingPower} from './auth';
 import {pushErrorMessage, pushMessage} from './pushMessage';
 import {actionLock, actionUnlock} from './session';
-import PostService from '../services/postService';
-import AuthService from "../services/authService";
+import PostService from '../services/PostService';
+import AuthService from "../services/AuthService";
 
 function toggleVoteRequest(postIndex) {
 	return {

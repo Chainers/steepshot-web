@@ -1,7 +1,7 @@
-import ChainService from "./chainService";
+import ChainService from "./ChainService";
 import Utils from "../utils/Utils";
 
-class TransferService {
+class WalletService {
 
 	static transfer(activeKey, amount, token, to, memo) {
 		if (Utils.isEmptyString(activeKey)) {
@@ -35,4 +35,4 @@ class TransferService {
 
 }
 
-export default TransferService;
+export default WalletService;

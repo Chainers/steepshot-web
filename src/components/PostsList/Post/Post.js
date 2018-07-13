@@ -18,7 +18,7 @@ import './post.css';
 import ReactPlayer from 'react-player';
 import MarkdownParser from '../../../utils/markdownParser';
 import renderHTML from 'react-render-html';
-import ImagesService from '../../../services/imagesService';
+import ImagesService from '../../../services/ImagesService';
 import PostImgBackground from './PostImgBackground';
 
 class Post extends React.Component {

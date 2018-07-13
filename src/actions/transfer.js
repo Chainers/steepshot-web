@@ -1,6 +1,6 @@
 import {getStore} from "../store/configureStore";
 import {actionLock, actionUnlock} from "./session";
-import TransferService from "../services/transferService";
+import WalletService from "../services/WalletService";
 import Constants from "../common/constants";
 import {pushErrorMessage, pushMessage} from "./pushMessage";
 import {closeModal} from "./modal";
@@ -81,7 +81,7 @@ export function transfer() {
 		}
 		dispatch(actionLock());
 		dispatch(showBodyLoader());
-		TransferService.transfer(activeKey,
+		WalletService.transfer(activeKey,
 			transfer.amount,
 			isGolosService ? (transfer.token === "STEEM" ? "GOLOS" : "GBG") : transfer.token,
 			transfer.to,

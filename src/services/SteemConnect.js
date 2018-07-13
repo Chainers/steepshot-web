@@ -1,6 +1,6 @@
 import sc2 from 'sc2-sdk';
-import AuthService from "./authService";
-import SteemService from "./steemService";
+import AuthService from "./AuthService";
+import SteemService from "./SteemService";
 
 const callbackURL = `${document.location.origin}/steemConnect`;
 const api = sc2.Initialize({

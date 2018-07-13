@@ -54,6 +54,10 @@ class ChainService {
 		return ChainService.currentService.getTransactionHistory(username, from, limit)
 	}
 
+	static powerUp(activeKey, amount) {
+		return ChainService.currentService.powerUp(activeKey, amount)
+	}
+
 }
 
 export default ChainService;

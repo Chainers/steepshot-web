@@ -1,5 +1,5 @@
-import RequestService from './requestService';
-import AuthService from './authService';
+import RequestService from './RequestService';
+import AuthService from './AuthService';
 
 class LoggingService {
 
