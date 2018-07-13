@@ -73,7 +73,7 @@ class Transfer extends React.Component {
 			                     ok={this.props.transfer}>
 				<form className="body_transfer" autoComplete="off">
 					<div className="form-line_transfer">
-						<p className="inputs-label">
+						<p className="label_transfer">
 							To
 						</p>
 						<div className="field_transfer">
