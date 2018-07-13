@@ -61,9 +61,9 @@ class Transfer extends React.Component {
 			                     ok={this.props.transfer}>
 				<form className="body_transfer" autoComplete="off">
 					<div className="form-line_transfer">
-						<div className="label_transfer">
+						<p className="inputs-label">
 							To
-						</div>
+						</p>
 						<div className="field_transfer">
 							<div className="at_transfer"/>
 							<input placeholder="username" onChange={this.changeUsername.bind(this)} maxLength={16} value={to}/>
@@ -71,9 +71,9 @@ class Transfer extends React.Component {
 					</div>
 
 					<div className="form-line_transfer">
-						<div className="label_transfer">
+						<p className="inputs-label">
 							Token
-						</div>
+						</p>
 						<ChooseToken selectedToken={selectedToken}
 						             amount={balance}
 						             onChange={this.changeToken.bind(this)}
@@ -83,9 +83,9 @@ class Transfer extends React.Component {
 					</div>
 
 					<div className="form-line_transfer">
-						<div className="label_transfer">
+						<p className="inputs-label">
 							Amount
-						</div>
+						</p>
 						<div className="field_transfer">
 							<input onChange={this.changeAmount.bind(this)} placeholder="0.001"
 							       value={amount} ref={this.setAmountRef.bind(this)}
@@ -102,9 +102,9 @@ class Transfer extends React.Component {
 					</ShowIf>
 
 					<ShowIf show={memoOpened}>
-						<div className="label_transfer">
+						<p className="inputs-label">
 							Memo
-						</div>
+						</p>
 						<textarea onChange={this.changeMemo.bind(this)} placeholder="This memo is public" value={memo}/>
 					</ShowIf>
 

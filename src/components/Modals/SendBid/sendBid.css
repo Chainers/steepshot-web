@@ -1,4 +1,4 @@
-.title_send-bid-mod {
+.title_send-bid {
     display: flex;
     justify-content: space-between;
     font: 14px OpenSans-Semibold;
@@ -7,18 +7,18 @@
     margin-bottom: 0;
 }
 
-.title_send-bid-mod a:hover {
+.title_send-bid a:hover {
     opacity: .6;
 }
 
-.body_send-bid-mod {
+.body_send-bid {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 20px 0;
 }
 
-.bot-logo_send-bid-mod {
+.bot-logo_send-bid {
     position: relative;
     width: 100px;
     height: 100px;
@@ -29,7 +29,7 @@
     background-size: cover;
 }
 
-.bot-logo_send-bid-mod::after {
+.bot-logo_send-bid::after {
     content: '';
     display: block;
     position: absolute;
@@ -41,7 +41,7 @@
     border-radius: 50%;
 }
 
-.promise-about-key_send-bid-mod {
+.promise-about-key_send-bid {
     padding: 5px 10px;
     border-radius: 6px;
     background-color: #fafafa;
@@ -61,13 +61,13 @@
 }
 
 @media (max-width: 510px) {
-    .body_send-bid-mod {
+    .body_send-bid {
         flex-direction: column;
     }
-    .bot-logo_send-bid-mod {
+    .bot-logo_send-bid {
         margin: 0 0 25px 0;
     }
-    .title_send-bid-mod {
+    .title_send-bid {
         font: 12px OpenSans-Semibold;
     }
 }

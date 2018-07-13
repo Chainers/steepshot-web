@@ -7,14 +7,6 @@
     overflow: hidden;
 }
 
-.label_transfer {
-    width: 100%;
-    height: 25px;
-    font: 12px OpenSans-Light;
-    color: #979b9e;
-    padding-top: 5px;
-}
-
 .field_transfer {
     width: 100%;
     height: 40px;

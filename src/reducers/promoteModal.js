@@ -68,12 +68,6 @@ export default function promoteModal(state = initialState, action) {
 				searchingBot: action.state
 			};
 
-		case 'SET_BID_REQUEST':
-			return {
-				...state,
-				sendingBid: action.state
-			};
-
 		case 'ADD_BOT':
 			return {
 				...state,

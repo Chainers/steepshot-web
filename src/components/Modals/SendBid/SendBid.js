@@ -12,13 +12,16 @@ import {
 	setBlockedTimer,
 	setRedTimer
 } from '../../../actions/promoteModal';
-import {loadingEllipsis} from '../../../utils/loadingEllipsis';
-import ShowIf from '../../Common/ShowIf';
-import storage from '../../../utils/Storage';
 import WalletPopupTemplate from "../WalletPopupTemplate/WalletPopupTemplate";
 import BotTimer from "./BotTimer/BotTimer";
+import GrayInput from "../../Common/GrayInput/GrayInput";
 
 class SendBid extends React.Component {
+
+	constructor() {
+		super();
+		this.setActiveKeyValue = this.setActiveKeyValue.bind(this);
+	}
 
 	componentDidMount() {
 		this.bidTimer = setTimeout(() => {
@@ -42,25 +45,18 @@ class SendBid extends React.Component {
 	}
 
 	sendBid() {
-		if (this.props.sendingBid) {
+		if (!this.props.activeKey) {
+			this.props.setActiveKeyError(Constants.PROMOTE.EMPTY_KEY_INPUT);
 			return;
 		}
-		if (this.input) {
-			if (!this.props.activeKey) {
-				this.props.setActiveKeyError(Constants.PROMOTE.EMPTY_KEY_INPUT);
-				return;
-			}
-			this.props.sendBid(this.props.steemLink, this.props.activeKey, this.props.botName);
-		} else {
-			this.props.sendBid(this.props.steemLink, storage.activeKey, this.props.botName);
-		}
+		this.props.sendBid(this.props.steemLink, this.props.activeKey, this.props.botName);
 	}
 
-	setActiveKeyValue() {
+	setActiveKeyValue(e) {
 		if (this.props.activeKeyError) {
 			this.props.setActiveKeyError('');
 		}
-		let activeKey = this.input.value.replace(/\s+/g, '');
+		let activeKey = e.target.value.replace(/\s+/g, '');
 		this.props.setActiveKey(activeKey);
 	}
 
@@ -75,49 +71,39 @@ class SendBid extends React.Component {
 	}
 
 	render() {
-
-		let sendBid = 'SEND BID';
-		if (this.props.sendingBid) {
-			sendBid = loadingEllipsis('SENDING');
-		}
-
 		let botAvatarStyle = {backgroundImage: 'url(' + this.props.botAvatar + ')'};
 		return (
 			<WalletPopupTemplate title="TRANSFER TO ACCOUNT"
 			                     username={this.props.botName}
 			                     usernameLink={`https://steemit.com/@${this.props.botName}`}
-			                     textButton={sendBid}
+			                     textButton='SEND BID'
 			                     cancel={this.props.closeModal}
 			                     ok={this.sendBid.bind(this)}>
-				<div className="body_send-bid-mod">
-					<div className="bot-logo_send-bid-mod" style={botAvatarStyle}/>
+				<div className="body_send-bid">
+					<div className="bot-logo_send-bid" style={botAvatarStyle}/>
 					<BotTimer isRead={this.props.redTimer} isBlocked={this.props.blockedTimer}
 					          upvoteTime={this.props.upvoteTime} tick={this.tick.bind(this)}/>
 				</div>
-				<ShowIf show={!storage.activeKey}>
-					<div className="position--relative">
-						<p className="label_promote-mod">Private active key</p>
-						<div className="centered--flex">
-							<input type={this.props.showActiveKey ? 'text' : 'password'}
-							       placeholder="e.g. STG52aKIcG9..."
-							       value={this.props.activeKey}
-							       className="input_promote-mod"
-							       ref={ref => this.input = ref}
-							       onChange={this.setActiveKeyValue.bind(this)}/>
-							<div className="eye-switcher_promote-mod"
-							     onClick={() => this.props.setActiveKeyInputSecurity(this.props.showActiveKey)}
-							     style={{
-								     backgroundImage: `url(/images/promoteModal/${this.props.showActiveKey ? 'red_eye.svg'
-									     : 'striked_eye.svg'})`
-							     }}/>
-						</div>
-						<div className="error_promote-mod">{this.props.activeKeyError}</div>
+				<div className="position--relative">
+					<p className="inputs-label">Private active key</p>
+					<div className="centered--flex">
+						<GrayInput type={this.props.showActiveKey ? 'text' : 'password'}
+						       placeholder="e.g. STG52aKIcG9..."
+						       value={this.props.activeKey}
+						       onChange={this.setActiveKeyValue}/>
+						<div className="eye-switcher_promote-mod"
+						     onClick={() => this.props.setActiveKeyInputSecurity(this.props.showActiveKey)}
+						     style={{
+							     backgroundImage: `url(/images/promoteModal/${this.props.showActiveKey ? 'red_eye.svg'
+								     : 'striked_eye.svg'})`
+						     }}/>
 					</div>
-					<div className="promise-about-key_send-bid-mod centered--flex">
-						Your key is securely used to sign the transfer transaction. It is never sent to any server, including
-						Steepshot servers.
-					</div>
-				</ShowIf>
+					<div className="error_promote-mod">{this.props.activeKeyError}</div>
+				</div>
+				<div className="promise-about-key_send-bid centered--flex">
+					Your key is securely used to sign the transfer transaction. It is never sent to any server, including
+					Steepshot servers.
+				</div>
 			</WalletPopupTemplate>
 		);
 	}

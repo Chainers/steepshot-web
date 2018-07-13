@@ -19,12 +19,14 @@ import {loadingEllipsis} from '../../../utils/loadingEllipsis';
 import {pushMessage} from '../../../actions/pushMessage';
 import ChooseToken from "../../Common/ChooseToken/ChooseToken";
 import ShowIf from "../../Common/ShowIf";
+import GrayInput from "../../Common/GrayInput/GrayInput";
 
 class Promote extends React.Component {
 
 	constructor(props) {
 		super(props);
 		this.promoteByEnter = this.promoteByEnter.bind(this);
+		this.setPromoteValue = this.setPromoteValue.bind(this);
 	}
 
 	componentDidMount() {
@@ -32,12 +34,12 @@ class Promote extends React.Component {
 			this.props.getAuthUserInfo();
 		}
 		this.props.addPostIndex(this.props.index);
-		this.input.addEventListener('keypress', this.promoteByEnter);
+		this.container.addEventListener('keypress', this.promoteByEnter);
 	}
 
 	componentWillUnmount() {
 		this.clearPromoteModalInfo();
-		this.input.removeEventListener('keypress', this.promoteByEnter);
+		this.container.removeEventListener('keypress', this.promoteByEnter);
 		this.props.getAuthUserInfoError('');
 	}
 
@@ -86,11 +88,11 @@ class Promote extends React.Component {
 		return false;
 	}
 
-	setPromoteValue() {
+	setPromoteValue(e) {
 		if (this.props.inputError) {
 			this.props.setPromoteInputError('');
 		}
-		let value = this.input.value;
+		let value = e.target.value;
 		let checkedValue = value.replace(/[^\d.]+/g, '');
 		this.props.setPromoteValue(checkedValue);
 	}
@@ -121,10 +123,10 @@ class Promote extends React.Component {
 			findBotButton = null;
 		}
 		return (
-			<div className="wrapper_promote-mod">
+			<div className="wrapper_promote-mod" ref={ref => this.container = ref}>
 				<p className="title_promote-mod">PROMOTE POST</p>
 				{noTokensBlock}
-				<p className="label_promote-mod">Token</p>
+				<p className="inputs-label">Token</p>
 				<ChooseToken selectedToken={this.props.selectedToken}
 				             amount={this.props.tokenNumber}
 				             onChange={this.setSelectedValue.bind(this)}
@@ -139,15 +141,13 @@ class Promote extends React.Component {
 					</ShowIf>
 				</div>
 
-				<p className="label_promote-mod">Promotion amount (minimum {Constants.SERVICES.BOTS.MIN_BID_VALUE})</p>
-				<div className="position--relative">
-					<input ref={ref => this.input = ref}
-					       placeholder="e.g. 100"
-					       className="input_promote-mod"
-					       value={this.props.promoteAmount}
-					       onChange={this.setPromoteValue.bind(this)}/>
-					<div className="error_promote-mod">{this.props.inputError}</div>
-				</div>
+				<p className="inputs-label">Promotion amount (minimum {Constants.SERVICES.BOTS.MIN_BID_VALUE})</p>
+				<GrayInput placeholder="e.g. 100"
+				           className="amount-input_promote"
+				           value={this.props.promoteAmount}
+				           onChange={this.setPromoteValue}
+				           error={this.props.inputError}
+				/>
 				<div className="buttons_promote-mod">
 					<button className="btn btn-cancel" onClick={this.props.closeModal}>{closeText}</button>
 					{findBotButton}

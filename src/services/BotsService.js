@@ -63,8 +63,8 @@ class BotsService {
 									}
 								}
 								if (!muchSuitableBots.length) {
-									if (state.modals['SendBidModal']) {
-										getStore().dispatch(closeModal("SendBidModal"));
+									if (state.modals['SendBid']) {
+										getStore().dispatch(closeModal("SendBid"));
 									}
 									return Promise.reject(Constants.PROMOTE.FIND_BOT_ERROR);
 								}

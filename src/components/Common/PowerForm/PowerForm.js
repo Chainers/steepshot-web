@@ -5,7 +5,7 @@ import './powerForm.css';
 
 const PowerForm = ({amount, amountOnChange, countToken, token, className}) => (
 	<form className={className || ''} autoComplete="off">
-		<div className="label-field_power-form">
+		<div className="inputs-label">
 			Amount
 		</div>
 		<div className="balance-group_power-form">

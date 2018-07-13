@@ -15,6 +15,7 @@ import Switcher from '../Switcher/Switcher';
 import ChooseSteemRegModal from './ChooseSteemRegModal/ChooseSteemRegModal';
 import {openModal} from '../../actions/modal';
 import SteemConnect from '../../services/SteemConnect';
+import GrayInput from "../Common/GrayInput/GrayInput";
 
 const galleryImages = [
 	'/images/login/1.png',
@@ -36,6 +37,7 @@ class Login extends React.Component {
 		this.state = {
 			openVideo: false
 		};
+		this.clearLoginErrors = this.clearLoginErrors.bind(this);
 	}
 
 	static async getInitialProps({location, req, res, store}) {
@@ -116,14 +118,10 @@ class Login extends React.Component {
 								Sign in to Steepshot
 							</div>
 							<div className="input-block_login">
-								<label className="input-label_login">Username</label>
-								<input type="text" className="input_login" ref={ref => this.name = ref}
-								       onChange={() => this.clearLoginErrors()}/>
-								<label className="error-msg_login">{usernameError}</label>
-								<label className="input-label_login">Posting Key</label>
-								<input type="password" className="input_login" ref={ref => this.password = ref}
-								       onChange={() => this.clearLoginErrors()}/>
-								<label className="error-msg_login">{postingKeyError}</label>
+								<GrayInput type="text" label="Username" ref={ref => this.name = ref}
+								       onChange={this.clearLoginErrors} error={usernameError} name="login"/>
+								<GrayInput type="password" label="Posting Key" ref={ref => this.password = ref}
+								       onChange={this.clearLoginErrors} error={postingKeyError} name="password"/>
 							</div>
 							<div className="btn-block_login">
 								<Switcher

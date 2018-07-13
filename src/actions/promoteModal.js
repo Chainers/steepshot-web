@@ -2,13 +2,14 @@ import * as React from 'react';
 import {getStore} from '../store/configureStore';
 import UserService from '../services/UserService';
 import {closeModal, openModal} from './modal';
-import SendBidModal from '../components/Modals/SendBid/SendBid';
+import SendBid from '../components/Modals/SendBid/SendBid';
 import Constants from '../common/constants';
 import {actionLock, actionUnlock} from './session';
 import {pushErrorMessage, pushMessage} from './pushMessage';
 import BotsService from '../services/BotsService';
 import storage from '../utils/Storage';
 import WalletService from "../services/WalletService";
+import {hideBodyLoader, showBodyLoader} from "./bodyLoader";
 
 function setAuthUserInfoLoading(param) {
 	return {
@@ -20,13 +21,6 @@ function setAuthUserInfoLoading(param) {
 function sendBotRequest(state) {
 	return {
 		type: 'SET_BOT_REQUEST',
-		state
-	}
-}
-
-function setBidRequest(state) {
-	return {
-		type: 'SET_BID_REQUEST',
 		state
 	}
 }
@@ -169,9 +163,9 @@ export function searchingBotRequest() {
 		BotsService.getBotsList()
 			.then(() => {
 				let modalOption = {
-					body: (<SendBidModal/>)
+					body: (<SendBid/>)
 				};
-				dispatch(openModal("SendBidModal", modalOption));
+				dispatch(openModal("SendBid", modalOption));
 				dispatch(sendBotRequest(false));
 			})
 			.catch((error) => {
@@ -195,7 +189,7 @@ export function searchingNewBot() {
 				dispatch(pushErrorMessage(Constants.PROMOTE.FIND_BOT_ERROR));
 				dispatch(setRedTimer(false));
 				dispatch(setBlockedTimer(false));
-				dispatch(closeModal("SendBidModal"));
+				dispatch(closeModal("SendBid"));
 			});
 	}
 }
@@ -208,12 +202,12 @@ export function sendBid(steemLink, activeKey, botName) {
 		}
 		let promoteModal = state.promoteModal;
 		dispatch(actionLock());
-		dispatch(setBidRequest(true));
+		dispatch(showBodyLoader());
 		WalletService.transfer(activeKey, promoteModal.promoteAmount, promoteModal.selectedToken, botName, steemLink)
 			.then(() => {
 				dispatch(actionUnlock());
 				dispatch(pushMessage(Constants.PROMOTE.BID_TO_BOT_SUCCESS));
-				dispatch(setBidRequest(false));
+				dispatch(hideBodyLoader());
 				if (!storage.activeKey) {
 					storage.activeKey = promoteModal.activeKey;
 				}
@@ -231,11 +225,11 @@ export function sendBid(steemLink, activeKey, botName) {
 					}
 				}
 				dispatch(getAuthUserInfoSuccess(newValue));
-				dispatch(closeModal("SendBidModal"));
+				dispatch(closeModal("SendBid"));
 			})
 			.catch(error => {
 				dispatch(actionUnlock());
-				dispatch(setBidRequest(false));
+				dispatch(hideBodyLoader());
 				if (!error.data && (error.actual === 128 || error.message === Constants.NON_BASE58_CHARACTER)) {
 					dispatch(setActiveKeyError(Constants.PROMOTE.INVALID_ACTIVE_KEY));
 					return dispatch(pushErrorMessage(Constants.PROMOTE.INVALID_ACTIVE_KEY));
