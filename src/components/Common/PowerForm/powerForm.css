@@ -1,14 +1,10 @@
-.label-field_power-form {
-    font: 12px OpenSans-Light;
-    color: #979b9e;
-}
-
 .balance-group_power-form {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     flex-wrap: wrap;
     width: calc(100% + 10px);
-    margin: -5px -5px 10px;
+    margin: -5px;
 }
 
 .balance-group_power-form > div, .balance-group_power-form > input {

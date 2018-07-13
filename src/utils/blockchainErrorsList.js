@@ -78,7 +78,7 @@ export function blockchainErrorsList(error) {
 			{
 				error: '10 assert_exception: Assert Exception: _db.get_balance( o.from, o.amount.symbol ) >= o.amount: Account' +
 				' does not have sufficient funds for transfer.',
-				notificationText: ' Insufficient funds!'
+				notificationText: 'Insufficient funds!'
 			}
 		];
 		for (let i = 0; i < errorsList.length; i++) {

@@ -1,9 +1,9 @@
 import {getStore} from '../store/configureStore';
 import {pushMessage} from './pushMessage';
-import UserService from '../services/userService';
-import AuthService from "../services/authService";
+import UserService from '../services/UserService';
+import AuthService from "../services/AuthService";
 
-function getUserProfileSuccess(result) {
+export function getUserProfileSuccess(result) {
 	return {
 		type: 'GET_USER_PROFILE_SUCCESS',
 		profile: result

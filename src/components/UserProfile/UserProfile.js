@@ -15,7 +15,7 @@ import LoadingSpinner from "../LoadingSpinner";
 import './userProfile.css';
 import {setActiveIndex} from "../../actions/tabsBar";
 import Follow from "../Follow/Follow";
-import AuthService from "../../services/authService";
+import AuthService from "../../services/AuthService";
 import renderHTML from 'react-render-html';
 import MarkdownParser from "../../utils/markdownParser";
 

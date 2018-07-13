@@ -7,6 +7,13 @@
 
 }
 
+.label_choose-token {
+    height: 17px;
+    margin: 0 0 3px;
+    font: 12px OpenSans-Regular;
+    color: #979b9e;
+}
+
 .container_choose-token > div {
     flex-basis: 210px;
     min-width: 200px;

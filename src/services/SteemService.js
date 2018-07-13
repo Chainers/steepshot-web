@@ -1,8 +1,8 @@
 import steem from 'steem';
 import Constants from "../common/constants";
-import PostService from "./postService";
-import AuthService from "./authService";
-import SteemNodeService from "./steemNodeService";
+import PostService from "./PostService";
+import AuthService from "./AuthService";
+import SteemNodeService from "./SteemNodeService";
 
 let dynamicProps = [];
 steem.api.getDynamicGlobalProperties((err, result) => {
@@ -128,6 +128,13 @@ class SteemService {
 		}
 		return processResponse(callback => {
 			steem.api.getAccountHistory(username, from, limit, callback);
+		})
+	}
+
+	powerUp(activeKey, amount) {
+		const username = AuthService.getUsername();
+		return processResponse(callback => {
+			steem.broadcast.transferToVesting(activeKey, username, username, amount, callback);
 		})
 	}
 

@@ -105,31 +105,6 @@
     padding-top: 40px;
 }
 
-.input-block_login > input:-webkit-autofill {
-    -webkit-box-shadow: inset 0 0 0 50px #fafafa !important;
-}
-
-.input-label_login {
-    font-size: 12px;
-    color: #979b9e;
-}
-
-.input_login {
-    height: 40px;
-    border-radius: 6px;
-    background-color: #fafafa;
-    border: solid 1px #f4f4f6;
-    padding-left: 10px;
-}
-
-.error-msg_login {
-    text-align: right;
-    color: #d0021b;
-    margin: 0;
-    font-size: 12px;
-    height: 20px;
-}
-
 .btn-block_login {
     height: 80px;
     display: flex;

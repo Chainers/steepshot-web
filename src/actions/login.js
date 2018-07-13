@@ -1,10 +1,10 @@
 import {push} from "react-router-redux";
 import {hideBodyLoader, showBodyLoader} from "./bodyLoader";
-import LoggingService from "../services/loggingService";
-import ChainService from "../services/chainService";
+import LoggingService from "../services/LoggingService";
+import ChainService from "../services/ChainService";
 import {getAvatar, initOneSignalService, showMessage} from "./auth";
 import {pushErrorMessage} from "./pushMessage";
-import StorageService from "../services/storageService";
+import StorageService from "../services/StorageService";
 import {setService} from "./services";
 
 export function setUsernameErrorMessage(message = '') {

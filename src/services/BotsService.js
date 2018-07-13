@@ -1,4 +1,4 @@
-import RequestService from './requestService';
+import RequestService from './RequestService';
 import Constants from '../common/constants';
 import {getStore} from '../store/configureStore';
 import {addBot} from '../actions/promoteModal';
@@ -29,6 +29,7 @@ class BotsService {
 						const state = getStore().getState();
 						const promoteModalInfo = state.promoteModal;
 						const permlink = promoteModalInfo.postIndex.replace(/\/[a-z\d-]+\/(.+)/, '$1');
+						const selectedToken = state.services.tokensNames[state.wallet.selectedToken];
 						const usersOptions = {
 							limit: state.posts[promoteModalInfo.postIndex].net_votes,
 							username: state.auth.user,
@@ -36,16 +37,16 @@ class BotsService {
 						};
 						return RequestService.get(`post/${permlink}/voters`, usersOptions)
 							.then(usersResult => {
-								let promoteAmount = +promoteModalInfo.promoteAmount;
+								let promoteAmount = +state.wallet.amount;
 								let muchSuitableBots = [];
 								for (let i = 0; i < suitableBots.length; i++) {
 									if (suitableBots[i]['min_bid'] <= promoteAmount) {
 										if (
 											suitableBots[i].next <= 100 * Constants.MILLISECONDS_IN_SECOND ||
-											(!suitableBots[i]['accepts_steem'] && promoteModalInfo.selectedToken === 'STEEM') ||
+											(!suitableBots[i]['accepts_steem'] && selectedToken === 'STEEM') ||
 											state.posts[promoteModalInfo.postIndex].postAge >= suitableBots[i]['max_post_age'] ||
 											suitableBots[i]['is_disabled'] ||
-											!BotsService.checkAmount(promoteAmount, steemToUSD, sbdToUSD, promoteModalInfo.selectedToken,
+											!BotsService.checkAmount(promoteAmount, steemToUSD, sbdToUSD, selectedToken,
 												suitableBots[i]) ||
 											BotsService.checkUpvotedUsers(suitableBots[i].name, usersResult.results)
 										) {
@@ -63,8 +64,8 @@ class BotsService {
 									}
 								}
 								if (!muchSuitableBots.length) {
-									if (state.modals['SendBidModal']) {
-										getStore().dispatch(closeModal("SendBidModal"));
+									if (state.modals['SendBid']) {
+										getStore().dispatch(closeModal("SendBid"));
 									}
 									return Promise.reject(Constants.PROMOTE.FIND_BOT_ERROR);
 								}

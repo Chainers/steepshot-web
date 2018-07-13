@@ -1,8 +1,8 @@
-import RequestService from "./requestService";
+import RequestService from "./RequestService";
 import Constants from "../common/constants";
-import AuthService from "./authService";
-import LoggingService from "./loggingService";
-import ChainService from "./chainService";
+import AuthService from "./AuthService";
+import LoggingService from "./LoggingService";
+import ChainService from "./ChainService";
 
 class UserService {
 

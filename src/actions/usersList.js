@@ -1,5 +1,5 @@
 import {getStore} from '../store/configureStore';
-import UserService from '../services/userService';
+import UserService from '../services/UserService';
 import {serverErrorsList} from '../utils/serverErrorsList';
 import Constants from '../common/constants';
 

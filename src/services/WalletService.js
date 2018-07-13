@@ -1,7 +1,7 @@
-import ChainService from "./chainService";
+import ChainService from "./ChainService";
 import Utils from "../utils/Utils";
 
-class TransferService {
+class WalletService {
 
 	static transfer(activeKey, amount, token, to, memo) {
 		if (Utils.isEmptyString(activeKey)) {
@@ -33,6 +33,12 @@ class TransferService {
 		return ChainService.sendTransferTroughBlockchain(transferInfo);
 	}
 
+	static powerUp(activeKey, amount, balance) {
+		if (balance <= amount) {
+			return Promise.reject(new Error('Insufficient funds'))
+		}
+	}
+
 }
 
-export default TransferService;
+export default WalletService;

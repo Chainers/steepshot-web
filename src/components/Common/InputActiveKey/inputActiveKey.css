@@ -1,11 +1,3 @@
-.label_input-active-key {
-    width: 100%;
-    height: 25px;
-    font: 12px OpenSans-Light;
-    color: #979b9e;
-    padding-top: 5px;
-}
-
 .checkbox-field_input-active-key {
     display: flex;
     justify-content: flex-start;
@@ -40,7 +32,6 @@
     background-color: #fafafa;
     font: 14px OpenSans-Light;
     color: #979b9e;
-    margin-bottom: 10px;
 }
 
 .container_input-active-key input::placeholder  {

@@ -1,7 +1,7 @@
 import Constants from "../common/constants";
-import RequestService from "./requestService";
-import ChainService from "./chainService";
-import AuthService from "./authService";
+import RequestService from "./RequestService";
+import ChainService from "./ChainService";
+import AuthService from "./AuthService";
 
 let OneSignal = window.OneSignal;
 

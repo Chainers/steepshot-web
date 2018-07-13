@@ -1,0 +1,41 @@
+.container_gray-input {
+    width: 100%;
+    position: relative;
+}
+
+.container_gray-input p {
+    height: 17px;
+    margin: 0 0 3px;
+    font: 12px OpenSans-Regular;
+    color: #979b9e;
+}
+
+.container_gray-input input {
+    width: 100%;
+    height: 40px;
+    border: solid 1px #f4f4f6;
+    border-radius: 6px;
+    padding-left: 10px;
+    background-color: #fafafa;
+    font: 14px OpenSans-Light;
+    color: #979b9e;
+}
+
+.container_gray-input input:-webkit-autofill {
+    -webkit-box-shadow: inset 0 0 0 50px #fafafa !important;
+}
+
+.container_gray-input input::placeholder {
+    font: 14px OpenSans-Regular;
+    color: #979b9e;
+}
+
+.container_gray-input label {
+    display: block;
+    height: 20px;
+    text-align: right;
+    color: #d0021b;
+    margin: 0;
+    font-size: 12px;
+    width: 100%
+}

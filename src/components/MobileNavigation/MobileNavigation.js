@@ -6,7 +6,7 @@ import {logout} from '../../actions/auth';
 import './mobileNavigation.css';
 import {closeMobileNavigation} from '../../actions/mobileNavigation';
 import {Scrollbars} from 'react-custom-scrollbars';
-import AuthService from '../../services/authService';
+import AuthService from '../../services/AuthService';
 
 class MobileNavigation extends React.Component {
 

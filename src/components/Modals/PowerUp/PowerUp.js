@@ -3,15 +3,15 @@ import {connect} from "react-redux";
 import './powerUp.css';
 import WalletPopupTemplate from "../WalletPopupTemplate/WalletPopupTemplate";
 import {closeModal} from "../../../actions/modal";
-import {changeAmount, powerUp} from "../../../actions/power";
 import PowerForm from "../../Common/PowerForm/PowerForm";
+import {changeAmount, powerUp} from "../../../actions/wallet";
 
 class PowerUp extends React.Component {
 
 	render() {
 		const {username, balance, amount} = this.props;
 		return (
-			<WalletPopupTemplate title="Convert to STEEM POWER"
+			<WalletPopupTemplate title="CONVERT TO STEEM POWER"
 			                     username={username}
 			                     textButton="POWER UP"
 			                     cancel={this.props.closePowerUpModal}
