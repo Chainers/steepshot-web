@@ -10,18 +10,22 @@ import {openModal} from "../../actions/modal";
 import Transfer from "../Modals/Transfer/Transfer";
 import {setToken} from "../../actions/transfer";
 import Constants from "../../common/constants";
-import {getStore} from "../../store/configureStore";
 import ShowIf from "../Common/ShowIf";
+import PowerUp from "../Modals/PowerUp/PowerUp";
+import PowerDown from "../Modals/PowerDown/PowerDown";
 
 const DESCRIPTION = {
 	STEEM: `Tradeable tokens that may be transferred anywhere at anytime.
 Steem can be converted to STEEM POWER in a process called powering up.`,
-	SP: "Influence tokens which give you more control over post payouts and allow you to earn on curation rewards.",
-	SBD: "Tradeable tokens that may be transferred anywhere at anytime.",
-	GOLOS: `Перемещаемые цифровые токены, которые могут переданы куда угодно в любой момент.
-Голос может быть конвертирован в Силу Голоса, этот процесс называется "увеличение Силы Голоса".`,
-	SG: `Сила Голоса неперемещаемая, её количество увеличивается при долгосрочном хранении.
-Чем больше у Вас Силы Голоса, тем сильней вы влияете на вознаграждения за пост и тем больше зарабатываете за голосование.`,
+	SP: `Influence tokens which give you more control over post payouts 
+	and allow you to earn on curation rewards.`,
+	SBD: `Tradeable tokens that may be transferred anywhere at anytime.`,
+	GOLOS: `Перемещаемые цифровые токены, которые могут переданы куда угодно 
+	в любой момент. Голос может быть конвертирован в Силу Голоса, этот процесс 
+	называется "увеличение Силы Голоса".`,
+	SG: `Сила Голоса неперемещаемая, её количество увеличивается при долгосрочном 
+	хранении. Чем больше у Вас Силы Голоса, тем сильней вы влияете на вознаграждения 
+	за пост и тем больше зарабатываете за голосование.`,
 	GBG: `Перемещаемые цифровые токены, цена которых равна ~1 мг золота в GOLOS.`
 };
 
@@ -47,6 +51,20 @@ class Wallet extends React.Component {
 	transferSbd() {
 		this.props.setToken('SBD');
 		this.transfer()
+	}
+
+	powerUp() {
+		let modalOption = {
+			body: (<PowerUp/>)
+		};
+		this.props.openModal("powerUp", modalOption);
+	}
+
+	powerDown() {
+		let modalOption = {
+			body: (<PowerDown/>)
+		};
+		this.props.openModal("powerDown", modalOption);
 	}
 
 	render() {
@@ -79,8 +97,12 @@ class Wallet extends React.Component {
 							actions={
 								[{
 									label: 'Transfer',
-									icon: '',
+									icon: '/images/wallet/buttons/transfer.png',
 									onClick: this.transferSteem.bind(this)
+								},{
+									label: 'Power up',
+									icon: '/images/wallet/buttons/powerUp.png',
+									onClick: this.powerUp.bind(this)
 								}]
 							}
 						/>
@@ -93,20 +115,14 @@ class Wallet extends React.Component {
 							point="sp"
 							coin={isGolosService ? "GOLOS" : "STEEM"}
 							value={sp}
-							description={isGolosService ? DESCRIPTION.SG : DESCRIPTION.STEEM}
-							/*actions={
+							description={isGolosService ? DESCRIPTION.SG : DESCRIPTION.SP}
+							actions={
 								[{
-									label: 'Power up',
-									icon: '/images/wallet/buttons/powerUp.png',
-									onClick: () => {
-									}
-								}, {
 									label: 'Power down',
 									icon: '/images/wallet/buttons/powerDown.png',
-									onClick: () => {
-									}
+									onClick: this.powerDown.bind(this)
 								}]
-							}*/
+							}
 						/>
 						<WidgetToken
 							background={{
@@ -143,7 +159,7 @@ const mapStateToProps = state => {
 	}
 	const {balance, sbd_balance, total_steem_power_steem, estimated_balance} = state.userProfile.profile;
 	const golosName = Constants.SERVICES.golos.name;
-	const isGolosService = getStore().getState().services.name === golosName;
+	const isGolosService = state.services.name === golosName;
 	return {
 		cost: estimated_balance,
 		steem: balance,

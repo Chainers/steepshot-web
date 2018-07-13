@@ -77,10 +77,12 @@
 }
 
 .description_widget-token {
-    flex-grow: 1;
     font: 13px OpenSans-Light;
-    line-height: normal;
-    padding: 16px 0;
+    flex-grow: 1;
+    line-height: 18px;
+    margin: 16px 0;
+    max-height: 38px;
+    overflow: hidden;
 }
 
 .button_widget-token {
@@ -91,6 +93,10 @@
     font-size: 12px;
     font-weight: bold;
     letter-spacing: 1px;
+}
+
+.fake-button_widget-token {
+    height: 40px;
 }
 
 .button_widget-token:hover {

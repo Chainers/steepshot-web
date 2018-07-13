@@ -38,6 +38,8 @@ import emptyRequestError from './emptyRequestError';
 import transactionHistory from "./transactionHistory";
 import contextMenu from "./contextMenu";
 import transfer from "./transfer";
+import activeKey from "./activeKey";
+import power from "./power";
 
 export default combineReducers({
 	clipboard,
@@ -78,5 +80,7 @@ export default combineReducers({
 	emptyRequestError,
 	transactionHistory,
 	contextMenu,
-	transfer
+	transfer,
+	activeKey,
+	power
 });

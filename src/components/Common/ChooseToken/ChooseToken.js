@@ -1,5 +1,6 @@
 import React from 'react';
 import './chooseToken.css';
+import BalanceInfo from "../BalanceInfo/BalanceInfo";
 
 const ChooseToken = ({selectedToken, amount, onChange, balanceOnClick, disabled = false, isGolosService = false}) => (
 	<div className="container_choose-token">
@@ -12,13 +13,8 @@ const ChooseToken = ({selectedToken, amount, onChange, balanceOnClick, disabled 
 				<option value="SBD">{isGolosService ? 'GBG' : 'SBD'}</option>
 			</select>
 		</div>
-		<div className="balance_choose-token">
-			<span>Balance</span>
-			<span className={'balance-value_choose-token ' +(!!balanceOnClick ? 'pointer_choose-token' : '')}
-			      onClick={balanceOnClick}>
-				{amount} {isGolosService ? (selectedToken === 'STEEM' ? 'GOLOS' : 'GBG') : selectedToken}
-				</span>
-		</div>
+		<BalanceInfo token={isGolosService ? (selectedToken === 'STEEM' ? 'GOLOS' : 'GBG') : selectedToken}
+		             amount={amount} onClick={balanceOnClick}/>
 	</div>
 );
 
