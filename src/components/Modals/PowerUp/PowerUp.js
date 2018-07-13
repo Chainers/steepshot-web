@@ -11,7 +11,7 @@ class PowerUp extends React.Component {
 	render() {
 		const {username, balance, amount} = this.props;
 		return (
-			<WalletPopupTemplate title="Convert to STEEM POWER"
+			<WalletPopupTemplate title="CONVERT TO STEEM POWER"
 			                     username={username}
 			                     textButton="POWER UP"
 			                     cancel={this.props.closePowerUpModal}

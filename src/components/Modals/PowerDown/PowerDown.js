@@ -26,7 +26,7 @@ class PowerDown extends React.Component {
 					You are already powering down 69.692 STEEM (16.083 STEEM paid out so far). Note that if you change the power
 					down amount the payout schedule will reset.
 				</div>
-				<div className="description_power-down">
+				<div className="description_power-down margin-bottom-25">
 					Leaving less than 5 STEEM POWER in your account is not recommended and can leave your account in a unusable
 					state.
 				</div>
