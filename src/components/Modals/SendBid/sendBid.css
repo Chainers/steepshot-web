@@ -44,7 +44,7 @@
     height: 30px;
     background: center no-repeat;
     cursor: pointer;
-    margin: 0 0 30px 10px;
+    margin-left: 10px;
 }
 
 @media (max-width: 510px) {

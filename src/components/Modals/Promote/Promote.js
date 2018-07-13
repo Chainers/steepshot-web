@@ -20,6 +20,7 @@ import {pushMessage} from '../../../actions/pushMessage';
 import ChooseToken from "../../Common/ChooseToken/ChooseToken";
 import ShowIf from "../../Common/ShowIf";
 import GrayInput from "../../Common/GrayInput/GrayInput";
+import WalletPopupTemplate from "../WalletPopupTemplate/WalletPopupTemplate";
 
 class Promote extends React.Component {
 
@@ -27,6 +28,8 @@ class Promote extends React.Component {
 		super(props);
 		this.promoteByEnter = this.promoteByEnter.bind(this);
 		this.setPromoteValue = this.setPromoteValue.bind(this);
+		this.promotePost = this.promotePost.bind(this);
+		this.setSelectedValue = this.setSelectedValue.bind(this);
 	}
 
 	componentDidMount() {
@@ -52,6 +55,7 @@ class Promote extends React.Component {
 
 	promoteByEnter(e) {
 		if (e.keyCode === 13) {
+			e.stopPropagation();
 			this.promotePost();
 		}
 	}
@@ -108,50 +112,47 @@ class Promote extends React.Component {
 	}
 
 	render() {
-		let closeText = 'CANCEL', noTokensBlock = null;
 
 		let findText = 'FIND PROMOTER';
 		if (this.props.searchingBot) {
 			findText = loadingEllipsis('LOOKING');
 		}
-		let findBotButton = <button className="btn btn-default" onClick={this.promotePost.bind(this)}>{findText}</button>;
-		if (this.props.noTokensForPromote) {
-			closeText = 'OK';
-			noTokensBlock = <div className="no-tokens_promote-mod centered--flex">
-				There's not enough tokens for promote in your wallet.
-			</div>;
-			findBotButton = null;
-		}
+
 		return (
-			<div className="wrapper_promote-mod" ref={ref => this.container = ref}>
-				<p className="title_promote-mod">PROMOTE POST</p>
-				{noTokensBlock}
-				<ChooseToken selectedToken={this.props.selectedToken}
-				             amount={this.props.tokenNumber}
-				             onChange={this.setSelectedValue.bind(this)}
-				             disabled={this.props.infoLoading}/>
-				<div className="error_promote-mod">
-					{this.props.selectError}
-				</div>
-
-				<div className="loading_promote-mod">
-					<ShowIf show={this.props.infoLoading}>
-						{loadingEllipsis('Loading data')}
+			<WalletPopupTemplate title="PROMOTE POST"
+			                     textButton={this.props.noTokensForPromote ? undefined : findText}
+			                     cancel={this.props.closeModal}
+			                     ok={this.promotePost}>
+				<div className="body_promote" ref={ref => this.container = ref}>
+					<ShowIf show={this.props.noTokensForPromote}>
+						<div className="no-tokens_promote centered--flex">
+							There's not enough tokens for promote in your wallet.
+						</div>
 					</ShowIf>
-				</div>
+					<ChooseToken selectedToken={this.props.selectedToken}
+					             amount={this.props.tokenNumber}
+					             onChange={this.setSelectedValue}
+					             disabled={this.props.infoLoading}
+					/>
+					<div className="error_promote">
+						{this.props.selectError}
+					</div>
 
-				<GrayInput placeholder="e.g. 100"
-				           className="amount-input_promote"
-				           value={this.props.promoteAmount}
-				           onChange={this.setPromoteValue}
-				           error={this.props.inputError}
-				           label={`Promotion amount (minimum ${Constants.SERVICES.BOTS.MIN_BID_VALUE})`}
-				/>
-				<div className="buttons_promote-mod">
-					<button className="btn btn-cancel" onClick={this.props.closeModal}>{closeText}</button>
-					{findBotButton}
+					<div className="loading_promote">
+						<ShowIf show={this.props.infoLoading}>
+							{loadingEllipsis('Loading data')}
+						</ShowIf>
+					</div>
+
+					<GrayInput placeholder="e.g. 100"
+					           className="amount-input_promote"
+					           value={this.props.promoteAmount}
+					           onChange={this.setPromoteValue}
+					           error={this.props.inputError}
+					           label={`Promotion amount (minimum ${Constants.SERVICES.BOTS.MIN_BID_VALUE})`}
+					/>
 				</div>
-			</div>
+			</WalletPopupTemplate>
 		);
 	}
 }

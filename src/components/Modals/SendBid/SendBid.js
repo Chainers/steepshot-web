@@ -81,25 +81,26 @@ class SendBid extends React.Component {
 			                     textButton='SEND BID'
 			                     cancel={this.props.closeModal}
 			                     ok={this.sendBid}>
+
 				<div className="body_send-bid">
 					<div className="bot-logo_send-bid" style={botAvatarStyle}/>
 					<BotTimer isRead={this.props.redTimer} isBlocked={this.props.blockedTimer}
 					          upvoteTime={this.props.upvoteTime} tick={this.tick}/>
 				</div>
 
-					<div className="centered--flex">
-						<GrayInput type={this.props.showActiveKey ? 'text' : 'password'}
-						       placeholder="e.g. STG52aKIcG9..."
-						       value={this.props.activeKey}
-						       onChange={this.setActiveKeyValue} label="Private active key"/>
-						<div className="eye-switcher_promote-mod"
-						     onClick={() => this.props.setActiveKeyInputSecurity(this.props.showActiveKey)}
-						     style={{
-							     backgroundImage: `url(/images/promoteModal/${this.props.showActiveKey ? 'red_eye.svg'
-								     : 'striked_eye.svg'})`
-						     }}/>
-					</div>
-					<div className="error_promote-mod">{this.props.activeKeyError}</div>
+				<div className="centered--flex">
+					<GrayInput type={this.props.showActiveKey ? 'text' : 'password'}
+					           placeholder="e.g. STG52aKIcG9..."
+					           value={this.props.activeKey}
+					           onChange={this.setActiveKeyValue} label="Private active key"/>
+					<div className="eye-switcher_promote-mod"
+					     onClick={() => this.props.setActiveKeyInputSecurity(this.props.showActiveKey)}
+					     style={{
+						     backgroundImage: `url(/images/promoteModal/${this.props.showActiveKey ? 'red_eye.svg'
+							     : 'striked_eye.svg'})`
+					     }}/>
+				</div>
+				<div className="error_promote">{this.props.activeKeyError}</div>
 
 				<div className="promise-about-key_send-bid centered--flex">
 					Your key is securely used to sign the transfer transaction. It is never sent to any server, including
