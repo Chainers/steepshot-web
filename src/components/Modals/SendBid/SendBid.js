@@ -84,13 +84,12 @@ class SendBid extends React.Component {
 					<BotTimer isRead={this.props.redTimer} isBlocked={this.props.blockedTimer}
 					          upvoteTime={this.props.upvoteTime} tick={this.tick.bind(this)}/>
 				</div>
-				<div className="position--relative">
-					<p className="inputs-label">Private active key</p>
+
 					<div className="centered--flex">
 						<GrayInput type={this.props.showActiveKey ? 'text' : 'password'}
 						       placeholder="e.g. STG52aKIcG9..."
 						       value={this.props.activeKey}
-						       onChange={this.setActiveKeyValue}/>
+						       onChange={this.setActiveKeyValue} label="Private active key"/>
 						<div className="eye-switcher_promote-mod"
 						     onClick={() => this.props.setActiveKeyInputSecurity(this.props.showActiveKey)}
 						     style={{
@@ -99,7 +98,7 @@ class SendBid extends React.Component {
 						     }}/>
 					</div>
 					<div className="error_promote-mod">{this.props.activeKeyError}</div>
-				</div>
+
 				<div className="promise-about-key_send-bid centered--flex">
 					Your key is securely used to sign the transfer transaction. It is never sent to any server, including
 					Steepshot servers.

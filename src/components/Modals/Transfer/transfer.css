@@ -1,5 +1,5 @@
 .body_transfer > div {
-    margin-top: 15px;
+    margin-top: 25px;
 }
 
 .label_transfer {
@@ -11,6 +11,10 @@
 .form-line_transfer {
     width: 100%;
     overflow: hidden;
+}
+
+.form-line_transfer.fixed-margin_transfer {
+    margin-bottom: -20px;
 }
 
 .field_transfer {
@@ -66,4 +70,15 @@
     font: 12px OpenSans-Light;
     color: #d0021b;
     cursor: pointer;
+}
+
+.inputs-label {
+    height: 17px;
+    margin: 0 0 3px;
+    font: 12px OpenSans-Regular;
+    color: #979b9e;
+}
+
+.active-key_transfer {
+    margin-bottom: 30px;
 }

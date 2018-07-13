@@ -126,7 +126,6 @@ class Promote extends React.Component {
 			<div className="wrapper_promote-mod" ref={ref => this.container = ref}>
 				<p className="title_promote-mod">PROMOTE POST</p>
 				{noTokensBlock}
-				<p className="inputs-label">Token</p>
 				<ChooseToken selectedToken={this.props.selectedToken}
 				             amount={this.props.tokenNumber}
 				             onChange={this.setSelectedValue.bind(this)}
@@ -141,12 +140,12 @@ class Promote extends React.Component {
 					</ShowIf>
 				</div>
 
-				<p className="inputs-label">Promotion amount (minimum {Constants.SERVICES.BOTS.MIN_BID_VALUE})</p>
 				<GrayInput placeholder="e.g. 100"
 				           className="amount-input_promote"
 				           value={this.props.promoteAmount}
 				           onChange={this.setPromoteValue}
 				           error={this.props.inputError}
+				           label={`Promotion amount (minimum ${Constants.SERVICES.BOTS.MIN_BID_VALUE})`}
 				/>
 				<div className="buttons_promote-mod">
 					<button className="btn btn-cancel" onClick={this.props.closeModal}>{closeText}</button>

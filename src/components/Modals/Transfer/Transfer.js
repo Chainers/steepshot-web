@@ -83,9 +83,6 @@ class Transfer extends React.Component {
 					</div>
 
 					<div className="form-line_transfer">
-						<p className="inputs-label">
-							Token
-						</p>
 						<ChooseToken selectedToken={selectedToken}
 						             amount={balance}
 						             onChange={this.changeToken}
@@ -94,7 +91,7 @@ class Transfer extends React.Component {
 						/>
 					</div>
 
-					<GrayInput label="Amount" className="form-line_transfer" onChange={this.changeAmount}
+					<GrayInput label="Amount" className="form-line_transfer fixed-margin_transfer" onChange={this.changeAmount}
 					           placeholder="0.001" value={amount} ref={this.setAmountRef}
 					           onFocus={this.amountFocused}/>
 
@@ -113,7 +110,7 @@ class Transfer extends React.Component {
 						</p>
 						<textarea onChange={this.changeMemo} placeholder="This memo is public" value={memo}/>
 					</ShowIf>
-					<InputActiveKey/>
+					<InputActiveKey className="active-key_transfer"/>
 				</form>
 			</WalletPopupTemplate>
 		);
