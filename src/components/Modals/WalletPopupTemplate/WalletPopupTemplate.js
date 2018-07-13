@@ -1,14 +1,22 @@
 import React from 'react';
 import './walletPopupTemplate.css';
+import ShowIf from "../../Common/ShowIf";
 
-const WalletPopupTemplate = ({title, username, textButton, cancel, ok, children}) => (
+const WalletPopupTemplate = ({title, username, usernameLink, textButton, cancel, ok, children}) => (
 	<div className="container_wal-pop-tem">
 		<div className="header_wal-pop-tem">
 			<div className="title_wal-pop-tem">
 				{title}
 			</div>
 			<div className="username_wal-pop-tem">
-				@{username}
+				<ShowIf show={usernameLink}>
+					<a href={usernameLink} target="_blank">
+						@{username.toUpperCase()}
+					</a>
+				</ShowIf>
+				<ShowIf show={!usernameLink}>
+					@{username}
+				</ShowIf>
 			</div>
 		</div>
 		<div className="body_wal-pop-tem">

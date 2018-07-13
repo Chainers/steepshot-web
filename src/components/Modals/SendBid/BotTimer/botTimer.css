@@ -1,0 +1,16 @@
+.container_bot-timer {
+    width: 320px;
+    max-width: 100%;
+    height: 40px;
+    padding: 0 10px;
+    border-radius: 6px;
+    background-color: #fafafa;
+}
+
+.checking_bot-timer {
+    color: #979b9e;
+}
+
+.red_bot-timer {
+    color: #e74800;
+}

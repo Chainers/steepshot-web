@@ -41,14 +41,6 @@
     border-radius: 50%;
 }
 
-.timer-wrapper_send-bid-mod {
-    width: 320px;
-    height: 40px;
-    padding: 0 10px;
-    border-radius: 6px;
-    background-color: #fafafa;
-}
-
 .promise-about-key_send-bid-mod {
     padding: 5px 10px;
     border-radius: 6px;
@@ -58,23 +50,6 @@
     margin-bottom: 20px;
     max-width: 440px;
     text-align: center;
-}
-
-.red-timer_send-bid-mod {
-    color: #e74800;
-}
-
-.blocked-timer_send-bid-mod {
-    opacity: .25;
-    cursor: default;
-    pointer-events: none;
-}
-
-.load-instead-timer_send-bid-mod {
-    display: flex;
-    justify-content: center;
-    width: 100%;
-    color: #979b9e;
 }
 
 .eye-switcher_promote-mod {
@@ -91,9 +66,6 @@
     }
     .bot-logo_send-bid-mod {
         margin: 0 0 25px 0;
-    }
-    .timer-wrapper_send-bid-mod {
-        width: 100%;
     }
     .title_send-bid-mod {
         font: 12px OpenSans-Semibold;
