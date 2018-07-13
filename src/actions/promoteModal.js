@@ -11,6 +11,7 @@ import storage from '../utils/Storage';
 import WalletService from "../services/WalletService";
 import {hideBodyLoader, showBodyLoader} from "./bodyLoader";
 import {getUserProfileSuccess} from "./userProfile";
+import {changeAmount} from "./wallet";
 
 function setAuthUserInfoLoading(param) {
 	return {
@@ -91,6 +92,7 @@ export function getAuthUserInfo() {
 	let state = getStore().getState();
 	return dispatch => {
 		dispatch(setAuthUserInfoLoading(true));
+		dispatch(changeAmount(0.5));
 		UserService.getProfile(state.auth.user, state.settings.show_nsfw, state.settings.show_low_rated)
 			.then(result => {
 				dispatch(getUserProfileSuccess(result));

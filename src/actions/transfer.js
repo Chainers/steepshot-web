@@ -6,7 +6,6 @@ import {pushErrorMessage, pushMessage} from "./pushMessage";
 import {closeModal} from "./modal";
 import {hideBodyLoader, showBodyLoader} from "./bodyLoader";
 import storage from "../utils/Storage";
-import ChainService from "../services/ChainService";
 
 export function showMemo() {
 	return {
@@ -45,14 +44,14 @@ export function clearTransfer() {
 export function transfer() {
 	let state = getStore().getState();
 
-	const isGolosService = ChainService.usingGolos();
 	return dispatch => {
 		if (state.session.actionLocked) {
 			return;
 		}
-		const {token, to, memo} = state.transfer;
+		const {to, memo} = state.transfer;
 		const {amount} = state.wallet;
-		const {activeKey, saveKey} = state.activeKey.activeKey;
+		const {activeKey, saveKey} = state.activeKey;
+		const selectedToken = state.services.tokensNames[state.wallet.selectedToken];
 		if (saveKey) {
 			storage.transferActiveKey = activeKey;
 		} else {
@@ -62,7 +61,7 @@ export function transfer() {
 		dispatch(showBodyLoader());
 		WalletService.transfer(activeKey,
 			amount,
-			isGolosService ? (token === "STEEM" ? "GOLOS" : "GBG") : transfer.token,
+			selectedToken,
 			to,
 			memo)
 			.then(() => {

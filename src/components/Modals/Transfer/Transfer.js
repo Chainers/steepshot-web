@@ -64,7 +64,6 @@ class Transfer extends React.Component {
 
 	render() {
 		const {username, selectedToken, balance, memoOpened, to, amount, memo, tokensNames} = this.props;
-		console.log(this.props);
 		return (
 			<WalletPopupTemplate title="TRANSFER TO ACCOUNT"
 			                     username={username}
