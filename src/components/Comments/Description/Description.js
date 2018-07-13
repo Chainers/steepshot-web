@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import Tags from '../../PostsList/Post/Tags/Tags';
 import './description.css';
 import ShowIf from '../../Common/ShowIf';
-import PromoteModal from '../../PostModal/PromoteModal/PromoteModal';
+import PromoteModal from '../../Modals/Promote/Promote';
 import {openModal} from '../../../actions/modal';
 import MarkdownParser from "../../../utils/markdownParser";
 import renderHTML from 'react-render-html';

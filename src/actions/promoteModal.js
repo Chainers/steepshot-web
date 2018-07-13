@@ -2,7 +2,7 @@ import * as React from 'react';
 import {getStore} from '../store/configureStore';
 import UserService from '../services/UserService';
 import {closeModal, openModal} from './modal';
-import SendBidModal from '../components/PostModal/PromoteModal/SendBidModal/SendBidModal';
+import SendBidModal from '../components/Modals/SendBid/SendBid';
 import Constants from '../common/constants';
 import {actionLock, actionUnlock} from './session';
 import {pushErrorMessage, pushMessage} from './pushMessage';

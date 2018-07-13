@@ -33,6 +33,12 @@ class WalletService {
 		return ChainService.sendTransferTroughBlockchain(transferInfo);
 	}
 
+	static powerUp(activeKey, amount, balance) {
+		if (balance <= amount) {
+			return Promise.reject(new Error('Insufficient funds'))
+		}
+	}
+
 }
 
 export default WalletService;

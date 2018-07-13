@@ -1,10 +1,10 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import './sendBidModal.css';
-import {closeModal} from '../../../../actions/modal';
-import Timer from '../../../Common/Timer/Timer';
-import Constants from '../../../../common/constants';
-import {pushMessage} from '../../../../actions/pushMessage';
+import './sendBid.css';
+import {closeModal} from '../../../actions/modal';
+import Timer from '../../Common/Timer/Timer';
+import Constants from '../../../common/constants';
+import {pushMessage} from '../../../actions/pushMessage';
 import {
 	searchingNewBot,
 	sendBid,
@@ -13,12 +13,12 @@ import {
 	setActiveKeyInputSecurity,
 	setBlockedTimer,
 	setRedTimer
-} from '../../../../actions/promoteModal';
-import {loadingEllipsis} from '../../../../utils/loadingEllipsis';
-import ShowIf from '../../../Common/ShowIf';
-import storage from '../../../../utils/Storage';
+} from '../../../actions/promoteModal';
+import {loadingEllipsis} from '../../../utils/loadingEllipsis';
+import ShowIf from '../../Common/ShowIf';
+import storage from '../../../utils/Storage';
 
-class SendBidModal extends React.Component {
+class SendBid extends React.Component {
 
 	componentDidMount() {
 		this.bidTimer = setTimeout(() => {
@@ -159,7 +159,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
 	return {
 		closeModal: () => {
-			dispatch(closeModal("SendBidModal"));
+			dispatch(closeModal("SendBid"));
 		},
 		pushMessage: (message) => {
 			dispatch(pushMessage(message));
@@ -188,4 +188,4 @@ const mapDispatchToProps = (dispatch) => {
 	}
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(SendBidModal);
+export default connect(mapStateToProps, mapDispatchToProps)(SendBid);

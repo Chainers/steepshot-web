@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import './promoteModal.css';
+import './promote.css';
 import {closeModal} from '../../../actions/modal';
 import {
 	addPostIndex,
@@ -20,7 +20,7 @@ import {pushMessage} from '../../../actions/pushMessage';
 import ChooseToken from "../../Common/ChooseToken/ChooseToken";
 import ShowIf from "../../Common/ShowIf";
 
-class PromoteModal extends React.Component {
+class Promote extends React.Component {
 
 	constructor(props) {
 		super(props);
@@ -215,4 +215,4 @@ const mapDispatchToProps = (dispatch) => {
 	}
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(PromoteModal);
+export default connect(mapStateToProps, mapDispatchToProps)(Promote);
