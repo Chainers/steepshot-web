@@ -8,11 +8,11 @@ import {getUserProfile} from "../../actions/userProfile";
 import Utils from "../../utils/Utils";
 import {openModal} from "../../actions/modal";
 import Transfer from "../Modals/Transfer/Transfer";
-import {setToken} from "../../actions/transfer";
-import Constants from "../../common/constants";
 import ShowIf from "../Common/ShowIf";
 import PowerUp from "../Modals/PowerUp/PowerUp";
 import PowerDown from "../Modals/PowerDown/PowerDown";
+import ChainService from "../../services/ChainService";
+import {setToken} from "../../actions/wallet";
 
 const DESCRIPTION = {
 	STEEM: `Tradeable tokens that may be transferred anywhere at anytime.
@@ -44,12 +44,12 @@ class Wallet extends React.Component {
 	}
 
 	transferSteem() {
-		this.props.setToken('STEEM');
+		this.props.setToken(0);
 		this.transfer()
 	}
 
 	transferSbd() {
-		this.props.setToken('SBD');
+		this.props.setToken(1);
 		this.transfer()
 	}
 
@@ -158,8 +158,7 @@ const mapStateToProps = state => {
 		return {}
 	}
 	const {balance, sbd_balance, total_steem_power_steem, estimated_balance} = state.userProfile.profile;
-	const golosName = Constants.SERVICES.golos.name;
-	const isGolosService = state.services.name === golosName;
+	const isGolosService = ChainService.usingGolos();
 	return {
 		cost: estimated_balance,
 		steem: balance,

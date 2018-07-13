@@ -7,7 +7,6 @@ import {
 	searchingNewBot,
 	sendBid,
 	setActiveKey,
-	setActiveKeyError,
 	setActiveKeyInputSecurity,
 	setBlockedTimer,
 	setRedTimer
@@ -21,7 +20,6 @@ class SendBid extends React.Component {
 	constructor() {
 		super();
 		this.setActiveKeyValue = this.setActiveKeyValue.bind(this);
-		this.sendBid = this.sendBid.bind(this);
 		this.tick = this.tick.bind(this);
 	}
 
@@ -46,20 +44,8 @@ class SendBid extends React.Component {
 		}
 	}
 
-	sendBid() {
-		if (!this.props.activeKey) {
-			this.props.setActiveKeyError(Constants.PROMOTE.EMPTY_KEY_INPUT);
-			return;
-		}
-		this.props.sendBid(this.props.steemLink, this.props.activeKey, this.props.botName);
-	}
-
 	setActiveKeyValue(e) {
-		if (this.props.activeKeyError) {
-			this.props.setActiveKeyError('');
-		}
-		let activeKey = e.target.value.replace(/\s+/g, '');
-		this.props.setActiveKey(activeKey);
+		this.props.setActiveKey(e.target.value);
 	}
 
 	tick(time) {
@@ -80,7 +66,7 @@ class SendBid extends React.Component {
 			                     usernameLink={`https://steemit.com/@${this.props.botName}`}
 			                     textButton='SEND BID'
 			                     cancel={this.props.closeModal}
-			                     ok={this.sendBid}>
+			                     ok={this.props.sendBid}>
 
 				<div className="body_send-bid">
 					<div className="bot-logo_send-bid" style={botAvatarStyle}/>
@@ -113,12 +99,12 @@ class SendBid extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-	const promoteModal = state.promoteModal;
-	const suitableBot = promoteModal.suitableBot;
-	const steemLink = `https://steemit.com${promoteModal.postIndex}`;
+	const {activeKey, showActiveKey, redTimer, blockedTimer, suitableBot} = state.promoteModal;
 	return {
-		...state.promoteModal,
-		steemLink,
+		activeKey,
+		showActiveKey,
+		redTimer,
+		blockedTimer,
 		upvoteTime: suitableBot.next,
 		botName: suitableBot.name,
 		botAvatar: suitableBot.avatar
@@ -130,14 +116,11 @@ const mapDispatchToProps = (dispatch) => {
 		closeModal: () => {
 			dispatch(closeModal("SendBid"));
 		},
-		setActiveKeyError: (error) => {
-			dispatch(setActiveKeyError(error));
+		sendBid: () => {
+			dispatch(sendBid());
 		},
-		sendBid: (steemLink, activeKey, botName) => {
-			dispatch(sendBid(steemLink, activeKey, botName));
-		},
-		setActiveKey: (activeKey) => {
-			dispatch(setActiveKey(activeKey));
+		setActiveKey: (value) => {
+			dispatch(setActiveKey(value));
 		},
 		searchingNewBot: () => {
 			dispatch(searchingNewBot());

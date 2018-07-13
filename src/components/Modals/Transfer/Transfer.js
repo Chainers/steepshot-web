@@ -3,20 +3,19 @@ import {connect} from "react-redux";
 import './transfer.css';
 import ChooseToken from "../../Common/ChooseToken/ChooseToken";
 import {
-	changeAmount,
 	changeMemo,
 	changeUsername,
 	clearTransfer,
-	setToken,
 	showMemo,
 	transfer
 } from "../../../actions/transfer";
 import ShowIf from "../../Common/ShowIf";
 import {closeModal} from "../../../actions/modal";
-import Constants from "../../../common/constants";
 import WalletPopupTemplate from "../WalletPopupTemplate/WalletPopupTemplate";
 import InputActiveKey from "../../Common/InputActiveKey/InputActiveKey";
 import GrayInput from "../../Common/GrayInput/GrayInput";
+import {changeAmount, setToken} from "../../../actions/wallet";
+import ChainService from "../../../services/ChainService";
 
 class Transfer extends React.Component {
 
@@ -64,7 +63,8 @@ class Transfer extends React.Component {
 	}
 
 	render() {
-		const {username, selectedToken, balance, memoOpened, to, amount, memo, isGolosService} = this.props;
+		const {username, selectedToken, balance, memoOpened, to, amount, memo, tokensNames} = this.props;
+		console.log(this.props);
 		return (
 			<WalletPopupTemplate title="TRANSFER TO ACCOUNT"
 			                     username={username}
@@ -87,7 +87,7 @@ class Transfer extends React.Component {
 						             amount={balance}
 						             onChange={this.changeToken}
 						             balanceOnClick={this.setAllAmount}
-						             isGolosService={isGolosService}
+						             tokensNames={tokensNames}
 						/>
 					</div>
 
@@ -118,13 +118,15 @@ class Transfer extends React.Component {
 }
 
 const mapStateToProps = state => {
-	const {balance, sbd_balance} = state.userProfile.profile || {};
-	const {token, showMemo, to, amount, memo} = state.transfer;
-	const golosName = Constants.SERVICES.golos.name;
-	const isGolosService = state.services.name === golosName;
+	const {to, memo, showMemo} = state.transfer;
+	const {amount, selectedToken, tokenValue} = state.wallet;
+	const {tokensNames} = state.services;
+	const isGolosService = ChainService.usingGolos();
 	return {
-		balance: token === 'STEEM' ? balance : sbd_balance,
-		selectedToken: token,
+		balance: tokenValue[selectedToken],
+		selectedToken,
+		tokensNames,
+		selectedTokenName: tokensNames[selectedToken],
 		username: state.auth.user,
 		memoOpened: showMemo,
 		to,

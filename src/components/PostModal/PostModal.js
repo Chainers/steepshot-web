@@ -35,6 +35,7 @@ import {setCommentEditState} from '../../actions/comments';
 import AuthService from '../../services/AuthService';
 import LowNSFWFilter from './LowNSFWFilter';
 import CopyLink from "./CopyLink/CopyLink";
+import ChainService from "../../services/ChainService";
 
 class PostModal extends React.Component {
 
@@ -454,7 +455,7 @@ class PostModal extends React.Component {
 const mapStateToProps = (state) => {
 	let currentIndex = state.postModal.currentIndex;
 	let post = state.posts[currentIndex];
-	let isGolosService = state.services.name === Constants.SERVICES.golos.name;
+	let isGolosService = ChainService.usingGolos();
 	let linkToSinglePost = document.location.origin + (isGolosService ? '/' + Constants.SERVICES.golos.name : '')
 		+ '/post' + post.url.replace(/\/[\w-.]+/, '');
 	let onlyPostModalOpen = Object.keys(state.modals).length === 1;

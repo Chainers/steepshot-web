@@ -6,13 +6,8 @@ import {
 	addPostIndex,
 	getAuthUserInfo,
 	getAuthUserInfoError,
-	getAuthUserInfoSuccess,
 	searchingBotRequest,
-	setNoTokensForPromote,
-	setPromoteInputError,
-	setPromoteValue,
-	setSelectedIndex,
-	setSelectError
+	setPromoteInputError
 } from '../../../actions/promoteModal';
 import Constants from '../../../common/constants';
 import {loadingEllipsis} from '../../../utils/loadingEllipsis';
@@ -21,21 +16,20 @@ import ChooseToken from "../../Common/ChooseToken/ChooseToken";
 import ShowIf from "../../Common/ShowIf";
 import GrayInput from "../../Common/GrayInput/GrayInput";
 import WalletPopupTemplate from "../WalletPopupTemplate/WalletPopupTemplate";
+import {changeAmount, setToken} from "../../../actions/wallet";
 
 class Promote extends React.Component {
 
 	constructor(props) {
 		super(props);
 		this.promoteByEnter = this.promoteByEnter.bind(this);
-		this.setPromoteValue = this.setPromoteValue.bind(this);
 		this.promotePost = this.promotePost.bind(this);
-		this.setSelectedValue = this.setSelectedValue.bind(this);
+		this.changeAmount = this.changeAmount.bind(this);
+		this.changeToken = this.changeToken.bind(this);
 	}
 
 	componentDidMount() {
-		if (!this.props.userInfo || !Object.keys(this.props.userInfo).length) {
-			this.props.getAuthUserInfo();
-		}
+		this.props.getAuthUserInfo();
 		this.props.addPostIndex(this.props.index);
 		this.container.addEventListener('keypress', this.promoteByEnter);
 	}
@@ -46,11 +40,12 @@ class Promote extends React.Component {
 		this.props.getAuthUserInfoError('');
 	}
 
+	changeAmount(e) {
+		this.props.changeAmount(e.target.value);
+	}
+
 	clearPromoteModalInfo() {
 		this.props.setPromoteInputError('');
-		this.props.setSelectError('');
-		this.props.getAuthUserInfoSuccess({});
-		this.props.setNoTokensForPromote(false);
 	}
 
 	promoteByEnter(e) {
@@ -66,49 +61,29 @@ class Promote extends React.Component {
 		}
 	}
 
+	changeToken(e) {
+		this.props.setToken(e.target.value);
+	}
+
 	validPromoteInfo() {
-		if (this.props.selectedToken) {
-			if (+this.props.tokenNumber < this.props.promoteAmount) {
-				this.props.setPromoteInputError(Constants.PROMOTE.NOT_ENOUGH_TOKENS);
-				return false;
-			}
-			if (this.props.promoteAmount < Constants.SERVICES.BOTS.MIN_BID_VALUE) {
-				this.props.setPromoteInputError(Constants.PROMOTE.MIN_AMOUNT_ERROR);
-				return false;
-			}
-			if (this.props.promoteAmount > Constants.SERVICES.BOTS.MAX_BID_VALUE) {
-				this.props.setPromoteInputError(Constants.PROMOTE.MAX_AMOUNT_ERROR);
-				return false;
-			}
-			let amount = this.props.promoteAmount.toString();
-			amount = amount.trim();
-			amount = amount.match(/\d+(\.\d+)?/);
-			if (amount[0] === amount.input) return true;
-			this.props.setPromoteInputError(Constants.PROMOTE.INPUT_ERROR);
+		if (this.props.balance < this.props.amount) {
+			this.props.setPromoteInputError(Constants.PROMOTE.NOT_ENOUGH_TOKENS);
+			return false;
 		}
-		if (!this.props.infoLoading) {
-			this.props.setSelectError(Constants.PROMOTE.SELECT_ERROR);
+		if (this.props.amount < Constants.SERVICES.BOTS.MIN_BID_VALUE) {
+			this.props.setPromoteInputError(Constants.PROMOTE.MIN_AMOUNT_ERROR);
+			return false;
 		}
+		if (this.props.amount > Constants.SERVICES.BOTS.MAX_BID_VALUE) {
+			this.props.setPromoteInputError(Constants.PROMOTE.MAX_AMOUNT_ERROR);
+			return false;
+		}
+		let amount = this.props.amount.toString();
+		amount = amount.trim();
+		amount = amount.match(/\d+(\.\d+)?/);
+		if (amount[0] === amount.input) return true;
+		this.props.setPromoteInputError(Constants.PROMOTE.INPUT_ERROR);
 		return false;
-	}
-
-	setPromoteValue(e) {
-		if (this.props.inputError) {
-			this.props.setPromoteInputError('');
-		}
-		let value = e.target.value;
-		let checkedValue = value.replace(/[^\d.]+/g, '');
-		this.props.setPromoteValue(checkedValue);
-	}
-
-	setSelectedValue(e) {
-		if (this.props.selectError) {
-			this.props.setSelectError('');
-		}
-		if (this.props.inputError) {
-			this.props.setPromoteInputError('');
-		}
-		this.props.setSelectedIndex(e.target.selectedIndex);
 	}
 
 	render() {
@@ -130,9 +105,10 @@ class Promote extends React.Component {
 						</div>
 					</ShowIf>
 					<ChooseToken selectedToken={this.props.selectedToken}
-					             amount={this.props.tokenNumber}
-					             onChange={this.setSelectedValue}
+					             amount={this.props.balance}
+					             onChange={this.changeToken}
 					             disabled={this.props.infoLoading}
+					             tokensNames={this.props.tokensNames}
 					/>
 
 					<div className="loading_promote">
@@ -143,8 +119,8 @@ class Promote extends React.Component {
 
 					<GrayInput placeholder="e.g. 100"
 					           className="amount-input_promote"
-					           value={this.props.promoteAmount}
-					           onChange={this.setPromoteValue}
+					           value={this.props.amount}
+					           onChange={this.changeAmount}
 					           error={this.props.inputError}
 					           label={`Promotion amount (minimum ${Constants.SERVICES.BOTS.MIN_BID_VALUE})`}
 					/>
@@ -155,19 +131,18 @@ class Promote extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-	let promoteModal = state.promoteModal;
-	let tokenNumber = '';
-	if (promoteModal.userInfo) {
-		if (promoteModal.selectedToken === 'STEEM') {
-			tokenNumber = promoteModal.userInfo.steem_balance;
-		}
-		if (promoteModal.selectedToken === 'SBD') {
-			tokenNumber = promoteModal.userInfo.sbd_balance;
-		}
-	}
+	const {tokensNames} = state.services;
+	const {amount, selectedToken, tokenValue} = state.wallet;
+	const {inputError, infoLoading, searchingBot} = state.promoteModal;
 	return {
-		...promoteModal,
-		tokenNumber
+		inputError,
+		infoLoading,
+		noTokensForPromote: !infoLoading && (tokenValue[0] <= 0.5 && tokenValue[1] <= 0.5),
+		searchingBot,
+		amount,
+		tokensNames,
+		selectedToken,
+		balance: tokenValue[selectedToken],
 	}
 };
 
@@ -176,11 +151,11 @@ const mapDispatchToProps = (dispatch) => {
 		closeModal: () => {
 			dispatch(closeModal("PromoteModal"));
 		},
-		setPromoteValue: (value) => {
-			dispatch(setPromoteValue(value));
+		setToken: token => {
+			dispatch(setToken(token))
 		},
-		setSelectedIndex: (index) => {
-			dispatch(setSelectedIndex(index));
+		changeAmount: value => {
+			dispatch(changeAmount(value))
 		},
 		getAuthUserInfo: () => {
 			dispatch(getAuthUserInfo());
@@ -188,26 +163,17 @@ const mapDispatchToProps = (dispatch) => {
 		setPromoteInputError: (error) => {
 			dispatch(setPromoteInputError(error));
 		},
-		setSelectError: (error) => {
-			dispatch(setSelectError(error));
-		},
 		pushMessage: (message) => {
 			dispatch(pushMessage(message));
 		},
 		searchingBotRequest: () => {
 			dispatch(searchingBotRequest());
 		},
-		getAuthUserInfoSuccess: (result) => {
-			dispatch(getAuthUserInfoSuccess(result));
-		},
 		addPostIndex: (postIndex) => {
 			dispatch(addPostIndex(postIndex));
 		},
 		getAuthUserInfoError: (error) => {
 			dispatch(getAuthUserInfoError(error));
-		},
-		setNoTokensForPromote: (param) => {
-			dispatch(setNoTokensForPromote(param));
 		}
 	}
 };

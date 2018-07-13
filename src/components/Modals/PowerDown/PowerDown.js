@@ -3,8 +3,8 @@ import {connect} from "react-redux";
 import './powerDown.css';
 import WalletPopupTemplate from "../WalletPopupTemplate/WalletPopupTemplate";
 import {closeModal} from "../../../actions/modal";
-import {changeAmount, powerDown} from "../../../actions/power";
 import PowerForm from "../../Common/PowerForm/PowerForm";
+import {changeAmount, powerDown} from "../../../actions/wallet";
 
 class PowerDown extends React.Component {
 

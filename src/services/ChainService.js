@@ -1,3 +1,5 @@
+import GolosService from "./GolosService";
+
 class ChainService {
 	static currentService = null;
 
@@ -58,6 +60,9 @@ class ChainService {
 		return ChainService.currentService.powerUp(activeKey, amount)
 	}
 
+	static usingGolos() {
+		return ChainService.currentService instanceof GolosService
+	}
 }
 
 export default ChainService;

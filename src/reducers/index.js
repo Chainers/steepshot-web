@@ -40,6 +40,7 @@ import contextMenu from "./contextMenu";
 import transfer from "./transfer";
 import activeKey from "./activeKey";
 import power from "./power";
+import wallet from "./wallet";
 
 export default combineReducers({
 	clipboard,
@@ -82,5 +83,6 @@ export default combineReducers({
 	contextMenu,
 	transfer,
 	activeKey,
-	power
+	power,
+	wallet
 });

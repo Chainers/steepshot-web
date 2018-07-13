@@ -12,6 +12,7 @@ import {push} from 'react-router-redux';
 import {pushMessage} from '../../actions/pushMessage';
 import Constants from '../../common/constants';
 import AuthService from '../../services/AuthService';
+import ChainService from "../../services/ChainService";
 
 class PostContextMenu extends React.Component {
 
@@ -168,7 +169,7 @@ const mapStateToProps = (state) => {
 	return {
 		username: state.auth.user,
 		isAuth: AuthService.isAuth(),
-		isGolosService: state.services.name === Constants.SERVICES.golos.name
+		isGolosService: ChainService.usingGolos()
 	};
 };
 

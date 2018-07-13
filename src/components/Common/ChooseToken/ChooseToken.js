@@ -2,7 +2,7 @@ import React, {Fragment} from 'react';
 import './chooseToken.css';
 import BalanceInfo from "../BalanceInfo/BalanceInfo";
 
-const ChooseToken = ({selectedToken, amount, onChange, balanceOnClick, disabled = false, isGolosService = false}) => (
+const ChooseToken = ({selectedToken, amount, onChange, balanceOnClick, disabled = false, tokensNames}) => (
 	<Fragment>
 		<p className="label_choose-token">Token</p>
 		<div className="container_choose-token">
@@ -11,11 +11,11 @@ const ChooseToken = ({selectedToken, amount, onChange, balanceOnClick, disabled 
 				        onChange={onChange}
 				        value={selectedToken}
 				        disabled={disabled ? 'disabled' : ''}>
-					<option value="STEEM">{isGolosService ? 'GOLOS' : 'STEEM'}</option>
-					<option value="SBD">{isGolosService ? 'GBG' : 'SBD'}</option>
+					<option value={0}>{tokensNames[0]}</option>
+					<option value={1}>{tokensNames[1]}</option>
 				</select>
 			</div>
-			<BalanceInfo token={isGolosService ? (selectedToken === 'STEEM' ? 'GOLOS' : 'GBG') : selectedToken}
+			<BalanceInfo token={tokensNames[selectedToken]}
 			             amount={amount} onClick={balanceOnClick}/>
 		</div>
 	</Fragment>

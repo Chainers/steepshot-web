@@ -10,6 +10,9 @@ const Constants = {
 				MAX_LENGTH: 40,
 				MAX_AMOUNT: 5
 			},
+			tokensNames: [
+				'GOLOS', 'GBG'
+			]
 		},
 		steem: {
 			name: 'steem',
@@ -21,6 +24,9 @@ const Constants = {
 				MAX_LENGTH: 40,
 				MAX_AMOUNT: 20
 			},
+			tokensNames: [
+				'STEEM', 'SBD'
+			]
 		},
 		BOTS: {
 			BOTS_INFO: 'https://steembottracker.net/bid_bots',
@@ -246,7 +252,6 @@ const Constants = {
 	},
 
 	PROMOTE: {
-		SELECT_ERROR: 'Choose token',
 		INPUT_ERROR: 'Enter correct value',
 		NOT_ENOUGH_TOKENS: 'Not enough tokens',
 		MIN_AMOUNT_ERROR: 'Min bid is 0.5',

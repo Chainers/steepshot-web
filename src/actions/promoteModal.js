@@ -10,6 +10,7 @@ import BotsService from '../services/BotsService';
 import storage from '../utils/Storage';
 import WalletService from "../services/WalletService";
 import {hideBodyLoader, showBodyLoader} from "./bodyLoader";
+import {getUserProfileSuccess} from "./userProfile";
 
 function setAuthUserInfoLoading(param) {
 	return {
@@ -29,13 +30,6 @@ function searchingNewBotError(error) {
 	return {
 		type: 'SEARCHING_NEW_BOR_ERROR',
 		error
-	}
-}
-
-export function setNoTokensForPromote(param) {
-	return {
-		type: 'SET_NO_TOKENS_FOR_PROMOTE',
-		param
 	}
 }
 
@@ -75,17 +69,14 @@ export function addPostIndex(postIndex) {
 	}
 }
 
-export function setActiveKey(key) {
-	return {
-		type: 'SET_ACTIVE_KEY',
-		key
-	}
-}
-
-export function getAuthUserInfoSuccess(result) {
-	return {
-		type: 'GET_AUTH_USER_INFO_SUCCESS',
-		result
+export function setActiveKey(value) {
+	let activeKey = value.replace(/\s+/g, '');
+	return dispatch => {
+		dispatch(setActiveKeyError(''));
+		dispatch({
+			type: 'SET_ACTIVE_KEY',
+			key: activeKey
+		})
 	}
 }
 
@@ -96,46 +87,14 @@ export function setPromoteInputError(error) {
 	}
 }
 
-export function setSelectError(error) {
-	return {
-		type: 'SET_SELECT_ERROR',
-		error
-	}
-}
-
-export function setPromoteValue(value) {
-	return {
-		type: 'SET_PROMOTE_VALUE',
-		value
-	}
-}
-
-export function setSelectedIndex(index) {
-	let token = 'STEEM';
-	if (index === 1) {
-		token = 'SBD';
-	}
-	return {
-		type: 'SET_SELECTED_INDEX',
-		index,
-		token
-	}
-}
-
 export function getAuthUserInfo() {
 	let state = getStore().getState();
 	return dispatch => {
 		dispatch(setAuthUserInfoLoading(true));
 		UserService.getProfile(state.auth.user, state.settings.show_nsfw, state.settings.show_low_rated)
 			.then(result => {
-				dispatch(getAuthUserInfoSuccess({
-					sbd_balance: result.sbd_balance,
-					steem_balance: result.balance,
-				}));
+				dispatch(getUserProfileSuccess(result));
 				dispatch(setAuthUserInfoLoading(false));
-				if (result.sbd_balance <= 0.5 && result.balance <= 0.5) {
-					dispatch(setNoTokensForPromote(true));
-				}
 			})
 			.catch(error => {
 				dispatch(getAuthUserInfoError(error));
@@ -194,37 +153,28 @@ export function searchingNewBot() {
 	}
 }
 
-export function sendBid(steemLink, activeKey, botName) {
+export function sendBid() {
 	let state = getStore().getState();
+	const {postIndex, activeKey, suitableBot} = state.promoteModal;
+	const botName = suitableBot.name;
 	return dispatch => {
 		if (state.session.actionLocked) {
 			return;
 		}
-		let promoteModal = state.promoteModal;
+		if (!activeKey) {
+			setActiveKeyError(Constants.PROMOTE.EMPTY_KEY_INPUT);
+			return;
+		}
+		const steemLink = `https://steemit.com${postIndex}`;
+		const selectedToken = state.services.tokensNames[state.wallet.selectedToken];
 		dispatch(actionLock());
 		dispatch(showBodyLoader());
-		WalletService.transfer(activeKey, promoteModal.promoteAmount, promoteModal.selectedToken, botName, steemLink)
+		WalletService.transfer(activeKey, state.wallet.amount, selectedToken, botName, steemLink)
 			.then(() => {
 				dispatch(actionUnlock());
 				dispatch(pushMessage(Constants.PROMOTE.BID_TO_BOT_SUCCESS));
 				dispatch(hideBodyLoader());
-				if (!storage.activeKey) {
-					storage.activeKey = promoteModal.activeKey;
-				}
-				let newValue;
-				if (promoteModal.selectedToken === 'STEEM') {
-					newValue = {
-						steem_balance: (promoteModal.userInfo.steem_balance - promoteModal.promoteAmount).toFixed(3) / 1,
-						sbd_balance: promoteModal.userInfo.sbd_balance
-					}
-				}
-				if (promoteModal.selectedToken === 'SBD') {
-					newValue = {
-						steem_balance: promoteModal.userInfo.steem_balance,
-						sbd_balance: (promoteModal.userInfo.sbd_balance - promoteModal.promoteAmount).toFixed(3) / 1
-					}
-				}
-				dispatch(getAuthUserInfoSuccess(newValue));
+				storage.activeKey = state.promoteModal.activeKey;
 				dispatch(closeModal("SendBid"));
 			})
 			.catch(error => {

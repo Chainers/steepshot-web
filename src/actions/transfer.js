@@ -6,13 +6,7 @@ import {pushErrorMessage, pushMessage} from "./pushMessage";
 import {closeModal} from "./modal";
 import {hideBodyLoader, showBodyLoader} from "./bodyLoader";
 import storage from "../utils/Storage";
-
-export function setToken(token) {
-	return {
-		type: 'TRANSFER_SET_TOKEN',
-		token
-	}
-}
+import ChainService from "../services/ChainService";
 
 export function showMemo() {
 	return {
@@ -35,21 +29,6 @@ export function changeUsername(value) {
 	}
 }
 
-export function changeAmount(value) {
-	const validCharacters = /^[0-9.]*$/;
-	if (validCharacters.test(value)) {
-		return {
-			type: 'TRANSFER_CHANGE_AMOUNT',
-			value
-		}
-	} else {
-		return {
-			type: 'TRANSFER_ERROR',
-			message: 'Incorrect amount.'
-		}
-	}
-}
-
 export function changeMemo(value) {
 	return {
 		type: 'TRANSFER_CHANGE_MEMO',
@@ -66,15 +45,15 @@ export function clearTransfer() {
 export function transfer() {
 	let state = getStore().getState();
 
-	const golosName = Constants.SERVICES.golos.name;
-	const isGolosService = state.services.name === golosName;
+	const isGolosService = ChainService.usingGolos();
 	return dispatch => {
 		if (state.session.actionLocked) {
 			return;
 		}
-		const transfer = state.transfer;
-		const activeKey = state.activeKey.activeKey;
-		if (transfer.saveKey) {
+		const {token, to, memo} = state.transfer;
+		const {amount} = state.wallet;
+		const {activeKey, saveKey} = state.activeKey.activeKey;
+		if (saveKey) {
 			storage.transferActiveKey = activeKey;
 		} else {
 			storage.transferActiveKey = null;
@@ -82,10 +61,10 @@ export function transfer() {
 		dispatch(actionLock());
 		dispatch(showBodyLoader());
 		WalletService.transfer(activeKey,
-			transfer.amount,
-			isGolosService ? (transfer.token === "STEEM" ? "GOLOS" : "GBG") : transfer.token,
-			transfer.to,
-			transfer.memo)
+			amount,
+			isGolosService ? (token === "STEEM" ? "GOLOS" : "GBG") : transfer.token,
+			to,
+			memo)
 			.then(() => {
 				dispatch(actionUnlock());
 				dispatch(hideBodyLoader());
