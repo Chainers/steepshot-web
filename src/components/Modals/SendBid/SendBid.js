@@ -21,6 +21,8 @@ class SendBid extends React.Component {
 	constructor() {
 		super();
 		this.setActiveKeyValue = this.setActiveKeyValue.bind(this);
+		this.sendBid = this.sendBid.bind(this);
+		this.tick = this.tick.bind(this);
 	}
 
 	componentDidMount() {
@@ -73,16 +75,16 @@ class SendBid extends React.Component {
 	render() {
 		let botAvatarStyle = {backgroundImage: 'url(' + this.props.botAvatar + ')'};
 		return (
-			<WalletPopupTemplate title="TRANSFER TO ACCOUNT"
+			<WalletPopupTemplate title="PROMOTER FOUND!"
 			                     username={this.props.botName}
 			                     usernameLink={`https://steemit.com/@${this.props.botName}`}
 			                     textButton='SEND BID'
 			                     cancel={this.props.closeModal}
-			                     ok={this.sendBid.bind(this)}>
+			                     ok={this.sendBid}>
 				<div className="body_send-bid">
 					<div className="bot-logo_send-bid" style={botAvatarStyle}/>
 					<BotTimer isRead={this.props.redTimer} isBlocked={this.props.blockedTimer}
-					          upvoteTime={this.props.upvoteTime} tick={this.tick.bind(this)}/>
+					          upvoteTime={this.props.upvoteTime} tick={this.tick}/>
 				</div>
 
 					<div className="centered--flex">

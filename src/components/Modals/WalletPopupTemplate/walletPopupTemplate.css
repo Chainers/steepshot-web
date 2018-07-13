@@ -20,6 +20,10 @@
     color: #e74800;
 }
 
+.username_wal-pop-tem a:hover {
+    opacity: .6;
+}
+
 .body_wal-pop-tem {
     border-bottom: 1px solid #f4f4f6;
 }

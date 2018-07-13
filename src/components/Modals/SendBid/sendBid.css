@@ -1,16 +1,3 @@
-.title_send-bid {
-    display: flex;
-    justify-content: space-between;
-    font: 14px OpenSans-Semibold;
-    border-bottom: 1px solid #f4f4f6;
-    padding-bottom: 25px;
-    margin-bottom: 0;
-}
-
-.title_send-bid a:hover {
-    opacity: .6;
-}
-
 .body_send-bid {
     display: flex;
     justify-content: space-between;
@@ -66,8 +53,5 @@
     }
     .bot-logo_send-bid {
         margin: 0 0 25px 0;
-    }
-    .title_send-bid {
-        font: 12px OpenSans-Semibold;
     }
 }
