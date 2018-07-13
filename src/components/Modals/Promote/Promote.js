@@ -134,9 +134,6 @@ class Promote extends React.Component {
 					             onChange={this.setSelectedValue}
 					             disabled={this.props.infoLoading}
 					/>
-					<div className="error_promote">
-						{this.props.selectError}
-					</div>
 
 					<div className="loading_promote">
 						<ShowIf show={this.props.infoLoading}>

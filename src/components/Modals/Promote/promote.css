@@ -2,13 +2,6 @@
     margin-top: 15px;
 }
 
-.error_promote {
-    position: absolute;
-    color: #d0011b;
-    font: 12px OpenSans-Regular;
-    bottom: -23px;
-}
-
 .loading_promote {
     width: 100%;
     height: 25px;
