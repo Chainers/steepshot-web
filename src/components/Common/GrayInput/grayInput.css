@@ -26,7 +26,6 @@
 }
 
 .container_gray-input input::placeholder {
-    font: 14px OpenSans-Regular;
     color: #979b9e;
 }
 

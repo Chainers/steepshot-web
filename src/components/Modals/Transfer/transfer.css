@@ -52,7 +52,6 @@
 }
 
 .field_transfer > input::placeholder, .body_transfer textarea::placeholder  {
-    font: 12px OpenSans-Light;
     color: #979b9e;
 }
 

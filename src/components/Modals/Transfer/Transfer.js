@@ -71,7 +71,7 @@ class Transfer extends React.Component {
 						</p>
 						<div className="field_transfer">
 							<div className="at_transfer"/>
-							<input type='text' onChange={this.changeUsername} maxLength={16} value={to} autoComplete="off"/>
+							<input type='text' placeholder="username" onChange={this.changeUsername} maxLength={16} value={to} autoComplete="off"/>
 						</div>
 						<label className="recipient-error_transfer">{toError}</label>
 					</div>
@@ -84,9 +84,8 @@ class Transfer extends React.Component {
 						/>
 					</div>
 
-					<GrayInput label="Amount" className="gray_transfer" onChange={this.changeAmount} placeholder="0.001"
-					           value={amount} ref={this.setAmountRef} onFocus={this.amountFocused} error={amountError}
-					           maxLength={15}/>
+					<GrayInput label="Amount" className="gray_transfer" onChange={this.changeAmount} value={amount}
+					           ref={this.setAmountRef} onFocus={this.amountFocused} error={amountError} maxLength={15}/>
 
 					<ShowIf show={!memoOpened}>
 						<div className="add-memo_transfer">
