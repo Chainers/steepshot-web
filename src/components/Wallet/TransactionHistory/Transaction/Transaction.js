@@ -40,15 +40,17 @@ const Transaction = ({operation, data, date, index, isMobileScreen, isExtraSmall
 export default Transaction;
 
 function getFormattedDate(date) {
-	if (new Date().getTime() - Date.parse(date) < 24 * 60 * 60 * 1000) {
+	const localData = new Date(date);
+	localData.setHours(localData.getHours() + 3);
+	if (new Date().getTime() - localData.getTime() < 24 * 60 * 60 * 1000) {
 		return (
 			<TimeAgo
-				datetime={new Date(date)}
+				datetime={localData}
 				locale='en_US'
 			/>
 		)
 	}
-	return DateFormatter.convertISOtoCustom(date);
+	return DateFormatter.convertISOtoCustom(localData);
 }
 
 function getOperationText(operation) {
