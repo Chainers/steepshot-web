@@ -127,6 +127,7 @@ class GolosService {
 	}
 
 	powerUp(activeKey, amount) {
+		console.log(amount);
 		const username = AuthService.getUsername();
 		return processResponse(callback => {
 			steem.broadcast.transferToVesting(activeKey, username, username, amount, callback);
@@ -134,6 +135,7 @@ class GolosService {
 	}
 
 	powerDown(activeKey, amount) {
+		console.log(amount);
 		return processResponse(callback => {
 			steem.broadcast.withdrawVesting(activeKey, AuthService.getUsername(), amount, callback);
 		})

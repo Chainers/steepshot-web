@@ -9,7 +9,7 @@ import {changeAmount, powerUp} from "../../../actions/wallet";
 class PowerUp extends React.Component {
 
 	render() {
-		const {username, balance, amount, amountError} = this.props;
+		const {username, balance, amount, token, amountError} = this.props;
 		return (
 			<WalletPopupTemplate title="CONVERT TO STEEM POWER"
 			                     username={username}
@@ -29,7 +29,7 @@ class PowerUp extends React.Component {
 				           amountOnChange={this.props.changeAmount}
 				           className="form_power-up"
 				           countToken={balance}
-				           token="STEEM"
+				           token={token}
 				/>
 			</WalletPopupTemplate>
 		);
@@ -39,8 +39,10 @@ class PowerUp extends React.Component {
 const mapStateToProps = state => {
 	const {balance} = state.userProfile.profile;
 	const {amount, amountError} = state.wallet;
+	const {tokensNames} = state.services;
 	return {
 		username: state.auth.user,
+		token: tokensNames[0],
 		balance,
 		amount,
 		amountError

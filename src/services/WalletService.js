@@ -22,7 +22,7 @@ class WalletService {
 		return checkActiveKey(activeKey)
 			.then(() => checkAmount(amount))
 			.then(() => {
-				const token = ChainService.usingGolos() ? 'GOLOS' : 'STEEM';
+				const token = ChainService.usingGolos() ? ' GOLOS' : ' STEEM';
 				return ChainService.powerUp(activeKey, getValidAmountFormat(amount, token));
 			});
 	}
@@ -31,11 +31,10 @@ class WalletService {
 		return checkActiveKey(activeKey)
 			.then(() => checkAmount(amount, 1))
 			.then(() => {
-				const token = ChainService.usingGolos() ? 'GESTS' : 'VESTS';
+				const token = ChainService.usingGolos() ? ' GESTS' : ' VESTS';
 				return ChainService.powerDown(activeKey, getValidAmountFormat(amount, token, true));
 			});
 	}
-
 }
 
 function checkActiveKey(activeKey) {
@@ -85,9 +84,9 @@ function getValidAmountFormat(amount, token, vests = false) {
 	}
 	if (vests) {
 		validAmount += '000';
-		return validAmount.replace(/(\d+\.\d{6})(\d*)/, '$1') + ' ' + token;
+		return validAmount.replace(/(\d+\.\d{6})(\d*)/, '$1') + token;
 	}
-	return validAmount.replace(/(\d+\.\d{3})(\d*)/, '$1') + ' ' + token;
+	return validAmount.replace(/(\d+\.\d{3})(\d*)/, '$1') + token;
 }
 
 export default WalletService;

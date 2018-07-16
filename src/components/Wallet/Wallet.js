@@ -34,6 +34,9 @@ class Wallet extends React.Component {
 	constructor(props) {
 		super();
 		props.getUserProfile();
+		this.transferSteem = this.transferSteem.bind(this);
+		this.powerUp = this.powerUp.bind(this);
+		this.powerDown = this.powerDown.bind(this);
 	}
 
 	transfer() {
@@ -94,15 +97,20 @@ class Wallet extends React.Component {
 							coin={isGolosService ? "GOLOS" : "STEEM"}
 							value={steem}
 							description={isGolosService ? DESCRIPTION.GOLOS : DESCRIPTION.STEEM}
-							actions={
+							actions={isGolosService ?
 								[{
 									label: 'Transfer',
 									icon: '/images/wallet/buttons/transfer.png',
-									onClick: this.transferSteem.bind(this)
-								},{
+									onClick: this.transferSteem
+								}] :
+								[{
+									label: 'Transfer',
+									icon: '/images/wallet/buttons/transfer.png',
+									onClick: this.transferSteem
+								}, {
 									label: 'Power up',
 									icon: '/images/wallet/buttons/powerUp.png',
-									onClick: this.powerUp.bind(this)
+									onClick: this.powerUp
 								}]
 							}
 						/>
@@ -116,11 +124,11 @@ class Wallet extends React.Component {
 							coin={isGolosService ? "GOLOS" : "STEEM"}
 							value={sp}
 							description={isGolosService ? DESCRIPTION.SG : DESCRIPTION.SP}
-							actions={
+							actions={isGolosService ? [] :
 								[{
 									label: 'Power down',
 									icon: '/images/wallet/buttons/powerDown.png',
-									onClick: this.powerDown.bind(this)
+									onClick: this.powerDown
 								}]
 							}
 						/>
