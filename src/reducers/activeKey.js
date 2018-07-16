@@ -27,13 +27,15 @@ export default function activeKey(state = initialState, action) {
 				...state,
 				saveKey: !state.saveKey
 			};
-		case 'ACTIVE_KEY_CLEAT':
-			if (!state.saveKey) {
-				return {
-					...state,
-					activeKey: action.value,
-					activeKeyError: ''
-				};
+		case 'CLOSE_MODAL':
+			if (action.index === 'transfer' || action.index === 'powerUp' || action.index === 'powerDown') {
+				if (!state.saveKey) {
+					return {
+						...state,
+						activeKey: action.value,
+						activeKeyError: ''
+					};
+				}
 			}
 			return state;
 		default:

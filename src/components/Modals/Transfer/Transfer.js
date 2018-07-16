@@ -5,7 +5,6 @@ import ChooseToken from "../../Common/ChooseToken/ChooseToken";
 import {
 	changeMemo,
 	changeUsername,
-	clearTransfer,
 	showMemo,
 	transfer
 } from "../../../actions/transfer";
@@ -27,10 +26,6 @@ class Transfer extends React.Component {
 		this.changeMemo = this.changeMemo.bind(this);
 		this.changeAmount = this.changeAmount.bind(this);
 		this.setAmountRef = this.setAmountRef.bind(this);
-	}
-
-	componentWillUnmount() {
-		this.props.clearTransfer();
 	}
 
 	changeToken(e) {
@@ -90,7 +85,8 @@ class Transfer extends React.Component {
 					</div>
 
 					<GrayInput label="Amount" className="gray_transfer" onChange={this.changeAmount} placeholder="0.001"
-					           value={amount} ref={this.setAmountRef} onFocus={this.amountFocused} error={amountError}/>
+					           value={amount} ref={this.setAmountRef} onFocus={this.amountFocused} error={amountError}
+					           maxLength={15}/>
 
 					<ShowIf show={!memoOpened}>
 						<div className="add-memo_transfer">
@@ -151,9 +147,6 @@ const mapDispatchToProps = dispatch => {
 		},
 		transfer: () => {
 			dispatch(transfer())
-		},
-		clearTransfer: () => {
-			dispatch(clearTransfer())
 		},
 		closeTransferModal: () => {
 			dispatch(closeModal("transfer"))

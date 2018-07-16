@@ -34,12 +34,6 @@ export function changeMemo(value) {
 	}
 }
 
-export function clearTransfer() {
-	return {
-		type: 'TRANSFER_CLEAR'
-	}
-}
-
 export function inputError(field, message) {
 	return {
 		type: 'TRANSFER_ERROR',

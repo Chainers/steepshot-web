@@ -2,9 +2,8 @@ import React from 'react';
 import {connect} from "react-redux";
 import './inputActiveKey.css';
 import ShowIf from "../ShowIf";
-import {changeActiveKey, changeSavingKey, clearActiveKey} from "../../../actions/activeKey";
+import {changeActiveKey, changeSavingKey} from "../../../actions/activeKey";
 import GrayInput from "../GrayInput/GrayInput";
-import {lifecycle} from 'recompose';
 
 const InputActiveKey = ({className, activeKey, activeKeyError, saveKey, changeSaveKey, changeActiveKey}) => (
 	<div className={'container_input-active-key ' + (className || '')}>
@@ -20,13 +19,6 @@ const InputActiveKey = ({className, activeKey, activeKeyError, saveKey, changeSa
 		</div>
 	</div>
 );
-
-const InputActiveKeyWithDidMount = lifecycle({
-	componentWillUnmount() {
-		this.props.clearActiveKey();
-	}
-})(InputActiveKey);
-
 
 const mapStateToProps = state => {
 	const {activeKey, activeKeyError, saveKey} = state.activeKey;
@@ -44,11 +36,8 @@ const mapDispatchToProps = dispatch => {
 		},
 		changeActiveKey: value => {
 			dispatch(changeActiveKey(value))
-		},
-		clearActiveKey: () => {
-			dispatch(clearActiveKey())
 		}
 	}
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(InputActiveKeyWithDidMount);
+export default connect(mapStateToProps, mapDispatchToProps)(InputActiveKey);

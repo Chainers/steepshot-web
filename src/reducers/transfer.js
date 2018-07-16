@@ -42,14 +42,11 @@ export default function transfer(state = initialState, action) {
 				...state,
 				loader: false
 			};
-		case 'TRANSFER_CLEAR':
-			return {
-				showMemo: false,
-				to: '',
-				toError: '',
-				memo: '',
-				loader: false
-			};
+		case 'CLOSE_MODAL':
+			if (action.index === 'transfer' || action.index === 'powerUp' || action.index === 'powerDown') {
+				return initialState;
+			}
+			return state;
 		default:
 			return state;
 	}

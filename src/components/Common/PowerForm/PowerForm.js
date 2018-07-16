@@ -8,7 +8,7 @@ const PowerForm = ({amount, amountError, amountOnChange, countToken, token, clas
 	<form className={className || ''} autoComplete="off">
 		<div className="balance-group_power-form">
 			<GrayInput label="amount" value={amount} onChange={(e) => amountOnChange(e.target.value)} name="amount"
-			           error={amountError}/>
+			           error={amountError} maxLength={15}/>
 			<BalanceInfo token={token} amount={countToken}/>
 		</div>
 		<span onClick={() => amountOnChange(countToken)} className="using-max_power-form">Using maximum</span>

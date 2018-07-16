@@ -37,6 +37,14 @@ export default function wallet(state = initialState, action) {
 					action.profile.sbd_balance,
 				]
 			};
+		case 'CLOSE_MODAL':
+			if (action.index === 'transfer' || action.index === 'powerUp' || action.index === 'powerDown') {
+				return {
+					...initialState,
+					tokenValue: state.tokenValue
+				};
+			}
+			return state;
 		default:
 			return state;
 	}
