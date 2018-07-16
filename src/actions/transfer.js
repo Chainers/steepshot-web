@@ -85,7 +85,7 @@ export function transfer() {
 	}
 }
 
-function getErrorData(error) {
+export function getErrorData(error) {
 	let message;
 	let field;
 	if (error.isCustom) {

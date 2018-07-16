@@ -88,6 +88,11 @@ export function blockchainErrorsList(error) {
 				notificationText: Constants.ERROR_MESSAGES.NOT_ENOUGH_TOKENS
 			},
 			{
+				error: '10 assert_exception: Assert Exception: _db.get_balance( from_account, o.amount.symbol) >= o.amount: ' +
+				'Account does not have sufficient liquid amount for transfer.',
+				notificationText: Constants.ERROR_MESSAGES.NOT_ENOUGH_TOKENS
+			},
+			{
 				error: '13 N5boost16exception_detail10clone_implINS0_19error_info_injectorISt12out_of_rangeEEEE: unknown key: ${what}: ', // eslint-disable-line
 				notificationText: Constants.ERROR_MESSAGES.USER_NOT_FOUND
 			}

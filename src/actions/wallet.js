@@ -4,8 +4,9 @@ import WalletService from "../services/WalletService";
 import storage from "../utils/Storage";
 import {hideBodyLoader, showBodyLoader} from "./bodyLoader";
 import {closeModal} from "./modal";
-import {pushErrorMessage, pushMessage} from "./pushMessage";
+import {pushMessage} from "./pushMessage";
 import Constants from "../common/constants";
+import {getErrorData, inputError} from "./transfer";
 
 export function powerUp() {
 	let state = getStore().getState();
@@ -34,7 +35,11 @@ export function powerUp() {
 			.catch(error => {
 				dispatch(actionUnlock());
 				dispatch(hideBodyLoader());
-				dispatch(pushErrorMessage(error))
+				const {message, field} = getErrorData(error);
+				if (field && message) {
+					dispatch(inputError(field, message));
+				}
+				dispatch(pushMessage(message));
 			})
 	}
 }
