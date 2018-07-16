@@ -1,7 +1,7 @@
 const initialState = {
-	token: 'SBD',
 	showMemo: false,
 	to: '',
+	toError: '',
 	memo: '',
 	loader: false
 };
@@ -16,8 +16,17 @@ export default function transfer(state = initialState, action) {
 		case 'TRANSFER_CHANGE_USERNAME':
 			return {
 				...state,
-				to: action.value
+				to: action.value,
+				toError: ''
 			};
+		case 'TRANSFER_ERROR':
+			if (action.toError) {
+				return {
+					...state,
+					toError: action.toError
+				};
+			}
+			return state;
 		case 'TRANSFER_CHANGE_MEMO':
 			return {
 				...state,
@@ -35,9 +44,9 @@ export default function transfer(state = initialState, action) {
 			};
 		case 'TRANSFER_CLEAR':
 			return {
-				token: 'SBD',
 				showMemo: false,
 				to: '',
+				toError: '',
 				memo: '',
 				loader: false
 			};

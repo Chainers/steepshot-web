@@ -2,10 +2,11 @@ import {getStore} from "../store/configureStore";
 import {actionLock, actionUnlock} from "./session";
 import WalletService from "../services/WalletService";
 import Constants from "../common/constants";
-import {pushErrorMessage, pushMessage} from "./pushMessage";
+import {pushMessage} from "./pushMessage";
 import {closeModal} from "./modal";
 import {hideBodyLoader, showBodyLoader} from "./bodyLoader";
 import storage from "../utils/Storage";
+import {blockchainErrorsList} from "../utils/blockchainErrorsList";
 
 export function showMemo() {
 	return {
@@ -14,16 +15,14 @@ export function showMemo() {
 }
 
 export function changeUsername(value) {
-	const validCharacters = /^[-a-zA-Z0-9.]*$/;
-	if (validCharacters.test(value)) {
-		return {
+	return dispatch => {
+		dispatch({
 			type: 'TRANSFER_CHANGE_USERNAME',
 			value
-		}
-	} else {
-		return {
-			type: 'TRANSFER_ERROR',
-			message: 'Incorrect username.'
+		});
+		const validCharacters = /^[-a-zA-Z0-9.]*$/;
+		if (!validCharacters.test(value)) {
+			dispatch(transferError('toError', 'Incorrect username.'));
 		}
 	}
 }
@@ -41,12 +40,21 @@ export function clearTransfer() {
 	}
 }
 
+function transferError(field, message) {
+	return {
+		type: 'TRANSFER_ERROR',
+		[field]: message
+	}
+}
+
 export function transfer() {
 	let state = getStore().getState();
 
 	return dispatch => {
 		if (state.session.actionLocked) {
-			return;
+			return {
+				type: 'ACTION_LOCKED_TRANSFER'
+			}
 		}
 		const {to, memo} = state.transfer;
 		const {amount} = state.wallet;
@@ -73,10 +81,26 @@ export function transfer() {
 			.catch(error => {
 				dispatch(actionUnlock());
 				dispatch(hideBodyLoader());
-				if (!error.data && (error.actual === 128 || error.message === Constants.NON_BASE58_CHARACTER)) {
-					return dispatch(pushErrorMessage(Constants.TRANSFER.INVALID_ACTIVE_KEY));
+				const {message, field} = getErrorData(error);
+				if (field && message) {
+					dispatch(transferError(field, message));
 				}
-				dispatch(pushErrorMessage(error.data ? error : error.message));
+				dispatch(pushMessage(message));
 			});
 	}
+}
+
+function getErrorData(error) {
+	let message;
+	let field;
+	if (error.isCustom) {
+		field = error.field;
+		message = error.message;
+	} else {
+		message = blockchainErrorsList(error);
+		if (message === Constants.TRANSFER.INVALID_ACTIVE_KEY) {
+			field = 'activeKeyError';
+		}
+	}
+	return {message, field}
 }

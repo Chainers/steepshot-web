@@ -10,3 +10,9 @@ export function changeSavingKey() {
 		type: 'ACTIVE_KEY_CHANGE_SAVING'
 	}
 }
+
+export function clearActiveKey() {
+	return {
+		type: 'ACTIVE_KEY_CLEAT'
+	}
+}

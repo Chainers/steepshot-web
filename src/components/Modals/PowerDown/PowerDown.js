@@ -37,7 +37,7 @@ class PowerDown extends React.Component {
 
 const mapStateToProps = state => {
 	const {total_steem_power_steem} = state.userProfile.profile;
-	const {amount} = state.power;
+	const {amount} = state.wallet;
 	return {
 		balance: total_steem_power_steem,
 		username: state.auth.user,

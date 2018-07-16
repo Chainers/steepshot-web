@@ -37,7 +37,7 @@ class PowerUp extends React.Component {
 
 const mapStateToProps = state => {
 	const {balance} = state.userProfile.profile;
-	const {amount} = state.power;
+	const {amount} = state.wallet;
 	return {
 		username: state.auth.user,
 		balance,

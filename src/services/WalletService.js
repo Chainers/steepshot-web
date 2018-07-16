@@ -4,17 +4,27 @@ import Utils from "../utils/Utils";
 class WalletService {
 
 	static transfer(activeKey, amount, token, to, memo) {
+		const error = new Error();
+		error.isCustom = true;
 		if (Utils.isEmptyString(activeKey)) {
-			return Promise.reject(new Error('Active key can\'t be empty.'))
-		}
-		if (parseFloat(amount) < 0.001) {
-			return Promise.reject(new Error('Amount can\'t be less then 0.001.'))
+			error.message = 'Active key can\'t be empty.';
+			error.field = 'activeKeyError';
+			return Promise.reject(error)
 		}
 		if (Utils.isEmptyString(token)) {
-			return Promise.reject(new Error('Amount can\'t be empty.'))
+			error.message = 'Amount can\'t be empty.';
+			error.field = 'amountError';
+			return Promise.reject(error)
+		}
+		if (parseFloat(amount) < 0.001) {
+			error.message = 'Amount can\'t be less then 0.001.';
+			error.field = 'amountError';
+			return Promise.reject(error)
 		}
 		if (Utils.isEmptyString(to)) {
-			return Promise.reject(new Error('Recipient can\'t be empty.'))
+			error.message = 'Recipient can\'t be empty.';
+			error.field = 'toError';
+			return Promise.reject(error)
 		}
 		let validAmount = amount.toString();
 		if (/\./.test(validAmount)) {
@@ -33,10 +43,18 @@ class WalletService {
 		return ChainService.sendTransferTroughBlockchain(transferInfo);
 	}
 
-	static powerUp(activeKey, amount, balance) {
-		if (balance <= amount) {
-			return Promise.reject(new Error('Insufficient funds'))
+	static powerUp(activeKey, amount) {
+		if (Utils.isEmptyString(activeKey)) {
+			return Promise.reject(new Error('Active key can\'t be empty.'))
 		}
+		if (Utils.isEmptyString(amount)) {
+			return Promise.reject(new Error('Amount can\'t be empty.'))
+		}
+		if (parseFloat(amount) < 0.001) {
+			return Promise.reject(new Error('Amount can\'t be less then 0.001.'))
+		}
+		const selectedToken = ChainService.usingGolos() ? 'GOLOS' : 'STEEM';
+		return ChainService.powerUp(activeKey, amount + ' ' + selectedToken);
 	}
 
 }

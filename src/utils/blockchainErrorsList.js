@@ -3,11 +3,16 @@ import {serverErrorsList} from './serverErrorsList';
 
 export function blockchainErrorsList(error) {
 	console.log(error);
-	if (!error.data && typeof error === 'string') {
-		return error;
-	}
-	if (!error.data && error.status && error.statusText) {
-		return serverErrorsList(error.status);
+	if (!error.data) {
+		if (error.actual === 128 || error.message === Constants.NON_BASE58_CHARACTER) {
+			return Constants.TRANSFER.INVALID_ACTIVE_KEY;
+		}
+		if (typeof error === 'string') {
+			return error;
+		}
+		if (error.status && error.statusText) {
+			return serverErrorsList(error.status);
+		}
 	}
 	if (error.data || error.payload) {
 		let newError, format = '';
