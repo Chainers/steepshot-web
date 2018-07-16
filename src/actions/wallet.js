@@ -45,7 +45,41 @@ export function powerUp() {
 }
 
 export function powerDown() {
-
+	let state = getStore().getState();
+	if (state.session.actionLocked) {
+		return {
+			type: 'ACTION_LOCKED_POWER_DOWN'
+		}
+	}
+	return dispatch => {
+		dispatch(actionLock());
+		dispatch(showBodyLoader());
+		const {amount} = state.wallet;
+		const {total_steem_power_steem, total_steem_power_vests} = state.userProfile.profile;
+		const amountVests = (amount / total_steem_power_steem) * total_steem_power_vests;
+		const {activeKey, saveKey} = state.activeKey;
+		if (saveKey) {
+			storage.transferActiveKey = activeKey;
+		} else {
+			storage.transferActiveKey = null;
+		}
+		WalletService.powerDown(activeKey, amountVests)
+			.then(() => {
+				dispatch(actionUnlock());
+				dispatch(hideBodyLoader());
+				dispatch(closeModal("powerDown"));
+				dispatch(pushMessage(Constants.WALLET.POWER_DOWN_SUCCESS));
+			})
+			.catch(error => {
+				dispatch(actionUnlock());
+				dispatch(hideBodyLoader());
+				const {message, field} = getErrorData(error);
+				if (field && message) {
+					dispatch(inputError(field, message));
+				}
+				dispatch(pushMessage(message));
+			})
+	}
 }
 
 export function changeAmount(value) {

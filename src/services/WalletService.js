@@ -27,6 +27,15 @@ class WalletService {
 			});
 	}
 
+	static powerDown(activeKey, amount) {
+		return checkActiveKey(activeKey)
+			.then(() => checkAmount(amount, 1))
+			.then(() => {
+				const token = ChainService.usingGolos() ? 'GESTS' : 'VESTS';
+				return ChainService.powerDown(activeKey, getValidAmountFormat(amount, token, true));
+			});
+	}
+
 }
 
 function checkActiveKey(activeKey) {
@@ -40,7 +49,7 @@ function checkActiveKey(activeKey) {
 	return Promise.resolve();
 }
 
-function checkAmount(amount) {
+function checkAmount(amount, min = 0.001) {
 	const error = new Error();
 	error.isCustom = true;
 	if (Utils.isEmpty(amount)) {
@@ -48,8 +57,8 @@ function checkAmount(amount) {
 		error.field = 'amountError';
 		return Promise.reject(error)
 	}
-	if (amount < 0.001) {
-		error.message = 'Amount can\'t be less then 0.001.';
+	if (amount < min) {
+		error.message = `Amount can't be less then 0.001.`;
 		error.field = 'amountError';
 		return Promise.reject(error)
 	}
@@ -67,12 +76,16 @@ function checkRecipient(recipient) {
 	return Promise.resolve();
 }
 
-function getValidAmountFormat(amount, token) {
+function getValidAmountFormat(amount, token, vests = false) {
 	let validAmount = amount.toString();
 	if (/\./.test(validAmount)) {
 		validAmount = validAmount + '000';
 	} else {
 		validAmount = validAmount + '.000';
+	}
+	if (vests) {
+		validAmount += '000';
+		return validAmount.replace(/(\d+\.\d{6})(\d*)/, '$1') + ' ' + token;
 	}
 	return validAmount.replace(/(\d+\.\d{3})(\d*)/, '$1') + ' ' + token;
 }

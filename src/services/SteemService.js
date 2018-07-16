@@ -138,6 +138,12 @@ class SteemService {
 		})
 	}
 
+	powerDown(activeKey, amount) {
+		return processResponse(callback => {
+			steem.broadcast.withdrawVesting(activeKey, AuthService.getUsername(), amount, callback);
+		})
+	}
+
 	static vestsToSp(vesting_shares) {
 		const vests = parseFloat(vesting_shares.split(' ')[0]);
 		const total_vests = parseFloat(dynamicProps['total_vesting_shares'].split(' ')[0]);

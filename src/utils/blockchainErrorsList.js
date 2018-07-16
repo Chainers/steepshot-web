@@ -93,6 +93,11 @@ export function blockchainErrorsList(error) {
 				notificationText: Constants.ERROR_MESSAGES.NOT_ENOUGH_TOKENS
 			},
 			{
+				error: '10 assert_exception: Assert Exception: account.vesting_shares - account.delegated_vesting_shares >= ' +
+				'o.vesting_shares: Account does not have sufficient Steem Power for withdraw.',
+				notificationText: Constants.ERROR_MESSAGES.NOT_ENOUGH_TOKENS
+			},
+			{
 				error: '13 N5boost16exception_detail10clone_implINS0_19error_info_injectorISt12out_of_rangeEEEE: unknown key: ${what}: ', // eslint-disable-line
 				notificationText: Constants.ERROR_MESSAGES.USER_NOT_FOUND
 			}

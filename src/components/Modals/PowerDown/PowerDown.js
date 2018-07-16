@@ -9,7 +9,7 @@ import {changeAmount, powerDown} from "../../../actions/wallet";
 class PowerDown extends React.Component {
 
 	render() {
-		const {username, balance, amount} = this.props;
+		const {username, balance, amount, amountError} = this.props;
 		return (
 			<WalletPopupTemplate title="POWER DOWN"
 			                     username={username}
@@ -17,6 +17,7 @@ class PowerDown extends React.Component {
 			                     cancel={this.props.closePowerUpModal}
 			                     ok={this.props.powerDown}>
 				<PowerForm amount={amount}
+				           amountError={amountError}
 				           amountOnChange={this.props.changeAmount}
 				           className="form_power-down"
 				           countToken={balance}
@@ -37,11 +38,12 @@ class PowerDown extends React.Component {
 
 const mapStateToProps = state => {
 	const {total_steem_power_steem} = state.userProfile.profile;
-	const {amount} = state.wallet;
+	const {amount, amountError} = state.wallet;
 	return {
 		balance: total_steem_power_steem,
 		username: state.auth.user,
-		amount
+		amount,
+		amountError
 	}
 };
 

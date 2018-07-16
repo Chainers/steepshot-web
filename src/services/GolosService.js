@@ -2,6 +2,7 @@ import golos from 'golos-js';
 import Constants from "../common/constants";
 import PostService from "./PostService";
 import AuthService from "./AuthService";
+import steem from "steem";
 
 class GolosService {
 
@@ -124,6 +125,20 @@ class GolosService {
 			golos.api.getAccountHistory(username, from, limit, callback);
 		})
 	}
+
+	powerUp(activeKey, amount) {
+		const username = AuthService.getUsername();
+		return processResponse(callback => {
+			steem.broadcast.transferToVesting(activeKey, username, username, amount, callback);
+		})
+	}
+
+	powerDown(activeKey, amount) {
+		return processResponse(callback => {
+			steem.broadcast.withdrawVesting(activeKey, AuthService.getUsername(), amount, callback);
+		})
+	}
+
 }
 
 export default GolosService;
