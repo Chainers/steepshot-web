@@ -67,7 +67,7 @@ class Promote extends React.Component {
 
 	validPromoteInfo() {
 		if (this.props.balance < this.props.amount) {
-			this.props.setPromoteInputError(Constants.PROMOTE.NOT_ENOUGH_TOKENS);
+			this.props.setPromoteInputError(Constants.ERROR_MESSAGES.NOT_ENOUGH_TOKENS);
 			return false;
 		}
 		if (this.props.amount < Constants.SERVICES.BOTS.MIN_BID_VALUE) {

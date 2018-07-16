@@ -22,7 +22,7 @@ export function changeUsername(value) {
 		});
 		const validCharacters = /^[-a-zA-Z0-9.]*$/;
 		if (!validCharacters.test(value)) {
-			dispatch(transferError('toError', 'Incorrect username.'));
+			dispatch(inputError('toError', 'Incorrect username.'));
 		}
 	}
 }
@@ -40,7 +40,7 @@ export function clearTransfer() {
 	}
 }
 
-function transferError(field, message) {
+export function inputError(field, message) {
 	return {
 		type: 'TRANSFER_ERROR',
 		[field]: message
@@ -49,13 +49,12 @@ function transferError(field, message) {
 
 export function transfer() {
 	let state = getStore().getState();
-
-	return dispatch => {
-		if (state.session.actionLocked) {
-			return {
-				type: 'ACTION_LOCKED_TRANSFER'
-			}
+	if (state.session.actionLocked) {
+		return {
+			type: 'ACTION_LOCKED_TRANSFER'
 		}
+	}
+	return dispatch => {
 		const {to, memo} = state.transfer;
 		const {amount} = state.wallet;
 		const {activeKey, saveKey} = state.activeKey;
@@ -67,11 +66,7 @@ export function transfer() {
 		}
 		dispatch(actionLock());
 		dispatch(showBodyLoader());
-		WalletService.transfer(activeKey,
-			amount,
-			selectedToken,
-			to,
-			memo)
+		WalletService.transfer(activeKey, amount, selectedToken, to, memo)
 			.then(() => {
 				dispatch(actionUnlock());
 				dispatch(hideBodyLoader());
@@ -83,7 +78,7 @@ export function transfer() {
 				dispatch(hideBodyLoader());
 				const {message, field} = getErrorData(error);
 				if (field && message) {
-					dispatch(transferError(field, message));
+					dispatch(inputError(field, message));
 				}
 				dispatch(pushMessage(message));
 			});
@@ -98,8 +93,14 @@ function getErrorData(error) {
 		message = error.message;
 	} else {
 		message = blockchainErrorsList(error);
-		if (message === Constants.TRANSFER.INVALID_ACTIVE_KEY) {
+		if (message === Constants.ERROR_MESSAGES.INVALID_ACTIVE_KEY) {
 			field = 'activeKeyError';
+		}
+		if (message === Constants.ERROR_MESSAGES.NOT_ENOUGH_TOKENS) {
+			field = 'amountError';
+		}
+		if (message === Constants.ERROR_MESSAGES.USER_NOT_FOUND) {
+			field = 'toError';
 		}
 	}
 	return {message, field}

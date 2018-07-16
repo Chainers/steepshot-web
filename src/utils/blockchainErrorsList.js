@@ -5,7 +5,8 @@ export function blockchainErrorsList(error) {
 	console.log(error);
 	if (!error.data) {
 		if (error.actual === 128 || error.message === Constants.NON_BASE58_CHARACTER) {
-			return Constants.TRANSFER.INVALID_ACTIVE_KEY;
+			return Constants.ERROR_MESSAGES.INVALID_ACTIVE_KEY;
+
 		}
 		if (typeof error === 'string') {
 			return error;
@@ -25,6 +26,7 @@ export function blockchainErrorsList(error) {
 			format = ': ' + golosErrorsData.stack[0].format;
 			newError = `${golosErrorsData.code} ${golosErrorsData.name}: ${golosErrorsData.message}${format}`;
 		}
+		console.log(newError);
 		let errorsList = [
 			{
 				error: ['4100000 plugin_exception: plugin exception: Account: ${account} bandwidth limit exeeded. Please wait to ' + // eslint-disable-line
@@ -83,7 +85,11 @@ export function blockchainErrorsList(error) {
 			{
 				error: '10 assert_exception: Assert Exception: _db.get_balance( o.from, o.amount.symbol ) >= o.amount: Account' +
 				' does not have sufficient funds for transfer.',
-				notificationText: 'Insufficient funds!'
+				notificationText: Constants.ERROR_MESSAGES.NOT_ENOUGH_TOKENS
+			},
+			{
+				error: '13 N5boost16exception_detail10clone_implINS0_19error_info_injectorISt12out_of_rangeEEEE: unknown key: ${what}: ', // eslint-disable-line
+				notificationText: Constants.ERROR_MESSAGES.USER_NOT_FOUND
 			}
 		];
 		for (let i = 0; i < errorsList.length; i++) {
