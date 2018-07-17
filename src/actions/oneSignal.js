@@ -9,7 +9,6 @@ let OneSignal = window.OneSignal;
 
 export function loadSubscribeData() {
 	try {
-		console.log(OneSignal);
 		OneSignal.on('subscriptionChange', subscribeListener);
 		return async dispatch => {
 			let playerId = await OneSignal.getUserId();
