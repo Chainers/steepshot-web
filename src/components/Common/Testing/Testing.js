@@ -8,9 +8,7 @@ class Testing extends React.Component {
 		if (global.isServerSide) {
 			return null;
 		}
-		return (
-			<Wallet/>
-		);
+		return null;
 	}
 }
 
