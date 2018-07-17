@@ -70,6 +70,7 @@ class Header extends React.Component {
 			authorLink = `/@${this.props.user}`;
 			loginComponent = <div className="section controls">
 				<div className="wrap-controls_header">
+					<Link to="/wallet" className="btn-control wallet"/>
 					<Link to="/settings" className="btn-control settings"/>
 					<a onClick={this.handleLogout.bind(this)}
 					   className="btn-control logout"> </a>

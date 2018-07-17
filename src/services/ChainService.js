@@ -60,6 +60,10 @@ class ChainService {
 		return ChainService.currentService.powerUp(activeKey, amount)
 	}
 
+	static powerDown(activeKey, amount) {
+		return ChainService.currentService.powerDown(activeKey, amount)
+	}
+
 	static usingGolos() {
 		return ChainService.currentService instanceof GolosService
 	}

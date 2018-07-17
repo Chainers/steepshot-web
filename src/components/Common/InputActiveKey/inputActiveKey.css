@@ -35,6 +35,5 @@
 }
 
 .container_input-active-key input::placeholder  {
-    font: 12px OpenSans-Light;
     color: #979b9e;
 }

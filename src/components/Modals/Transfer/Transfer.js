@@ -5,7 +5,6 @@ import ChooseToken from "../../Common/ChooseToken/ChooseToken";
 import {
 	changeMemo,
 	changeUsername,
-	clearTransfer,
 	showMemo,
 	transfer
 } from "../../../actions/transfer";
@@ -15,7 +14,6 @@ import WalletPopupTemplate from "../WalletPopupTemplate/WalletPopupTemplate";
 import InputActiveKey from "../../Common/InputActiveKey/InputActiveKey";
 import GrayInput from "../../Common/GrayInput/GrayInput";
 import {changeAmount, setToken} from "../../../actions/wallet";
-import ChainService from "../../../services/ChainService";
 
 class Transfer extends React.Component {
 
@@ -28,10 +26,6 @@ class Transfer extends React.Component {
 		this.changeMemo = this.changeMemo.bind(this);
 		this.changeAmount = this.changeAmount.bind(this);
 		this.setAmountRef = this.setAmountRef.bind(this);
-	}
-
-	componentWillUnmount() {
-		this.props.clearTransfer();
 	}
 
 	changeToken(e) {
@@ -63,7 +57,7 @@ class Transfer extends React.Component {
 	}
 
 	render() {
-		const {username, selectedToken, balance, memoOpened, to, amount, memo, tokensNames} = this.props;
+		const {username, selectedToken, balance, memoOpened, to, toError, amount, amountError, memo, tokensNames} = this.props;
 		return (
 			<WalletPopupTemplate title="TRANSFER TO ACCOUNT"
 			                     username={username}
@@ -77,11 +71,11 @@ class Transfer extends React.Component {
 						</p>
 						<div className="field_transfer">
 							<div className="at_transfer"/>
-							<input placeholder="username" onChange={this.changeUsername} maxLength={16} value={to}/>
+							<input type='text' placeholder="username" onChange={this.changeUsername} maxLength={16} value={to} autoComplete="off"/>
 						</div>
+						<label className="recipient-error_transfer">{toError}</label>
 					</div>
-
-					<div className="form-line_transfer">
+					<div className="form-line_transfer" >
 						<ChooseToken selectedToken={selectedToken}
 						             amount={balance}
 						             onChange={this.changeToken}
@@ -90,10 +84,8 @@ class Transfer extends React.Component {
 						/>
 					</div>
 
-					<GrayInput label="Amount" className="form-line_transfer fixed-margin_transfer" onChange={this.changeAmount}
-					           placeholder="0.001" value={amount} ref={this.setAmountRef}
-					           onFocus={this.amountFocused}/>
-
+					<GrayInput label="Amount" className="gray_transfer" onChange={this.changeAmount} value={amount}
+					           ref={this.setAmountRef} onFocus={this.amountFocused} error={amountError} maxLength={15}/>
 
 					<ShowIf show={!memoOpened}>
 						<div className="add-memo_transfer">
@@ -117,10 +109,9 @@ class Transfer extends React.Component {
 }
 
 const mapStateToProps = state => {
-	const {to, memo, showMemo} = state.transfer;
-	const {amount, selectedToken, tokenValue} = state.wallet;
+	const {to, memo, showMemo, toError} = state.transfer;
+	const {amount, amountError, selectedToken, tokenValue} = state.wallet;
 	const {tokensNames} = state.services;
-	const isGolosService = ChainService.usingGolos();
 	return {
 		balance: tokenValue[selectedToken],
 		selectedToken,
@@ -129,9 +120,10 @@ const mapStateToProps = state => {
 		username: state.auth.user,
 		memoOpened: showMemo,
 		to,
+		toError,
 		amount,
-		memo,
-		isGolosService
+		amountError,
+		memo
 	}
 };
 
@@ -152,14 +144,8 @@ const mapDispatchToProps = dispatch => {
 		changeMemo: value => {
 			dispatch(changeMemo(value))
 		},
-		clear: () => {
-			dispatch(clearTransfer())
-		},
 		transfer: () => {
 			dispatch(transfer())
-		},
-		clearTransfer: () => {
-			dispatch(clearTransfer())
 		},
 		closeTransferModal: () => {
 			dispatch(closeModal("transfer"))

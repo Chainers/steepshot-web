@@ -1,5 +1,9 @@
+.body_transfer {
+    padding-top: 20px;
+}
+
 .body_transfer > div {
-    margin-top: 25px;
+    margin-top: 5px;
 }
 
 .label_transfer {
@@ -13,8 +17,8 @@
     overflow: hidden;
 }
 
-.form-line_transfer.fixed-margin_transfer {
-    margin-bottom: -20px;
+.body_transfer > div.gray_transfer {
+    margin-top: 25px;
 }
 
 .field_transfer {
@@ -48,8 +52,17 @@
 }
 
 .field_transfer > input::placeholder, .body_transfer textarea::placeholder  {
-    font: 12px OpenSans-Light;
     color: #979b9e;
+}
+
+.recipient-error_transfer {
+    display: block;
+    height: 20px;
+    text-align: right;
+    color: #d0021b;
+    margin: 0;
+    font-size: 12px;
+    width: 100%
 }
 
 .body_transfer textarea {
@@ -79,6 +92,6 @@
     color: #979b9e;
 }
 
-.active-key_transfer {
-    margin-bottom: 30px;
+.body_transfer > div.active-key_transfer {
+    margin: 25px 0 30px;
 }

@@ -4,10 +4,11 @@ import InputActiveKey from "../InputActiveKey/InputActiveKey";
 import './powerForm.css';
 import GrayInput from "../GrayInput/GrayInput";
 
-const PowerForm = ({amount, amountOnChange, countToken, token, className}) => (
+const PowerForm = ({amount, amountError, amountOnChange, countToken, token, className}) => (
 	<form className={className || ''} autoComplete="off">
 		<div className="balance-group_power-form">
-			<GrayInput label="amount" value={amount} onChange={(e) => amountOnChange(e.target.value)} name="amount"/>
+			<GrayInput label="amount" value={amount} onChange={(e) => amountOnChange(e.target.value)} name="amount"
+			           error={amountError} maxLength={15}/>
 			<BalanceInfo token={token} amount={countToken}/>
 		</div>
 		<span onClick={() => amountOnChange(countToken)} className="using-max_power-form">Using maximum</span>

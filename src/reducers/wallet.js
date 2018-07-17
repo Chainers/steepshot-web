@@ -1,5 +1,6 @@
 const initialState = {
 	amount: 0.001,
+	amountError: '',
 	selectedToken: 0,
 	tokenValue: [
 		0,
@@ -17,8 +18,17 @@ export default function wallet(state = initialState, action) {
 		case 'WALLET_CHANGE_AMOUNT':
 			return {
 				...state,
-				amount: action.value
+				amount: action.value,
+				amountError: ''
 			};
+		case 'TRANSFER_ERROR':
+			if (action.amountError) {
+				return {
+					...state,
+					amountError: action.amountError
+				};
+			}
+			return state;
 		case 'GET_USER_PROFILE_SUCCESS':
 			return {
 				...state,
@@ -27,6 +37,14 @@ export default function wallet(state = initialState, action) {
 					action.profile.sbd_balance,
 				]
 			};
+		case 'CLOSE_MODAL':
+			if (action.index === 'transfer' || action.index === 'powerUp' || action.index === 'powerDown') {
+				return {
+					...initialState,
+					tokenValue: state.tokenValue
+				};
+			}
+			return state;
 		default:
 			return state;
 	}

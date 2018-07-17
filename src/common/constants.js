@@ -253,7 +253,6 @@ const Constants = {
 
 	PROMOTE: {
 		INPUT_ERROR: 'Enter correct value',
-		NOT_ENOUGH_TOKENS: 'Not enough tokens',
 		MIN_AMOUNT_ERROR: 'Min bid is 0.5',
 		MAX_AMOUNT_ERROR: 'Max bid is 100',
 		FIND_BOT_ERROR: 'We look, but there\'s no appropriate bot for promotion. Please, try little later.',
@@ -262,12 +261,21 @@ const Constants = {
 		BLOCKED_TIMER: 21,
 		EMPTY_KEY_INPUT: 'You should enter the key',
 		BID_TO_BOT_SUCCESS: 'Your bid has been successfully sent. Wait for upvote.',
-		INVALID_ACTIVE_KEY: 'Invalid active key.'
 	},
 
 	TRANSFER: {
-		INVALID_ACTIVE_KEY: 'Invalid active key.',
 		BID_TO_BOT_SUCCESS: 'Your bid has been successfully sent.'
+	},
+
+	WALLET: {
+		POWER_UP_SUCCESS: 'SUCCESS',
+		POWER_DOWN_SUCCESS: 'SUCCESS'
+	},
+
+	ERROR_MESSAGES: {
+		INVALID_ACTIVE_KEY: 'Invalid active key.',
+		USER_NOT_FOUND: 'User not found!',
+		NOT_ENOUGH_TOKENS: 'Insufficient funds!'
 	},
 
 	MILLISECONDS_IN_DAY: 24 * 60 * 60 * 1000,

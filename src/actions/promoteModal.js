@@ -183,8 +183,8 @@ export function sendBid() {
 				dispatch(actionUnlock());
 				dispatch(hideBodyLoader());
 				if (!error.data && (error.actual === 128 || error.message === Constants.NON_BASE58_CHARACTER)) {
-					dispatch(setActiveKeyError(Constants.PROMOTE.INVALID_ACTIVE_KEY));
-					return dispatch(pushErrorMessage(Constants.PROMOTE.INVALID_ACTIVE_KEY));
+					dispatch(setActiveKeyError(Constants.ERROR_MESSAGES.INVALID_ACTIVE_KEY));
+					return dispatch(pushErrorMessage(Constants.ERROR_MESSAGES.INVALID_ACTIVE_KEY));
 				}
 				dispatch(pushErrorMessage(error));
 			});

@@ -2,10 +2,11 @@ import {getStore} from "../store/configureStore";
 import {actionLock, actionUnlock} from "./session";
 import WalletService from "../services/WalletService";
 import Constants from "../common/constants";
-import {pushErrorMessage, pushMessage} from "./pushMessage";
+import {pushMessage} from "./pushMessage";
 import {closeModal} from "./modal";
 import {hideBodyLoader, showBodyLoader} from "./bodyLoader";
 import storage from "../utils/Storage";
+import {blockchainErrorsList} from "../utils/blockchainErrorsList";
 
 export function showMemo() {
 	return {
@@ -14,16 +15,14 @@ export function showMemo() {
 }
 
 export function changeUsername(value) {
-	const validCharacters = /^[-a-zA-Z0-9.]*$/;
-	if (validCharacters.test(value)) {
-		return {
+	return dispatch => {
+		dispatch({
 			type: 'TRANSFER_CHANGE_USERNAME',
 			value
-		}
-	} else {
-		return {
-			type: 'TRANSFER_ERROR',
-			message: 'Incorrect username.'
+		});
+		const validCharacters = /^[-a-zA-Z0-9.]*$/;
+		if (!validCharacters.test(value)) {
+			dispatch(inputError('toError', 'Incorrect username.'));
 		}
 	}
 }
@@ -35,19 +34,21 @@ export function changeMemo(value) {
 	}
 }
 
-export function clearTransfer() {
+export function inputError(field, message) {
 	return {
-		type: 'TRANSFER_CLEAR'
+		type: 'TRANSFER_ERROR',
+		[field]: message
 	}
 }
 
 export function transfer() {
 	let state = getStore().getState();
-
-	return dispatch => {
-		if (state.session.actionLocked) {
-			return;
+	if (state.session.actionLocked) {
+		return {
+			type: 'ACTION_LOCKED_TRANSFER'
 		}
+	}
+	return dispatch => {
 		const {to, memo} = state.transfer;
 		const {amount} = state.wallet;
 		const {activeKey, saveKey} = state.activeKey;
@@ -59,11 +60,7 @@ export function transfer() {
 		}
 		dispatch(actionLock());
 		dispatch(showBodyLoader());
-		WalletService.transfer(activeKey,
-			amount,
-			selectedToken,
-			to,
-			memo)
+		WalletService.transfer(activeKey, amount, selectedToken, to, memo)
 			.then(() => {
 				dispatch(actionUnlock());
 				dispatch(hideBodyLoader());
@@ -73,10 +70,32 @@ export function transfer() {
 			.catch(error => {
 				dispatch(actionUnlock());
 				dispatch(hideBodyLoader());
-				if (!error.data && (error.actual === 128 || error.message === Constants.NON_BASE58_CHARACTER)) {
-					return dispatch(pushErrorMessage(Constants.TRANSFER.INVALID_ACTIVE_KEY));
+				const {message, field} = getErrorData(error);
+				if (field && message) {
+					dispatch(inputError(field, message));
 				}
-				dispatch(pushErrorMessage(error.data ? error : error.message));
+				dispatch(pushMessage(message));
 			});
 	}
+}
+
+export function getErrorData(error) {
+	let message;
+	let field;
+	if (error.isCustom) {
+		field = error.field;
+		message = error.message;
+	} else {
+		message = blockchainErrorsList(error);
+		if (message === Constants.ERROR_MESSAGES.INVALID_ACTIVE_KEY) {
+			field = 'activeKeyError';
+		}
+		if (message === Constants.ERROR_MESSAGES.NOT_ENOUGH_TOKENS) {
+			field = 'amountError';
+		}
+		if (message === Constants.ERROR_MESSAGES.USER_NOT_FOUND) {
+			field = 'toError';
+		}
+	}
+	return {message, field}
 }
