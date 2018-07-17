@@ -124,7 +124,6 @@ export function closeTimer() {
 
 export function editPostClear() {
 	const initDataEditPost = getStore().getState().editPost.initData;
-	console.log(initDataEditPost);
 	return dispatch => {
 		if (initDataEditPost && initDataEditPost.src) {
 			dispatch({

@@ -8,22 +8,30 @@ let OneSignal = window.OneSignal;
 class OneSignalService {
 
 	static addNotificationTags(username, playerId) {
-		if (!username) {
-			return;
-		}
-		if (playerId) {
-			OneSignal.sendTags({username, player_id: playerId});
-			return;
-		}
-		OneSignal.getUserId().then(playerId => {
+		try {
+			if (!username) {
+				return;
+			}
 			if (playerId) {
 				OneSignal.sendTags({username, player_id: playerId});
+				return;
 			}
-		})
+			OneSignal.getUserId().then(playerId => {
+				if (playerId) {
+					OneSignal.sendTags({username, player_id: playerId});
+				}
+			})
+		} catch (error) {
+			console.error(error);
+		}
 	}
 
 	static removeNotificationTags() {
-		OneSignal.deleteTags(['username', 'player_id']);
+		try {
+			OneSignal.deleteTags(['username', 'player_id']);
+		} catch (error) {
+			console.error(error);
+		}
 	}
 
 	static async setSubscribeConfiguration(username, player_id, app_id, settings) {
