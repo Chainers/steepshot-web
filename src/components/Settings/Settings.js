@@ -47,7 +47,7 @@ class Settings extends React.Component {
 						<SettingsField label="Show NSFW posts" point={fields.show_nsfw}
 						               default={this.props[fields.show_nsfw]}/>
 					</div>
-					<div className="block_settings">
+					<ShowIf show={!this.props.notificationError} className="block_settings">
 						<div className="header_settings">
 							<span>PUSH NOTIFICATIONS</span>
 							<ShowIf show={!this.props.notificationEnabled}>
@@ -70,7 +70,7 @@ class Settings extends React.Component {
 							<SettingsField label="Post" point={fields.post}
 							               default={this.props[fields.post]}/>
 						</div>
-					</div>
+					</ShowIf>
 				</div>
 				<button className="btn btn-default save-btn" onClick={this.submit.bind(this)}>
 					SAVE
@@ -84,6 +84,7 @@ const mapStateToProps = (state) => {
 	return {
 		...state.settings,
 		notificationEnabled: state.oneSignal.notificationPermission && state.oneSignal.isNotificationsEnabled,
+		notificationError: state.oneSignal.error
 	};
 };
 

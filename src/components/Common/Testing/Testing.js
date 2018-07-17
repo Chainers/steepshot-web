@@ -1,6 +1,5 @@
 import React from 'react';
 import './testing.css';
-import Wallet from "../../Wallet/Wallet";
 
 class Testing extends React.Component {
 
