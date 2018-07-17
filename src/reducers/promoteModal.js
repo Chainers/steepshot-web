@@ -1,14 +1,15 @@
-import Constants from '../common/constants';
+import storage from "../utils/Storage";
 
 const initialState = {
-	promoteAmount: Constants.SERVICES.BOTS.MIN_BID_VALUE,
-	selectedToken: 'STEEM',
 	inputError: '',
-	selectError: '',
-	activeKey: '',
-	activeIndex: 0,
+	activeKey: storage.activeKey || '',
 	infoLoading: false,
 	showActiveKey: false,
+	searchingBot: false,
+	redTimer: false,
+	suitableBot: null,
+	blockedTimer: false,
+	postIndex: ''
 };
 
 export default function promoteModal(state = initialState, action) {
@@ -17,25 +18,6 @@ export default function promoteModal(state = initialState, action) {
 			return {
 				...state,
 				postIndex: action.postIndex
-			};
-
-		case 'SET_PROMOTE_VALUE':
-			return {
-				...state,
-				promoteAmount: action.value
-			};
-
-		case 'SET_SELECTED_INDEX':
-			return {
-				...state,
-				selectedToken: action.token,
-				activeIndex: action.index
-			};
-
-		case 'GET_AUTH_USER_INFO_SUCCESS':
-			return {
-				...state,
-				userInfo: action.result
 			};
 
 		case 'SET_AUTH_USER_INFO_LOADING':
@@ -50,12 +32,6 @@ export default function promoteModal(state = initialState, action) {
 				inputError: action.error
 			};
 
-		case 'SET_SELECT_ERROR':
-			return {
-				...state,
-				selectError: action.error
-			};
-
 		case 'SET_ACTIVE_KEY_ERROR':
 			return {
 				...state,
@@ -66,12 +42,6 @@ export default function promoteModal(state = initialState, action) {
 			return {
 				...state,
 				searchingBot: action.state
-			};
-
-		case 'SET_BID_REQUEST':
-			return {
-				...state,
-				sendingBid: action.state
 			};
 
 		case 'ADD_BOT':
@@ -108,12 +78,6 @@ export default function promoteModal(state = initialState, action) {
 			return {
 				...state,
 				blockedTimer: action.param
-			};
-
-		case 'SET_NO_TOKENS_FOR_PROMOTE':
-			return {
-				...state,
-				noTokensForPromote: action.param
 			};
 
 		case 'LOGOUT_SUCCESS':

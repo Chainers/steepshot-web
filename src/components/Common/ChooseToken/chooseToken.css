@@ -7,6 +7,13 @@
 
 }
 
+.label_choose-token {
+    height: 17px;
+    margin: 0 0 3px;
+    font: 12px OpenSans-Regular;
+    color: #979b9e;
+}
+
 .container_choose-token > div {
     flex-basis: 210px;
     min-width: 200px;
@@ -56,22 +63,4 @@
 
 .select_choose-token select.disabled {
     cursor: unset;
-}
-
-.balance_choose-token {
-    display: flex;
-    justify-content: space-between;
-    padding: 10px;
-    width: 210px;
-    border-radius: 6px;
-    background-color: #f5f5f5;
-    color: #0f181e;
-}
-
-.balance-value_choose-token {
-    color: #e74800;
-}
-
-.pointer_choose-token {
-    cursor: pointer;
 }

@@ -3,25 +3,29 @@ import {connect} from "react-redux";
 import './transfer.css';
 import ChooseToken from "../../Common/ChooseToken/ChooseToken";
 import {
-	changeActiveKey,
-	changeAmount,
 	changeMemo,
-	changeSaveKey,
 	changeUsername,
-	clearTransfer,
-	setToken,
 	showMemo,
 	transfer
 } from "../../../actions/transfer";
 import ShowIf from "../../Common/ShowIf";
 import {closeModal} from "../../../actions/modal";
-import Constants from "../../../common/constants";
-import {getStore} from "../../../store/configureStore";
+import WalletPopupTemplate from "../WalletPopupTemplate/WalletPopupTemplate";
+import InputActiveKey from "../../Common/InputActiveKey/InputActiveKey";
+import GrayInput from "../../Common/GrayInput/GrayInput";
+import {changeAmount, setToken} from "../../../actions/wallet";
 
 class Transfer extends React.Component {
 
-	componentWillUnmount() {
-		this.props.clearTransfer();
+	constructor() {
+		super();
+		this.amountFocused = this.amountFocused.bind(this);
+		this.changeUsername = this.changeUsername.bind(this);
+		this.changeToken = this.changeToken.bind(this);
+		this.setAllAmount = this.setAllAmount.bind(this);
+		this.changeMemo = this.changeMemo.bind(this);
+		this.changeAmount = this.changeAmount.bind(this);
+		this.setAmountRef = this.setAmountRef.bind(this);
 	}
 
 	changeToken(e) {
@@ -40,14 +44,6 @@ class Transfer extends React.Component {
 		this.props.changeMemo(e.target.value);
 	}
 
-	changeActiveKey(e) {
-		this.props.changeActiveKey(e.target.value);
-	}
-
-	changeSaveKey() {
-		this.props.changeSaveKey();
-	}
-
 	setAmountRef(ref) {
 		this.amount = ref;
 	}
@@ -61,52 +57,35 @@ class Transfer extends React.Component {
 	}
 
 	render() {
-		const {username, selectedToken, balance, memoOpened, saveKey, activeKey, to, amount, memo, isGolosService} = this.props;
+		const {username, selectedToken, balance, memoOpened, to, toError, amount, amountError, memo, tokensNames} = this.props;
 		return (
-			<div className="container_transfer">
-				<div className="header_transfer">
-					<div className="title_transfer">
-						TRANSFER TO ACCOUNT
-					</div>
-					<div className="username_transfer">
-						@{username}
-					</div>
-				</div>
-
+			<WalletPopupTemplate title="TRANSFER TO ACCOUNT"
+			                     username={username}
+			                     textButton="OK"
+			                     cancel={this.props.closeTransferModal}
+			                     ok={this.props.transfer}>
 				<form className="body_transfer" autoComplete="off">
-
 					<div className="form-line_transfer">
-						<div className="label_transfer">
+						<p className="label_transfer">
 							To
-						</div>
+						</p>
 						<div className="field_transfer">
 							<div className="at_transfer"/>
-							<input placeholder="username" onChange={this.changeUsername.bind(this)} maxLength={16} value={to}/>
+							<input type='text' placeholder="username" onChange={this.changeUsername} maxLength={16} value={to} autoComplete="off"/>
 						</div>
+						<label className="recipient-error_transfer">{toError}</label>
 					</div>
-
-					<div className="form-line_transfer">
-						<div className="label_transfer">
-							Token
-						</div>
+					<div className="form-line_transfer" >
 						<ChooseToken selectedToken={selectedToken}
 						             amount={balance}
-						             onChange={this.changeToken.bind(this)}
-						             balanceOnClick={this.setAllAmount.bind(this)}
-						             isGolosService={isGolosService}
+						             onChange={this.changeToken}
+						             balanceOnClick={this.setAllAmount}
+						             tokensNames={tokensNames}
 						/>
 					</div>
 
-					<div className="form-line_transfer">
-						<div className="label_transfer">
-							Amount
-						</div>
-						<div className="field_transfer">
-							<input onChange={this.changeAmount.bind(this)} placeholder="0.001"
-							       value={amount} ref={this.setAmountRef.bind(this)}
-							       onFocus={this.amountFocused.bind(this)}/>
-						</div>
-					</div>
+					<GrayInput label="Amount" className="gray_transfer" onChange={this.changeAmount} value={amount}
+					           ref={this.setAmountRef} onFocus={this.amountFocused} error={amountError} maxLength={15}/>
 
 					<ShowIf show={!memoOpened}>
 						<div className="add-memo_transfer">
@@ -117,54 +96,34 @@ class Transfer extends React.Component {
 					</ShowIf>
 
 					<ShowIf show={memoOpened}>
-						<div className="label_transfer">
+						<p className="inputs-label">
 							Memo
-						</div>
-						<textarea onChange={this.changeMemo.bind(this)} placeholder="This memo is public" value={memo}/>
+						</p>
+						<textarea onChange={this.changeMemo} placeholder="This memo is public" value={memo}/>
 					</ShowIf>
-
-					<div className="form-line_transfer">
-						<div className="label_transfer">
-							Active key
-						</div>
-						<div className="field_transfer">
-							<input type="password" onChange={this.changeActiveKey.bind(this)} value={activeKey}/>
-						</div>
-					</div>
-					<div className="checkbox-field_transfer">
-						<div className="checkbox_transfer" onClick={this.changeSaveKey.bind(this)}>
-							<ShowIf show={saveKey}>
-								<div className="save_transfer"/>
-							</ShowIf>
-						</div>
-						<span>Save the key for transferring.</span>
-					</div>
+					<InputActiveKey className="active-key_transfer"/>
 				</form>
-				<div className="buttons_transfer clearfix">
-					<button className="btn btn-cancel" onClick={this.props.closeTransferModal}>CANCEL</button>
-					<button className="btn btn-default" onClick={this.props.transfer}>OK</button>
-				</div>
-			</div>
+			</WalletPopupTemplate>
 		);
 	}
 }
 
 const mapStateToProps = state => {
-	const {balance, sbd_balance} = state.userProfile.profile || {};
-	const {token, showMemo, activeKey, saveKey, to, amount, memo} = state.transfer;
-	const golosName = Constants.SERVICES.golos.name;
-	const isGolosService = state.services.name === golosName;
+	const {to, memo, showMemo, toError} = state.transfer;
+	const {amount, amountError, selectedToken, tokenValue} = state.wallet;
+	const {tokensNames} = state.services;
 	return {
-		balance: token === 'STEEM' ? balance : sbd_balance,
-		selectedToken: token,
+		balance: tokenValue[selectedToken],
+		selectedToken,
+		tokensNames,
+		selectedTokenName: tokensNames[selectedToken],
 		username: state.auth.user,
 		memoOpened: showMemo,
-		saveKey,
-		activeKey: activeKey,
 		to,
+		toError,
 		amount,
-		memo,
-		isGolosService
+		amountError,
+		memo
 	}
 };
 
@@ -185,20 +144,8 @@ const mapDispatchToProps = dispatch => {
 		changeMemo: value => {
 			dispatch(changeMemo(value))
 		},
-		changeActiveKey: value => {
-			dispatch(changeActiveKey(value))
-		},
-		changeSaveKey: () => {
-			dispatch(changeSaveKey())
-		},
-		clear: () => {
-			dispatch(clearTransfer())
-		},
 		transfer: () => {
 			dispatch(transfer())
-		},
-		clearTransfer: () => {
-			dispatch(clearTransfer())
 		},
 		closeTransferModal: () => {
 			dispatch(closeModal("transfer"))

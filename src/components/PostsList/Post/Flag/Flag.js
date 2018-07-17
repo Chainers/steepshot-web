@@ -7,7 +7,7 @@ import {pushMessage} from '../../../../actions/pushMessage';
 import './flag.css';
 import {toggleFlag} from '../../../../actions/flag';
 import {loadingEllipsis} from '../../../../utils/loadingEllipsis';
-import AuthService from '../../../../services/authService';
+import AuthService from '../../../../services/AuthService';
 
 class Flag extends React.Component {
 

@@ -6,7 +6,7 @@ import {logout} from '../../actions/auth';
 import './mobileNavigation.css';
 import {closeMobileNavigation} from '../../actions/mobileNavigation';
 import {Scrollbars} from 'react-custom-scrollbars';
-import AuthService from '../../services/authService';
+import AuthService from '../../services/AuthService';
 
 class MobileNavigation extends React.Component {
 
@@ -44,6 +44,12 @@ class MobileNavigation extends React.Component {
 									{labels.browseLabel}
 								</Link>
 								<Link
+									to={urls.wallet}
+									onClick={closeMobileNavigation}
+								>
+									{labels.walletLabel}
+								</Link>
+								<Link
 									to={urls.settings}
 									onClick={closeMobileNavigation}
 								>
@@ -68,14 +74,16 @@ MobileNavigation.defaultProps = {
 		browseLabel: "Browse",
 		settingsLabel: "Settings",
 		logoutLabel: "Logout",
-		loginLabel: "Sign in"
+		loginLabel: "Sign in",
+		walletLabel: "Wallet"
 	},
 	urls: {
 		feed: "/feed",
 		userProfileBase: "/@",
 		settings: "/settings",
 		login: "/signin",
-		browse: "/browse"
+		browse: "/browse",
+		wallet: "/wallet"
 	}
 };
 

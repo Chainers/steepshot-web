@@ -3,7 +3,7 @@ import Constants from "../common/constants";
 import storage from "../utils/Storage";
 import {pushMessage} from "./pushMessage";
 import {updateSettings} from "./settings";
-import OneSignalService from "../services/oneSignalService";
+import OneSignalService from "../services/OneSignalService";
 
 let OneSignal = window.OneSignal;
 

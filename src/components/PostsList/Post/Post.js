@@ -18,8 +18,9 @@ import './post.css';
 import ReactPlayer from 'react-player';
 import MarkdownParser from '../../../utils/markdownParser';
 import renderHTML from 'react-render-html';
-import ImagesService from '../../../services/imagesService';
+import ImagesService from '../../../services/ImagesService';
 import PostImgBackground from './PostImgBackground';
+import ChainService from "../../../services/ChainService";
 
 class Post extends React.Component {
 
@@ -211,7 +212,7 @@ class Post extends React.Component {
 
 const mapStateToProps = (state, props) => {
 	let post = state.posts[props.index];
-	let isGolosService = state.services.name === Constants.SERVICES.golos.name;
+	let isGolosService = ChainService.usingGolos();
 	if (post) {
 		const media = post.media[0];
 		let linkToSinglePost = (isGolosService ? '/' + Constants.SERVICES.golos.name : '')

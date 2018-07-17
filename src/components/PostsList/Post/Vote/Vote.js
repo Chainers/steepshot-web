@@ -7,7 +7,7 @@ import {pushMessage} from '../../../../actions/pushMessage';
 import VoteIndicator from './VoteIndicator/VoteIndicator';
 import ShowIf from '../../../Common/ShowIf';
 import './vote.css';
-import AuthService from '../../../../services/authService';
+import AuthService from '../../../../services/AuthService';
 
 class Vote extends React.Component {
 

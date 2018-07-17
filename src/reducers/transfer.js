@@ -1,23 +1,13 @@
-import storage from '../utils/Storage';
-
 const initialState = {
-	token: 'SBD',
 	showMemo: false,
 	to: '',
-	amount: 0.001,
+	toError: '',
 	memo: '',
-	activeKey: storage.transferActiveKey || '',
-	saveKey: !!storage.transferActiveKey,
 	loader: false
 };
 
 export default function transfer(state = initialState, action) {
 	switch (action.type) {
-		case 'TRANSFER_SET_TOKEN':
-			return {
-				...state,
-				token: action.token
-			};
 		case 'TRANSFER_SHOW_MEMO':
 			return {
 				...state,
@@ -26,27 +16,21 @@ export default function transfer(state = initialState, action) {
 		case 'TRANSFER_CHANGE_USERNAME':
 			return {
 				...state,
-				to: action.value
+				to: action.value,
+				toError: ''
 			};
-		case 'TRANSFER_CHANGE_AMOUNT':
-			return {
-				...state,
-				amount: action.value
-			};
+		case 'TRANSFER_ERROR':
+			if (action.toError) {
+				return {
+					...state,
+					toError: action.toError
+				};
+			}
+			return state;
 		case 'TRANSFER_CHANGE_MEMO':
 			return {
 				...state,
 				memo: action.value
-			};
-		case 'TRANSFER_CHANGE_ACTIVE_KEY':
-			return {
-				...state,
-				activeKey: action.value
-			};
-		case 'TRANSFER_CHANGE_SAVE_KEY':
-			return {
-				...state,
-				saveKey: !state.saveKey
 			};
 		case 'TRANSFER_SHOW_LOADER':
 			return {
@@ -58,17 +42,11 @@ export default function transfer(state = initialState, action) {
 				...state,
 				loader: false
 			};
-		case 'TRANSFER_CLEAR':
-			return {
-				token: 'SBD',
-				showMemo: false,
-				to: '',
-				amount: 0.001,
-				memo: '',
-				activeKey: storage.transferActiveKey || '',
-				saveKey: !!storage.transferActiveKey,
-				loader: false
-			};
+		case 'CLOSE_MODAL':
+			if (action.index === 'transfer' || action.index === 'powerUp' || action.index === 'powerDown') {
+				return initialState;
+			}
+			return state;
 		default:
 			return state;
 	}

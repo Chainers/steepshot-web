@@ -1,25 +1,24 @@
-import React from 'react';
+import React, {Fragment} from 'react';
 import './chooseToken.css';
+import BalanceInfo from "../BalanceInfo/BalanceInfo";
 
-const ChooseToken = ({selectedToken, amount, onChange, balanceOnClick, disabled = false, isGolosService = false}) => (
-	<div className="container_choose-token">
-		<div className="select_choose-token">
-			<select className={disabled ? ' disabled' : ''}
-			        onChange={onChange}
-			        value={selectedToken}
-			        disabled={disabled ? 'disabled' : ''}>
-				<option value="STEEM">{isGolosService ? 'GOLOS' : 'STEEM'}</option>
-				<option value="SBD">{isGolosService ? 'GBG' : 'SBD'}</option>
-			</select>
+const ChooseToken = ({selectedToken, amount, onChange, balanceOnClick, disabled = false, tokensNames}) => (
+	<Fragment>
+		<p className="label_choose-token">Token</p>
+		<div className="container_choose-token">
+			<div className="select_choose-token">
+				<select className={disabled ? ' disabled' : ''}
+				        onChange={onChange}
+				        value={selectedToken}
+				        disabled={disabled ? 'disabled' : ''}>
+					<option value={0}><strong>{tokensNames[0]}</strong></option>
+					<option value={1}>{tokensNames[1]}</option>
+				</select>
+			</div>
+			<BalanceInfo token={tokensNames[selectedToken]}
+			             amount={amount} onClick={balanceOnClick}/>
 		</div>
-		<div className="balance_choose-token">
-			<span>Balance</span>
-			<span className={'balance-value_choose-token ' +(!!balanceOnClick ? 'pointer_choose-token' : '')}
-			      onClick={balanceOnClick}>
-				{amount} {isGolosService ? (selectedToken === 'STEEM' ? 'GOLOS' : 'GBG') : selectedToken}
-				</span>
-		</div>
-	</div>
+	</Fragment>
 );
 
 export default ChooseToken;

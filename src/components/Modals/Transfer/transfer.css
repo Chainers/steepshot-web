@@ -1,32 +1,15 @@
-.container_transfer {
-    width: 500px;
-    max-width: 100vw;
-    background-color: white;
-    border-radius: 10px;
-    padding: 25px 30px;
-}
-
-.header_transfer {
-    height: 45px;
-    border-bottom: 1px solid #f4f4f6;
-    font: 14px OpenSans-Bold;
-    color: #0f181e;
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-}
-
-.username_transfer {
-    color: #e74800;
-}
-
 .body_transfer {
-    padding-bottom: 15px;
-    border-bottom: 1px solid #f4f4f6;
+    padding-top: 20px;
 }
 
 .body_transfer > div {
-    margin-top: 15px;
+    margin-top: 5px;
+}
+
+.label_transfer {
+    font: 12px OpenSans-Light;
+    color: #979b9e;
+    margin: 0 0 3px;
 }
 
 .form-line_transfer {
@@ -34,12 +17,8 @@
     overflow: hidden;
 }
 
-.label_transfer {
-    width: 100%;
-    height: 25px;
-    font: 12px OpenSans-Light;
-    color: #979b9e;
-    padding-top: 5px;
+.body_transfer > div.gray_transfer {
+    margin-top: 25px;
 }
 
 .field_transfer {
@@ -54,6 +33,7 @@
 
 .at_transfer {
     width: 40px;
+    height: 40px;
     background: #ffffff url('/images/wallet/@.png') no-repeat center;
     background-size: 14px 14px;
 }
@@ -72,8 +52,17 @@
 }
 
 .field_transfer > input::placeholder, .body_transfer textarea::placeholder  {
-    font: 12px OpenSans-Light;
     color: #979b9e;
+}
+
+.recipient-error_transfer {
+    display: block;
+    height: 20px;
+    text-align: right;
+    color: #d0021b;
+    margin: 0;
+    font-size: 12px;
+    width: 100%
 }
 
 .body_transfer textarea {
@@ -90,53 +79,19 @@
     transition: .3s;
 }
 
-.buttons_transfer {
-    padding-top: 20px;
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: flex-end;
-}
-
-.buttons_transfer > button {
-    margin: 10px 0 0 10px;
-}
-
 .add-memo_transfer > span {
     font: 12px OpenSans-Light;
     color: #d0021b;
     cursor: pointer;
 }
 
-.checkbox-field_transfer {
-    display: flex;
-    justify-content: flex-start;
-}
-
-.checkbox-field_transfer {
-    font: 12px OpenSans-Light;
+.inputs-label {
+    height: 17px;
+    margin: 0 0 3px;
+    font: 12px OpenSans-Regular;
     color: #979b9e;
 }
 
-.checkbox_transfer {
-    width: 20px;
-    height: 20px;
-    border: solid 1px #979b9e;
-    cursor: pointer;
-    margin-right: 10px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.checkbox_transfer .save_transfer {
-    width: 16px;
-    height: 16px;
-    background-color: #d0021b;
-}
-
-@media (max-width: 400px) {
-    .buttons_transfer {
-        justify-content: center;
-    }
+.body_transfer > div.active-key_transfer {
+    margin: 25px 0 30px;
 }

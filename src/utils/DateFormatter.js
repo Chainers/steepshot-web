@@ -7,7 +7,7 @@ class DateFormatter {
 			"Nov", "Dec"
 		];
 
-		let result = date.split('T')[0].split('-');
+		let result = date.toISOString().split('T')[0].split('-');
 
 		return result[2] + ' ' + monthNames[parseInt(result[1], 10)] + ' ' + result[0]
 	}

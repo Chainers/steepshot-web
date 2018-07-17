@@ -1,0 +1,17 @@
+.container_balance-info {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    width: 210px;
+    border-radius: 6px;
+    background-color: #f5f5f5;
+    color: #0f181e;
+}
+
+.value_balance-info {
+    color: #e74800;
+}
+
+.pointer_balance-info {
+    cursor: pointer;
+}

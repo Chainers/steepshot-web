@@ -7,9 +7,9 @@ import {push} from "react-router-redux";
 import {compressJPEG} from "../utils/compressor";
 import {pushErrorMessage, pushMessage} from "./pushMessage";
 import Constants from "../common/constants";
-import PostService from "../services/postService";
-import UserService from "../services/userService";
-import AuthService from "../services/authService";
+import PostService from "../services/PostService";
+import UserService from "../services/UserService";
+import AuthService from "../services/AuthService";
 import Utils from "../utils/Utils";
 
 export function addTag() {

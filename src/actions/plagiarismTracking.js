@@ -1,6 +1,6 @@
-import PostService from '../services/postService';
+import PostService from '../services/PostService';
 import Constants from '../common/constants';
-import AuthService from '../services/authService';
+import AuthService from '../services/AuthService';
 import {push} from 'react-router-redux';
 import {closeModal} from './modal';
 import {editPostReject, editPostRequest, editPostSuccess} from './editPost';

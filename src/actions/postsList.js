@@ -1,7 +1,7 @@
 import {getStore} from '../store/configureStore';
 import Constants from '../common/constants';
 import {serverErrorsList} from '../utils/serverErrorsList';
-import PostService from '../services/postService';
+import PostService from '../services/PostService';
 
 export function initPostsList(options) {
 	return {

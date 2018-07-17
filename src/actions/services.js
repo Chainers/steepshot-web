@@ -1,4 +1,4 @@
-import RequestService from "../services/requestService";
+import RequestService from "../services/RequestService";
 import Constants from "../common/constants";
 import {getStore} from "../store/configureStore";
 import storage from "../utils/Storage";

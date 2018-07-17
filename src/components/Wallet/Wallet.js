@@ -8,20 +8,24 @@ import {getUserProfile} from "../../actions/userProfile";
 import Utils from "../../utils/Utils";
 import {openModal} from "../../actions/modal";
 import Transfer from "../Modals/Transfer/Transfer";
-import {setToken} from "../../actions/transfer";
-import Constants from "../../common/constants";
-import {getStore} from "../../store/configureStore";
 import ShowIf from "../Common/ShowIf";
+import PowerUp from "../Modals/PowerUp/PowerUp";
+import PowerDown from "../Modals/PowerDown/PowerDown";
+import ChainService from "../../services/ChainService";
+import {setToken} from "../../actions/wallet";
 
 const DESCRIPTION = {
 	STEEM: `Tradeable tokens that may be transferred anywhere at anytime.
 Steem can be converted to STEEM POWER in a process called powering up.`,
-	SP: "Influence tokens which give you more control over post payouts and allow you to earn on curation rewards.",
-	SBD: "Tradeable tokens that may be transferred anywhere at anytime.",
-	GOLOS: `Перемещаемые цифровые токены, которые могут переданы куда угодно в любой момент.
-Голос может быть конвертирован в Силу Голоса, этот процесс называется "увеличение Силы Голоса".`,
-	SG: `Сила Голоса неперемещаемая, её количество увеличивается при долгосрочном хранении.
-Чем больше у Вас Силы Голоса, тем сильней вы влияете на вознаграждения за пост и тем больше зарабатываете за голосование.`,
+	SP: `Influence tokens which give you more control over post payouts 
+	and allow you to earn on curation rewards.`,
+	SBD: `Tradeable tokens that may be transferred anywhere at anytime.`,
+	GOLOS: `Перемещаемые цифровые токены, которые могут переданы куда угодно 
+	в любой момент. Голос может быть конвертирован в Силу Голоса, этот процесс 
+	называется "увеличение Силы Голоса".`,
+	SG: `Сила Голоса неперемещаемая, её количество увеличивается при долгосрочном 
+	хранении. Чем больше у Вас Силы Голоса, тем сильней вы влияете на вознаграждения 
+	за пост и тем больше зарабатываете за голосование.`,
 	GBG: `Перемещаемые цифровые токены, цена которых равна ~1 мг золота в GOLOS.`
 };
 
@@ -30,6 +34,9 @@ class Wallet extends React.Component {
 	constructor(props) {
 		super();
 		props.getUserProfile();
+		this.transferSteem = this.transferSteem.bind(this);
+		this.powerUp = this.powerUp.bind(this);
+		this.powerDown = this.powerDown.bind(this);
 	}
 
 	transfer() {
@@ -40,13 +47,27 @@ class Wallet extends React.Component {
 	}
 
 	transferSteem() {
-		this.props.setToken('STEEM');
+		this.props.setToken(0);
 		this.transfer()
 	}
 
 	transferSbd() {
-		this.props.setToken('SBD');
+		this.props.setToken(1);
 		this.transfer()
+	}
+
+	powerUp() {
+		let modalOption = {
+			body: (<PowerUp/>)
+		};
+		this.props.openModal("powerUp", modalOption);
+	}
+
+	powerDown() {
+		let modalOption = {
+			body: (<PowerDown/>)
+		};
+		this.props.openModal("powerDown", modalOption);
 	}
 
 	render() {
@@ -76,11 +97,20 @@ class Wallet extends React.Component {
 							coin={isGolosService ? "GOLOS" : "STEEM"}
 							value={steem}
 							description={isGolosService ? DESCRIPTION.GOLOS : DESCRIPTION.STEEM}
-							actions={
+							actions={isGolosService ?
 								[{
 									label: 'Transfer',
-									icon: '',
-									onClick: this.transferSteem.bind(this)
+									icon: '/images/wallet/buttons/transfer.png',
+									onClick: this.transferSteem
+								}] :
+								[{
+									label: 'Transfer',
+									icon: '/images/wallet/buttons/transfer.png',
+									onClick: this.transferSteem
+								}, {
+									label: 'Power up',
+									icon: '/images/wallet/buttons/powerUp.png',
+									onClick: this.powerUp
 								}]
 							}
 						/>
@@ -93,20 +123,14 @@ class Wallet extends React.Component {
 							point="sp"
 							coin={isGolosService ? "GOLOS" : "STEEM"}
 							value={sp}
-							description={isGolosService ? DESCRIPTION.SG : DESCRIPTION.STEEM}
-							/*actions={
+							description={isGolosService ? DESCRIPTION.SG : DESCRIPTION.SP}
+							actions={isGolosService ? [] :
 								[{
-									label: 'Power up',
-									icon: '/images/wallet/buttons/powerUp.png',
-									onClick: () => {
-									}
-								}, {
 									label: 'Power down',
 									icon: '/images/wallet/buttons/powerDown.png',
-									onClick: () => {
-									}
+									onClick: this.powerDown
 								}]
-							}*/
+							}
 						/>
 						<WidgetToken
 							background={{
@@ -142,8 +166,7 @@ const mapStateToProps = state => {
 		return {}
 	}
 	const {balance, sbd_balance, total_steem_power_steem, estimated_balance} = state.userProfile.profile;
-	const golosName = Constants.SERVICES.golos.name;
-	const isGolosService = getStore().getState().services.name === golosName;
+	const isGolosService = ChainService.usingGolos();
 	return {
 		cost: estimated_balance,
 		steem: balance,

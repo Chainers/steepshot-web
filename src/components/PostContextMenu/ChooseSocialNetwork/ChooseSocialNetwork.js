@@ -14,8 +14,8 @@ import {
 	VKShareButton
 } from 'react-share';
 import './chooseSocialNetwork.css';
-import {getStore} from "../../../store/configureStore";
 import Constants from "../../../common/constants";
+import ChainService from "../../../services/ChainService";
 
 class ChooseSocialNetwork extends React.Component {
 
@@ -26,7 +26,7 @@ class ChooseSocialNetwork extends React.Component {
 
 	render() {
 		const golosName = Constants.SERVICES.golos.name;
-		const isGolosService = getStore().getState().services.name === golosName;
+		const isGolosService = ChainService.usingGolos();
 		let shareAddress = document.location.origin + (isGolosService ? '/' + golosName : '') + '/post' + this.props.item.url;
 		let postTitle = this.props.item.title;
 		let crossOffset = {top: 8, right: 5};

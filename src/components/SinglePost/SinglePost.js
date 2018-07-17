@@ -6,8 +6,8 @@ import './singlePost.css';
 import {withWrapper} from "create-react-server/wrapper";
 import {addMetaTags, getTags} from "../../actions/metaTags";
 import Utils from "../../utils/Utils";
-import LoggingService from '../../services/loggingService';
-import PostService from '../../services/postService';
+import LoggingService from '../../services/LoggingService';
+import PostService from '../../services/PostService';
 
 class SinglePost extends React.Component {
 

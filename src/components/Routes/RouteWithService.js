@@ -5,7 +5,7 @@ import {replace} from "react-router-redux";
 import Utils from "../../utils/Utils";
 import Constants from "../../common/constants";
 import {setService} from "../../actions/services";
-import AuthService from "../../services/authService";
+import AuthService from "../../services/AuthService";
 
 class RouteWithService extends React.Component {
 
