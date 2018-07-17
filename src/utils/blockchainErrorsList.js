@@ -69,6 +69,11 @@ export function blockchainErrorsList(error) {
 				notificationText: 'You\'ve already voted in a similar way. Please wait for synchronisation with blockchain.'
 			},
 			{
+				error: '10 assert_exception: Assert Exception: _db.head_block_time() < comment.cashout_time - STEEM_UPVOTE_LOCKOUT_HF17:' +
+				' Cannot increase payout within last twelve hours before payout.',
+				notificationText: 'Cannot increase payout within last twelve hours before payout.'
+			},
+			{
 				error: '3010000 tx_missing_active_auth: missing required active authority: Missing Active Authority ${id}', // eslint-disable-line
 				notificationText: 'It\'s wrong key. Check it and try again.'
 			},

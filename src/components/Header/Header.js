@@ -61,7 +61,7 @@ class Header extends React.Component {
 		let loginComponent = <div className="section login">
 			<div className="wrap-login">
 				<Link to="/signin" className="btn btn-default btn-xs">
-					Sign in
+					SIGN IN
 				</Link>
 			</div>
 		</div>;
