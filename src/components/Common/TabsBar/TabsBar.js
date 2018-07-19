@@ -1,16 +1,18 @@
 import React from 'react';
-import {connect} from "react-redux";
-import {pageLoaded, setActiveIndex} from "../../../actions/tabsBar";
-import LoadingSpinner from "../../LoadingSpinner";
-import ShowIf from "../ShowIf";
-import Constants from "../../../common/constants";
+import {connect} from 'react-redux';
+import {pageLoaded, setActiveIndex} from '../../../actions/tabsBar';
+import LoadingSpinner from '../../LoadingSpinner';
+import ShowIf from '../ShowIf';
+import Constants from '../../../common/constants';
+import './tabsBar.css';
 
 class TabsBar extends React.Component {
 	static defaultProps = {
 		className: '',
 		alwaysShowNavigation: false,
 		showLoader: true,
-		changeIndex: () => {}
+		changeIndex: () => {
+		}
 	};
 
 	componentDidUpdate() {
@@ -47,7 +49,7 @@ class TabsBar extends React.Component {
 				navItems.push(
 					<li role="presentation" key={index} className={styles}>
 						<a onClick={() => this.setIndex(index)}
-							 className="nav-link tab-head">
+						   className="nav-link tab-head">
 							{item.props.name}
 						</a>
 					</li>
@@ -89,7 +91,7 @@ class TabsBar extends React.Component {
 
 	render() {
 		return (
-			<div className={"clearfix" + this.props.className}>
+			<div className={this.props.className}>
 				{this.renderNavigation()}
 				{this.renderChildren()}
 				<ShowIf show={!this.props.pageLoaded && this.props.showLoader}>
@@ -102,7 +104,7 @@ class TabsBar extends React.Component {
 
 const mapStateToProps = (state, props) => {
 	return {
-		...state.tabsBar[props.point],
+		...state.tabsBar[props.point]
 	};
 };
 

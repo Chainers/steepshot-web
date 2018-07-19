@@ -32,29 +32,24 @@ export function setPostModalOptions(options) {
 }
 
 function swapPostModal(index, isLoading) {
-  let postModal = getStore().getState().postModal, previousStyle = postModal.style;
-  if (Object.keys(postModal.style).length < 1) {
-    previousStyle = postModal.previousStyle;
+	let postModal = getStore().getState().postModal, previousStyle = postModal.style;
+	if (Object.keys(postModal.style).length < 1) {
+		previousStyle = postModal.previousStyle;
 	}
 	return dispatch => {
-    dispatch(setCommentEditState('', postModal.currentIndex, false));
-    dispatch ({
-      type: 'SWAP_POST_MODAL',
-      index,
-      isLoading,
-      previousStyle
-    });
-    dispatch(setTextInputState(Constants.OPERATIONS.COMMENT, {text: '', focusedStyle: ''}));
+		dispatch(setCommentEditState('', postModal.currentIndex, false));
+		dispatch({
+			type: 'SWAP_POST_MODAL',
+			index,
+			isLoading,
+			previousStyle
+		});
+		dispatch(setTextInputState(Constants.OPERATIONS.COMMENT, {text: '', focusedStyle: ''}));
 	}
 }
 
 export function nextPostModal(index, isLoading) {
 	let state = getStore().getState();
-	if (Object.keys(state.modals).length >= 2) {
-		return {
-			type: 'CONFIRM_ACTION_IN_MODAL'
-		}
-	}
 	let point = state.postModal.point;
 	let postsList = state.postsList[point].posts;
 	let positionPost = postsList.indexOf(index);
@@ -78,11 +73,6 @@ export function nextPostModal(index, isLoading) {
 
 export function previousPostModal(index, isLoading) {
 	let state = getStore().getState();
-	if (Object.keys(state.modals).length >= 2) {
-		return {
-			type: 'CONFIRM_ACTION_IN_MODAL'
-		}
-	}
 	let point = state.postModal.point;
 	let postsList = state.postsList[point].posts;
 	let positionPost = postsList.indexOf(index);

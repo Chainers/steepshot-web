@@ -8,7 +8,7 @@ import Description from './Description/Description';
 import CommentInput from './CommentInput/CommentInput';
 import {Scrollbars} from 'react-custom-scrollbars';
 import './comments.css';
-import AuthService from "../../services/authService";
+import AuthService from "../../services/AuthService";
 
 class Comments extends React.Component {
 
@@ -39,19 +39,19 @@ class Comments extends React.Component {
 		if (this.props.loading && (!propsComments || !propsComments.length)) {
 			comments = <LoadingSpinner style={{marginTop: 20}}/>;
 		}
-    if (!this.props.loading && (!propsComments || !propsComments.length)) {
-      let warningMessage = '';
-      if (this.props.errorMessage) {
-        warningMessage = this.props.errorMessage;
-      }
-				comments = <div className="empty-query-message_comment">
-										 {warningMessage}
-									 </div>
-    }
+		if (!this.props.loading && (!propsComments || !propsComments.length)) {
+			let warningMessage = '';
+			if (this.props.errorMessage) {
+				warningMessage = this.props.errorMessage;
+			}
+			comments = <div className="empty-query-message_comment">
+				{warningMessage}
+			</div>
+		}
 		if (propsComments && propsComments.length > 0) {
 			comments = [];
 			for (let i = 0; i < propsComments.length; i++) {
-        comments.unshift(<Comment key={i} point={propsComments[i]}/>);
+				comments.unshift(<Comment key={i} point={propsComments[i]}/>);
 			}
 		}
 		return (
@@ -95,7 +95,7 @@ const mapStateToProps = (state, props) => {
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-    getPostComments: (point) => {
+		getPostComments: (point) => {
 			dispatch(getPostComments(point))
 		},
 		initPostComment: (point) => {

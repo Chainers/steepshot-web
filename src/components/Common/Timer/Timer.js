@@ -1,43 +1,44 @@
 import React from 'react';
 import ShowIf from '../ShowIf';
+import Constants from '../../../common/constants';
 
-const MILLISECONDS_IN_SECOND = 1000;
 const SECONDS_IN_MINUTE = 60;
 const MINUTES_IN_HOUR = 60;
 
 class Timer extends React.Component {
 
 	static defaultProps = {
-		onTimeout: () => {},
+		onTimeout: () => {
+		},
+		onTick: () => {
+		},
 		waitingTime: 0
 	};
 
 	constructor(props) {
 		super(props);
 		this.state = {
-			waitingTime: props.waitingTime * MILLISECONDS_IN_SECOND,
-			targetTime: new Date().getTime() + props.waitingTime * MILLISECONDS_IN_SECOND,
+			waitingTime: props.waitingTime * Constants.MILLISECONDS_IN_SECOND,
+			targetTime: new Date().getTime() + props.waitingTime * Constants.MILLISECONDS_IN_SECOND,
 			show: false
 		};
 	}
 
 	componentDidMount() {
 		if (this.props.staticTimer) {
-      this.timer = setInterval(() => {
-        this.tick()
-      }, 1000);
+			this.timer = setInterval(() => {
+				this.tick()
+			}, 1000);
 		}
 	}
 
 	componentWillReceiveProps(nextProps) {
-		if (this.state.waitingTime !== nextProps.waitingTime) {
-      if (this.timer) {
-      	clearInterval(this.timer);
-			}
-			this.setState({targetTime: new Date().getTime() + nextProps.waitingTime * MILLISECONDS_IN_SECOND}, () => {
-        this.timer = setInterval(() => {
-          this.tick()
-        }, 1000);
+		if (this.state.waitingTime !== nextProps.waitingTime && !this.props.staticTimer) {
+			if (this.timer) clearInterval(this.timer);
+			this.setState({targetTime: new Date().getTime() + nextProps.waitingTime * Constants.MILLISECONDS_IN_SECOND}, () => {
+				this.timer = setInterval(() => {
+					this.tick()
+				}, 1000);
 			});
 		}
 	}
@@ -51,7 +52,7 @@ class Timer extends React.Component {
 		if (this.props.staticTimer) {
 			this.props.onTick(waitingTime / 1000);
 		}
-		if (waitingTime < 0.5 * MILLISECONDS_IN_SECOND) {
+		if (waitingTime < 0.5 * Constants.MILLISECONDS_IN_SECOND) {
 			clearInterval(this.timer);
 			this.setState({
 				waitingTime: 0,
@@ -67,7 +68,7 @@ class Timer extends React.Component {
 	}
 
 	render() {
-		let seconds = Math.floor(this.state.waitingTime / MILLISECONDS_IN_SECOND);
+		let seconds = Math.floor(this.state.waitingTime / Constants.MILLISECONDS_IN_SECOND);
 		let minutes = Math.floor(seconds / SECONDS_IN_MINUTE);
 		let hours = Math.floor(minutes / MINUTES_IN_HOUR);
 		seconds %= SECONDS_IN_MINUTE;

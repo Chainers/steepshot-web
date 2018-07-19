@@ -1,7 +1,7 @@
 import React from 'react';
 import {Redirect, Route, Switch} from 'react-router-dom';
 import App from './components/App';
-import NotFound from './components/NotFound';
+import NotFound from './components/NotFound/NotFound';
 import PrivateRoute from './components/Routes/PrivateRoute';
 import Feed from './components/Feed/Feed';
 import AboutComponent from './components/About/AboutComponent';
@@ -15,7 +15,7 @@ import Browse from './components/Browse/Browse';
 import Settings from './components/Settings/Settings';
 import RouteWithService from "./components/Routes/RouteWithService";
 import SteemConnect from "./components/SteemConnect/SteemConnect";
-import AuthService from "./services/authService";
+import AuthService from "./services/AuthService";
 
 export default function getRoutes() {
 	return (
@@ -41,6 +41,7 @@ export default function getRoutes() {
 				<PrivateRoute path="/:service(golos)?/editPost/:category?/:username?/:permlink?" component={EditPost}/>
 				<PrivateRoute path="/:service(golos)?/Profile" component={UserProfile}/>
 				<PrivateRoute path="/:service(golos)?/settings" component={Settings}/>
+				{/*<PrivateRoute path="/:service(golos)?/wallet" component={Wallet}/>*/}
 				<Route path="*" component={NotFound}/>
 			</Switch>
 		</App>

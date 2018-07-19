@@ -1,0 +1,39 @@
+.checkbox-field_input-active-key {
+    display: flex;
+    justify-content: flex-start;
+    font: 12px OpenSans-Light;
+    color: #979b9e;
+}
+
+
+.checkbox_input-active-key {
+    width: 20px;
+    height: 20px;
+    border: solid 1px #979b9e;
+    cursor: pointer;
+    margin-right: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.save_input-active-key {
+    width: 16px;
+    height: 16px;
+    background-color: #d0021b;
+}
+
+.container_input-active-key input {
+    width: 100%;
+    height: 40px;
+    border: solid 1px #f4f4f6;
+    border-radius: 6px;
+    padding-left: 10px;
+    background-color: #fafafa;
+    font: 14px OpenSans-Light;
+    color: #979b9e;
+}
+
+.container_input-active-key input::placeholder  {
+    color: #979b9e;
+}

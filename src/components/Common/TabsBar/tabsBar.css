@@ -1,0 +1,20 @@
+.empty-search_tabs-bar {
+    width: 550px;
+    height: 150px;
+    font: 32px OpenSans-Light;
+    line-height: 1.56;
+    color: #0f181e;
+    margin-top: 8%;
+}
+
+.empty-search_tabs-bar span {
+    color: #e74800;
+}
+
+@media (max-width: 570px) {
+    .empty-search_tabs-bar {
+        margin-top: 16%;
+        width: 80vw;
+        font: 20px OpenSans-Light;
+    }
+}

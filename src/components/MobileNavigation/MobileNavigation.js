@@ -6,7 +6,7 @@ import {logout} from '../../actions/auth';
 import './mobileNavigation.css';
 import {closeMobileNavigation} from '../../actions/mobileNavigation';
 import {Scrollbars} from 'react-custom-scrollbars';
-import AuthService from '../../services/authService';
+import AuthService from '../../services/AuthService';
 
 class MobileNavigation extends React.Component {
 
@@ -20,7 +20,8 @@ class MobileNavigation extends React.Component {
 		const {isAuth, name, opened, urls, labels, closeMobileNavigation} = this.props;
 		return (
 			<ShowIf show={isAuth}>
-				<div className={'container_mobile' + (opened ? ' opened_mobile' : '')} onClick={this.props.closeMobileNavigation}>
+				<div className={'container_mobile' + (opened ? ' opened_mobile' : '')}
+				     onClick={this.props.closeMobileNavigation}>
 					<div className="menu_mobile" style={this.props.menuMobilePaddingTop}>
 						<Scrollbars>
 							<div className="menu-items_mobile">
@@ -41,6 +42,12 @@ class MobileNavigation extends React.Component {
 									onClick={closeMobileNavigation}
 								>
 									{labels.browseLabel}
+								</Link>
+								<Link
+									to={urls.wallet}
+									onClick={closeMobileNavigation}
+								>
+									{labels.walletLabel}
 								</Link>
 								<Link
 									to={urls.settings}
@@ -67,21 +74,23 @@ MobileNavigation.defaultProps = {
 		browseLabel: "Browse",
 		settingsLabel: "Settings",
 		logoutLabel: "Logout",
-		loginLabel: "Sign in"
+		loginLabel: "Sign in",
+		walletLabel: "Wallet"
 	},
 	urls: {
 		feed: "/feed",
 		userProfileBase: "/@",
 		settings: "/settings",
 		login: "/signin",
-		browse: "/browse"
+		browse: "/browse",
+		wallet: "/wallet"
 	}
 };
 
 const mapStateToProps = (state) => {
-  const menuMobilePaddingTop = !state.advertising.advertisingStatus ? {paddingTop: 160} : {};
+	const menuMobilePaddingTop = !state.advertising.advertisingStatus ? {paddingTop: 160} : {};
 	return {
-    menuMobilePaddingTop,
+		menuMobilePaddingTop,
 		isAuth: AuthService.isAuth(),
 		name: state.auth.user,
 		opened: state.mobileNavigation.opened

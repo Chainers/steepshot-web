@@ -1,6 +1,6 @@
 .container_push-msg {
     position: fixed;
-    z-index: 1100;
+    z-index: 15;
     left: 50%;
     bottom: 0;
     transform: translateX(-50%);
@@ -41,6 +41,7 @@
     .container_push-msg {
         min-width: 85vw;
     }
+
     .text-wrap_push-msg {
         border-radius: 16px;
         padding: 20px;

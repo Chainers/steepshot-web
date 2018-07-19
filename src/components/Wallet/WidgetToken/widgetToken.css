@@ -1,0 +1,104 @@
+.container_widget-token {
+    width: 300px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 20px;
+    color: #ffffff;
+    font-family: OpenSans-Light, serif;
+    margin: 30px 10px;
+    background: no-repeat top;
+    background-size: 300px auto;
+    border-radius: 15px;
+}
+
+.header_widget-token {
+    height: 30px;
+    min-height: 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.icon_widget-token {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background-color: white;
+}
+
+.actions-btn_widget-token {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: rgba(1, 1, 1, 0.1) url('/images/wallet/whitedots.png') no-repeat center;
+    background-size: 14px 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.actions-btn_widget-token:hover, .actions-btn_widget-token.active {
+    background: #ffffff url('/images/wallet/blackdots.png') no-repeat center;
+    background-size: 14px 4px;
+}
+
+.container-actions_context-menu {
+    width: 200px;
+    border-radius: 10px;
+    background-color: #ffffff;
+    overflow: hidden;
+}
+
+.balance_widget-token {
+    height: 57px;
+    min-height: 57px;
+    font-size: 32px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding-bottom: 7px;
+    border-bottom: 1px solid #fafafa33;
+}
+
+.token_widget-token {
+    height: 27px;
+    font-weight: 600;
+    line-height: 1.69;
+    font-size: 16px;
+}
+
+.value_widget-token {
+    font-size: 26px;
+    font-weight: 100;
+    line-height: 1.79;
+}
+
+.description_widget-token {
+    font: 13px OpenSans-Light;
+    flex-grow: 1;
+    line-height: 18px;
+    margin: 16px 0;
+    max-height: 38px;
+    overflow: hidden;
+}
+
+.button_widget-token {
+    height: 40px;
+    background: rgba(255, 255, 255, 0.3);
+    border: none;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+.fake-button_widget-token {
+    height: 40px;
+}
+
+.button_widget-token:hover {
+    background: rgba(255, 255, 255, 0.4);
+}

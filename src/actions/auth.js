@@ -4,14 +4,14 @@ import {hideBodyLoader, showBodyLoader} from './bodyLoader';
 import {checkSubscribeAndUpdateSettings, removeSettings} from './settings';
 import storage from '../utils/Storage';
 import {unsubscribe} from './oneSignal';
-import UserService from '../services/userService';
-import OneSignalService from '../services/oneSignalService';
-import LoggingService from '../services/loggingService';
-import ChainService from '../services/chainService';
+import UserService from '../services/UserService';
+import OneSignalService from '../services/OneSignalService';
+import LoggingService from '../services/LoggingService';
+import ChainService from '../services/ChainService';
 import {setPostingKeyErrorMessage, setUsernameErrorMessage} from './login';
 import {getStore} from '../store/configureStore';
 import Constants from '../common/constants';
-import StorageSerive from '../services/storageService';
+import StorageSerive from '../services/StorageService';
 
 export function showMessage(message) {
 	return dispatch => {
@@ -37,20 +37,18 @@ export function login(username, postingKey) {
 		ChainService.getAccounts(username)
 			.then(response => {
 				if (response.length === 0) {
-					const errorMessage = 'Such user doesn\'t exist.';
-					dispatch(setUsernameErrorMessage(errorMessage));
-					return Promise.reject(errorMessage);
+					dispatch(setUsernameErrorMessage(Constants.AUTH_WRONG_USER));
+					return Promise.reject(Constants.AUTH_WRONG_USER);
 				}
 				let pubWif = response[0].posting.key_auths[0][0];
 				return ChainService.wifIsValid(postingKey, pubWif)
 					.then(isValid => {
 						if (!isValid) {
-							return Promise.reject({actual: 128, expected: 1});
+							return Promise.reject(Constants.AUTH_WRONG_POSTING_KEY);
 						}
 						let avatar = getAvatar(response[0]);
 						StorageSerive.setAuthData(username, postingKey, avatar, getStore().getState().services.name || Constants.SERVICES.steem.name);
 						initOneSignalService(username, dispatch);
-						let parseResult = JSON.parse(response[0].json_metadata);
 						dispatch({
 							type: 'LOGIN_SUCCESS',
 							postingKey,
@@ -60,14 +58,15 @@ export function login(username, postingKey) {
 							voting_power: response[0].voting_power / 100
 						});
 						dispatch(push('/feed'));
-						dispatch(showMessage('Welcome to Steepshot, ' + (parseResult.profile.name || username) + '!'));
+						dispatch(showMessage(`Welcome to Steepshot, ${username}!`));
 						LoggingService.logLogin();
 					})
 			})
 			.catch(error => {
 				StorageSerive.clearAuthData();
-				if (!error.data && error.actual === 128) {
-					dispatch(setPostingKeyErrorMessage('Invalid posting key.'))
+				if (!error.data && (error.actual === 128 || error.message === Constants.NON_BASE58_CHARACTER)) {
+					dispatch(setPostingKeyErrorMessage(Constants.AUTH_WRONG_POSTING_KEY));
+					return dispatch(loginError(Constants.AUTH_WRONG_POSTING_KEY));
 				}
 				dispatch(loginError(error));
 			})

@@ -7,9 +7,7 @@ class Testing extends React.Component {
 		if (global.isServerSide) {
 			return null;
 		}
-		return (
-			null
-		);
+		return null;
 	}
 }
 

@@ -4,14 +4,14 @@
     right: 0;
     bottom: 0;
     left: 0;
-    background: rgba(0,0,0,.5);
+    background: rgba(0, 0, 0, .5);
     z-index: -1;
     opacity: 0;
-    transition: opacity .25s,z-index .5s;
+    transition: opacity .25s, z-index .5s;
 }
 
 .container_mobile.opened_mobile {
-    z-index: 1000;
+    z-index: 10;
     opacity: 1;
 }
 
@@ -21,7 +21,7 @@
     max-width: 400px;
     background: #fff;
     transition: transform .5s;
-    z-index: 1001;
+    z-index: 11;
     padding: 60px 0 0;
     margin: 0;
     overflow: auto;

@@ -1,5 +1,4 @@
 import {getStore} from "../store/configureStore";
-import {utils} from "../utils/utils";
 import {clearTextInputState, setTextInputError} from "./textInput";
 import * as React from "react";
 import PlagiarismTracking from "../components/Modals/PlagiarismTracking/PlagiarismTracking";
@@ -8,9 +7,10 @@ import {push} from "react-router-redux";
 import {compressJPEG} from "../utils/compressor";
 import {pushErrorMessage, pushMessage} from "./pushMessage";
 import Constants from "../common/constants";
-import PostService from "../services/postService";
-import UserService from "../services/userService";
-import AuthService from "../services/authService";
+import PostService from "../services/PostService";
+import UserService from "../services/UserService";
+import AuthService from "../services/AuthService";
+import Utils from "../utils/Utils";
 
 export function addTag() {
 	return (dispatch) => {
@@ -20,7 +20,7 @@ export function addTag() {
 		if (editPostState.tags.split(' ').length === 20) {
 			dispatch(pushMessage(Constants.MAX_TAGS_NUMBER));
 		}
-		if (utils.isEmptyString(newTag)) {
+		if (Utils.isEmptyString(newTag)) {
 			return emptyAction();
 		}
 		dispatch(editPostChangeTags(getValidTagsString(editPostState.tags + ' ' + newTag.trim())));
@@ -124,7 +124,6 @@ export function closeTimer() {
 
 export function editPostClear() {
 	const initDataEditPost = getStore().getState().editPost.initData;
-	console.log(initDataEditPost);
 	return dispatch => {
 		if (initDataEditPost && initDataEditPost.src) {
 			dispatch({
@@ -410,11 +409,11 @@ function isValidImageSize(dispatch, imageSize) {
 
 function isValidField(dispatch, title, photoSrc) {
 	let isValid = true;
-	if (utils.isEmptyString(title)) {
+	if (Utils.isEmptyString(title)) {
 		dispatch(setTextInputError(Constants.TEXT_INPUT_POINT.TITLE, 'Title is required'));
 		isValid = false;
 	}
-	if (utils.isEmptyString(photoSrc)) {
+	if (Utils.isEmptyString(photoSrc)) {
 		dispatch(setEditPostImageError('Photo is required'));
 		isValid = false;
 	}

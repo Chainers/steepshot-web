@@ -1,5 +1,5 @@
 import {getStore} from '../store/configureStore';
-import UserService from '../services/userService';
+import UserService from '../services/UserService';
 import {serverErrorsList} from '../utils/serverErrorsList';
 import Constants from '../common/constants';
 
@@ -17,10 +17,11 @@ export function clearUsersList(point) {
 	};
 }
 
-function getUsersListRequest(point) {
+function getUsersListRequest(point, offset) {
 	return {
 		type: 'GET_USERS_LIST_REQUEST',
-		point
+		point,
+		offset
 	};
 }
 
@@ -59,16 +60,17 @@ export function getUsersList(point) {
 
 	return (dispatch) => {
 		if (statePoint.options.query) {
-      if (statePoint.options.query.length < 3) {
-        return {type: 'EMPTY_GET_USERS'};
-      }
+			if (statePoint.options.query.length < 3) {
+				return {type: 'EMPTY_GET_USERS'};
+			}
 		}
-		dispatch(getUsersListRequest(point));
+		dispatch(getUsersListRequest(point, statePoint.offset));
 		UserService.getUsersList(point.substr(0, point.indexOf('JSON_OPTIONS:')), statePoint.offset, LIMIT, statePoint.options)
 			.then((response) => {
 				statePoint = getStore().getState().usersList[point];
 				let newUsers = response.results;
-				let hasMore = response.offset !== statePoint.offset;
+				const offset = newUsers[newUsers.length - 1] ? newUsers[newUsers.length - 1].author : statePoint.offset;
+				let hasMore = statePoint.offset !== offset;
 				if (statePoint.users.length !== 0) {
 					newUsers = newUsers.slice(1, newUsers.length);
 				}
@@ -94,18 +96,18 @@ export function getUsersList(point) {
 					point,
 					hasMore,
 					users: authors,
-					offset: newUsers[newUsers.length - 1] ? newUsers[newUsers.length - 1].author : statePoint.offset,
+					offset
 				};
 				dispatch(getUsersListSuccess(pointOptions, users));
 				if (statePoint.users.length < 17 && state.window.width > Constants.WINDOW.WIDE_SCREEN_WIDTH
-							&& state.window.height > Constants.WINDOW.MOBILE_START_WIDTH) {
+					&& state.window.height > Constants.WINDOW.MOBILE_START_WIDTH) {
 					dispatch(getUsersList(point));
 				}
 			})
 			.catch(error => {
 				let checkedError = serverErrorsList(error);
 				dispatch(getUsersListError(point, checkedError));
-      });
+			});
 	};
 }
 
@@ -132,7 +134,7 @@ export function updateUser(author) {
 				let updatedUser = {[author]: {...response.results[0], togglingFollow: false}};
 				dispatch(updateUserSuccess(updatedUser));
 			})
-			.catch( error => {
+			.catch(error => {
 				dispatch({
 					type: 'UPDATE_USER_ERROR',
 					error

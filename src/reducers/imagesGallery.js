@@ -1,7 +1,7 @@
 export default function imagesGallery(state = {}, action) {
-  switch (action.type) {
+	switch (action.type) {
 
-    default:
-      return state;
-  }
+		default:
+			return state;
+	}
 }

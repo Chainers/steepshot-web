@@ -1,12 +1,12 @@
 import {getStore} from '../store/configureStore';
-import {push} from "react-router-redux";
+import {push} from 'react-router-redux';
 import {initPostsList} from './postsList';
 import {initPostModal} from './postModal';
 import {pushErrorMessage, pushMessage} from './pushMessage';
 import {actionLock, actionUnlock} from './session';
 import Constants from '../common/constants';
-import PostService from '../services/postService';
-import CommentService from '../services/commentService';
+import PostService from '../services/PostService';
+import CommentService from '../services/CommentService';
 import {closeAllModals, closeModal, openModal} from './modal';
 import * as React from 'react';
 import ConfirmDeleteModal from '../components/PostContextMenu/ConfirmDeleteModal/ConfirmDeleteModal';
@@ -31,7 +31,7 @@ export function updatePost(postIndex, newVoteState, newFlagState) {
 function updatePostData(dispatch, postUrl, newVoteState, newFlagState) {
 	PostService.getPost(postUrl)
 		.then((response) => {
-      let newItem = updateFromResponse(postUrl, response, newVoteState, newFlagState);
+			let newItem = updateFromResponse(postUrl, response, newVoteState, newFlagState);
 			dispatch({
 				type: 'UPDATE_POST',
 				post: newItem
@@ -51,14 +51,14 @@ function updateCommentData(dispatch, postIndex, newVoteState, newFlagState) {
 }
 
 function updateFromResponse(postIndex, response, newVoteState, newFlagState) {
-  let newItem = getStore().getState().posts[postIndex];
-  newItem.vote = !!newVoteState;
-  newItem.flag = !!newFlagState;
-  newItem.net_likes = response.net_likes;
-  newItem.net_votes = response.net_votes;
-  newItem.net_flags = response.net_flags;
-  newItem.total_payout_reward = response.total_payout_reward;
-  return newItem;
+	let newItem = getStore().getState().posts[postIndex];
+	newItem.vote = !!newVoteState;
+	newItem.flag = !!newFlagState;
+	newItem.net_likes = response.net_likes;
+	newItem.net_votes = response.net_votes;
+	newItem.net_flags = response.net_flags;
+	newItem.total_payout_reward = response.total_payout_reward;
+	return newItem;
 }
 
 export function setPowerLikeInd(postIndex, isOpen) {
@@ -126,10 +126,10 @@ function deletePostSuccess(postIndex) {
 }
 
 function deleteCommentSuccess(postIndex) {
-  return {
-    type: 'DELETE_COMMENT_SUCCESS',
-    index: postIndex
-  }
+	return {
+		type: 'DELETE_COMMENT_SUCCESS',
+		index: postIndex
+	}
 }
 
 function deletePostError(postIndex, error) {
@@ -142,14 +142,14 @@ function deletePostError(postIndex, error) {
 
 export function deletePost(postIndex, isComment = false) {
 	return (dispatch) => {
-    let modalOption = {
-      body: (<ConfirmDeleteModal
-								closeModal={() => dispatch(closeModal("ConfirmDeleteModal"))}
-							  closeAllModals={() => dispatch(closeAllModals())}
-							  postIndex={postIndex}
-								isComment={isComment}/>)
-    };
-    dispatch(openModal("ConfirmDeleteModal", modalOption));
+		let modalOption = {
+			body: (<ConfirmDeleteModal
+				closeModal={() => dispatch(closeModal("ConfirmDeleteModal"))}
+				closeAllModals={() => dispatch(closeAllModals())}
+				postIndex={postIndex}
+				isComment={isComment}/>)
+		};
+		dispatch(openModal("ConfirmDeleteModal", modalOption));
 	}
 }
 
@@ -165,16 +165,16 @@ export function deletePostAfterConfirm(postIndex, isComment) {
 			.then(() => {
 				dispatch(actionUnlock());
 				if (isComment) {
-          dispatch(deleteCommentSuccess(postIndex));
-          dispatch(pushMessage(Constants.DELETE.DELETE_COMMENT_SUCCESS));
+					dispatch(deleteCommentSuccess(postIndex));
+					dispatch(pushMessage(Constants.DELETE.DELETE_COMMENT_SUCCESS));
 				} else {
-          dispatch(deletePostSuccess(postIndex));
-          dispatch(pushMessage(Constants.DELETE.DELETE_POST_SUCCESS));
+					dispatch(deletePostSuccess(postIndex));
+					dispatch(pushMessage(Constants.DELETE.DELETE_POST_SUCCESS));
 				}
 			})
 			.catch(error => {
 				dispatch(actionUnlock());
-        dispatch(pushErrorMessage(error));
+				dispatch(pushErrorMessage(error));
 				dispatch(deletePostError(postIndex, error));
 			});
 	}

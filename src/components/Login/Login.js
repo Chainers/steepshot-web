@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React from 'react';
 import {connect} from 'react-redux'
 import {documentTitle} from '../../utils/documentTitle';
 import {addMetaTags, getDefaultTags} from '../../actions/metaTags';
@@ -14,7 +14,8 @@ import {clearLoginErrors} from '../../actions/login';
 import Switcher from '../Switcher/Switcher';
 import ChooseSteemRegModal from './ChooseSteemRegModal/ChooseSteemRegModal';
 import {openModal} from '../../actions/modal';
-import SteemConnect from "../../services/steemConnect";
+import SteemConnect from '../../services/SteemConnect';
+import GrayInput from "../Common/GrayInput/GrayInput";
 
 const galleryImages = [
 	'/images/login/1.png',
@@ -29,13 +30,14 @@ const galleryImages = [
 	'/images/login/10.png'
 ];
 
-class Login extends Component {
+class Login extends React.Component {
 
 	constructor(props) {
 		super(props);
 		this.state = {
 			openVideo: false
 		};
+		this.clearLoginErrors = this.clearLoginErrors.bind(this);
 	}
 
 	static async getInitialProps({location, req, res, store}) {
@@ -49,10 +51,10 @@ class Login extends Component {
 	openRegisterSite(event) {
 		event.preventDefault();
 		if (this.props.chooseSteem) {
-      let modalOption = {
-        body: (<ChooseSteemRegModal/>),
-      };
-      this.props.openModal("ChooseSteemRegModal", modalOption);
+			let modalOption = {
+				body: (<ChooseSteemRegModal/>),
+			};
+			this.props.openModal("ChooseSteemRegModal", modalOption);
 		} else {
 			window.open('https://golos.io/create_account');
 		}
@@ -68,19 +70,26 @@ class Login extends Component {
 		let passwordValue = this.password.value;
 		nameValue = nameValue.replace(/\s+/g, '');
 		nameValue = nameValue.replace(/@([\w-.]+)/, '$1');
-    passwordValue = passwordValue.replace(/\s+/g, '');
+		passwordValue = passwordValue.replace(/\s+/g, '');
 		this.props.login(nameValue.toLowerCase(), passwordValue);
 	}
 
-  loginWithSteemConnect() {
+	loginWithSteemConnect() {
 		window.location.replace(SteemConnect.getLoginUrl() + '&expires_in=6048000');
+	}
+
+	clearLoginErrors() {
+		if (!this.props.usernameError && !this.props.postingKeyError) {
+			return;
+		}
+		this.props.clearLoginErrors();
 	}
 
 	render() {
 		if (global.isServerSide) {
 			return null;
 		}
-		const {chooseSteem, switchService, usernameError, postingKeyError, clearLoginErrors} = this.props;
+		const {chooseSteem, usernameError, postingKeyError} = this.props;
 		return (
 			<div className="container_login">
 				<ShowIf show={!this.props.isMobileScreen}>
@@ -109,20 +118,16 @@ class Login extends Component {
 								Sign in to Steepshot
 							</div>
 							<div className="input-block_login">
-								<label className="input-label_login">Username</label>
-								<input type="text" className="input_login" ref={ref => this.name = ref}
-											 onChange={() => clearLoginErrors()}/>
-								<label className="error-msg_login">{usernameError}</label>
-								<label className="input-label_login">Posting Key</label>
-								<input type="password" className="input_login" ref={ref => this.password = ref}
-											 onChange={() => clearLoginErrors()}/>
-								<label className="error-msg_login">{postingKeyError}</label>
+								<GrayInput type="text" label="Username" ref={ref => this.name = ref}
+								       onChange={this.clearLoginErrors} error={usernameError} name="login"/>
+								<GrayInput type="password" label="Posting Key" ref={ref => this.password = ref}
+								       onChange={this.clearLoginErrors} error={postingKeyError} name="password"/>
 							</div>
 							<div className="btn-block_login">
 								<Switcher
 									onClick={() => {
-										clearLoginErrors();
-										switchService();
+										this.clearLoginErrors();
+										this.props.switchService();
 									}}
 									left={chooseSteem}
 									leftLabel="Steem"
@@ -135,12 +140,12 @@ class Login extends Component {
 						</form>
 					</div>
 					{/*<div className={'registration-block_login login-steem-con-block_login' +
-						(chooseSteem ? '' : ' hide-log-ste-con-block_login')}>
-						<label>Don’t you trust us?</label>
-						<button className="steem-con-btn_login" onClick={this.loginWithSteemConnect.bind(this)}>
-							{(this.props.isMobileScreen ? '' : 'LOGIN WITH ') + 'STEEM CONNECT'}
-						</button>
-					</div>*/}
+							(chooseSteem ? '' : ' hide-log-ste-con-block_login')}>
+							<label>Don’t you trust us?</label>
+							<button className="steem-con-btn_login" onClick={this.loginWithSteemConnect.bind(this)}>
+								{(this.props.isMobileScreen ? '' : 'LOGIN WITH ') + 'STEEM CONNECT'}
+							</button>
+						</div>*/}
 					<div className="registration-block_login">
 						<label>Don’t have a {chooseSteem ? 'Steem' : 'Golos'} account?</label>
 						<button className="guidelines-btn_login create-acc_login" onClick={this.openRegisterSite.bind(this)}>

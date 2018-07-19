@@ -1,5 +1,8 @@
+import Constants from "../common/constants";
+
 const initialState = {
-	name: null
+	name: null,
+	tokensNames: []
 };
 
 export default function services(state = initialState, action) {
@@ -7,7 +10,8 @@ export default function services(state = initialState, action) {
 		case 'SET_SERVICE':
 			return {
 				...state,
-				name: action.serviceName
+				name: action.serviceName,
+				tokensNames: Constants.SERVICES[action.serviceName].tokensNames
 			};
 		default:
 			return state;

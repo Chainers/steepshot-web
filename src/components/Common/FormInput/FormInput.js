@@ -1,8 +1,8 @@
-import React from "react";
+import React from 'react';
 import PropTypes from 'prop-types';
-import {connect} from "react-redux";
-import ShowIf from "../ShowIf";
-import {blurFormInput, changeFormInput, createFormInput, focusFormInput} from "../../../actions/formInput";
+import {connect} from 'react-redux';
+import ShowIf from '../ShowIf';
+import {blurFormInput, changeFormInput, createFormInput, focusFormInput} from '../../../actions/formInput';
 import './formInput.css';
 
 class FormInput extends React.Component {
@@ -14,13 +14,13 @@ class FormInput extends React.Component {
 
 	componentDidMount() {
 		if (this.props.isName) this.input.focus();
-  }
+	}
 
 	inputOnChange() {
 		let inputValue = this.input.value.replace(/\s+/g, '');
 		if (this.props.isName) {
-      inputValue = inputValue.replace(/[^\w-.]+/g, '');
-      inputValue = inputValue.toLowerCase();
+			inputValue = inputValue.replace(/[^\w-.]+/g, '');
+			inputValue = inputValue.toLowerCase();
 		}
 		this.props.changeText(this.props.point, inputValue);
 	}
@@ -32,16 +32,16 @@ class FormInput extends React.Component {
 			+ (this.props.errorMsg ? ' error_for-inp' : '')}>
 				<label>{this.props.label}</label>
 				<input onFocus={() => this.props.focus(this.props.point)}
-							 onBlur={() => {
-								 if (this.input && !this.input.value) {
-									 this.props.blur(this.props.point);
-								 }
-							 }}
-							 autoComplete="new-password"
-							 type={this.props.type}
-							 name={this.props.type}
-							 onChange={this.inputOnChange.bind(this)}
-							 ref={ref => this.input = ref}
+				       onBlur={() => {
+					       if (this.input && !this.input.value) {
+						       this.props.blur(this.props.point);
+					       }
+				       }}
+				       autoComplete="new-password"
+				       type={this.props.type}
+				       name={this.props.type}
+				       onChange={this.inputOnChange.bind(this)}
+				       ref={ref => this.input = ref}
 				/>
 				<ShowIf show={!!this.props.errorMsg}>
 					<div className="error-msg_for-inp">{this.props.errorMsg}</div>

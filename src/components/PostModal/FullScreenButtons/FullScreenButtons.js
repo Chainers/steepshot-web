@@ -8,7 +8,7 @@ class FullScreenButtons extends React.Component {
 	render() {
 		let like;
 		if (this.props.post.voteLoading) {
-			like = <LoadingSpinner style={{padding: '0 16px 0 10px'}} loaderClass="full-screen-loader"/>
+			like = <LoadingSpinner style={{padding: '0 16px 0 10px'}} loaderClass="full-screen-loader_fsf"/>
 		} else if (this.props.post.vote) {
 			like = <p className="text_fsf">DISLIKE</p>;
 		} else {

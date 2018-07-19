@@ -1,4 +1,4 @@
-import storage from "../utils/Storage";
+import storage from '../utils/Storage';
 
 const initialState = {
 	search: {

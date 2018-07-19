@@ -1,0 +1,12 @@
+.default_scroll {
+    position: absolute;
+    border-radius: 3px;
+    height: 100%;
+    width: 6px;
+    right: 2px;
+}
+
+.body_scroll {
+    width: 10px;
+    border-radius: 5px;
+}

@@ -1,7 +1,7 @@
 import {getStore} from '../store/configureStore';
 import Constants from '../common/constants';
 import {serverErrorsList} from '../utils/serverErrorsList';
-import PostService from '../services/postService';
+import PostService from '../services/PostService';
 
 export function initPostsList(options) {
 	return {
@@ -86,10 +86,13 @@ export function getPostsList(point) {
 				let postsObject = {};
 				let postsLength = notDeletedPosts.length;
 				for (let i = 0; i < postsLength; i++) {
+					let daysBeforeCashout = (new Date(notDeletedPosts[i]['cashout_time']).getTime() - new Date().getTime())
+						/ Constants.MILLISECONDS_IN_DAY;
 					let post = Object.assign({}, notDeletedPosts[i], {
 						flagLoading: false,
 						voteLoading: false,
 						postDeleting: false,
+						postAge: (Constants.CASHOUT_PERIOD - daysBeforeCashout).toFixed(1) / 1,
 						isVideo: !!notDeletedPosts[i].media[0].url.match(/mp4$/i),
 						isGif: !!notDeletedPosts[i].media[0].url.match(/gif$/i),
 						playing: false

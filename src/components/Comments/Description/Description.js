@@ -3,10 +3,11 @@ import {connect} from 'react-redux';
 import Tags from '../../PostsList/Post/Tags/Tags';
 import './description.css';
 import ShowIf from '../../Common/ShowIf';
-import PromoteModal from '../../PostModal/PromoteModal/PromoteModal';
+import PromoteModal from '../../Modals/Promote/Promote';
 import {openModal} from '../../../actions/modal';
 import MarkdownParser from "../../../utils/markdownParser";
 import renderHTML from 'react-render-html';
+import ChainService from "../../../services/ChainService";
 
 class Description extends React.Component {
 
@@ -23,24 +24,24 @@ class Description extends React.Component {
 		});
 	}
 
-  openPromoteModal() {
-    let modalOption = {
-      body: (<PromoteModal postIndex={this.props.postIndex}/>),
-    };
-    this.props.openModal("PromoteModal", modalOption);
-  }
+	openPromoteModal() {
+		let modalOption = {
+			body: <PromoteModal index={this.props.postIndex}/>
+		};
+		this.props.openModal("PromoteModal", modalOption);
+	}
 
 	render() {
 		return (
 			<div className="container_description">
-				{/*<ShowIf show={this.props.isSelfPost && !this.props.isGolos}>
+				<ShowIf show={this.props.isSelfPost && !this.props.isGolos && !this.props.oldForPromote && false}>
 					<div className="open-promote_description centered--flex" onClick={this.openPromoteModal.bind(this)}>
 						PROMOTE THIS POST
 					</div>
-				</ShowIf>*/}
+				</ShowIf>
 				<p className="word-wrap_brake-word">{renderHTML(MarkdownParser.parseTitle(this.props.title))}</p>
 				<div className={(this.state.isDescriptionOpened || (this.props.description.length < 140))
-							? 'collapse-opened' : 'collapse-closed'}>
+					? 'collapse-opened' : 'collapse-closed'}>
 					{renderHTML(MarkdownParser.parse(this.props.description))}
 					<Tags tags={this.props.tags}/>
 					<a className="lnk-more" onClick={this.openDescription.bind(this)}>Show more</a>
@@ -51,22 +52,22 @@ class Description extends React.Component {
 
 
 const mapStateToProps = (state) => {
-	let postIndex = state.postModal.currentIndex;
-	let isSelfPost = state.auth.user === state.posts[postIndex].author;
-	let isGolos = state.services.name === 'golos';
-  return {
-  	isGolos,
+	const postIndex = state.postModal.currentIndex;
+	const post = state.posts[postIndex];
+	return {
 		postIndex,
-		isSelfPost
-  }
+		isGolos: ChainService.usingGolos(),
+		isSelfPost: state.auth.user === post.author,
+		oldForPromote: post.postAge > 4
+	}
 };
 
 const mapDispatchToProps = (dispatch) => {
-  return {
-    openModal: (index, option) => {
-    	dispatch(openModal(index, option));
+	return {
+		openModal: (index, option) => {
+			dispatch(openModal(index, option));
 		}
-  }
+	}
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Description);

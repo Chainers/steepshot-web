@@ -12,3 +12,8 @@
 .website_use-pro:hover {
     opacity: .6;
 }
+
+.balance_use-pro {
+    margin-bottom: 10px;
+    font: 22px OpenSans-Light;
+}

@@ -4,7 +4,9 @@ import Constants from '../../../common/constants';
 import ShowIf from '../ShowIf';
 import './avatar.css';
 import {setAvatarTip, setAvatarTipTimeout} from '../../../actions/avatar';
-import ImagesService from '../../../services/imagesService';
+import ImagesService from '../../../services/ImagesService';
+import AvaImgBackground from './AvaImgBackground';
+import Utils from "../../../utils/Utils";
 
 class Avatar extends React.Component {
 
@@ -12,31 +14,29 @@ class Avatar extends React.Component {
 		style: {}
 	};
 
+	constructor(props) {
+		super(props);
+		if (this.props.src && this.props.src !== Constants.NO_AVATAR) {
+			let sendImageAction = false;
+			if (this.props.headerAvatar || this.props.sizes === Constants.USER_PROFILE_AVATAR_SIZE) {
+				sendImageAction = true;
+			}
+			ImagesService.getImagesWithProxy(this.props.src,
+				`https://steemitimages.com/${2 * this.props.sizes}x${2 * this.props.sizes}/`, sendImageAction);
+		}
+	}
+
 	componentDidMount() {
-    this.powerIndicator(this.props.votingPower);
+		this.powerIndicator(this.props.votingPower);
 	}
 
 	componentWillReceiveProps(nextProps) {
 		this.powerIndicator(nextProps.votingPower);
 	}
 
-	pic() {
-		let avatarLink = this.props.src;
-		if (this.props.src && this.props.src !== Constants.NO_AVATAR) {
-			avatarLink = `https://steemitimages.com/${2 * this.props.sizes}x${2 * this.props.sizes}/${this.props.src}`;
-      /*avatarLink = ImagesService.getImagesWithProxy(this.props.src,
-				`https://steemitimages.com/${2 * this.props.sizes}x${2 * this.props.sizes}/`);
-      avatarLink = avatarLink.src;*/
-		}
-		return Object.assign({}, this.props.style, {
-			backgroundImage: 'url(' + avatarLink + ')'
-		});
-	}
-
-	picError() {
-		return Object.assign({}, this.props.style, {
-			backgroundImage: 'url(' + Constants.NO_AVATAR + ')'
-		});
+	shouldComponentUpdate(nextProps) {
+		if (Utils.equalsObjects(nextProps, this.props)) return false;
+		return true;
 	}
 
 	powerIndicator(votingPower) {
@@ -108,25 +108,27 @@ class Avatar extends React.Component {
 			<div className={this.props.powerIndicator ? 'position--relative' : ''}>
 				<ShowIf show={this.props.powerIndicator}>
 					<canvas ref={ref => this.canvas = ref}
-									className="border-indicator_ava-com"
-									onTouchStart={this.showTip.bind(this)}
-									onTouchEnd={this.hideTip.bind(this)}
-									onMouseEnter={this.showTip.bind(this)}
+					        className="border-indicator_ava-com"
+					        onTouchStart={this.showTip.bind(this)}
+					        onTouchEnd={this.hideTip.bind(this)}
+					        onMouseEnter={this.showTip.bind(this)}
 					/>
 					<ShowIf show={!this.props.headerAvatar && this.props.isTip}>
 						<div ref={ref => this.tipVotingPower = ref}
-								 className="tip-voting-power_ava-com prevent--selection"
-								 onTouchStart={() => {}}
-								 onMouseEnter={() => {}}
-								 onMouseLeave={this.hideTip.bind(this)}
+						     className="tip-voting-power_ava-com prevent--selection"
+						     onTouchStart={() => {
+						     }}
+						     onMouseEnter={() => {
+						     }}
+						     onMouseLeave={this.hideTip.bind(this)}
 						>
 							<p>Power of like: {this.props.votingPower}%</p>
 						</div>
 					</ShowIf>
 				</ShowIf>
-				<div className="pic_ava-com" style={this.picError()}>
-					<div className="pic_ava-com" style={this.pic()}/>
-				</div>
+				<AvaImgBackground style={this.props.style}
+				                  src={this.props.src}
+				                  sizes={this.props.sizes}/>
 			</div>
 		)
 	}

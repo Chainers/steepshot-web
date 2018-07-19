@@ -1,0 +1,183 @@
+.btn {
+    display: inline-block;
+    font-family: OpenSans-SemiBold,Helvetica,Arial,sans-serif;
+    text-align: center;
+    vertical-align: middle;
+    touch-action: manipulation;
+    cursor: pointer;
+    text-decoration: none;
+    max-width: 100%;
+    line-height: 1;
+    color: #fff;
+    user-select: none;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    border-radius: 21px;
+    transition: all .2s ease;
+    padding: 12px 40px;
+}
+
+.btn-default:hover, .btn-default:focus, .btn-default:active {
+    border-color: transparent;
+    box-shadow: 0 5px 12px 0 rgba(231,72,0,.3);
+}
+
+.btn-default {
+    box-shadow: 0 10px 20px 0 rgba(231,72,0,.3);
+    background: linear-gradient(90deg,#ff7904,#ff1605);
+    border: 1px transparent;
+}
+
+.btn-default:hover {
+    background-color: #ce1800;
+}
+
+.btn-default:active {
+    background-color: #9c1200;
+}
+
+.btn-cancel {
+    background: #ffffff;
+    color: #0f181e;
+    border: 1px solid #e7e7e7;
+}
+
+.btn-cancel:hover {
+    background-color: #ffffff;
+    border: solid 1px #e2e2e2;
+    color: #e74800;
+}
+
+.btn-cancel:active {
+    box-shadow: inset 0 1px 3px rgba(0,0,0,.1);
+    color: #e74800;
+}
+
+.btn-cancel:disabled {
+    background: #f1f1f1;
+    opacity: .3;
+    color: #e74800;
+}
+
+.btn.btn-xs {
+    padding: 8px 28px;
+    font-size: 12px;
+    border-radius: 15px;
+}
+
+.btn.btn-create {
+    background-color: #1294f6;
+}
+
+.btn.btn-create:hover {
+    background-color: #1083da;
+}
+
+.btn.btn-create:active {
+    background-color: #0f72be;
+}
+
+.btn-close {
+    border: none;
+    vertical-align: middle;
+    margin-left: 8px;
+    margin-top: -1px;
+    padding: 0;
+    background: 0 0;
+    position: relative;
+    display: block;
+    width: 16px;
+    height: 30px;
+    line-height: 30px;
+}
+
+.btn-close:before {
+    content: ' ';
+    font-size: 10px;
+    background: url('/images/sprite_svg1910.svg') -.2em -42.6em no-repeat;
+    background-size: 4.4em 47.2em;
+    width: .8em;
+    height: .8em;
+    display: block
+}
+
+.btn-close:before {
+    content: ' ';
+    font-size: 10px;
+    background: url('/images/sprite_svg1910.svg') no-repeat -.2em -3.6em;
+    background-size: 4.4em 47.2em;
+    width: 1.6em;
+    height: 1.6em;
+    display: block;
+}
+
+.btn-close:hover:before {
+    background-position: -.2em -5.6000000000000005em;
+    width: 1.6em;
+    height: 1.6em;
+}
+
+.btn-control {
+    position: relative;
+    display: inline-block;
+    vertical-align: top;
+    text-decoration: none;
+    height: 22px;
+    width: 22px;
+    margin-left: 26px
+}
+
+.btn-control:before {
+    content: ' ';
+    font-size: 10px;
+    background: url('/images/sprite_svg1910.svg') no-repeat;
+    background-size: 4.4em 47.2em;
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%)
+}
+
+.btn-control.wallet {
+    background: url('/images/wallet/buttons/wallet.png') no-repeat center;
+    background-size: 100% 100%;
+}
+
+.btn-control.wallet:hover {
+    background: url('/images/wallet/buttons/wallet-hover.png') no-repeat center;
+    background-size: 100% 100%;
+}
+
+
+.btn-control.settings:before {
+    background-position: -.2em -38.6em;
+    width: 1.6em;
+    height: 1.6em
+}
+
+.btn-control.settings:hover:before {
+    background-position: -.2em -40.6em;
+    width: 1.6em;
+    height: 1.6em
+}
+
+.btn-control.logout:before {
+    background-position: -.2em -22.2em;
+    width: 1.6em;
+    height: 1.6em
+}
+
+.btn-control.logout:hover:before {
+    background-position: -.2em -24.2em;
+    width: 1.6em;
+    height: 1.6em
+}
+
+.sign_login {
+    font: 12px OpenSans-Regular;
+    padding: 12px 30px;
+    width: 117px;
+}

@@ -1,0 +1,87 @@
+.container_trx {
+    width: 100%;
+    display: flex;
+}
+
+.container_trx.even_trx {
+    background-color: #fbfbfb;
+}
+
+.container_trx > div {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding-top: 25px;
+    padding-bottom: 25px;
+    overflow: hidden;
+}
+
+.type_trx {
+    width: 150px;
+    padding-left: 30px;
+    flex-shrink: 0;
+}
+
+.info_trx {
+    min-width: 220px;
+    flex-shrink: 0;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.info_trx > span {
+    word-wrap: break-word;
+}
+
+.type_trx, .info_trx {
+    color: #0f181e;
+    font: 14px OpenSans-Semibold;
+}
+
+.memo_trx {
+    flex-grow: 1;
+    color: #333333;
+    font: 14px OpenSans-Light;
+}
+
+.date_trx {
+    width: 120px;
+    padding-right: 30px;
+    line-height: 22px;
+    color: #0f181e;
+    font: 14px OpenSans-Light;
+    flex-shrink: 0;
+}
+
+.container_trx > div.date_trx {
+    justify-content: flex-end;
+}
+
+.mobile-screen .container_trx {
+    flex-wrap: wrap;
+    justify-content: stretch;
+}
+
+.mobile-screen .info_trx {
+    flex-grow: 1;
+    min-width: 100px;
+}
+
+.mobile-screen .memo_trx {
+    padding: 0 30px 25px;
+    min-width: 300px;
+    display: inline-block;
+    word-wrap: break-word;
+}
+
+.mobile-screen .extra-small_trx .type_trx {
+    flex-grow: 1;
+}
+
+.mobile-screen .extra-small_trx .info_trx {
+    justify-content: flex-start;
+    padding: 0 30px 25px;
+    min-width: 240px;
+    max-width: 100vw;
+
+}

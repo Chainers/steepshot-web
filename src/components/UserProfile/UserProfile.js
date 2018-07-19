@@ -15,7 +15,7 @@ import LoadingSpinner from "../LoadingSpinner";
 import './userProfile.css';
 import {setActiveIndex} from "../../actions/tabsBar";
 import Follow from "../Follow/Follow";
-import AuthService from "../../services/authService";
+import AuthService from "../../services/AuthService";
 import renderHTML from 'react-render-html';
 import MarkdownParser from "../../utils/markdownParser";
 
@@ -56,7 +56,7 @@ class UserProfile extends React.Component {
 		let website = this.props.profile['website'];
 		let location = this.props.profile.location;
 		let balance = this.props.profile['estimated_balance'];
-		let avatar = this.props.profile['profile_image'];
+		let avatarSrc = this.props.profile['profile_image'] || Constants.NO_AVATAR;
 		return (
 			<div className="container">
 				<div className="g-content col-xs-12 clearfix" id="workspace">
@@ -64,9 +64,9 @@ class UserProfile extends React.Component {
 						<div className="col-xs-12 col-md-4 col-lg-3">
 							<div className="user-information">
 								<div className="pic-wrap clearfix">
-									<Avatar src={avatar}
-													powerIndicator={this.props.isYourProfile}
-													sizes={Constants.USER_PROFILE_AVATAR_SIZE}
+									<Avatar src={avatarSrc}
+									        powerIndicator={this.props.isYourProfile}
+									        sizes={Constants.USER_PROFILE_AVATAR_SIZE}
 									/>
 									<ShowIf show={!this.props.isYourProfile && this.props.isAuth}>
 										<Follow/>
@@ -74,12 +74,13 @@ class UserProfile extends React.Component {
 								</div>
 								<div className="name">{name}</div>
 								<div className="location">{location}</div>
-								<p className="word-wrap_brake-word">{renderHTML(MarkdownParser.parseTitle(this.props.profile.about))}</p>
+								<p
+									className="word-wrap_brake-word">{renderHTML(MarkdownParser.parseTitle(this.props.profile.about))}</p>
 								<p className="break--word">
 									<a className="website_use-pro" href={website} target="_blank">{website}</a>
 								</p>
 								<div className="amount">
-									<div className="count">$ {balance}</div>
+									<div className="balance_use-pro">$ {balance}</div>
 									<ShowIf show={this.props.isYourProfile}>
 										<div className="description">This is the current amount of
 											funds in your account in the
@@ -98,26 +99,26 @@ class UserProfile extends React.Component {
 						<div className="col-xs-12 col-md-8 col-lg-9 position--unset">
 							<TabsBar point="userProfile" showLoader={false}>
 								<Tab name={this.props.profile['post_count'] + ' ' + Constants.POSTS_FILTERS.POSTS_USER.label}>
-										<PostsList
-											point={insertUsername(Constants.POSTS_FILTERS.POSTS_USER.point, this.props.username)}
-											wrapperModifier="posts-list clearfix type-2"
-											clearPostHeader={true}
-											isComponentVisible={this.props.activeIndex === 0}
-										/>
+									<PostsList
+										point={insertUsername(Constants.POSTS_FILTERS.POSTS_USER.point, this.props.username)}
+										wrapperModifier="posts-list clearfix type-2"
+										clearPostHeader={true}
+										isComponentVisible={this.props.activeIndex === 0}
+									/>
 								</Tab>
 								<Tab name={this.props.profile['following_count'] + ' ' + Constants.USERS_FILTERS.FOLLOWING.label}>
-										<UsersList
-											point={insertUsername(Constants.USERS_FILTERS.FOLLOWING.point, this.props.username)}
-											className="posts-list clearfix type-2"
-											isComponentVisible={this.props.activeIndex === 1}
-										/>
+									<UsersList
+										point={insertUsername(Constants.USERS_FILTERS.FOLLOWING.point, this.props.username)}
+										className="posts-list clearfix type-2"
+										isComponentVisible={this.props.activeIndex === 1}
+									/>
 								</Tab>
 								<Tab name={this.props.profile['followers_count'] + ' ' + Constants.USERS_FILTERS.FOLLOWERS.label}>
-										<UsersList
-											point={insertUsername(Constants.USERS_FILTERS.FOLLOWERS.point, this.props.username)}
-											className="posts-list clearfix type-2"
-											isComponentVisible={this.props.activeIndex === 2}
-										/>
+									<UsersList
+										point={insertUsername(Constants.USERS_FILTERS.FOLLOWERS.point, this.props.username)}
+										className="posts-list clearfix type-2"
+										isComponentVisible={this.props.activeIndex === 2}
+									/>
 								</Tab>
 							</TabsBar>
 						</div>

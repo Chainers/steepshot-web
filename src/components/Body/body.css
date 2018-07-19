@@ -29,3 +29,15 @@
     position: relative;
     flex: 1;
 }
+
+.search-empty-request-error_body {
+    background: url('/images/tabsBar/lighthouse-background.png') center no-repeat;
+    background-size: cover;
+}
+
+@media (max-width: 570px) {
+    .search-empty-request-error_body {
+        background: url('/images/tabsBar/lighthouse-background.png') center bottom no-repeat;
+        background-size: 100vw;
+    }
+}

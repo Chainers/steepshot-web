@@ -1,8 +1,8 @@
-import {utils} from './utils';
+import Utils from "./Utils";
 
 export function documentTitle() {
 	let title = window.location.pathname.replace('/', '');
-	title = utils.detransliterate(decodeURI(title), true);
+	title = Utils.detransliterate(decodeURI(title), true);
 	if (title === 'signin') {
 		title = 'sign in';
 	}

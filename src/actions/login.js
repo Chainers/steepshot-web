@@ -1,10 +1,10 @@
 import {push} from "react-router-redux";
 import {hideBodyLoader, showBodyLoader} from "./bodyLoader";
-import LoggingService from "../services/loggingService";
-import ChainService from "../services/chainService";
+import LoggingService from "../services/LoggingService";
+import ChainService from "../services/ChainService";
 import {getAvatar, initOneSignalService, showMessage} from "./auth";
 import {pushErrorMessage} from "./pushMessage";
-import StorageService from "../services/storageService";
+import StorageService from "../services/StorageService";
 import {setService} from "./services";
 
 export function setUsernameErrorMessage(message = '') {
@@ -50,7 +50,6 @@ export function loginWithSteemConnect(params) {
 				let avatar = getAvatar(response[0]);
 				StorageService.setSteemConnectData(username, expiresIn, accessToken, avatar, service);
 				initOneSignalService(username, dispatch);
-				let parseResult = JSON.parse(response[0].json_metadata);
 				dispatch({
 					type: 'LOGIN_WITH_STEEM_CONNECT_SUCCESS',
 					user: username,
@@ -61,7 +60,7 @@ export function loginWithSteemConnect(params) {
 				});
 				dispatch(setService());
 				dispatch(push('/feed'));
-				dispatch(showMessage('Welcome to Steepshot, ' + (parseResult.profile.name || username) + '!'));
+				dispatch(showMessage('Welcome to Steepshot, ' + username + '!'));
 				LoggingService.logLogin();
 			})
 			.catch(error => {

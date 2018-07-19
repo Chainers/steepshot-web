@@ -45,82 +45,12 @@
     color: #0f181e;
 }
 
-.save_settings {
+.save-btn {
     margin: 20px;
-    transition: .2s all ease;
-    display: inline-block;
-    font-family: OpenSans-SemiBold, Helvetica, Arial, sans-serif;
-    text-align: center;
-    vertical-align: middle;
-    -ms-touch-action: manipulation;
-    touch-action: manipulation;
-    cursor: pointer;
-    text-decoration: none;
-    padding: 12px 40px;
-    font-size: 14px;
-    line-height: 1;
-    border-radius: 21px;
-    color: #fff;
-    user-select: none;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
-
-    border: 1px transparent;
-    background: linear-gradient(to right, rgb(255, 121, 4), rgb(255, 22, 5));
-    box-shadow: 0 10px 20px 0 rgba(231, 72, 0, .3);
 }
 
-.save_settings:hover {
-    box-shadow: 0 5px 12px 0 rgba(231, 72, 0, .3);
-}
-
-.subscribe-btn_settings {
-    width: 120px;
+.block_settings .header_settings .btn {
     height: 30px;
-    border-radius: 6px;
-    background-color: #ff1e00;
-    border: 0;
-    font-size: 12px;
-    font-weight: bold;
-    font-style: normal;
-    font-stretch: normal;
-    line-height: normal;
-    letter-spacing: normal;
-    text-align: center;
-    color: #ffffff;
-}
-
-.subscribe-btn_settings:hover {
-    background-color: #ff3c00;
-}
-
-.subscribe-btn_settings:active {
-    background-color: #cc1a00;
-}
-
-.unsubscribe-btn_settings {
-    width: 120px;
-    height: 30px;
-    border-radius: 6px;
-    background-color: #f3f3f3;
-    border: 0;
-    font-size: 12px;
-    font-weight: bold;
-    font-style: normal;
-    font-stretch: normal;
-    line-height: normal;
-    letter-spacing: normal;
-    text-align: center;
-    color: #333333;
-}
-
-.unsubscribe-btn_settings:hover {
-    background-color: #f8f8f8;
-}
-
-.unsubscribe-btn_settings:active {
-    background-color: #e3e3e3;
 }
 
 @media (max-width: 450px) {

@@ -1,15 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {connect} from 'react-redux';
-import {closeModal} from "../../actions/modal";
-import UsersList from "../UsersList/UsersList";
-import CloseButton from "../Common/CloseButton/CloseButton";
-import {clearBodyHeight, setLikesFlagsListBodyHeight} from "../../actions/likesFlagsList";
+import {closeModal} from '../../actions/modal';
+import UsersList from '../UsersList/UsersList';
+import CloseButton from '../Common/CloseButton/CloseButton';
+import {clearBodyHeight, setLikesFlagsListBodyHeight} from '../../actions/likesFlagsList';
 import ReactResizeDetector from 'react-resize-detector';
 import TabsBar from '../Common/TabsBar/TabsBar';
 import Tab from '../Common/TabsBar/Tab/Tab';
 import './likesFlagsList.css';
-import {utils} from '../../utils/utils';
+import Utils from '../../utils/Utils';
 import Scroll from '../Scroll/Scroll';
 
 const SCROLL_POINT_LIKES = 'likes';
@@ -17,20 +17,9 @@ const SCROLL_POINT_FLAGS = 'flags';
 
 class LikesFlagsList extends React.Component {
 
-	constructor(props) {
+	constructor() {
 		super();
 		this.updateBodyHeight = this.updateBodyHeight.bind(this);
-	}
-
-	componentWillReceiveProps(nextProps) {
-		if (!utils.equalsObjects(nextProps.window, this.props.window)) {
-			this.updateBodyHeight()
-		}
-	}
-
-	componentDidUpdate() {
-		let currentBody = this.props.activeIndex ? this.flags : this.likes;
-		this.updateBodyHeight(undefined, ReactDOM.findDOMNode(currentBody).clientHeight);
 	}
 
 	static permLink(url, commentAuthor) {
@@ -40,6 +29,21 @@ class LikesFlagsList extends React.Component {
 		}
 		let urlObject = url.split('/');
 		return `/${urlObject[urlObject.length - 2]}/${urlObject[urlObject.length - 1]}`;
+	}
+
+	componentWillReceiveProps(nextProps) {
+		if (!Utils.equalsObjects(nextProps.window, this.props.window)) {
+			this.updateBodyHeight()
+		}
+	}
+
+	componentWillUnmount() {
+		this.props.clearBodyHeight();
+	}
+
+	componentDidUpdate() {
+		let currentBody = this.props.activeIndex ? this.flags : this.likes;
+		this.updateBodyHeight(undefined, ReactDOM.findDOMNode(currentBody).clientHeight);
 	}
 
 	updateBodyHeight(width, height) {
@@ -56,24 +60,25 @@ class LikesFlagsList extends React.Component {
 	}
 
 	render() {
-		let likesCondition = !this.props.likes || !this.props.likes.users.length;
-		let flagsCondition = !this.props.flags || !this.props.flags.users.length;
+		const {likes, flags, preferredBodyHeight, point} = this.props;
+
+		let likesCondition = !likes.users || !likes.users.length;
+		let flagsCondition = !flags.users || !flags.users.length;
 		let commonLoader = true;
-		if (this.props.likes && this.props.flags) {
-			if (!this.props.likes.loading && !this.props.flags.loading) {
-        commonLoader = false;
-			}
+		if (!likes.loading && !flags.loading) {
+			commonLoader = false;
 		}
 		return (
 			<div className="container_lik-lis">
 				<CloseButton className="close-button_lik-lis" onClick={this.props.closeModal}/>
 				<TabsBar point="likesFlags"
-								 showLoader={false}
-								 alwaysShowNavigation={true}
-					>
+				         showLoader={false}
+				         alwaysShowNavigation={true}
+				>
 					<Tab name="Likes" empty={likesCondition && !flagsCondition}>
-						<Scroll style={{width: '100%', height: this.props.preferredBodyHeight, marginTop: 20}}
-												point={SCROLL_POINT_LIKES}>
+						<Scroll style={{width: '100%', height: preferredBodyHeight, marginTop: 20}}
+						        point={SCROLL_POINT_LIKES}
+						        deltaForFetch={1000}>
 							<UsersList
 								scrollPoint={SCROLL_POINT_LIKES}
 								isLikesFlags={true}
@@ -83,22 +88,23 @@ class LikesFlagsList extends React.Component {
 								commonLoader={commonLoader}
 							>
 								<ReactResizeDetector handleWidth handleHeight onResize={this.updateBodyHeight}
-																		 ref={ref => this.likes = ref}/>
+								                     ref={ref => this.likes = ref}/>
 							</UsersList>
 						</Scroll>
 					</Tab>
 					<Tab name="Flags" empty={flagsCondition && !likesCondition}>
-						<Scroll style={{width: '100%', height: this.props.preferredBodyHeight, marginTop: 20}}
-												point={SCROLL_POINT_FLAGS}>
+						<Scroll style={{width: '100%', height: preferredBodyHeight, marginTop: 20}}
+						        point={SCROLL_POINT_FLAGS}
+						        deltaForFetch={1000}>
 							<UsersList
 								scrollPoint={SCROLL_POINT_FLAGS}
-								point={this.props.point}
+								point={point}
 								useScrollView={true}
 								options={{flags: 1}}
 								commonLoader={commonLoader}
 							>
 								<ReactResizeDetector handleWidth handleHeight onResize={this.updateBodyHeight}
-																		 ref={ref => this.flags = ref}/>
+								                     ref={ref => this.flags = ref}/>
 							</UsersList>
 						</Scroll>
 					</Tab>
@@ -112,8 +118,8 @@ const mapStateToProps = (state, props) => {
 	let point = `post${LikesFlagsList.permLink(state.posts[props.postIndex].url, props.commentAuthor)}/voters`;
 	return {
 		point,
-		flags: state.usersList[point + 'JSON_OPTIONS:{"flags":1}'],
-		likes: state.usersList[point + 'JSON_OPTIONS:{"likes":1}'],
+		flags: state.usersList[point + 'JSON_OPTIONS:{"flags":1}'] || {},
+		likes: state.usersList[point + 'JSON_OPTIONS:{"likes":1}'] || {},
 		...state.likesFlagsList,
 		...state.tabsBar.likesFlags,
 		window: state.window

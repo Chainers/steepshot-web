@@ -10,6 +10,9 @@ const Constants = {
 				MAX_LENGTH: 40,
 				MAX_AMOUNT: 5
 			},
+			tokensNames: [
+				'GOLOS', 'GBG'
+			]
 		},
 		steem: {
 			name: 'steem',
@@ -21,6 +24,18 @@ const Constants = {
 				MAX_LENGTH: 40,
 				MAX_AMOUNT: 20
 			},
+			tokensNames: [
+				'STEEM', 'SBD'
+			]
+		},
+		BOTS: {
+			BOTS_INFO: 'https://steembottracker.net/bid_bots',
+			BOOTS_TOKENS_COURSES: 'https://postpromoter.net/api/prices',
+			MIN_BID_VALUE: 0.5,
+			MAX_BID_VALUE: 100,
+			BOT_UPDATE_TIME: 80,
+			SUPPORTABLE_BOTS_LIST: ['promobot', 'upme', 'therising', 'upmewhale', 'sneaky-ninja', 'rocky1', 'boomerang',
+				'appreciator', 'postpromoter', 'smartsteem', 'spydo', 'booster', 'emperorofnaps', 'jerrybanfield']
 		}
 	},
 
@@ -34,10 +49,12 @@ const Constants = {
 	},
 
 	NO_AVATAR: '/images/person.png',
-	NO_IMAGE: '/images/noimage.jpg',
-	DEF_AVATAR_SIZE: 20 + 10,
+	DEF_AVATAR_SIZE: 30,
 	USER_CARD_AVATAR_SIZE: 60,
 	USER_PROFILE_AVATAR_SIZE: 100,
+
+	NO_IMAGE: '/images/noimage.jpg',
+	DEF_POST_SIZE: 300,
 
 	SETTINGS: {
 		FIELDS: {
@@ -164,7 +181,7 @@ const Constants = {
 	DELETE: {
 		PUTATIVE_DELETED_POST: 'https://steemitimages.com/DQmd4wyZvtAUifJDLZD9vaqek17S1cUhN3PyEbFMMMgLW8o/Steepshot_footer2.PNG',
 		DELETE_POST_SUCCESS: 'The post has been successfully deleted. If you still see your post, please give it a few minutes to sync from the blockchain.',
-    DELETE_COMMENT_SUCCESS: 'The comment has been successfully deleted. If you still see your comment, please give' +
+		DELETE_COMMENT_SUCCESS: 'The comment has been successfully deleted. If you still see your comment, please give' +
 		' it a few minutes to sync from the blockchain.',
 	},
 
@@ -181,8 +198,11 @@ const Constants = {
 	SETTINGS_CHANGED_MESSAGE: 'Settings has been successfully changed.',
 	SETTINGS_NOT_CHANGED_MESSAGE: 'Settings hasn\'t been changed.',
 
-	VOTE_ACTION_WHEN_NOT_AUTH: 'This action is only available for logged-in users',
+	VOTE_ACTION_WHEN_NOT_AUTH: 'This action is only available for logged-in users.',
 	VOTE_ACTION_WHEN_NOT_AUTH_DEBOUNCE: 500,
+	AUTH_WRONG_USER: 'Such user doesn\'t exist.',
+	AUTH_WRONG_POSTING_KEY: 'Invalid posting key.',
+	NON_BASE58_CHARACTER: 'Non-base58 character',
 
 	FOLLOW_REQUEST_ERROR: 'Something went wrong, please, try again later.',
 	OOOPS_SOMETHING_WRONG: 'Ooops, something went wrong.',
@@ -203,7 +223,7 @@ const Constants = {
 		}
 	},
 
-	BLOCKCHAIN : {
+	BLOCKCHAIN: {
 		golos: {
 			CONNECTION_SERVERS: [
 				"wss://ws.golos.io"
@@ -214,9 +234,9 @@ const Constants = {
 
 		steem: {
 			CONNECTION_SERVERS: [
-				//'https://steemd.steepshot.org',
+				//'https://steemd.steepshot.org', don't working
 				'https://api.steemit.com',
-				'https://api.steemitstage.com'
+				//'https://api.steemitstage.com' don't working
 			]
 		}
 	},
@@ -232,17 +252,35 @@ const Constants = {
 	},
 
 	PROMOTE: {
-    SELECT_ERROR: 'Choose token',
 		INPUT_ERROR: 'Enter correct value',
-		NOT_ENOUGH_TOKENS: 'Not enough tokens',
-		MIN_AMOUNT_ERROR: 'Min bid is 0.25',
+		MIN_AMOUNT_ERROR: 'Min bid is 0.5',
+		MAX_AMOUNT_ERROR: 'Max bid is 100',
 		FIND_BOT_ERROR: 'We look, but there\'s no appropriate bot for promotion. Please, try little later.',
 		BID_TIMEOUT_ERROR: 'It\'s too late to bid to this bot, try any one.',
 		RED_TIMER: 60,
 		BLOCKED_TIMER: 21,
 		EMPTY_KEY_INPUT: 'You should enter the key',
-		BID_TO_BOT_SUCCESS: 'Your bid has been successfully sent. Wait for upvote.'
-	}
+		BID_TO_BOT_SUCCESS: 'Your bid has been successfully sent. Wait for upvote.',
+	},
+
+	TRANSFER: {
+		BID_TO_BOT_SUCCESS: 'Your bid has been successfully sent.'
+	},
+
+	WALLET: {
+		POWER_UP_SUCCESS: 'SUCCESS',
+		POWER_DOWN_SUCCESS: 'SUCCESS'
+	},
+
+	ERROR_MESSAGES: {
+		INVALID_ACTIVE_KEY: 'Invalid active key.',
+		USER_NOT_FOUND: 'User not found!',
+		NOT_ENOUGH_TOKENS: 'Insufficient funds!'
+	},
+
+	MILLISECONDS_IN_DAY: 24 * 60 * 60 * 1000,
+	MILLISECONDS_IN_SECOND: 1000,
+	CASHOUT_PERIOD: 7
 };
 
 

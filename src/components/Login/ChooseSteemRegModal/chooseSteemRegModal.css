@@ -63,12 +63,6 @@
     color: #979b9e;
 }
 
-.reg-service-logo_choose-steem-reg-mod a {
-    display: block;
-    width: 100%;
-    height: 100%;
-}
-
 .buttons_choose-steem-reg-mod {
     text-align: right;
     padding-top: 20px;
@@ -79,14 +73,20 @@
 }
 
 @media (max-width: 540px) {
+    .wrapper_choose-steem-reg-mod {
+        max-width: 90vw;
+    }
+
     .reg-services-items_choose-steem-reg-mod {
         flex-direction: column;
         align-items: center;
         padding-bottom: 15px;
     }
+
     .reg-service_choose-steem-reg-mod {
         padding: 15px 0 0 0;
     }
+
     .buttons_choose-steem-reg-mod button {
         padding: 10px 30px;
     }

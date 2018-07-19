@@ -2,7 +2,8 @@ export default function users(state = {}, action) {
 	switch (action.type) {
 		case 'GET_USERS_LIST_SUCCESS':
 			return {
-				...state, ...action.users
+				...state,
+				...action.users
 			};
 		case 'CHANGE_FOLLOW_REQUEST':
 			return {
