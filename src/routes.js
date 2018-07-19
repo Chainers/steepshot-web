@@ -16,7 +16,6 @@ import Settings from './components/Settings/Settings';
 import RouteWithService from "./components/Routes/RouteWithService";
 import SteemConnect from "./components/SteemConnect/SteemConnect";
 import AuthService from "./services/AuthService";
-import Wallet from "./components/Wallet/Wallet";
 
 export default function getRoutes() {
 	return (
@@ -42,7 +41,7 @@ export default function getRoutes() {
 				<PrivateRoute path="/:service(golos)?/editPost/:category?/:username?/:permlink?" component={EditPost}/>
 				<PrivateRoute path="/:service(golos)?/Profile" component={UserProfile}/>
 				<PrivateRoute path="/:service(golos)?/settings" component={Settings}/>
-				<PrivateRoute path="/:service(golos)?/wallet" component={Wallet}/>
+				{/*<PrivateRoute path="/:service(golos)?/wallet" component={Wallet}/>*/}
 				<Route path="*" component={NotFound}/>
 			</Switch>
 		</App>

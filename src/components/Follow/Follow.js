@@ -43,7 +43,7 @@ const mapStateToProps = (state) => {
 		isSubscribed: profile['is_subscribed'],
 		profileUserName: profile.username,
 		changeFollow: state.userProfile.changeFollow,
-		notificationEnabled: state.oneSignal.notificationPermission && state.oneSignal.isNotificationsEnabled,
+		notificationEnabled: !state.oneSignal.error && state.oneSignal.notificationPermission && state.oneSignal.isNotificationsEnabled,
 		changeSubscribe: state.userProfile.changeSubscribe
 	};
 };

@@ -8,15 +8,22 @@ import OneSignalService from "../services/OneSignalService";
 let OneSignal = window.OneSignal;
 
 export function loadSubscribeData() {
-	OneSignal.on('subscriptionChange', subscribeListener);
-	return async dispatch => {
-		let playerId = await OneSignal.getUserId();
-		let notificationPermission = await OneSignal.getNotificationPermission();
-		let isNotificationsEnabled = await OneSignal.isPushNotificationsEnabled();
-		if ((notificationPermission === Constants.ONE_SIGNAL.STATES.DEFAULT) && !storage.shownSubscribe) {
-			subscribe();
+	try {
+		OneSignal.on('subscriptionChange', subscribeListener);
+		return async dispatch => {
+			let playerId = await OneSignal.getUserId();
+			let notificationPermission = await OneSignal.getNotificationPermission();
+			let isNotificationsEnabled = await OneSignal.isPushNotificationsEnabled();
+			if ((notificationPermission === Constants.ONE_SIGNAL.STATES.DEFAULT) && !storage.shownSubscribe) {
+				subscribe();
+			}
+			dispatch(setOneSignalData(playerId, notificationPermission, isNotificationsEnabled));
 		}
-		dispatch(setOneSignalData(playerId, notificationPermission, isNotificationsEnabled));
+	} catch (e) {
+		return {
+			type: 'ONE_SIGNAL_ERROR',
+			error: e
+		}
 	}
 }
 
@@ -38,43 +45,64 @@ function setSubscription(isNotificationsEnabled) {
 
 export function subscribe() {
 	return dispatch => {
-		const playerId = getStore().getState().oneSignal.playerId;
-		if (playerId != null) {
-			OneSignal.setSubscription(true);
-			dispatch(setSubscription(true));
-		} else {
-			OneSignal.registerForPushNotifications({
-				modalPrompt: true
-			});
-			dispatch(updateSettings());
-			storage.shownSubscribe = true;
+		try {
+			const playerId = getStore().getState().oneSignal.playerId;
+			if (playerId != null) {
+				OneSignal.setSubscription(true);
+				dispatch(setSubscription(true));
+			} else {
+				OneSignal.registerForPushNotifications({
+					modalPrompt: true
+				});
+				dispatch(updateSettings());
+				storage.shownSubscribe = true;
+			}
+		} catch (e) {
+			dispatch({
+				type: 'ONE_SIGNAL_ERROR',
+				error: e
+			})
 		}
 	}
 }
 
 export function unsubscribe() {
+
 	return dispatch => {
-		OneSignal.setSubscription(false);
-		dispatch(setSubscription(false));
+		try {
+			OneSignal.setSubscription(false);
+			dispatch(setSubscription(false));
+		} catch (e) {
+			console.error(e);
+			return;
+		}
 	}
+
 }
 
 async function subscribeListener(isSubscribed) {
-	const store = getStore();
-	let playerId = await OneSignal.getUserId();
-	let notificationPermission = await OneSignal.getNotificationPermission();
-	let isNotificationsEnabled = await OneSignal.isPushNotificationsEnabled();
-	let user = store.getState().auth.user;
-	if (isSubscribed) {
-		OneSignalService.addNotificationTags(user, playerId);
-		store.dispatch(setSubscription(true));
-	} else {
-		OneSignalService.removeNotificationTags();
+	try {
+		const store = getStore();
+		let playerId = await OneSignal.getUserId();
+		let notificationPermission = await OneSignal.getNotificationPermission();
+		let isNotificationsEnabled = await OneSignal.isPushNotificationsEnabled();
+		let user = store.getState().auth.user;
+		if (isSubscribed) {
+			OneSignalService.addNotificationTags(user, playerId);
+			store.dispatch(setSubscription(true));
+		} else {
+			OneSignalService.removeNotificationTags();
+		}
+		store.dispatch(setOneSignalData(playerId, notificationPermission, isNotificationsEnabled));
+		store.dispatch({
+			type: 'SUBSCRIBE_SUCCESS'
+		});
+	} catch (e) {
+		return {
+			type: 'ONE_SIGNAL_ERROR',
+			error: e
+		}
 	}
-	store.dispatch(setOneSignalData(playerId, notificationPermission, isNotificationsEnabled));
-	store.dispatch({
-		type: 'SUBSCRIBE_SUCCESS'
-	});
 }
 
 export function setSubscribeOnBackend() {

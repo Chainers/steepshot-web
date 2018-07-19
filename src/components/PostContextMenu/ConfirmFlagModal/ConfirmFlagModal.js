@@ -1,9 +1,9 @@
 import * as React from 'react';
 import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
-import './confirmFlagModal.css';
 import {closeModal} from '../../../actions/modal';
 import {toggleFlag} from '../../../actions/flag';
+import './confirmFlagModal.css';
 
 class ConfirmFlagModal extends React.Component {
 
