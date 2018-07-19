@@ -40,6 +40,10 @@
     margin-right: 20px;
 }
 
+.buttons_holder-flag-mod > button {
+    font: 14px OpenSans-Semibold;
+}
+
 @media screen and (max-width: 815px) {
     .title_confirm-flag-mod {
         font: 20px OpenSans-Semibold;

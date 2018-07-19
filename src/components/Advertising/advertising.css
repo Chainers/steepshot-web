@@ -14,7 +14,8 @@
     position: fixed;
     top: 0;
     z-index: 12;
-    background: url('/images/advertising/adverting-background.jpg') center;
+    background: url('/images/advertising/adverting-background.png') center;
+    background-size: 200px 200px;
 }
 
 .wrapper_advertising p {

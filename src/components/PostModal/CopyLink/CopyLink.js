@@ -28,9 +28,9 @@ class CopyLink extends React.Component {
 
 	render() {
 		return (
-			<button className={'btn btn-copy-link ' + (this.state.clicked ? 'clicked ' : '') + (this.props.className || '')}
+			<button className={'btn btn-default btn-xs'}
 			        onClick={this.onClick.bind(this)} disabled={this.state.clicked}>
-				{this.state.clicked ? 'COPIED' : 'COPY LINK'}
+				Copy Link
 			</button>
 		)
 	}

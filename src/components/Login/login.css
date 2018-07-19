@@ -113,12 +113,6 @@
     border-top: 1px solid #f4f4f6;
 }
 
-.sign_login {
-    font: 12px OpenSans-Regular;
-    padding: 12px 30px 12px;
-    width: 117px;
-}
-
 .registration-block_login {
     width: 530px;
     height: 80px;

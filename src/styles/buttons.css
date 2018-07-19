@@ -1,33 +1,32 @@
 .btn {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 40px;
-    min-width: 140px;
-    padding: 0 20px;
-    border-radius: 6px;
-    border: none;
-    font: 14px OpenSans-SemiBold;
-    line-height: 1;
-    cursor: pointer;
-    -ms-touch-action: manipulation;
+    display: inline-block;
+    font-family: OpenSans-SemiBold,Helvetica,Arial,sans-serif;
+    text-align: center;
+    vertical-align: middle;
     touch-action: manipulation;
-    background-image: none;
+    cursor: pointer;
     text-decoration: none;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
+    max-width: 100%;
+    line-height: 1;
+    color: #fff;
     user-select: none;
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
-    transition: .2s;
+    border-radius: 21px;
+    transition: all .2s ease;
+    padding: 12px 40px;
+}
+
+.btn-default:hover, .btn-default:focus, .btn-default:active {
+    border-color: transparent;
+    box-shadow: 0 5px 12px 0 rgba(231,72,0,.3);
 }
 
 .btn-default {
+    box-shadow: 0 10px 20px 0 rgba(231,72,0,.3);
+    background: linear-gradient(90deg,#ff7904,#ff1605);
     border: 1px transparent;
-    background-color: #ff1e00;
-    color: white;
 }
 
 .btn-default:hover {
@@ -47,27 +46,28 @@
 .btn-cancel:hover {
     background-color: #ffffff;
     border: solid 1px #e2e2e2;
+    color: #e74800;
 }
 
 .btn-cancel:active {
-    background-color: #f1f1f1;
-    border: solid 1px #e2e2e2;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,.1);
+    color: #e74800;
 }
 
 .btn-cancel:disabled {
     background: #f1f1f1;
-    opacity: .3
+    opacity: .3;
+    color: #e74800;
 }
 
 .btn.btn-xs {
-    min-width: 120px;
-    height: 34px;
+    padding: 8px 28px;
     font-size: 12px;
+    border-radius: 15px;
 }
 
 .btn.btn-create {
     background-color: #1294f6;
-    margin-top: -4px;
 }
 
 .btn.btn-create:hover {
@@ -117,35 +117,6 @@
     width: 1.6em;
     height: 1.6em;
 }
-
-.btn-create-mob {
-    position: relative;
-    display: none;
-    padding: 0;
-    width: 30px;
-    height: 30px;
-    border-radius: 50%
-}
-
-.btn-create-mob:before {
-    content: ' ';
-    font-size: 10px;
-    background: url('/images/sprite_svg1910.svg') -.2em -9.6em no-repeat;
-    background-size: 4.4em 47.2em;
-    width: 2.2em;
-    height: 2.2em;
-    display: block;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    -webkit-transform: translate(-50%, -50%);
-    transform: translate(-50%, -50%)
-}
-
-.btn-create-mob:before {
-    background-image: url('/images/sprite_svg1910.svg')
-}
-
 
 .btn-control {
     position: relative;
@@ -203,4 +174,10 @@
     background-position: -.2em -24.2em;
     width: 1.6em;
     height: 1.6em
+}
+
+.sign_login {
+    font: 12px OpenSans-Regular;
+    padding: 12px 30px;
+    width: 117px;
 }

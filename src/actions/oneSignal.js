@@ -44,8 +44,8 @@ function setSubscription(isNotificationsEnabled) {
 }
 
 export function subscribe() {
-	try {
-		return dispatch => {
+	return dispatch => {
+		try {
 			const playerId = getStore().getState().oneSignal.playerId;
 			if (playerId != null) {
 				OneSignal.setSubscription(true);
@@ -57,11 +57,11 @@ export function subscribe() {
 				dispatch(updateSettings());
 				storage.shownSubscribe = true;
 			}
-		}
-	} catch (e) {
-		return {
-			type: 'ONE_SIGNAL_ERROR',
-			error: e
+		} catch (e) {
+			dispatch({
+				type: 'ONE_SIGNAL_ERROR',
+				error: e
+			})
 		}
 	}
 }

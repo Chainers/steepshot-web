@@ -116,7 +116,7 @@ class Header extends React.Component {
 									<div className="wrap-create">
 										<ShowIf show={isAuth}>
 											<Link to="/editPost" type="button" className="btn btn-default btn-xs btn-create">
-												CREATE POST
+												Create post
 											</Link>
 										</ShowIf>
 									</div>
