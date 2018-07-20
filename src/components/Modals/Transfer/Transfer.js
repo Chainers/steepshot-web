@@ -1,13 +1,8 @@
 import React from 'react';
-import {connect} from "react-redux";
+import {connect} from 'react-redux';
 import './transfer.css';
-import ChooseToken from "../../Common/ChooseToken/ChooseToken";
-import {
-	changeMemo,
-	changeUsername,
-	showMemo,
-	transfer
-} from "../../../actions/transfer";
+import ChooseToken from '../../Common/ChooseToken/ChooseToken';
+import {changeMemo, changeUsername, showMemo, transfer} from '../../../actions/transfer';
 import ShowIf from "../../Common/ShowIf";
 import {closeModal} from "../../../actions/modal";
 import WalletPopupTemplate from "../WalletPopupTemplate/WalletPopupTemplate";
@@ -61,7 +56,7 @@ class Transfer extends React.Component {
 		return (
 			<WalletPopupTemplate title="TRANSFER TO ACCOUNT"
 			                     username={username}
-			                     textButton="OK"
+			                     textButton="SEND"
 			                     cancel={this.props.closeTransferModal}
 			                     ok={this.props.transfer}>
 				<form className="body_transfer" autoComplete="off">
@@ -83,10 +78,8 @@ class Transfer extends React.Component {
 						             tokensNames={tokensNames}
 						/>
 					</div>
-
 					<GrayInput label="Amount" className="gray_transfer" onChange={this.changeAmount} value={amount}
 					           ref={this.setAmountRef} onFocus={this.amountFocused} error={amountError} maxLength={15}/>
-
 					<ShowIf show={!memoOpened}>
 						<div className="add-memo_transfer">
 							<span onClick={this.props.showMemo}>
@@ -94,7 +87,6 @@ class Transfer extends React.Component {
 							</span>
 						</div>
 					</ShowIf>
-
 					<ShowIf show={memoOpened}>
 						<p className="inputs-label">
 							Memo

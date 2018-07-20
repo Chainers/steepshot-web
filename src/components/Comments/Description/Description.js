@@ -34,7 +34,7 @@ class Description extends React.Component {
 	render() {
 		return (
 			<div className="container_description">
-				<ShowIf show={this.props.isSelfPost && !this.props.isGolos && !this.props.oldForPromote && false}>
+				<ShowIf show={this.props.isSelfPost && !this.props.isGolos && !this.props.oldForPromote}>
 					<div className="open-promote_description centered--flex" onClick={this.openPromoteModal.bind(this)}>
 						PROMOTE THIS POST
 					</div>

@@ -1,7 +1,7 @@
 import React from 'react';
 import './walletPopupTemplate.css';
-import ShowIf from "../../Common/ShowIf";
-import Utils from "../../../utils/Utils";
+import ShowIf from '../../Common/ShowIf';
+import Utils from '../../../utils/Utils';
 
 const WalletPopupTemplate = ({title, username, usernameLink, textButton, cancel, ok, children}) => (
 	<div className="container_wal-pop-tem">

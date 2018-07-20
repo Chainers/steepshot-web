@@ -20,16 +20,13 @@ export function powerUp() {
 		dispatch(showBodyLoader());
 		const {amount} = state.wallet;
 		const {activeKey, saveKey} = state.activeKey;
-		if (saveKey) {
-			storage.transferActiveKey = activeKey;
-		} else {
-			storage.transferActiveKey = null;
-		}
-		WalletService.powerUp(activeKey, amount)
+
+		WalletService.powerUp(activeKey || storage.activeKey, amount)
 			.then(() => {
 				dispatch(actionUnlock());
 				dispatch(hideBodyLoader());
 				dispatch(closeModal("powerUp"));
+        if (saveKey && !storage.activeKey) storage.activeKey = activeKey;
 				dispatch(pushMessage(Constants.WALLET.POWER_UP_SUCCESS));
 			})
 			.catch(error => {
@@ -58,16 +55,13 @@ export function powerDown() {
 		const {total_steem_power_steem, total_steem_power_vests} = state.userProfile.profile;
 		const amountVests = (amount / total_steem_power_steem) * total_steem_power_vests;
 		const {activeKey, saveKey} = state.activeKey;
-		if (saveKey) {
-			storage.transferActiveKey = activeKey;
-		} else {
-			storage.transferActiveKey = null;
-		}
-		WalletService.powerDown(activeKey, amountVests)
+
+		WalletService.powerDown(activeKey || storage.activeKey, amountVests)
 			.then(() => {
 				dispatch(actionUnlock());
 				dispatch(hideBodyLoader());
 				dispatch(closeModal("powerDown"));
+        if (saveKey && !storage.activeKey) storage.activeKey = activeKey;
 				dispatch(pushMessage(Constants.WALLET.POWER_DOWN_SUCCESS));
 			})
 			.catch(error => {

@@ -1,7 +1,7 @@
-import React from "react";
+import React from 'react';
 import {connect} from 'react-redux'
-import Utils from "../../utils/Utils";
-import {loginWithSteemConnect} from "../../actions/login";
+import Utils from '../../utils/Utils';
+import {loginWithSteemConnect} from '../../actions/login';
 
 class SteemConnect extends React.Component {
 	constructor(props) {
@@ -22,5 +22,4 @@ const mapDispatchToProps = (dispatch) => {
 	}
 };
 
-export default connect(() => {
-}, mapDispatchToProps)(SteemConnect);
+export default connect(() => {}, mapDispatchToProps)(SteemConnect);

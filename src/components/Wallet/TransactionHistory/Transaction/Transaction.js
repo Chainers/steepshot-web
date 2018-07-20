@@ -1,11 +1,11 @@
 import React from 'react';
 import './transaction.css';
 import TimeAgo from 'timeago-react';
-import DateFormatter from "../../../../utils/DateFormatter";
-import SteemService from "../../../../services/SteemService";
-import AuthService from "../../../../services/AuthService";
-import ShowIf from "../../../Common/ShowIf";
-import Utils from "../../../../utils/Utils";
+import DateFormatter from '../../../../utils/DateFormatter';
+import SteemService from '../../../../services/SteemService';
+import AuthService from '../../../../services/AuthService';
+import ShowIf from '../../../Common/ShowIf';
+import Utils from '../../../../utils/Utils';
 
 const Transaction = ({operation, data, date, index, isMobileScreen, isExtraSmall}) => {
 	let memo = /^#/.test(data.memo) ? (<div className="encoded-memo_trx">data.memo</div>) : data.memo;
@@ -59,6 +59,10 @@ function getOperationText(operation) {
 			return 'Transfer';
 		case 'claim_reward_balance':
 			return 'Claim rewards';
+		case 'withdraw_vesting':
+			return 'Power down';
+		case 'transfer_to_vesting':
+			return 'Power up';
 		default:
 			return 'Transaction'
 	}
@@ -82,7 +86,22 @@ function getOperationBody(operation, data) {
 					{isEmptySteem || isEmptySBD ? '' : (<span>,&nbsp;</span>)}
 					{wrap(data.reward_sbd)}
 					{isEmptySteem && isEmptySBD ? '' : (<span>&nbsp;and&nbsp;</span>)}
-					{wrap(SteemService.vestsToSp(data.reward_vests))}
+					{wrap(SteemService.vestsToSp(data.reward_vests) + ' STEEM POWER')}
+				</div>
+			);
+		case 'withdraw_vesting':
+			const isEmptySteemPowerDown =  /^0\.000/.test(data.vesting_shares);
+			const steemAmountPowerDown = <span>Start power down of&nbsp;
+				{wrap(SteemService.vestsToSp(data.vesting_shares) + ' STEEM', false)}</span>;
+			return (
+				<div className="info_trx">
+					{isEmptySteemPowerDown ? 'Cancel power down' : steemAmountPowerDown}
+				</div>
+			);
+		case 'transfer_to_vesting':
+			return (
+				<div className="info_trx">
+          Transfer&nbsp;{wrap(data.amount)}&nbsp;into&nbsp;{wrap(data.amount + ' POWER')}
 				</div>
 			);
 		default:
@@ -90,7 +109,7 @@ function getOperationBody(operation, data) {
 	}
 }
 
-function wrap(data) {
-	if (/^0\.000/.test(data)) return '';
+function wrap(data, empty = true) {
+	if (/^0\.000/.test(data) && empty) return '';
 	return (<span style={{color: '#e74800'}}>{data}</span>);
 }

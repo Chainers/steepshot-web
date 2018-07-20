@@ -7,9 +7,10 @@
 
 
 .checkbox_input-active-key {
-    width: 20px;
-    height: 20px;
+    width: 22px;
+    height: 22px;
     border: solid 1px #979b9e;
+    border-radius: 50%;
     cursor: pointer;
     margin-right: 10px;
     display: flex;
@@ -17,10 +18,16 @@
     align-items: center;
 }
 
+.checkbox_input-active-key + span {
+    display: flex;
+    align-items: center;
+}
+
 .save_input-active-key {
     width: 16px;
     height: 16px;
-    background-color: #d0021b;
+    border-radius: 50%;
+    background: #ff2400;
 }
 
 .container_input-active-key input {
@@ -36,4 +43,15 @@
 
 .container_input-active-key input::placeholder  {
     color: #979b9e;
+}
+
+.promise-about-key_input-active-key {
+    padding: 5px 10px;
+    border-radius: 6px;
+    background-color: #fafafa;
+    font: 10px OpenSans-Regular;
+    color: #979b9e;
+    margin: 20px 0;
+    max-width: 440px;
+    text-align: center;
 }

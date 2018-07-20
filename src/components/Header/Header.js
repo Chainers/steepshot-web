@@ -61,7 +61,7 @@ class Header extends React.Component {
 		let loginComponent = <div className="section login">
 			<div className="wrap-login">
 				<Link to="/signin" className="btn btn-default btn-xs">
-					Sign in
+					SIGN IN
 				</Link>
 			</div>
 		</div>;
@@ -70,7 +70,7 @@ class Header extends React.Component {
 			authorLink = `/@${this.props.user}`;
 			loginComponent = <div className="section controls">
 				<div className="wrap-controls_header">
-					{/*<Link to="/wallet" className="btn-control wallet"/>*/}
+					<Link to="/wallet" className="btn-control wallet"/>
 					<Link to="/settings" className="btn-control settings"/>
 					<a onClick={this.handleLogout.bind(this)}
 					   className="btn-control logout"> </a>

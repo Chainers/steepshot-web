@@ -3,11 +3,7 @@ import {connect} from 'react-redux';
 import './promote.css';
 import {closeModal} from '../../../actions/modal';
 import {
-	addPostIndex,
-	getAuthUserInfo,
-	getAuthUserInfoError,
-	searchingBotRequest,
-	setPromoteInputError
+  addPostIndex, clearPromoteModalInfo, getAuthUserInfo, searchingBotRequest, setPromoteInputError
 } from '../../../actions/promoteModal';
 import Constants from '../../../common/constants';
 import {loadingEllipsis} from '../../../utils/loadingEllipsis';
@@ -35,17 +31,12 @@ class Promote extends React.Component {
 	}
 
 	componentWillUnmount() {
-		this.clearPromoteModalInfo();
+		this.props.clearPromoteModalInfo();
 		this.container.removeEventListener('keypress', this.promoteByEnter);
-		this.props.getAuthUserInfoError('');
 	}
 
 	changeAmount(e) {
 		this.props.changeAmount(e.target.value);
-	}
-
-	clearPromoteModalInfo() {
-		this.props.setPromoteInputError('');
 	}
 
 	promoteByEnter(e) {
@@ -110,13 +101,11 @@ class Promote extends React.Component {
 					             disabled={this.props.infoLoading}
 					             tokensNames={this.props.tokensNames}
 					/>
-
 					<div className="loading_promote">
 						<ShowIf show={this.props.infoLoading}>
 							{loadingEllipsis('Loading data')}
 						</ShowIf>
 					</div>
-
 					<GrayInput placeholder="e.g. 100"
 					           className="amount-input_promote"
 					           value={this.props.amount}
@@ -172,8 +161,8 @@ const mapDispatchToProps = (dispatch) => {
 		addPostIndex: (postIndex) => {
 			dispatch(addPostIndex(postIndex));
 		},
-		getAuthUserInfoError: (error) => {
-			dispatch(getAuthUserInfoError(error));
+		clearPromoteModalInfo: () => {
+			dispatch(clearPromoteModalInfo());
 		}
 	}
 };

@@ -144,6 +144,7 @@
 .btn-control.wallet {
     background: url('/images/wallet/buttons/wallet.png') no-repeat center;
     background-size: 100% 100%;
+    transition: 0s;
 }
 
 .btn-control.wallet:hover {

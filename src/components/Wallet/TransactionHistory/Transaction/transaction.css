@@ -39,6 +39,8 @@
 }
 
 .memo_trx {
+    padding-left: 10px;
+    padding-right: 10px;
     flex-grow: 1;
     color: #333333;
     font: 14px OpenSans-Light;

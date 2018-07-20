@@ -1,9 +1,9 @@
-import storage from "../utils/Storage";
+import storage from '../utils/Storage';
 
 const initialState = {
-	activeKey: storage.transferActiveKey || '',
-	activeKeyError: '',
-	saveKey: !!storage.transferActiveKey,
+	activeKey: storage.activeKey || '',
+	saveKey: false,
+	showActiveKey: false
 };
 
 export default function activeKey(state = initialState, action) {
@@ -14,6 +14,7 @@ export default function activeKey(state = initialState, action) {
 				activeKey: action.value,
 				activeKeyError: ''
 			};
+
 		case 'TRANSFER_ERROR':
 			if (action.activeKeyError) {
 				return {
@@ -22,13 +23,22 @@ export default function activeKey(state = initialState, action) {
 				};
 			}
 			return state;
+
 		case 'ACTIVE_KEY_CHANGE_SAVING':
 			return {
 				...state,
 				saveKey: !state.saveKey
 			};
+
+    case 'SET_ACTIVE_KEY_INPUT_SECURITY':
+      return {
+        ...state,
+        showActiveKey: action.state
+      };
+
 		case 'CLOSE_MODAL':
-			if (action.index === 'transfer' || action.index === 'powerUp' || action.index === 'powerDown') {
+			if (action.index === 'transfer' || action.index === 'powerUp' || action.index === 'powerDown'
+				|| action.index === 'SendBid') {
 				if (!state.saveKey) {
 					return {
 						...state,
@@ -38,6 +48,7 @@ export default function activeKey(state = initialState, action) {
 				}
 			}
 			return state;
+
 		default:
 			return state;
 	}
