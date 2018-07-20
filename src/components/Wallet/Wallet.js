@@ -75,7 +75,7 @@ class Wallet extends React.Component {
 	render() {
 		const {cost, steem, sp, sbd, isGolosService} = this.props;
 		if (Utils.isEmpty(cost) || Utils.isEmpty(steem) || Utils.isEmpty(sp) || Utils.isEmpty(sbd)) {
-			return <LoadingSpinner center={true}/>
+			return global.isServerSide ? null : <LoadingSpinner center={true}/>
 		}
 		return (
 			<div className="container">
