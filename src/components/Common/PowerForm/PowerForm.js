@@ -11,7 +11,7 @@ const PowerForm = ({amount, amountError, amountOnChange, countToken, token, clas
 			           error={amountError} maxLength={15}/>
 			<BalanceInfo token={token} amount={countToken}/>
 		</div>
-		<span onClick={() => amountOnChange(countToken)} className="using-max_power-form">Using maximum</span>
+		<span onClick={() => amountOnChange(countToken - 5)} className="using-max_power-form">Using maximum</span>
 		<InputActiveKey className="input-active-key_power-form" name="activeKey"/>
 	</form>
 );

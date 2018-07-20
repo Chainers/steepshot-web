@@ -13,6 +13,7 @@ import PowerUp from "../Modals/PowerUp/PowerUp";
 import PowerDown from "../Modals/PowerDown/PowerDown";
 import ChainService from "../../services/ChainService";
 import {setToken} from "../../actions/wallet";
+import {documentTitle} from "../../utils/documentTitle";
 
 const DESCRIPTION = {
 	STEEM: `Tradeable tokens that may be transferred anywhere at anytime.
@@ -37,6 +38,7 @@ class Wallet extends React.Component {
 		this.transferSteem = this.transferSteem.bind(this);
 		this.powerUp = this.powerUp.bind(this);
 		this.powerDown = this.powerDown.bind(this);
+		documentTitle();
 	}
 
 	transfer() {
@@ -73,7 +75,7 @@ class Wallet extends React.Component {
 	render() {
 		const {cost, steem, sp, sbd, isGolosService} = this.props;
 		if (Utils.isEmpty(cost) || Utils.isEmpty(steem) || Utils.isEmpty(sp) || Utils.isEmpty(sbd)) {
-			return <LoadingSpinner style={{display: '20px'}} center={true}/>
+			return <LoadingSpinner center={true}/>
 		}
 		return (
 			<div className="container">

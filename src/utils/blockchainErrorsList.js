@@ -6,7 +6,6 @@ export function blockchainErrorsList(error) {
 	if (!error.data) {
 		if (error.actual === 128 || error.message === Constants.NON_BASE58_CHARACTER) {
 			return Constants.ERROR_MESSAGES.INVALID_ACTIVE_KEY;
-
 		}
 		if (typeof error === 'string') {
 			return error;
@@ -86,6 +85,10 @@ export function blockchainErrorsList(error) {
 				'You may only post once every 5 minutes.',
 				notificationText: 'You can only create posts 5 minutes after the previous one.'
 			},
+      {
+        error: '10 assert_exception: Assert Exception: is_valid_account_name( name ): Account name ${n} is invalid', // eslint-disable-line
+        notificationText: 'There\'s no such user you want to transfer to.'
+      },
 			{
 				error: '10 assert_exception: Assert Exception: _db.get_balance( o.from, o.amount.symbol ) >= o.amount: Account' +
 				' does not have sufficient funds for transfer.',

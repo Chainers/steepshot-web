@@ -4,7 +4,6 @@
     flex-wrap: wrap;
     width: calc(100% + 10px);
     margin: -5px;
-
 }
 
 .label_choose-token {
@@ -59,6 +58,16 @@
     cursor: pointer;
     color: #e74800;
     font: 14px OpenSans-Bold;
+    border-radius: 6px;
+}
+
+.select_choose-token select:-moz-focusring {
+    color: transparent;
+    text-shadow: 0 0 0 #e74800;
+}
+
+.select_choose-token select option:not(:checked) {
+    color: #000000;
 }
 
 .select_choose-token select.disabled {

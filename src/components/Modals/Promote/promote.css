@@ -3,6 +3,8 @@
 }
 
 .loading_promote {
+    display: flex;
+    align-items: center;
     width: 100%;
     height: 25px;
     color: #979b9e;

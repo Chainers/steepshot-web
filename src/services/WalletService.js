@@ -41,7 +41,7 @@ function checkActiveKey(activeKey) {
 	const error = new Error();
 	error.isCustom = true;
 	if (Utils.isEmptyString(activeKey)) {
-		error.message = 'Active key can\'t be empty.';
+		error.message = 'Active key field can\'t be empty.';
 		error.field = 'activeKeyError';
 		return Promise.reject(error)
 	}
@@ -52,7 +52,7 @@ function checkAmount(amount, min = 0.001) {
 	const error = new Error();
 	error.isCustom = true;
 	if (Utils.isEmpty(amount)) {
-		error.message = 'Amount can\'t be empty.';
+		error.message = 'Amount field can\'t be empty.';
 		error.field = 'amountError';
 		return Promise.reject(error)
 	}

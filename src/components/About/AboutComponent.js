@@ -1,8 +1,8 @@
 import React from 'react';
 import HeadingLeadComponent from '../Atoms/HeadingLeadComponent';
 import {documentTitle} from '../../utils/documentTitle';
-import {addMetaTags, getDefaultTags} from "../../actions/metaTags";
-import {withWrapper} from "create-react-server/wrapper";
+import {addMetaTags, getDefaultTags} from '../../actions/metaTags';
+import {withWrapper} from 'create-react-server/wrapper';
 
 class AboutComponent extends React.Component {
 
