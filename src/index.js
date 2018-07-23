@@ -5,13 +5,11 @@ import React from 'react';
 import './styles/main.css';
 import createApp from './app';
 import BrowserRouter from 'react-router-dom/BrowserRouter';
-/* for profiling
-import {whyDidYouUpdate} from 'why-did-you-update';
+/*import {whyDidYouUpdate} from 'why-did-you-update';
 
 if (process.env.NODE_ENV !== 'production') {
 	whyDidYouUpdate(React, { exclude: [/^(Connect|Link)/] });
-}
-*/
+}*/
 
 const Root = () => global.isServerSide ?
 	(<BrowserRouter>

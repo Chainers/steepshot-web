@@ -11,17 +11,26 @@ const InputActiveKey = ({className, activeKey, activeKeyError, saveKey, changeSa
 	if (storage.activeKey) {
 		return null;
 	}
+
+	function onChangeActiveKey(e) {
+    changeActiveKey(e.target.value);
+	}
+
+	function setActiveKeyInputEye() {
+    setActiveKeyInputSecurity(showActiveKey);
+	}
+
   return (
 		<div className={'container_input-active-key ' + (className || '')}>
 			<div className="centered--flex">
 				<GrayInput label="Private active key"
 									 type={showActiveKey ? 'text' : 'password'}
 									 placeholder="e.g. STG52aKIcG9..."
-									 onChange={(e) => changeActiveKey(e.target.value)}
+									 onChange={onChangeActiveKey}
 									 value={activeKey}
 									 error={activeKeyError}/>
 				<div className="eye-switcher_promote-mod"
-						 onClick={() => setActiveKeyInputSecurity(showActiveKey)}
+						 onClick={setActiveKeyInputEye}
 						 style={{
                backgroundImage: `url(/images/promoteModal/${showActiveKey ? 'red_eye.svg'
                  : 'striked_eye.svg'})`

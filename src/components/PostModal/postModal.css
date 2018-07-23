@@ -257,7 +257,8 @@
 
 .before-load-curtain_pos-mod {
     z-index: 7;
-    background-color: #e7e7e7
+    background-color: #e7e7e7;
+    border-radius: 10px 0 0 10px;
 }
 
 .title-low-nsfw_pos-mod {
