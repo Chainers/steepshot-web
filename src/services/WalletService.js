@@ -1,5 +1,6 @@
-import ChainService from "./ChainService";
-import Utils from "../utils/Utils";
+import ChainService from './ChainService';
+import Utils from '../utils/Utils';
+import Constants from '../common/constants';
 
 class WalletService {
 
@@ -41,23 +42,23 @@ function checkActiveKey(activeKey) {
 	const error = new Error();
 	error.isCustom = true;
 	if (Utils.isEmptyString(activeKey)) {
-		error.message = 'Active key can\'t be empty.';
+		error.message = 'Active key field can\'t be empty.';
 		error.field = 'activeKeyError';
 		return Promise.reject(error)
 	}
 	return Promise.resolve();
 }
 
-function checkAmount(amount, min = 0.001) {
+function checkAmount(amount, min = Constants.TRANSFER.MIN_AMOUNT) {
 	const error = new Error();
 	error.isCustom = true;
 	if (Utils.isEmpty(amount)) {
-		error.message = 'Amount can\'t be empty.';
+		error.message = 'Amount field can\'t be empty.';
 		error.field = 'amountError';
 		return Promise.reject(error)
 	}
 	if (amount < min) {
-		error.message = `Amount can't be less then 0.001.`;
+		error.message = `Amount can't be less then ${Constants.TRANSFER.MIN_AMOUNT}.`;
 		error.field = 'amountError';
 		return Promise.reject(error)
 	}

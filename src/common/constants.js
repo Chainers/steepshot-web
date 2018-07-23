@@ -16,8 +16,8 @@ const Constants = {
 		},
 		steem: {
 			name: 'steem',
-			baseUrl: 'https://steepshot.org/api/v1_1',
-			loggingUrl: 'https://steepshot.org/api/v1',
+			baseUrl: 'https://qa.steepshot.org/api/v1_1',
+			loggingUrl: 'https://qa.steepshot.org/api/v1',
 			MAX_ACCEPTED_PAYOUT: '1000000.000 SBD',
 			PERCENT_STEEM_DOLLARS: 10000,
 			TAGS: {
@@ -34,8 +34,8 @@ const Constants = {
 			MIN_BID_VALUE: 0.5,
 			MAX_BID_VALUE: 100,
 			BOT_UPDATE_TIME: 80,
-			SUPPORTABLE_BOTS_LIST: ['promobot', 'upme', 'therising', 'upmewhale', 'sneaky-ninja', 'rocky1', 'boomerang',
-				'appreciator', 'postpromoter', 'smartsteem', 'spydo', 'booster', 'emperorofnaps', 'jerrybanfield']
+			SUPPORTABLE_BOTS_LIST: ['promobot', 'upme', 'therising', 'upmewhale', 'rocky1', 'boomerang', 'appreciator',
+				'postpromoter', 'smartsteem', 'spydo', 'booster', 'emperorofnaps', 'jerrybanfield']
 		}
 	},
 
@@ -259,17 +259,18 @@ const Constants = {
 		BID_TIMEOUT_ERROR: 'It\'s too late to bid to this bot, try any one.',
 		RED_TIMER: 60,
 		BLOCKED_TIMER: 21,
-		EMPTY_KEY_INPUT: 'You should enter the key',
 		BID_TO_BOT_SUCCESS: 'Your bid has been successfully sent. Wait for upvote.',
 	},
 
 	TRANSFER: {
-		BID_TO_BOT_SUCCESS: 'Your bid has been successfully sent.'
+		BID_TO_BOT_SUCCESS: 'Your bid has been successfully sent.',
+		TRANSFER_SUCCESS: 'Transfer has been successfully concluded.',
+		MIN_AMOUNT: 0.001
 	},
 
 	WALLET: {
-		POWER_UP_SUCCESS: 'SUCCESS',
-		POWER_DOWN_SUCCESS: 'SUCCESS'
+		POWER_UP_SUCCESS: 'Power up success.',
+		POWER_DOWN_SUCCESS: 'Started power down.'
 	},
 
 	ERROR_MESSAGES: {

@@ -1,6 +1,6 @@
 import sc2 from 'sc2-sdk';
-import AuthService from "./AuthService";
-import SteemService from "./SteemService";
+import AuthService from './AuthService';
+import SteemService from './SteemService';
 
 const callbackURL = `${document.location.origin}/steemConnect`;
 const api = sc2.Initialize({
@@ -12,6 +12,7 @@ const api = sc2.Initialize({
 class SteemConnect {
 
 	static getLoginUrl() {
+    console.log(api);
 		return api.getLoginURL()
 	}
 
@@ -56,11 +57,11 @@ class SteemConnect {
 	}
 
 	wifIsValid() {
-		throw new Error('Only for base authorization')
+		throw new Error('Only for base authorization.')
 	}
 
 	getValidTransaction() {
-		throw new Error('Only for base authorization')
+		throw new Error('Only for base authorization.')
 	}
 
 	getBeneficiaries(permlink, beneficiaries) {

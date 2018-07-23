@@ -1,17 +1,17 @@
 import React from 'react';
 import {connect} from "react-redux";
 import './powerDown.css';
-import WalletPopupTemplate from "../WalletPopupTemplate/WalletPopupTemplate";
-import {closeModal} from "../../../actions/modal";
-import PowerForm from "../../Common/PowerForm/PowerForm";
-import {changeAmount, powerDown} from "../../../actions/wallet";
+import WalletPopupTemplate from '../WalletPopupTemplate/WalletPopupTemplate';
+import {closeModal} from '../../../actions/modal';
+import PowerForm from '../../Common/PowerForm/PowerForm';
+import {changeAmount, powerDown} from '../../../actions/wallet';
 
 class PowerDown extends React.Component {
 
 	render() {
 		const {username, balance, amount, amountError} = this.props;
 		return (
-			<WalletPopupTemplate title="POWER DOWN"
+			<WalletPopupTemplate title="CONVERT TO STEEM"
 			                     username={username}
 			                     textButton="POWER DOWN"
 			                     cancel={this.props.closePowerUpModal}
@@ -24,8 +24,7 @@ class PowerDown extends React.Component {
 				           token="STEEM"
 				/>
 				<div className="description_power-down">
-					You are already powering down 69.692 STEEM (16.083 STEEM paid out so far). Note that if you change the power
-					down amount the payout schedule will reset.
+					Note that if you change the power down amount the payout schedule will reset.
 				</div>
 				<div className="description_power-down margin-bottom-25">
 					Leaving less than 5 STEEM POWER in your account is not recommended and can leave your account in a unusable

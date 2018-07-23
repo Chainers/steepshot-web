@@ -1,6 +1,6 @@
 import React, {Fragment} from 'react';
 import './chooseToken.css';
-import BalanceInfo from "../BalanceInfo/BalanceInfo";
+import BalanceInfo from '../BalanceInfo/BalanceInfo';
 
 const ChooseToken = ({selectedToken, amount, onChange, balanceOnClick, disabled = false, tokensNames}) => (
 	<Fragment>
@@ -11,7 +11,7 @@ const ChooseToken = ({selectedToken, amount, onChange, balanceOnClick, disabled 
 				        onChange={onChange}
 				        value={selectedToken}
 				        disabled={disabled ? 'disabled' : ''}>
-					<option value={0}><strong>{tokensNames[0]}</strong></option>
+					<option value={0}>{tokensNames[0]}</option>
 					<option value={1}>{tokensNames[1]}</option>
 				</select>
 			</div>

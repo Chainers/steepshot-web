@@ -1,10 +1,6 @@
-import storage from "../utils/Storage";
-
 const initialState = {
 	inputError: '',
-	activeKey: storage.activeKey || '',
 	infoLoading: false,
-	showActiveKey: false,
 	searchingBot: false,
 	redTimer: false,
 	suitableBot: null,
@@ -20,22 +16,10 @@ export default function promoteModal(state = initialState, action) {
 				postIndex: action.postIndex
 			};
 
-		case 'SET_AUTH_USER_INFO_LOADING':
-			return {
-				...state,
-				infoLoading: action.loading
-			};
-
 		case 'SET_PROMOTE_INPUT_ERROR':
 			return {
 				...state,
 				inputError: action.error
-			};
-
-		case 'SET_ACTIVE_KEY_ERROR':
-			return {
-				...state,
-				activeKeyError: action.activeKeyError
 			};
 
 		case 'SET_BOT_REQUEST':
@@ -48,18 +32,6 @@ export default function promoteModal(state = initialState, action) {
 			return {
 				...state,
 				suitableBot: action.bot
-			};
-
-		case 'SET_ACTIVE_KEY':
-			return {
-				...state,
-				activeKey: action.key
-			};
-
-		case 'SET_ACTIVE_KEY_INPUT_SECURITY':
-			return {
-				...state,
-				showActiveKey: action.state
 			};
 
 		case 'GET_AUTH_USER_INFO_ERROR':

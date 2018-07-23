@@ -53,18 +53,14 @@ export function transfer() {
 		const {amount} = state.wallet;
 		const {activeKey, saveKey} = state.activeKey;
 		const selectedToken = state.services.tokensNames[state.wallet.selectedToken];
-		if (saveKey) {
-			storage.transferActiveKey = activeKey;
-		} else {
-			storage.transferActiveKey = null;
-		}
 		dispatch(actionLock());
 		dispatch(showBodyLoader());
-		WalletService.transfer(activeKey, amount, selectedToken, to, memo)
+		WalletService.transfer(activeKey || storage.activeKey, amount, selectedToken, to, memo)
 			.then(() => {
 				dispatch(actionUnlock());
 				dispatch(hideBodyLoader());
-				dispatch(pushMessage(Constants.TRANSFER.BID_TO_BOT_SUCCESS));
+				dispatch(pushMessage(Constants.TRANSFER.TRANSFER_SUCCESS));
+        if (saveKey && !storage.activeKey) storage.activeKey = activeKey;
 				dispatch(closeModal("transfer"));
 			})
 			.catch(error => {
@@ -80,8 +76,7 @@ export function transfer() {
 }
 
 export function getErrorData(error) {
-	let message;
-	let field;
+	let message, field;
 	if (error.isCustom) {
 		field = error.field;
 		message = error.message;

@@ -58,7 +58,6 @@
 .recipient-error_transfer {
     display: block;
     height: 20px;
-    text-align: right;
     color: #d0021b;
     margin: 0;
     font-size: 12px;
@@ -77,6 +76,10 @@
     font: 14px OpenSans-Light;
     color: #979b9e;
     transition: .3s;
+}
+
+.add-memo_transfer {
+    margin-bottom: 20px;
 }
 
 .add-memo_transfer > span {

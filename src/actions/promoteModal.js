@@ -1,6 +1,5 @@
 import * as React from 'react';
 import {getStore} from '../store/configureStore';
-import UserService from '../services/UserService';
 import {closeModal, openModal} from './modal';
 import SendBid from '../components/Modals/SendBid/SendBid';
 import Constants from '../common/constants';
@@ -8,17 +7,10 @@ import {actionLock, actionUnlock} from './session';
 import {pushErrorMessage, pushMessage} from './pushMessage';
 import BotsService from '../services/BotsService';
 import storage from '../utils/Storage';
-import WalletService from "../services/WalletService";
-import {hideBodyLoader, showBodyLoader} from "./bodyLoader";
-import {getUserProfileSuccess} from "./userProfile";
-import {changeAmount} from "./wallet";
-
-function setAuthUserInfoLoading(param) {
-	return {
-		type: 'SET_AUTH_USER_INFO_LOADING',
-		loading: param
-	}
-}
+import WalletService from '../services/WalletService';
+import {hideBodyLoader, showBodyLoader} from './bodyLoader';
+import {getErrorData, inputError} from './transfer';
+import {changeAmount} from './wallet';
 
 function sendBotRequest(state) {
 	return {
@@ -34,18 +26,10 @@ function searchingNewBotError(error) {
 	}
 }
 
-export function getAuthUserInfoError(error) {
-	return {
-		type: 'GET_AUTH_USER_INFO_ERROR',
-		error: error.statusText
-	}
-
-}
-
-export function setActiveKeyInputSecurity(state) {
-	return {
-		type: 'SET_ACTIVE_KEY_INPUT_SECURITY',
-		state: !state
+export function clearPromoteModalInfo() {
+	return dispatch => {
+    dispatch(setPromoteInputError(''));
+    dispatch(changeAmount(Constants.TRANSFER.MIN_AMOUNT));
 	}
 }
 
@@ -70,44 +54,10 @@ export function addPostIndex(postIndex) {
 	}
 }
 
-export function setActiveKey(value) {
-	let activeKey = value.replace(/\s+/g, '');
-	return dispatch => {
-		dispatch(setActiveKeyError(''));
-		dispatch({
-			type: 'SET_ACTIVE_KEY',
-			key: activeKey
-		})
-	}
-}
-
 export function setPromoteInputError(error) {
 	return {
 		type: 'SET_PROMOTE_INPUT_ERROR',
 		error
-	}
-}
-
-export function getAuthUserInfo() {
-	let state = getStore().getState();
-	return dispatch => {
-		dispatch(setAuthUserInfoLoading(true));
-		dispatch(changeAmount(0.5));
-		UserService.getProfile(state.auth.user, state.settings.show_nsfw, state.settings.show_low_rated)
-			.then(result => {
-				dispatch(getUserProfileSuccess(result));
-				dispatch(setAuthUserInfoLoading(false));
-			})
-			.catch(error => {
-				dispatch(getAuthUserInfoError(error));
-			})
-	}
-}
-
-export function setActiveKeyError(activeKeyError) {
-	return {
-		type: 'SET_ACTIVE_KEY_ERROR',
-		activeKeyError
 	}
 }
 
@@ -156,36 +106,34 @@ export function searchingNewBot() {
 }
 
 export function sendBid() {
-	let state = getStore().getState();
-	const {postIndex, activeKey, suitableBot} = state.promoteModal;
-	const botName = suitableBot.name;
+  const state = getStore().getState();
+  const {activeKey, saveKey} = state.activeKey;
 	return dispatch => {
 		if (state.session.actionLocked) {
 			return;
 		}
-		if (!activeKey) {
-			setActiveKeyError(Constants.PROMOTE.EMPTY_KEY_INPUT);
-			return;
-		}
+    const {postIndex, suitableBot} = state.promoteModal;
+    const botName = suitableBot.name;
 		const steemLink = `https://steemit.com${postIndex}`;
 		const selectedToken = state.services.tokensNames[state.wallet.selectedToken];
 		dispatch(actionLock());
 		dispatch(showBodyLoader());
-		WalletService.transfer(activeKey, state.wallet.amount, selectedToken, botName, steemLink)
+		WalletService.transfer(activeKey || storage.activeKey, state.wallet.amount, selectedToken, botName, steemLink)
 			.then(() => {
 				dispatch(actionUnlock());
 				dispatch(pushMessage(Constants.PROMOTE.BID_TO_BOT_SUCCESS));
 				dispatch(hideBodyLoader());
-				storage.activeKey = state.promoteModal.activeKey;
+        if (saveKey && !storage.activeKey) storage.activeKey = activeKey;
 				dispatch(closeModal("SendBid"));
 			})
 			.catch(error => {
 				dispatch(actionUnlock());
 				dispatch(hideBodyLoader());
-				if (!error.data && (error.actual === 128 || error.message === Constants.NON_BASE58_CHARACTER)) {
-					dispatch(setActiveKeyError(Constants.ERROR_MESSAGES.INVALID_ACTIVE_KEY));
-					return dispatch(pushErrorMessage(Constants.ERROR_MESSAGES.INVALID_ACTIVE_KEY));
-				}
+        const {message, field} = getErrorData(error);
+        if (field && message) {
+          dispatch(inputError(field, message));
+          return dispatch(pushErrorMessage(message));
+        }
 				dispatch(pushErrorMessage(error));
 			});
 	}

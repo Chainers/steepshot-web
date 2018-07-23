@@ -1,4 +1,4 @@
-import ChainService from "./ChainService";
+import ChainService from './ChainService';
 
 class TransactionService {
 	static getWalletTransaction(username, from, amount, operationTypes = []) {
