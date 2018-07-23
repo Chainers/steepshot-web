@@ -264,7 +264,8 @@ const Constants = {
 
 	TRANSFER: {
 		BID_TO_BOT_SUCCESS: 'Your bid has been successfully sent.',
-		TRANSFER_SUCCESS: 'Transfer has been successfully concluded.'
+		TRANSFER_SUCCESS: 'Transfer has been successfully concluded.',
+		MIN_AMOUNT: 0.001
 	},
 
 	WALLET: {

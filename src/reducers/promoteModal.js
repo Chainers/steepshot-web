@@ -16,12 +16,6 @@ export default function promoteModal(state = initialState, action) {
 				postIndex: action.postIndex
 			};
 
-		case 'SET_AUTH_USER_INFO_LOADING':
-			return {
-				...state,
-				infoLoading: action.loading
-			};
-
 		case 'SET_PROMOTE_INPUT_ERROR':
 			return {
 				...state,

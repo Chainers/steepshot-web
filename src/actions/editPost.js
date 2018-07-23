@@ -210,13 +210,12 @@ export function createPost() {
 		dispatch(editPostRequest());
 		checkTimeAfterUpdatedLastPost()
 			.then(() => {
-				const dataType = 'image/gif';
 				const image = new Image();
 				image.src = photoSrc;
 				image.onload = () => {
 					let dataUrl = photoSrc;
 					if (!isGif && rotate) {
-						dataUrl = getCanvasWithImage(image, rotate).toDataURL(dataType, 1);
+						dataUrl = getCanvasWithImage(image, rotate).toDataURL('image/jpeg', 1);
 					}
 					fetch(dataUrl).then(res => {
 						return res.blob()

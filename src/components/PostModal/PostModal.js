@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Fragment} from 'react';
 import {connect} from 'react-redux';
 import {
 	nextPostModal,
@@ -34,8 +34,10 @@ import {setComponentSize} from '../../utils/setComponentSize';
 import {setCommentEditState} from '../../actions/comments';
 import AuthService from '../../services/AuthService';
 import LowNSFWFilter from './LowNSFWFilter';
-import CopyLink from "./CopyLink/CopyLink";
-import ChainService from "../../services/ChainService";
+import CopyLink from './CopyLink/CopyLink';
+import ChainService from '../../services/ChainService';
+import LoadingFilter from './LoadingFilter';
+import RenderImage from './RenderImage';
 
 class PostModal extends React.Component {
 
@@ -51,6 +53,7 @@ class PostModal extends React.Component {
 		this.initKeyPress = this.initKeyPress.bind(this);
 		this.resizePostModal = this.resizePostModal.bind(this);
 		this.copyLinkToClipboard = this.copyLinkToClipboard.bind(this);
+		this.setFullScreen = this.setFullScreen.bind(this);
 	}
 
 	componentDidMount() {
@@ -144,61 +147,8 @@ class PostModal extends React.Component {
 		}
 	}
 
-	loadingFilter(isFullScreen) {
-		let holderClass = isFullScreen ? 'before-load-full-screen_pos-mod' : 'before-load-curtain_pos-mod';
-		if (!this.props.newImageLoading) return null;
-		return (
-			<div className={holderClass} style={{width: '100%'}}>
-				<LoadingSpinner/>
-			</div>
-		)
-	}
-
 	copyLinkToClipboard() {
 		this.props.copyToClipboard(this.props.linkToSinglePost);
-	}
-
-	renderImage() {
-		let previousImageWidth;
-		if (this.props.previousStyle && this.props.previousStyle.image) {
-			previousImageWidth = {width: this.props.previousStyle.image.width};
-		}
-		return (
-			<div className="image-container_pos-mod"
-			     style={this.props.style.imgCont || previousImageWidth}
-			     onDoubleClick={(e) => this.setFullScreen(!this.props.fullScreenMode, e)}>
-				<LowNSFWFilter post={this.props.post}
-				               showAll={this.props.showAll}
-				               fullScreenMode={this.props.fullScreenMode}/>
-				{this.loadingFilter(false)}
-				<CopyLink onClick={this.copyLinkToClipboard} />
-				<ShowIf show={!this.props.isFSByScreenSize && !this.props.fullScreenMode && !this.props.singlePost}>
-					<div className="full-screen-button_pos-mod"
-					     onClick={this.setFullScreen.bind(this, true, false)}
-					>
-						<img className="img-full-screen" src="/images/shape.svg" alt="open full screen"/>
-					</div>
-				</ShowIf>
-				<ShowIf show={!this.props.post.isVideo}>
-					<ImagesGallery index={this.props.currentIndex}
-					               styles={this.props.style.image}
-					               isFullScreen={false}
-					               setPostModalSize={this.setPostModalSize}/>
-				</ShowIf>
-				<ShowIf show={this.props.post.isVideo}>
-					<div className="image-container_pos-mod image-container_vid-con"
-					     style={this.props.style.imgCont || previousImageWidth}
-					>
-						<ReactPlayer
-							width='100%'
-							height='100%'
-							url={this.props.urlVideo}
-							playing={true}
-							loop={true}/>
-					</div>
-				</ShowIf>
-			</div>
-		)
 	}
 
 	renderFullScreenImg() {
@@ -214,7 +164,8 @@ class PostModal extends React.Component {
 					<LowNSFWFilter post={this.props.post}
 					               showAll={this.props.showAll}
 					               fullScreenMode={this.props.fullScreenMode}/>
-					{this.loadingFilter(true)}
+					<LoadingFilter isFullScreen={true}
+												 newImageLoading={this.props.newImageLoading}/>
 					<CopyLink className="full-screen-share_pos-mod" onClick={this.copyLinkToClipboard} />
 					<ShowIf show={!this.props.post.isVideo}>
 						<ImagesGallery index={this.props.currentIndex}
@@ -365,7 +316,7 @@ class PostModal extends React.Component {
 		}
 
 		return (
-			<div>
+			<Fragment>
 				<div className="container_pos-mod" style={hideModalFS}>
 					<ShowIf show={this.props.showClose && !this.props.style.isMobile}>
 						<ShowIf show={!this.props.firstPost}>
@@ -384,7 +335,19 @@ class PostModal extends React.Component {
 							</div>
 						</ShowIf>
 					</ShowIf>
-					{this.renderImage()}
+					<RenderImage previousStyle={this.props.previousStyle}
+											 style={this.props.style}
+											 showAll={this.props.showAll}
+											 fullScreenMode={this.props.fullScreenMode}
+											 newImageLoading={this.props.newImageLoading}
+											 post={this.props.post}
+											 isFSByScreenSize={this.props.isFSByScreenSize}
+											 index={this.props.currentIndex}
+											 singlePost={this.props.singlePost}
+											 urlVideo={this.props.urlVideo}
+											 setPostModalSize={this.setPostModalSize}
+											 copyLinkToClipboard={this.copyLinkToClipboard}
+											 setFullScreen={this.setFullScreen}/>
 					<div className="header_pos-mod"
 					     style={this.props.style.headerCont}
 					>
@@ -436,7 +399,7 @@ class PostModal extends React.Component {
 				<ShowIf show={this.props.fullScreenMode}>
 					{this.renderFullScreenImg()}
 				</ShowIf>
-			</div>
+			</Fragment>
 		);
 	}
 

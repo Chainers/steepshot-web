@@ -1,6 +1,5 @@
 import * as React from 'react';
 import {getStore} from '../store/configureStore';
-import UserService from '../services/UserService';
 import {closeModal, openModal} from './modal';
 import SendBid from '../components/Modals/SendBid/SendBid';
 import Constants from '../common/constants';
@@ -10,16 +9,8 @@ import BotsService from '../services/BotsService';
 import storage from '../utils/Storage';
 import WalletService from '../services/WalletService';
 import {hideBodyLoader, showBodyLoader} from './bodyLoader';
-import {getUserProfileSuccess} from './userProfile';
-import {changeAmount} from './wallet';
 import {getErrorData, inputError} from './transfer';
-
-function setAuthUserInfoLoading(param) {
-	return {
-		type: 'SET_AUTH_USER_INFO_LOADING',
-		loading: param
-	}
-}
+import {changeAmount} from './wallet';
 
 function sendBotRequest(state) {
 	return {
@@ -38,16 +29,8 @@ function searchingNewBotError(error) {
 export function clearPromoteModalInfo() {
 	return dispatch => {
     dispatch(setPromoteInputError(''));
-    dispatch(getAuthUserInfoError(''));
+    dispatch(changeAmount(Constants.TRANSFER.MIN_AMOUNT));
 	}
-}
-
-export function getAuthUserInfoError(error) {
-	return {
-		type: 'GET_AUTH_USER_INFO_ERROR',
-		error: error.statusText
-	}
-
 }
 
 export function setRedTimer(param) {
@@ -75,22 +58,6 @@ export function setPromoteInputError(error) {
 	return {
 		type: 'SET_PROMOTE_INPUT_ERROR',
 		error
-	}
-}
-
-export function getAuthUserInfo() {
-	let state = getStore().getState();
-	return dispatch => {
-		dispatch(setAuthUserInfoLoading(true));
-		dispatch(changeAmount(0.5));
-		UserService.getProfile(state.auth.user, state.settings.show_nsfw, state.settings.show_low_rated)
-			.then(result => {
-				dispatch(getUserProfileSuccess(result));
-				dispatch(setAuthUserInfoLoading(false));
-			})
-			.catch(error => {
-				dispatch(getAuthUserInfoError(error));
-			})
 	}
 }
 

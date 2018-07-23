@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import './promote.css';
 import {closeModal} from '../../../actions/modal';
 import {
-  addPostIndex, clearPromoteModalInfo, getAuthUserInfo, searchingBotRequest, setPromoteInputError
+  addPostIndex, clearPromoteModalInfo, searchingBotRequest, setPromoteInputError
 } from '../../../actions/promoteModal';
 import Constants from '../../../common/constants';
 import {loadingEllipsis} from '../../../utils/loadingEllipsis';
@@ -25,7 +25,7 @@ class Promote extends React.Component {
 	}
 
 	componentDidMount() {
-		this.props.getAuthUserInfo();
+		this.props.changeAmount(0.5);
 		this.props.addPostIndex(this.props.index);
 		this.container.addEventListener('keypress', this.promoteByEnter);
 	}
@@ -47,7 +47,7 @@ class Promote extends React.Component {
 	}
 
 	promotePost() {
-		if (!this.props.searchingBot && !this.props.infoLoading && this.validPromoteInfo()) {
+		if (!this.props.searchingBot && this.validPromoteInfo()) {
 			this.props.searchingBotRequest();
 		}
 	}
@@ -98,14 +98,8 @@ class Promote extends React.Component {
 					<ChooseToken selectedToken={this.props.selectedToken}
 					             amount={this.props.balance}
 					             onChange={this.changeToken}
-					             disabled={this.props.infoLoading}
 					             tokensNames={this.props.tokensNames}
 					/>
-					<div className="loading_promote">
-						<ShowIf show={this.props.infoLoading}>
-							{loadingEllipsis('Loading data')}
-						</ShowIf>
-					</div>
 					<GrayInput placeholder="e.g. 100"
 					           className="amount-input_promote"
 					           value={this.props.amount}
@@ -122,11 +116,10 @@ class Promote extends React.Component {
 const mapStateToProps = (state) => {
 	const {tokensNames} = state.services;
 	const {amount, selectedToken, tokenValue} = state.wallet;
-	const {inputError, infoLoading, searchingBot} = state.promoteModal;
+	const {inputError, searchingBot} = state.promoteModal;
 	return {
 		inputError,
-		infoLoading,
-		noTokensForPromote: !infoLoading && (tokenValue[0] <= 0.5 && tokenValue[1] <= 0.5),
+		noTokensForPromote: tokenValue[0] <= 0.5 && tokenValue[1] <= 0.5,
 		searchingBot,
 		amount,
 		tokensNames,
@@ -145,9 +138,6 @@ const mapDispatchToProps = (dispatch) => {
 		},
 		changeAmount: value => {
 			dispatch(changeAmount(value))
-		},
-		getAuthUserInfo: () => {
-			dispatch(getAuthUserInfo());
 		},
 		setPromoteInputError: (error) => {
 			dispatch(setPromoteInputError(error));

@@ -24,7 +24,6 @@
 }
 
 .btn-default {
-    box-shadow: 0 10px 20px 0 rgba(231,72,0,.3);
     background: linear-gradient(90deg,#ff7904,#ff1605);
     border: 1px transparent;
 }
@@ -34,6 +33,7 @@
 }
 
 .btn-default:active {
+    box-shadow: 0 0 0 0;
     background-color: #9c1200;
 }
 
@@ -62,8 +62,8 @@
 
 .btn.btn-xs {
     padding: 8px 28px;
-    font-size: 12px;
-    border-radius: 15px;
+    font: 12px OpenSans-Semibold;
+    border-radius: 17px;
 }
 
 .btn.btn-create {
