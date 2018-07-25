@@ -17,6 +17,10 @@
     overflow: hidden;
 }
 
+.form-line-not-overflow_transfer {
+    width: 100%;
+}
+
 .body_transfer > div.gray_transfer {
     margin-top: 25px;
 }
@@ -98,3 +102,5 @@
 .body_transfer > div.active-key_transfer {
     margin: 25px 0 30px;
 }
+
+

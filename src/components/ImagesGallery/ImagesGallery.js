@@ -82,7 +82,7 @@ class ImagesGallery extends React.Component {
 				<ShowIf show={this.image && this.image.complete && !this.image.naturalWidth}>
 					<div className={holderClass}
 					     style={{width: imgWidth, backgroundColor: this.props.isFullScreen ? '#e7e7e7' : ''}}>
-						<p className="title_pos-mod">Sorry, image isn't found.</p>
+						<p className="image-not-found_pos-mod">Sorry, image isn't found.</p>
 					</div>
 				</ShowIf>
 			</div>

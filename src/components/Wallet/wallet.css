@@ -1,7 +1,6 @@
 .header_wallet {
     width: 100%;
     height: 84px;
-    margin-top: 30px;
     border-bottom: 1px solid #f4f4f6;
     display: flex;
     justify-content: space-between;
@@ -24,7 +23,8 @@
     justify-content: flex-start;
     flex-wrap: wrap;
     align-content: flex-start;
-    margin-bottom: 30px;
+    margin: 0 -10px 30px -10px;
+    padding-bottom: 20px;
     border-bottom: 1px solid #f4f4f6;
 }
 
@@ -32,13 +32,25 @@
     height: 400px;
 }
 
+.trx-history_wallet {
+    border-radius: 10px;
+    background-color: #ffffff;
+}
+
 @media (max-width: 650px) {
     .body_wallet {
         justify-content: center;
     }
+    .container_wallet {
+        padding: 0 10px;
+    }
 }
 
-.trx-history_wallet {
-    border-radius: 10px;
-    background-color: #ffffff;
+@media (max-width: 350px) {
+    .title_wallet {
+        font-size: 18px;
+    }
+    .account-balance_wallet {
+        font-size: 28px;
+    }
 }
