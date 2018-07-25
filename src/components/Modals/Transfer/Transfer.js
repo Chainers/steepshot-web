@@ -7,8 +7,8 @@ import ShowIf from "../../Common/ShowIf";
 import {closeModal} from "../../../actions/modal";
 import WalletPopupTemplate from "../WalletPopupTemplate/WalletPopupTemplate";
 import InputActiveKey from "../../Common/InputActiveKey/InputActiveKey";
-import GrayInput from "../../Common/GrayInput/GrayInput";
 import {changeAmount, setToken} from "../../../actions/wallet";
+import {closeContextMenu} from '../../../actions/contextMenu';
 
 class Transfer extends React.Component {
 
@@ -16,15 +16,9 @@ class Transfer extends React.Component {
 		super();
 		this.amountFocused = this.amountFocused.bind(this);
 		this.changeUsername = this.changeUsername.bind(this);
-		this.changeToken = this.changeToken.bind(this);
-		this.setAllAmount = this.setAllAmount.bind(this);
 		this.changeMemo = this.changeMemo.bind(this);
 		this.changeAmount = this.changeAmount.bind(this);
 		this.setAmountRef = this.setAmountRef.bind(this);
-	}
-
-	changeToken(e) {
-		this.props.setToken(e.target.value);
 	}
 
 	changeUsername(e) {
@@ -47,18 +41,16 @@ class Transfer extends React.Component {
 		this.amount.select();
 	}
 
-	setAllAmount() {
-		this.props.changeAmount(this.props.balance);
-	}
-
 	render() {
-		const {username, selectedToken, balance, memoOpened, to, toError, amount, amountError, memo, tokensNames} = this.props;
+		const {username, selectedToken, balance, memoOpened, to, toError, amount, amountError, memo,
+			tokensNames, closeChooseTokens, closeTransferModal, transfer} = this.props;
 		return (
-			<WalletPopupTemplate title="TRANSFER TO ACCOUNT"
+			<WalletPopupTemplate title="TRANSFER"
 			                     username={username}
 			                     textButton="SEND"
-			                     cancel={this.props.closeTransferModal}
-			                     ok={this.props.transfer}>
+			                     cancel={closeTransferModal}
+			                     ok={transfer}
+													 mainClick={closeChooseTokens}>
 				<form className="body_transfer" autoComplete="off">
 					<div className="form-line_transfer">
 						<p className="label_transfer">
@@ -70,16 +62,16 @@ class Transfer extends React.Component {
 						</div>
 						<label className="recipient-error_transfer">{toError}</label>
 					</div>
-					<div className="form-line_transfer" >
-						<ChooseToken selectedToken={selectedToken}
-						             amount={balance}
-						             onChange={this.changeToken}
-						             balanceOnClick={this.setAllAmount}
+					<div className="form-line-not-overflow_transfer">
+						<ChooseToken selectedItemNumber={selectedToken}
+						             tokensAmount={balance}
 						             tokensNames={tokensNames}
-						/>
+												 label="Amount"
+												 value={amount}
+												 reference={this.setAmountRef}
+												 onFocus={this.amountFocused}
+												 error={amountError}/>
 					</div>
-					<GrayInput label="Amount" className="gray_transfer" onChange={this.changeAmount} value={amount}
-					           ref={this.setAmountRef} onFocus={this.amountFocused} error={amountError} maxLength={15}/>
 					<ShowIf show={!memoOpened}>
 						<div className="add-memo_transfer">
 							<span onClick={this.props.showMemo}>
@@ -141,6 +133,9 @@ const mapDispatchToProps = dispatch => {
 		},
 		closeTransferModal: () => {
 			dispatch(closeModal("transfer"))
+		},
+    closeChooseTokens: () => {
+			dispatch(closeContextMenu("chooseToken"));
 		}
 	}
 };

@@ -52,6 +52,12 @@ export default function promoteModal(state = initialState, action) {
 				blockedTimer: action.param
 			};
 
+    case 'WALLET_CHANGE_AMOUNT':
+      return {
+        ...state,
+        inputError: ''
+      };
+
 		case 'LOGOUT_SUCCESS':
 			return initialState;
 

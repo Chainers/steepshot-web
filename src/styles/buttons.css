@@ -26,6 +26,7 @@
 .btn-default {
     background: linear-gradient(90deg,#ff7904,#ff1605);
     border: 1px transparent;
+    box-shadow: 0 10px 20px 0 rgba(231, 72, 0, 0.3);
 }
 
 .btn-default:hover {
@@ -142,13 +143,13 @@
 }
 
 .btn-control.wallet {
-    background: url('/images/wallet/buttons/wallet.png') no-repeat center;
+    background: url('/images/wallet/buttons/wallet.svg') no-repeat center;
     background-size: 100% 100%;
     transition: 0s;
 }
 
 .btn-control.wallet:hover {
-    background: url('/images/wallet/buttons/wallet-hover.png') no-repeat center;
+    background: url('/images/wallet/buttons/wallet-hover.svg') no-repeat center;
     background-size: 100% 100%;
 }
 

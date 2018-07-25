@@ -5,7 +5,6 @@
     color: #979b9e;
 }
 
-
 .checkbox_input-active-key {
     width: 22px;
     height: 22px;
@@ -46,7 +45,7 @@
 }
 
 .promise-about-key_input-active-key {
-    padding: 5px 10px;
+    padding: 15px 10px;
     border-radius: 6px;
     background-color: #fafafa;
     font: 10px OpenSans-Regular;
@@ -54,4 +53,8 @@
     margin: 20px 0;
     max-width: 440px;
     text-align: center;
+}
+
+.container_input-active-key .container_gray-input {
+    width: 100%;
 }

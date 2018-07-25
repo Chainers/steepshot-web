@@ -8,11 +8,11 @@ import {
 import Constants from '../../../common/constants';
 import {loadingEllipsis} from '../../../utils/loadingEllipsis';
 import {pushMessage} from '../../../actions/pushMessage';
-import ChooseToken from "../../Common/ChooseToken/ChooseToken";
-import ShowIf from "../../Common/ShowIf";
-import GrayInput from "../../Common/GrayInput/GrayInput";
-import WalletPopupTemplate from "../WalletPopupTemplate/WalletPopupTemplate";
-import {changeAmount, setToken} from "../../../actions/wallet";
+import ChooseToken from '../../Common/ChooseToken/ChooseToken';
+import ShowIf from '../../Common/ShowIf';
+import WalletPopupTemplate from '../WalletPopupTemplate/WalletPopupTemplate';
+import {changeAmount, setToken} from '../../../actions/wallet';
+import {closeContextMenu} from '../../../actions/contextMenu';
 
 class Promote extends React.Component {
 
@@ -21,7 +21,6 @@ class Promote extends React.Component {
 		this.promoteByEnter = this.promoteByEnter.bind(this);
 		this.promotePost = this.promotePost.bind(this);
 		this.changeAmount = this.changeAmount.bind(this);
-		this.changeToken = this.changeToken.bind(this);
 	}
 
 	componentDidMount() {
@@ -52,10 +51,6 @@ class Promote extends React.Component {
 		}
 	}
 
-	changeToken(e) {
-		this.props.setToken(e.target.value);
-	}
-
 	validPromoteInfo() {
 		if (this.props.balance < this.props.amount) {
 			this.props.setPromoteInputError(Constants.ERROR_MESSAGES.NOT_ENOUGH_TOKENS);
@@ -78,35 +73,30 @@ class Promote extends React.Component {
 	}
 
 	render() {
-
+		const {amount, searchingBot, noTokensForPromote, selectedToken, tokensNames, inputError, balance,
+			closeModal, closeChooseTokens} = this.props;
 		let findText = 'FIND PROMOTER';
-		if (this.props.searchingBot) {
+		if (searchingBot) {
 			findText = loadingEllipsis('LOOKING');
 		}
-
 		return (
 			<WalletPopupTemplate title="PROMOTE POST"
-			                     textButton={this.props.noTokensForPromote ? undefined : findText}
-			                     cancel={this.props.closeModal}
-			                     ok={this.promotePost}>
+			                     textButton={noTokensForPromote ? undefined : findText}
+			                     cancel={closeModal}
+			                     ok={this.promotePost}
+													 mainClick={closeChooseTokens}>
 				<div className="body_promote" ref={ref => this.container = ref}>
-					<ShowIf show={this.props.noTokensForPromote}>
+					<ShowIf show={noTokensForPromote}>
 						<div className="no-tokens_promote centered--flex">
 							There's not enough tokens for promote in your wallet.
 						</div>
 					</ShowIf>
-					<ChooseToken selectedToken={this.props.selectedToken}
-					             amount={this.props.balance}
-					             onChange={this.changeToken}
-					             tokensNames={this.props.tokensNames}
-					/>
-					<GrayInput placeholder="e.g. 100"
-					           className="amount-input_promote"
-					           value={this.props.amount}
-					           onChange={this.changeAmount}
-					           error={this.props.inputError}
-					           label={`Promotion amount (minimum ${Constants.SERVICES.BOTS.MIN_BID_VALUE})`}
-					/>
+					<ChooseToken selectedItemNumber={selectedToken}
+											 tokensAmount={balance}
+											 label={`Promotion amount (minimum ${Constants.SERVICES.BOTS.MIN_BID_VALUE})`}
+											 value={amount}
+					             tokensNames={tokensNames}
+											 error={inputError}/>
 				</div>
 			</WalletPopupTemplate>
 		);
@@ -153,7 +143,10 @@ const mapDispatchToProps = (dispatch) => {
 		},
 		clearPromoteModalInfo: () => {
 			dispatch(clearPromoteModalInfo());
-		}
+		},
+    closeChooseTokens: () => {
+      dispatch(closeContextMenu("chooseToken"));
+    }
 	}
 };
 

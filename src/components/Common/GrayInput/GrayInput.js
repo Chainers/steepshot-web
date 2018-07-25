@@ -2,7 +2,7 @@ import React from 'react';
 import './grayInput.css';
 import ShowIf from '../ShowIf';
 
-class GrayInput extends React.PureComponent {
+class GrayInput extends React.Component {
 
 	get value() {
 		return this.field.value;
@@ -13,13 +13,16 @@ class GrayInput extends React.PureComponent {
 	}
 
 	render() {
+		const {className, label, error} = this.props;
 		return (
-			<div className={'container_gray-input ' + (this.props.className || '')}>
-				<ShowIf show={this.props.label}>
-					<p>{this.props.label}</p>
-				</ShowIf>
-				{React.cloneElement(<input ref={ref => this.field = ref}/>,	{...this.props, className: ''})}
-				<label>{this.props.error}</label>
+			<div className={'container_gray-input ' + (className || '')}>
+				<div className="wrapper-inscription_gray-input">
+					<ShowIf show={label}>
+						<p>{label}</p>
+					</ShowIf>
+				</div>
+        {React.cloneElement(<input ref={ref => this.field = ref}/>,	{...this.props, className: ''})}
+				<label>{error}</label>
 			</div>
 		)
 	}

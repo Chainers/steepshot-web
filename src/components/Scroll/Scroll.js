@@ -18,11 +18,16 @@ class Scroll extends React.Component {
 		this.forceUpdate();
 	}
 
+	static hideHorizontalThumb() {
+		return <div className="hide"/>
+	}
+
 	render() {
 		const {children, customScrollStyle} = this.props;
 		return (
 			<Scrollbars onScrollFrame={this.onScrollFrame.bind(this)}
 			            style={this.props.style}
+									renderThumbHorizontal={Scroll.hideHorizontalThumb}
 			            renderTrackVertical={() => {
 				            return (<div className={'default_scroll ' + (customScrollStyle || '')}/>)
 			            }}>

@@ -47,7 +47,7 @@ const LowNSFWFilter = ({fullScreenMode, post, showAll, setPostModalOptions}) => 
 	)
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
 	return {
 		setPostModalOptions: options => {
 			dispatch(setPostModalOptions(options));

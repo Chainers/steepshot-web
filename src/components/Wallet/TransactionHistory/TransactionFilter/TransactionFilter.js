@@ -15,7 +15,7 @@ const TransactionFilter = ({filter, current, onChange, pointContextMenu, openCon
 				                openContextMenu(pointContextMenu)
 			                }}
 			/>
-			<ContextMenu point={pointContextMenu} left="-160px" top="5px">
+			<ContextMenu point={pointContextMenu} left="-160px" top="5px" style={{borderRadius: 10}}>
 				<div className="container_trx-filter">
 					{filter.map((operation, index) =>
 						<FilterRow
@@ -49,10 +49,10 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = dispatch => {
 	return {
-		openContextMenu: (point) => {
+		openContextMenu: point => {
 			dispatch(openContextMenu(point))
 		},
-		closeContextMenu: (point) => {
+		closeContextMenu: point => {
 			dispatch(closeContextMenu(point))
 		}
 	}

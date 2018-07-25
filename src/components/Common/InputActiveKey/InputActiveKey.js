@@ -42,7 +42,7 @@ const InputActiveKey = ({className, activeKey, activeKeyError, saveKey, changeSa
 						<div className="save_input-active-key"/>
 					</ShowIf>
 				</div>
-				<span>Save private active key.</span>
+				<span>Keep me logged with this key.</span>
 			</div>
 			<div className="promise-about-key_input-active-key centered--flex">
 				Your key is securely used to sign the transfer transaction. It is never sent to any server, including

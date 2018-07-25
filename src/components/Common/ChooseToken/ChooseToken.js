@@ -1,24 +1,85 @@
-import React, {Fragment} from 'react';
+import React from 'react';
+import {connect} from 'react-redux';
+import GrayInput from '../GrayInput/GrayInput';
+import {changeAmount, setToken} from '../../../actions/wallet';
+import ContextMenu from '../ContextMenu/ContextMenu';
+import {closeContextMenu, openContextMenu} from '../../../actions/contextMenu';
+import FilterRow from '../../Wallet/TransactionHistory/TransactionFilter/FilterRow/FilterRow';
 import './chooseToken.css';
-import BalanceInfo from '../BalanceInfo/BalanceInfo';
 
-const ChooseToken = ({selectedToken, amount, onChange, balanceOnClick, disabled = false, tokensNames}) => (
-	<Fragment>
-		<p className="label_choose-token">Token</p>
+const ChooseToken = ({selectedItemNumber, tokensAmount, changeAmount, tokensNames, label, value, reference, onFocus,
+											 error, openContextMenu, closeContextMenu, pointContextMenu, setToken}) => {
+
+	function useMaxAmount() {
+    changeAmount(tokensAmount);
+	}
+
+	function onChangeAmount(e) {
+		changeAmount(e.target.value);
+  }
+
+	return (
 		<div className="container_choose-token">
-			<div className="select_choose-token">
-				<select className={disabled ? ' disabled' : ''}
-				        onChange={onChange}
-				        value={selectedToken}
-				        disabled={disabled ? 'disabled' : ''}>
-					<option value={0}>{tokensNames[0]}</option>
-					<option value={1}>{tokensNames[1]}</option>
-				</select>
+			<div className="relative-wrapper_choose-token">
+				<GrayInput label={label} placeholder="e.g. 100" onChange={onChangeAmount} value={value} ref={reference}
+									 onFocus={onFocus} error={error} maxLength={12}/>
+				<div className="token-amount_power-form"
+						 onClick={(e) => {
+						   e.stopPropagation();
+						   openContextMenu(pointContextMenu)
+					   }}>
+					<div className="balance_power-form">Balance: {tokensAmount}</div>
+					<div className="wrapper-choose-token_choose-token">
+						<div className="choose-token_choose-token">{tokensNames[selectedItemNumber]}</div>
+						<div className="choose-border_choose-token"/>
+						<div className="choose-arrows_choose-token"/>
+					</div>
+				</div>
+				<ContextMenu point={pointContextMenu} style={{borderRadius: 10, right: 0}}>
+					<div className="container_trx-filter">
+						{tokensNames.map((token, index) =>
+							<FilterRow
+								key={index}
+								isActive={index === selectedItemNumber}
+								label={token}
+								onClick={() => {
+									closeContextMenu(pointContextMenu);
+									if (selectedItemNumber !== index) {
+                    setToken(index);
+									}
+								}}
+							/>
+						)}
+					</div>
+				</ContextMenu>
 			</div>
-			<BalanceInfo token={tokensNames[selectedToken]}
-			             amount={amount} onClick={balanceOnClick}/>
+			<div onClick={useMaxAmount} className="btn btn-cancel btn-cancel-20_power-form">MAX</div>
 		</div>
-	</Fragment>
-);
+  );
+};
 
-export default ChooseToken;
+const mapStateToProps = () => {
+	const pointContextMenu = 'chooseToken';
+	return {
+    pointContextMenu
+	}
+};
+
+const mapDispatchToProps = (dispatch) => {
+	return {
+    changeAmount: value => {
+      dispatch(changeAmount(value))
+    },
+    openContextMenu: point => {
+      dispatch(openContextMenu(point))
+    },
+    closeContextMenu: point => {
+      dispatch(closeContextMenu(point))
+    },
+		setToken: token => {
+    	dispatch(setToken(token));
+		}
+	}
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ChooseToken);

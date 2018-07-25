@@ -128,6 +128,11 @@ class Wallet extends React.Component {
 							description={isGolosService ? DESCRIPTION.SG : DESCRIPTION.SP}
 							actions={isGolosService ? [] :
 								[{
+                  label: 'Power up',
+                  icon: '/images/wallet/buttons/powerUp.png',
+                  onClick: this.powerUp
+                },
+								{
 									label: 'Power down',
 									icon: '/images/wallet/buttons/powerDown.png',
 									onClick: this.powerDown
