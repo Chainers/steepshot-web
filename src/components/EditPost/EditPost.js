@@ -265,7 +265,7 @@ class EditPost extends React.Component {
 			return (<Timer waitingTime={this.props.waitingTime}
 			               staticTimer={false}
 			               onTimeout={this.props.closeTimer}
-			               style={{fontSize: 13}}/>)
+			               style={{fontSize: 14}}/>)
 		}
 		return this.props.isNew ? 'CREATE NEW POST' : 'UPDATE POST'
 	}

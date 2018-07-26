@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="43px" height="44px" viewBox="0 0 43 44" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 51.1 (57501) - http://www.bohemiancoding.com/sketch -->
+    <title>Coins_Hover@1,5x</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="icons" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
+        <g id="coins-2-copy-2" transform="translate(-2.000000, -2.000000)" stroke="#E74800" stroke-width="4">
+            <g id="Coins_Hover" transform="translate(4.000000, 4.000000)">
+                <path d="M15,4 C15,1.790861 20.372583,0 27,0 C33.627417,0 39,1.790861 39,4 L39,35 C39,37.209139 33.627417,39 27,39 C20.372583,39 15,37.209139 15,35 L15,4 Z" id="Combined-Shape"></path>
+                <path d="M39,15 C39,17.209139 33.627417,19 27,19 C20.372583,19 15,17.209139 15,15" id="Combined-Shape-Copy"></path>
+                <path d="M39,25 C39,27.209139 33.627417,29 27,29 C20.372583,29 15,27.209139 15,25" id="Combined-Shape-Copy-2"></path>
+                <path d="M39,5 C39,7.209139 33.627417,9 27,9 C20.372583,9 15,7.209139 15,5" id="Combined-Shape-Copy-4"></path>
+                <circle id="Oval-27" fill="#FFFFFF" cx="15" cy="25" r="15"></circle>
+            </g>
+        </g>
+    </g>
+</svg>

@@ -27,6 +27,7 @@
     overflow: hidden;
     order: 1;
     background: #e7e7e7;
+    min-height: 150px;
 }
 
 .resizing-filter_pos-mod {
@@ -241,10 +242,10 @@
     font: 14px OpenSans-Semibold;
 }
 
-.title_pos-mod {
-    margin-bottom: 20px;
+.image-not-found_pos-mod {
+    margin: 0;
     color: #000000;
-    font: 27px OpenSans-Light
+    font: 27px OpenSans-Light;
 }
 
 .message_pos-mod {

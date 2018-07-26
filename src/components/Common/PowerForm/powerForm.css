@@ -2,36 +2,41 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    flex-wrap: wrap;
-    width: calc(100% + 10px);
-    margin: -5px;
 }
 
-.balance-group_power-form > div, .balance-group_power-form > input {
-    flex-basis: 210px;
-    min-width: 200px;
+.relative-wrapper_power-form {
+    position: relative;
     flex-grow: 1;
-    flex-shrink: 1;
-    margin: 5px;
 }
 
-.balance-group_power-form > input, .key-field_power-form > input {
-    height: 42px;
-    border: solid 1px #f4f4f6;
-    padding-left: 10px;
-    background-color: #fafafa;
-    font: 14px OpenSans-Light;
+.token-amount_power-form {
+    position: absolute;
+    height: 100%;
+    right: 0;
+    top: 0;
+    width: 140px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-align: right;
+}
+
+.balance_power-form {
     color: #979b9e;
-    border-radius: 6px;
+    font: 12px OpenSans-Regular;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
-.using-max_power-form {
-    font: 12px OpenSans-Light;
-    color: #d0021b;
-    cursor: pointer;
+.token_power-form {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #e74800;
+    font: 14px OpenSans-Bold;
 }
 
-.key-field_power-form {
+.key-field_power-form, .input-active-key_power-form {
     margin-top: 20px;
 }
 
@@ -39,6 +44,25 @@
     width: 100%;
 }
 
-.input-active-key_power-form {
-    margin-top: 20px;
+.wrapper-inscription_gray-input {
+    display: flex;
+    justify-content: space-between;
+}
+
+.btn-cancel.btn-cancel-20_power-form {
+    margin-left: 20px;
+    padding: 12px 30px;
+}
+
+@media (max-width: 483px) {
+    .btn-cancel.btn-cancel-20_power-form {
+        margin: 10px 0 10px 0;
+    }
+    .container_choose-token, .balance-group_power-form {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .relative-wrapper_choose-token, .relative-wrapper_power-form {
+        width: 100%;
+    }
 }

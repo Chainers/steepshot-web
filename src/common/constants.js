@@ -198,6 +198,8 @@ const Constants = {
 	SETTINGS_CHANGED_MESSAGE: 'Settings has been successfully changed.',
 	SETTINGS_NOT_CHANGED_MESSAGE: 'Settings hasn\'t been changed.',
 
+	EMPTY_FIELD: 'This field can\'t be empty.',
+
 	VOTE_ACTION_WHEN_NOT_AUTH: 'This action is only available for logged-in users.',
 	VOTE_ACTION_WHEN_NOT_AUTH_DEBOUNCE: 500,
 	AUTH_WRONG_USER: 'Such user doesn\'t exist.',
@@ -265,7 +267,8 @@ const Constants = {
 	TRANSFER: {
 		BID_TO_BOT_SUCCESS: 'Your bid has been successfully sent.',
 		TRANSFER_SUCCESS: 'Transfer has been successfully concluded.',
-		MIN_AMOUNT: 0.001
+		MIN_AMOUNT: 0.001,
+		MIN_LEAVE_STEEM_POWER: 5
 	},
 
 	WALLET: {
@@ -276,7 +279,7 @@ const Constants = {
 	ERROR_MESSAGES: {
 		INVALID_ACTIVE_KEY: 'Invalid active key.',
 		USER_NOT_FOUND: 'User not found!',
-		NOT_ENOUGH_TOKENS: 'Insufficient funds!'
+		NOT_ENOUGH_TOKENS: 'There\'s not enough tokens!'
 	},
 
 	MILLISECONDS_IN_DAY: 24 * 60 * 60 * 1000,

@@ -65,7 +65,7 @@ const mapStateToProps = (state, props) => {
 			width: props.width,
 			height: props.height,
 			marginLeft: props.left,
-			marginTop: props.top,
+			marginTop: props.top
 		},
 		show: !!show
 	}

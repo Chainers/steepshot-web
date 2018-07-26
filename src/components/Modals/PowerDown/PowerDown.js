@@ -1,10 +1,12 @@
 import React from 'react';
-import {connect} from "react-redux";
+import {connect} from 'react-redux';
 import './powerDown.css';
 import WalletPopupTemplate from '../WalletPopupTemplate/WalletPopupTemplate';
 import {closeModal} from '../../../actions/modal';
 import PowerForm from '../../Common/PowerForm/PowerForm';
 import {changeAmount, powerDown} from '../../../actions/wallet';
+import InOutSteem from '../WalletPopupTemplate/InOutSteem/InOutSteem';
+import Constants from '../../../common/constants';
 
 class PowerDown extends React.Component {
 
@@ -16,18 +18,19 @@ class PowerDown extends React.Component {
 			                     textButton="POWER DOWN"
 			                     cancel={this.props.closePowerUpModal}
 			                     ok={this.props.powerDown}>
+				<InOutSteem point="power-down"/>
 				<PowerForm amount={amount}
 				           amountError={amountError}
 				           amountOnChange={this.props.changeAmount}
 				           className="form_power-down"
-				           countToken={balance}
+									 tokensAmount={balance}
 				           token="STEEM"
 				/>
 				<div className="description_power-down">
 					Note that if you change the power down amount the payout schedule will reset.
 				</div>
 				<div className="description_power-down margin-bottom-25">
-					Leaving less than 5 STEEM POWER in your account is not recommended and can leave your account in a unusable
+					Leaving less than {Constants.TRANSFER.MIN_LEAVE_STEEM_POWER} STEEM POWER in your account is not recommended and can leave your account in a unusable
 					state.
 				</div>
 			</WalletPopupTemplate>
