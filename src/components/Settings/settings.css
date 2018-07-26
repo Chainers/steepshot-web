@@ -31,6 +31,8 @@
     border-bottom: 1px solid #f4f4f6;
     display: flex;
     justify-content: space-between;
+    flex-wrap: wrap;
+    margin: -5px;
 }
 
 .header_settings > span {
@@ -45,12 +47,12 @@
     color: #0f181e;
 }
 
-.save-btn {
-    margin: 20px;
+.header_settings > span, .header_settings > button {
+    margin: 5px;
 }
 
-.block_settings .header_settings .btn {
-    height: 30px;
+.save-btn {
+    margin: 20px;
 }
 
 @media (max-width: 450px) {

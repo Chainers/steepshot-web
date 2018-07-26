@@ -2,18 +2,19 @@ import React from 'react';
 import InputActiveKey from '../InputActiveKey/InputActiveKey';
 import './powerForm.css';
 import GrayInput from '../GrayInput/GrayInput';
+import Constants from '../../../common/constants';
 
 const PowerForm = ({amount, amountError, amountOnChange, tokensAmount, token, className}) => {
 
 	function useMaxAmount() {
     if (className === 'form_power-down') {
-      tokensAmount = (tokensAmount - 5).toFixed(3) / 1;
+      tokensAmount = (tokensAmount - Constants.TRANSFER.MIN_LEAVE_STEEM_POWER).toFixed(3) / 1;
     }
     amountOnChange(tokensAmount);
 	}
 
 	function onChangeAmount(e) {
-    amountOnChange(e.target.value)
+    amountOnChange(e.target.value);
 	}
 
 	return (

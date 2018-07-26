@@ -8,26 +8,26 @@ import FilterRow from '../../Wallet/TransactionHistory/TransactionFilter/FilterR
 import './chooseToken.css';
 
 const ChooseToken = ({selectedItemNumber, tokensAmount, changeAmount, tokensNames, label, value, reference, onFocus,
-											 error, openContextMenu, closeContextMenu, pointContextMenu, setToken}) => {
+                       error, openContextMenu, closeContextMenu, pointContextMenu, setToken}) => {
 
-	function useMaxAmount() {
+  function useMaxAmount() {
     changeAmount(tokensAmount);
-	}
-
-	function onChangeAmount(e) {
-		changeAmount(e.target.value);
   }
 
-	return (
+  function onChangeAmount(e) {
+    changeAmount(e.target.value);
+  }
+
+  return (
 		<div className="container_choose-token">
 			<div className="relative-wrapper_choose-token">
 				<GrayInput label={label} placeholder="e.g. 100" onChange={onChangeAmount} value={value} ref={reference}
 									 onFocus={onFocus} error={error} maxLength={12}/>
 				<div className="token-amount_power-form"
 						 onClick={(e) => {
-						   e.stopPropagation();
-						   openContextMenu(pointContextMenu)
-					   }}>
+               e.stopPropagation();
+               openContextMenu(pointContextMenu)
+             }}>
 					<div className="balance_power-form">Balance: {tokensAmount}</div>
 					<div className="wrapper-choose-token_choose-token">
 						<div className="choose-token_choose-token">{tokensNames[selectedItemNumber]}</div>
@@ -37,19 +37,19 @@ const ChooseToken = ({selectedItemNumber, tokensAmount, changeAmount, tokensName
 				</div>
 				<ContextMenu point={pointContextMenu} style={{borderRadius: 10, right: 0}}>
 					<div className="container_trx-filter">
-						{tokensNames.map((token, index) =>
+            {tokensNames.map((token, index) =>
 							<FilterRow
 								key={index}
 								isActive={index === selectedItemNumber}
 								label={token}
 								onClick={() => {
-									closeContextMenu(pointContextMenu);
-									if (selectedItemNumber !== index) {
+                  closeContextMenu(pointContextMenu);
+                  if (selectedItemNumber !== index) {
                     setToken(index);
-									}
-								}}
+                  }
+                }}
 							/>
-						)}
+            )}
 					</div>
 				</ContextMenu>
 			</div>
@@ -59,14 +59,14 @@ const ChooseToken = ({selectedItemNumber, tokensAmount, changeAmount, tokensName
 };
 
 const mapStateToProps = () => {
-	const pointContextMenu = 'chooseToken';
-	return {
+  const pointContextMenu = 'chooseToken';
+  return {
     pointContextMenu
-	}
+  }
 };
 
 const mapDispatchToProps = (dispatch) => {
-	return {
+  return {
     changeAmount: value => {
       dispatch(changeAmount(value))
     },
@@ -76,10 +76,10 @@ const mapDispatchToProps = (dispatch) => {
     closeContextMenu: point => {
       dispatch(closeContextMenu(point))
     },
-		setToken: token => {
-    	dispatch(setToken(token));
-		}
-	}
+    setToken: token => {
+      dispatch(setToken(token));
+    }
+  }
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ChooseToken);

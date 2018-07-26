@@ -36,7 +36,15 @@ export function login(username, postingKey) {
 		dispatch(showBodyLoader());
 		ChainService.getAccounts(username)
 			.then(response => {
-				if (response.length === 0) {
+				if (!username.length) {
+          dispatch(setUsernameErrorMessage(Constants.EMPTY_FIELD));
+          return Promise.reject(Constants.EMPTY_FIELD);
+				}
+				if (!postingKey.length) {
+          dispatch(setPostingKeyErrorMessage(Constants.EMPTY_FIELD));
+          return Promise.reject(Constants.EMPTY_FIELD);
+				}
+				if (!response.length) {
 					dispatch(setUsernameErrorMessage(Constants.AUTH_WRONG_USER));
 					return Promise.reject(Constants.AUTH_WRONG_USER);
 				}

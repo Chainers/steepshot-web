@@ -49,6 +49,12 @@ export function powerDown() {
 		}
 	}
 	return dispatch => {
+    if (state.userProfile.profile.total_steem_power_steem - state.wallet.amount
+			< Constants.TRANSFER.MIN_LEAVE_STEEM_POWER) {
+    	let powerDownError = `You should leave not less than ${Constants.TRANSFER.MIN_LEAVE_STEEM_POWER} steem power.`;
+      dispatch(inputError('amountError', powerDownError));
+      return dispatch(pushMessage(powerDownError));
+    }
 		dispatch(actionLock());
 		dispatch(showBodyLoader());
 		const {amount} = state.wallet;

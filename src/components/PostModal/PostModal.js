@@ -119,7 +119,7 @@ class PostModal extends React.Component {
 	}
 
 	initKeyPress(e) {
-		if (!this.props.focusedTextInput) {
+		if (!this.props.focusedTextInput && !this.props.moreThenOneModal) {
 			switch (e.keyCode) {
 				case 37:
 					this.previousPost();
@@ -424,6 +424,7 @@ const mapStateToProps = (state) => {
 	let onlyPostModalOpen = Object.keys(state.modals).length === 1;
 	if (post) {
 		const isFSByScreenSize = state.window.width < Constants.WINDOW.MAX_MOBILE_SCREEN_WIDTH;
+		const moreThenOneModal = Object.keys(state.modals).length > 1;
 		let urlVideo = post.media[0].url;
 		let postsList = state.postsList[state.postModal.point];
 		let isCommentEditing = state.comments[currentIndex] ? state.comments[currentIndex].commentEditing : null;
@@ -436,6 +437,7 @@ const mapStateToProps = (state) => {
 			isGolosService,
 			linkToSinglePost,
 			onlyPostModalOpen,
+      moreThenOneModal,
 			completeStatus: post.completeStatus,
 			...state.postModal,
 			newPostsLoading: postsList.loading,

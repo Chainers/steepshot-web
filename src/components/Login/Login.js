@@ -116,10 +116,11 @@ class Login extends React.Component {
 								Sign in to Steepshot
 							</div>
 							<div className="input-block_login">
-								<GrayInput type="text" label="Username" ref={ref => this.name = ref}
+								<GrayInput type="text" label="Username" placeholder="username" ref={ref => this.name = ref}
 								       onChange={this.clearLoginErrors} error={usernameError} name="login"/>
-								<GrayInput type="password" label="Posting Key" ref={ref => this.password = ref}
-								       onChange={this.clearLoginErrors} error={postingKeyError} name="password"/>
+								<GrayInput type="password" label="Posting Key" placeholder="e.g. STG52aKIcG9..."
+													 ref={ref => this.password = ref} onChange={this.clearLoginErrors} error={postingKeyError}
+													 name="password"/>
 							</div>
 							<div className="btn-block_login">
 								<Switcher

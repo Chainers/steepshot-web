@@ -14,11 +14,9 @@ class Transfer extends React.Component {
 
 	constructor() {
 		super();
-		this.amountFocused = this.amountFocused.bind(this);
 		this.changeUsername = this.changeUsername.bind(this);
 		this.changeMemo = this.changeMemo.bind(this);
 		this.changeAmount = this.changeAmount.bind(this);
-		this.setAmountRef = this.setAmountRef.bind(this);
 	}
 
 	changeUsername(e) {
@@ -33,13 +31,13 @@ class Transfer extends React.Component {
 		this.props.changeMemo(e.target.value);
 	}
 
-	setAmountRef(ref) {
+	/*setAmountRef(ref) {
 		this.amount = ref;
 	}
 
 	amountFocused() {
 		this.amount.select();
-	}
+	}*/
 
 	render() {
 		const {username, selectedToken, balance, memoOpened, to, toError, amount, amountError, memo,
@@ -68,8 +66,6 @@ class Transfer extends React.Component {
 						             tokensNames={tokensNames}
 												 label="Amount"
 												 value={amount}
-												 reference={this.setAmountRef}
-												 onFocus={this.amountFocused}
 												 error={amountError}/>
 					</div>
 					<ShowIf show={!memoOpened}>
