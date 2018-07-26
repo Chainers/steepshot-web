@@ -72,12 +72,17 @@ export default function editPost(state = initialState, action) {
 			};
 
 		case 'EDIT_POST_CREATE_NEW':
-		case 'EDIT_POST_CLEAR_ALL':
 			return {
 				...initialState,
 				waitingTime: state.waitingTime,
 				canCreate: waitingTime === 0
 			};
+
+    case 'EDIT_POST_CLEAR_ALL':
+    	return {
+        ...initialState
+			};
+
 		case 'EDIT_POST_CLEAR_FIELDS':
 			return {
 				...state,

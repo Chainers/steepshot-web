@@ -10,7 +10,7 @@ import {closeMobileNavigation, toggleMobileNavigation} from '../../actions/mobil
 import Hamburger from '../Hamburger/Hamburger';
 import './header.css';
 import AuthService from '../../services/AuthService';
-import ShowIf from "../Common/ShowIf";
+import ShowIf from '../Common/ShowIf';
 
 class Header extends React.Component {
 
@@ -59,13 +59,12 @@ class Header extends React.Component {
 		let avatarSrc = this.props.avatar || Constants.NO_AVATAR;
 
 		let loginComponent = <div className="section login">
-			<div className="wrap-login">
-				<Link to="/signin" className="btn btn-default btn-xs">
-					SIGN IN
-				</Link>
-			</div>
-		</div>;
-
+													 <div className="wrap-login">
+														 <Link to="/signin" className="btn btn-default btn-xs">
+															 SIGN IN
+														 </Link>
+													 </div>
+												 </div>;
 		if (isAuth) {
 			authorLink = `/@${this.props.user}`;
 			loginComponent = <div className="section controls">
