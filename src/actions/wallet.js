@@ -1,12 +1,29 @@
-import {getStore} from "../store/configureStore";
-import {actionLock, actionUnlock} from "./session";
-import WalletService from "../services/WalletService";
-import storage from "../utils/Storage";
-import {hideBodyLoader, showBodyLoader} from "./bodyLoader";
-import {closeModal} from "./modal";
-import {pushMessage} from "./pushMessage";
-import Constants from "../common/constants";
-import {getErrorData, inputError} from "./transfer";
+import {getStore} from '../store/configureStore';
+import {actionLock, actionUnlock} from './session';
+import WalletService from '../services/WalletService';
+import storage from '../utils/Storage';
+import {hideBodyLoader, showBodyLoader} from './bodyLoader';
+import {closeModal} from './modal';
+import {pushMessage} from './pushMessage';
+import Constants from '../common/constants';
+import {getErrorData, inputError} from './transfer';
+
+export function setErrorWithPushNotification(field, error) {
+  return dispatch => {
+    dispatch(inputError(field, error));
+    dispatch(pushMessage(error));
+  }
+}
+
+export function setNotValidAmountTokens(tokensAmount, transactionAction) {
+	return dispatch => {
+		if (!isNaN(+tokensAmount)) {
+      transactionAction();
+		} else {
+      dispatch(setErrorWithPushNotification('amountError', Constants.PROMOTE.INPUT_ERROR));
+		}
+	}
+}
 
 export function powerUp() {
 	let state = getStore().getState();
@@ -49,11 +66,15 @@ export function powerDown() {
 		}
 	}
 	return dispatch => {
+		let amountString = state.wallet.amount.toString();
+    amountString = amountString.match(/\d+(\.\d+)?/);
+		if (amountString[0] !== amountString.input) {
+      return dispatch(setErrorWithPushNotification('amountError', Constants.PROMOTE.INPUT_ERROR));
+		}
     if (state.userProfile.profile.total_steem_power_steem - state.wallet.amount
 			< Constants.TRANSFER.MIN_LEAVE_STEEM_POWER) {
-    	let powerDownError = `You should leave not less than ${Constants.TRANSFER.MIN_LEAVE_STEEM_POWER} steem power.`;
-      dispatch(inputError('amountError', powerDownError));
-      return dispatch(pushMessage(powerDownError));
+      return dispatch(setErrorWithPushNotification('amountError',
+				`You should leave not less than ${Constants.TRANSFER.MIN_LEAVE_STEEM_POWER} steem power.`))
     }
 		dispatch(actionLock());
 		dispatch(showBodyLoader());

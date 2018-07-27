@@ -65,7 +65,7 @@ class SteemConnect {
 	}
 
 	getBeneficiaries(permlink, beneficiaries) {
-		return new SteemService().getBeneficiaries(permlink, beneficiaries)
+		return new SteemService().getBeneficiaries(permlink, beneficiaries);
 	}
 
 	getTransactionHistory(username, from, limit) {
