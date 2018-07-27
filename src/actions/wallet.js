@@ -7,7 +7,6 @@ import {closeModal} from './modal';
 import {pushMessage} from './pushMessage';
 import Constants from '../common/constants';
 import {getErrorData, inputError} from './transfer';
-import {checkValidTokensAmount} from '../utils/validation';
 
 export function setErrorWithPushNotification(field, error) {
   return dispatch => {
@@ -18,7 +17,7 @@ export function setErrorWithPushNotification(field, error) {
 
 export function setNotValidAmountTokens(tokensAmount, transactionAction) {
 	return dispatch => {
-		if (checkValidTokensAmount(tokensAmount)) {
+		if (!isNaN(+tokensAmount)) {
       transactionAction();
 		} else {
       dispatch(setErrorWithPushNotification('amountError', Constants.PROMOTE.INPUT_ERROR));

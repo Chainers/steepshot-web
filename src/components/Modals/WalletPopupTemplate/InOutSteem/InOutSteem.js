@@ -26,10 +26,8 @@ const mapStateToProps = (state, props) => {
   const {amount} = state.wallet;
   const {balance, total_steem_power_steem} = state.userProfile.profile;
   let newSteem, newSteemPower;
-  let tokensAmount = +amount;
-  if (isNaN(tokensAmount)) {
-    tokensAmount = 0;
-  }
+  let tokensAmount = +amount || 0;
+
   if (props.point === 'power-up') {
     newSteem = balance - tokensAmount;
     newSteemPower = total_steem_power_steem + tokensAmount;
