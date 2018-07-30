@@ -49,8 +49,8 @@ class ImagesGallery extends React.Component {
 			let dotClass = this.props.imageNumberInGallery === i ? 'nav-dot_img-gallery active-dot_img-gallery' : 'nav-dot_img-gallery';
 			dots.push(<div key={i} className="nav-dot-wrapper_img-gallery centered--flex"
 			               onClick={this.setGalleryImage.bind(this, i)}>
-				<div className={dotClass}/>
-			</div>);
+									<div className={dotClass}/>
+								</div>);
 		}
 		return dots;
 	}
