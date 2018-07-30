@@ -1,10 +1,11 @@
-import RequestService from "./RequestService";
-import LoggingService from "./LoggingService";
-import Constants from "../common/constants";
-import AuthService from "./AuthService";
-import ChainService from "./ChainService";
-import CommentService from "./CommentService";
-import Utils from "../utils/Utils";
+import RequestService from './RequestService';
+import LoggingService from './LoggingService';
+import Constants from '../common/constants';
+import AuthService from './AuthService';
+import ChainService from './ChainService';
+import CommentService from './CommentService';
+import Utils from '../utils/Utils';
+import storage from '../utils/Storage';
 
 class PostService {
 
@@ -97,7 +98,6 @@ class PostService {
 	static editPost(title, tags, description, permlink, media) {
 		tags = getValidTags(tags);
 		const operation = getDefaultPostOperation(title, tags, description, permlink);
-
 		return preparePost(tags, description, permlink, [media])
 			.then(response => {
 				operation[1].body = response.body;
@@ -221,7 +221,15 @@ function getDefaultPostOperation(title, tags, description, permlink) {
 }
 
 function fileUpload(file) {
+	const accessToken = storage.accessToken;
 	const url = 'media/upload';
+	if (accessToken) {
+    let form = new FormData();
+    form.append('file', file);
+    form.append('access_token', accessToken);
+    form.append('username', storage.username);
+    return RequestService.post(url, form);
+	}
 	return ChainService.getValidTransaction()
 		.then(transaction => {
 			let form = new FormData();
