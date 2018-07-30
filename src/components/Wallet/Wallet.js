@@ -1,18 +1,19 @@
 import React from 'react';
-import {connect} from "react-redux";
+import {connect} from 'react-redux';
 import './wallet.css';
-import WidgetToken from "./WidgetToken/WidgetToken";
-import TransactionHistory from "./TransactionHistory/TransactionHistory";
-import LoadingSpinner from "../LoadingSpinner";
-import {getUserProfile} from "../../actions/userProfile";
-import Utils from "../../utils/Utils";
-import {openModal} from "../../actions/modal";
-import Transfer from "../Modals/Transfer/Transfer";
-import ShowIf from "../Common/ShowIf";
-import PowerUp from "../Modals/PowerUp/PowerUp";
-import PowerDown from "../Modals/PowerDown/PowerDown";
-import ChainService from "../../services/ChainService";
-import {setToken} from "../../actions/wallet";
+import WidgetToken from './WidgetToken/WidgetToken';
+import TransactionHistory from './TransactionHistory/TransactionHistory';
+import LoadingSpinner from '../LoadingSpinner';
+import {getUserProfile} from '../../actions/userProfile';
+import Utils from '../../utils/Utils';
+import {openModal} from '../../actions/modal';
+import Transfer from '../Modals/Transfer/Transfer';
+import ShowIf from '../Common/ShowIf';
+import PowerUp from '../Modals/PowerUp/PowerUp';
+import PowerDown from '../Modals/PowerDown/PowerDown';
+import ChainService from '../../services/ChainService';
+import {setToken} from '../../actions/wallet';
+import {documentTitle} from '../../utils/documentTitle';
 
 const DESCRIPTION = {
 	STEEM: `Tradeable tokens that may be transferred anywhere at anytime.
@@ -37,6 +38,7 @@ class Wallet extends React.Component {
 		this.transferSteem = this.transferSteem.bind(this);
 		this.powerUp = this.powerUp.bind(this);
 		this.powerDown = this.powerDown.bind(this);
+		documentTitle();
 	}
 
 	transfer() {
@@ -73,7 +75,7 @@ class Wallet extends React.Component {
 	render() {
 		const {cost, steem, sp, sbd, isGolosService} = this.props;
 		if (Utils.isEmpty(cost) || Utils.isEmpty(steem) || Utils.isEmpty(sp) || Utils.isEmpty(sbd)) {
-			return <LoadingSpinner style={{display: '20px'}} center={true}/>
+			return global.isServerSide ? null : <LoadingSpinner center={true}/>
 		}
 		return (
 			<div className="container">
@@ -126,6 +128,11 @@ class Wallet extends React.Component {
 							description={isGolosService ? DESCRIPTION.SG : DESCRIPTION.SP}
 							actions={isGolosService ? [] :
 								[{
+                  label: 'Power up',
+                  icon: '/images/wallet/buttons/powerUp.png',
+                  onClick: this.powerUp
+                },
+								{
 									label: 'Power down',
 									icon: '/images/wallet/buttons/powerDown.png',
 									onClick: this.powerDown

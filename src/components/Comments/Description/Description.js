@@ -5,9 +5,9 @@ import './description.css';
 import ShowIf from '../../Common/ShowIf';
 import PromoteModal from '../../Modals/Promote/Promote';
 import {openModal} from '../../../actions/modal';
-import MarkdownParser from "../../../utils/markdownParser";
+import MarkdownParser from '../../../utils/markdownParser';
 import renderHTML from 'react-render-html';
-import ChainService from "../../../services/ChainService";
+import ChainService from '../../../services/ChainService';
 
 class Description extends React.Component {
 
@@ -34,7 +34,7 @@ class Description extends React.Component {
 	render() {
 		return (
 			<div className="container_description">
-				<ShowIf show={this.props.isSelfPost && !this.props.isGolos && !this.props.oldForPromote && false}>
+				<ShowIf show={this.props.isSelfPost && !this.props.isGolos && !this.props.oldForPromote}>
 					<div className="open-promote_description centered--flex" onClick={this.openPromoteModal.bind(this)}>
 						PROMOTE THIS POST
 					</div>

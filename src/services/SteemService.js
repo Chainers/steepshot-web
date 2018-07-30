@@ -1,8 +1,8 @@
 import steem from 'steem';
-import Constants from "../common/constants";
-import PostService from "./PostService";
-import AuthService from "./AuthService";
-import SteemNodeService from "./SteemNodeService";
+import Constants from '../common/constants';
+import PostService from './PostService';
+import AuthService from './AuthService';
+import SteemNodeService from './SteemNodeService';
 
 let dynamicProps = [];
 steem.api.getDynamicGlobalProperties((err, result) => {
@@ -148,7 +148,7 @@ class SteemService {
 		const vests = parseFloat(vesting_shares.split(' ')[0]);
 		const total_vests = parseFloat(dynamicProps['total_vesting_shares'].split(' ')[0]);
 		const total_vest_steem = parseFloat(dynamicProps['total_vesting_fund_steem'].split(' ')[0]);
-		return (total_vest_steem * (vests / total_vests)).toFixed(3) + ' STEEM POWER';
+		return (total_vest_steem * (vests / total_vests)).toFixed(3);
 	}
 
 }

@@ -27,6 +27,7 @@
     overflow: hidden;
     order: 1;
     background: #e7e7e7;
+    min-height: 150px;
 }
 
 .resizing-filter_pos-mod {
@@ -241,10 +242,10 @@
     font: 14px OpenSans-Semibold;
 }
 
-.title_pos-mod {
-    margin-bottom: 20px;
+.image-not-found_pos-mod {
+    margin: 0;
     color: #000000;
-    font: 27px OpenSans-Light
+    font: 27px OpenSans-Light;
 }
 
 .message_pos-mod {
@@ -257,7 +258,8 @@
 
 .before-load-curtain_pos-mod {
     z-index: 7;
-    background-color: #e7e7e7
+    background-color: #e7e7e7;
+    border-radius: 10px 0 0 10px;
 }
 
 .title-low-nsfw_pos-mod {
@@ -366,7 +368,7 @@
 }
 
 .close-full-screen_pos-mod {
-    position: absolute;
+    position: fixed;
     bottom: 14px;
     right: 23px;
     width: 38px;
@@ -421,7 +423,7 @@
 }
 
 .fs-post-amount_pos-mod {
-    position: absolute;
+    position: fixed;
     left: 23px;
     bottom: 10px;
     height: 38px;

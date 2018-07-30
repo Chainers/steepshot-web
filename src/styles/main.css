@@ -80,6 +80,10 @@ a {
     width: 100%;
 }
 
+.hide {
+    display: none;
+}
+
 .loading-ellipsis_main span {
     animation-name: blink;
     animation-duration: 1.4s;
@@ -137,14 +141,6 @@ a {
 }
 
 @media screen and (min-width: 320px) and (max-width: 420px) {
-    .section.hamburger {
-        margin-left: 18px !important;
-    }
-
-    .wrap-hamburger {
-        padding-left: 12px !important;
-    }
-
     .g-content {
         padding: 22px 0 40px 0 !important;
     }
@@ -397,7 +393,7 @@ i {
     margin-right: auto;
     margin-left: auto;
     padding-left: 10px;
-    padding-right: 10px
+    padding-right: 10px;
 }
 
 .container:after, .container:before {
@@ -1054,13 +1050,14 @@ input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer
 
 .user-panel .login {
     float: right;
-    margin-left: 30px;
+    margin-top: -2px;
     padding: 0
 }
 
 .user-panel .create {
     float: right;
     margin-left: 30px;
+    margin-top: -2px;
     padding: 0
 }
 
@@ -1075,7 +1072,7 @@ input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer
 
 .user-panel .hamburger .wrap-hamburger {
     padding-left: 20px;
-    border-left: 1px solid #f4f4f6
+    border-left: 1px solid #e7e7e7;
 }
 
 .search-panel {
@@ -1396,11 +1393,15 @@ input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer
 
     .section.create {
         float: left;
-        margin: 0;
+        margin: -2px 0 0 0;
     }
 
     .section.hamburger {
-        margin-left: 10px;
+        margin-left: 20px;
+    }
+
+    .user-panel .login {
+        float: left;
     }
 }
 

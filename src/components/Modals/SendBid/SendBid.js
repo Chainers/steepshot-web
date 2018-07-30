@@ -6,20 +6,18 @@ import Constants from '../../../common/constants';
 import {
 	searchingNewBot,
 	sendBid,
-	setActiveKey,
-	setActiveKeyInputSecurity,
 	setBlockedTimer,
 	setRedTimer
 } from '../../../actions/promoteModal';
-import WalletPopupTemplate from "../WalletPopupTemplate/WalletPopupTemplate";
-import BotTimer from "./BotTimer/BotTimer";
-import GrayInput from "../../Common/GrayInput/GrayInput";
+import WalletPopupTemplate from '../WalletPopupTemplate/WalletPopupTemplate';
+import BotTimer from './BotTimer/BotTimer';
+import {setActiveKeyInputSecurity} from '../../../actions/activeKey';
+import InputActiveKey from '../../Common/InputActiveKey/InputActiveKey';
 
 class SendBid extends React.Component {
 
 	constructor() {
 		super();
-		this.setActiveKeyValue = this.setActiveKeyValue.bind(this);
 		this.tick = this.tick.bind(this);
 	}
 
@@ -44,10 +42,6 @@ class SendBid extends React.Component {
 		}
 	}
 
-	setActiveKeyValue(e) {
-		this.props.setActiveKey(e.target.value);
-	}
-
 	tick(time) {
 		let leftTime = time.toFixed(0) / 1;
 		if (leftTime === Constants.PROMOTE.RED_TIMER) {
@@ -67,42 +61,21 @@ class SendBid extends React.Component {
 			                     textButton='SEND BID'
 			                     cancel={this.props.closeModal}
 			                     ok={this.props.sendBid}>
-
 				<div className="body_send-bid">
 					<div className="bot-logo_send-bid" style={botAvatarStyle}/>
 					<BotTimer isRead={this.props.redTimer} isBlocked={this.props.blockedTimer}
 					          upvoteTime={this.props.upvoteTime} tick={this.tick}/>
 				</div>
-
-				<div className="centered--flex">
-					<GrayInput type={this.props.showActiveKey ? 'text' : 'password'}
-					           placeholder="e.g. STG52aKIcG9..."
-					           value={this.props.activeKey}
-					           onChange={this.setActiveKeyValue}
-					           label="Private active key"
-					           error={this.props.activeKeyError}
-					/>
-					<div className="eye-switcher_promote-mod"
-					     onClick={() => this.props.setActiveKeyInputSecurity(this.props.showActiveKey)}
-					     style={{
-						     backgroundImage: `url(/images/promoteModal/${this.props.showActiveKey ? 'red_eye.svg'
-							     : 'striked_eye.svg'})`
-					     }}/>
-				</div>
-				<div className="promise-about-key_send-bid centered--flex">
-					Your key is securely used to sign the transfer transaction. It is never sent to any server, including
-					Steepshot servers.
-				</div>
+				<InputActiveKey className="active-key_transfer"/>
 			</WalletPopupTemplate>
 		);
 	}
 }
 
 const mapStateToProps = (state) => {
-	const {activeKey, showActiveKey, redTimer, blockedTimer, suitableBot} = state.promoteModal;
+	const {activeKey, redTimer, blockedTimer, suitableBot} = state.promoteModal;
 	return {
 		activeKey,
-		showActiveKey,
 		redTimer,
 		blockedTimer,
 		upvoteTime: suitableBot.next,
@@ -118,9 +91,6 @@ const mapDispatchToProps = (dispatch) => {
 		},
 		sendBid: () => {
 			dispatch(sendBid());
-		},
-		setActiveKey: (value) => {
-			dispatch(setActiveKey(value));
 		},
 		searchingNewBot: () => {
 			dispatch(searchingNewBot());

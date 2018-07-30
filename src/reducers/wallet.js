@@ -34,7 +34,7 @@ export default function wallet(state = initialState, action) {
 				...state,
 				tokenValue: [
 					action.profile.balance,
-					action.profile.sbd_balance,
+					action.profile.sbd_balance
 				]
 			};
 		case 'CLOSE_MODAL':

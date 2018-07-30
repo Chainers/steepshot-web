@@ -1,6 +1,6 @@
 import sc2 from 'sc2-sdk';
-import AuthService from "./AuthService";
-import SteemService from "./SteemService";
+import AuthService from './AuthService';
+import SteemService from './SteemService';
 
 const callbackURL = `${document.location.origin}/steemConnect`;
 const api = sc2.Initialize({
@@ -20,7 +20,6 @@ class SteemConnect {
 	}
 
 	addCommentToBlockchain(commentOperation) {
-		console.log('form connect');
 		let beneficiaries = this.getBeneficiaries(commentOperation[1].permlink, [{
 			account: 'steepshot',
 			weight: 1000
@@ -34,7 +33,11 @@ class SteemConnect {
 	}
 
 	deletePostFromBlockchain(permlink) {
-		//TODO implement after addPostToBlockchain
+		const params = {
+			'author': AuthService.getUsername(),
+			'permlink': permlink
+		};
+		return api.broadcast([['delete_comment', params]])
 	}
 
 	changeFollowInBlockchain(jsonData) {
@@ -48,7 +51,7 @@ class SteemConnect {
 	}
 
 	addPostDataToBlockchain(operations) {
-		//TODO implement after signTransaction
+    return api.broadcast(operations).then(response => Promise.resolve(response.result));
 	}
 
 	getAccounts(username) {
@@ -56,15 +59,15 @@ class SteemConnect {
 	}
 
 	wifIsValid() {
-		throw new Error('Only for base authorization')
+		throw new Error('Only for base authorization.')
 	}
 
 	getValidTransaction() {
-		throw new Error('Only for base authorization')
+		throw new Error('Only for base authorization.')
 	}
 
 	getBeneficiaries(permlink, beneficiaries) {
-		return new SteemService().getBeneficiaries(permlink, beneficiaries)
+		return new SteemService().getBeneficiaries(permlink, beneficiaries);
 	}
 
 	getTransactionHistory(username, from, limit) {

@@ -34,8 +34,8 @@ const Constants = {
 			MIN_BID_VALUE: 0.5,
 			MAX_BID_VALUE: 100,
 			BOT_UPDATE_TIME: 80,
-			SUPPORTABLE_BOTS_LIST: ['promobot', 'upme', 'therising', 'upmewhale', 'sneaky-ninja', 'rocky1', 'boomerang',
-				'appreciator', 'postpromoter', 'smartsteem', 'spydo', 'booster', 'emperorofnaps', 'jerrybanfield']
+			SUPPORTABLE_BOTS_LIST: ['promobot', 'upme', 'therising', 'upmewhale', 'rocky1', 'boomerang', 'appreciator',
+				'postpromoter', 'smartsteem', 'spydo', 'booster', 'emperorofnaps', 'jerrybanfield']
 		}
 	},
 
@@ -198,6 +198,8 @@ const Constants = {
 	SETTINGS_CHANGED_MESSAGE: 'Settings has been successfully changed.',
 	SETTINGS_NOT_CHANGED_MESSAGE: 'Settings hasn\'t been changed.',
 
+	EMPTY_FIELD: 'This field can\'t be empty.',
+
 	VOTE_ACTION_WHEN_NOT_AUTH: 'This action is only available for logged-in users.',
 	VOTE_ACTION_WHEN_NOT_AUTH_DEBOUNCE: 500,
 	AUTH_WRONG_USER: 'Such user doesn\'t exist.',
@@ -252,30 +254,32 @@ const Constants = {
 	},
 
 	PROMOTE: {
-		INPUT_ERROR: 'Enter correct value',
-		MIN_AMOUNT_ERROR: 'Min bid is 0.5',
-		MAX_AMOUNT_ERROR: 'Max bid is 100',
+		INPUT_ERROR: 'Enter correct value.',
+		MIN_AMOUNT_ERROR: 'Min bid is 0.5.',
+		MAX_AMOUNT_ERROR: 'Max bid is 100.',
 		FIND_BOT_ERROR: 'We look, but there\'s no appropriate bot for promotion. Please, try little later.',
 		BID_TIMEOUT_ERROR: 'It\'s too late to bid to this bot, try any one.',
 		RED_TIMER: 60,
 		BLOCKED_TIMER: 21,
-		EMPTY_KEY_INPUT: 'You should enter the key',
 		BID_TO_BOT_SUCCESS: 'Your bid has been successfully sent. Wait for upvote.',
 	},
 
 	TRANSFER: {
-		BID_TO_BOT_SUCCESS: 'Your bid has been successfully sent.'
+		BID_TO_BOT_SUCCESS: 'Your bid has been successfully sent.',
+		TRANSFER_SUCCESS: 'Transfer has been successfully concluded.',
+		MIN_AMOUNT: 0.001,
+		MIN_LEAVE_STEEM_POWER: 5
 	},
 
 	WALLET: {
-		POWER_UP_SUCCESS: 'SUCCESS',
-		POWER_DOWN_SUCCESS: 'SUCCESS'
+		POWER_UP_SUCCESS: 'Power up success.',
+		POWER_DOWN_SUCCESS: 'Started power down.'
 	},
 
 	ERROR_MESSAGES: {
 		INVALID_ACTIVE_KEY: 'Invalid active key.',
 		USER_NOT_FOUND: 'User not found!',
-		NOT_ENOUGH_TOKENS: 'Insufficient funds!'
+		NOT_ENOUGH_TOKENS: 'There\'s not enough tokens!'
 	},
 
 	MILLISECONDS_IN_DAY: 24 * 60 * 60 * 1000,

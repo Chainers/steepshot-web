@@ -10,7 +10,7 @@ import {closeMobileNavigation, toggleMobileNavigation} from '../../actions/mobil
 import Hamburger from '../Hamburger/Hamburger';
 import './header.css';
 import AuthService from '../../services/AuthService';
-import ShowIf from "../Common/ShowIf";
+import ShowIf from '../Common/ShowIf';
 
 class Header extends React.Component {
 
@@ -59,18 +59,17 @@ class Header extends React.Component {
 		let avatarSrc = this.props.avatar || Constants.NO_AVATAR;
 
 		let loginComponent = <div className="section login">
-			<div className="wrap-login">
-				<Link to="/signin" className="btn btn-default btn-xs">
-					Sign in
-				</Link>
-			</div>
-		</div>;
-
+													 <div className="wrap-login">
+														 <Link to="/signin" className="btn btn-default btn-xs">
+															 SIGN IN
+														 </Link>
+													 </div>
+												 </div>;
 		if (isAuth) {
 			authorLink = `/@${this.props.user}`;
 			loginComponent = <div className="section controls">
 				<div className="wrap-controls_header">
-					{/*<Link to="/wallet" className="btn-control wallet"/>*/}
+					<Link to="/wallet" className="btn-control wallet"/>
 					<Link to="/settings" className="btn-control settings"/>
 					<a onClick={this.handleLogout.bind(this)}
 					   className="btn-control logout"> </a>
@@ -116,7 +115,7 @@ class Header extends React.Component {
 									<div className="wrap-create">
 										<ShowIf show={isAuth}>
 											<Link to="/editPost" type="button" className="btn btn-default btn-xs btn-create">
-												Create post
+												CREATE POST
 											</Link>
 										</ShowIf>
 									</div>

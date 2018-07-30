@@ -15,5 +15,4 @@ const ActionRow = ({label, icon, isActive, onClick}) => {
 	)
 };
 
-
 export default ActionRow;

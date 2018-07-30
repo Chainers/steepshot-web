@@ -2,7 +2,7 @@ const initialState = {
 	loading: false,
 	transactions: [],
 	hasMore: true,
-	operationTypes: ['all', 'transfer', 'claim_reward_balance'],
+	operationTypes: ['all', 'transfer', 'claim_reward_balance', 'withdraw_vesting', 'transfer_to_vesting'],
 	operationLabel: ['ALL', 'TRANSFER', 'REWARDS'],
 	indexOperation: 0,
 	lastId: 0

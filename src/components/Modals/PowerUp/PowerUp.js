@@ -1,12 +1,22 @@
 import React from 'react';
-import {connect} from "react-redux";
+import {connect} from 'react-redux';
 import './powerUp.css';
-import WalletPopupTemplate from "../WalletPopupTemplate/WalletPopupTemplate";
-import {closeModal} from "../../../actions/modal";
-import PowerForm from "../../Common/PowerForm/PowerForm";
-import {changeAmount, powerUp} from "../../../actions/wallet";
+import WalletPopupTemplate from '../WalletPopupTemplate/WalletPopupTemplate';
+import {closeModal} from '../../../actions/modal';
+import PowerForm from '../../Common/PowerForm/PowerForm';
+import {changeAmount, powerUp, setNotValidAmountTokens} from '../../../actions/wallet';
+import InOutSteem from '../WalletPopupTemplate/InOutSteem/InOutSteem';
 
 class PowerUp extends React.Component {
+
+	constructor() {
+		super();
+		this.sendPowerUp = this.sendPowerUp.bind(this);
+	}
+
+  sendPowerUp() {
+    this.props.setNotValidAmountTokens(this.props.amount, this.props.powerUp);
+  }
 
 	render() {
 		const {username, balance, amount, token, amountError} = this.props;
@@ -15,10 +25,10 @@ class PowerUp extends React.Component {
 			                     username={username}
 			                     textButton="POWER UP"
 			                     cancel={this.props.closePowerUpModal}
-			                     ok={this.props.powerUp}>
+			                     ok={this.sendPowerUp}>
+				<InOutSteem point="power-up"/>
 				<div className="description_power-up">
-					Tokens give you the ability to influence the reward for content, as well as the ability to earn content from
-					content.
+					Tokens give you the ability to influence the reward for content.
 				</div>
 				<div className="description_power-up">
 					STEEM POWER - non-liquid tokens, it takes three months (13 weekly payments) to convert them into Steem's
@@ -28,7 +38,7 @@ class PowerUp extends React.Component {
 				           amountError={amountError}
 				           amountOnChange={this.props.changeAmount}
 				           className="form_power-up"
-				           countToken={balance}
+				           tokensAmount={balance}
 				           token={token}
 				/>
 			</WalletPopupTemplate>
@@ -59,7 +69,10 @@ const mapDispatchToProps = dispatch => {
 		},
 		changeAmount: value => {
 			dispatch(changeAmount(value))
-		}
+		},
+    setNotValidAmountTokens: (tokensAmount, transactionAction) => {
+      dispatch(setNotValidAmountTokens(tokensAmount, transactionAction))
+    }
 	}
 };
 

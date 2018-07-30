@@ -3,20 +3,16 @@ import {connect} from 'react-redux';
 import './promote.css';
 import {closeModal} from '../../../actions/modal';
 import {
-	addPostIndex,
-	getAuthUserInfo,
-	getAuthUserInfoError,
-	searchingBotRequest,
-	setPromoteInputError
+  addPostIndex, clearPromoteModalInfo, searchingBotRequest, setPromoteInputError
 } from '../../../actions/promoteModal';
 import Constants from '../../../common/constants';
 import {loadingEllipsis} from '../../../utils/loadingEllipsis';
 import {pushMessage} from '../../../actions/pushMessage';
-import ChooseToken from "../../Common/ChooseToken/ChooseToken";
-import ShowIf from "../../Common/ShowIf";
-import GrayInput from "../../Common/GrayInput/GrayInput";
-import WalletPopupTemplate from "../WalletPopupTemplate/WalletPopupTemplate";
-import {changeAmount, setToken} from "../../../actions/wallet";
+import ChooseToken from '../../Common/ChooseToken/ChooseToken';
+import ShowIf from '../../Common/ShowIf';
+import WalletPopupTemplate from '../WalletPopupTemplate/WalletPopupTemplate';
+import {changeAmount, setToken} from '../../../actions/wallet';
+import {closeContextMenu} from '../../../actions/contextMenu';
 
 class Promote extends React.Component {
 
@@ -25,27 +21,21 @@ class Promote extends React.Component {
 		this.promoteByEnter = this.promoteByEnter.bind(this);
 		this.promotePost = this.promotePost.bind(this);
 		this.changeAmount = this.changeAmount.bind(this);
-		this.changeToken = this.changeToken.bind(this);
 	}
 
 	componentDidMount() {
-		this.props.getAuthUserInfo();
+		this.props.changeAmount(0.5);
 		this.props.addPostIndex(this.props.index);
 		this.container.addEventListener('keypress', this.promoteByEnter);
 	}
 
 	componentWillUnmount() {
-		this.clearPromoteModalInfo();
+		this.props.clearPromoteModalInfo();
 		this.container.removeEventListener('keypress', this.promoteByEnter);
-		this.props.getAuthUserInfoError('');
 	}
 
 	changeAmount(e) {
 		this.props.changeAmount(e.target.value);
-	}
-
-	clearPromoteModalInfo() {
-		this.props.setPromoteInputError('');
 	}
 
 	promoteByEnter(e) {
@@ -56,13 +46,9 @@ class Promote extends React.Component {
 	}
 
 	promotePost() {
-		if (!this.props.searchingBot && !this.props.infoLoading && this.validPromoteInfo()) {
+		if (!this.props.searchingBot && this.validPromoteInfo()) {
 			this.props.searchingBotRequest();
 		}
-	}
-
-	changeToken(e) {
-		this.props.setToken(e.target.value);
 	}
 
 	validPromoteInfo() {
@@ -79,7 +65,6 @@ class Promote extends React.Component {
 			return false;
 		}
 		let amount = this.props.amount.toString();
-		amount = amount.trim();
 		amount = amount.match(/\d+(\.\d+)?/);
 		if (amount[0] === amount.input) return true;
 		this.props.setPromoteInputError(Constants.PROMOTE.INPUT_ERROR);
@@ -87,43 +72,30 @@ class Promote extends React.Component {
 	}
 
 	render() {
-
+		const {amount, searchingBot, noTokensForPromote, selectedToken, tokensNames, inputError, balance,
+			closeModal, closeChooseTokens} = this.props;
 		let findText = 'FIND PROMOTER';
-		if (this.props.searchingBot) {
+		if (searchingBot) {
 			findText = loadingEllipsis('LOOKING');
 		}
-
 		return (
 			<WalletPopupTemplate title="PROMOTE POST"
-			                     textButton={this.props.noTokensForPromote ? undefined : findText}
-			                     cancel={this.props.closeModal}
-			                     ok={this.promotePost}>
+			                     textButton={noTokensForPromote ? undefined : findText}
+			                     cancel={closeModal}
+			                     ok={this.promotePost}
+													 mainClick={closeChooseTokens}>
 				<div className="body_promote" ref={ref => this.container = ref}>
-					<ShowIf show={this.props.noTokensForPromote}>
+					<ShowIf show={noTokensForPromote}>
 						<div className="no-tokens_promote centered--flex">
 							There's not enough tokens for promote in your wallet.
 						</div>
 					</ShowIf>
-					<ChooseToken selectedToken={this.props.selectedToken}
-					             amount={this.props.balance}
-					             onChange={this.changeToken}
-					             disabled={this.props.infoLoading}
-					             tokensNames={this.props.tokensNames}
-					/>
-
-					<div className="loading_promote">
-						<ShowIf show={this.props.infoLoading}>
-							{loadingEllipsis('Loading data')}
-						</ShowIf>
-					</div>
-
-					<GrayInput placeholder="e.g. 100"
-					           className="amount-input_promote"
-					           value={this.props.amount}
-					           onChange={this.changeAmount}
-					           error={this.props.inputError}
-					           label={`Promotion amount (minimum ${Constants.SERVICES.BOTS.MIN_BID_VALUE})`}
-					/>
+					<ChooseToken selectedItemNumber={selectedToken}
+											 tokensAmount={balance}
+											 label={`Promotion amount (minimum ${Constants.SERVICES.BOTS.MIN_BID_VALUE})`}
+											 value={amount}
+					             tokensNames={tokensNames}
+											 error={inputError}/>
 				</div>
 			</WalletPopupTemplate>
 		);
@@ -133,11 +105,10 @@ class Promote extends React.Component {
 const mapStateToProps = (state) => {
 	const {tokensNames} = state.services;
 	const {amount, selectedToken, tokenValue} = state.wallet;
-	const {inputError, infoLoading, searchingBot} = state.promoteModal;
+	const {inputError, searchingBot} = state.promoteModal;
 	return {
 		inputError,
-		infoLoading,
-		noTokensForPromote: !infoLoading && (tokenValue[0] <= 0.5 && tokenValue[1] <= 0.5),
+		noTokensForPromote: tokenValue[0] <= 0.5 && tokenValue[1] <= 0.5,
 		searchingBot,
 		amount,
 		tokensNames,
@@ -157,9 +128,6 @@ const mapDispatchToProps = (dispatch) => {
 		changeAmount: value => {
 			dispatch(changeAmount(value))
 		},
-		getAuthUserInfo: () => {
-			dispatch(getAuthUserInfo());
-		},
 		setPromoteInputError: (error) => {
 			dispatch(setPromoteInputError(error));
 		},
@@ -172,9 +140,12 @@ const mapDispatchToProps = (dispatch) => {
 		addPostIndex: (postIndex) => {
 			dispatch(addPostIndex(postIndex));
 		},
-		getAuthUserInfoError: (error) => {
-			dispatch(getAuthUserInfoError(error));
-		}
+		clearPromoteModalInfo: () => {
+			dispatch(clearPromoteModalInfo());
+		},
+    closeChooseTokens: () => {
+      dispatch(closeContextMenu("chooseToken"));
+    }
 	}
 };
 

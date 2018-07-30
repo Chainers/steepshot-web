@@ -1,12 +1,12 @@
-import {getStore} from "../store/configureStore";
-import {actionLock, actionUnlock} from "./session";
-import WalletService from "../services/WalletService";
-import Constants from "../common/constants";
-import {pushMessage} from "./pushMessage";
-import {closeModal} from "./modal";
-import {hideBodyLoader, showBodyLoader} from "./bodyLoader";
-import storage from "../utils/Storage";
-import {blockchainErrorsList} from "../utils/blockchainErrorsList";
+import {getStore} from '../store/configureStore';
+import {actionLock, actionUnlock} from './session';
+import WalletService from '../services/WalletService';
+import Constants from '../common/constants';
+import {pushMessage} from './pushMessage';
+import {closeModal} from './modal';
+import {hideBodyLoader, showBodyLoader} from './bodyLoader';
+import storage from '../utils/Storage';
+import {blockchainErrorsList} from '../utils/blockchainErrorsList';
 
 export function showMemo() {
 	return {
@@ -50,21 +50,17 @@ export function transfer() {
 	}
 	return dispatch => {
 		const {to, memo} = state.transfer;
-		const {amount} = state.wallet;
+		const {amount, selectedToken} = state.wallet;
 		const {activeKey, saveKey} = state.activeKey;
-		const selectedToken = state.services.tokensNames[state.wallet.selectedToken];
-		if (saveKey) {
-			storage.transferActiveKey = activeKey;
-		} else {
-			storage.transferActiveKey = null;
-		}
+		const selectedTokenName = state.services.tokensNames[selectedToken];
 		dispatch(actionLock());
 		dispatch(showBodyLoader());
-		WalletService.transfer(activeKey, amount, selectedToken, to, memo)
+		WalletService.transfer(activeKey || storage.activeKey, amount, selectedTokenName, to, memo)
 			.then(() => {
 				dispatch(actionUnlock());
 				dispatch(hideBodyLoader());
-				dispatch(pushMessage(Constants.TRANSFER.BID_TO_BOT_SUCCESS));
+				dispatch(pushMessage(Constants.TRANSFER.TRANSFER_SUCCESS));
+        if (saveKey && !storage.activeKey) storage.activeKey = activeKey;
 				dispatch(closeModal("transfer"));
 			})
 			.catch(error => {
@@ -80,8 +76,7 @@ export function transfer() {
 }
 
 export function getErrorData(error) {
-	let message;
-	let field;
+	let message, field;
 	if (error.isCustom) {
 		field = error.field;
 		message = error.message;

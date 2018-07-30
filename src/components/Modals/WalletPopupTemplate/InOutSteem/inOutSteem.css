@@ -1,0 +1,32 @@
+.wrapper_in-out-steem {
+    display: flex;
+    border-bottom: 1px solid #f4f4f6;
+    padding: 15px 0;
+    flex-direction: column;
+}
+
+.wrapper_in-out-steem div:not(.border-line_in-out-steem) {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.steem-amount_in-out-steem {
+    padding: 0 0 15px 0;
+}
+
+.steem-power-amount_in-out-steem {
+    padding: 15px 0 0 0;
+    border-top: 1px solid #f4f4f6;
+}
+
+.start-balance_in-out-steem {
+    color: #979b9e;
+}
+
+.short-amount_in-out-steem {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 50px;
+}

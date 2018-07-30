@@ -17,6 +17,10 @@
     overflow: hidden;
 }
 
+.form-line-not-overflow_transfer {
+    width: 100%;
+}
+
 .body_transfer > div.gray_transfer {
     margin-top: 25px;
 }
@@ -58,7 +62,6 @@
 .recipient-error_transfer {
     display: block;
     height: 20px;
-    text-align: right;
     color: #d0021b;
     margin: 0;
     font-size: 12px;
@@ -79,6 +82,10 @@
     transition: .3s;
 }
 
+.add-memo_transfer {
+    margin-bottom: 20px;
+}
+
 .add-memo_transfer > span {
     font: 12px OpenSans-Light;
     color: #d0021b;
@@ -95,3 +102,5 @@
 .body_transfer > div.active-key_transfer {
     margin: 25px 0 30px;
 }
+
+
