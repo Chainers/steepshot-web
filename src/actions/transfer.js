@@ -50,12 +50,12 @@ export function transfer() {
 	}
 	return dispatch => {
 		const {to, memo} = state.transfer;
-		const {amount} = state.wallet;
+		const {amount, selectedToken} = state.wallet;
 		const {activeKey, saveKey} = state.activeKey;
-		const selectedToken = state.services.tokensNames[state.wallet.selectedToken];
+		const selectedTokenName = state.services.tokensNames[selectedToken];
 		dispatch(actionLock());
 		dispatch(showBodyLoader());
-		WalletService.transfer(activeKey || storage.activeKey, amount, selectedToken, to, memo)
+		WalletService.transfer(activeKey || storage.activeKey, amount, selectedTokenName, to, memo)
 			.then(() => {
 				dispatch(actionUnlock());
 				dispatch(hideBodyLoader());

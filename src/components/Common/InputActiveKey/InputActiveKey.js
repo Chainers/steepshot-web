@@ -50,7 +50,7 @@ const InputActiveKey = ({className, activeKey, activeKeyError, saveKey, changeSa
 			</div>
 		</div>
   );
-}
+};
 
 const mapStateToProps = state => {
 	const {activeKey, activeKeyError, saveKey, showActiveKey} = state.activeKey;

@@ -368,7 +368,7 @@
 }
 
 .close-full-screen_pos-mod {
-    position: absolute;
+    position: fixed;
     bottom: 14px;
     right: 23px;
     width: 38px;
@@ -423,7 +423,7 @@
 }
 
 .fs-post-amount_pos-mod {
-    position: absolute;
+    position: fixed;
     left: 23px;
     bottom: 10px;
     height: 38px;

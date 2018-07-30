@@ -71,7 +71,7 @@ class Login extends React.Component {
 		this.props.login(nameValue.toLowerCase(), passwordValue);
 	}
 
-/*	loginWithSteemConnect() {
+	/*loginWithSteemConnect() {
     SteemConnect.getLoginUrl();
 		window.location.replace(SteemConnect.getLoginUrl() + '&expires_in=6048000');
 	}*/

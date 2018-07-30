@@ -7,8 +7,8 @@ import {closeContextMenu, openContextMenu} from '../../../actions/contextMenu';
 import FilterRow from '../../Wallet/TransactionHistory/TransactionFilter/FilterRow/FilterRow';
 import './chooseToken.css';
 
-const ChooseToken = ({selectedItemNumber, tokensAmount, changeAmount, tokensNames, label, value, reference, onFocus,
-                       error, openContextMenu, closeContextMenu, pointContextMenu, setToken}) => {
+const ChooseToken = ({selectedItemNumber, tokensAmount, changeAmount, tokensNames, label, value, onFocus, error,
+                       openContextMenu, closeContextMenu, pointContextMenu, setToken}) => {
 
   function useMaxAmount() {
     changeAmount(tokensAmount);
@@ -33,8 +33,8 @@ const ChooseToken = ({selectedItemNumber, tokensAmount, changeAmount, tokensName
   return (
 		<div className="container_choose-token">
 			<div className="relative-wrapper_choose-token">
-				<GrayInput label={label} placeholder="e.g. 100" onChange={onChangeAmount} value={value} ref={reference}
-									 onFocus={onFocus} error={error} maxLength={12}/>
+				<GrayInput label={label} placeholder="e.g. 100" onChange={onChangeAmount} value={value} onFocus={onFocus}
+                   error={error} maxLength={12}/>
 				<div className="token-amount_power-form"
 						 onClick={openSelectToken}>
 					<div className="balance_power-form">Balance: {tokensAmount}</div>
