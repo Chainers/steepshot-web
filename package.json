@@ -55,7 +55,6 @@
     "redux-thunk": "^2.2.0",
     "remarkable": "^1.7.1",
     "sc2-sdk": "^1.0.2",
-    "slick-carousel": "^1.8.1",
     "steem": "^0.7.1",
     "timeago-react": "^2.0.0",
     "why-did-you-update": "^0.1.1"
