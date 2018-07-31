@@ -82,8 +82,7 @@ export function searchingBotRequest() {
 				dispatch(openModal("SendBid", modalOption));
 				dispatch(sendBotRequest(false));
 			})
-			.catch((error) => {
-				console.log(error);
+			.catch(() => {
 				dispatch(pushErrorMessage(Constants.PROMOTE.FIND_BOT_ERROR));
 				dispatch(sendBotRequest(false));
 			});

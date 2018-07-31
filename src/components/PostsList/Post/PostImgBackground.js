@@ -13,24 +13,20 @@ class PostImgBackground extends React.Component {
 			backgroundImage: 'url(' + this.props.imageUrl + ')',
 		};
 		return (
-			<div style={imageBackground} className="img_post"></div>
+			<div style={imageBackground} className="img_post"/>
 		)
 	}
 }
 
 const mapStateToProps = (state, props) => {
-	let imageUrl, image;
-	if (props.src === Constants.NO_IMAGE) {
-		imageUrl = props.src;
-	} else {
-		image = state.images[props.src]
-	}
-	if (image) {
-		imageUrl = image[props.sizes];
-	}
-	return {
-		imageUrl
-	}
+  let imageUrl = props.src;
+  let image = state.images[props.src];
+  if (image) {
+    imageUrl = image[props.sizes];
+  }
+  return {
+    imageUrl
+  }
 };
 
 export default connect(mapStateToProps)(PostImgBackground);

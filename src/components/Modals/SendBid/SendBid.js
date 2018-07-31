@@ -13,12 +13,17 @@ import WalletPopupTemplate from '../WalletPopupTemplate/WalletPopupTemplate';
 import BotTimer from './BotTimer/BotTimer';
 import {setActiveKeyInputSecurity} from '../../../actions/activeKey';
 import InputActiveKey from '../../Common/InputActiveKey/InputActiveKey';
+import ImagesService from '../../../services/ImagesService';
 
 class SendBid extends React.Component {
 
-	constructor() {
-		super();
+	constructor(props) {
+		super(props);
 		this.tick = this.tick.bind(this);
+    if (this.props.botAvatarSrc && this.props.botAvatarSrc !== Constants.NO_AVATAR) {
+      ImagesService.getImagesWithProxy(this.props.botAvatarSrc,
+				`https://steemitimages.com/${2 * this.props.sizes}x${2 * this.props.sizes}/`);
+		}
 	}
 
 	componentDidMount() {
@@ -53,7 +58,7 @@ class SendBid extends React.Component {
 	}
 
 	render() {
-		let botAvatarStyle = {backgroundImage: 'url(' + this.props.botAvatar + ')'};
+		let botAvatarStyle = {backgroundImage: 'url("' + this.props.botAvatarSrc + '")'};
 		return (
 			<WalletPopupTemplate title="PROMOTER FOUND!"
 			                     username={this.props.botName}
@@ -74,13 +79,20 @@ class SendBid extends React.Component {
 
 const mapStateToProps = (state) => {
 	const {activeKey, redTimer, blockedTimer, suitableBot} = state.promoteModal;
+	let botAvatarSrc = suitableBot.avatar || Constants.NO_AVATAR;
+	let sizes = Constants.USER_PROFILE_AVATAR_SIZE;
+  let botAvatarUrl = state.images[botAvatarSrc];
+  if (botAvatarUrl) {
+    botAvatarSrc = botAvatarUrl[sizes];
+  }
 	return {
+    sizes,
 		activeKey,
 		redTimer,
 		blockedTimer,
+    botAvatarSrc,
 		upvoteTime: suitableBot.next,
-		botName: suitableBot.name,
-		botAvatar: suitableBot.avatar
+		botName: suitableBot.name
 	}
 };
 
