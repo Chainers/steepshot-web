@@ -8,9 +8,10 @@ class AvaImgBackground extends React.Component {
 	};
 
 	pic() {
-		return Object.assign({}, this.props.style, {
-			backgroundImage: 'url("' + this.props.imageUrl + '")'
-		});
+		return {
+			...this.props.style,
+      backgroundImage: 'url("' + this.props.imageUrl + '")'
+		}
 	}
 
 	render() {

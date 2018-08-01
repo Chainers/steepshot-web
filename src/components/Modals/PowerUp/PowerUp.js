@@ -4,7 +4,7 @@ import './powerUp.css';
 import WalletPopupTemplate from '../WalletPopupTemplate/WalletPopupTemplate';
 import {closeModal} from '../../../actions/modal';
 import PowerForm from '../../Common/PowerForm/PowerForm';
-import {changeAmount, powerUp, setNotValidAmountTokens} from '../../../actions/wallet';
+import {changeAmount, powerUp, isValidAmountTokens} from '../../../actions/wallet';
 import InOutSteem from '../WalletPopupTemplate/InOutSteem/InOutSteem';
 
 class PowerUp extends React.Component {
@@ -15,7 +15,7 @@ class PowerUp extends React.Component {
 	}
 
   sendPowerUp() {
-    this.props.setNotValidAmountTokens(this.props.amount, this.props.powerUp);
+    this.props.isValidAmountTokens(this.props.amount, this.props.balance, this.props.powerUp);
   }
 
 	render() {
@@ -70,8 +70,8 @@ const mapDispatchToProps = dispatch => {
 		changeAmount: value => {
 			dispatch(changeAmount(value))
 		},
-    setNotValidAmountTokens: (tokensAmount, transactionAction) => {
-      dispatch(setNotValidAmountTokens(tokensAmount, transactionAction))
+    isValidAmountTokens: (tokensAmount, balance, transactionAction) => {
+      dispatch(isValidAmountTokens(tokensAmount, balance, transactionAction))
     }
 	}
 };

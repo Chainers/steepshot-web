@@ -8,7 +8,7 @@ import storage from '../../../utils/Storage';
 
 const InputActiveKey = ({className, activeKey, activeKeyError, saveKey, changeSaveKey, changeActiveKey,
 													showActiveKey, setActiveKeyInputSecurity}) => {
-	if (storage.activeKey) {
+	if (storage.activeKey || storage.accessToken) {
 		return null;
 	}
 
