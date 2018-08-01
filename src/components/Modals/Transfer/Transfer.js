@@ -77,7 +77,7 @@ class Transfer extends React.Component {
 					<ShowIf show={!memoOpened}>
 						<div className="add-memo_transfer">
 							<span onClick={this.props.showMemo}>
-								+ Add memo
+								+&nbsp;message
 							</span>
 						</div>
 					</ShowIf>
