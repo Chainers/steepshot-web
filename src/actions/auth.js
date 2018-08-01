@@ -12,6 +12,7 @@ import {setPostingKeyErrorMessage, setUsernameErrorMessage} from './login';
 import {getStore} from '../store/configureStore';
 import Constants from '../common/constants';
 import StorageSerive from '../services/StorageService';
+import {setService} from './services';
 
 export function showMessage(message) {
 	return dispatch => {
@@ -104,6 +105,7 @@ export function logout() {
 		StorageSerive.clearAuthData();
 		OneSignalService.removeNotificationTags();
 		dispatch(logoutUser());
+		dispatch(setService('steem'));
 		dispatch(push(`/browse`));
 	}
 }

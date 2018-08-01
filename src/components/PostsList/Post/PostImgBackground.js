@@ -1,6 +1,5 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import Constants from '../../../common/constants';
 
 class PostImgBackground extends React.Component {
 
@@ -8,12 +7,16 @@ class PostImgBackground extends React.Component {
 		style: {}
 	};
 
+  pic() {
+  	return {
+			...this.props.style,
+      backgroundImage: 'url("' + this.props.imageUrl + '")'
+		}
+  }
+
 	render() {
-		const imageBackground = {
-			backgroundImage: 'url(' + this.props.imageUrl + ')',
-		};
 		return (
-			<div style={imageBackground} className="img_post"/>
+			<div className="img_post" style={this.pic()}/>
 		)
 	}
 }

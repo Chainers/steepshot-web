@@ -7,7 +7,7 @@ import ShowIf from '../../Common/ShowIf';
 import {closeModal} from '../../../actions/modal';
 import WalletPopupTemplate from '../WalletPopupTemplate/WalletPopupTemplate';
 import InputActiveKey from '../../Common/InputActiveKey/InputActiveKey';
-import {changeAmount, setNotValidAmountTokens, setToken} from '../../../actions/wallet';
+import {changeAmount, isValidAmountTokens, setToken} from '../../../actions/wallet';
 import {closeContextMenu} from '../../../actions/contextMenu';
 
 class Transfer extends React.Component {
@@ -33,7 +33,7 @@ class Transfer extends React.Component {
 	}
 
 	sendTransfer() {
-    this.props.setNotValidAmountTokens(this.props.amount, this.props.transfer);
+    this.props.isValidAmountTokens(this.props.amount, this.props.balance, this.props.transfer);
 	}
 
 	/*setAmountRef(ref) {
@@ -139,8 +139,8 @@ const mapDispatchToProps = dispatch => {
     closeChooseTokens: () => {
 			dispatch(closeContextMenu("chooseToken"));
 		},
-    setNotValidAmountTokens: (tokensAmount, transactionAction) => {
-      dispatch(setNotValidAmountTokens(tokensAmount, transactionAction))
+    isValidAmountTokens: (tokensAmount, balance, transactionAction) => {
+      dispatch(isValidAmountTokens(tokensAmount, balance, transactionAction))
     }
 	}
 };

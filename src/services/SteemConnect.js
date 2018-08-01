@@ -54,6 +54,21 @@ class SteemConnect {
     return api.broadcast(operations).then(response => Promise.resolve(response.result));
 	}
 
+  sendTransferTroughBlockchain(transferInfo) {
+		const transferLink = api.sign('transfer', transferInfo, document.location.href);
+		window.location.assign(transferLink);
+	}
+
+  powerUp(powerUpInfo) {
+    const powerUpLink = api.sign('transfer_to_vesting', powerUpInfo, document.location.href);
+    window.location.assign(powerUpLink);
+	}
+
+  powerDown(powerDownInfo) {
+    const powerDownLink = api.sign('withdraw_vesting', powerDownInfo, document.location.href);
+    window.location.assign(powerDownLink);
+	}
+
 	getAccounts(username) {
 		return new SteemService().getAccounts(username);
 	}
