@@ -16,9 +16,15 @@
     }
 }
 
-@media (max-width: 815px) and (min-width: 350px) {
+@media (max-width: 815px) and (min-width: 400px) {
     .body_use-lis {
-        margin-left: -20px;
+        margin-left: -25px;
+    }
+}
+
+@media (max-width: 400px) {
+    .body_use-lis {
+        margin-left: -22px;
     }
 }
 
