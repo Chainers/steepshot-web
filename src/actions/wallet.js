@@ -17,11 +17,12 @@ export function setErrorWithPushNotification(field, error) {
 
 export function isValidAmountTokens(tokensAmount, balance, transactionAction) {
 	return dispatch => {
-  	if (tokensAmount > balance) {
+		const tokensAmountNumber = +tokensAmount;
+    if (isNaN(tokensAmountNumber)) {
+      return dispatch(setErrorWithPushNotification('amountError', Constants.PROMOTE.INPUT_ERROR));
+    }
+  	if (tokensAmountNumber > balance) {
       return dispatch(setErrorWithPushNotification('amountError', Constants.ERROR_MESSAGES.NOT_ENOUGH_TOKENS));
-		}
-		if (isNaN(+tokensAmount)) {
-  		return dispatch(setErrorWithPushNotification('amountError', Constants.PROMOTE.INPUT_ERROR));
 		}
 		transactionAction();
 	}

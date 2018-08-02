@@ -23,7 +23,7 @@ export default class Utils {
 	}
 
 	static isNotEmpty(variable) {
-		return variable !== undefined && variable !== null && variable !== '';
+		return variable !== undefined && variable !== null;
 	}
 
 	static isEmpty(variable) {
