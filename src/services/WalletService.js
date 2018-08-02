@@ -90,7 +90,7 @@ function checkActiveKey(activeKey) {
 function checkAmount(amount, min = Constants.TRANSFER.MIN_AMOUNT) {
   const error = new Error();
   error.isCustom = true;
-  if (Utils.isEmpty(amount)) {
+  if (Utils.isEmptyString(amount)) {
     error.message = 'Amount field can\'t be empty.';
     error.field = 'amountError';
     return Promise.reject(error);
