@@ -11,6 +11,7 @@ import Tab from '../Common/TabsBar/Tab/Tab';
 import './likesFlagsList.css';
 import Utils from '../../utils/Utils';
 import Scroll from '../Scroll/Scroll';
+import {setActiveIndex} from '../../actions/tabsBar';
 
 const SCROLL_POINT_LIKES = 'likes';
 const SCROLL_POINT_FLAGS = 'flags';
@@ -34,6 +35,9 @@ class LikesFlagsList extends React.Component {
 	componentWillReceiveProps(nextProps) {
 		if (!Utils.equalsObjects(nextProps.window, this.props.window)) {
 			this.updateBodyHeight()
+		}
+		if (this.props.commonLoader && !nextProps.commonLoader) {
+			this.props.setActiveIndex('likesFlags', 0);
 		}
 	}
 
@@ -60,20 +64,17 @@ class LikesFlagsList extends React.Component {
 	}
 
 	render() {
-		const {likes, flags, preferredBodyHeight, point} = this.props;
+		const {likes, flags, preferredBodyHeight, point, commonLoader} = this.props;
 
 		let likesCondition = !likes.users || !likes.users.length;
 		let flagsCondition = !flags.users || !flags.users.length;
-		let commonLoader = true;
-		if (!likes.loading && !flags.loading) {
-			commonLoader = false;
-		}
 		return (
 			<div className="container_lik-lis">
 				<CloseButton className="close-button_lik-lis" onClick={this.props.closeModal}/>
 				<TabsBar point="likesFlags"
 				         showLoader={false}
 				         alwaysShowNavigation={true}
+								 commonLoader={commonLoader}
 				>
 					<Tab name="Likes" empty={likesCondition && !flagsCondition}>
 						<Scroll style={{width: '100%', height: preferredBodyHeight, marginTop: 20}}
@@ -115,11 +116,18 @@ class LikesFlagsList extends React.Component {
 }
 
 const mapStateToProps = (state, props) => {
-	let point = `post${LikesFlagsList.permLink(state.posts[props.postIndex].url, props.commentAuthor)}/voters`;
+	const point = `post${LikesFlagsList.permLink(state.posts[props.postIndex].url, props.commentAuthor)}/voters`;
+  const likes = state.usersList[point + 'JSON_OPTIONS:{"likes":1}'] || {};
+  const flags = state.usersList[point + 'JSON_OPTIONS:{"flags":1}'] || {};
+  let commonLoader = true;
+  if (!likes.loading && !flags.loading) {
+    commonLoader = false;
+  }
 	return {
 		point,
-		flags: state.usersList[point + 'JSON_OPTIONS:{"flags":1}'] || {},
-		likes: state.usersList[point + 'JSON_OPTIONS:{"likes":1}'] || {},
+		likes,
+		flags,
+		commonLoader,
 		...state.likesFlagsList,
 		...state.tabsBar.likesFlags,
 		window: state.window
@@ -129,13 +137,16 @@ const mapStateToProps = (state, props) => {
 const mapDispatchToProps = (dispatch) => {
 	return {
 		closeModal: () => {
-			dispatch(closeModal("LikesFlagsList"));
+			dispatch(closeModal("LikesFlagsList"))
 		},
 		setBodyHeight: (preferredBodyHeight, fullBodyHeight) => {
 			dispatch(setLikesFlagsListBodyHeight(preferredBodyHeight, fullBodyHeight))
 		},
 		clearBodyHeight: (preferredBodyHeight, fullBodyHeight) => {
 			dispatch(clearBodyHeight(preferredBodyHeight, fullBodyHeight))
+		},
+		setActiveIndex: (point, index) => {
+			dispatch(setActiveIndex(point, index))
 		}
 	}
 };
