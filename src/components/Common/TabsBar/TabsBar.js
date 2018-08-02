@@ -38,6 +38,9 @@ class TabsBar extends React.Component {
 	}
 
 	renderNavigation() {
+		if (this.props.commonLoader) {
+			return <div className="nav nav-tabs list-reset"/>
+		}
 		let navItems = [];
 		this.props.children.forEach((item, index) => {
 			let styles = 'nav-item';
