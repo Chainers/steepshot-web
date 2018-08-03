@@ -15,7 +15,11 @@ export default class Utils {
 	}
 
 	static isNotEmptyString(str) {
-		return Utils.isNotEmpty(str) && str.trim().length > 0
+		if (str) {
+      const string = str.toString();
+      return Utils.isNotEmpty(string) && string.trim().length > 0
+		}
+		return false;
 	}
 
 	static isEmptyString(str) {

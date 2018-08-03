@@ -90,6 +90,12 @@
     font: 12px OpenSans-Light;
     color: #d0021b;
     cursor: pointer;
+    text-decoration: underline;
+    transition: .2s;
+}
+
+.add-memo_transfer > span:hover {
+    opacity: .6;
 }
 
 .inputs-label {

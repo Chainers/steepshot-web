@@ -56,7 +56,6 @@ class Header extends React.Component {
 		}
 		const isAuth = this.props.isAuth;
 		let browse, authorLink = '';
-		let avatarSrc = this.props.avatar || Constants.NO_AVATAR;
 
 		let loginComponent = <div className="section login">
 													 <div className="wrap-login">
@@ -112,20 +111,18 @@ class Header extends React.Component {
 								</ShowIf>
 								{loginComponent}
 								<div className="section create">
-									<div className="wrap-create">
-										<ShowIf show={isAuth}>
-											<Link to="/editPost" type="button" className="btn btn-default btn-xs btn-create">
-												CREATE POST
-											</Link>
-										</ShowIf>
-									</div>
+									<ShowIf show={isAuth}>
+										<Link to="/editPost" type="button" className="btn btn-default btn-xs btn-create">
+											CREATE POST
+										</Link>
+									</ShowIf>
 								</div>
 								<div className="section user">
 									{
 										this.props.user
 											? <Link to={authorLink} className="user-link clearfix">
 												<div className="photo">
-													<Avatar src={avatarSrc}
+													<Avatar src={this.props.avatar}
 													        powerIndicator={true}
 													        headerAvatar={true}
 													        sizes={Constants.DEF_AVATAR_SIZE}

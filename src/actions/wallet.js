@@ -6,7 +6,7 @@ import {hideBodyLoader, showBodyLoader} from './bodyLoader';
 import {closeModal} from './modal';
 import {pushMessage} from './pushMessage';
 import Constants from '../common/constants';
-import {getErrorData, inputError} from './transfer';
+import {inputError, stopTransferWithError} from './transfer';
 
 export function setErrorWithPushNotification(field, error) {
   return dispatch => {
@@ -15,13 +15,16 @@ export function setErrorWithPushNotification(field, error) {
   }
 }
 
-export function setNotValidAmountTokens(tokensAmount, transactionAction) {
+export function isValidAmountTokens(tokensAmount, balance, transactionAction) {
 	return dispatch => {
-		if (!isNaN(+tokensAmount)) {
-      transactionAction();
-		} else {
-      dispatch(setErrorWithPushNotification('amountError', Constants.PROMOTE.INPUT_ERROR));
+		const tokensAmountNumber = +tokensAmount;
+    if (isNaN(tokensAmountNumber)) {
+      return dispatch(setErrorWithPushNotification('amountError', Constants.PROMOTE.INPUT_ERROR));
+    }
+  	if (tokensAmountNumber > balance) {
+      return dispatch(setErrorWithPushNotification('amountError', Constants.ERROR_MESSAGES.NOT_ENOUGH_TOKENS));
 		}
+		transactionAction();
 	}
 }
 
@@ -38,6 +41,18 @@ export function powerUp() {
 		const {amount} = state.wallet;
 		const {activeKey, saveKey} = state.activeKey;
 
+    if (storage.accessToken) {
+      WalletService.powerUpSteemConnect(amount)
+        .then(() => {
+          dispatch(actionUnlock());
+          dispatch(hideBodyLoader());
+        })
+        .catch(error => {
+          dispatch(stopTransferWithError(error));
+        });
+      return;
+    }
+
 		WalletService.powerUp(activeKey || storage.activeKey, amount)
 			.then(() => {
 				dispatch(actionUnlock());
@@ -47,13 +62,7 @@ export function powerUp() {
 				dispatch(pushMessage(Constants.WALLET.POWER_UP_SUCCESS));
 			})
 			.catch(error => {
-				dispatch(actionUnlock());
-				dispatch(hideBodyLoader());
-				const {message, field} = getErrorData(error);
-				if (field && message) {
-					dispatch(inputError(field, message));
-				}
-				dispatch(pushMessage(message));
+        dispatch(stopTransferWithError(error));
 			})
 	}
 }
@@ -83,6 +92,18 @@ export function powerDown() {
 		const amountVests = (amount / total_steem_power_steem) * total_steem_power_vests;
 		const {activeKey, saveKey} = state.activeKey;
 
+    if (storage.accessToken) {
+      WalletService.powerDownSteemConnect(amountVests)
+        .then(() => {
+          dispatch(actionUnlock());
+          dispatch(hideBodyLoader());
+        })
+        .catch(error => {
+          dispatch(stopTransferWithError(error));
+        });
+      return;
+    }
+
 		WalletService.powerDown(activeKey || storage.activeKey, amountVests)
 			.then(() => {
 				dispatch(actionUnlock());
@@ -92,13 +113,7 @@ export function powerDown() {
 				dispatch(pushMessage(Constants.WALLET.POWER_DOWN_SUCCESS));
 			})
 			.catch(error => {
-				dispatch(actionUnlock());
-				dispatch(hideBodyLoader());
-				const {message, field} = getErrorData(error);
-				if (field && message) {
-					dispatch(inputError(field, message));
-				}
-				dispatch(pushMessage(message));
+        dispatch(stopTransferWithError(error));
 			})
 	}
 }

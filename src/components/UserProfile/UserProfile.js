@@ -9,7 +9,7 @@ import {addMetaTags, getDefaultTags} from '../../actions/metaTags';
 import {push, replace} from 'react-router-redux';
 import TabsBar from '../Common/TabsBar/TabsBar';
 import Tab from '../Common/TabsBar/Tab/Tab';
-import {getUserProfile} from '../../actions/userProfile';
+import {getUserProfile, setUserProfileLoading} from '../../actions/userProfile';
 import ShowIf from '../Common/ShowIf';
 import LoadingSpinner from '../LoadingSpinner';
 import './userProfile.css';
@@ -34,6 +34,10 @@ class UserProfile extends React.Component {
 		props.getUserProfile(props.username);
 	}
 
+	componentWillUnmount() {
+		this.props.setUserProfileLoading(true);
+	}
+
 	componentWillReceiveProps(nextProps) {
 		if (nextProps.username !== this.props.username) {
 			this.props.getUserProfile(nextProps.username);
@@ -56,7 +60,6 @@ class UserProfile extends React.Component {
 		let website = this.props.profile['website'];
 		let location = this.props.profile.location;
 		let balance = this.props.profile['estimated_balance'];
-		let avatarSrc = this.props.profile['profile_image'] || Constants.NO_AVATAR;
 		return (
 			<div className="container">
 				<div className="g-content col-xs-12 clearfix" id="workspace">
@@ -64,7 +67,7 @@ class UserProfile extends React.Component {
 						<div className="col-xs-12 col-md-4 col-lg-3">
 							<div className="user-information">
 								<div className="pic-wrap clearfix">
-									<Avatar src={avatarSrc}
+									<Avatar src={this.props.profile['profile_image']}
 									        powerIndicator={this.props.isYourProfile}
 									        sizes={Constants.USER_PROFILE_AVATAR_SIZE}
 									/>
@@ -154,17 +157,20 @@ function insertUsername(point, userName) {
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		historyPush: (path) => {
+		historyPush: path => {
 			dispatch(push(path))
 		},
-		historyReplace: (newPath) => {
+		historyReplace: newPath => {
 			dispatch(replace(newPath))
 		},
-		getUserProfile: (userName) => {
+		getUserProfile: userName => {
 			dispatch(getUserProfile(userName));
 		},
 		setActiveIndex: (point, index) => {
 			dispatch(setActiveIndex(point, index));
+		},
+    setUserProfileLoading: loading => {
+			dispatch(setUserProfileLoading(loading));
 		}
 	}
 };

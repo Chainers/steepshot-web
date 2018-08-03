@@ -71,10 +71,10 @@ class Login extends React.Component {
 		this.props.login(nameValue.toLowerCase(), passwordValue);
 	}
 
-	/*loginWithSteemConnect() {
+	loginWithSteemConnect() {
     SteemConnect.getLoginUrl();
 		window.location.replace(SteemConnect.getLoginUrl() + '&expires_in=6048000');
-	}*/
+	}
 
 	clearLoginErrors() {
 		if (!this.props.usernameError && !this.props.postingKeyError) {
@@ -118,7 +118,7 @@ class Login extends React.Component {
 							<div className="input-block_login">
 								<GrayInput type="text" label="Username" placeholder="username" ref={ref => this.name = ref}
 								       onChange={this.clearLoginErrors} error={usernameError} name="login"/>
-								<GrayInput type="password" label="Posting Key" placeholder="e.g. STG52aKIcG9..."
+								<GrayInput type="password" label="Private posting key" placeholder="e.g. STG52aKIcG9..."
 													 ref={ref => this.password = ref} onChange={this.clearLoginErrors} error={postingKeyError}
 													 name="password"/>
 							</div>
@@ -138,13 +138,13 @@ class Login extends React.Component {
 							</div>
 						</form>
 					</div>
-					{/*<div className={'registration-block_login login-steem-con-block_login' +
+					<div className={'registration-block_login login-steem-con-block_login' +
 							(chooseSteem ? '' : ' hide-log-ste-con-block_login')}>
 							<label>Don’t you trust us?</label>
 							<button className="steem-con-btn_login" onClick={this.loginWithSteemConnect.bind(this)}>
 								{(this.props.isMobileScreen ? '' : 'LOGIN WITH ') + 'STEEM CONNECT'}
 							</button>
-					</div>*/}
+					</div>
 					<div className="registration-block_login">
 						<label>Don’t have a {chooseSteem ? 'Steem' : 'Golos'} account?</label>
 						<button className="guidelines-btn_login create-acc_login" onClick={this.openRegisterSite.bind(this)}>

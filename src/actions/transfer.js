@@ -8,6 +8,18 @@ import {hideBodyLoader, showBodyLoader} from './bodyLoader';
 import storage from '../utils/Storage';
 import {blockchainErrorsList} from '../utils/blockchainErrorsList';
 
+export function stopTransferWithError(error) {
+	return dispatch => {
+    dispatch(actionUnlock());
+    dispatch(hideBodyLoader());
+    const {message, field} = getErrorData(error);
+    if (field && message) {
+      dispatch(inputError(field, message));
+    }
+    dispatch(pushMessage(message));
+	}
+}
+
 export function showMemo() {
 	return {
 		type: 'TRANSFER_SHOW_MEMO'
@@ -54,7 +66,18 @@ export function transfer() {
 		const {activeKey, saveKey} = state.activeKey;
 		const selectedTokenName = state.services.tokensNames[selectedToken];
 		dispatch(actionLock());
-		dispatch(showBodyLoader());
+    dispatch(showBodyLoader());
+		if (storage.accessToken) {
+			WalletService.steemConnectTransfer(amount, selectedTokenName, to, memo)
+				.then(() => {
+          dispatch(actionUnlock());
+          dispatch(hideBodyLoader());
+				})
+        .catch(error => {
+          dispatch(stopTransferWithError(error));
+        });
+			return;
+		}
 		WalletService.transfer(activeKey || storage.activeKey, amount, selectedTokenName, to, memo)
 			.then(() => {
 				dispatch(actionUnlock());
@@ -64,13 +87,7 @@ export function transfer() {
 				dispatch(closeModal("transfer"));
 			})
 			.catch(error => {
-				dispatch(actionUnlock());
-				dispatch(hideBodyLoader());
-				const {message, field} = getErrorData(error);
-				if (field && message) {
-					dispatch(inputError(field, message));
-				}
-				dispatch(pushMessage(message));
+        dispatch(stopTransferWithError(error));
 			});
 	}
 }

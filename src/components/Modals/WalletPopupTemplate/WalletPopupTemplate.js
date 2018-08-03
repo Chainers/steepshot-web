@@ -23,7 +23,7 @@ const WalletPopupTemplate = ({title, username, usernameLink, textButton, cancel,
 		<div className="body_wal-pop-tem">
 			{children}
 		</div>
-		<div className="buttons_wal-pop-tem clearfix">
+		<div className="buttons_wal-pop-tem">
 			<button className="btn btn-cancel" onClick={cancel}>CANCEL</button>
 			<ShowIf show={textButton}>
 				<button className="btn btn-default" onClick={ok}>{textButton}</button>

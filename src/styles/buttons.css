@@ -144,15 +144,15 @@
 
 .btn-control.wallet {
     background: url('/images/wallet/buttons/wallet.svg') no-repeat center;
-    background-size: 100% 100%;
+    background-size: 18px 18px;
     transition: 0s;
-    width: 20px;
-    height: 20px;
+    width: 22px;
+    height: 22px;
 }
 
 .btn-control.wallet:hover {
     background: url('/images/wallet/buttons/wallet-hover.svg') no-repeat center;
-    background-size: 100% 100%;
+    background-size: 18px 18px;
 }
 
 
