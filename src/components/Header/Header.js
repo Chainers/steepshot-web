@@ -111,13 +111,11 @@ class Header extends React.Component {
 								</ShowIf>
 								{loginComponent}
 								<div className="section create">
-									<div className="wrap-create">
-										<ShowIf show={isAuth}>
-											<Link to="/editPost" type="button" className="btn btn-default btn-xs btn-create">
-												CREATE POST
-											</Link>
-										</ShowIf>
-									</div>
+									<ShowIf show={isAuth}>
+										<Link to="/editPost" type="button" className="btn btn-default btn-xs btn-create">
+											CREATE POST
+										</Link>
+									</ShowIf>
 								</div>
 								<div className="section user">
 									{

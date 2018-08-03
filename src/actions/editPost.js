@@ -13,7 +13,7 @@ import AuthService from '../services/AuthService';
 import Utils from '../utils/Utils';
 
 export function addTag() {
-  return (dispatch) => {
+  return dispatch => {
     const state = getStore().getState();
     const editPostState = state.editPost;
     let newTag = state.textInput[Constants.TEXT_INPUT_POINT.TAGS].text.toLowerCase();

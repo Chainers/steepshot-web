@@ -267,7 +267,7 @@ class PostModal extends React.Component {
 		if (e && !e.target.src) {
 			return;
 		}
-		if (this.props.singlePost || this.props.isFSByScreenSize) {
+		if (this.props.singlePost || this.props.notFullScreenByScreenSize) {
 			return;
 		}
 		let timeoutID = null;
@@ -310,7 +310,7 @@ class PostModal extends React.Component {
 		if (this.props.fullScreenMode) {
 			hideModalFS = {
 				position: 'absolute',
-				top: '-5000px',
+        top: '-5000px',
 				visibility: 'hidden'
 			}
 		}
@@ -318,11 +318,11 @@ class PostModal extends React.Component {
 		return (
 			<Fragment>
 				<div className="container_pos-mod" style={hideModalFS}>
-					<ShowIf show={this.props.showClose && !this.props.style.isMobile}>
+					<ShowIf show={this.props.showClose && !this.props.style.isMobile && !this.props.notFullScreenByScreenSize}>
 						<ShowIf show={!this.props.firstPost}>
 							<div className="arrow-left-full-screen_post-mod" onClick={this.previousPost.bind(this)}/>
 						</ShowIf>
-						<ShowIf show={!this.props.lastPost && !this.props.newPostsLoading}>
+						<ShowIf show={!this.props.lastPost && !this.props.newPostsLoading && !this.props.notFullScreenByScreenSize}>
 							<div className="arrow-right-full-screen_post-mod" onClick={this.nextPost.bind(this)}/>
 						</ShowIf>
 						<ShowIf show={this.props.newPostsLoading}>
@@ -341,7 +341,7 @@ class PostModal extends React.Component {
 											 fullScreenMode={this.props.fullScreenMode}
 											 newImageLoading={this.props.newImageLoading}
 											 post={this.props.post}
-											 isFSByScreenSize={this.props.isFSByScreenSize}
+											 notFullScreenByScreenSize={this.props.notFullScreenByScreenSize}
 											 index={this.props.currentIndex}
 											 singlePost={this.props.singlePost}
 											 urlVideo={this.props.urlVideo}
@@ -408,7 +408,7 @@ class PostModal extends React.Component {
 		if (JSON.stringify(style) !== JSON.stringify(this.props.style)) {
 			this.props.setPostModalOptions({style});
 		}
-		if (this.props.isFSByScreenSize && this.props.fullScreenMode) {
+		if (this.props.notFullScreenByScreenSize && this.props.fullScreenMode) {
 			this.setFullScreen(false, false);
 		}
 		this.props.setNewImageLoading(false);
@@ -423,7 +423,7 @@ const mapStateToProps = (state) => {
 		+ '/post' + post.url.replace(/\/[\w-.]+/, '');
 	let onlyPostModalOpen = Object.keys(state.modals).length === 1;
 	if (post) {
-		const isFSByScreenSize = state.window.width < Constants.WINDOW.MAX_MOBILE_SCREEN_WIDTH;
+		const notFullScreenByScreenSize = state.window.width < Constants.WINDOW.MAX_MOBILE_SCREEN_WIDTH;
 		const moreThenOneModal = Object.keys(state.modals).length > 1;
 		let urlVideo = post.media[0].url;
 		let postsList = state.postsList[state.postModal.point];
@@ -432,7 +432,7 @@ const mapStateToProps = (state) => {
 			post,
 			postsList,
 			urlVideo,
-			isFSByScreenSize,
+			notFullScreenByScreenSize,
 			isCommentEditing,
 			isGolosService,
 			linkToSinglePost,
