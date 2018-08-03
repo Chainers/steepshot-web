@@ -300,10 +300,6 @@
     z-index: 3;
 }
 
-.before-load-curtain_pos-mod .loader-blocker {
-    top: 0;
-}
-
 .arrow-left-modal_post-mod:hover {
     box-shadow: inset 18px 0 18px -8px rgba(255, 255, 255, .2);
 }
@@ -491,7 +487,9 @@
         overflow: hidden;
         padding: 20px 0;
     }
-
+    .before-load-curtain_pos-mod {
+        border-radius: 0;
+    }
 }
 
 @media (max-width: 350px) {

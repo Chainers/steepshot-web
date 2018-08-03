@@ -35,23 +35,25 @@ function getPostsListError(point, error) {
 
 export function getPostsList(point) {
 	const LIMIT = 16;
-	const statePoint = getStore().getState().postsList[point];
-	if (statePoint.loading) {
+	const state = getStore().getState();
+	const statePostsList = state.postsList[point];
+	if (statePostsList.loading) {
 		return {
 			type: 'EMPTY_GET_POSTS'
 		}
 	}
-	if (!statePoint.hasMore) {
+	if (!statePostsList.hasMore) {
 		return {
 			type: 'ALL_POSTS_LOADED',
 			point
 		}
 	}
-	return (dispatch) => {
+	return dispatch => {
 		dispatch(getPostsListRequest(point));
-		let settings = getStore().getState().settings;
+		const settings = state.settings;
 
-		PostService.getPostsList(point, statePoint.offset, settings.show_nsfw, settings.show_low_rated, LIMIT, statePoint.options)
+		PostService.getPostsList(point, statePostsList.offset, settings.show_nsfw, settings.show_low_rated, LIMIT,
+			statePostsList.options)
 			.then(response => {
 				//TODO удалить когда будут реальные видео в ленте
 				/*if (response.results[2]) {
@@ -64,15 +66,15 @@ export function getPostsList(point) {
 				let newPosts = response.results;
 				let hasMore = newPosts.length === LIMIT;
 				newPosts = removeDuplicate(newPosts);
-				newPosts = removeOldDuplicate(statePoint.posts, newPosts);
+				newPosts = removeOldDuplicate(statePostsList.posts, newPosts);
 				newPosts = removeDeleted(response, newPosts);
 				let notDeletedPosts = newPosts[0];
 				response = newPosts[1];
 				let posts = notDeletedPosts.map((post) => {
 					return post.url
 				});
-				if (statePoint.maxPosts <= posts.length + statePoint.posts.length) {
-					posts = posts.slice(0, statePoint.maxPosts - statePoint.posts.length);
+				if (statePostsList.maxPosts <= posts.length + statePostsList.posts.length) {
+					posts = posts.slice(0, statePostsList.maxPosts - statePostsList.posts.length);
 					hasMore = false;
 				}
 				let pointOptions = {
@@ -127,7 +129,7 @@ function removeOldDuplicate(posts, newPosts) {
 }
 
 function removeDuplicate(posts) {
-	if (posts.length) {
+	if (posts.length > 1) {
 		for (let i = 0; i < posts.length - 1; i++) {
 			for (let j = i + 1; j < posts.length; j++) {
 				if (posts[j].url === posts[i].url) {

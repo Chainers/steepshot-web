@@ -9,7 +9,7 @@ import {addMetaTags, getDefaultTags} from '../../actions/metaTags';
 import {push, replace} from 'react-router-redux';
 import TabsBar from '../Common/TabsBar/TabsBar';
 import Tab from '../Common/TabsBar/Tab/Tab';
-import {getUserProfile} from '../../actions/userProfile';
+import {getUserProfile, setUserProfileLoading} from '../../actions/userProfile';
 import ShowIf from '../Common/ShowIf';
 import LoadingSpinner from '../LoadingSpinner';
 import './userProfile.css';
@@ -32,6 +32,10 @@ class UserProfile extends React.Component {
 	constructor(props) {
 		super();
 		props.getUserProfile(props.username);
+	}
+
+	componentWillUnmount() {
+		this.props.setUserProfileLoading(true);
 	}
 
 	componentWillReceiveProps(nextProps) {
@@ -153,17 +157,20 @@ function insertUsername(point, userName) {
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		historyPush: (path) => {
+		historyPush: path => {
 			dispatch(push(path))
 		},
-		historyReplace: (newPath) => {
+		historyReplace: newPath => {
 			dispatch(replace(newPath))
 		},
-		getUserProfile: (userName) => {
+		getUserProfile: userName => {
 			dispatch(getUserProfile(userName));
 		},
 		setActiveIndex: (point, index) => {
 			dispatch(setActiveIndex(point, index));
+		},
+    setUserProfileLoading: loading => {
+			dispatch(setUserProfileLoading(loading));
 		}
 	}
 };
