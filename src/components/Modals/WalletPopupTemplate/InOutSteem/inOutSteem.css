@@ -24,9 +24,11 @@
     color: #979b9e;
 }
 
-.short-amount_in-out-steem {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: 50px;
+@media (max-width: 380px) {
+    .short-amount_in-out-steem {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 90px;
+    }
 }

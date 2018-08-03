@@ -72,7 +72,6 @@ export function transfer() {
 				.then(() => {
           dispatch(actionUnlock());
           dispatch(hideBodyLoader());
-          dispatch(pushMessage(Constants.TRANSFER.TRANSFER_SUCCESS));
 				})
         .catch(error => {
           dispatch(stopTransferWithError(error));
