@@ -4,21 +4,20 @@ import ShowIf from '../../Common/ShowIf';
 import Utils from '../../../utils/Utils';
 import {Link} from 'react-router-dom';
 
-const WalletPopupTemplate = ({title, username, usernameLink, textButton, cancel, ok, children, mainClick,
-															 notBotUsernameLink}) => (
+const WalletPopupTemplate = ({title, username, usernameLink, textButton, cancel, ok, children, mainClick}) => (
 	<div className="container_wal-pop-tem" onClick={mainClick}>
 		<div className="header_wal-pop-tem">
 			<div className="title_wal-pop-tem">
 				{title}
 			</div>
 			<ShowIf show={Utils.isNotEmptyString(username)} className="username_wal-pop-tem">
-				<ShowIf show={usernameLink}>
+				<ShowIf show={usernameLink && username}>
 					<a href={usernameLink} target="_blank">
 						@{(username || '').toUpperCase()}
 					</a>
 				</ShowIf>
-				<ShowIf show={notBotUsernameLink}>
-					<Link to={notBotUsernameLink}>
+				<ShowIf show={!usernameLink && username}>
+					<Link to={`/@${username}`}>
 						@{(username || '')}
 					</Link>
 				</ShowIf>

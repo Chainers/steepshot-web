@@ -50,7 +50,6 @@ class Transfer extends React.Component {
 		return (
 			<WalletPopupTemplate title="TRANSFER"
 			                     username={username}
-													 notBotUsernameLink={`/@${username}`}
 			                     textButton="SEND"
 			                     cancel={closeTransferModal}
 			                     ok={this.sendTransfer}

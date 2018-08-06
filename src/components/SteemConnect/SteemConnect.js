@@ -14,7 +14,7 @@ class SteemConnect extends React.Component {
 	}
 }
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
 	return {
 		loginWithSteemConnect: params => {
 			dispatch(loginWithSteemConnect(params))
