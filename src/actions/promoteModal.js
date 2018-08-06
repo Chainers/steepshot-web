@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import {getStore} from '../store/configureStore';
 import {closeModal, openModal} from './modal';
 import SendBid from '../components/Modals/SendBid/SendBid';
@@ -79,7 +79,9 @@ export function searchingBotRequest() {
 				let modalOption = {
 					body: (<SendBid/>)
 				};
-				dispatch(openModal("SendBid", modalOption));
+				if (getStore().getState().modals["PromoteModal"]) {
+          dispatch(openModal("SendBid", modalOption));
+				}
 				dispatch(sendBotRequest(false));
 			})
 			.catch(() => {
