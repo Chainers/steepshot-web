@@ -141,7 +141,7 @@ function deletePostError(postIndex, error) {
 }
 
 export function deletePost(postIndex, isComment = false) {
-	return (dispatch) => {
+	return dispatch => {
 		let modalOption = {
 			body: (<ConfirmDeleteModal
 				closeModal={() => dispatch(closeModal("ConfirmDeleteModal"))}
@@ -154,7 +154,7 @@ export function deletePost(postIndex, isComment = false) {
 }
 
 export function deletePostAfterConfirm(postIndex, isComment) {
-	return (dispatch) => {
+	return dispatch => {
 		let state = getStore().getState();
 		if (state.session.actionLocked) {
 			return;

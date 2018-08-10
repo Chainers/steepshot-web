@@ -18,6 +18,39 @@
     line-height: 1.56;
 }
 
+.claim-reward-wrapper_wallet {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 80px;
+    border-radius: 10px;
+    background: url('/images/wallet/claim_rewards_bg.png') center;
+    background-size: cover;
+    margin-top: 30px;
+    padding: 0 30px 0 20px;
+}
+
+.gift-boxes_wallet {
+    background: url('/images/wallet/gift-boxes.png') center no-repeat;
+    background-size: cover;
+    min-width: 157px;
+    height: 94px;
+    margin-top: -14px;
+}
+
+.text-claim-reward_wallet {
+    color: #ffffff;
+    font: 22px OpenSans-Light;
+    margin-left: 50px;
+}
+
+.claim-reward-wrapper_wallet button {
+    color: #ffffff;
+    padding: 12px 23px;
+    margin-left: 20px;
+    white-space: nowrap;
+}
+
 .body_wallet {
     display: flex;
     justify-content: flex-start;
@@ -37,6 +70,13 @@
     background-color: #ffffff;
 }
 
+@media (max-width: 1023px) {
+    .text-claim-reward_wallet {
+        font-size: 18px;
+        margin-left: 20px;
+    }
+}
+
 @media (max-width: 650px) {
     .body_wallet {
         justify-content: center;
@@ -44,13 +84,36 @@
     .container_wallet {
         padding: 0 10px;
     }
+    .mobile-claim-rewards-wrapper_wallet {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        height: 304px;
+        padding: 0 30px;
+    }
+    .text-claim-reward_wallet {
+        font-size: 22px;
+        text-align: center;
+        line-height: 1.23;
+        margin: 25px 0 0 0;
+    }
+    .mobile-claim-rewards-wrapper_wallet .button_widget-token {
+        margin: -10px 0 0 0;
+    }
+    .gift-boxes_wallet {
+        width: 220px;
+        height: 130px;
+    }
 }
 
 @media (max-width: 350px) {
     .title_wallet {
-        font-size: 18px;
+        font-size: 20px;
     }
     .account-balance_wallet {
         font-size: 28px;
+    }
+    .text-claim-reward_wallet {
+        font-size: 20px;
     }
 }

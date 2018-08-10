@@ -20,6 +20,15 @@ export default function userProfile(state = initialState, action) {
 				loading: false
 			};
 
+    case 'UPDATE_ACCOUNT_BALANCE':
+      return {
+        ...state,
+        profile: {
+          ...state.profile,
+          ...action.newBalance
+        }
+      };
+
 		case 'SET_USER_PROFILE_LOADING':
 			return {
         ...state,

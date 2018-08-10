@@ -23,6 +23,7 @@
     min-height: calc(100%);
     display: flex;
     flex-direction: column;
+    overflow-x: hidden;
 }
 
 .for-space-between {

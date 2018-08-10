@@ -3,6 +3,9 @@ import {serverErrorsList} from './serverErrorsList';
 
 export function blockchainErrorsList(error) {
 	console.log(error);
+	if (error.message === 'sc2-sdk error') {
+		return 'SteemConnect error.'
+	}
 	if (!error.data) {
 		if (error.actual === 128 || error.message === Constants.NON_BASE58_CHARACTER) {
 			return Constants.ERROR_MESSAGES.INVALID_ACTIVE_KEY;

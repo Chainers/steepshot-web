@@ -13,35 +13,35 @@ class ChainService {
 	}
 
 	static addCommentToBlockchain(commentOperation) {
-		return ChainService.currentService.addCommentToBlockchain(commentOperation);
+		return ChainService.currentService.addCommentToBlockchain(commentOperation)
 	}
 
 	static changeVoteInBlockchain(postAuthor, permlink, power) {
-		return ChainService.currentService.changeVoteInBlockchain(postAuthor, permlink, power);
+		return ChainService.currentService.changeVoteInBlockchain(postAuthor, permlink, power)
 	}
 
 	static deletePostFromBlockchain(permlink) {
-		return ChainService.currentService.deletePostFromBlockchain(permlink);
+		return ChainService.currentService.deletePostFromBlockchain(permlink)
 	}
 
 	static changeFollowInBlockchain(jsonData) {
-		return ChainService.currentService.changeFollowInBlockchain(jsonData);
+		return ChainService.currentService.changeFollowInBlockchain(jsonData)
 	}
 
 	static sendTransferTroughBlockchain(transferInfo) {
-		return ChainService.currentService.sendTransferTroughBlockchain(transferInfo);
+		return ChainService.currentService.sendTransferTroughBlockchain(transferInfo)
 	}
 
 	static addPostDataToBlockchain(operations) {
-		return ChainService.currentService.addPostDataToBlockchain(operations);
+		return ChainService.currentService.addPostDataToBlockchain(operations)
 	}
 
 	static getAccounts(username) {
-		return ChainService.currentService.getAccounts(username);
+		return ChainService.currentService.getAccounts(username)
 	}
 
 	static wifIsValid(postingKey, pubWif) {
-		return ChainService.currentService.wifIsValid(postingKey, pubWif);
+		return ChainService.currentService.wifIsValid(postingKey, pubWif)
 	}
 
 	static getValidTransaction() {
@@ -49,7 +49,7 @@ class ChainService {
 	}
 
 	static getBeneficiaries(permlink, beneficiaries) {
-		return ChainService.currentService.getBeneficiaries(permlink, beneficiaries);
+		return ChainService.currentService.getBeneficiaries(permlink, beneficiaries)
 	}
 
 	static getTransactionHistory(username, from = -1, limit = 10000) {
@@ -63,6 +63,10 @@ class ChainService {
 	static powerDown(activeKey, amount) {
 		return ChainService.currentService.powerDown(activeKey, amount)
 	}
+
+  static claimRewards(steem_tokens, sbd_tokens, steem_power) {
+    return ChainService.currentService.claimRewards(steem_tokens, sbd_tokens, steem_power)
+  }
 
 	static usingGolos() {
 		return ChainService.currentService instanceof GolosService
