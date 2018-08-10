@@ -4,9 +4,102 @@ import WalletService from '../services/WalletService';
 import storage from '../utils/Storage';
 import {hideBodyLoader, showBodyLoader} from './bodyLoader';
 import {closeModal} from './modal';
-import {pushMessage} from './pushMessage';
+import {pushErrorMessage, pushMessage} from './pushMessage';
 import Constants from '../common/constants';
 import {inputError, stopTransferWithError} from './transfer';
+import ChainService from '../services/ChainService';
+import AuthService from '../services/AuthService';
+import SteemService from '../services/SteemService';
+
+function addDataToWallet(data) {
+	return {
+		type: 'ADD_DATA_TO_WALLET',
+		data
+	}
+}
+
+function updateAccountBalance() {
+	return dispatch => {
+    if (global.isServerSide) {
+      return;
+    }
+		ChainService.getAccounts(AuthService.getUsername())
+			.then(response => {
+				const data = response[0];
+				dispatch({
+					type: 'UPDATE_ACCOUNT_BALANCE',
+					newBalance: {
+						balance: parseFloat(data.balance.split(' ')[0]),
+						sbd_balance: parseFloat(data.sbd_balance.split(' ')[0]),
+						total_steem_power_steem: SteemService.vestsToSp(data.vesting_shares),
+						total_steem_power_vests: parseFloat(data.vesting_shares.split(' ')[0])
+					}
+				})
+			})
+			.catch(error => {
+				dispatch({
+					type: 'UPDATE_ACCOUNT_ERROR',
+					error
+				})
+			})
+	}
+}
+
+export function getAccountsSelectiveData() {
+  return dispatch => {
+    if (global.isServerSide) {
+      return;
+    }
+    ChainService.getAccounts(AuthService.getUsername())
+      .then(response => {
+        const data = response[0];
+        const sbdRewards = parseFloat(data['reward_sbd_balance'].split(' ')[0]);
+        const steemRewards = parseFloat(data['reward_steem_balance'].split(' ')[0]);
+        const steemPowerRewards = parseFloat(data['reward_vesting_steem'].split(' ')[0]);
+        let noRewards = true;
+        if (sbdRewards && steemRewards && steemPowerRewards) {
+        	noRewards = false;
+				}
+        const selectiveData = {
+          noRewards,
+          next_power_down: data['next_vesting_withdrawal'],
+          sbd_rewards: sbdRewards,
+          steem_rewards: steemRewards,
+          steem_power_rewards: steemPowerRewards,
+        };
+        dispatch(addDataToWallet(selectiveData));
+      })
+      .catch(error => {
+        dispatch({
+          type: 'GET_ACCOUNTS_SELECTIVE_DATA_ERROR',
+          error
+        })
+      });
+  }
+}
+
+export function claimAccountRewards(steem_tokens, sbd_tokens, steem_power) {
+	return dispatch => {
+    dispatch(actionLock());
+    dispatch(showBodyLoader());
+		ChainService.claimRewards('0.003 STEEM', '0.000 SBD', '0.000 STEEM POWER')
+			.then(() => {
+        dispatch(actionUnlock());
+        dispatch(hideBodyLoader());
+				dispatch(pushMessage(Constants.WALLET.CLAIM_REWARD_SUCCESSFULLY));
+        dispatch(addDataToWallet({noRewards: true}));
+        dispatch(updateAccountBalance());
+			})
+			.catch(error => {
+				dispatch({
+					type: 'CLAIM_REWARDS_ERROR'
+				});
+        dispatch(actionUnlock());
+        dispatch(hideBodyLoader());
+				dispatch(pushErrorMessage(error));
+			});
+	}
+}
 
 export function setErrorWithPushNotification(field, error) {
   return dispatch => {

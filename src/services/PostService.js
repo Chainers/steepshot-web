@@ -119,8 +119,9 @@ class PostService {
 		const permlink = PostService.getPermlinkFromUrl(post.url);
 		return ChainService.deletePostFromBlockchain(permlink)
 			.catch(() => {
-				let operation = getDefaultPostOperation(post.title, post.tags, post.description, permlink);
+				let operation;
 				if (!isComment) {
+					operation = getDefaultPostOperation(post.title, post.tags, post.description, permlink);
 					operation[1].title = '*deleted*';
 					operation[1].body = '*deleted*';
 					if (post.json_metadata.tags.length > 2) {

@@ -89,8 +89,8 @@
     height: 40px;
     background: rgba(255, 255, 255, 0.3);
     border: none;
-    border-radius: 6px;
-    font-size: 12px;
+    border-radius: 20px;
+    font: 12px OpenSans-Regular;
     font-weight: bold;
     letter-spacing: 1px;
 }

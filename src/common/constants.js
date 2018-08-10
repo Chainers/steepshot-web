@@ -273,7 +273,8 @@ const Constants = {
 
 	WALLET: {
 		POWER_UP_SUCCESS: 'Power up success.',
-		POWER_DOWN_SUCCESS: 'Started power down.'
+		POWER_DOWN_SUCCESS: 'Started power down.',
+		CLAIM_REWARD_SUCCESSFULLY: 'Rewards successfully claimed.'
 	},
 
 	ERROR_MESSAGES: {
