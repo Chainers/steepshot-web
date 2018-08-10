@@ -82,7 +82,7 @@ export function claimAccountRewards(steem_tokens, sbd_tokens, steem_power) {
 	return dispatch => {
     dispatch(actionLock());
     dispatch(showBodyLoader());
-		ChainService.claimRewards('0.003 STEEM', '0.000 SBD', '0.000 STEEM POWER')
+		ChainService.claimRewards(steem_tokens, sbd_tokens, steem_power)
 			.then(() => {
         dispatch(actionUnlock());
         dispatch(hideBodyLoader());
