@@ -138,7 +138,6 @@ class GolosService {
 			steem.broadcast.withdrawVesting(activeKey, AuthService.getUsername(), amount, callback);
 		})
 	}
-
 }
 
 export default GolosService;
