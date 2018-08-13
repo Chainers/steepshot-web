@@ -1,6 +1,6 @@
 const initialState = {
 	profile: null,
-	loading: false,
+  loadingUserProfile: false,
 	changeFollow: false,
 	changeSubscribe: false
 };
@@ -10,20 +10,29 @@ export default function userProfile(state = initialState, action) {
 		case 'GET_USER_PROFILE_REQUEST':
 			return {
 				...state,
-				loading: true
+				loadingUserProfile: true
 			};
 
 		case 'GET_USER_PROFILE_SUCCESS':
 			return {
 				...state,
 				profile: action.profile,
-				loading: false
+        loadingUserProfile: false
 			};
+
+    case 'UPDATE_ACCOUNT_BALANCE':
+      return {
+        ...state,
+        profile: {
+          ...state.profile,
+          ...action.newBalance
+        }
+      };
 
 		case 'SET_USER_PROFILE_LOADING':
 			return {
         ...state,
-        loading: action.loading
+        loadingUserProfile: action.loadingUserProfile
 			};
 
 		case 'CHANGE_FOLLOW_REQUEST':

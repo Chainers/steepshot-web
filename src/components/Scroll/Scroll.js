@@ -23,10 +23,10 @@ class Scroll extends React.Component {
 	}
 
 	render() {
-		const {children, customScrollStyle} = this.props;
+		const {children, customScrollStyle, style} = this.props;
 		return (
 			<Scrollbars onScrollFrame={this.onScrollFrame.bind(this)}
-			            style={this.props.style}
+			            style={style}
 									renderThumbHorizontal={Scroll.hideHorizontalThumb}
 			            renderTrackVertical={() => {
 				            return (<div className={'default_scroll ' + (customScrollStyle || '')}/>)
@@ -48,9 +48,9 @@ const mapStateToProps = () => {
 	return {}
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
 	return {
-		shouldFetchFunc: (point) => {
+		shouldFetchFunc: point => {
 			dispatch(shouldFetch(point))
 		}
 	};
