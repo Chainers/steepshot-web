@@ -120,7 +120,7 @@ class PostsList extends React.Component {
 const mapStateToProps = (state, props) => {
 	return {
 		...state.postsList[props.point],
-		ignored: state.postsList[props.ignored] ? state.postsList[props.ignored].posts : [],
+		ignored: state.postsList[props.ignored] ? state.postsList[props.ignored].posts : []
 	};
 };
 

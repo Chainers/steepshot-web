@@ -35,8 +35,8 @@ class SteemConnect {
 
   deletePostFromBlockchain(permlink) {
     const params = {
-      'author': AuthService.getUsername(),
-      'permlink': permlink
+      author: AuthService.getUsername(),
+      permlink
     };
     return api.broadcast([['delete_comment', params]]);
   }

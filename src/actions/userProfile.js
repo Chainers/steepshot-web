@@ -10,10 +10,10 @@ export function getUserProfileSuccess(result) {
 	}
 }
 
-export function setUserProfileLoading(loading) {
+export function setUserProfileLoading(loadingUserProfile) {
   return {
     type: 'SET_USER_PROFILE_LOADING',
-    loading
+    loadingUserProfile
   }
 }
 

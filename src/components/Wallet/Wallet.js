@@ -82,17 +82,19 @@ class Wallet extends React.Component {
 	renderClaimRewards(sbd_rewards, steem_rewards, steem_power_rewards) {
 		if (this.props.mobileScreen) {
 			return (
-				<div className="mobile-claim-rewards-wrapper_wallet">
-					<div className="text-claim-reward_wallet">{/*Current rewards:&nbsp;
-						{addAndStringToLastItem([sbd_rewards, steem_rewards, steem_power_rewards])}*/}
-						Hello. It's time to claim rewards!</div>
-					<button className="button_widget-token" onClick={this.claimAccountRewards}>CLAIM REWARDS NOW</button>
-					<div className="gift-boxes_wallet"/>
+				<div className="centered--flex">
+					<div className="mobile-claim-rewards-wrapper_wallet">
+						<div className="text-claim-reward_wallet">{/*Current rewards:&nbsp;
+							{addAndStringToLastItem([sbd_rewards, steem_rewards, steem_power_rewards])}*/}
+							Hello. It's time to claim rewards!</div>
+						<button className="button_widget-token" onClick={this.claimAccountRewards}>CLAIM REWARDS NOW</button>
+						<div className="gift-boxes_wallet"/>
+					</div>
 				</div>
 			)
 		} else {
       return (
-				<div>
+				<div className="claim-reward-wrapper_wallet">
 					<div className="centered--flex">
 						<div className="gift-boxes_wallet"/>
 						<div className="text-claim-reward_wallet">{/*Current rewards:&nbsp;
@@ -114,7 +116,7 @@ class Wallet extends React.Component {
 		return (
 			<div className="container">
 				<div className="container_wallet">
-					<ShowIf show={!noRewards} className="claim-reward-wrapper_wallet">
+					<ShowIf show={!noRewards}>
 						{this.renderClaimRewards(sbd_rewards, steem_rewards, steem_power_rewards)}
 					</ShowIf>
 					<div className="header_wallet">

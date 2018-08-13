@@ -44,7 +44,7 @@
     margin-left: 50px;
 }
 
-.claim-reward-wrapper_wallet button {
+.claim-reward-wrapper_wallet button, .mobile-claim-rewards-wrapper_wallet button {
     color: #ffffff;
     padding: 12px 23px;
     margin-left: 20px;
@@ -86,10 +86,16 @@
     }
     .mobile-claim-rewards-wrapper_wallet {
         display: flex;
+        justify-content: space-between;
         align-items: center;
         flex-direction: column;
         height: 304px;
+        width: 300px;
         padding: 0 30px;
+        margin-top: 30px;
+        background: url('/images/wallet/claim_rewards_bg.png') center;
+        background-size: cover;
+        border-radius: 10px;
     }
     .text-claim-reward_wallet {
         font-size: 22px;
@@ -115,5 +121,8 @@
     }
     .text-claim-reward_wallet {
         font-size: 20px;
+    }
+    .mobile-claim-rewards-wrapper_wallet {
+        padding: 0 20px;
     }
 }

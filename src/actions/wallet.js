@@ -20,9 +20,6 @@ function addDataToWallet(data) {
 
 function updateAccountBalance() {
 	return dispatch => {
-    if (global.isServerSide) {
-      return;
-    }
 		ChainService.getAccounts(AuthService.getUsername())
 			.then(response => {
 				const data = response[0];
@@ -78,11 +75,11 @@ export function getAccountsSelectiveData() {
   }
 }
 
-export function claimAccountRewards(steem_tokens, sbd_tokens, steem_power) {
+export function claimAccountRewards(liquid_tokens, not_liquid_tokens, power_tokens) {
 	return dispatch => {
     dispatch(actionLock());
     dispatch(showBodyLoader());
-		ChainService.claimRewards(steem_tokens, sbd_tokens, steem_power)
+		ChainService.claimRewards(liquid_tokens, not_liquid_tokens, power_tokens)
 			.then(() => {
         dispatch(actionUnlock());
         dispatch(hideBodyLoader());
