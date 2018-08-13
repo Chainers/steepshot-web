@@ -64,8 +64,8 @@ class ChainService {
 		return ChainService.currentService.powerDown(activeKey, amount)
 	}
 
-  static claimRewards(steem_tokens, sbd_tokens, steem_power) {
-    return ChainService.currentService.claimRewards(steem_tokens, sbd_tokens, steem_power)
+  static claimRewards(liquid_tokens, not_liquid_tokens, power_tokens) {
+    return ChainService.currentService.claimRewards(liquid_tokens, not_liquid_tokens, power_tokens)
   }
 
 	static usingGolos() {

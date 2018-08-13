@@ -45,17 +45,23 @@ class UserProfile extends React.Component {
 		}
 	}
 
+	shouldComponentUpdate(nextProps) {
+		if (nextProps.username !== this.props.username) {
+			return false;
+		}
+		return true;
+	}
+
 	render() {
 		if (global.isServerSide) {
 			return null;
 		}
-		if (this.props.loading || !this.props.profile) {
+		if (this.props.loadingUserProfile || !this.props.profile) {
 			return (
 				<div className="con-spi_use-pro">
 					<LoadingSpinner/>
 				</div>);
 		}
-
 		let name = this.props.profile.name || `@${this.props.profile.username}`;
 		let website = this.props.profile['website'];
 		let location = this.props.profile.location;
@@ -135,13 +141,12 @@ class UserProfile extends React.Component {
 const mapStateToProps = (state, props) => {
 	const watcher = state.auth.user;
 	const username = props.match.params.username || watcher;
-
 	const location = state.router.location || props.location || {};
 	return {
 		username,
 		isAuth: AuthService.isAuth(),
 		profile: state.userProfile.profile,
-		loading: state.userProfile.loading,
+    loadingUserProfile: state.userProfile.loadingUserProfile,
 		pathname: location.pathname,
 		isYourProfile: watcher === username,
 		watcher,
@@ -169,8 +174,8 @@ const mapDispatchToProps = (dispatch) => {
 		setActiveIndex: (point, index) => {
 			dispatch(setActiveIndex(point, index));
 		},
-    setUserProfileLoading: loading => {
-			dispatch(setUserProfileLoading(loading));
+    setUserProfileLoading: loadingUserProfile => {
+			dispatch(setUserProfileLoading(loadingUserProfile));
 		}
 	}
 };
