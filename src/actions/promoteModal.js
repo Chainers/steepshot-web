@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import {getStore} from '../store/configureStore';
 import {closeModal, openModal} from './modal';
 import SendBid from '../components/Modals/SendBid/SendBid';
@@ -9,7 +9,7 @@ import BotsService from '../services/BotsService';
 import storage from '../utils/Storage';
 import WalletService from '../services/WalletService';
 import {hideBodyLoader, showBodyLoader} from './bodyLoader';
-import {getErrorData, inputError} from './transfer';
+import {stopTransferWithError} from './transfer';
 import {changeAmount} from './wallet';
 
 function sendBotRequest(state) {
@@ -79,11 +79,12 @@ export function searchingBotRequest() {
 				let modalOption = {
 					body: (<SendBid/>)
 				};
-				dispatch(openModal("SendBid", modalOption));
+				if (getStore().getState().modals["PromoteModal"]) {
+          dispatch(openModal("SendBid", modalOption));
+				}
 				dispatch(sendBotRequest(false));
 			})
-			.catch((error) => {
-				console.log(error);
+			.catch(() => {
 				dispatch(pushErrorMessage(Constants.PROMOTE.FIND_BOT_ERROR));
 				dispatch(sendBotRequest(false));
 			});
@@ -116,12 +117,24 @@ export function sendBid() {
 			return;
 		}
     const {postIndex, suitableBot} = state.promoteModal;
+		const {amount, selectedToken} = state.wallet;
     const botName = suitableBot.name;
 		const steemLink = `https://steemit.com${postIndex}`;
-		const selectedToken = state.services.tokensNames[state.wallet.selectedToken];
+		const selectedTokenName = state.services.tokensNames[selectedToken];
 		dispatch(actionLock());
 		dispatch(showBodyLoader());
-		WalletService.transfer(activeKey || storage.activeKey, state.wallet.amount, selectedToken, botName, steemLink)
+    if (storage.accessToken) {
+      WalletService.steemConnectTransfer(amount, selectedTokenName, botName, steemLink)
+        .then(() => {
+          dispatch(actionUnlock());
+          dispatch(hideBodyLoader());
+        })
+        .catch(error => {
+          dispatch(stopTransferWithError(error));
+        });
+      return;
+    }
+		WalletService.transfer(activeKey || storage.activeKey, amount, selectedTokenName, botName, steemLink)
 			.then(() => {
 				dispatch(actionUnlock());
 				dispatch(pushMessage(Constants.PROMOTE.BID_TO_BOT_SUCCESS));
@@ -130,14 +143,7 @@ export function sendBid() {
 				dispatch(closeModal("SendBid"));
 			})
 			.catch(error => {
-				dispatch(actionUnlock());
-				dispatch(hideBodyLoader());
-        const {message, field} = getErrorData(error);
-        if (field && message) {
-          dispatch(inputError(field, message));
-          return dispatch(pushErrorMessage(message));
-        }
-				dispatch(pushErrorMessage(error));
+        dispatch(stopTransferWithError(error));
 			});
 	}
 }

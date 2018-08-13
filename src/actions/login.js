@@ -44,6 +44,9 @@ export function loginWithSteemConnect(params) {
 			type: 'LOGIN_WITH_STEEM_CONNECT_REQUEST',
 			params
 		});
+		if (global.isServerSide) {
+			return;
+		}
 		ChainService.getAccounts(username)
 			.then(response => {
 				const service = '';

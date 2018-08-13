@@ -42,6 +42,23 @@
 
 @media (max-width: 400px) {
     .buttons_wal-pop-tem {
-        justify-content: center;
+        justify-content: space-between;
+    }
+
+    .buttons_wal-pop-tem > button:first-child {
+        margin: 0;
+    }
+}
+
+@media (max-width: 350px) {
+    .buttons_wal-pop-tem > button {
+        padding: 12px 30px;
+    }
+
+    .header_wal-pop-tem {
+        font: 12px OpenSans-Bold;
+    }
+    .wrapper_in-out-steem {
+        font-size: 12px;
     }
 }

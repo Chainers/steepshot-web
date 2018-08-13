@@ -1,6 +1,5 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import Constants from '../../../common/constants';
 
 class AvaImgBackground extends React.Component {
 
@@ -9,28 +8,21 @@ class AvaImgBackground extends React.Component {
 	};
 
 	pic() {
-		return Object.assign({}, this.props.style, {
-			backgroundImage: 'url(' + this.props.imageUrl + ')'
-		});
-	}
-
-	picError() {
-		return Object.assign({}, this.props.style, {
-			backgroundImage: 'url(' + Constants.NO_AVATAR + ')'
-		});
+		return {
+			...this.props.style,
+      backgroundImage: 'url("' + this.props.imageUrl + '")'
+		}
 	}
 
 	render() {
 		return (
-			<div className="pic_ava-com" style={this.picError()}>
-				<div className="pic_ava-com" style={this.pic()}/>
-			</div>
+			<div className="pic_ava-com" style={this.pic()}/>
 		)
 	}
 }
 
 const mapStateToProps = (state, props) => {
-	let imageUrl;
+	let imageUrl = props.src;
 	let image = state.images[props.src];
 	if (image) {
 		imageUrl = image[props.sizes];

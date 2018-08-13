@@ -142,10 +142,7 @@ class Post extends React.Component {
 		if (!this.props || !this.props.imageUrl) {
 			return null;
 		}
-		let avatarSrc = this.props.avatar || Constants.NO_AVATAR;
-
 		const authorLink = `/@${this.props.author}`;
-
 		return (
 			<div className="item-wrap" id={this.props.index}>
 				<div className="post-card position--relative">
@@ -170,7 +167,7 @@ class Post extends React.Component {
 							</div>
 							<Link to={authorLink} className="user">
 								<div className="photo">
-									<Avatar src={avatarSrc} sizes={Constants.DEF_AVATAR_SIZE}/>
+									<Avatar src={this.props.avatar} sizes={Constants.DEF_AVATAR_SIZE}/>
 								</div>
 								<div className="name">{this.props.author}</div>
 							</Link>

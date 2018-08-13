@@ -11,7 +11,6 @@ import Constants from '../../../common/constants';
 const User = ({user, authUser, changeFollow}) => {
 
 	let amountMoney = null;
-	let avatarSrc = user.avatar || Constants.NO_AVATAR;
 	if (user.amount_sbd) {
 		amountMoney = <span className="money_user">
 										{(user.amount_sbd < 0 ? '-' : '+') + '$' + Math.abs(user.amount_sbd.toFixed(3))}
@@ -21,7 +20,7 @@ const User = ({user, authUser, changeFollow}) => {
 		<div className="container_user">
 			<div className="ava-name-wrap_user">
 				<Link to={`/@${user.author}`}>
-					<Avatar src={avatarSrc}
+					<Avatar src={user.avatar}
 					        style={{width: 60, height: 60, position: 'static'}}
 					        sizes={Constants.USER_CARD_AVATAR_SIZE}/>
 				</Link>

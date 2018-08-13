@@ -13,6 +13,10 @@
     font: 14px OpenSans-Regular;
 }
 
+.container_lik-lis .loader-blocker {
+    margin-left: -20px;
+}
+
 .close-button_lik-lis {
     position: absolute;
     top: 15px;
@@ -42,8 +46,8 @@
     }
 }
 
-@media (max-width: 370px) {
+@media (max-width: 400px) {
     .container_lik-lis {
-        width: 320px;
+        width: 95vw;
     }
 }

@@ -273,13 +273,14 @@ const Constants = {
 
 	WALLET: {
 		POWER_UP_SUCCESS: 'Power up success.',
-		POWER_DOWN_SUCCESS: 'Started power down.'
+		POWER_DOWN_SUCCESS: 'Started power down.',
+		CLAIM_REWARD_SUCCESSFULLY: 'Rewards successfully claimed.'
 	},
 
 	ERROR_MESSAGES: {
 		INVALID_ACTIVE_KEY: 'Invalid active key.',
-		USER_NOT_FOUND: 'User not found!',
-		NOT_ENOUGH_TOKENS: 'There\'s not enough tokens!'
+		USER_NOT_FOUND: 'User not found.',
+		NOT_ENOUGH_TOKENS: 'There\'s not enough tokens.'
 	},
 
 	MILLISECONDS_IN_DAY: 24 * 60 * 60 * 1000,

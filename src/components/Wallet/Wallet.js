@@ -12,8 +12,9 @@ import ShowIf from '../Common/ShowIf';
 import PowerUp from '../Modals/PowerUp/PowerUp';
 import PowerDown from '../Modals/PowerDown/PowerDown';
 import ChainService from '../../services/ChainService';
-import {setToken} from '../../actions/wallet';
+import {claimAccountRewards, getAccountsSelectiveData, setToken} from '../../actions/wallet';
 import {documentTitle} from '../../utils/documentTitle';
+import {addAndStringToLastItem} from '../../utils/addAndStringToLastItem';
 
 const DESCRIPTION = {
 	STEEM: `Tradeable tokens that may be transferred anywhere at anytime.
@@ -35,9 +36,11 @@ class Wallet extends React.Component {
 	constructor(props) {
 		super();
 		props.getUserProfile();
+		props.getAccountsSelectiveData();
 		this.transferSteem = this.transferSteem.bind(this);
 		this.powerUp = this.powerUp.bind(this);
 		this.powerDown = this.powerDown.bind(this);
+		this.claimAccountRewards = this.claimAccountRewards.bind(this);
 		documentTitle();
 	}
 
@@ -72,14 +75,50 @@ class Wallet extends React.Component {
 		this.props.openModal("powerDown", modalOption);
 	}
 
+  claimAccountRewards() {
+		this.props.claimAccountRewards(this.props.steem_rewards, this.props.sbd_rewards, this.props.steem_power_rewards_in_vests);
+	}
+
+	renderClaimRewards(sbd_rewards, steem_rewards, steem_power_rewards) {
+		if (this.props.mobileScreen) {
+			return (
+				<div className="centered--flex">
+					<div className="mobile-claim-rewards-wrapper_wallet">
+						<div className="text-claim-reward_wallet">{/*Current rewards:&nbsp;
+							{addAndStringToLastItem([sbd_rewards, steem_rewards, steem_power_rewards])}*/}
+							Hello. It's time to claim rewards!</div>
+						<button className="button_widget-token" onClick={this.claimAccountRewards}>CLAIM REWARDS NOW</button>
+						<div className="gift-boxes_wallet"/>
+					</div>
+				</div>
+			)
+		} else {
+      return (
+				<div className="claim-reward-wrapper_wallet">
+					<div className="centered--flex">
+						<div className="gift-boxes_wallet"/>
+						<div className="text-claim-reward_wallet">{/*Current rewards:&nbsp;
+              {addAndStringToLastItem([sbd_rewards, steem_rewards, steem_power_rewards])}*/}
+							Hello. It's time to claim rewards!</div>
+					</div>
+					<button className="button_widget-token" onClick={this.claimAccountRewards}>CLAIM REWARDS NOW</button>
+				</div>
+      )
+		}
+	}
+
 	render() {
-		const {cost, steem, sp, sbd, isGolosService} = this.props;
+		const {cost, steem, sp, sbd, isGolosService, sbd_rewards, steem_rewards, steem_power_rewards,
+			noRewards} = this.props;
 		if (Utils.isEmpty(cost) || Utils.isEmpty(steem) || Utils.isEmpty(sp) || Utils.isEmpty(sbd)) {
 			return global.isServerSide ? null : <LoadingSpinner center={true}/>
 		}
 		return (
 			<div className="container">
 				<div className="container_wallet">
+					<ShowIf show={!noRewards}>
+						{this.renderClaimRewards(sbd_rewards, steem_rewards, steem_power_rewards)}
+					</ShowIf>
 					<div className="header_wallet">
 						<div className="title_wallet">
 							Account balance
@@ -173,13 +212,20 @@ const mapStateToProps = state => {
 		return {}
 	}
 	const {balance, sbd_balance, total_steem_power_steem, estimated_balance} = state.userProfile.profile;
+	const {sbd_rewards, steem_rewards, steem_power_rewards, steem_power_rewards_in_vests, noRewards} = state.wallet;
 	const isGolosService = ChainService.usingGolos();
 	return {
+    isGolosService,
 		cost: estimated_balance,
 		steem: balance,
 		sp: total_steem_power_steem,
 		sbd: sbd_balance,
-		isGolosService
+    sbd_rewards: sbd_rewards ? (sbd_rewards + ' SBD') : '',
+    steem_rewards: steem_rewards ? (steem_rewards + ' STEEM') : '',
+    steem_power_rewards: steem_power_rewards ? (steem_power_rewards + ' STEEM POWER') : '',
+    steem_power_rewards_in_vests: steem_power_rewards_in_vests ? (steem_power_rewards_in_vests + ' VESTS') : '',
+    noRewards,
+		mobileScreen: state.window.width <= 650
 	}
 };
 
@@ -189,10 +235,16 @@ const mapDispatchToProps = dispatch => {
 			dispatch(getUserProfile(username))
 		},
 		openModal: (index, options) => {
-			dispatch(openModal(index, options));
+			dispatch(openModal(index, options))
 		},
 		setToken: token => {
 			dispatch(setToken(token))
+		},
+    getAccountsSelectiveData: () => {
+			dispatch(getAccountsSelectiveData())
+		},
+    claimAccountRewards: (steem_tokens, sbd_tokens, steem_power) => {
+			dispatch(claimAccountRewards(steem_tokens, sbd_tokens, steem_power))
 		}
 	}
 };

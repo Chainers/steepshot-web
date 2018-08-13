@@ -1,4 +1,4 @@
-import React from 'react';
+import  React from 'react';
 import {connect} from 'react-redux';
 import {getPostsList, initPostsList} from '../../actions/postsList';
 import Post from './Post/Post';
@@ -54,10 +54,7 @@ class PostsList extends React.Component {
 	}
 
 	shouldComponentUpdate(nextProps) {
-		if (Utils.equalsObjects(nextProps, this.props)) {
-			return false;
-		}
-		return true;
+		return !Utils.equalsObjects(nextProps, this.props)
 	}
 
 	renderPosts() {
@@ -123,7 +120,7 @@ class PostsList extends React.Component {
 const mapStateToProps = (state, props) => {
 	return {
 		...state.postsList[props.point],
-		ignored: state.postsList[props.ignored] ? state.postsList[props.ignored].posts : [],
+		ignored: state.postsList[props.ignored] ? state.postsList[props.ignored].posts : []
 	};
 };
 

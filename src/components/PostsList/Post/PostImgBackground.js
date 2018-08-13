@@ -1,6 +1,5 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import Constants from '../../../common/constants';
 
 class PostImgBackground extends React.Component {
 
@@ -8,29 +7,29 @@ class PostImgBackground extends React.Component {
 		style: {}
 	};
 
+  pic() {
+  	return {
+			...this.props.style,
+      backgroundImage: 'url("' + this.props.imageUrl + '")'
+		}
+  }
+
 	render() {
-		const imageBackground = {
-			backgroundImage: 'url(' + this.props.imageUrl + ')',
-		};
 		return (
-			<div style={imageBackground} className="img_post"></div>
+			<div className="img_post" style={this.pic()}/>
 		)
 	}
 }
 
 const mapStateToProps = (state, props) => {
-	let imageUrl, image;
-	if (props.src === Constants.NO_IMAGE) {
-		imageUrl = props.src;
-	} else {
-		image = state.images[props.src]
-	}
-	if (image) {
-		imageUrl = image[props.sizes];
-	}
-	return {
-		imageUrl
-	}
+  let imageUrl = props.src;
+  let image = state.images[props.src];
+  if (image) {
+    imageUrl = image[props.sizes];
+  }
+  return {
+    imageUrl
+  }
 };
 
 export default connect(mapStateToProps)(PostImgBackground);

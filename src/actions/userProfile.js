@@ -10,6 +10,13 @@ export function getUserProfileSuccess(result) {
 	}
 }
 
+export function setUserProfileLoading(loadingUserProfile) {
+  return {
+    type: 'SET_USER_PROFILE_LOADING',
+    loadingUserProfile
+  }
+}
+
 export function getUserProfile(userName = AuthService.getUsername()) {
 	let settings = getStore().getState().settings;
 	return dispatch => {

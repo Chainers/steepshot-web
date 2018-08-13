@@ -2,6 +2,7 @@ import React from 'react';
 import './walletPopupTemplate.css';
 import ShowIf from '../../Common/ShowIf';
 import Utils from '../../../utils/Utils';
+import {Link} from 'react-router-dom';
 
 const WalletPopupTemplate = ({title, username, usernameLink, textButton, cancel, ok, children, mainClick}) => (
 	<div className="container_wal-pop-tem" onClick={mainClick}>
@@ -10,20 +11,22 @@ const WalletPopupTemplate = ({title, username, usernameLink, textButton, cancel,
 				{title}
 			</div>
 			<ShowIf show={Utils.isNotEmptyString(username)} className="username_wal-pop-tem">
-				<ShowIf show={usernameLink}>
+				<ShowIf show={usernameLink && username}>
 					<a href={usernameLink} target="_blank">
 						@{(username || '').toUpperCase()}
 					</a>
 				</ShowIf>
-				<ShowIf show={!usernameLink}>
-					@{username}
+				<ShowIf show={!usernameLink && username}>
+					<Link to={`/@${username}`}>
+						@{(username || '')}
+					</Link>
 				</ShowIf>
 			</ShowIf>
 		</div>
 		<div className="body_wal-pop-tem">
 			{children}
 		</div>
-		<div className="buttons_wal-pop-tem clearfix">
+		<div className="buttons_wal-pop-tem">
 			<button className="btn btn-cancel" onClick={cancel}>CANCEL</button>
 			<ShowIf show={textButton}>
 				<button className="btn btn-default" onClick={ok}>{textButton}</button>

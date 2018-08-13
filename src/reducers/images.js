@@ -49,6 +49,21 @@ export default function images(state = {}, action) {
 				...proxysAvaUrls
 			};
 
+		case 'GET_POST_COMMENTS_SUCCESS':
+      let proxysCommentUrls = {};
+      for (let url in action.posts) {
+        let avatarUrl = action.posts[url].avatar;
+        proxysCommentUrls[avatarUrl] = {
+          [defaultAvaSize]: `https://steemitimages.com/${2 * defaultAvaSize}x${2 * defaultAvaSize}/` + avatarUrl,
+          [userCardAvaSize]: `https://steemitimages.com/${2 * userCardAvaSize}x${2 * userCardAvaSize}/` + avatarUrl,
+          [userProfAvaSize]: `https://steemitimages.com/${2 * userProfAvaSize}x${2 * userProfAvaSize}/` + avatarUrl,
+        }
+      }
+      return {
+        ...state,
+        ...proxysCommentUrls
+			};
+
 		case 'LOGIN_SUCCESS':
 			let avatarHeaderUrl = action.avatar;
 			let proxyHeaderAvaUrl = {
@@ -61,6 +76,32 @@ export default function images(state = {}, action) {
 			return {
 				...state,
 				...proxyHeaderAvaUrl
+			};
+
+		case 'GET_USER_PROFILE_SUCCESS':
+      let profileAvaUrl = action.profile['profile_image'];
+      let proxyProfileAvaUrl = {
+        [profileAvaUrl]: {
+          [defaultAvaSize]: `https://steemitimages.com/${2 * defaultAvaSize}x${2 * defaultAvaSize}/` + profileAvaUrl,
+          [userCardAvaSize]: `https://steemitimages.com/${2 * userCardAvaSize}x${2 * userCardAvaSize}/` + profileAvaUrl,
+          [userProfAvaSize]: `https://steemitimages.com/${2 * userProfAvaSize}x${2 * userProfAvaSize}/` + profileAvaUrl
+        }
+      };
+      return {
+        ...state,
+        ...proxyProfileAvaUrl
+      };
+
+		case 'ADD_BOT':
+      let botAvaUrl = action.bot.avatar;
+      let proxyBotAvaUrl = {
+      	[botAvaUrl]: {
+          [userProfAvaSize]: `https://steemitimages.com/${2 * userProfAvaSize}x${2 * userProfAvaSize}/` + botAvaUrl
+				}
+			};
+			return {
+        ...state,
+        ...proxyBotAvaUrl
 			};
 
 		default:

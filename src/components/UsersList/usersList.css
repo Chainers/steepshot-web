@@ -10,15 +10,21 @@
     justify-content: center;
 }
 
-@media (max-width: 645px) {
+@media (max-width: 670px) {
     .body_use-lis {
         justify-content: center;
     }
 }
 
-@media (max-width: 815px) and (min-width: 350px) {
+@media (max-width: 670px) and (min-width: 400px) {
     .body_use-lis {
-        margin-left: -20px;
+        margin-left: -25px;
+    }
+}
+
+@media (max-width: 399px) {
+    .body_use-lis {
+        margin-left: -22px;
     }
 }
 

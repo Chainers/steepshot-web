@@ -144,13 +144,19 @@ class SteemService {
 		})
 	}
 
+  claimRewards(steem_tokens, sbd_tokens, steem_power) {
+    return processRequest(callback => {
+      steem.broadcast.claimRewardBalance(AuthService.getPostingKey(), AuthService.getUsername(), steem_tokens,
+				sbd_tokens, steem_power, callback);
+    })
+  }
+
 	static vestsToSp(vesting_shares) {
 		const vests = parseFloat(vesting_shares.split(' ')[0]);
 		const total_vests = parseFloat(dynamicProps['total_vesting_shares'].split(' ')[0]);
 		const total_vest_steem = parseFloat(dynamicProps['total_vesting_fund_steem'].split(' ')[0]);
 		return (total_vest_steem * (vests / total_vests)).toFixed(3);
 	}
-
 }
 
 export default SteemService;

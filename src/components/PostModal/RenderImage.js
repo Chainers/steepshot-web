@@ -6,7 +6,7 @@ import LoadingFilter from './LoadingFilter';
 import CopyLink from './CopyLink/CopyLink';
 import ImagesGallery from '../ImagesGallery/ImagesGallery';
 
-const RenderImage = ({previousStyle, style, showAll, fullScreenMode, newImageLoading, post, isFSByScreenSize,
+const RenderImage = ({previousStyle, style, showAll, fullScreenMode, newImageLoading, post, notFullScreenByScreenSize,
                        index, singlePost, urlVideo, setPostModalSize, copyLinkToClipboard, setFullScreen}) => {
 
   let previousImageWidth;
@@ -24,7 +24,7 @@ const RenderImage = ({previousStyle, style, showAll, fullScreenMode, newImageLoa
       <LoadingFilter isFullScreen={false}
                      newImageLoading={newImageLoading}/>
       <CopyLink onClick={copyLinkToClipboard} />
-      <ShowIf show={!isFSByScreenSize && !fullScreenMode && !singlePost}>
+      <ShowIf show={!notFullScreenByScreenSize && !fullScreenMode && !singlePost}>
         <div className="full-screen-button_pos-mod"
              onClick={() => setFullScreen(true, false)}
         >

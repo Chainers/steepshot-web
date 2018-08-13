@@ -57,6 +57,7 @@
 @media (max-width: 483px) {
     .btn-cancel.btn-cancel-20_power-form {
         margin: 10px 0 10px 0;
+        width: 100%;
     }
     .container_choose-token, .balance-group_power-form {
         flex-direction: column;

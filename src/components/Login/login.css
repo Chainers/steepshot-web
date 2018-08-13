@@ -187,3 +187,9 @@
         padding: 20px 0;
     }
 }
+
+@media (max-width: 430px) {
+    .steem-con-btn_login {
+        margin-left: 20px;
+    }
+}
