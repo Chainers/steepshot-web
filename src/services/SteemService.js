@@ -147,7 +147,7 @@ class SteemService {
   claimRewards(steem_tokens, sbd_tokens, steem_power) {
     return processRequest(callback => {
       steem.broadcast.claimRewardBalance(AuthService.getPostingKey(), AuthService.getUsername(), steem_tokens,
-				sbd_tokens, SteemService.spToVests(steem_power) + ' VESTS', callback);
+				sbd_tokens, steem_power, callback);
     })
   }
 
@@ -156,13 +156,6 @@ class SteemService {
 		const total_vests = parseFloat(dynamicProps['total_vesting_shares'].split(' ')[0]);
 		const total_vest_steem = parseFloat(dynamicProps['total_vesting_fund_steem'].split(' ')[0]);
 		return (total_vest_steem * (vests / total_vests)).toFixed(3);
-	}
-
-	static spToVests(steem_power) {
-    const sp = parseFloat(steem_power.split(' ')[0]);
-    const total_vests = parseFloat(dynamicProps['total_vesting_shares'].split(' ')[0]);
-    const total_vest_steem = parseFloat(dynamicProps['total_vesting_fund_steem'].split(' ')[0]);
-    return ((total_vests * sp) / total_vest_steem).toFixed(6);
 	}
 }
 
