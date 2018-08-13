@@ -53,8 +53,9 @@ export function getAccountsSelectiveData() {
         const sbdRewards = parseFloat(data['reward_sbd_balance'].split(' ')[0]);
         const steemRewards = parseFloat(data['reward_steem_balance'].split(' ')[0]);
         const steemPowerRewards = parseFloat(data['reward_vesting_steem'].split(' ')[0]);
+        const steemPowerRewardsInVests = parseFloat(data['reward_vesting_balance'].split(' ')[0]);
         let noRewards = true;
-        if (sbdRewards && steemRewards && steemPowerRewards) {
+        if (sbdRewards || steemRewards || steemPowerRewards) {
         	noRewards = false;
 				}
         const selectiveData = {
@@ -63,6 +64,7 @@ export function getAccountsSelectiveData() {
           sbd_rewards: sbdRewards,
           steem_rewards: steemRewards,
           steem_power_rewards: steemPowerRewards,
+          steem_power_rewards_in_vests: steemPowerRewardsInVests
         };
         dispatch(addDataToWallet(selectiveData));
       })
@@ -79,7 +81,8 @@ export function claimAccountRewards(liquid_tokens, not_liquid_tokens, power_toke
 	return dispatch => {
     dispatch(actionLock());
     dispatch(showBodyLoader());
-		ChainService.claimRewards(liquid_tokens, not_liquid_tokens, power_tokens)
+		ChainService.claimRewards(liquid_tokens || '0.000 STEEM', not_liquid_tokens || '0.000 SBD',
+			power_tokens || '0.000000 VESTS')
 			.then(() => {
         dispatch(actionUnlock());
         dispatch(hideBodyLoader());

@@ -76,7 +76,7 @@ class Wallet extends React.Component {
 	}
 
   claimAccountRewards() {
-		this.props.claimAccountRewards(this.props.steem_rewards, this.props.sbd_rewards, this.props.steem_power_rewards);
+		this.props.claimAccountRewards(this.props.steem_rewards, this.props.sbd_rewards, this.props.steem_power_rewards_in_vests);
 	}
 
 	renderClaimRewards(sbd_rewards, steem_rewards, steem_power_rewards) {
@@ -212,7 +212,7 @@ const mapStateToProps = state => {
 		return {}
 	}
 	const {balance, sbd_balance, total_steem_power_steem, estimated_balance} = state.userProfile.profile;
-	const {sbd_rewards, steem_rewards, steem_power_rewards, noRewards} = state.wallet;
+	const {sbd_rewards, steem_rewards, steem_power_rewards, steem_power_rewards_in_vests, noRewards} = state.wallet;
 	const isGolosService = ChainService.usingGolos();
 	return {
     isGolosService,
@@ -223,6 +223,7 @@ const mapStateToProps = state => {
     sbd_rewards: sbd_rewards ? (sbd_rewards + ' SBD') : '',
     steem_rewards: steem_rewards ? (steem_rewards + ' STEEM') : '',
     steem_power_rewards: steem_power_rewards ? (steem_power_rewards + ' STEEM POWER') : '',
+    steem_power_rewards_in_vests: steem_power_rewards_in_vests ? (steem_power_rewards_in_vests + ' VESTS') : '',
     noRewards,
 		mobileScreen: state.window.width <= 650
 	}

@@ -71,8 +71,7 @@ class SteemConnect {
   }
 
   claimRewards(steem_tokens, sbd_tokens, steem_power) {
-    return api.claimRewardBalance(AuthService.getUsername(), steem_tokens, sbd_tokens,
-      SteemService.spToVests(steem_power) + ' VESTS')
+    return api.claimRewardBalance(AuthService.getUsername(), steem_tokens, sbd_tokens, steem_power)
       .then(() => {return Promise.resolve()});
   }
 
