@@ -23,7 +23,7 @@ export function addTag() {
     if (Utils.isEmptyString(newTag)) {
       return emptyAction();
     }
-    dispatch(editPostChangeTags(getValidTagsString(editPostState.tags + ' ' + newTag.trim())));
+    dispatch(editPostChangeTags(getValidTagsString(editPostState.tags + ' ' + newTag.trim() + ' ')));
     dispatch(clearTextInputState(Constants.TEXT_INPUT_POINT.TAGS));
   }
 }
@@ -282,6 +282,8 @@ function getValidTagsString(str) {
   const serviceName = getStore().getState().services.name;
   if (str) {
     let result = str.replace(/\bsteepshot\b/g, '');
+    result = result.replace(/(\s+)-+/g, '$1');
+    result = result.replace(/-+(\s+)/g, '$1');
     result = result.trim();
     result = result.replace(/\s+/g, ' ');
     result = result.replace(/[^a-zA-Zа-яА-Я0-9_\s-]+/g, '');
