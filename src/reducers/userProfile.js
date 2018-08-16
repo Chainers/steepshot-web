@@ -1,7 +1,7 @@
 const initialState = {
 	profile: null,
   loadingUserProfile: false,
-	changeFollow: false,
+	changingFollowProfile: false,
 	changeSubscribe: false
 };
 
@@ -35,13 +35,13 @@ export default function userProfile(state = initialState, action) {
         loadingUserProfile: action.loadingUserProfile
 			};
 
-		case 'CHANGE_FOLLOW_REQUEST':
+		case 'CHANGE_FOLLOW_REQUEST_PROFILE':
 			if (!state.profile) {
 				return state;
 			}
 			return {
 				...state,
-				changeFollow: true
+        changingFollowProfile: true
 			};
 
 		case 'CHANGE_FOLLOW_SUCCESS':
@@ -50,7 +50,7 @@ export default function userProfile(state = initialState, action) {
 			}
 			return {
 				...state,
-				changeFollow: false,
+        changingFollowProfile: false,
 				profile: {
 					...state.profile,
 					has_followed: !state.profile['has_followed']
@@ -63,7 +63,7 @@ export default function userProfile(state = initialState, action) {
 			}
 			return {
 				...state,
-				changeFollow: false
+        changingFollowProfile: false
 			};
 
 		case 'CHANGE_USER_SUBSCRIBE_REQUEST':
