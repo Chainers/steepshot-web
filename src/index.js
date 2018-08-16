@@ -11,12 +11,9 @@ if (process.env.NODE_ENV !== 'production') {
 	whyDidYouUpdate(React, { exclude: [/^(Connect|Link)/] });
 }*/
 
-const Root = () => global.isServerSide ?
-	(<BrowserRouter>
-		{createApp({state: {}, props: window.__INITIAL__PROPS__})}
-	</BrowserRouter>)
-	:
-	createApp({state: {}, props: window.__INITIAL__PROPS__});
+const Root = () => (
+	createApp({state: window['__INITIAL__STATE__'], props: window['__INITIAL__PROPS__']})
+);
 
 render((<Root/>), document.getElementById('root'));
 

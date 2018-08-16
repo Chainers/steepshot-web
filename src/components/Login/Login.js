@@ -1,8 +1,6 @@
 import React from 'react';
-import {connect} from 'react-redux'
+import {connect} from 'react-redux';
 import {documentTitle} from '../../utils/documentTitle';
-import {addMetaTags, getDefaultTags} from '../../actions/metaTags';
-import {withWrapper} from 'create-react-server/wrapper';
 import './login.css';
 import ShowIf from '../Common/ShowIf';
 import {login} from '../../actions/auth';
@@ -38,15 +36,7 @@ class Login extends React.Component {
 			openVideo: false
 		};
 		this.clearLoginErrors = this.clearLoginErrors.bind(this);
-    documentTitle();
-	}
-
-	static async getInitialProps({location, req, res, store}) {
-		if (!req || !location || !store) {
-			return {};
-		}
-		await store.dispatch(addMetaTags(getDefaultTags(req.hostname, location.pathname)));
-		return {};
+		documentTitle();
 	}
 
 	openRegisterSite(event) {
@@ -55,7 +45,7 @@ class Login extends React.Component {
 			let modalOption = {
 				body: (<ChooseSteemRegModal/>),
 			};
-			this.props.openModal("ChooseSteemRegModal", modalOption);
+			this.props.openModal('ChooseSteemRegModal', modalOption);
 		} else {
 			window.open('https://golos.io/create_account');
 		}
@@ -72,7 +62,7 @@ class Login extends React.Component {
 	}
 
 	loginWithSteemConnect() {
-    SteemConnect.getLoginUrl();
+		SteemConnect.getLoginUrl();
 		window.location.assign(SteemConnect.getLoginUrl() + '&expires_in=604800');
 	}
 
@@ -84,9 +74,6 @@ class Login extends React.Component {
 	}
 
 	render() {
-		if (global.isServerSide) {
-			return null;
-		}
 		const {chooseSteem, usernameError, postingKeyError} = this.props;
 		return (
 			<div className="container_login">
@@ -102,7 +89,7 @@ class Login extends React.Component {
 								Platform that rewards people for sharing their lifestyle and visual experience
 							</div>
 							<button className="guidelines-btn_login" onClick={() => {
-								this.props.historyPush('/guide')
+								this.props.historyPush('/guide');
 							}}>
 								LINK TO OUR GUIDELINES
 							</button>
@@ -117,10 +104,10 @@ class Login extends React.Component {
 							</div>
 							<div className="input-block_login">
 								<GrayInput type="text" label="Username" placeholder="username" ref={ref => this.name = ref}
-								       onChange={this.clearLoginErrors} error={usernameError} name="login"/>
+								           onChange={this.clearLoginErrors} error={usernameError} name="login"/>
 								<GrayInput type="password" label="Private posting key" placeholder="e.g. STG52aKIcG9..."
-													 ref={ref => this.password = ref} onChange={this.clearLoginErrors} error={postingKeyError}
-													 name="password"/>
+								           ref={ref => this.password = ref} onChange={this.clearLoginErrors} error={postingKeyError}
+								           name="password"/>
 							</div>
 							<div className="btn-block_login">
 								<Switcher
@@ -139,11 +126,11 @@ class Login extends React.Component {
 						</form>
 					</div>
 					<div className={'registration-block_login login-steem-con-block_login' +
-							(chooseSteem ? '' : ' hide-log-ste-con-block_login')}>
-							<label>Don’t you trust us?</label>
-							<button className="steem-con-btn_login" onClick={this.loginWithSteemConnect.bind(this)}>
-								{(this.props.isMobileScreen ? '' : 'LOGIN WITH ') + 'STEEM CONNECT'}
-							</button>
+					(chooseSteem ? '' : ' hide-log-ste-con-block_login')}>
+						<label>Don’t you trust us?</label>
+						<button className="steem-con-btn_login" onClick={this.loginWithSteemConnect.bind(this)}>
+							{(this.props.isMobileScreen ? '' : 'LOGIN WITH ') + 'STEEM CONNECT'}
+						</button>
 					</div>
 					<div className="registration-block_login">
 						<label>Don’t have a {chooseSteem ? 'Steem' : 'Golos'} account?</label>
@@ -173,18 +160,18 @@ const mapDispatchToProps = (dispatch) => {
 			dispatch(login(name, postingKey));
 		},
 		historyPush: (path) => {
-			dispatch(push(path))
+			dispatch(push(path));
 		},
 		switchService: () => {
-			dispatch(switchService())
+			dispatch(switchService());
 		},
 		clearLoginErrors: () => {
-			dispatch(clearLoginErrors())
+			dispatch(clearLoginErrors());
 		},
 		openModal: (index, options) => {
 			dispatch(openModal(index, options));
 		}
-	}
+	};
 };
 
-export default withWrapper(connect(mapStateToProps, mapDispatchToProps)(Login));
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
