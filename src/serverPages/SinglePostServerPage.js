@@ -2,6 +2,7 @@ import React from 'react';
 import {withWrapper} from 'create-react-server/wrapper';
 import Utils from '../utils/Utils';
 import {addMetaTags, getTags} from '../actions/metaTags';
+import {addSinglePost} from '../actions/post';
 
 class SinglePost extends React.Component {
 
