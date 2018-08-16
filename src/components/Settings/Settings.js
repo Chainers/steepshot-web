@@ -4,7 +4,6 @@ import {connect} from 'react-redux';
 import {goBack} from 'react-router-redux';
 import './settings.css';
 import Constants from '../../common/constants';
-import {withWrapper} from 'create-react-server/wrapper';
 import SettingsField from './SettingsField/SettingsField';
 import {subscribe, unsubscribe} from '../../actions/oneSignal';
 import ShowIf from '../Common/ShowIf';
@@ -31,9 +30,6 @@ class Settings extends React.Component {
 	}
 
 	render() {
-		if (global.isServerSide) {
-			return null;
-		}
 		const fields = Constants.SETTINGS.FIELDS;
 		return (
 			<div className="container_settings">
@@ -97,12 +93,12 @@ const mapDispatchToProps = (dispatch) => {
 			dispatch(goBack());
 		},
 		unsubscribe: () => {
-			dispatch(unsubscribe())
+			dispatch(unsubscribe());
 		},
 		subscribe: () => {
-			dispatch(subscribe())
+			dispatch(subscribe());
 		}
 	};
 };
 
-export default withWrapper(connect(mapStateToProps, mapDispatchToProps)(Settings));
+export default connect(mapStateToProps, mapDispatchToProps)(Settings);

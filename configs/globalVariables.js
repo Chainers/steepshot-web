@@ -16,9 +16,5 @@ window.matchMedia = window.matchMedia || function () {
 		}
 	};
 };
-for (let key in window) {
-	if (!global[key]) {
-		global[key] = window[key]
-	}
-}
+global.document = window.document;
 global.isServerSide = true;

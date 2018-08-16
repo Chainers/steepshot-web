@@ -3,28 +3,14 @@ import {connect} from 'react-redux';
 import {addSinglePost} from '../../actions/post';
 import PostModal from '../PostModal/PostModal';
 import './singlePost.css';
-import {withWrapper} from 'create-react-server/wrapper';
-import {addMetaTags, getTags} from '../../actions/metaTags';
-import Utils from '../../utils/Utils';
 import LoggingService from '../../services/LoggingService';
 import PostService from '../../services/PostService';
 
 class SinglePost extends React.Component {
 
-	static async getInitialProps({location, req, res, store}) {
-		if (!global.isServerSide) return {};
-		await store.dispatch(addSinglePost(location.pathname));
-		if (!req || !store || !location) {
-			return {};
-		}
-		const post = Utils.getFirstObjectField(store.getState().posts);
-		await store.dispatch(addMetaTags(getTags(post.title, req.hostname + location.pathname, post.media[0].url)));
-		return {};
-	}
-
 	componentDidMount() {
 		if (!Object.keys(this.props.post).length) {
-			this.props.addSinglePost(this.props.history.location.pathname)
+			this.props.addSinglePost(this.props.history.location.pathname);
 		}
 		let username = this.props.location.pathname.match(/\/@[\w-.]+\//)[0];
 		LoggingService.logSharePost(username.replace(/\/@([\w-.]+)\//, '$1'),
@@ -32,9 +18,6 @@ class SinglePost extends React.Component {
 	}
 
 	render() {
-		if (global.isServerSide) {
-			return null;
-		}
 		let itemPost;
 		if (Object.keys(this.props.post).length !== 0) {
 			itemPost = this.props.post[Object.keys(this.props.post)[0]];
@@ -67,4 +50,4 @@ const mapDispatchToProps = (dispatch) => {
 	};
 };
 
-export default withWrapper(connect(mapStateToProps, mapDispatchToProps)(SinglePost));
+export default connect(mapStateToProps, mapDispatchToProps)(SinglePost);
