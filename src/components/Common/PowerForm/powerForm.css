@@ -32,8 +32,8 @@
     right: 20px;
     top: 50%;
     transform: translateY(-50%);
-    color: #e74800;
-    font: 14px OpenSans-Bold;
+    color: #0f181e;
+    font: 14px OpenSans-Regular;
 }
 
 .key-field_power-form, .input-active-key_power-form {
