@@ -1,5 +1,5 @@
 {
-  "name": "Steepshot-web",
+  "name": "steepshot-web",
   "version": "0.0.6",
   "repository": {
     "type": "git"
@@ -26,19 +26,13 @@
     "es6-promise": "^4.2.4",
     "golos-js": "^0.6.3",
     "history": "^4.7.2",
-    "image-compressor": "^1.2.0",
     "image-compressor.js": "^1.1.4",
     "isomorphic-fetch": "^2.2.1",
     "jsdom": "^11.10.0",
-    "lodash": "^4.17.10",
-    "moment": "^2.22.2",
     "react": "^16.4.1",
-    "react-cookie": "^2.2.0",
     "react-copy-to-clipboard": "^5.0.1",
     "react-custom-scrollbars": "^4.2.1",
     "react-dom": "^16.4.1",
-    "react-helmet": "^5.2.0",
-    "react-image-gallery": "^0.8.9",
     "react-player": "^1.6.4",
     "react-rangeslider": "^2.2.0",
     "react-redux": "^5.0.6",
@@ -47,23 +41,20 @@
     "react-router-dom": "^4.3.1",
     "react-router-redux": "^5.0.0-alpha.9",
     "react-share": "^2.1.1",
-    "recompose": "^0.27.1",
     "redux": "^3.7.2",
     "redux-logger": "^3.0.6",
     "redux-promise": "^0.5.3",
-    "redux-promise-middleware": "^4.4.1",
     "redux-thunk": "^2.2.0",
     "remarkable": "^1.7.1",
     "sc2-sdk": "^1.0.2",
     "steem": "^0.7.1",
-    "timeago-react": "^2.0.0",
-    "why-did-you-update": "^0.1.1"
+    "timeago-react": "^2.0.0"
   },
   "devDependencies": {
     "babel-plugin-transform-ensure-ignore": "^0.1.0",
     "babel-preset-env": "^1.7.0",
-    "linklocal": "^2.8.1",
     "prop-types": "^15.6.2",
-    "react-scripts": "^1.1.4"
+    "react-scripts": "^1.1.4",
+    "why-did-you-update": "^0.1.1"
   }
 }
