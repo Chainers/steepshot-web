@@ -61,7 +61,7 @@ function renderHTML(config, options) {
 			'<head>', // this should be the first script on a page so that others can pick it up
 			'<head>' +
 			metaStr +
-			'<script type="text/javascript">window["' + options.initialStateKey + '"] = ' + JSON.stringify(config.store ? config.store.getState() : undefined) + ';</script>' +
+			/*'<script type="text/javascript">window["' + options.initialStateKey + '"] = ' + JSON.stringify(config.store ? config.store.getState() : undefined) + ';</script>' +*/
 			'<script type="text/javascript">window["' + options.initialPropsKey + '"] = ' + JSON.stringify(config.initialProps) + ';</script>'
 		)
 	});

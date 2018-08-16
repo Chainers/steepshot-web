@@ -1,27 +1,14 @@
 import React from 'react';
 import HeadingLeadComponent from '../Atoms/HeadingLeadComponent';
 import {documentTitle} from '../../utils/documentTitle';
-import {addMetaTags, getDefaultTags} from '../../actions/metaTags';
-import {withWrapper} from 'create-react-server/wrapper';
 
-class AboutComponent extends React.Component {
-
-	static async getInitialProps({location, req, res, store}) {
-		if (!req || !location || !store) {
-			return {};
-		}
-		await store.dispatch(addMetaTags(getDefaultTags(req.hostname, location.pathname)));
-		return {};
-	}
+class About extends React.Component {
 
 	componentWillMount() {
 		documentTitle();
 	}
 
 	render() {
-		if (global.isServerSide) {
-			return null;
-		}
 		return (
 			<div className="card-field about">
 				<div className="about__heading text--center">
@@ -71,8 +58,8 @@ class AboutComponent extends React.Component {
 						hide it. Also please direct users to the guidelines here if you find someone breaking them.</p>
 				</div>
 			</div>
-		)
+		);
 	}
 }
 
-export default withWrapper(AboutComponent);
+export default About;

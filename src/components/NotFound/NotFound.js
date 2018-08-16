@@ -1,28 +1,15 @@
-import React from 'react'
+import React from 'react';
 import {documentTitle} from '../../utils/documentTitle';
-import {withWrapper} from 'create-react-server/wrapper';
-import {addMetaTags, getDefaultTags} from '../../actions/metaTags';
 import {Link} from 'react-router-dom';
 import './notFound.css';
 
 class NotFound extends React.Component {
-
-	static async getInitialProps({location, req, res, store}) {
-		if (!req || !location || !store) {
-			return {};
-		}
-		await store.dispatch(addMetaTags(getDefaultTags(req.hostname, location.pathname)));
-		return {};
-	}
 
 	componentDidMount() {
 		documentTitle();
 	}
 
 	render() {
-		if (global.isServerSide) {
-			return null;
-		}
 		return (
 			<div className="for-background_not-found">
 				<div className="wrapper_not-found">
@@ -38,4 +25,4 @@ class NotFound extends React.Component {
 	}
 }
 
-export default withWrapper(NotFound);
+export default NotFound;

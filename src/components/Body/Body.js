@@ -2,7 +2,6 @@ import React from 'react';
 import {connect} from 'react-redux';
 import Footer from '../Footer/Footer';
 import Scroll from '../Scroll/Scroll';
-import {withWrapper} from 'create-react-server/wrapper';
 import './body.css';
 
 const SCROLL_POINT = 'body';
@@ -43,7 +42,7 @@ const mapStateToProps = (state, props) => {
 		location,
 		bodyStyle,
 		emptyErrorClass
-	}
+	};
 };
 
-export default withWrapper(connect(mapStateToProps)(Body));
+export default connect(mapStateToProps)(Body);

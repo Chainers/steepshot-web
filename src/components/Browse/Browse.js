@@ -2,8 +2,6 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {documentTitle} from '../../utils/documentTitle';
 import PostsList from '../PostsList/PostsList';
-import {withWrapper} from 'create-react-server/wrapper';
-import {addMetaTags, getDefaultTags} from '../../actions/metaTags';
 import {push, replace} from 'react-router-redux';
 import TabsBar from '../Common/TabsBar/TabsBar';
 import Tab from '../Common/TabsBar/Tab/Tab';
@@ -13,14 +11,6 @@ import storage from '../../utils/Storage';
 import Utils from '../../utils/Utils';
 
 class Browse extends React.Component {
-
-	static async getInitialProps({location, req, res, store}) {
-		if (!req || !location || !store) {
-			return {};
-		}
-		await store.dispatch(addMetaTags(getDefaultTags(req.hostname, location.pathname)));
-		return {};
-	}
 
 	componentDidMount() {
 		this.setUrlPath.call(this);
@@ -43,18 +33,15 @@ class Browse extends React.Component {
 		}
 		storage.browse = lastActiveIndex;
 		this.props.setActiveIndex('browser', lastActiveIndex);
-		this.props.historyReplace('/browse/' + Constants.BROWSE_ROUTES[lastActiveIndex])
+		this.props.historyReplace('/browse/' + Constants.BROWSE_ROUTES[lastActiveIndex]);
 	}
 
 	changeIndex(index) {
 		storage.browse = index;
-		this.props.historyReplace('/browse/' + Constants.BROWSE_ROUTES[index])
+		this.props.historyReplace('/browse/' + Constants.BROWSE_ROUTES[index]);
 	}
 
 	render() {
-		if (global.isServerSide) {
-			return null;
-		}
 		return (
 			<div className="container">
 				<div id="workspace" className="g-content">
@@ -98,15 +85,15 @@ const mapStateToProps = (state, props) => {
 const mapDispatchToProps = (dispatch) => {
 	return {
 		historyPush: (path) => {
-			dispatch(push(path))
+			dispatch(push(path));
 		},
 		historyReplace: (newPath) => {
-			dispatch(replace(newPath))
+			dispatch(replace(newPath));
 		},
 		setActiveIndex: (point, index) => {
 			dispatch(setActiveIndex(point, index));
 		},
-	}
+	};
 };
 
-export default withWrapper(connect(mapStateToProps, mapDispatchToProps)(Browse));
+export default connect(mapStateToProps, mapDispatchToProps)(Browse);
