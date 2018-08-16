@@ -18,7 +18,8 @@
       "react-app"
     ],
     "plugins": [
-      "transform-ensure-ignore"
+      "transform-ensure-ignore",
+      "styled-components"
     ]
   },
   "dependencies": {
@@ -48,6 +49,7 @@
     "remarkable": "^1.7.1",
     "sc2-sdk": "^1.0.2",
     "steem": "^0.7.1",
+    "styled-components": "^3.4.2",
     "timeago-react": "^2.0.0"
   },
   "devDependencies": {
