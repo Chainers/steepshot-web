@@ -35,13 +35,6 @@ class UserProfile extends React.Component {
 		}
 	}
 
-	shouldComponentUpdate(nextProps) {
-		if (nextProps.username !== this.props.username) {
-			return false;
-		}
-		return true;
-	}
-
 	render() {
 		if (this.props.loadingUserProfile || !this.props.profile) {
 			return (

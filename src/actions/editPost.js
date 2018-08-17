@@ -236,7 +236,8 @@ export function createPost() {
             .then(() => {
               dispatch(pushMessage(Constants.POST_SUCCESSFULLY_CREATED));
               dispatch(editPostSuccess());
-              dispatch(push(`/@${AuthService.getUsername()}`))
+              dispatch(push(`/@${AuthService.getUsername()}`));
+              dispatch(push(`/@${AuthService.getUsername()}`));
             })
             .catch(error => {
               if (error.plagiarism_author) {
