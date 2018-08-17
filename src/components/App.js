@@ -8,6 +8,7 @@ const App = ({children}) => (
 	<div className="container_app">
 		<Advertising/>
 		<Header/>
+		<Test/>
 		<FunctionalUtils/>
 		<Body>{children}</Body>
 	</div>
