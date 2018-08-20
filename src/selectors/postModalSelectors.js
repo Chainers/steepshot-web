@@ -1,7 +1,7 @@
 import { createSelector } from "reselect";
 
 const postSelector = (state, index) => state.posts[index];
-const gallerySelector = state => state.imagesGallery;
+export const gallerySelector = state => state.imagesGallery;
 const screenWidthSelector = state => state.window.width;
 
 export const imagesSelector = createSelector(
@@ -29,12 +29,9 @@ export const imagesSelector = createSelector(
   }
 );
 
-export const activeIndexSelector = createSelector(
-  [gallerySelector],
-  gallery => {
-    return gallery.activeIndex;
-  }
-);
+const activeIndexSelector = createSelector([gallerySelector], gallery => {
+  return gallery.activeIndex;
+});
 
 export const imageUrlSelector = createSelector(
   [imagesSelector, activeIndexSelector],
@@ -48,3 +45,6 @@ export const postTitleSelector = createSelector([postSelector], post => {
 export const imageSizeSelector = createSelector([postSelector], post => {
   return (!!post && post.image_size) || { width: 1024, height: 1024 };
 });
+
+export const imageHasErrorSelector = (state, imageUrl) =>
+  state.imageLoadError.includes(imageUrl);

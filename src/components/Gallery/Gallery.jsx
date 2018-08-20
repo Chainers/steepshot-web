@@ -9,29 +9,32 @@ import {
   setActiveImage
 } from "../../actions/imagesGallery";
 import {
-  activeIndexSelector,
-  imageSizeSelector,
+  gallerySelector,
+  imageHasErrorSelector,
   imagesSelector,
   imageUrlSelector,
   postTitleSelector
 } from "../../selectors/postModalSelectors";
-import Constants from "../../common/constants";
 import { imageLoadError } from "../../actions/images";
+import Loader from "../Common/Loader";
 
 const Wrapper = styled.div`
   position: relative;
   width: 100%;
   height: 100%;
+  overflow: hidden;
 `;
 
-const Images = styled.img`
-  max-width: calc((100vw - 380px) * 0.9);
-  max-height: calc(100vh - 160px);
+const Image = styled.img`
+  width: 100%;
+  height: 100%;
   object-fit: cover;
-  min-width: 640px;
-  min-height: 480px;
-  width: ${({ width }) => width + "px"};
-  height: ${({ height }) => height + "px"};
+`;
+
+const ImageNotFound = styled.div`
+  margin: 0;
+  color: #000000;
+  font: 27px OpenSans-Light;
 `;
 
 class Gallery extends React.Component {
@@ -54,25 +57,39 @@ class Gallery extends React.Component {
   }
 
   render() {
-    console.log(this.props);
-
-    const { images, activeIndex, imageUrl, title, imageSize } = this.props;
-
+    const {
+      images,
+      activeIndex,
+      imageUrl,
+      title,
+      hasError,
+      imageLoading
+    } = this.props;
     return (
-      <Wrapper>
+      <Wrapper className="centered--flex">
         <Navigation
           images={images}
           activeIndex={activeIndex}
           show={images.length > 1}
           swapTo={this.props.setActiveIndex}
         />
-        <Images
-          src={imageUrl || Constants.NO_IMAGE}
-          alt={title}
-          ref={ref => (this.image = ref)}
-          onError={this.loadImgError}
-          onLoad={this.props.imageLoaded}
-        />
+        {!imageLoading &&
+          !hasError && (
+            <Image
+              src={imageUrl}
+              alt={title}
+              ref={ref => (this.image = ref)}
+              onError={this.loadImgError}
+              onLoad={this.props.imageLoaded}
+            />
+          )}
+        {!imageLoading &&
+          hasError && (
+            <ImageNotFound className="centered--flex">
+              Sorry, image isn't found.
+            </ImageNotFound>
+          )}
+        {imageLoading && <Loader />}
       </Wrapper>
     );
   }
@@ -90,7 +107,7 @@ const stateM = {
             1024: "http://steepshot.org/api/v1/image/f77c9845-0fd2-4067-b32b-1552b458eed9.jpeg"
           },
           url:
-            "http://steepshot.org/api/v1/image/5ab2191b-40b1-4c41-aab4-21812157e0ff.jpeg"
+            "http://steepshot.org/api/v1/image/5ab2191b-40b1-4c41-aab4-21812157e0ff1.jpeg"
         },
         {
           ipfs_hash: "QmeZAQj4pnsU1cd18JagWjJKQCV3Ds9bAkwb2S5FyWURN7",
@@ -116,12 +133,14 @@ const stateM = {
 
 const mapStateToProps = (state, props) => {
   const imageUrl = imageUrlSelector(stateM, props.index);
+  const { activeIndex, imageLoading } = gallerySelector(stateM);
   return {
     images: imagesSelector(stateM, props.index),
-    activeIndex: activeIndexSelector(stateM, props.index),
+    activeIndex,
+    imageLoading,
     imageUrl,
     title: postTitleSelector(stateM, props.index),
-    imageSize: imageSizeSelector(stateM, props.index)
+    hasError: imageHasErrorSelector(state, imageUrl)
   };
 };
 

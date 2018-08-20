@@ -9,6 +9,8 @@ const Wrapper = styled.div`
   left: 50%;
   transform: translateX(-50%);
   background-color: rgba(0, 0, 0, 0.03);
+  width: 640px;
+  height: 540px;
 `;
 
 class Testing extends React.Component {
