@@ -1,6 +1,6 @@
 import {getStore} from '../store/configureStore';
 import {clearTextInputState, setTextInputError} from './textInput';
-import * as React from 'react';
+import React from 'react';
 import PlagiarismTracking from '../components/Modals/PlagiarismTracking/PlagiarismTracking';
 import {openModal} from './modal';
 import {push} from 'react-router-redux';
@@ -39,6 +39,9 @@ export function removeTag(index) {
     } else {
       let tagsList = tagsString.toLowerCase().split(' ');
       tagsList.splice(index, 1);
+      if (tagsList[0]) {
+        tagsList[0] = tagsList[0].replace(/_+/g, '');
+      }
       dispatch(editPostChangeTags(tagsList.join(' ')));
     }
   }
@@ -280,11 +283,15 @@ function prepareData() {
 }
 
 function getValidTagsString(str) {
-  const serviceName = getStore().getState().services.name;
+  const state = getStore().getState();
+  const serviceName = state.services.name;
   if (str) {
     let result = str.replace(/\bsteepshot\b/g, '');
     result = result.replace(/(\s+)-+/g, '$1');
     result = result.replace(/-+(\s+)/g, '$1');
+    if (!state.editPost.tags) {
+      result[0] = result[0].replace(/_+/g, '');
+    }
     result = result.trim();
     result = result.replace(/\s+/g, ' ');
     result = result.replace(/[^a-zA-Zа-яА-Я0-9_\s-]+/g, '');
