@@ -33,7 +33,7 @@ const User = ({user, authUser, changeFollow}) => {
 			</div>
 			<ShowIf show={!!authUser && (user.author !== authUser)}>
 				<div className="following-toggle-wrapper_user">
-					<ShowIf show={!user.togglingFollow }>
+					<ShowIf show={!user.changingFollowUserCard}>
 						<ShowIf show={!user.has_followed}>
 							<div className="follow-btn_user" onClick={() => changeFollow(user.author, user.has_followed)}>
 								<img src="/images/userProfile/follow.svg"
@@ -49,7 +49,7 @@ const User = ({user, authUser, changeFollow}) => {
 							</div>
 						</ShowIf>
 					</ShowIf>
-					<ShowIf show={user.togglingFollow}>
+					<ShowIf show={user.changingFollowUserCard}>
 						<div className="spinner_user">
 							<LoadingSpinner/>
 						</div>
@@ -71,7 +71,7 @@ const mapStateToProps = (state, props) => {
 const mapDispatchToProps = (dispatch) => {
 	return {
 		changeFollow: (followingName, followed) => {
-			dispatch(changeFollow(followingName, followed));
+			dispatch(changeFollow(followingName, followed, 'USER_CARD'));
 		}
 	};
 };

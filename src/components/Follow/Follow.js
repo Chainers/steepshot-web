@@ -12,10 +12,10 @@ class Follow extends React.Component {
 	render() {
 		return (
 			<div className="container_follow">
-				<ShowIf show={this.props.changeFollow}>
+				<ShowIf show={this.props.changingFollowProfile}>
 					{loadingEllipsis('Pending', 'saving_follow')}
 				</ShowIf>
-				<ShowIf show={!this.props.changeFollow}>
+				<ShowIf show={!this.props.changingFollowProfile}>
 					<div className={this.props.isFollowed ? 'btn btn-cancel' : 'btn btn-default'}
 					     onClick={() => this.props.changeFollowFunc(this.props.profileUserName, this.props.isFollowed)}>
 						{this.props.isFollowed ? 'Unfollow' : 'Follow'}
@@ -42,7 +42,7 @@ const mapStateToProps = (state) => {
 		isFollowed: profile['has_followed'],
 		isSubscribed: profile['is_subscribed'],
 		profileUserName: profile.username,
-		changeFollow: state.userProfile.changeFollow,
+    changingFollowProfile: state.userProfile.changingFollowProfile,
 		notificationEnabled: !state.oneSignal.error && state.oneSignal.notificationPermission && state.oneSignal.isNotificationsEnabled,
 		changeSubscribe: state.userProfile.changeSubscribe
 	};
@@ -51,7 +51,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
 	return {
 		changeFollowFunc: (followingName, followed) => {
-			dispatch(changeFollow(followingName, followed))
+			dispatch(changeFollow(followingName, followed, 'PROFILE'))
 		},
 		pushMessage: (message) => {
 			dispatch(pushMessage(message))

@@ -88,7 +88,7 @@ export function getUsersList(point) {
 				newUsers.forEach((user) => {
 					users[user.author] = {
 						...user,
-						togglingFollow: false
+						changingFollowUserCard: false
 					};
 				});
 
@@ -131,7 +131,7 @@ export function updateUser(author) {
 
 		UserService.getUsersList('user/search', undefined, 1, {query: author})
 			.then((response) => {
-				let updatedUser = {[author]: {...response.results[0], togglingFollow: false}};
+				let updatedUser = {[author]: {...response.results[0], changingFollowUserCard: false}};
 				dispatch(updateUserSuccess(updatedUser));
 			})
 			.catch(error => {

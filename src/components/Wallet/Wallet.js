@@ -14,7 +14,7 @@ import PowerDown from '../Modals/PowerDown/PowerDown';
 import ChainService from '../../services/ChainService';
 import {claimAccountRewards, getAccountsSelectiveData, setToken} from '../../actions/wallet';
 import {documentTitle} from '../../utils/documentTitle';
-import {addAndStringToLastItem} from '../../utils/addAndStringToLastItem';
+//import {addAndStringToLastItem} from '../../utils/addAndStringToLastItem';
 
 const DESCRIPTION = {
 	STEEM: `Tradeable tokens that may be transferred anywhere at anytime.

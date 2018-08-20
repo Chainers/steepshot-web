@@ -36,10 +36,10 @@ export function getUserProfile(userName = AuthService.getUsername()) {
 	}
 }
 
-export function changeFollow(followingName, followed) {
+export function changeFollow(followingName, followed, component) {
 	return dispatch => {
 		dispatch({
-			type: 'CHANGE_FOLLOW_REQUEST',
+			type: 'CHANGE_FOLLOW_REQUEST_' + component,
 			author: followingName
 		});
 		UserService.changeFollow(followingName, followed)
