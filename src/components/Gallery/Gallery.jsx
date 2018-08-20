@@ -3,19 +3,15 @@ import { connect } from "react-redux";
 import styled from "styled-components";
 import Navigation from "./Navigation/Navigation";
 import PropTypes from "prop-types";
-import {
-  clearGalleryState,
-  imageLoaded,
-  setActiveImage
-} from "../../actions/imagesGallery";
+import { clearGalleryState, setActiveImage } from "../../actions/imagesGallery";
 import {
   gallerySelector,
-  imageHasErrorSelector,
+  imagesLoadSelector,
   imagesSelector,
   imageUrlSelector,
   postTitleSelector
 } from "../../selectors/postModalSelectors";
-import { imageLoadError } from "../../actions/images";
+import { imageLoadError, imageLoadSuccess } from "../../actions/images";
 import Loader from "../Common/Loader";
 
 const Wrapper = styled.div`
@@ -29,6 +25,7 @@ const Image = styled.img`
   width: 100%;
   height: 100%;
   object-fit: cover;
+  display: ${({ imageLoaded }) => (imageLoaded ? "block" : "none")};
 `;
 
 const ImageNotFound = styled.div`
@@ -44,16 +41,20 @@ class Gallery extends React.Component {
 
   constructor() {
     super();
-    this.loadImgError = this.loadImgError.bind(this);
+    this.loadedImageError = this.loadedImageError.bind(this);
+    this.loadedImage = this.loadedImage.bind(this);
   }
 
   componentWillUnmount() {
     this.props.clearGalleryState();
   }
 
-  loadImgError() {
-    this.props.imageLoaded();
-    this.props.imageLoadError(this.props.imageUrl);
+  loadedImageError() {
+    this.props.imageLoadedError(this.props.imageUrl);
+  }
+
+  loadedImage() {
+    this.props.imageLoadedSuccess(this.props.imageUrl);
   }
 
   render() {
@@ -63,8 +64,9 @@ class Gallery extends React.Component {
       imageUrl,
       title,
       hasError,
-      imageLoading
+      imageLoaded
     } = this.props;
+
     return (
       <Wrapper className="centered--flex">
         <Navigation
@@ -73,84 +75,50 @@ class Gallery extends React.Component {
           show={images.length > 1}
           swapTo={this.props.setActiveIndex}
         />
-        {!imageLoading &&
-          !hasError && (
+        {!hasError &&
+          imageUrl && (
             <Image
               src={imageUrl}
               alt={title}
               ref={ref => (this.image = ref)}
-              onError={this.loadImgError}
-              onLoad={this.props.imageLoaded}
+              onError={this.loadedImageError}
+              onLoad={this.loadedImage}
+              imageLoaded={imageLoaded}
             />
           )}
-        {!imageLoading &&
+        {imageLoaded &&
           hasError && (
             <ImageNotFound className="centered--flex">
               Sorry, image isn't found.
             </ImageNotFound>
           )}
-        {imageLoading && <Loader />}
+        {!imageLoaded && <Loader />}
       </Wrapper>
     );
   }
 }
 
-const stateM = {
-  posts: {
-    index: {
-      media: [
-        {
-          ipfs_hash: "QmS9UXKaoNS9dA7X6RAL9wsKckDjpov5UtAXrCYgro7KDo",
-          size: { height: 1080, width: 1080 },
-          thumbnails: {
-            256: "http://steepshot.org/api/v1/image/787edc99-67e7-46bf-8293-047adca38228.jpeg",
-            1024: "http://steepshot.org/api/v1/image/f77c9845-0fd2-4067-b32b-1552b458eed9.jpeg"
-          },
-          url:
-            "http://steepshot.org/api/v1/image/5ab2191b-40b1-4c41-aab4-21812157e0ff1.jpeg"
-        },
-        {
-          ipfs_hash: "QmeZAQj4pnsU1cd18JagWjJKQCV3Ds9bAkwb2S5FyWURN7",
-          size: { height: 1080, width: 1080 },
-          thumbnails: {
-            256: "http://steepshot.org/api/v1/image/215f80b2-a3dd-44db-9068-9a02fbf6627e.jpeg",
-            1024: "http://steepshot.org/api/v1/image/22efcaf9-992d-4285-8962-3fa81130f6d9.jpeg"
-          },
-          url:
-            "http://steepshot.org/api/v1/image/57ea5bad-38ec-4ad6-8008-53291aa48875.jpeg"
-        }
-      ],
-      image_size: { height: 1080, width: 1080 },
-      title: "title"
-    }
-  },
-  window: { width: 1030 },
-  imagesGallery: {
-    activeIndex: 0,
-    imageLoading: true
-  }
-};
-
 const mapStateToProps = (state, props) => {
-  const imageUrl = imageUrlSelector(stateM, props.index);
-  const { activeIndex, imageLoading } = gallerySelector(stateM);
+  const imageUrl = imageUrlSelector(state, props.index);
+  const { activeIndex } = gallerySelector(state);
+  const { loaded, hasError } = imagesLoadSelector(state, imageUrl);
   return {
-    images: imagesSelector(stateM, props.index),
+    images: imagesSelector(state, props.index),
     activeIndex,
-    imageLoading,
     imageUrl,
-    title: postTitleSelector(stateM, props.index),
-    hasError: imageHasErrorSelector(state, imageUrl)
+    title: postTitleSelector(state, props.index),
+    hasError,
+    imageLoaded: loaded
   };
 };
 
-const mapDispatchToProps = (dispatch, props) => {
+const mapDispatchToProps = dispatch => {
   return {
-    imageLoadError: imageUrl => {
+    imageLoadedError: imageUrl => {
       dispatch(imageLoadError(imageUrl));
     },
-    imageLoaded: () => {
-      dispatch(imageLoaded());
+    imageLoadedSuccess: imageUrl => {
+      dispatch(imageLoadSuccess(imageUrl));
     },
     setActiveIndex: index => {
       dispatch(setActiveImage(index));

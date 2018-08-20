@@ -35,16 +35,12 @@ const activeIndexSelector = createSelector([gallerySelector], gallery => {
 
 export const imageUrlSelector = createSelector(
   [imagesSelector, activeIndexSelector],
-  (images, activeIndex) => images[activeIndex].url
+  (images, activeIndex) => !!images[activeIndex] && images[activeIndex].url
 );
 
 export const postTitleSelector = createSelector([postSelector], post => {
   return (!!post && post.title) || "Image isn't found";
 });
 
-export const imageSizeSelector = createSelector([postSelector], post => {
-  return (!!post && post.image_size) || { width: 1024, height: 1024 };
-});
-
-export const imageHasErrorSelector = (state, imageUrl) =>
-  state.imageLoadError.includes(imageUrl);
+export const imagesLoadSelector = (state, imageUrl) =>
+  state.imagesLoad[imageUrl] || { loaded: false, hasError: false };

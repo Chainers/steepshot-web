@@ -14,12 +14,6 @@ export function setImageCompleteStatus(postIndex, isComplete) {
 	}
 }
 
-export function imageLoaded() {
-	return {
-		type: 'GALLERY_IMAGE_LOADED',
-	}
-}
-
 export function setActiveImage(index) {
 	return {
 		type: 'GALLERY_SET_ACTIVE_IMAGE',

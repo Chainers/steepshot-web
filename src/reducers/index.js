@@ -41,7 +41,7 @@ import transfer from "./transfer";
 import activeKey from "./activeKey";
 import power from "./power";
 import wallet from "./wallet";
-import imageLoadError from "./imageLoadError";
+import imagesLoad from "./imagesLoad";
 
 export default combineReducers({
   clipboard,
@@ -86,5 +86,5 @@ export default combineReducers({
   activeKey,
   power,
   wallet,
-  imageLoadError
+  imagesLoad
 });

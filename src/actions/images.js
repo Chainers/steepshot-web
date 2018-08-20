@@ -45,3 +45,11 @@ export function imageLoadError(imageUrl) {
 		imageUrl
 	}
 }
+
+
+export function imageLoadSuccess(imageUrl) {
+	return {
+		type: 'IMAGE_LOAD_SUCCESS',
+		imageUrl
+	}
+}

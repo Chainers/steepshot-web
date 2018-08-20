@@ -99,7 +99,7 @@ class Navigation extends Component {
         <RightArrow onClick={this.next} />
         <DotsWrapper>
           {images.map((image, index) => (
-            <DotContainer key={index} onClick={() => swapTo(index - 1)}>
+            <DotContainer key={index} onClick={() => swapTo(index)}>
               <Dot active={index === activeIndex} />
             </DotContainer>
           ))}
