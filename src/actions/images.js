@@ -37,3 +37,11 @@ export function addImageLink(originalUrl, proxyError, originalError) {
 		imageLink
 	}
 }
+
+
+export function imageLoadError(imageUrl) {
+	return {
+		type: 'IMAGE_LOAD_ERROR',
+		imageUrl
+	}
+}
