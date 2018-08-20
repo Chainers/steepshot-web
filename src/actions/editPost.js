@@ -289,7 +289,7 @@ function getValidTagsString(str) {
     result = result.replace(/(\s+)-+/g, '$1');
     result = result.replace(/-+(\s+)/g, '$1');
     if (!state.editPost.tags) {
-      result[0] = result[0].replace(/_+/g, '');
+      result = checkFirstTag(result);
     }
     result = result.trim();
     result = result.replace(/\s+/g, ' ');
@@ -311,6 +311,13 @@ function deleteSimilarTags(result) {
     }
   }
   return arr.join(' ');
+}
+
+function checkFirstTag(result) {
+  result = result.trim();
+  result = result.split(' ');
+  result[0] = result[0].replace(/_+/g, '');
+  return result.join(' ');
 }
 
 function emptyAction() {
