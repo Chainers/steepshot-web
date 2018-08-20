@@ -257,8 +257,7 @@ const Constants = {
 		INPUT_ERROR: 'Enter correct value.',
 		MIN_AMOUNT_ERROR: 'Min bid is 0.5.',
 		MAX_AMOUNT_ERROR: 'Max bid is 100.',
-		FIND_BOT_ERROR: 'We look, but there\'s no appropriate bot for promotion. Please, try little later.',
-		BID_TIMEOUT_ERROR: 'It\'s too late to bid to this bot, try any one.',
+		FIND_BOT_ERROR: 'Please, try little later.',
 		RED_TIMER: 60,
 		BLOCKED_TIMER: 21,
 		BID_TO_BOT_SUCCESS: 'Your bid has been successfully sent. Wait for upvote.',
@@ -266,7 +265,7 @@ const Constants = {
 
 	TRANSFER: {
 		BID_TO_BOT_SUCCESS: 'Your bid has been successfully sent.',
-		TRANSFER_SUCCESS: 'Transfer has been successfully concluded.',
+		TRANSFER_SUCCESS: 'Transaction completed successfully!',
 		MIN_AMOUNT: 0.001,
 		MIN_LEAVE_STEEM_POWER: 5
 	},

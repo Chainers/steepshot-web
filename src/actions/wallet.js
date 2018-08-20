@@ -61,6 +61,8 @@ export function getAccountsSelectiveData() {
         const selectiveData = {
           noRewards,
           next_power_down: data['next_vesting_withdrawal'],
+					to_withdraw: data['to_withdraw'],
+					withdrawn: data['withdrawn'],
           sbd_rewards: sbdRewards,
           steem_rewards: steemRewards,
           steem_power_rewards: steemPowerRewards,
@@ -208,6 +210,12 @@ export function powerDown() {
 			.catch(error => {
         dispatch(stopTransferWithError(error));
 			})
+	}
+}
+
+export function cancelPowerDown() {
+	return dispatch => {
+
 	}
 }
 
