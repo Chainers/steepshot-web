@@ -1,6 +1,6 @@
 import { createSelector } from "reselect";
 
-const postSelector = (state, index) => state.posts[index];
+export const postSelector = (state, index) => state.posts[index];
 export const gallerySelector = state => state.imagesGallery;
 const screenWidthSelector = state => state.window.width;
 

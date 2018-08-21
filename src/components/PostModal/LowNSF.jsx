@@ -2,40 +2,55 @@ import React, { Component } from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 import ShowIf from "../Common/ShowIf";
+import { CancelButton } from "../Common/Button";
 
 const Wrapper = styled.div`
   position: absolute;
-  width: 100%;
-  height: 100%;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  background-color: ${({ fullScreenMode }) =>
+    fullScreenMode ? "rgba(0, 0, 0, .96)" : "rgba(255, 255, 255, .96)"};
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: ${({ fullScreenMode }) =>
-    fullScreenMode ? "rgba(0, 0, 0, .96)" : "rgba(255, 255, 255, .96)"};
 `;
 
 const Title = styled.p`
+  width: 100%;
+  text-align: center;
   margin-bottom: 20px;
   font: 27px OpenSans-Light;
   color: ${({ fullScreenMode }) => (fullScreenMode ? "#ffffff" : "#000000")};
 `;
 
 const Description = styled.p`
-  max-width: 80%;
+  width: 100%;
+  padding: 0 10%;
   margin-bottom: 30px;
   font: 14px OpenSans-Regular;
   text-align: center;
   color: ${({ fullScreenMode }) => (fullScreenMode ? "#f3f3f2" : "#696969")};
 `;
 
-const Button = styled.button`
+const ShowButton = CancelButton.extend`
   color: ${({ fullScreenMode }) => (fullScreenMode ? "#ffffff" : "#000000")};
   background-color: ${({ fullScreenMode }) =>
     fullScreenMode ? "rgba(0, 0, 0, .96)" : "rgba(255, 255, 255, .96)"};
+
+  box-shadow: none;
+  &:hover,
+  &:focus,
+  &:active {
+    box-shadow: none;
+    color: ${({ fullScreenMode }) => (fullScreenMode ? "#000000" : "#e74800")};
+    background-color: rgba(255, 255, 255, 0.96);
+  }
 `;
 
-class LowNSFFilter extends Component {
+class LowNSF extends Component {
   static propTypes = {
     fullScreenMode: PropTypes.bool.isRequired,
     isNsfw: PropTypes.bool.isRequired,
@@ -45,15 +60,13 @@ class LowNSFFilter extends Component {
   };
 
   render() {
-    const {
-      isNsfw,
-      showAll,
-      isLowRated,
-      setShowAll,
-      fullScreenMode
-    } = this.props;
-    const showNsfw = isNsfw && !showAll;
-    const showLowRated = !isNsfw && !showAll && isLowRated;
+    if (this.props.showAll) {
+      return null;
+    }
+
+    const { isNsfw, isLowRated, setShowAll, fullScreenMode } = this.props;
+    const showNsfw = isNsfw;
+    const showLowRated = !isNsfw && isLowRated;
 
     return (
       <Wrapper fullScreenMode={fullScreenMode}>
@@ -64,22 +77,20 @@ class LowNSFFilter extends Component {
             sensitive individuals.
           </Description>
         </ShowIf>
+
         <ShowIf show={showLowRated}>
           <Title fullScreenMode={fullScreenMode}>Low rated content</Title>
           <Description fullScreenMode={fullScreenMode}>
             This content is hidden due to low ratings.
           </Description>
         </ShowIf>
-        <Button
-          className="btn btn-cancel"
-          onCLick={setShowAll}
-          fullScreenMode={fullScreenMode}
-        >
+
+        <ShowButton onCLick={setShowAll} fullScreenMode={fullScreenMode}>
           Show me
-        </Button>
+        </ShowButton>
       </Wrapper>
     );
   }
 }
 
-export default LowNSFFilter;
+export default LowNSF;
