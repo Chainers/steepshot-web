@@ -184,7 +184,6 @@ class PostModal extends React.Component {
 						</div>
 					</ShowIf>
 				</div>
-				<ShowIf show={true}>
 					<div>
 						<ShowIf show={!this.props.firstPost}>
 							<div className="arrow-left-full-screen_post-mod"
@@ -233,7 +232,6 @@ class PostModal extends React.Component {
 						</ShowIf>
 					</div>
 					<FullScreenButtons/>
-				</ShowIf>
 			</div>
 		)
 	}
