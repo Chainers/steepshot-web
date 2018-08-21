@@ -134,7 +134,7 @@ const mapDispatchToProps = dispatch => {
 			dispatch(transfer())
 		},
 		closeTransferModal: () => {
-			dispatch(closeModal("transfer"))
+			dispatch(closeModal("Transfer"))
 		},
     closeChooseTokens: () => {
 			dispatch(closeContextMenu("chooseToken"));

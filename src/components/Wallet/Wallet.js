@@ -50,7 +50,7 @@ class Wallet extends React.Component {
     let modalOption = {
       body: (<Transfer/>)
     };
-    this.props.openModal('transfer', modalOption);
+    this.props.openModal("Transfer", modalOption);
   }
 
   transferSteem() {
@@ -67,14 +67,14 @@ class Wallet extends React.Component {
     let modalOption = {
       body: (<PowerUp/>)
     };
-    this.props.openModal("powerUp", modalOption);
+    this.props.openModal("PowerUp", modalOption);
   }
 
   powerDown() {
     let modalOption = {
       body: (<PowerDown/>)
     };
-    this.props.openModal("powerDown", modalOption);
+    this.props.openModal("PowerDown", modalOption);
   }
 
   cancelPowerDown() {

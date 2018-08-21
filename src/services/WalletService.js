@@ -63,6 +63,14 @@ class WalletService {
       });
   }
 
+  static cancelPowerDown(activeKey, amount) {
+    return checkActiveKey(activeKey)
+      .then(() => {
+        const token = ChainService.usingGolos() ? 'GESTS' : 'VESTS';
+        return ChainService.powerDown(activeKey, amount + ' ' + token);
+      })
+  }
+
   static powerDownSteemConnect(amount) {
     return checkAmount(amount, 1)
       .then(() => {
@@ -73,6 +81,14 @@ class WalletService {
         };
         ChainService.powerDown(powerDownInfo);
       })
+  }
+
+  static cancelPowerDownSteemConnect(amount) {
+    const powerDownInfo = {
+      account: AuthService.getUsername(),
+      vesting_shares: amount + ' VESTS',
+    };
+    return ChainService.powerDown(powerDownInfo);
   }
 }
 

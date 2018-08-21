@@ -50,6 +50,7 @@ export function getAccountsSelectiveData() {
     ChainService.getAccounts(AuthService.getUsername())
       .then(response => {
         const data = response[0];
+        console.log(data);
         const sbdRewards = parseFloat(data['reward_sbd_balance'].split(' ')[0]);
         const steemRewards = parseFloat(data['reward_steem_balance'].split(' ')[0]);
         const steemPowerRewards = parseFloat(data['reward_vesting_steem'].split(' ')[0]);
@@ -152,7 +153,7 @@ export function powerUp() {
 			.then(() => {
 				dispatch(actionUnlock());
 				dispatch(hideBodyLoader());
-				dispatch(closeModal("powerUp"));
+				dispatch(closeModal("PowerUp"));
         if (saveKey && !storage.activeKey) storage.activeKey = activeKey;
 				dispatch(pushMessage(Constants.WALLET.POWER_UP_SUCCESS));
 			})
@@ -203,7 +204,7 @@ export function powerDown() {
 			.then(() => {
 				dispatch(actionUnlock());
 				dispatch(hideBodyLoader());
-				dispatch(closeModal("powerDown"));
+				dispatch(closeModal("PowerDown"));
         if (saveKey && !storage.activeKey) storage.activeKey = activeKey;
 				dispatch(pushMessage(Constants.WALLET.POWER_DOWN_SUCCESS));
 			})
@@ -214,9 +215,44 @@ export function powerDown() {
 }
 
 export function cancelPowerDown() {
-	return dispatch => {
+  let state = getStore().getState();
+  if (state.session.actionLocked) {
+    return {
+      type: 'ACTION_LOCKED_POWER_DOWN'
+    }
+  }
+  return dispatch => {
+    dispatch(actionLock());
+    dispatch(showBodyLoader());
+    const amountVests = '0.000000';
+    const {activeKey, saveKey} = state.activeKey;
 
-	}
+    if (storage.accessToken) {
+      WalletService.cancelPowerDownSteemConnect(amountVests)
+        .then(() => {
+          dispatch(actionUnlock());
+          dispatch(hideBodyLoader());
+          dispatch(addDataToWallet({next_power_down: ''}));
+        })
+        .catch(error => {
+          dispatch(stopTransferWithError(error));
+        });
+      return;
+    }
+
+    WalletService.cancelPowerDown(activeKey || storage.activeKey, amountVests)
+      .then(() => {
+        dispatch(actionUnlock());
+        dispatch(hideBodyLoader());
+        dispatch(closeModal("PowerDown"));
+        if (saveKey && !storage.activeKey) storage.activeKey = activeKey;
+        dispatch(pushMessage(Constants.WALLET.CANCEL_POWER_DOWN_SUCCESS));
+        dispatch(addDataToWallet({next_power_down: ''}));
+      })
+      .catch(error => {
+        dispatch(stopTransferWithError(error));
+      })
+  }
 }
 
 export function changeAmount(value) {

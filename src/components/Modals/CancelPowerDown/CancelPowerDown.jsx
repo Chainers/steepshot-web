@@ -5,6 +5,7 @@ import {Link} from 'react-router-dom';
 import SteemService from '../../../services/SteemService';
 import {closeModal} from '../../../actions/modal';
 import {cancelPowerDown} from '../../../actions/wallet';
+import InputActiveKey from '../../Common/InputActiveKey/InputActiveKey';
 
 const Wrapper = styled.div`
   width: 460px;
@@ -95,8 +96,8 @@ const PercentsSpan = styled.div`
 const ScaleFill = styled.div`
   position: absolute;
   z-index: 1;
-  left: 1px;
   top: 50%;
+  left: ${props => props.powerInPercents > 0 ? '1px' : '0'}
   transform: translateY(-50%);
   height: 26px;
   border-radius: 15px;
@@ -114,6 +115,11 @@ const ButtonsHolder = styled.div`
   & button:first-child {
     margin-right: 10px;
   }
+`;
+
+const ActiveKeyField = styled(InputActiveKey)`
+  padding: 20px 0 10px 0;
+  border-bottom: 1px solid #f4f4f6;
 `;
 
 class CancelPowerDown extends React.Component {
@@ -156,6 +162,7 @@ class CancelPowerDown extends React.Component {
             {remainedPayout} STEEM POWER
           </AmountSpan>
         </BottomAmountField>
+        <ActiveKeyField/>
         <ButtonsHolder>
           <button className="btn btn-cancel" onClick={closeModal}>CLOSE</button>
           <button className="btn btn-default" onClick={cancelPowerDown}>CANCEL POWER DOWN</button>
@@ -170,11 +177,11 @@ const mapStateToProps = state => {
   const toWithdraw = (SteemService.vestsToSp(to_withdraw) / 1000000);
   const withdranPower = withdrawn ? (SteemService.vestsToSp(withdrawn) / 1000000) : 0;
   const requestedPower = (toWithdraw + withdranPower).toFixed(3);
-  const powerInPercents = (withdranPower * 100 / requestedPower).toFixed(1);
+  const powerInPercents = parseFloat((withdranPower * 100 / requestedPower).toFixed(1));
   return {
     user: state.auth.user,
     payedPower: withdranPower.toFixed(3),
-    remainedPayout: (toWithdraw - withdranPower).toFixed(3),
+    remainedPayout: (requestedPower - withdranPower).toFixed(3),
     requestedPower,
     powerInPercents
   };

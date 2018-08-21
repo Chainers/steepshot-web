@@ -43,7 +43,7 @@ export default function transfer(state = initialState, action) {
 				loader: false
 			};
 		case 'CLOSE_MODAL':
-			if (action.index === 'transfer' || action.index === 'powerUp' || action.index === 'powerDown') {
+			if (action.index === 'Transfer' || action.index === 'PowerUp' || action.index === 'PowerDown') {
 				return initialState;
 			}
 			return state;

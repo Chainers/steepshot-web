@@ -47,7 +47,7 @@ export default function wallet(state = initialState, action) {
       };
 
     case 'CLOSE_MODAL':
-      if (action.index === 'transfer' || action.index === 'powerUp' || action.index === 'powerDown') {
+      if (action.index === 'Transfer' || action.index === 'PowerUp' || action.index === 'PowerDown') {
         return {
           ...state,
           amount: initialState.amount,
