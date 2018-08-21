@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-const DefaultButton = styled.button`
+export const DefaultButton = styled.button`
   font-family: OpenSans-SemiBold, Helvetica, Arial, sans-serif;
   line-height: 1;
   color: #fff;
@@ -29,7 +29,7 @@ const DefaultButton = styled.button`
   }
 `;
 
-const CancelButton = DefaultButton.extend`
+export const CancelButton = DefaultButton.extend`
   background: #ffffff;
   color: #0f181e;
   border: 1px solid #e7e7e7;
@@ -51,15 +51,3 @@ const CancelButton = DefaultButton.extend`
     color: #e74800;
   }
 `;
-
-const Button = ({ children, cancel }) => {
-  let Btn = DefaultButton;
-
-  if (cancel) {
-    Btn = CancelButton;
-  }
-
-  return <Btn>{children}</Btn>;
-};
-
-export default Button;
