@@ -50,7 +50,6 @@ export function getAccountsSelectiveData() {
     ChainService.getAccounts(AuthService.getUsername())
       .then(response => {
         const data = response[0];
-        console.log(data);
         const sbdRewards = parseFloat(data['reward_sbd_balance'].split(' ')[0]);
         const steemRewards = parseFloat(data['reward_steem_balance'].split(' ')[0]);
         const steemPowerRewards = parseFloat(data['reward_vesting_steem'].split(' ')[0]);
@@ -61,7 +60,7 @@ export function getAccountsSelectiveData() {
 				}
         const selectiveData = {
           noRewards,
-          next_power_down: data['next_vesting_withdrawal'],
+          next_power_down: data['next_vesting_withdrawal'] === '1969-12-31T23:59:59' ? '' : data['next_vesting_withdrawal'],
 					to_withdraw: data['to_withdraw'],
 					withdrawn: data['withdrawn'],
           sbd_rewards: sbdRewards,
@@ -193,6 +192,7 @@ export function powerDown() {
         .then(() => {
           dispatch(actionUnlock());
           dispatch(hideBodyLoader());
+          dispatch(getAccountsSelectiveData());
         })
         .catch(error => {
           dispatch(stopTransferWithError(error));
@@ -207,6 +207,7 @@ export function powerDown() {
 				dispatch(closeModal("PowerDown"));
         if (saveKey && !storage.activeKey) storage.activeKey = activeKey;
 				dispatch(pushMessage(Constants.WALLET.POWER_DOWN_SUCCESS));
+        dispatch(getAccountsSelectiveData());
 			})
 			.catch(error => {
         dispatch(stopTransferWithError(error));
@@ -244,7 +245,7 @@ export function cancelPowerDown() {
       .then(() => {
         dispatch(actionUnlock());
         dispatch(hideBodyLoader());
-        dispatch(closeModal("PowerDown"));
+        dispatch(closeModal("CancelPowerDown"));
         if (saveKey && !storage.activeKey) storage.activeKey = activeKey;
         dispatch(pushMessage(Constants.WALLET.CANCEL_POWER_DOWN_SUCCESS));
         dispatch(addDataToWallet({next_power_down: ''}));

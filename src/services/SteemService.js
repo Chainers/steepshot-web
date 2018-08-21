@@ -152,6 +152,7 @@ class SteemService {
   }
 
 	static vestsToSp(vesting_shares) {
+		vesting_shares = vesting_shares.toString();
 		const vests = parseFloat(vesting_shares.split(' ')[0]);
 		const total_vests = parseFloat(dynamicProps['total_vesting_shares'].split(' ')[0]);
 		const total_vest_steem = parseFloat(dynamicProps['total_vesting_fund_steem'].split(' ')[0]);
