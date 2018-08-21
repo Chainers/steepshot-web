@@ -15,6 +15,7 @@ export function continuePublishing(data) {
 				dispatch(pushMessage(Constants.POST_SUCCESSFULLY_CREATED));
 				dispatch(editPostSuccess());
 				dispatch(push(`/@${AuthService.getUsername()}`));
+				dispatch(push(`/@${AuthService.getUsername()}`));
 			})
 			.catch(error => {
 				dispatch(editPostReject(error));

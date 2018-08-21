@@ -5,25 +5,25 @@ export default function users(state = {}, action) {
 				...state,
 				...action.users
 			};
-		case 'CHANGE_FOLLOW_REQUEST':
+		case 'CHANGE_FOLLOW_REQUEST_USER_CARD':
 			return {
 				...state, [action.author]: {
 					...state[action.author],
-					togglingFollow: true
+					changingFollowUserCard: true
 				}
 			};
 		case 'CHANGE_FOLLOW_ERROR':
 			return {
 				...state, [action.author]: {
 					...state[action.author],
-					togglingFollow: false
+					changingFollowUserCard: false
 				}
 			};
 		case 'CHANGE_FOLLOW_SUCCESS':
 			return {
 				...state, [action.author]: {
 					...state[action.author],
-					togglingFollow: false,
+					changingFollowUserCard: false,
 					has_followed: !state[action.author]['has_followed']
 				}
 			};

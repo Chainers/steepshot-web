@@ -4,8 +4,6 @@ import Constants from '../../common/constants';
 import Avatar from '../Common/Avatar/Avatar';
 import PostsList from '../PostsList/PostsList';
 import UsersList from '../UsersList/UsersList';
-import {withWrapper} from 'create-react-server/wrapper';
-import {addMetaTags, getDefaultTags} from '../../actions/metaTags';
 import {push, replace} from 'react-router-redux';
 import TabsBar from '../Common/TabsBar/TabsBar';
 import Tab from '../Common/TabsBar/Tab/Tab';
@@ -21,14 +19,6 @@ import MarkdownParser from '../../utils/markdownParser';
 
 class UserProfile extends React.Component {
 
-	static async getInitialProps({location, req, res, store}) {
-		if (!req || !location || !store) {
-			return {};
-		}
-		await store.dispatch(addMetaTags(getDefaultTags(req.hostname, location.pathname)));
-		return {};
-	}
-
 	constructor(props) {
 		super();
 		props.getUserProfile(props.username);
@@ -41,21 +31,11 @@ class UserProfile extends React.Component {
 	componentWillReceiveProps(nextProps) {
 		if (nextProps.username !== this.props.username) {
 			this.props.getUserProfile(nextProps.username);
-			this.props.setActiveIndex("userProfile", 0);
+			this.props.setActiveIndex('userProfile', 0);
 		}
-	}
-
-	shouldComponentUpdate(nextProps) {
-		if (nextProps.username !== this.props.username) {
-			return false;
-		}
-		return true;
 	}
 
 	render() {
-		if (global.isServerSide) {
-			return null;
-		}
 		if (this.props.loadingUserProfile || !this.props.profile) {
 			return (
 				<div className="con-spi_use-pro">
@@ -146,7 +126,7 @@ const mapStateToProps = (state, props) => {
 		username,
 		isAuth: AuthService.isAuth(),
 		profile: state.userProfile.profile,
-    loadingUserProfile: state.userProfile.loadingUserProfile,
+		loadingUserProfile: state.userProfile.loadingUserProfile,
 		pathname: location.pathname,
 		isYourProfile: watcher === username,
 		watcher,
@@ -163,10 +143,10 @@ function insertUsername(point, userName) {
 const mapDispatchToProps = (dispatch) => {
 	return {
 		historyPush: path => {
-			dispatch(push(path))
+			dispatch(push(path));
 		},
 		historyReplace: newPath => {
-			dispatch(replace(newPath))
+			dispatch(replace(newPath));
 		},
 		getUserProfile: userName => {
 			dispatch(getUserProfile(userName));
@@ -174,10 +154,10 @@ const mapDispatchToProps = (dispatch) => {
 		setActiveIndex: (point, index) => {
 			dispatch(setActiveIndex(point, index));
 		},
-    setUserProfileLoading: loadingUserProfile => {
+		setUserProfileLoading: loadingUserProfile => {
 			dispatch(setUserProfileLoading(loadingUserProfile));
 		}
-	}
+	};
 };
 
-export default withWrapper(connect(mapStateToProps, mapDispatchToProps)(UserProfile));
+export default connect(mapStateToProps, mapDispatchToProps)(UserProfile);

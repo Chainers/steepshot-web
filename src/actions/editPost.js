@@ -1,6 +1,6 @@
 import {getStore} from '../store/configureStore';
 import {clearTextInputState, setTextInputError} from './textInput';
-import * as React from 'react';
+import React from 'react';
 import PlagiarismTracking from '../components/Modals/PlagiarismTracking/PlagiarismTracking';
 import {openModal} from './modal';
 import {push} from 'react-router-redux';
@@ -23,7 +23,7 @@ export function addTag() {
     if (Utils.isEmptyString(newTag)) {
       return emptyAction();
     }
-    dispatch(editPostChangeTags(getValidTagsString(editPostState.tags + ' ' + newTag.trim())));
+    dispatch(editPostChangeTags(getValidTagsString(editPostState.tags + ' ' + newTag.trim() + ' ')));
     dispatch(clearTextInputState(Constants.TEXT_INPUT_POINT.TAGS));
   }
 }
@@ -39,6 +39,9 @@ export function removeTag(index) {
     } else {
       let tagsList = tagsString.toLowerCase().split(' ');
       tagsList.splice(index, 1);
+      if (tagsList[0]) {
+        tagsList[0] = tagsList[0].replace(/_+/g, '');
+      }
       dispatch(editPostChangeTags(tagsList.join(' ')));
     }
   }
@@ -236,7 +239,8 @@ export function createPost() {
             .then(() => {
               dispatch(pushMessage(Constants.POST_SUCCESSFULLY_CREATED));
               dispatch(editPostSuccess());
-              dispatch(push(`/@${AuthService.getUsername()}`))
+              dispatch(push(`/@${AuthService.getUsername()}`));
+              dispatch(push(`/@${AuthService.getUsername()}`));
             })
             .catch(error => {
               if (error.plagiarism_author) {
@@ -279,9 +283,15 @@ function prepareData() {
 }
 
 function getValidTagsString(str) {
-  const serviceName = getStore().getState().services.name;
+  const state = getStore().getState();
+  const serviceName = state.services.name;
   if (str) {
     let result = str.replace(/\bsteepshot\b/g, '');
+    result = result.replace(/(\s+)-+/g, '$1');
+    result = result.replace(/-+(\s+)/g, '$1');
+    if (!state.editPost.tags) {
+      result = checkFirstTag(result);
+    }
     result = result.trim();
     result = result.replace(/\s+/g, ' ');
     result = result.replace(/[^a-zA-Zа-яА-Я0-9_\s-]+/g, '');
@@ -302,6 +312,13 @@ function deleteSimilarTags(result) {
     }
   }
   return arr.join(' ');
+}
+
+function checkFirstTag(result) {
+  result = result.trim();
+  result = result.split(' ');
+  result[0] = result[0].replace(/_+/g, '');
+  return result.join(' ');
 }
 
 function emptyAction() {

@@ -24,19 +24,9 @@ import LoadingSpinner from '../LoadingSpinner';
 import {documentTitle} from '../../utils/documentTitle';
 import './editPost.css';
 import Timer from '../Common/Timer/Timer';
-import {withWrapper} from 'create-react-server/wrapper';
-import {addMetaTags, getDefaultTags} from '../../actions/metaTags';
 import Constants from '../../common/constants';
 
 class EditPost extends React.Component {
-
-	static async getInitialProps({location, req, res, store}) {
-		if (!req || !location || !store) {
-			return {};
-		}
-		await store.dispatch(addMetaTags(getDefaultTags(req.hostname, location.pathname)));
-		return {};
-	}
 
 	constructor(props) {
 		super();
@@ -88,7 +78,7 @@ class EditPost extends React.Component {
 		if (isHover) {
 			this.props.setDragAndDropHover(isHover);
 		} else {
-			this.props.setDragAndDropHover(isHover)
+			this.props.setDragAndDropHover(isHover);
 		}
 	}
 
@@ -116,7 +106,7 @@ class EditPost extends React.Component {
 			};
 			image.onerror = () => {
 				this.props.setEditPostImageError(Constants.WRONG_FILE_FORMAT);
-			}
+			};
 		};
 		reader.readAsDataURL(file);
 		this.inputField.value = '';
@@ -150,16 +140,13 @@ class EditPost extends React.Component {
 
 	submit() {
 		if (this.props.isNew) {
-			this.props.createPost()
+			this.props.createPost();
 		} else {
-			this.props.editPost()
+			this.props.editPost();
 		}
 	}
 
 	render() {
-		if (global.isServerSide) {
-			return null;
-		}
 		return (
 			<div className="wrapper_edi-pos">
 				<ShowIf show={this.props.loading}>
@@ -229,8 +216,8 @@ class EditPost extends React.Component {
 					           maxLength={this.props.tagsMaxLength}
 					           point={Constants.TEXT_INPUT_POINT.TAGS}
 					           multiline={false}
-					           description={"Enter tags with spaces, but not more than " + this.props.tagsAmount}
-					           noValidCharacters="[^a-zA-Zа-яА-Я0-9\s_]"
+					           description={'Enter tags with spaces, but not more than ' + this.props.tagsAmount}
+					           noValidCharacters="[^a-zA-Zа-яА-Я0-9\s-_]"
 					           keyPressEvents={[{
 						           keys: [Constants.KEYS.SPACE, Constants.KEYS.ENTER],
 						           func: () => this.props.addTag()
@@ -265,9 +252,9 @@ class EditPost extends React.Component {
 			return (<Timer waitingTime={this.props.waitingTime}
 			               staticTimer={false}
 			               onTimeout={this.props.closeTimer}
-			               style={{fontSize: 14}}/>)
+			               style={{fontSize: 14}}/>);
 		}
-		return this.props.isNew ? 'CREATE NEW POST' : 'UPDATE POST'
+		return this.props.isNew ? 'CREATE NEW POST' : 'UPDATE POST';
 	}
 }
 
@@ -291,48 +278,48 @@ const mapStateToProps = (state, props) => {
 const mapDispatchToProps = (dispatch) => {
 	return {
 		addTag: () => {
-			dispatch(addTag())
+			dispatch(addTag());
 		},
 		removeTag: (index) => {
-			dispatch(removeTag(index))
+			dispatch(removeTag(index));
 		},
 		changeImage: (imageSrc, image) => {
-			dispatch(changeImage(imageSrc, image))
+			dispatch(changeImage(imageSrc, image));
 		},
 		imageRotate: (image) => {
-			dispatch(imageRotate(image))
+			dispatch(imageRotate(image));
 		},
 		setImageContainerSize: (width, height) => {
-			dispatch(setImageContainerSize(width, height))
+			dispatch(setImageContainerSize(width, height));
 		},
 		setInitDataForEditPost: (postUrl) => {
-			dispatch(setInitDataForEditPost(postUrl))
+			dispatch(setInitDataForEditPost(postUrl));
 		},
 		editPostClear: () => {
-			dispatch(editPostClear())
+			dispatch(editPostClear());
 		},
 		editClearAll: () => {
-			dispatch(editClearAll())
+			dispatch(editClearAll());
 		},
 		createPost: () => {
-			dispatch(createPost())
+			dispatch(createPost());
 		},
 		editPost: () => {
-			dispatch(editPost())
+			dispatch(editPost());
 		},
 		setImageNotFound: () => {
-			dispatch(imageNotFound())
+			dispatch(imageNotFound());
 		},
 		closeTimer: () => {
-			dispatch(closeTimer())
+			dispatch(closeTimer());
 		},
 		setEditPostImageError: (message) => {
-			dispatch(setEditPostImageError(message))
+			dispatch(setEditPostImageError(message));
 		},
 		setDragAndDropHover: (dragHover) => {
-			dispatch(setDragAndDropHover(dragHover))
+			dispatch(setDragAndDropHover(dragHover));
 		}
 	};
 };
 
-export default withWrapper(connect(mapStateToProps, mapDispatchToProps)(EditPost));
+export default connect(mapStateToProps, mapDispatchToProps)(EditPost);

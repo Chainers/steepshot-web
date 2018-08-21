@@ -9,19 +9,9 @@ import Tab from '../Common/TabsBar/Tab/Tab';
 import ShowIf from '../Common/ShowIf';
 import HeadingLeadComponent from '../Atoms/HeadingLeadComponent';
 import {pageLoading} from '../../actions/tabsBar';
-import {withWrapper} from 'create-react-server/wrapper';
-import {addMetaTags, getDefaultTags} from '../../actions/metaTags';
 import Constants from '../../common/constants';
 
 class Search extends React.Component {
-
-	static async getInitialProps({location, req, res, store}) {
-		if (!req || !location || !store) {
-			return {};
-		}
-		await store.dispatch(addMetaTags(getDefaultTags(req.hostname, location.pathname)));
-		return {};
-	}
 
 	shouldComponentUpdate(nextProps) {
 		if (this.props.searchValue !== nextProps.searchValue) {
@@ -39,9 +29,6 @@ class Search extends React.Component {
 	}
 
 	render() {
-		if (global.isServerSide) {
-			return null;
-		}
 		let hotPost =
 			<span>{Constants.SEARCH_HEADING_LABELS.HOT_POSTS_RESULT}
 				<u>{this.props.searchValue}</u>
@@ -115,9 +102,9 @@ const mapStateToProps = (state, props) => {
 const mapDispatchToProps = (dispatch) => {
 	return {
 		pageLoading: (point) => {
-			dispatch(pageLoading(point))
+			dispatch(pageLoading(point));
 		}
-	}
+	};
 };
 
-export default withWrapper(connect(mapStateToProps, mapDispatchToProps)(Search));
+export default connect(mapStateToProps, mapDispatchToProps)(Search);
