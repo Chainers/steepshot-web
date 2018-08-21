@@ -84,7 +84,7 @@ export function transfer() {
 				dispatch(hideBodyLoader());
 				dispatch(pushMessage(Constants.TRANSFER.TRANSFER_SUCCESS));
         if (saveKey && !storage.activeKey) storage.activeKey = activeKey;
-				dispatch(closeModal("transfer"));
+				dispatch(closeModal("Transfer"));
 			})
 			.catch(error => {
         dispatch(stopTransferWithError(error));
