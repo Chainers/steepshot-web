@@ -1,11 +1,10 @@
 import React from "react";
 import styled from "styled-components";
-import Gallery from "../../Gallery/Gallery";
 import { connect } from "react-redux";
 import { addSinglePost } from "../../../actions/post";
+import Content from "../../PostModal/Content/Content";
 
 const Wrapper = styled.div`
-  display: inline-block;
   position: relative;
   margin-top: 20px;
   left: 50%;
@@ -24,7 +23,7 @@ class Testing extends React.Component {
   render() {
     return (
       <Wrapper>
-        <Gallery index="/steepshot/@likesmylove/ngg-2018-08-03-09-13-58" />
+        <Content index="/steepshot/@likesmylove/ngg-2018-08-03-09-13-58" />
       </Wrapper>
     );
   }
