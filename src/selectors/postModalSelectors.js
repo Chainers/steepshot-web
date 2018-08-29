@@ -60,46 +60,51 @@ export const imageSizeSelector = createSelector(
     isMobileSize
   ],
   (post, screenWidth, screenHeight, isFullScreenMod, isMobileSize) => {
-    const MIN_WIDTH = isMobileSize
-      ? screenWidth
-      : Constants.IMAGE.DISPLAY.MIN_WIDTH;
-    const MIN_HEIGHT = isMobileSize ? 100 : Constants.IMAGE.DISPLAY.MIN_HEIGHT;
     const MARGIN = 125;
     const DETAILS_WIDTH = isFullScreenMod ? 0 : 380;
-    const MAX_WIDTH = isMobileSize
-      ? screenWidth
-      : Math.min(
-          Constants.IMAGE.DISPLAY.MAX_WIDTH,
-          screenWidth - MARGIN * 2 - DETAILS_WIDTH
-        );
-    const MAX_HEIGHT = isMobileSize
-      ? Constants.IMAGE.DISPLAY.MAX_HEIGHT
-      : Math.min(Constants.IMAGE.DISPLAY.MAX_HEIGHT, screenHeight * 0.9);
+    let minWidth = Constants.IMAGE.DISPLAY.MIN_WIDTH;
+    let minHeight = Constants.IMAGE.DISPLAY.MIN_HEIGHT;
+    let maxWidth = Math.min(
+      Constants.IMAGE.DISPLAY.MAX_WIDTH,
+      screenWidth - MARGIN * 2 - DETAILS_WIDTH
+    );
+    let maxHeight = Math.min(
+      Constants.IMAGE.DISPLAY.MAX_HEIGHT,
+      screenHeight * 0.9
+    );
+
+    if (isMobileSize) {
+      minWidth = screenWidth;
+      minHeight = 100;
+      maxWidth = screenWidth;
+      maxHeight = Constants.IMAGE.DISPLAY.MAX_HEIGHT;
+    }
+
     const imageSize = { ...post["image_size"] };
 
-    const RATIO_MAX = MAX_WIDTH / MAX_HEIGHT;
-    const RATIO_MIN = MIN_HEIGHT / MIN_HEIGHT;
+    const RATIO_MAX = maxWidth / maxHeight;
+    const RATIO_MIN = minHeight / minHeight;
     const RATIO_IMAGE = imageSize.width / imageSize.height;
 
-    if (imageSize.width < MIN_WIDTH || imageSize.height < MIN_HEIGHT) {
+    if (imageSize.width < minWidth || imageSize.height < minHeight) {
       const deltaMin = RATIO_MIN - RATIO_IMAGE;
       if (deltaMin < 0) {
-        imageSize.width *= MIN_HEIGHT / imageSize.height;
-        imageSize.height = MIN_HEIGHT;
+        imageSize.width *= minHeight / imageSize.height;
+        imageSize.height = minHeight;
       } else {
-        imageSize.height *= MIN_WIDTH / imageSize.width;
-        imageSize.width = MIN_WIDTH;
+        imageSize.height *= minWidth / imageSize.width;
+        imageSize.width = minWidth;
       }
     }
 
-    if (imageSize.width > MAX_WIDTH || imageSize.height > MAX_HEIGHT) {
+    if (imageSize.width > maxWidth || imageSize.height > maxHeight) {
       const deltaMax = RATIO_MAX - RATIO_IMAGE;
       if (deltaMax < 0) {
-        imageSize.height *= MAX_WIDTH / imageSize.width;
-        imageSize.width = MAX_WIDTH;
+        imageSize.height *= maxWidth / imageSize.width;
+        imageSize.width = maxWidth;
       } else {
-        imageSize.width *= MAX_HEIGHT / imageSize.height;
-        imageSize.height = MAX_HEIGHT;
+        imageSize.width *= maxHeight / imageSize.height;
+        imageSize.height = maxHeight;
       }
     }
     return imageSize;
