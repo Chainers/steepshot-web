@@ -2,16 +2,13 @@ import React from "react";
 import styled from "styled-components";
 import { connect } from "react-redux";
 import { addSinglePost } from "../../../actions/post";
-import Content from "../../PostModal/Content/Content";
+import PostModal from "../../PostModal/PostModalNew";
+import { postSelector } from "../../../selectors/postModalSelectors";
 
 const Wrapper = styled.div`
   position: relative;
-  margin-top: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  background-color: rgba(255, 255, 255, 1);
-  width: 240px;
-  height: 240px;
+  width: 100vw;
+  height: 100vh;
 `;
 
 class Testing extends React.Component {
@@ -21,16 +18,21 @@ class Testing extends React.Component {
   }
 
   render() {
+    if (!this.props.post.url) {
+      return null;
+    }
     return (
       <Wrapper>
-        <Content index="/steepshot/@likesmylove/ngg-2018-08-03-09-13-58" />
+        <PostModal />
       </Wrapper>
     );
   }
 }
 
 const mapStateToProps = state => {
-  return {};
+  return {
+    post: postSelector(state)
+  };
 };
 
 const mapDispatchToProps = dispatch => {

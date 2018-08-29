@@ -82,7 +82,13 @@ const Constants = {
 		MIN_HEIGHT: 480,
 		MAX_WIDTH: 1920,
 		MAX_HEIGHT: 1200,
-		MAX_SIZE: 1000000
+		MAX_SIZE: 1000000,
+		DISPLAY: {
+			MIN_WIDTH: 270,
+			MIN_HEIGHT: 440,
+			MAX_WIDTH: 1920,
+			MAX_HEIGHT: 1200,
+		}
 	},
 
 	EMPTY_QUERY: 'It\'s very strange, but we do not have anything yet for this query. Try to look for something else...',

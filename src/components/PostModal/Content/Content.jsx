@@ -65,7 +65,6 @@ class Content extends Component {
 
   render() {
     const {
-      index,
       isNsfw,
       showAll,
       isLowRated,
