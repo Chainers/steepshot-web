@@ -1,9 +1,24 @@
 import { createSelector } from "reselect";
 
-export const postSelector = (state, index) => state.posts[index] || {};
+const postsSelector = state => state.posts;
 export const postModalSelector = state => state.postModal;
 export const gallerySelector = state => state.imagesGallery;
 const screenWidthSelector = state => state.window.width;
+const screenHeightSelector = state => state.window.height;
+export const postIndexSelector = createSelector(
+  [postModalSelector],
+  postModal => postModal.currentIndex
+);
+
+export const postSelector = createSelector(
+  [postsSelector, postIndexSelector],
+  (posts, index) => posts[index] || {}
+);
+
+export const isFullScreenModSelector = createSelector(
+  [postModalSelector],
+  postModal => postModal.fullScreenMode
+);
 
 export const imagesSelector = createSelector(
   [postSelector, screenWidthSelector],
@@ -27,6 +42,18 @@ export const imagesSelector = createSelector(
       }
     }
     return images;
+  }
+);
+
+export const imageSizeSelector = createSelector(
+  [
+    postSelector,
+    screenWidthSelector,
+    screenHeightSelector,
+    isFullScreenModSelector
+  ],
+  (post, screenWidth, screenHeight, isFullScreenMod) => {
+    const imageSize = post["image_size"];
   }
 );
 

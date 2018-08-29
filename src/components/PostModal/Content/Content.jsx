@@ -54,10 +54,6 @@ const Wrapper = styled.div`
 `;
 
 class Content extends Component {
-  static propTypes = {};
-
-  static defaultProps = {};
-
   constructor() {
     super();
     this.copyLinkToClipboard = this.copyLinkToClipboard.bind(this);
@@ -80,7 +76,7 @@ class Content extends Component {
     } = this.props;
     return (
       <Wrapper>
-        <Gallery index={index} />
+        <Gallery />
         <LowNSF
           fullScreenMode={fullScreenMode}
           isNsfw={isNsfw}
@@ -98,8 +94,8 @@ class Content extends Component {
   }
 }
 
-const mapStateToProps = (state, props) => {
-  const post = postSelector(state, props.index);
+const mapStateToProps = state => {
+  const post = postSelector(state);
   const postModal = postModalSelector(state);
   return {
     isNsfw: !!post["is_nsfw"],
@@ -110,7 +106,7 @@ const mapStateToProps = (state, props) => {
   };
 };
 
-const mapDispatchToProps = (dispatch, props) => {
+const mapDispatchToProps = dispatch => {
   return {
     showAllContent: () => {
       dispatch(setPostModalOptions({ showAll: true }));

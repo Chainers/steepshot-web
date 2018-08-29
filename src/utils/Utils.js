@@ -44,8 +44,8 @@ export default class Utils {
 
 	static getWindowDimension() {
 		return {
-			width: document.documentElement.clientWidth,
-			height: document.documentElement.clientHeight
+			width: document.documentElement.clientWidth || 1366,
+			height: document.documentElement.clientHeight || 768
 		}
 	}
 

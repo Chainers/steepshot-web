@@ -2,7 +2,6 @@ import React from "react";
 import { connect } from "react-redux";
 import styled from "styled-components";
 import Navigation from "./Navigation/Navigation";
-import PropTypes from "prop-types";
 import { clearGalleryState, setActiveImage } from "../../actions/imagesGallery";
 import {
   gallerySelector,
@@ -35,10 +34,6 @@ const ImageNotFound = styled.div`
 `;
 
 class Gallery extends React.Component {
-  static propTypes = {
-    index: PropTypes.string.isRequired
-  };
-
   constructor() {
     super();
     this.loadedImageError = this.loadedImageError.bind(this);
@@ -98,15 +93,15 @@ class Gallery extends React.Component {
   }
 }
 
-const mapStateToProps = (state, props) => {
-  const imageUrl = imageUrlSelector(state, props.index);
+const mapStateToProps = state => {
+  const imageUrl = imageUrlSelector(state);
   const { activeIndex } = gallerySelector(state);
   const { loaded, hasError } = imagesLoadSelector(state, imageUrl);
   return {
-    images: imagesSelector(state, props.index),
+    images: imagesSelector(state),
     activeIndex,
     imageUrl,
-    title: postTitleSelector(state, props.index),
+    title: postTitleSelector(state),
     hasError,
     imageLoaded: loaded
   };
