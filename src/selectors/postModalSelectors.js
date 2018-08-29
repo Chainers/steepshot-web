@@ -80,6 +80,7 @@ export const imageSizeSelector = createSelector(
     const RATIO_MAX = MAX_WIDTH / MAX_HEIGHT;
     const RATIO_MIN = MIN_HEIGHT / MIN_HEIGHT;
     const RATIO_IMAGE = imageSize.width / imageSize.height;
+
     if (imageSize.width < MIN_WIDTH || imageSize.height < MIN_HEIGHT) {
       const deltaMin = RATIO_MIN - RATIO_IMAGE;
       if (deltaMin < 0) {
@@ -101,7 +102,6 @@ export const imageSizeSelector = createSelector(
         imageSize.height = MAX_HEIGHT;
       }
     }
-
     return imageSize;
   }
 );
