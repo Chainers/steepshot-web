@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {addSinglePost} from '../../actions/post';
-import PostModal from '../PostModal/PostModal';
+import PostModal from '../PostModal/PostModalNew';
 import './singlePost.css';
 import LoggingService from '../../services/LoggingService';
 import PostService from '../../services/PostService';
@@ -28,7 +28,7 @@ class SinglePost extends React.Component {
 		return (
 			<div className="container_sin-pos">
 				<div className="to-center_sin-pos">
-					<PostModal showClose={false} singlePost={true}/>
+					<PostModal />
 				</div>
 			</div>
 		);

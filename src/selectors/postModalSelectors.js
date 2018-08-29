@@ -10,6 +10,8 @@ export const postIndexSelector = createSelector(
   [postModalSelector],
   postModal => postModal.currentIndex
 );
+export const isSinglePost = state =>
+  state.router.location.pathname.includes("/post/@");
 
 export const postSelector = createSelector(
   [postsSelector, postIndexSelector],
@@ -71,10 +73,6 @@ export const imageSizeSelector = createSelector(
     const RATIO_MAX = MAX_WIDTH / MAX_HEIGHT;
     const RATIO_MIN = MIN_HEIGHT / MIN_HEIGHT;
     const RATIO_IMAGE = imageSize.width / imageSize.height;
-
-    console.log(MAX_WIDTH);
-    console.log(MAX_HEIGHT);
-    console.log("_______");
     if (imageSize.width < MIN_WIDTH || imageSize.height < MIN_HEIGHT) {
       const deltaMin = RATIO_MIN - RATIO_IMAGE;
       if (deltaMin < 0) {
@@ -88,7 +86,6 @@ export const imageSizeSelector = createSelector(
 
     if (imageSize.width > MAX_WIDTH || imageSize.height > MAX_HEIGHT) {
       const deltaMax = RATIO_MAX - RATIO_IMAGE;
-      console.log(deltaMax);
       if (deltaMax < 0) {
         imageSize.height *= MAX_WIDTH / imageSize.width;
         imageSize.width = MAX_WIDTH;

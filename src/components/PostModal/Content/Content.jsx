@@ -6,6 +6,7 @@ import { setFullScreen, setPostModalOptions } from "../../../actions/postModal";
 import CopyLink from "../CopyLink/CopyLink";
 import { copyToClipboard } from "../../../actions/clipboard";
 import {
+  isSinglePost,
   postModalSelector,
   postSelector
 } from "../../../selectors/postModalSelectors";
@@ -71,7 +72,8 @@ class Content extends Component {
       showAllContent,
       fullScreenMode,
       hideFullScreen,
-      showFullScreen
+      showFullScreen,
+      isSinglePost
     } = this.props;
     return (
       <Wrapper>
@@ -84,10 +86,12 @@ class Content extends Component {
           setShowAll={showAllContent}
         />
         <CopyLinkButton onClick={this.copyLinkToClipboard} />
-        <ToggleFullScreen
-          fullScreenMode={fullScreenMode}
-          onClick={fullScreenMode ? hideFullScreen : showFullScreen}
-        />
+        {!isSinglePost && (
+          <ToggleFullScreen
+            fullScreenMode={fullScreenMode}
+            onClick={fullScreenMode ? hideFullScreen : showFullScreen}
+          />
+        )}
       </Wrapper>
     );
   }
@@ -101,7 +105,8 @@ const mapStateToProps = state => {
     isLowRated: !!post["is_low_rated"],
     showAll: !!postModal.showAll,
     fullScreenMode: !!postModal.fullScreenMode,
-    post
+    post,
+    isSinglePost: isSinglePost(state)
   };
 };
 

@@ -32,6 +32,10 @@ const DetailsWrapper = styled.div`
   height: ${({ height }) => height}px;
   min-height: ${Constants.IMAGE.DISPLAY.MIN_HEIGHT}px;
   background-color: black;
+
+  ${is("fullScreenMode")`
+    display: none;  
+  `};
 `;
 
 class PostModal extends Component {
@@ -45,7 +49,10 @@ class PostModal extends Component {
           <ContentWrapper width={imageSize.width} height={imageSize.height}>
             <Content />
           </ContentWrapper>
-          <DetailsWrapper height={imageSize.height} />
+          <DetailsWrapper
+            height={imageSize.height}
+            fullScreenMode={fullScreenMode}
+          />
         </PostWrapper>
       </Wrapper>
     );
