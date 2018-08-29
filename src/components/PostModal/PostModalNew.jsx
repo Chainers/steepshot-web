@@ -3,7 +3,8 @@ import { connect } from "react-redux";
 import styled from "styled-components";
 import {
   imageSizeSelector,
-  isFullScreenModSelector
+  isFullScreenModSelector,
+  isMobileSize
 } from "../../selectors/postModalSelectors";
 import is from "styled-is";
 import Content from "./Content/Content";
@@ -11,12 +12,21 @@ import Constants from "../../common/constants";
 
 const Wrapper = styled.div`
   display: table-cell;
+
+  ${is("isMobileSize")`
+    display: block;
+  `};
 `;
 
 const PostWrapper = styled.div`
   display: flex;
   border-radius: 10px;
   overflow: hidden;
+
+  ${is("isMobileSize")`
+      flex-direction: column;
+      border-radius: 0;
+  `};
 `;
 
 const ContentWrapper = styled.div`
@@ -25,6 +35,11 @@ const ContentWrapper = styled.div`
   min-width: ${Constants.IMAGE.DISPLAY.MIN_WIDTH}px;
   min-height: ${Constants.IMAGE.DISPLAY.MIN_HEIGHT}px;
   background: #e7e7e7;
+
+  ${is("isMobileSize")`
+    min-height: auto;
+    width: 100%;
+  `};
 `;
 
 const DetailsWrapper = styled.div`
@@ -36,22 +51,30 @@ const DetailsWrapper = styled.div`
   ${is("fullScreenMode")`
     display: none;  
   `};
+
+  ${is("isMobileSize")`
+    width: 100%;
+  `};
 `;
 
 class PostModal extends Component {
   render() {
-    const { fullScreenMode, imageSize } = this.props;
-    console.log(imageSize);
+    const { fullScreenMode, imageSize, isMobileSize } = this.props;
 
     return (
-      <Wrapper>
-        <PostWrapper>
-          <ContentWrapper width={imageSize.width} height={imageSize.height}>
+      <Wrapper isMobileSize={isMobileSize}>
+        <PostWrapper isMobileSize={isMobileSize}>
+          <ContentWrapper
+            width={imageSize.width}
+            height={imageSize.height}
+            isMobileSize={isMobileSize}
+          >
             <Content />
           </ContentWrapper>
           <DetailsWrapper
             height={imageSize.height}
             fullScreenMode={fullScreenMode}
+            isMobileSize={isMobileSize}
           />
         </PostWrapper>
       </Wrapper>
@@ -62,7 +85,8 @@ class PostModal extends Component {
 const mapStateToProps = state => {
   return {
     fullScreenMode: isFullScreenModSelector(state),
-    imageSize: imageSizeSelector(state)
+    imageSize: imageSizeSelector(state),
+    isMobileSize: isMobileSize(state)
   };
 };
 

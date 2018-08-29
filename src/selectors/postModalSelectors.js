@@ -2,10 +2,13 @@ import { createSelector } from "reselect";
 import Constants from "../common/constants";
 
 const postsSelector = state => state.posts;
-export const postModalSelector = state => state.postModal;
-export const gallerySelector = state => state.imagesGallery;
 const screenWidthSelector = state => state.window.width;
 const screenHeightSelector = state => state.window.height;
+export const postModalSelector = state => state.postModal;
+export const gallerySelector = state => state.imagesGallery;
+export const isMobileSize = state =>
+  state.window.width <= Constants.WINDOW.MOBILE_START_WIDTH;
+
 export const postIndexSelector = createSelector(
   [postModalSelector],
   postModal => postModal.currentIndex
@@ -53,21 +56,25 @@ export const imageSizeSelector = createSelector(
     postSelector,
     screenWidthSelector,
     screenHeightSelector,
-    isFullScreenModSelector
+    isFullScreenModSelector,
+    isMobileSize
   ],
-  (post, screenWidth, screenHeight, isFullScreenMod) => {
-    const MIN_WIDTH = Constants.IMAGE.DISPLAY.MIN_WIDTH;
-    const MIN_HEIGHT = Constants.IMAGE.DISPLAY.MIN_HEIGHT;
+  (post, screenWidth, screenHeight, isFullScreenMod, isMobileSize) => {
+    const MIN_WIDTH = isMobileSize
+      ? screenWidth
+      : Constants.IMAGE.DISPLAY.MIN_WIDTH;
+    const MIN_HEIGHT = isMobileSize ? 100 : Constants.IMAGE.DISPLAY.MIN_HEIGHT;
     const MARGIN = 125;
     const DETAILS_WIDTH = isFullScreenMod ? 0 : 380;
-    const MAX_WIDTH = Math.min(
-      Constants.IMAGE.DISPLAY.MAX_WIDTH,
-      screenWidth - MARGIN * 2 - DETAILS_WIDTH
-    );
-    const MAX_HEIGHT = Math.min(
-      Constants.IMAGE.DISPLAY.MAX_HEIGHT,
-      screenHeight * 0.9
-    );
+    const MAX_WIDTH = isMobileSize
+      ? screenWidth
+      : Math.min(
+          Constants.IMAGE.DISPLAY.MAX_WIDTH,
+          screenWidth - MARGIN * 2 - DETAILS_WIDTH
+        );
+    const MAX_HEIGHT = isMobileSize
+      ? Constants.IMAGE.DISPLAY.MAX_HEIGHT
+      : Math.min(Constants.IMAGE.DISPLAY.MAX_HEIGHT, screenHeight * 0.9);
     const imageSize = { ...post["image_size"] };
 
     const RATIO_MAX = MAX_WIDTH / MAX_HEIGHT;

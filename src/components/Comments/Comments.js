@@ -9,6 +9,7 @@ import CommentInput from './CommentInput/CommentInput';
 import {Scrollbars} from 'react-custom-scrollbars';
 import './comments.css';
 import AuthService from '../../services/AuthService';
+import Constants from '../../common/constants';
 
 class Comments extends React.Component {
 
@@ -33,7 +34,7 @@ class Comments extends React.Component {
 	}
 
 	render() {
-		const isMobile = document.documentElement.clientWidth < 815;
+		const isMobile = document.documentElement.clientWidth < Constants.WINDOW.MOBILE_START_WIDTH;
 		let comments = null, propsComments = this.props.comments;
 
 		if (this.props.loading && (!propsComments || !propsComments.length)) {

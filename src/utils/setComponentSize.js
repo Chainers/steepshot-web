@@ -5,7 +5,7 @@ export function setComponentSize(windowSizes,
                                  isFullScreen) {
 	const DESC_WIDTH = isFullScreen ? 0 : 380;
 	const MIN_HEIGHT = 440;
-	const MAX_WIDTH_FULL_SCREEN = 815;
+	const MAX_WIDTH_FULL_SCREEN = Constants.WINDOW.MOBILE_START_WIDTH;
 
 	let sideMargin = 0.75;
 
