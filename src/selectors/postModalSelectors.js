@@ -1,6 +1,7 @@
 import { createSelector } from "reselect";
 
-export const postSelector = (state, index) => state.posts[index];
+export const postSelector = (state, index) => state.posts[index] || {};
+export const postModalSelector = state => state.postModal;
 export const gallerySelector = state => state.imagesGallery;
 const screenWidthSelector = state => state.window.width;
 
@@ -8,7 +9,7 @@ export const imagesSelector = createSelector(
   [postSelector, screenWidthSelector],
   (post, screenWidth = 1024) => {
     const images = [];
-    if (!post) {
+    if (!post.media) {
       return images;
     }
     const media = post.media;

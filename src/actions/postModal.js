@@ -87,12 +87,11 @@ export function previousPostModal(index, isLoading) {
 	}
 }
 
-export function setFullScreen(isOpen, timeoutID) {
+export function setFullScreen(isOpen) {
 	return dispatch => {
 		dispatch({
 			type: 'SET_FULL_SCREEN',
-			isOpen,
-			timeoutID
+			isOpen
 		});
 	}
 }

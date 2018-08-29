@@ -78,17 +78,19 @@ class Navigation extends Component {
   }
 
   next() {
-    if (this.props.activeIndex === this.props.images.length - 1) {
-      return;
-    }
-    this.props.swapTo(this.props.activeIndex + 1);
+    let nextIndex =
+      this.props.activeIndex === this.props.images.length - 1
+        ? 0
+        : this.props.activeIndex + 1;
+    this.props.swapTo(nextIndex);
   }
 
   prev() {
-    if (this.props.activeIndex === 0) {
-      return;
-    }
-    this.props.swapTo(this.props.activeIndex - 1);
+    let nextIndex =
+      this.props.activeIndex === 0
+        ? this.props.images.length - 1
+        : this.props.activeIndex - 1;
+    this.props.swapTo(nextIndex);
   }
 
   render() {
