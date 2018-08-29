@@ -60,11 +60,18 @@ class LowNSF extends Component {
   };
 
   render() {
-    if (this.props.showAll) {
+    const {
+      isNsfw,
+      isLowRated,
+      setShowAll,
+      fullScreenMode,
+      showAll
+    } = this.props;
+
+    if (showAll || (!isNsfw && !isLowRated)) {
       return null;
     }
 
-    const { isNsfw, isLowRated, setShowAll, fullScreenMode } = this.props;
     const showNsfw = isNsfw;
     const showLowRated = !isNsfw && isLowRated;
 

@@ -19,12 +19,33 @@ const CopyLinkButton = styled(CopyLink)`
   transition: 0.2s;
 `;
 
+const ToggleFullScreen = styled.div`
+  opacity: 0;
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  width: 38px;
+  height: 38px;
+  border-radius: 4px;
+  cursor: pointer;
+  background: #000000 url("/images/shape.svg") no-repeat center;
+  background-size: 18px 18px;
+
+  &:hover {
+    background-size: 22px 22px;
+  }
+`;
+
 const Wrapper = styled.div`
   position: relative;
   width: 100%;
   height: 100%;
 
   &:hover > ${CopyLinkButton} {
+    opacity: 1;
+  }
+
+  &:hover > ${ToggleFullScreen} {
     opacity: 1;
   }
 `;
@@ -63,6 +84,7 @@ class Content extends Component {
           setShowAll={showAllContent}
         />
         <CopyLinkButton onClick={this.copyLinkToClipboard} />
+        <ToggleFullScreen />
       </Wrapper>
     );
   }
@@ -71,9 +93,9 @@ class Content extends Component {
 const mapStateToProps = (state, props) => {
   return {
     isNsfw: false,
-    isLowRated: true,
+    isLowRated: false,
     showAll: false,
-    fullScreenMode: true,
+    fullScreenMode: false,
     post: postSelector(state, props.index)
   };
 };
