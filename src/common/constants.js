@@ -87,7 +87,7 @@ const Constants = {
 			MIN_WIDTH: 270,
 			MIN_HEIGHT: 440,
 			MAX_WIDTH: 1920,
-			MAX_HEIGHT: 600,
+			MAX_HEIGHT: 1200,
 		}
 	},
 

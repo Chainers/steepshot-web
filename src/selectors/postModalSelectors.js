@@ -57,9 +57,19 @@ export const imageSizeSelector = createSelector(
     screenWidthSelector,
     screenHeightSelector,
     isFullScreenModSelector,
-    isMobileSize
+    isMobileSize,
+    isSinglePost
   ],
-  (post, screenWidth, screenHeight, isFullScreenMod, isMobileSize) => {
+  (
+    post,
+    screenWidth,
+    screenHeight,
+    isFullScreenMod,
+    isMobileSize,
+    isSinglePost
+  ) => {
+    const HEADER_HEIGHT = 60;
+    const FOOTER_HEIGHT = 60;
     const MARGIN = 125;
     const DETAILS_WIDTH = isFullScreenMod ? 0 : 380;
     let minWidth = Constants.IMAGE.DISPLAY.MIN_WIDTH;
@@ -70,7 +80,7 @@ export const imageSizeSelector = createSelector(
     );
     let maxHeight = Math.min(
       Constants.IMAGE.DISPLAY.MAX_HEIGHT,
-      screenHeight * 0.9
+      screenHeight * 0.9 - (isSinglePost ? HEADER_HEIGHT + FOOTER_HEIGHT : 0)
     );
 
     if (isMobileSize) {
@@ -79,6 +89,9 @@ export const imageSizeSelector = createSelector(
       maxWidth = screenWidth;
       maxHeight = Constants.IMAGE.DISPLAY.MAX_HEIGHT;
     }
+
+    console.log(maxWidth);
+    console.log(maxHeight);
 
     const imageSize = { ...post["image_size"] };
 
