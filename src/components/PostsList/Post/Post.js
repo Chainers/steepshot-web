@@ -8,7 +8,6 @@ import PostContextMenu from '../../PostContextMenu/PostContextMenu';
 import Constants from '../../../common/constants';
 import Tags from './Tags/Tags';
 import Vote from './Vote/Vote';
-import PostModal from '../../PostModal/PostModal';
 import {openPostModal} from '../../../actions/postModal';
 import {playVideo, setPowerLikeInd, setPowerLikeTimeout, setVideoTime, stopVideo} from '../../../actions/post';
 import LoadingSpinner from '../../LoadingSpinner/index';
@@ -21,6 +20,7 @@ import renderHTML from 'react-render-html';
 import ImagesService from '../../../services/ImagesService';
 import PostImgBackground from './PostImgBackground';
 import ChainService from '../../../services/ChainService';
+import PostModal from '../../PostModal/PostModal';
 
 class Post extends React.Component {
 

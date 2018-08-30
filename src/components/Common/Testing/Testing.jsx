@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { connect } from "react-redux";
 import { addSinglePost } from "../../../actions/post";
-import PostModal from "../../PostModal/PostModalNew";
+import PostModal from "../../PostModal/PostModal";
 import { postSelector } from "../../../selectors/postModalSelectors";
 
 const Wrapper = styled.div`

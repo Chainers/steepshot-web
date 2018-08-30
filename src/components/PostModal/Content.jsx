@@ -1,19 +1,19 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import styled from "styled-components";
-import LowNSF from "../LowNSF";
-import { setFullScreen, setPostModalOptions } from "../../../actions/postModal";
-import CopyLink from "../CopyLink/CopyLink";
-import { copyToClipboard } from "../../../actions/clipboard";
+import LowNSF from "./LowNSF";
+import { setFullScreen, setPostModalOptions } from "../../actions/postModal";
+import CopyLink from "./CopyLink/CopyLink";
+import { copyToClipboard } from "../../actions/clipboard";
 import {
   isMobileSize,
   isSinglePost,
   postModalSelector,
   postSelector
-} from "../../../selectors/postModalSelectors";
-import Gallery from "../../Gallery/Gallery";
-import ChainService from "../../../services/ChainService";
-import Constants from "../../../common/constants";
+} from "../../selectors/postModalSelectors";
+import Gallery from "./Gallery/Gallery";
+import ChainService from "../../services/ChainService";
+import Constants from "../../common/constants";
 import is from "styled-is";
 
 const CopyLinkButton = styled(CopyLink)`

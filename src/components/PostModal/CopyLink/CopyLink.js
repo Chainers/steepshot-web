@@ -14,6 +14,7 @@ class CopyLink extends React.Component {
 	onClick(e) {
 		e.target.blur();
 		this.props.onClick();
+		clearTimeout(this.state.timeout);
 		this.setState(() => {
 			return {
 				clicked: true,

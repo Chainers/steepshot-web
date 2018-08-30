@@ -1,10 +1,10 @@
 import React from 'react';
 import ReactPlayer from 'react-player'
-import ShowIf from '../Common/ShowIf';
+import ShowIf from '../../Common/ShowIf';
 import LowNSFWFilter from './LowNSFWFilter';
 import LoadingFilter from './LoadingFilter';
-import CopyLink from './CopyLink/CopyLink';
-import ImagesGallery from '../ImagesGallery/ImagesGallery';
+import CopyLink from '../CopyLink/CopyLink';
+import ImagesGallery from '../../ImagesGallery/ImagesGallery';
 
 const RenderImage = ({previousStyle, style, showAll, fullScreenMode, newImageLoading, post, notFullScreenByScreenSize,
                        index, singlePost, urlVideo, setPostModalSize, copyLinkToClipboard, setFullScreen}) => {

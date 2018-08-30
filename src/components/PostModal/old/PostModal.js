@@ -8,34 +8,34 @@ import {
   setNewImageLoading,
   setPostModalOptions,
   setPostOffset
-} from "../../actions/postModal";
+} from "../../../actions/postModal";
 import TimeAgo from "timeago-react";
 import { Link } from "react-router-dom";
-import Avatar from "../Common/Avatar/Avatar";
-import { closeModal } from "../../actions/modal";
-import ShowIf from "../Common/ShowIf";
-import Flag from "../PostsList/Post/Flag/Flag";
-import Vote from "../PostsList/Post/Vote/Vote";
-import LoadingSpinner from "../LoadingSpinner/index";
-import { copyToClipboard } from "../../actions/clipboard";
-import PostContextMenu from "../PostContextMenu/PostContextMenu";
-import Likes from "../PostsList/Post/Likes/Likes";
+import Avatar from "../../Common/Avatar/Avatar";
+import { closeModal } from "../../../actions/modal";
+import ShowIf from "../../Common/ShowIf";
+import Flag from "../../PostsList/Post/Flag/Flag";
+import Vote from "../../PostsList/Post/Vote/Vote";
+import LoadingSpinner from "../../LoadingSpinner/index";
+import { copyToClipboard } from "../../../actions/clipboard";
+import PostContextMenu from "../../PostContextMenu/PostContextMenu";
+import Likes from "../../PostsList/Post/Likes/Likes";
 import FullScreenButtons from "./FullScreenButtons/FullScreenButtons";
-import { toggleVote } from "../../actions/vote";
-import { setPowerLikeInd, setPowerLikeTimeout } from "../../actions/post";
-import { openPushNot } from "../../actions/pushNotification";
-import ImagesGallery from "../ImagesGallery/ImagesGallery";
+import { toggleVote } from "../../../actions/vote";
+import { setPowerLikeInd, setPowerLikeTimeout } from "../../../actions/post";
+import { openPushNot } from "../../../actions/pushNotification";
+import ImagesGallery from "../../ImagesGallery/ImagesGallery";
 import ReactPlayer from "react-player";
-import Comments from "../Comments/Comments";
+import Comments from "../../Comments/Comments";
 import "./postModal.css";
-import Constants from "../../common/constants";
-import Utils from "../../utils/Utils";
-import { setComponentSize } from "../../utils/setComponentSize";
-import { setCommentEditState } from "../../actions/comments";
-import AuthService from "../../services/AuthService";
+import Constants from "../../../common/constants";
+import Utils from "../../../utils/Utils";
+import { setComponentSize } from "../../../utils/setComponentSize";
+import { setCommentEditState } from "../../../actions/comments";
+import AuthService from "../../../services/AuthService";
 import LowNSFWFilter from "./LowNSFWFilter";
-import CopyLink from "./CopyLink/CopyLink";
-import ChainService from "../../services/ChainService";
+import CopyLink from "../CopyLink/CopyLink";
+import ChainService from "../../../services/ChainService";
 import LoadingFilter from "./LoadingFilter";
 import RenderImage from "./RenderImage";
 

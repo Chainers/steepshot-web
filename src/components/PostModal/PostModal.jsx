@@ -7,7 +7,7 @@ import {
   isMobileSize
 } from "../../selectors/postModalSelectors";
 import is from "styled-is";
-import Content from "./Content/Content";
+import Content from "./Content";
 import Constants from "../../common/constants";
 
 const Wrapper = styled.div`

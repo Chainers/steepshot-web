@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import ShowIf from '../Common/ShowIf';
-import {setPostModalOptions} from '../../actions/postModal';
+import ShowIf from '../../Common/ShowIf';
+import {setPostModalOptions} from '../../../actions/postModal';
 
 const LowNSFWFilter = ({fullScreenMode, post, showAll, setPostModalOptions}) => {
 

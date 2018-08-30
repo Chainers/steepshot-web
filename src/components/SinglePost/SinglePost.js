@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {addSinglePost} from '../../actions/post';
-import PostModal from '../PostModal/PostModalNew';
+import PostModal from '../PostModal/PostModal';
 import './singlePost.css';
 import LoggingService from '../../services/LoggingService';
 import PostService from '../../services/PostService';

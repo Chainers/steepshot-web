@@ -2,16 +2,19 @@ import React from "react";
 import { connect } from "react-redux";
 import styled from "styled-components";
 import Navigation from "./Navigation/Navigation";
-import { clearGalleryState, setActiveImage } from "../../actions/imagesGallery";
+import {
+  clearGalleryState,
+  setActiveImage
+} from "../../../actions/imagesGallery";
 import {
   gallerySelector,
   imagesLoadSelector,
   imagesSelector,
   imageUrlSelector,
   postTitleSelector
-} from "../../selectors/postModalSelectors";
-import { imageLoadError, imageLoadSuccess } from "../../actions/images";
-import Loader from "../Common/Loader";
+} from "../../../selectors/postModalSelectors";
+import { imageLoadError, imageLoadSuccess } from "../../../actions/images";
+import Loader from "../../Common/Loader";
 
 const Wrapper = styled.div`
   position: relative;
