@@ -25,6 +25,7 @@ const Arrow = styled.div`
   cursor: pointer;
   border-radius: 50%;
   transform: translateY(-50%);
+  transition: all 0.2s;
 
   ${is("hide")`
     opacity: 0;
@@ -50,6 +51,7 @@ const HelpBlock = styled(HelpPanel)`
   bottom: 14px;
   left: 50%;
   transform: translateX(-50%);
+  transition: all 0.2s;
 
   ${is("hide")`
     opacity: 0;
@@ -66,6 +68,7 @@ const CloseButtonWrapper = styled.div`
   width: 38px;
   height: 38px;
   cursor: pointer;
+  transition: all 0.2s;
 
   ${is("hide")`
     opacity: 0;
@@ -109,6 +112,13 @@ class Navigation extends Component {
     if (nextProps.fullScreenMode && !this.props.fullScreenMode) {
       window.addEventListener("mousemove", this.showNavigation);
     }
+    if (!nextProps.fullScreenMode && this.props.fullScreenMode) {
+      clearTimeout(this.timeout);
+      window.removeEventListener("mousemove", this.showNavigation);
+      this.setState({
+        hideAll: false
+      });
+    }
   }
 
   showNavigation() {
@@ -143,6 +153,7 @@ class Navigation extends Component {
 
   componentWillUnmount() {
     window.removeEventListener("keydown", this.keyListener);
+    clearTimeout(this.timeout);
   }
 
   keyListener(e) {
