@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import styled from "styled-components";
 import {
   isFullScreenModSelector,
+  isMobileSize,
   modalPointSelector,
   postIndexSelector,
   postSelector
@@ -197,13 +198,13 @@ class Navigation extends Component {
   }
 
   render() {
-    const { post, fullScreenMode } = this.props;
+    const { post, fullScreenMode, isMobileSize } = this.props;
     const { hideAll } = this.state;
     return (
       <Fragment>
         <CloseButtonWrapper
           onClick={this.closeModal}
-          hide={!fullScreenMode || hideAll}
+          hide={!fullScreenMode || hideAll || isMobileSize}
           onMouseEnter={this.blockMouseEnter}
           onMouseLeave={this.blockMouseLeave}
         >
@@ -211,13 +212,13 @@ class Navigation extends Component {
         </CloseButtonWrapper>
         <LeftArrow
           onClick={this.previous}
-          hide={fullScreenMode && hideAll}
+          hide={(fullScreenMode && hideAll) || isMobileSize}
           onMouseEnter={this.blockMouseEnter}
           onMouseLeave={this.blockMouseLeave}
         />
         <RightArrow
           onClick={this.next}
-          hide={fullScreenMode && hideAll}
+          hide={(fullScreenMode && hideAll) || isMobileSize}
           onMouseEnter={this.blockMouseEnter}
           onMouseLeave={this.blockMouseLeave}
         />
@@ -228,7 +229,7 @@ class Navigation extends Component {
           <HelpBlock
             voteLoading={post.voteLoading}
             vote={post.vote}
-            hide={!fullScreenMode || hideAll}
+            hide={!fullScreenMode || hideAll || isMobileSize}
           />
         </HelpBlockWrapper>
       </Fragment>
@@ -241,7 +242,8 @@ const mapStateToProps = state => {
     fullScreenMode: isFullScreenModSelector(state),
     post: postSelector(state),
     currentIndex: postIndexSelector(state),
-    modalPoint: modalPointSelector(state)
+    modalPoint: modalPointSelector(state),
+    isMobileSize: isMobileSize(state)
   };
 };
 

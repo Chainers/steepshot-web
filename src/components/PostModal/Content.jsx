@@ -61,6 +61,16 @@ class Content extends Component {
     this.copyLinkToClipboard = this.copyLinkToClipboard.bind(this);
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (
+      nextProps.isMobileSize &&
+      !this.props.isMobileSize &&
+      nextProps.fullScreenMode
+    ) {
+      this.props.hideFullScreen();
+    }
+  }
+
   copyLinkToClipboard() {
     this.props.copyToClipboard(this.props.post);
   }
@@ -107,7 +117,8 @@ const mapStateToProps = state => {
     showAll: !!postModal.showAll,
     fullScreenMode: !!postModal.fullScreenMode,
     post,
-    showToggleButton: !isSinglePost(state) && !isMobileSize(state)
+    showToggleButton: !isSinglePost(state) && !isMobileSize(state),
+    isMobileSize: isMobileSize(state)
   };
 };
 
