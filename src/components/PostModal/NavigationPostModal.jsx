@@ -90,7 +90,7 @@ const HelpBlockWrapper = styled.div``;
 
 const HIDE_TIME = 6000;
 
-class Navigation extends Component {
+class NavigationPostModal extends Component {
   constructor() {
     super();
     this.closeModal = this.closeModal.bind(this);
@@ -270,4 +270,4 @@ const mapDispatchToProps = dispatch => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(Navigation);
+)(NavigationPostModal);

@@ -58,7 +58,7 @@ const Dot = styled.div`
   opacity: ${({ active }) => (active ? 1 : 0.6)};
 `;
 
-class Navigation extends Component {
+class NavigationGallery extends Component {
   static propTypes = {
     images: PropTypes.arrayOf(PropTypes.object).isRequired,
     activeIndex: PropTypes.number.isRequired,
@@ -111,4 +111,4 @@ class Navigation extends Component {
   }
 }
 
-export default Navigation;
+export default NavigationGallery;

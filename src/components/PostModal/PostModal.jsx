@@ -9,7 +9,7 @@ import {
 import is from "styled-is";
 import Content from "./Content";
 import Constants from "../../common/constants";
-import Navigation from "./Navigation";
+import NavigationPostModal from "./NavigationPostModal";
 
 const Wrapper = styled.div`
   display: table-cell;
@@ -78,7 +78,7 @@ class PostModal extends Component {
             isMobileSize={isMobileSize}
           />
         </PostWrapper>
-        <Navigation />
+        <NavigationPostModal />
       </Wrapper>
     );
   }

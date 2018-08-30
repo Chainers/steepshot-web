@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import styled from "styled-components";
-import Navigation from "./Navigation/Navigation";
+import NavigationGallery from "./NavigationGallery";
 import {
   clearGalleryState,
   setActiveImage
@@ -67,7 +67,7 @@ class Gallery extends React.Component {
 
     return (
       <Wrapper className="centered--flex">
-        <Navigation
+        <NavigationGallery
           images={images}
           activeIndex={activeIndex}
           show={images.length > 1}
