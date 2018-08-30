@@ -39,9 +39,7 @@ class FullScreenButtons extends React.Component {
 
 const mapStateToProps = (state) => {
 	return {
-		...state.postModal,
 		post: state.posts[state.postModal.currentIndex],
-		postList: state.postsList[state.postModal.point],
 	}
 };
 

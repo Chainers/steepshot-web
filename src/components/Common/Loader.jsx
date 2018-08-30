@@ -13,8 +13,8 @@ const Spinner = styled.div`
   border: 5px solid #f3f3f3;
   border-radius: 50%;
   border-top: 5px solid #e74800;
-  width: 40px;
-  height: 40px;
+  width: ${({ size }) => size}px;
+  height: ${({ size }) => size}px;
   animation: spin 2s linear infinite;
 `;
 
@@ -23,26 +23,28 @@ class Loader extends Component {
     width: PropTypes.string,
     height: PropTypes.string,
     show: PropTypes.bool,
-    position: PropTypes.string
+    position: PropTypes.string,
+    size: PropTypes.number
   };
 
   static defaultProps = {
     width: "100%",
     height: "100%",
     show: true,
-    position: "absolute"
+    position: "absolute",
+    size: 40
   };
 
   render() {
     return (
       <Wrapper
-        className="centered--flex"
+        className={"centered--flex " + (this.props.className || "")}
         width={this.props.width}
         height={this.props.height}
         show={this.props.show}
         position={this.props.absolute}
       >
-        <Spinner />
+        <Spinner size={this.props.size} />
       </Wrapper>
     );
   }
