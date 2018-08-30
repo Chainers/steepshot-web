@@ -2,8 +2,7 @@ import React, { Component } from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
-import Constants from "../../common/constants";
-import Avatar from "../Common/Avatar/Avatar";
+import Avatar from "../Common/Avatar";
 import TimeAgo from "timeago-react";
 import PostContextMenu from "../PostContextMenu/PostContextMenu";
 
@@ -20,7 +19,7 @@ const LeftBlock = styled(Link)`
   color: #0f181e;
   overflow: hidden;
   line-height: 20px;
-  float: left;
+  display: flex;
 `;
 
 const UserName = styled.div`
@@ -29,6 +28,8 @@ const UserName = styled.div`
   text-overflow: ellipsis;
   overflow: hidden;
   transition: 0.2s all ease;
+  display: flex;
+  align-items: center;
 `;
 
 const RightBlock = styled.div`
@@ -82,7 +83,7 @@ class Header extends Component {
     return (
       <Wrapper className={className}>
         <LeftBlock to={post.url}>
-          <Avatar src={post.avatar} sizes={Constants.DEF_AVATAR_SIZE} />
+          <Avatar src={post.avatar} size={20} />
           <UserName>{post.author}</UserName>
         </LeftBlock>
         <RightBlock>

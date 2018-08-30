@@ -31,8 +31,7 @@ class Post extends React.Component {
 	constructor(props) {
 		super(props);
 		if (this.props.imageUrl && this.props.imageUrl !== Constants.NO_IMAGE) {
-			ImagesService.getImagesWithProxy(this.props.imageUrl,
-				`https://steemitimages.com/${2 * Constants.DEF_POST_SIZE}x${2 * Constants.DEF_POST_SIZE}/`);
+			ImagesService.getImagesWithProxy(this.props.imageUrl, Constants.DEF_POST_SIZE);
 		}
 	}
 

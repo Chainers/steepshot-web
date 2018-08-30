@@ -91,6 +91,11 @@ const Constants = {
 		}
 	},
 
+	IMAGE_SERVICE: {
+		HOST: 'https://steemitimages.com/',
+		SCALE: 2
+	},
+
 	EMPTY_QUERY: 'It\'s very strange, but we do not have anything yet for this query. Try to look for something else...',
 
 	SEARCH_PLACEHOLDER: 'Type your search query and press "Enter"',

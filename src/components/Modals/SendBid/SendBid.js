@@ -21,8 +21,7 @@ class SendBid extends React.Component {
 		super(props);
 		this.tick = this.tick.bind(this);
     if (this.props.botAvatarSrc && this.props.botAvatarSrc !== Constants.NO_AVATAR) {
-      ImagesService.getImagesWithProxy(this.props.botAvatarSrc,
-				`https://steemitimages.com/${2 * this.props.sizes}x${2 * this.props.sizes}/`);
+      ImagesService.getImagesWithProxy(this.props.botAvatarSrc, this.props.sizes);
 		}
 	}
 
