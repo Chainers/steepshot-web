@@ -15,7 +15,7 @@ import {
 } from "../../actions/postModal";
 import { toggleVote } from "../../actions/vote";
 import { closeModal } from "../../actions/modal";
-import * as ReactDOM from "react-dom";
+import is from "styled-is";
 
 const Arrow = styled.div`
   position: absolute;
@@ -25,6 +25,10 @@ const Arrow = styled.div`
   cursor: pointer;
   border-radius: 50%;
   transform: translateY(-50%);
+
+  ${is("hide")`
+    opacity: 0;
+  `};
 
   &:hover {
     background-color: rgba(255, 255, 255, 0.08);
@@ -46,6 +50,10 @@ const HelpBlock = styled(HelpPanel)`
   bottom: 14px;
   left: 50%;
   transform: translateX(-50%);
+
+  ${is("hide")`
+    opacity: 0;
+  `};
 `;
 
 const CloseButtonWrapper = styled.div`
@@ -58,6 +66,10 @@ const CloseButtonWrapper = styled.div`
   width: 38px;
   height: 38px;
   cursor: pointer;
+
+  ${is("hide")`
+    opacity: 0;
+  `};
 `;
 
 const CloseButton = styled.div`
@@ -70,6 +82,10 @@ const CloseButton = styled.div`
   }
 `;
 
+const HelpBlockWrapper = styled.div``;
+
+const HIDE_TIME = 6000;
+
 class Navigation extends Component {
   constructor() {
     super();
@@ -77,6 +93,48 @@ class Navigation extends Component {
     this.next = this.next.bind(this);
     this.previous = this.previous.bind(this);
     this.keyListener = this.keyListener.bind(this);
+    this.showNavigation = this.showNavigation.bind(this);
+    this.hideNavigation = this.hideNavigation.bind(this);
+    this.blockMouseEnter = this.blockMouseEnter.bind(this);
+    this.blockMouseLeave = this.blockMouseLeave.bind(this);
+
+    this.state = {
+      hideAll: false
+    };
+  }
+
+  timeout = null;
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.fullScreenMode && !this.props.fullScreenMode) {
+      window.addEventListener("mousemove", this.showNavigation);
+    }
+  }
+
+  showNavigation() {
+    clearTimeout(this.timeout);
+    this.timeout = setTimeout(this.hideNavigation, HIDE_TIME);
+
+    if (this.state.hideAll) {
+      this.setState({
+        hideAll: false
+      });
+    }
+  }
+
+  hideNavigation() {
+    this.setState({
+      hideAll: true
+    });
+  }
+
+  blockMouseEnter() {
+    clearTimeout(this.timeout);
+    window.removeEventListener("mousemove", this.showNavigation);
+  }
+
+  blockMouseLeave() {
+    window.addEventListener("mousemove", this.showNavigation);
   }
 
   componentDidMount() {
@@ -128,15 +186,40 @@ class Navigation extends Component {
   }
 
   render() {
-    const { post } = this.props;
+    const { post, fullScreenMode } = this.props;
+    const { hideAll } = this.state;
     return (
       <Fragment>
-        <CloseButtonWrapper onClick={this.closeModal}>
+        <CloseButtonWrapper
+          onClick={this.closeModal}
+          hide={!fullScreenMode || hideAll}
+          onMouseEnter={this.blockMouseEnter}
+          onMouseLeave={this.blockMouseLeave}
+        >
           <CloseButton />
         </CloseButtonWrapper>
-        <LeftArrow onClick={this.previous} />
-        <RightArrow onClick={this.next} />
-        <HelpBlock voteLoading={post.voteLoading} vote={post.vote} />
+        <LeftArrow
+          onClick={this.previous}
+          hide={fullScreenMode && hideAll}
+          onMouseEnter={this.blockMouseEnter}
+          onMouseLeave={this.blockMouseLeave}
+        />
+        <RightArrow
+          onClick={this.next}
+          hide={fullScreenMode && hideAll}
+          onMouseEnter={this.blockMouseEnter}
+          onMouseLeave={this.blockMouseLeave}
+        />
+        <HelpBlockWrapper
+          onMouseEnter={this.blockMouseEnter}
+          onMouseLeave={this.blockMouseLeave}
+        >
+          <HelpBlock
+            voteLoading={post.voteLoading}
+            vote={post.vote}
+            hide={!fullScreenMode || hideAll}
+          />
+        </HelpBlockWrapper>
       </Fragment>
     );
   }
