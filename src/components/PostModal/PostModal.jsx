@@ -16,6 +16,7 @@ const Wrapper = styled.div`
 
   ${is("isMobileSize")`
     display: block;
+    min-height: 100vh;
   `};
 `;
 
@@ -39,7 +40,6 @@ const ContentWrapper = styled.div`
 
   ${is("isMobileSize")`
     min-height: auto;
-    width: 100%;
   `};
 `;
 
