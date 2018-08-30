@@ -39,10 +39,6 @@ import LoadingFilter from "./LoadingFilter";
 import RenderImage from "./RenderImage";
 
 class PostModal extends React.Component {
-  static defaultProps = {
-    showClose: true
-  };
-
   constructor() {
     super();
     this.setPostModalSize = this.setPostModalSize.bind(this);
@@ -351,7 +347,6 @@ class PostModal extends React.Component {
         <div className="container_pos-mod" style={hideModalFS}>
           <ShowIf
             show={
-              this.props.showClose &&
               !this.props.style.isMobile &&
               !this.props.notFullScreenByScreenSize
             }
@@ -407,6 +402,7 @@ class PostModal extends React.Component {
             copyLinkToClipboard={this.copyLinkToClipboard}
             setFullScreen={this.setFullScreen}
           />
+
           <div className="header_pos-mod" style={this.props.style.headerCont}>
             <div className="date_pos-mod">
               <TimeAgo
@@ -418,20 +414,18 @@ class PostModal extends React.Component {
                 style={{
                   height: "22px",
                   width: "22px",
-                  marginRight: this.props.showClose ? "38px" : 0
+                  marginRight: "38px"
                 }}
                 className="post-context-menu_post"
                 item={this.props.post}
                 index={this.props.currentIndex}
               />
-              <ShowIf show={this.props.showClose}>
-                <div
-                  className="cont-close-btn_pos-mod"
-                  onClick={() => this.props.closeModal(this.props.point)}
-                >
-                  <i className="close-btn_pos-mod" />
-                </div>
-              </ShowIf>
+              <div
+                className="cont-close-btn_pos-mod"
+                onClick={() => this.props.closeModal(this.props.point)}
+              >
+                <i className="close-btn_pos-mod" />
+              </div>
             </div>
             <Link to={authorLink} className="user_pos-mod">
               <Avatar
@@ -441,6 +435,7 @@ class PostModal extends React.Component {
               <div className="name_pos-mod">{this.props.post.author}</div>
             </Link>
           </div>
+
           <div
             className="description_pos-mod"
             style={this.props.style.description}

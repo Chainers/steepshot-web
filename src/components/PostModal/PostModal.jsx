@@ -4,12 +4,16 @@ import styled from "styled-components";
 import {
   imageSizeSelector,
   isFullScreenModSelector,
-  isMobileSize
+  isMobileSize,
+  modalPointSelector,
+  postSelector
 } from "../../selectors/postModalSelectors";
 import is from "styled-is";
 import Content from "./Content";
 import Constants from "../../common/constants";
 import NavigationPostModal from "./NavigationPostModal";
+import Header from "./Header";
+import { closeModal } from "../../actions/modal";
 
 const Wrapper = styled.div`
   display: table-cell;
@@ -59,8 +63,17 @@ const DetailsWrapper = styled.div`
 `;
 
 class PostModal extends Component {
+  constructor() {
+    super();
+    this.closeModal = this.closeModal.bind(this);
+  }
+
+  closeModal() {
+    this.props.closeModal(this.props.modalPoint);
+  }
+
   render() {
-    const { fullScreenMode, imageSize, isMobileSize } = this.props;
+    const { fullScreenMode, imageSize, isMobileSize, post } = this.props;
 
     return (
       <Wrapper isMobileSize={isMobileSize}>
@@ -72,6 +85,7 @@ class PostModal extends Component {
           >
             <Content />
           </ContentWrapper>
+          <Header post={post} closeModal={this.closeModal} />
           <DetailsWrapper
             height={imageSize.height}
             fullScreenMode={fullScreenMode}
@@ -88,12 +102,18 @@ const mapStateToProps = state => {
   return {
     fullScreenMode: isFullScreenModSelector(state),
     imageSize: imageSizeSelector(state),
-    isMobileSize: isMobileSize(state)
+    isMobileSize: isMobileSize(state),
+    post: postSelector(state),
+    modalPoint: modalPointSelector(state)
   };
 };
 
 const mapDispatchToProps = dispatch => {
-  return {};
+  return {
+    closeModal: modalPoint => {
+      dispatch(closeModal(modalPoint));
+    }
+  };
 };
 
 export default connect(
