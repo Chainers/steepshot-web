@@ -31,7 +31,7 @@ export function setPostModalOptions(options) {
 	}
 }
 
-function swapPostModal(index, isLoading) {
+function swapPostModal(index) {
 	let postModal = getStore().getState().postModal, previousStyle = postModal.style;
 	if (Object.keys(postModal.style).length < 1) {
 		previousStyle = postModal.previousStyle;
@@ -41,14 +41,13 @@ function swapPostModal(index, isLoading) {
 		dispatch({
 			type: 'SWAP_POST_MODAL',
 			index,
-			isLoading,
 			previousStyle
 		});
 		dispatch(setTextInputState(Constants.OPERATIONS.COMMENT, {text: '', focusedStyle: ''}));
 	}
 }
 
-export function nextPostModal(index, isLoading) {
+export function nextPostModal(index) {
 	let state = getStore().getState();
 	let point = state.postModal.point;
 	let postsList = state.postsList[point].posts;
@@ -66,12 +65,12 @@ export function nextPostModal(index, isLoading) {
 			}
 		} else {
 			let newIndex = postsList[positionPost + 1];
-			dispatch(swapPostModal(newIndex, isLoading))
+			dispatch(swapPostModal(newIndex))
 		}
 	}
 }
 
-export function previousPostModal(index, isLoading) {
+export function previousPostModal(index) {
 	let state = getStore().getState();
 	let point = state.postModal.point;
 	let postsList = state.postsList[point].posts;
@@ -83,7 +82,7 @@ export function previousPostModal(index, isLoading) {
 	}
 	return dispatch => {
 		let newIndex = postsList[positionPost - 1];
-		dispatch(swapPostModal(newIndex, isLoading))
+		dispatch(swapPostModal(newIndex))
 	}
 }
 
@@ -112,12 +111,5 @@ export function setPostOffset(offset) {
 			type: 'SET_POST_OFFSET',
 			postOffset: offset
 		})
-	}
-}
-
-export function setNewImageLoading(isLoading) {
-	return {
-		type: 'SET_NEW_IMAGE_LOADING',
-		newImageLoading: isLoading
 	}
 }

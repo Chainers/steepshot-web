@@ -5,6 +5,7 @@ const postsSelector = state => state.posts;
 const screenWidthSelector = state => state.window.width;
 const screenHeightSelector = state => state.window.height;
 export const postModalSelector = state => state.postModal;
+export const modalPointSelector = state => state.postModal.point;
 export const gallerySelector = state => state.imagesGallery;
 export const isMobileSize = state =>
   state.window.width <= Constants.WINDOW.MOBILE_START_WIDTH;
@@ -89,9 +90,6 @@ export const imageSizeSelector = createSelector(
       maxWidth = screenWidth;
       maxHeight = Constants.IMAGE.DISPLAY.MAX_HEIGHT;
     }
-
-    console.log(maxWidth);
-    console.log(maxHeight);
 
     const imageSize = { ...post["image_size"] };
 

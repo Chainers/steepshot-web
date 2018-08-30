@@ -4,18 +4,10 @@ import './imagesGallery.css';
 import {setGalleryImage, setImageCompleteStatus} from '../../actions/imagesGallery';
 import Constants from '../../common/constants';
 import ShowIf from '../Common/ShowIf';
-import {setNewImageLoading} from '../../actions/postModal';
 
 class ImagesGallery extends React.Component {
 
 	componentWillReceiveProps(nextProps) {
-		if (this.props.imageNumberInGallery !== nextProps.imageNumberInGallery) {
-			setTimeout(() => {
-				if (!this.image.complete) {
-					this.props.setNewImageLoading(true);
-				}
-			}, 50);
-		}
 		if (this.props.index !== nextProps.index && this.image.complete) {
 			this.props.setImageCompleteStatus(this.props.index, true);
 		}
@@ -116,9 +108,6 @@ const mapDispatchToProps = (dispatch) => {
 		},
 		setImageCompleteStatus: (postIndex, isComplete) => {
 			dispatch(setImageCompleteStatus(postIndex, isComplete));
-		},
-		setNewImageLoading: (isLoading) => {
-			dispatch(setNewImageLoading(isLoading));
 		}
 	}
 };

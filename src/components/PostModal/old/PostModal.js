@@ -5,7 +5,6 @@ import {
   previousPostModal,
   setFSNavigation,
   setFullScreen,
-  setNewImageLoading,
   setPostModalOptions,
   setPostOffset
 } from "../../../actions/postModal";
@@ -175,10 +174,7 @@ class PostModal extends React.Component {
             showAll={this.props.showAll}
             fullScreenMode={this.props.fullScreenMode}
           />
-          <LoadingFilter
-            isFullScreen={true}
-            newImageLoading={this.props.newImageLoading}
-          />
+          <LoadingFilter isFullScreen={true} />
           <CopyLink
             className="full-screen-share_pos-mod"
             onClick={this.copyLinkToClipboard}
@@ -402,7 +398,6 @@ class PostModal extends React.Component {
             style={this.props.style}
             showAll={this.props.showAll}
             fullScreenMode={this.props.fullScreenMode}
-            newImageLoading={this.props.newImageLoading}
             post={this.props.post}
             notFullScreenByScreenSize={this.props.notFullScreenByScreenSize}
             index={this.props.currentIndex}
@@ -496,7 +491,6 @@ class PostModal extends React.Component {
     if (this.props.notFullScreenByScreenSize && this.props.fullScreenMode) {
       this.setFullScreen(false, false);
     }
-    this.props.setNewImageLoading(false);
   }
 }
 
@@ -556,11 +550,11 @@ const mapDispatchToProps = dispatch => {
     copyToClipboard: text => {
       dispatch(copyToClipboard(text));
     },
-    next: (index, isLoading) => {
-      dispatch(nextPostModal(index, isLoading));
+    next: index => {
+      dispatch(nextPostModal(index));
     },
-    previous: (index, isLoading) => {
-      dispatch(previousPostModal(index, isLoading));
+    previous: index => {
+      dispatch(previousPostModal(index));
     },
     toggleVote: postIndex => {
       dispatch(toggleVote(postIndex));
@@ -579,9 +573,6 @@ const mapDispatchToProps = dispatch => {
     },
     setPowerLikeTimeout: (index, plTimeout) => {
       dispatch(setPowerLikeTimeout(index, plTimeout));
-    },
-    setNewImageLoading: isLoading => {
-      dispatch(setNewImageLoading(isLoading));
     },
     openPushNot: (index, pushNotBody) => {
       dispatch(openPushNot(index, pushNotBody));

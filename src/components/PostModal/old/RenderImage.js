@@ -6,7 +6,7 @@ import LoadingFilter from './LoadingFilter';
 import CopyLink from '../CopyLink/CopyLink';
 import ImagesGallery from '../../ImagesGallery/ImagesGallery';
 
-const RenderImage = ({previousStyle, style, showAll, fullScreenMode, newImageLoading, post, notFullScreenByScreenSize,
+const RenderImage = ({previousStyle, style, showAll, fullScreenMode, post, notFullScreenByScreenSize,
                        index, singlePost, urlVideo, setPostModalSize, copyLinkToClipboard, setFullScreen}) => {
 
   let previousImageWidth;
@@ -21,8 +21,7 @@ const RenderImage = ({previousStyle, style, showAll, fullScreenMode, newImageLoa
       <LowNSFWFilter post={post}
                      showAll={showAll}
                      fullScreenMode={fullScreenMode}/>
-      <LoadingFilter isFullScreen={false}
-                     newImageLoading={newImageLoading}/>
+      <LoadingFilter isFullScreen={false} />
       <CopyLink onClick={copyLinkToClipboard} />
       <ShowIf show={!notFullScreenByScreenSize && !fullScreenMode && !singlePost}>
         <div className="full-screen-button_pos-mod"

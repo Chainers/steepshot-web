@@ -1,19 +1,21 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
 import styled from "styled-components";
 import {
   isFullScreenModSelector,
+  modalPointSelector,
+  postIndexSelector,
   postSelector
 } from "../../selectors/postModalSelectors";
 import HelpPanel from "./HelpPanel";
-
-const Wrapper = styled.div`
-  position: absolute;
-  width: 100vw;
-  height: 100vh;
-  left: 0;
-  top: 0;
-`;
+import {
+  nextPostModal,
+  previousPostModal,
+  setFullScreen
+} from "../../actions/postModal";
+import { toggleVote } from "../../actions/vote";
+import { closeModal } from "../../actions/modal";
+import * as ReactDOM from "react-dom";
 
 const Arrow = styled.div`
   position: absolute;
@@ -69,16 +71,73 @@ const CloseButton = styled.div`
 `;
 
 class Navigation extends Component {
+  constructor() {
+    super();
+    this.closeModal = this.closeModal.bind(this);
+    this.next = this.next.bind(this);
+    this.previous = this.previous.bind(this);
+    this.keyListener = this.keyListener.bind(this);
+  }
+
+  componentDidMount() {
+    window.addEventListener("keydown", this.keyListener);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener("keydown", this.keyListener);
+  }
+
+  keyListener(e) {
+    switch (e.keyCode) {
+      case 37:
+        this.previous(e);
+        break;
+      case 39:
+        this.next(e);
+        break;
+      case 27:
+        if (this.props.fullScreenMode) {
+          e.stopPropagation();
+          this.props.hideFullScreen();
+        } else {
+          this.closeModal(e);
+        }
+        break;
+      case 13:
+        e.stopPropagation();
+        this.props.toggleVote(this.props.currentIndex);
+        break;
+      default:
+        break;
+    }
+  }
+
+  closeModal(e) {
+    e.stopPropagation();
+    this.props.closeModal(this.props.modalPoint);
+  }
+
+  next(e) {
+    e.stopPropagation();
+    this.props.next(this.props.currentIndex);
+  }
+
+  previous(e) {
+    e.stopPropagation();
+    this.props.previous(this.props.currentIndex);
+  }
+
   render() {
+    const { post } = this.props;
     return (
-      <Wrapper>
-        <CloseButtonWrapper>
+      <Fragment>
+        <CloseButtonWrapper onClick={this.closeModal}>
           <CloseButton />
         </CloseButtonWrapper>
-        <LeftArrow />
-        <RightArrow />
-        <HelpBlock voteLoading={true} vote={false} />
-      </Wrapper>
+        <LeftArrow onClick={this.previous} />
+        <RightArrow onClick={this.next} />
+        <HelpBlock voteLoading={post.voteLoading} vote={post.vote} />
+      </Fragment>
     );
   }
 }
@@ -86,15 +145,29 @@ class Navigation extends Component {
 const mapStateToProps = state => {
   return {
     fullScreenMode: isFullScreenModSelector(state),
-    post: postSelector(state)
+    post: postSelector(state),
+    currentIndex: postIndexSelector(state),
+    modalPoint: modalPointSelector(state)
   };
 };
 
-const mapDispatchToProps = (dispatch, props) => {
+const mapDispatchToProps = dispatch => {
   return {
-    next: () => {},
-    prev: () => {},
-    close: () => {}
+    next: currentIndex => {
+      dispatch(nextPostModal(currentIndex));
+    },
+    previous: currentIndex => {
+      dispatch(previousPostModal(currentIndex));
+    },
+    closeModal: modalPoint => {
+      dispatch(closeModal(modalPoint));
+    },
+    hideFullScreen: () => {
+      dispatch(setFullScreen(false));
+    },
+    toggleVote: postIndex => {
+      dispatch(toggleVote(postIndex));
+    }
   };
 };
 
