@@ -58,12 +58,12 @@ class Header extends React.Component {
 		let browse, authorLink = '';
 
 		let loginComponent = <div className="section login">
-													 <div className="wrap-login">
-														 <Link to="/signin" className="btn btn-default btn-xs">
-															 SIGN IN
-														 </Link>
-													 </div>
-												 </div>;
+			<div className="wrap-login">
+				<Link to="/signin" className="btn btn-default btn-xs">
+					SIGN IN
+				</Link>
+			</div>
+		</div>;
 		if (isAuth) {
 			authorLink = `/@${this.props.user}`;
 			loginComponent = <div className="section controls">
@@ -123,7 +123,8 @@ class Header extends React.Component {
 											? <Link to={authorLink} className="user-link clearfix">
 												<div className="photo">
 													<VotingPower src={this.props.avatar}
-													        size={Constants.DEF_AVATAR_SIZE}
+													             size={Constants.DEF_AVATAR_SIZE}
+													             headerAvatar={true}
 													/>
 												</div>
 												<div className="name">{this.props.user}</div>
@@ -149,7 +150,7 @@ class Header extends React.Component {
 							<div className="wrap-panel container clearfix">
 								<div className="wrap-btn">
 									<button type="button" className="btn-close" onClick={() => {
-										this.props.setSearchValue("");
+										this.props.setSearchValue('');
 										this.props.setSearchPanelState(false);
 									}}/>
 								</div>
@@ -198,7 +199,7 @@ const mapStateToProps = (state, props) => {
 const mapDispatchToProps = (dispatch) => {
 	return {
 		logout: () => {
-			dispatch(logout())
+			dispatch(logout());
 		},
 		updateVotingPower: (username) => {
 			dispatch(updateVotingPower(username));
@@ -221,7 +222,7 @@ const mapDispatchToProps = (dispatch) => {
 		toggleMobileNavigation: () => {
 			dispatch(toggleMobileNavigation());
 		}
-	}
+	};
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Header);

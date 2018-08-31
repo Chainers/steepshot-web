@@ -1,6 +1,6 @@
 import React from 'react';
 import './likePostNotification.css';
-import Avatar from '../../Common/Avatar/Avatar';
+import Avatar from '../../Common/Avatar';
 import {Link} from 'react-router-dom';
 
 class LikePostNotification extends React.Component {
@@ -19,7 +19,7 @@ class LikePostNotification extends React.Component {
 		return (
 			<div className="wrapper_like-post-not">
 				<Link to={loginLink} target="_blank">
-					<Avatar src={this.props.avatar} style={{width: '40px', height: '40px'}}/>
+					<Avatar src={this.props.avatar} size={40}/>
 				</Link>
 				<div className="text_like-post-not">
 					<Link to={loginLink} target="_blank">

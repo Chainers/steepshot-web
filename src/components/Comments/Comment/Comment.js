@@ -2,7 +2,7 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
 import TimeAgo from 'timeago-react';
-import Avatar from '../../Common/Avatar/Avatar';
+import Avatar from '../../Common/Avatar';
 import {replyAuthor, setCommentEditState, setInputForEdit} from '../../../actions/comments';
 import Likes from '../../PostsList/Post/Likes/Likes';
 import './comment.css';
@@ -89,7 +89,7 @@ class Comment extends React.Component {
 						/>
 					</div>
 					<Link to={authorLink} className="user">
-						<Avatar src={this.props.comment.avatar} sizes={Constants.DEF_AVATAR_SIZE}/>
+						<Avatar src={this.props.comment.avatar} size={Constants.DEF_AVATAR_SIZE}/>
 						<div className="name">{this.props.author}</div>
 					</Link>
 				</div>

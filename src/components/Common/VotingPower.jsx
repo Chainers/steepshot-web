@@ -8,7 +8,8 @@ import ImageWithProxy from "./ImageWithProxy";
 
 class VotingPower extends React.Component {
   static defaultProps = {
-    style: {}
+    style: {},
+    headerAvatar: false
   };
 
   componentDidMount() {
@@ -99,26 +100,24 @@ class VotingPower extends React.Component {
 
   render() {
     return (
-      <div className={this.props.powerIndicator ? "position--relative" : ""}>
-        <ShowIf show={this.props.powerIndicator}>
-          <canvas
-            ref={ref => (this.canvas = ref)}
-            className="border-indicator_ava-com"
-            onTouchStart={this.showTip.bind(this)}
-            onTouchEnd={this.hideTip.bind(this)}
-            onMouseEnter={this.showTip.bind(this)}
-          />
-          <ShowIf show={!this.props.headerAvatar && this.props.isTip}>
-            <div
-              ref={ref => (this.tipVotingPower = ref)}
-              className="tip-voting-power_ava-com prevent--selection"
-              onTouchStart={() => {}}
-              onMouseEnter={() => {}}
-              onMouseLeave={this.hideTip.bind(this)}
-            >
-              <p>Power of like: {this.props.votingPower}%</p>
-            </div>
-          </ShowIf>
+      <div className="position--relative">
+        <canvas
+          ref={ref => (this.canvas = ref)}
+          className="border-indicator_ava-com"
+          onTouchStart={this.showTip.bind(this)}
+          onTouchEnd={this.hideTip.bind(this)}
+          onMouseEnter={this.showTip.bind(this)}
+        />
+        <ShowIf show={!this.props.headerAvatar && this.props.isTip}>
+          <div
+            ref={ref => (this.tipVotingPower = ref)}
+            className="tip-voting-power_ava-com prevent--selection"
+            onTouchStart={() => {}}
+            onMouseEnter={() => {}}
+            onMouseLeave={this.hideTip.bind(this)}
+          >
+            <p>Power of like: {this.props.votingPower}%</p>
+          </div>
         </ShowIf>
         <ImageWithProxy src={this.props.src} size={this.props.sizes} />
       </div>

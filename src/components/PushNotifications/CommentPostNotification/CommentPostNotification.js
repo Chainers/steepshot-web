@@ -1,6 +1,6 @@
 import React from 'react';
 import './commentPostNotification.css';
-import Avatar from '../../Common/Avatar/Avatar';
+import Avatar from '../../Common/Avatar';
 import {Link} from 'react-router-dom';
 
 class CommentPostNotification extends React.Component {
@@ -21,7 +21,7 @@ class CommentPostNotification extends React.Component {
 			<div className="wrapper_like-comment-not">
 				<div className="sub-wrapper_like-comment-not">
 					<Link to={loginLink} target="_blank">
-						<Avatar src={this.props.avatar} style={{width: '40px', height: '40px'}}/>
+						<Avatar src={this.props.avatar} size={40}/>
 					</Link>
 					<div className="text_like-post-not">
 						<Link to={loginLink} target="_blank">

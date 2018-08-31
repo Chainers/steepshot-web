@@ -10,7 +10,7 @@ import {
 } from "../../../actions/postModal";
 import TimeAgo from "timeago-react";
 import { Link } from "react-router-dom";
-import Avatar from "../../Common/Avatar/Avatar";
+import Avatar from "../../Common/Avatar";
 import { closeModal } from "../../../actions/modal";
 import ShowIf from "../../Common/ShowIf";
 import Flag from "../../PostsList/Post/Flag/Flag";
@@ -430,7 +430,7 @@ class PostModal extends React.Component {
             <Link to={authorLink} className="user_pos-mod">
               <Avatar
                 src={this.props.post.avatar}
-                sizes={Constants.DEF_AVATAR_SIZE}
+                size={Constants.DEF_AVATAR_SIZE}
               />
               <div className="name_pos-mod">{this.props.post.author}</div>
             </Link>
