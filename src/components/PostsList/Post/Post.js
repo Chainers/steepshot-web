@@ -11,7 +11,7 @@ import Vote from './Vote/Vote';
 import {openPostModal} from '../../../actions/postModal';
 import {playVideo, setPowerLikeInd, setPowerLikeTimeout, setVideoTime, stopVideo} from '../../../actions/post';
 import LoadingSpinner from '../../LoadingSpinner/index';
-import {Avatar} from '../../Common/Avatar';
+import Avatar from '../../Common/Avatar';
 import Likes from './Likes/Likes';
 import './post.css';
 import ReactPlayer from 'react-player';

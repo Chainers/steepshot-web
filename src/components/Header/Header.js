@@ -4,13 +4,13 @@ import {connect} from 'react-redux';
 import {push} from 'react-router-redux';
 import {logout, setUserAuth, updateVotingPower} from '../../actions/auth';
 import Constants from '../../common/constants';
-import Avatar from '../Common/Avatar/Avatar';
 import {setSearchPanelState, setSearchValue} from '../../actions/search';
 import {closeMobileNavigation, toggleMobileNavigation} from '../../actions/mobileNavigation';
 import Hamburger from '../Hamburger/Hamburger';
 import './header.css';
 import AuthService from '../../services/AuthService';
 import ShowIf from '../Common/ShowIf';
+import VotingPower from '../Common/VotingPower';
 
 class Header extends React.Component {
 
@@ -122,10 +122,8 @@ class Header extends React.Component {
 										this.props.user
 											? <Link to={authorLink} className="user-link clearfix">
 												<div className="photo">
-													<Avatar src={this.props.avatar}
-													        powerIndicator={true}
-													        headerAvatar={true}
-													        sizes={Constants.DEF_AVATAR_SIZE}
+													<VotingPower src={this.props.avatar}
+													        size={Constants.DEF_AVATAR_SIZE}
 													/>
 												</div>
 												<div className="name">{this.props.user}</div>

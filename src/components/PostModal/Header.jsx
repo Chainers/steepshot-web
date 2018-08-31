@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import TimeAgo from "timeago-react";
 import PostContextMenu from "../PostContextMenu/PostContextMenu";
-import { Avatar } from "../Common/Avatar";
+import Avatar from "../Common/Avatar";
 
 const Wrapper = styled.div`
   padding: 20px;

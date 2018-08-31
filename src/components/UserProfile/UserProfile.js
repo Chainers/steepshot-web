@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import Constants from '../../common/constants';
-import Avatar from '../Common/Avatar/Avatar';
+import Avatar from '../Common/Avatar';
 import PostsList from '../PostsList/PostsList';
 import UsersList from '../UsersList/UsersList';
 import {push, replace} from 'react-router-redux';
@@ -16,6 +16,7 @@ import Follow from '../Follow/Follow';
 import AuthService from '../../services/AuthService';
 import renderHTML from 'react-render-html';
 import MarkdownParser from '../../utils/markdownParser';
+import VotingPower from '../Common/VotingPower';
 
 class UserProfile extends React.Component {
 
@@ -53,12 +54,18 @@ class UserProfile extends React.Component {
 						<div className="col-xs-12 col-md-4 col-lg-3">
 							<div className="user-information">
 								<div className="pic-wrap clearfix">
-									<Avatar src={this.props.profile['profile_image']}
-									        powerIndicator={this.props.isYourProfile}
-									        sizes={Constants.USER_PROFILE_AVATAR_SIZE}
-									/>
-									<ShowIf show={!this.props.isYourProfile && this.props.isAuth}>
-										<Follow/>
+									<ShowIf show={this.props.isYourProfile}>
+										<VotingPower src={this.props.profile['profile_image']}
+										             sizes={Constants.USER_PROFILE_AVATAR_SIZE}/>
+									</ShowIf>
+									<ShowIf show={!this.props.isYourProfile}>
+										<Avatar src={this.props.profile['profile_image']}
+										        powerIndicator={this.props.isYourProfile}
+										        sizes={Constants.USER_PROFILE_AVATAR_SIZE}
+										/>
+										<ShowIf show={this.props.isAuth}>
+											<Follow/>
+										</ShowIf>
 									</ShowIf>
 								</div>
 								<div className="name">{name}</div>
