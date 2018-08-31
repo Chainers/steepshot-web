@@ -46,7 +46,7 @@ export function changeFollow(followingName, followed, component) {
 			.then(response => {
 				dispatch(pushMessage(`User has been successfully ${followed ? 'un' : ''}followed.`));
 				dispatch({
-					type: 'CHANGE_FOLLOW_SUCCESS',
+					type: 'CHANGE_FOLLOW_SUCCESS_' + component,
 					response,
 					author: followingName
 				})
