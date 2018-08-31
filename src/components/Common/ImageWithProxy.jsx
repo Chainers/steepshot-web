@@ -8,10 +8,10 @@ const Image = styled.div`
     width: ${({ size }) => size}px;
     height: ${({ size }) => size}px;
     overflow: hidden;
-    background: url('${({ proxyUrl }) => proxyUrl}'), 
-    url('${({ originUrl }) => originUrl}'), url('${({ defaultUrl }) =>
-  defaultUrl}') no-repeat center;
-     background-size: cover;
+    background: url('${({ proxyUrl }) => proxyUrl}') no-repeat center, 
+      url('${({ originUrl }) => originUrl}') no-repeat center, 
+      url('${({ defaultUrl }) => defaultUrl}') no-repeat center;
+    background-size: cover;
 `;
 
 class ImageWithProxy extends Component {

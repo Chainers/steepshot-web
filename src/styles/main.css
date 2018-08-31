@@ -883,8 +883,16 @@ input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer
 
 .user-information .pic-wrap {
     margin-bottom: 25px;
+}
+
+.user-information .pic-wrap,
+.user-information .pic-wrap > .container_show-if {
     display: flex;
     align-items: center;
+}
+
+.user-information .pic-wrap > .container_show-if > div:first-child {
+    margin-right: 25px;
 }
 
 .user-information .name {

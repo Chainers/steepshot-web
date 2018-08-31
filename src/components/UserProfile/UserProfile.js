@@ -60,8 +60,7 @@ class UserProfile extends React.Component {
 									</ShowIf>
 									<ShowIf show={!this.props.isYourProfile}>
 										<Avatar src={this.props.profile['profile_image']}
-										        powerIndicator={this.props.isYourProfile}
-										        sizes={Constants.USER_PROFILE_AVATAR_SIZE}
+										        size={Constants.USER_PROFILE_AVATAR_SIZE}
 										/>
 										<ShowIf show={this.props.isAuth}>
 											<Follow/>
