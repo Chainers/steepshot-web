@@ -17,6 +17,15 @@ const Canvas = styled.canvas`
   transform: rotate(-90deg);
 `;
 
+const Tip = styled.div`
+  position: absolute;
+  opacity: 0;
+
+  &:hover {
+    opacity: 1;
+  }
+`;
+
 class VotingPower extends React.Component {
   static defaultProps = {
     style: {},
@@ -126,15 +135,15 @@ class VotingPower extends React.Component {
           onMouseEnter={this.showTip}
         />
         <ShowIf show={!this.props.headerAvatar && this.props.isTip}>
-          <div
+          <Tip
             ref={ref => (this.tipVotingPower = ref)}
-            className="tip-voting-power_ava-com prevent--selection"
+            className="prevent--selection"
             onTouchStart={this.emptyFunc}
             onMouseEnter={this.emptyFunc}
             onMouseLeave={this.hideTip}
           >
             <p>Power of like: {this.props.votingPower}%</p>
-          </div>
+          </Tip>
         </ShowIf>
         <Avatar src={this.props.src} size={this.props.size - 10} />
       </Wrapper>

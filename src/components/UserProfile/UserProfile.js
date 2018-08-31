@@ -56,7 +56,7 @@ class UserProfile extends React.Component {
 								<div className="pic-wrap clearfix">
 									<ShowIf show={this.props.isYourProfile}>
 										<VotingPower src={this.props.profile['profile_image']}
-										             sizes={Constants.USER_PROFILE_AVATAR_SIZE}/>
+										             size={Constants.USER_PROFILE_AVATAR_SIZE}/>
 									</ShowIf>
 									<ShowIf show={!this.props.isYourProfile}>
 										<Avatar src={this.props.profile['profile_image']}
