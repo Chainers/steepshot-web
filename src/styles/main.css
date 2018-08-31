@@ -1017,15 +1017,20 @@ input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer
 
 .user-panel .user .user-link {
     display: flex;
-    text-decoration: none
+    text-decoration: none;
+    margin-top: -5px;
 }
 
 .user-panel .user .user-link > div:first-child {
     margin-right: 10px;
 }
 
+.user-panel .user .user-link .name {
+    margin-top: 5px;
+}
+
 .user-panel .user .user-link:hover .name {
-    color: #e74800
+    color: #e74800;
 }
 
 .user-panel .user .photo {
