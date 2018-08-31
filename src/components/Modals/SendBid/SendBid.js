@@ -14,16 +14,9 @@ import BotTimer from './BotTimer/BotTimer';
 import {setActiveKeyInputSecurity} from '../../../actions/activeKey';
 import InputActiveKey from '../../Common/InputActiveKey/InputActiveKey';
 import ImagesService from '../../../services/ImagesService';
+import ImageWithProxy from '../../Common/ImageWithProxy';
 
 class SendBid extends React.Component {
-
-	constructor(props) {
-		super(props);
-		this.tick = this.tick.bind(this);
-    if (this.props.botAvatarSrc && this.props.botAvatarSrc !== Constants.NO_AVATAR) {
-      ImagesService.getImagesWithProxy(this.props.botAvatarSrc, this.props.sizes);
-		}
-	}
 
 	componentDidMount() {
 		this.bidTimer = setTimeout(() => {
@@ -57,7 +50,6 @@ class SendBid extends React.Component {
 	}
 
 	render() {
-		let botAvatarStyle = {backgroundImage: 'url("' + this.props.botAvatarSrc + '")'};
 		return (
 			<WalletPopupTemplate title="PROMOTER FOUND!"
 			                     username={this.props.botName}
@@ -66,7 +58,7 @@ class SendBid extends React.Component {
 			                     cancel={this.props.closeModal}
 			                     ok={this.props.sendBid}>
 				<div className="body_send-bid">
-					<div className="bot-logo_send-bid" style={botAvatarStyle}/>
+					<ImageWithProxy src={this.props.botAvatarSrc} size={100} className="bot-logo_send-bid"/>
 					<BotTimer isRead={this.props.redTimer} isBlocked={this.props.blockedTimer}
 					          upvoteTime={this.props.upvoteTime} tick={this.tick}/>
 				</div>
@@ -78,18 +70,13 @@ class SendBid extends React.Component {
 
 const mapStateToProps = (state) => {
 	const {activeKey, redTimer, blockedTimer, suitableBot} = state.promoteModal;
-	let botAvatarSrc = suitableBot.avatar || Constants.NO_AVATAR;
 	let sizes = Constants.USER_PROFILE_AVATAR_SIZE;
-  let botAvatarUrl = state.images[botAvatarSrc];
-  if (botAvatarUrl) {
-    botAvatarSrc = botAvatarUrl[sizes];
-  }
 	return {
     sizes,
 		activeKey,
 		redTimer,
 		blockedTimer,
-    botAvatarSrc,
+    botAvatarSrc: suitableBot.avatar,
 		upvoteTime: suitableBot.next,
 		botName: suitableBot.name
 	}

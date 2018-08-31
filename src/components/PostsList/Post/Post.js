@@ -11,29 +11,28 @@ import Vote from './Vote/Vote';
 import {openPostModal} from '../../../actions/postModal';
 import {playVideo, setPowerLikeInd, setPowerLikeTimeout, setVideoTime, stopVideo} from '../../../actions/post';
 import LoadingSpinner from '../../LoadingSpinner/index';
-import Avatar from '../../Common/Avatar/Avatar';
+import {Avatar} from '../../Common/Avatar';
 import Likes from './Likes/Likes';
 import './post.css';
 import ReactPlayer from 'react-player';
 import MarkdownParser from '../../../utils/markdownParser';
 import renderHTML from 'react-render-html';
-import ImagesService from '../../../services/ImagesService';
-import PostImgBackground from './PostImgBackground';
 import ChainService from '../../../services/ChainService';
 import PostModal from '../../PostModal/PostModal';
+import ImageWithProxy from '../../Common/ImageWithProxy';
+import styled from "styled-components";
+
+const Image = styled(ImageWithProxy)`
+	width: 100%;
+	height: 100%;
+`;
+
 
 class Post extends React.Component {
 
 	static defaultProps = {
 		clearPostHeader: false,
 	};
-
-	constructor(props) {
-		super(props);
-		if (this.props.imageUrl && this.props.imageUrl !== Constants.NO_IMAGE) {
-			ImagesService.getImagesWithProxy(this.props.imageUrl, Constants.DEF_POST_SIZE);
-		}
-	}
 
 	openPostModal() {
 		let modalOption = {
@@ -132,7 +131,7 @@ class Post extends React.Component {
 						<p>Low rated content</p>
 					</div>
 				</ShowIf>
-				<PostImgBackground src={this.props.imageUrl} sizes={Constants.DEF_POST_SIZE}/>
+				<Image src={this.props.imageUrl} size={Constants.DEF_POST_SIZE}/>
 			</div>
 		)
 	}
@@ -166,7 +165,7 @@ class Post extends React.Component {
 							</div>
 							<Link to={authorLink} className="user">
 								<div className="photo">
-									<Avatar src={this.props.avatar} sizes={Constants.DEF_AVATAR_SIZE}/>
+									<Avatar src={this.props.avatar} size={20}/>
 								</div>
 								<div className="name">{this.props.author}</div>
 							</Link>

@@ -4,22 +4,14 @@ import Constants from '../../../common/constants';
 import ShowIf from '../ShowIf';
 import './avatar.css';
 import {setAvatarTip, setAvatarTipTimeout} from '../../../actions/avatar';
-import ImagesService from '../../../services/ImagesService';
-import AvaImgBackground from './AvaImgBackground';
 import Utils from '../../../utils/Utils';
+import ImageWithProxy from '../ImageWithProxy';
 
 class Avatar extends React.Component {
 
 	static defaultProps = {
 		style: {}
 	};
-
-	constructor(props) {
-		super(props);
-		if (this.props.src && this.props.src !== Constants.NO_AVATAR) {
-			ImagesService.getImagesWithProxy(this.props.src, this.props.sizes);
-		}
-	}
 
 	componentDidMount() {
 		this.powerIndicator(this.props.votingPower);
@@ -121,9 +113,7 @@ class Avatar extends React.Component {
 						</div>
 					</ShowIf>
 				</ShowIf>
-				<AvaImgBackground style={this.props.style}
-				                  src={this.props.src}
-				                  sizes={this.props.sizes}/>
+				<ImageWithProxy src={this.props.src} size={this.props.sizes}/>
 			</div>
 		)
 	}
