@@ -7,12 +7,14 @@ import PostContextMenu from "../PostContextMenu/PostContextMenu";
 import Avatar from "../Common/Avatar";
 
 const Wrapper = styled.div`
-  padding: 20px;
-  background-color: #ffffff;
+  position: relative;
   width: 100%;
+  height: 60px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 0 15px 0 20px;
+  background-color: #ffffff;
 `;
 
 const LeftBlock = styled(Link)`
@@ -23,17 +25,19 @@ const LeftBlock = styled(Link)`
 `;
 
 const UserName = styled.div`
+  display: flex;
+  align-items: center;
+  margin-left: 10px;
   font-size: 14px;
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
   transition: 0.2s all ease;
-  display: flex;
-  align-items: center;
 `;
 
 const RightBlock = styled.div`
   display: flex;
+  align-items: center;
   color: #979b9e;
   font-size: 12px;
   line-height: 22px;
@@ -46,13 +50,10 @@ const Time = styled(TimeAgo)`
 const ContextMenu = styled(PostContextMenu)`
   height: 22px;
   width: 22px;
-  margin-right: 38px;
+  margin-right: 10px;
 `;
 
 const CloseButton = styled.div`
-  position: absolute;
-  top: 15px;
-  right: 15px;
   height: 32px;
   width: 32px;
   display: flex;
