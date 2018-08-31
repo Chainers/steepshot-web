@@ -4,13 +4,31 @@ import Constants from "../../common/constants";
 import ShowIf from "./ShowIf";
 import { setAvatarTip, setAvatarTipTimeout } from "../../actions/avatar";
 import Utils from "../../utils/Utils";
-import ImageWithProxy from "./ImageWithProxy";
+import Avatar from "./Avatar";
+import * as ReactDOm from "react-dom";
+import styled from "styled-components";
+
+const Wrapper = styled.div`
+  position: relative;
+`;
+
+const Canvas = styled.canvas`
+  position: absolute;
+  transform: rotate(-90deg);
+`;
 
 class VotingPower extends React.Component {
   static defaultProps = {
     style: {},
     headerAvatar: false
   };
+
+  constructor() {
+    super();
+    this.showTip = this.showTip.bind(this);
+    this.hideTip = this.hideTip.bind(this);
+    this.showTip = this.showTip.bind(this);
+  }
 
   componentDidMount() {
     this.powerIndicator(this.props.votingPower);
@@ -100,29 +118,30 @@ class VotingPower extends React.Component {
 
   render() {
     return (
-      <div className="position--relative">
-        <canvas
-          ref={ref => (this.canvas = ref)}
-          className="border-indicator_ava-com"
-          onTouchStart={this.showTip.bind(this)}
-          onTouchEnd={this.hideTip.bind(this)}
-          onMouseEnter={this.showTip.bind(this)}
+      <Wrapper>
+        <Canvas
+          ref={ref => (this.canvas = ReactDOm.findDOMNode(ref))}
+          onTouchStart={this.showTip}
+          onTouchEnd={this.hideTip}
+          onMouseEnter={this.showTip}
         />
         <ShowIf show={!this.props.headerAvatar && this.props.isTip}>
           <div
             ref={ref => (this.tipVotingPower = ref)}
             className="tip-voting-power_ava-com prevent--selection"
-            onTouchStart={() => {}}
-            onMouseEnter={() => {}}
-            onMouseLeave={this.hideTip.bind(this)}
+            onTouchStart={this.emptyFunc}
+            onMouseEnter={this.emptyFunc}
+            onMouseLeave={this.hideTip}
           >
             <p>Power of like: {this.props.votingPower}%</p>
           </div>
         </ShowIf>
-        <ImageWithProxy src={this.props.src} size={this.props.sizes} />
-      </div>
+        <Avatar src={this.props.src} size={this.props.size - 10} />
+      </Wrapper>
     );
   }
+
+  emptyFunc() {}
 }
 
 const mapStateToProps = (state, props) => {

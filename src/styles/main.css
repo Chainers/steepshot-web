@@ -1016,8 +1016,12 @@ input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer
 }
 
 .user-panel .user .user-link {
-    display: block;
+    display: flex;
     text-decoration: none
+}
+
+.user-panel .user .user-link > div:first-child {
+    margin-right: 10px;
 }
 
 .user-panel .user .user-link:hover .name {

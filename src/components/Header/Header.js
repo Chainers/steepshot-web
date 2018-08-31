@@ -121,12 +121,10 @@ class Header extends React.Component {
 									{
 										this.props.user
 											? <Link to={authorLink} className="user-link clearfix">
-												<div className="photo">
 													<VotingPower src={this.props.avatar}
 													             size={Constants.DEF_AVATAR_SIZE}
 													             headerAvatar={true}
 													/>
-												</div>
 												<div className="name">{this.props.user}</div>
 											</Link>
 											: null
