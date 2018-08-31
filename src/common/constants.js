@@ -51,7 +51,7 @@ const Constants = {
 	NO_AVATAR: '/images/person.png',
 	DEF_AVATAR_SIZE: 30,
 	USER_CARD_AVATAR_SIZE: 60,
-	USER_PROFILE_AVATAR_SIZE: 110,
+	USER_PROFILE_AVATAR_SIZE: 112,
 
 	NO_IMAGE: '/images/noimage.jpg',
 	DEF_POST_SIZE: 300,

@@ -13,7 +13,6 @@ import textInput from "./textInput";
 import metaTags from "./metaTags";
 import search from "./search";
 import editPost from "./editPost";
-import avatar from "./avatar";
 import { routerReducer } from "react-router-redux";
 import pushNotifications from "./pushNotifications";
 import comments from "./comments";
@@ -55,7 +54,6 @@ export default combineReducers({
   likesFlagsList,
   editPost,
   textInput,
-  avatar,
   metaTags,
   search,
   pushNotifications,

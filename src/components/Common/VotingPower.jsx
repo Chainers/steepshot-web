@@ -1,29 +1,46 @@
 import React from "react";
 import { connect } from "react-redux";
-import Constants from "../../common/constants";
 import ShowIf from "./ShowIf";
-import { setAvatarTip, setAvatarTipTimeout } from "../../actions/avatar";
-import Utils from "../../utils/Utils";
 import Avatar from "./Avatar";
 import * as ReactDOm from "react-dom";
 import styled from "styled-components";
+import Constants from "../../common/constants";
+
+const Tip = styled.div`
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: #f7f7f7;
+  text-align: center;
+  opacity: 0;
+  z-index: 1;
+
+  transition: opacity 4s ease-in;
+`;
 
 const Wrapper = styled.div`
   position: relative;
+  width: ${({ size }) => size}px;
+  height: ${({ size }) => size}px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  &:hover > ${Tip} {
+    opacity: 1;
+    transition: opacity 0ms;
+  }
 `;
 
 const Canvas = styled.canvas`
   position: absolute;
   transform: rotate(-90deg);
-`;
-
-const Tip = styled.div`
-  position: absolute;
-  opacity: 0;
-
-  &:hover {
-    opacity: 1;
-  }
+  width: 100%;
+  height: 100%;
 `;
 
 class VotingPower extends React.Component {
@@ -32,148 +49,73 @@ class VotingPower extends React.Component {
     headerAvatar: false
   };
 
-  constructor() {
-    super();
-    this.showTip = this.showTip.bind(this);
-    this.hideTip = this.hideTip.bind(this);
-    this.showTip = this.showTip.bind(this);
-  }
-
   componentDidMount() {
-    this.powerIndicator(this.props.votingPower);
+    this.renderCircle(this.props.votingPower);
   }
 
   componentWillReceiveProps(nextProps) {
-    this.powerIndicator(nextProps.votingPower);
-  }
-
-  shouldComponentUpdate(nextProps) {
-    if (Utils.equalsObjects(nextProps, this.props)) return false;
-    return true;
-  }
-
-  powerIndicator(votingPower) {
-    if (this.canvas) {
-      let ctx = this.canvas.getContext("2d");
-      let ratio = window.devicePixelRatio;
-      let style = this.canvas.style;
-      style.width = "112px";
-      style.height = "112px";
-      style.left = "-6px";
-      style.top = "-6px";
-      this.canvas.width = 112 * ratio;
-      this.canvas.height = 112 * ratio;
-      let coords = 56,
-        radius = 54,
-        lineWidth = 3,
-        gradStart = 50,
-        gradEnd = 150;
-      if (this.props.headerAvatar) {
-        style.width = "30px";
-        style.height = "30px";
-        style.left = "-5px";
-        style.top = "-5px";
-        this.canvas.width = 30 * ratio;
-        this.canvas.height = 30 * ratio;
-        coords = 15;
-        radius = 13;
-        lineWidth = 2;
-        gradStart = 10;
-        gradEnd = 30;
-      }
-      ctx.scale(ratio, ratio);
-      if (!this.props.headerAvatar) {
-        ctx.beginPath();
-        ctx.arc(coords, coords, radius, 2 * Math.PI, 0);
-        ctx.strokeStyle = "#d1d5d8";
-        ctx.lineWidth = lineWidth;
-        ctx.stroke();
-        ctx.closePath();
-      }
-      ctx.beginPath();
-      ctx.lineCap = "round";
-      ctx.arc(coords, coords, radius, (votingPower / 50) * Math.PI, 0, true);
-      ctx.lineWidth = lineWidth;
-      let grad = ctx.createLinearGradient(
-        gradStart,
-        gradStart,
-        gradEnd,
-        gradEnd
-      );
-      grad.addColorStop(0.1, "#ff7700");
-      grad.addColorStop(0.5, "#ff1000");
-      ctx.strokeStyle = grad;
-      ctx.stroke();
+    if (nextProps.votingPower !== this.props.votingPower) {
+      this.renderCircle(nextProps.votingPower);
     }
   }
 
-  showTip() {
-    if (!this.props.headerAvatar) {
-      this.props.setAvatarTip(true);
-    }
-  }
+  renderCircle(votingPower) {
+    const { size, headerAvatar } = this.props;
+    let ctx = this.canvas.getContext("2d");
+    let ratio = window.devicePixelRatio;
+    this.canvas.width = size * ratio;
+    this.canvas.height = size * ratio;
+    const coords = this.props.size / 2;
+    const radius = this.props.size / 2 - 2;
+    const lineWidth = headerAvatar ? 2 : 3;
+    const gradStart = size / 3;
+    const gradEnd = size;
+    ctx.scale(ratio, ratio);
 
-  hideTip() {
-    if (this.props.tipTimeout) {
-      return;
-    }
-    this.tipVotingPower.classList.add("tip-hide_ava-com");
-    let tipTimeout = setTimeout(() => {
-      this.props.setAvatarTip(false);
-      this.props.setAvatarTipTimeout(null);
-    }, 4000);
-    this.props.setAvatarTipTimeout(tipTimeout);
+    ctx.beginPath();
+    ctx.arc(coords, coords, radius, 2 * Math.PI, 0);
+    ctx.strokeStyle = headerAvatar ? "rgba(0,0,0,0)" : "#d1d5d8";
+    ctx.lineWidth = lineWidth;
+    ctx.stroke();
+    ctx.closePath();
+
+    ctx.beginPath();
+    ctx.lineCap = "round";
+    ctx.arc(coords, coords, radius, (votingPower / 50) * Math.PI, 0, true);
+    ctx.lineWidth = lineWidth;
+
+    let grad = ctx.createLinearGradient(gradStart, gradStart, gradEnd, gradEnd);
+    grad.addColorStop(0.1, "#ff7700");
+    grad.addColorStop(0.5, "#ff1000");
+    ctx.strokeStyle = grad;
+    ctx.stroke();
   }
 
   render() {
+    const { size } = this.props;
     return (
-      <Wrapper>
-        <Canvas
-          ref={ref => (this.canvas = ReactDOm.findDOMNode(ref))}
-          onTouchStart={this.showTip}
-          onTouchEnd={this.hideTip}
-          onMouseEnter={this.showTip}
-        />
-        <ShowIf show={!this.props.headerAvatar && this.props.isTip}>
-          <Tip
-            ref={ref => (this.tipVotingPower = ref)}
-            className="prevent--selection"
-            onTouchStart={this.emptyFunc}
-            onMouseEnter={this.emptyFunc}
-            onMouseLeave={this.hideTip}
-          >
-            <p>Power of like: {this.props.votingPower}%</p>
+      <Wrapper size={size}>
+        <Canvas ref={ref => (this.canvas = ReactDOm.findDOMNode(ref))} />
+        <ShowIf show={!this.props.headerAvatar}>
+          <Tip className="prevent--selection">
+            Power of like: {this.props.votingPower}%
           </Tip>
         </ShowIf>
-        <Avatar src={this.props.src} size={this.props.size - 10} />
+        <Avatar
+          src={this.props.src}
+          size={this.props.size - 10}
+          defaultUrl={Constants.NO_AVATAR}
+        />
       </Wrapper>
     );
   }
-
-  emptyFunc() {}
 }
 
 const mapStateToProps = (state, props) => {
   return {
-    src: props.src || Constants.NO_AVATAR,
-    votingPower: state.auth.voting_power,
-    isTip: state.avatar.isTip,
-    tipTimeout: state.avatar.tipTimeout
+    src: props.src,
+    votingPower: state.auth.voting_power
   };
 };
 
-const mapDispatchToProps = dispatch => {
-  return {
-    setAvatarTip: param => {
-      dispatch(setAvatarTip(param));
-    },
-    setAvatarTipTimeout: timeout => {
-      dispatch(setAvatarTipTimeout(timeout));
-    }
-  };
-};
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(VotingPower);
+export default connect(mapStateToProps)(VotingPower);
