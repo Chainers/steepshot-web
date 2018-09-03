@@ -216,6 +216,8 @@ const Constants = {
 
 	MAX_TAGS_NUMBER: 'You have reached the max number of tags.',
 
+	COPY_TO_CLIPBOARD: 'URL has been successfully copied to clipboard.',
+
 	ONE_SIGNAL: {
 		APP_ID: '77fa644f-3280-4e87-9f14-1f0c7ddf8ca5',
 		STATES: {

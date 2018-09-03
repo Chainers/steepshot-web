@@ -2,7 +2,7 @@ import {getStore} from '../store/configureStore';
 import UserService from '../services/UserService';
 import {serverErrorsList} from '../utils/serverErrorsList';
 import Constants from '../common/constants';
-import pushMessage from '../reducers/pushMessage';
+import {pushMessage} from './pushMessage';
 
 export function initUsersList(options) {
 	return {
