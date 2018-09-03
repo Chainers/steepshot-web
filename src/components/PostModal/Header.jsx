@@ -8,8 +8,6 @@ import Avatar from "../Common/Avatar";
 
 const Wrapper = styled.div`
   position: relative;
-  width: 100%;
-  height: 60px;
   display: flex;
   justify-content: space-between;
   align-items: center;

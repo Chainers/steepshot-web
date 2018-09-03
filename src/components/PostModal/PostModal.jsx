@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
 import styled from "styled-components";
 import {
@@ -15,43 +15,26 @@ import NavigationPostModal from "./NavigationPostModal";
 import Header from "./Header";
 import { closeModal } from "../../actions/modal";
 
-const Wrapper = styled.div`
-  display: table-cell;
-
-  ${is("isMobileSize")`
-    display: block;
-    min-height: 100vh;
-  `};
-`;
-
-const PostWrapper = styled.div`
-  display: flex;
-  border-radius: 10px;
-  overflow: hidden;
-
-  ${is("isMobileSize")`
-      flex-direction: column;
-      border-radius: 0;
-  `};
-`;
-
 const ContentWrapper = styled.div`
   width: ${({ width }) => width}px;
   height: ${({ height }) => height}px;
   min-width: ${Constants.IMAGE.DISPLAY.MIN_WIDTH}px;
   min-height: ${Constants.IMAGE.DISPLAY.MIN_HEIGHT}px;
   background: #e7e7e7;
+  grid-area: content;
 
   ${is("isMobileSize")`
     min-height: auto;
   `};
 `;
 
+const HeaderWrapper = styled(Header)`
+  grid-area: header;
+`;
+
 const DetailsWrapper = styled.div`
-  width: 380px;
-  height: ${({ height }) => height}px;
-  min-height: ${Constants.IMAGE.DISPLAY.MIN_HEIGHT}px;
   background-color: black;
+  grid-area: details;
 
   ${is("fullScreenMode")`
     display: none;  
@@ -59,6 +42,31 @@ const DetailsWrapper = styled.div`
 
   ${is("isMobileSize")`
     width: 100%;
+  `};
+`;
+
+const PostWrapper = styled.div`
+  display: grid;
+  grid-template-columns: auto 380px;
+  grid-template-rows: 60px auto;
+
+  grid-template-areas:
+    "content header"
+    "content details";
+
+  border-radius: 10px;
+  overflow: hidden;
+
+  ${is("isMobileSize")`
+      grid-template-columns: 1fr;
+      grid-template-rows: 60px auto 1fr;
+      grid-template-areas: 
+        "header"
+        "content"
+        "details";
+      
+      min-height: 100vh;
+      border-radius: 0;
   `};
 `;
 
@@ -76,7 +84,7 @@ class PostModal extends Component {
     const { fullScreenMode, imageSize, isMobileSize, post } = this.props;
 
     return (
-      <Wrapper isMobileSize={isMobileSize}>
+      <Fragment>
         <PostWrapper isMobileSize={isMobileSize}>
           <ContentWrapper
             width={imageSize.width}
@@ -85,7 +93,7 @@ class PostModal extends Component {
           >
             <Content />
           </ContentWrapper>
-          <Header post={post} closeModal={this.closeModal} />
+          <HeaderWrapper post={post} closeModal={this.closeModal} />
           <DetailsWrapper
             height={imageSize.height}
             fullScreenMode={fullScreenMode}
@@ -93,7 +101,7 @@ class PostModal extends Component {
           />
         </PostWrapper>
         <NavigationPostModal />
-      </Wrapper>
+      </Fragment>
     );
   }
 }
