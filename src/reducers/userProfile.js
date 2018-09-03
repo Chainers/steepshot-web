@@ -44,7 +44,7 @@ export default function userProfile(state = initialState, action) {
         changingFollowProfile: true
 			};
 
-		case 'CHANGE_FOLLOW_SUCCESS':
+		case 'CHANGE_FOLLOW_SUCCESS_PROFILE':
 			if (!state.profile) {
 				return state;
 			}
