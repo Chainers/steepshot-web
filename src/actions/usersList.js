@@ -2,6 +2,7 @@ import {getStore} from '../store/configureStore';
 import UserService from '../services/UserService';
 import {serverErrorsList} from '../utils/serverErrorsList';
 import Constants from '../common/constants';
+import pushMessage from '../reducers/pushMessage';
 
 export function initUsersList(options) {
 	return {
@@ -141,4 +142,30 @@ export function updateUser(author) {
 				})
 			});
 	}
+}
+
+export function changeFollowUserCard(followingName, followed) {
+  return dispatch => {
+    dispatch({
+      type: 'CHANGE_FOLLOW_REQUEST_USER_CARD',
+      author: followingName
+    });
+    UserService.changeFollow(followingName, followed)
+      .then(response => {
+        dispatch(pushMessage(`User has been successfully ${followed ? 'un' : ''}followed.`));
+        dispatch({
+          type: 'CHANGE_FOLLOW_SUCCESS_USER_CARD',
+          response,
+          author: followingName
+        })
+      })
+      .catch(error => {
+        dispatch(pushMessage(error));
+        dispatch({
+          type: 'CHANGE_FOLLOW_ERROR',
+          error,
+          author: followingName
+        })
+      })
+  }
 }

@@ -5,9 +5,9 @@ import is from 'styled-is';
 import './follow.css';
 import ShowIf from '../Common/ShowIf';
 import {pushMessage} from '../../actions/pushMessage';
-import {changeFollow} from '../../actions/userProfile';
 import {changeUserSubscribe} from '../../actions/oneSignal';
 import {loadingEllipsis} from '../../utils/loadingEllipsis';
+import {changeFollowProfile} from '../../actions/userProfile';
 
 const WrapperFollow = styled.div`
 	display: flex;
@@ -109,7 +109,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
 	return {
 		changeFollowFunc: (followingName, followed) => {
-			dispatch(changeFollow(followingName, followed, 'PROFILE'))
+			dispatch(changeFollowProfile(followingName, followed))
 		},
 		pushMessage: (message) => {
 			dispatch(pushMessage(message))

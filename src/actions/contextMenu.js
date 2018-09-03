@@ -1,6 +1,6 @@
 import {getStore} from '../store/configureStore';
 
-export function openContextMenu(point) {
+export function toggleContextMenu(point) {
 	const isMenuAlreadyOpened = getStore().getState().contextMenu[point];
 	if (isMenuAlreadyOpened) {
     return {
