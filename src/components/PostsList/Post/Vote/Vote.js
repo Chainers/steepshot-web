@@ -8,6 +8,7 @@ import VoteIndicator from './VoteIndicator/VoteIndicator';
 import ShowIf from '../../../Common/ShowIf';
 import './vote.css';
 import AuthService from '../../../../services/AuthService';
+import {isSinglePost} from '../../../../selectors/postModalSelectors';
 
 class Vote extends React.Component {
 
@@ -185,7 +186,8 @@ const mapStateToProps = (state, props) => {
 		isPLOpen: post.isPLOpen,
 		plTimeout: post.plTimeout,
 		hplTimeout: post.hplTimeout,
-		isAuth: AuthService.isAuth()
+		isAuth: AuthService.isAuth(),
+		singlePost: isSinglePost(state)
 	};
 };
 

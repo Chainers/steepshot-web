@@ -459,7 +459,6 @@ class PostModal extends React.Component {
                   <Vote
                     postIndex={this.props.currentIndex}
                     powerLikeIndPlace="modal"
-                    singlePost={this.props.singlePost}
                   />
                 </div>
               </div>

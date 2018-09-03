@@ -15,6 +15,7 @@ class Likes extends React.Component {
 	}
 
 	render() {
+		const { className } = this.props;
 		if (this.props.likes === 0 && !this.props.flags) {
 			if (this.props.commentAuthor) return <div></div>;
 			return <div className="no-likes-flags_likes centered--flex"
@@ -28,7 +29,7 @@ class Likes extends React.Component {
 			likeFlag = <span>{this.props.flags} {this.props.flags > 1 ? ' flags' : ' flag'}</span>;
 		}
 		return (
-			<div className="container_likes centered--flex"
+			<div className={'container_likes centered--flex ' + (className || '')}
 			     onClick={this.openLikesModal.bind(this)}
 			     style={this.props.style}>
 				{likeFlag}

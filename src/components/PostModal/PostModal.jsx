@@ -14,6 +14,7 @@ import Constants from "../../common/constants";
 import NavigationPostModal from "./NavigationPostModal";
 import Header from "./Header";
 import { closeModal } from "../../actions/modal";
+import Details from "./Details";
 
 const ContentWrapper = styled.div`
   width: ${({ width }) => width}px;
@@ -32,16 +33,11 @@ const HeaderWrapper = styled(Header)`
   grid-area: header;
 `;
 
-const DetailsWrapper = styled.div`
-  background-color: black;
+const DetailsWrapper = styled(Details)`
   grid-area: details;
 
   ${is("fullScreenMode")`
     display: none;  
-  `};
-
-  ${is("isMobileSize")`
-    width: 100%;
   `};
 `;
 
@@ -95,9 +91,8 @@ class PostModal extends Component {
           </ContentWrapper>
           <HeaderWrapper post={post} closeModal={this.closeModal} />
           <DetailsWrapper
-            height={imageSize.height}
             fullScreenMode={fullScreenMode}
-            isMobileSize={isMobileSize}
+            postIndex={post.url}
           />
         </PostWrapper>
         <NavigationPostModal />

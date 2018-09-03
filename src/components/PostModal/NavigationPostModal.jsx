@@ -227,7 +227,7 @@ class NavigationPostModal extends Component {
           onMouseLeave={this.blockMouseLeave}
         >
           <HelpBlock
-            voteLoading={post.voteLoading}
+            voteLoading={post.voteLoading || false}
             vote={post.vote}
             hide={!fullScreenMode || hideAll || isMobileSize}
           />
