@@ -19,7 +19,7 @@ export default function users(state = {}, action) {
 					changingFollowUserCard: false
 				}
 			};
-		case 'CHANGE_FOLLOW_SUCCESS':
+		case 'CHANGE_FOLLOW_SUCCESS_USER_CARD':
 			return {
 				...state, [action.author]: {
 					...state[action.author],

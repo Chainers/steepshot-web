@@ -61,7 +61,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
 	return {
 		closePowerUpModal: () => {
-			dispatch(closeModal("powerDown"))
+			dispatch(closeModal("PowerDown"))
 		},
 		powerDown: () => {
 			dispatch(powerDown())

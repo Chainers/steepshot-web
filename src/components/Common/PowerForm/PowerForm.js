@@ -30,7 +30,7 @@ const PowerForm = ({amount, amountError, amountOnChange, tokensAmount, token, cl
 				</div>
 				<div onClick={useMaxAmount} className="btn btn-cancel btn-cancel-20_power-form">MAX</div>
 			</div>
-			<InputActiveKey className="input-active-key_power-form" name="activeKey"/>
+			<InputActiveKey className="input-active-key_power-form"/>
 		</form>
 	)
 };

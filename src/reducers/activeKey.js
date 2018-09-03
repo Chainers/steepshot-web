@@ -37,7 +37,7 @@ export default function activeKey(state = initialState, action) {
       };
 
 		case 'CLOSE_MODAL':
-			if (action.index === 'transfer' || action.index === 'powerUp' || action.index === 'powerDown'
+			if (action.index === 'Transfer' || action.index === 'PowerUp' || action.index === 'PowerDown'
 				|| action.index === 'SendBid') {
 				if (!state.saveKey) {
 					return {

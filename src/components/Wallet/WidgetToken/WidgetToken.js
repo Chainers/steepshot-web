@@ -3,7 +3,7 @@ import './widgetToken.css';
 import ShowIf from '../../Common/ShowIf';
 import ContextMenu from '../../Common/ContextMenu/ContextMenu';
 import {connect} from 'react-redux';
-import {closeContextMenu, openContextMenu} from '../../../actions/contextMenu';
+import {closeContextMenu, toggleContextMenu} from '../../../actions/contextMenu';
 import ActionRow from './ActionRow/ActionRow';
 
 class WidgetToken extends React.Component {
@@ -20,7 +20,7 @@ class WidgetToken extends React.Component {
 
 	render() {
 		const {background, fullName, coin, value, description, actions = [], pointContextMenu, closeContextMenu,
-			openContextMenu, show} = this.props;
+			toggleContextMenu, show} = this.props;
 		return (
 			<div className="container_widget-token"
 			     style={{
@@ -32,7 +32,7 @@ class WidgetToken extends React.Component {
 					<ShowIf show={actions.length > 1}>
 						<div className={'actions-btn_widget-token ' + (show ? 'active' : '')} onClick={(e) => {
 							e.stopPropagation();
-							openContextMenu(pointContextMenu)
+							toggleContextMenu(pointContextMenu)
 						}}/>
 						<ContextMenu point={pointContextMenu} left="-160px" top="5px">
 							<div className="container-actions_context-menu">
@@ -88,8 +88,8 @@ const mapStateToProps = (state, props) => {
 
 const mapDispatchToProps = dispatch => {
 	return {
-		openContextMenu: (point) => {
-			dispatch(openContextMenu(point))
+		toggleContextMenu: (point) => {
+			dispatch(toggleContextMenu(point))
 		},
 		closeContextMenu: (point) => {
 			dispatch(closeContextMenu(point))
