@@ -216,6 +216,8 @@ const Constants = {
 
 	MAX_TAGS_NUMBER: 'You have reached the max number of tags.',
 
+	COPY_TO_CLIPBOARD: 'URL has been successfully copied to clipboard.',
+
 	ONE_SIGNAL: {
 		APP_ID: '77fa644f-3280-4e87-9f14-1f0c7ddf8ca5',
 		STATES: {
@@ -257,8 +259,7 @@ const Constants = {
 		INPUT_ERROR: 'Enter correct value.',
 		MIN_AMOUNT_ERROR: 'Min bid is 0.5.',
 		MAX_AMOUNT_ERROR: 'Max bid is 100.',
-		FIND_BOT_ERROR: 'We look, but there\'s no appropriate bot for promotion. Please, try little later.',
-		BID_TIMEOUT_ERROR: 'It\'s too late to bid to this bot, try any one.',
+		FIND_BOT_ERROR: 'Please, try little later.',
 		RED_TIMER: 60,
 		BLOCKED_TIMER: 21,
 		BID_TO_BOT_SUCCESS: 'Your bid has been successfully sent. Wait for upvote.',
@@ -266,7 +267,7 @@ const Constants = {
 
 	TRANSFER: {
 		BID_TO_BOT_SUCCESS: 'Your bid has been successfully sent.',
-		TRANSFER_SUCCESS: 'Transfer has been successfully concluded.',
+		TRANSFER_SUCCESS: 'Transaction completed successfully!',
 		MIN_AMOUNT: 0.001,
 		MIN_LEAVE_STEEM_POWER: 5
 	},
@@ -274,7 +275,8 @@ const Constants = {
 	WALLET: {
 		POWER_UP_SUCCESS: 'Power up success.',
 		POWER_DOWN_SUCCESS: 'Started power down.',
-		CLAIM_REWARD_SUCCESSFULLY: 'Rewards successfully claimed.'
+		CLAIM_REWARD_SUCCESSFULLY: 'Rewards successfully claimed.',
+		CANCEL_POWER_DOWN_SUCCESS: 'Canceled power down.'
 	},
 
 	ERROR_MESSAGES: {

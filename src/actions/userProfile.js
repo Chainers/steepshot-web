@@ -36,27 +36,24 @@ export function getUserProfile(userName = AuthService.getUsername()) {
 	}
 }
 
-export function changeFollow(followingName, followed, component) {
+export function changeFollowProfile(followingName, followed) {
 	return dispatch => {
 		dispatch({
-			type: 'CHANGE_FOLLOW_REQUEST_' + component,
-			author: followingName
+			type: 'CHANGE_FOLLOW_REQUEST_PROFILE'
 		});
 		UserService.changeFollow(followingName, followed)
 			.then(response => {
 				dispatch(pushMessage(`User has been successfully ${followed ? 'un' : ''}followed.`));
 				dispatch({
-					type: 'CHANGE_FOLLOW_SUCCESS',
-					response,
-					author: followingName
+					type: 'CHANGE_FOLLOW_SUCCESS_PROFILE',
+					response
 				})
 			})
 			.catch(error => {
 				dispatch(pushMessage(error));
 				dispatch({
 					type: 'CHANGE_FOLLOW_ERROR',
-					error,
-					author: followingName
+					error
 				})
 			})
 	}

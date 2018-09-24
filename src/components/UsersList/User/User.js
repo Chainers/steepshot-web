@@ -5,8 +5,8 @@ import {connect} from 'react-redux';
 import ShowIf from '../../Common/ShowIf';
 import LoadingSpinner from '../../LoadingSpinner';
 import './user.css';
-import {changeFollow} from '../../../actions/userProfile';
 import Constants from '../../../common/constants';
+import {changeFollowUserCard} from '../../../actions/usersList';
 
 const User = ({user, authUser, changeFollow}) => {
 
@@ -71,7 +71,7 @@ const mapStateToProps = (state, props) => {
 const mapDispatchToProps = (dispatch) => {
 	return {
 		changeFollow: (followingName, followed) => {
-			dispatch(changeFollow(followingName, followed, 'USER_CARD'));
+			dispatch(changeFollowUserCard(followingName, followed));
 		}
 	};
 };

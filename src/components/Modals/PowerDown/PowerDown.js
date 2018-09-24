@@ -20,7 +20,7 @@ class PowerDown extends React.Component {
 	}
 
 	render() {
-		const {username, balance, amount, amountError} = this.props;
+		const {username, balance, amount, amountError, delegated, received} = this.props;
 		return (
 			<WalletPopupTemplate title="CONVERT TO STEEM"
 			                     username={username}
@@ -34,6 +34,8 @@ class PowerDown extends React.Component {
 				           className="form_power-down"
 									 tokensAmount={balance}
 				           token="STEEM"
+									 delegated={delegated}
+									 received={received}
 				/>
 				<div className="description_power-down">
 					Note that if you change the power down amount the payout schedule will reset.
@@ -49,10 +51,12 @@ class PowerDown extends React.Component {
 
 const mapStateToProps = state => {
 	const {total_steem_power_steem} = state.userProfile.profile;
-	const {amount, amountError} = state.wallet;
+	const {amount, amountError, sp_received_by_delegation, sp_delegated_to_someone} = state.wallet;
 	return {
 		balance: total_steem_power_steem,
 		username: state.auth.user,
+		delegated: sp_delegated_to_someone,
+		received: sp_received_by_delegation,
 		amount,
 		amountError
 	}
@@ -61,7 +65,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
 	return {
 		closePowerUpModal: () => {
-			dispatch(closeModal("powerDown"))
+			dispatch(closeModal("PowerDown"))
 		},
 		powerDown: () => {
 			dispatch(powerDown())

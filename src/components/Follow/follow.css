@@ -1,10 +1,3 @@
-.container_follow {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: flex-start;
-}
-
 .saving_follow {
     width: 140px;
     font: 14px OpenSans-SemiBold;
@@ -60,44 +53,3 @@
     color: #0f181e;
     padding: 12px 10px;
 }
-
-.subscribe_follow, .unsubscribe_follow, .subscribing_follow {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    margin-left: 10px;
-    cursor: pointer;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-size: 16px 18px;
-    border: solid 1px #e7e7e7;
-}
-
-.subscribe_follow, .subscribing_follow {
-    background: url('/images/userProfile/subscribe.svg') no-repeat 10px 10px;
-}
-
-.unsubscribe_follow {
-    background: url('/images/userProfile/subscribed.svg') no-repeat 9px 10px;
-}
-
-@keyframes subscribing {
-    0% {
-        transform: rotate(10grad);
-    }
-    50% {
-        transform: rotate(-20grad);
-    }
-    100% {
-        transform: rotate(10grad);
-    }
-}
-
-.subscribing_follow {
-    animation-name: subscribing;
-    animation-duration: 1s;
-    animation-iteration-count: infinite;
-    animation-fill-mode: both;
-}
-

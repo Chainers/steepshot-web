@@ -2,17 +2,17 @@ import React from 'react';
 import {connect} from 'react-redux';
 import './transactionFilter.css';
 import ContextMenu from '../../../Common/ContextMenu/ContextMenu';
-import {closeContextMenu, openContextMenu} from '../../../../actions/contextMenu';
+import {closeContextMenu, toggleContextMenu} from '../../../../actions/contextMenu';
 import SettingsButton from '../SettingsButton/SettingsButton';
 import FilterRow from './FilterRow/FilterRow';
 
-const TransactionFilter = ({filter, current, onChange, pointContextMenu, openContextMenu, closeContextMenu, show}) => {
+const TransactionFilter = ({filter, current, onChange, pointContextMenu, toggleContextMenu, closeContextMenu, show}) => {
 	return (
 		<div className="component_trx-filter">
 			<SettingsButton active={show}
 			                onClick={(e) => {
 				                e.stopPropagation();
-				                openContextMenu(pointContextMenu)
+				                toggleContextMenu(pointContextMenu)
 			                }}
 			/>
 			<ContextMenu point={pointContextMenu} left="-160px" top="5px" style={{borderRadius: 10}}>
@@ -49,8 +49,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = dispatch => {
 	return {
-		openContextMenu: point => {
-			dispatch(openContextMenu(point))
+		toggleContextMenu: point => {
+			dispatch(toggleContextMenu(point))
 		},
 		closeContextMenu: point => {
 			dispatch(closeContextMenu(point))

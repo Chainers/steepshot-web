@@ -60,11 +60,15 @@ export function getAccountsSelectiveData() {
 				}
         const selectiveData = {
           noRewards,
-          next_power_down: data['next_vesting_withdrawal'],
+          next_power_down: data['next_vesting_withdrawal'] === '1969-12-31T23:59:59' ? '' : data['next_vesting_withdrawal'],
+					to_withdraw: data['to_withdraw'],
+					withdrawn: data['withdrawn'],
           sbd_rewards: sbdRewards,
           steem_rewards: steemRewards,
           steem_power_rewards: steemPowerRewards,
-          steem_power_rewards_in_vests: steemPowerRewardsInVests
+          steem_power_rewards_in_vests: steemPowerRewardsInVests,
+					sp_received_by_delegation: parseFloat(SteemService.vestsToSp(data['received_vesting_shares'])),
+					sp_delegated_to_someone: parseFloat(SteemService.vestsToSp(data['delegated_vesting_shares']))
         };
         dispatch(addDataToWallet(selectiveData));
       })
@@ -150,7 +154,7 @@ export function powerUp() {
 			.then(() => {
 				dispatch(actionUnlock());
 				dispatch(hideBodyLoader());
-				dispatch(closeModal("powerUp"));
+				dispatch(closeModal("PowerUp"));
         if (saveKey && !storage.activeKey) storage.activeKey = activeKey;
 				dispatch(pushMessage(Constants.WALLET.POWER_UP_SUCCESS));
 			})
@@ -168,20 +172,20 @@ export function powerDown() {
 		}
 	}
 	return dispatch => {
-		let amountString = state.wallet.amount.toString();
+		const {amount, sp_received_by_delegation, sp_delegated_to_someone} = state.wallet;
+    const {total_steem_power_steem, total_steem_power_vests} = state.userProfile.profile;
+		let amountString = amount.toString();
     amountString = amountString.match(/\d+(\.\d+)?/);
 		if (amountString[0] !== amountString.input) {
       return dispatch(setErrorWithPushNotification('amountError', Constants.PROMOTE.INPUT_ERROR));
 		}
-    if (state.userProfile.profile.total_steem_power_steem - state.wallet.amount
-			< Constants.TRANSFER.MIN_LEAVE_STEEM_POWER) {
+    if (total_steem_power_steem - amount - sp_received_by_delegation - sp_delegated_to_someone <
+			Constants.TRANSFER.MIN_LEAVE_STEEM_POWER) {
       return dispatch(setErrorWithPushNotification('amountError',
-				`You should leave not less than ${Constants.TRANSFER.MIN_LEAVE_STEEM_POWER} steem power.`))
+				`You should leave not less than ${Constants.TRANSFER.MIN_LEAVE_STEEM_POWER} steem power (delegated consider).`))
     }
 		dispatch(actionLock());
 		dispatch(showBodyLoader());
-		const {amount} = state.wallet;
-		const {total_steem_power_steem, total_steem_power_vests} = state.userProfile.profile;
 		const amountVests = (amount / total_steem_power_steem) * total_steem_power_vests;
 		const {activeKey, saveKey} = state.activeKey;
 
@@ -190,6 +194,7 @@ export function powerDown() {
         .then(() => {
           dispatch(actionUnlock());
           dispatch(hideBodyLoader());
+          dispatch(getAccountsSelectiveData());
         })
         .catch(error => {
           dispatch(stopTransferWithError(error));
@@ -201,14 +206,56 @@ export function powerDown() {
 			.then(() => {
 				dispatch(actionUnlock());
 				dispatch(hideBodyLoader());
-				dispatch(closeModal("powerDown"));
+				dispatch(closeModal("PowerDown"));
         if (saveKey && !storage.activeKey) storage.activeKey = activeKey;
 				dispatch(pushMessage(Constants.WALLET.POWER_DOWN_SUCCESS));
+        dispatch(getAccountsSelectiveData());
 			})
 			.catch(error => {
         dispatch(stopTransferWithError(error));
 			})
 	}
+}
+
+export function cancelPowerDown() {
+  let state = getStore().getState();
+  if (state.session.actionLocked) {
+    return {
+      type: 'ACTION_LOCKED_POWER_DOWN'
+    }
+  }
+  return dispatch => {
+    dispatch(actionLock());
+    dispatch(showBodyLoader());
+    const amountVests = '0.000000';
+    const {activeKey, saveKey} = state.activeKey;
+
+    if (storage.accessToken) {
+      WalletService.cancelPowerDownSteemConnect(amountVests)
+        .then(() => {
+          dispatch(actionUnlock());
+          dispatch(hideBodyLoader());
+          dispatch(addDataToWallet({next_power_down: ''}));
+        })
+        .catch(error => {
+          dispatch(stopTransferWithError(error));
+        });
+      return;
+    }
+
+    WalletService.cancelPowerDown(activeKey || storage.activeKey, amountVests)
+      .then(() => {
+        dispatch(actionUnlock());
+        dispatch(hideBodyLoader());
+        dispatch(closeModal("CancelPowerDown"));
+        if (saveKey && !storage.activeKey) storage.activeKey = activeKey;
+        dispatch(pushMessage(Constants.WALLET.CANCEL_POWER_DOWN_SUCCESS));
+        dispatch(addDataToWallet({next_power_down: ''}));
+      })
+      .catch(error => {
+        dispatch(stopTransferWithError(error));
+      })
+  }
 }
 
 export function changeAmount(value) {

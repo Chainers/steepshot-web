@@ -3,12 +3,12 @@ import {connect} from 'react-redux';
 import GrayInput from '../GrayInput/GrayInput';
 import {changeAmount, setToken} from '../../../actions/wallet';
 import ContextMenu from '../ContextMenu/ContextMenu';
-import {closeContextMenu, openContextMenu} from '../../../actions/contextMenu';
+import {closeContextMenu, toggleContextMenu} from '../../../actions/contextMenu';
 import FilterRow from '../../Wallet/TransactionHistory/TransactionFilter/FilterRow/FilterRow';
 import './chooseToken.css';
 
 const ChooseToken = ({selectedItemNumber, tokensAmount, changeAmount, tokensNames, label, value, onFocus, error,
-                       openContextMenu, closeContextMenu, pointContextMenu, setToken}) => {
+                       toggleContextMenu, closeContextMenu, pointContextMenu, setToken}) => {
 
   function useMaxAmount() {
     changeAmount(tokensAmount);
@@ -20,7 +20,7 @@ const ChooseToken = ({selectedItemNumber, tokensAmount, changeAmount, tokensName
 
   function openSelectToken(e) {
     e.stopPropagation();
-    openContextMenu(pointContextMenu)
+    toggleContextMenu(pointContextMenu)
   }
 
   function onClickForMenuItem(index) {
@@ -74,8 +74,8 @@ const mapDispatchToProps = (dispatch) => {
     changeAmount: value => {
       dispatch(changeAmount(value))
     },
-    openContextMenu: point => {
-      dispatch(openContextMenu(point))
+    toggleContextMenu: point => {
+      dispatch(toggleContextMenu(point))
     },
     closeContextMenu: point => {
       dispatch(closeContextMenu(point))

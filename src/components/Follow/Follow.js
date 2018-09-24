@@ -1,36 +1,94 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {pushMessage} from '../../actions/pushMessage';
+import styled, {keyframes} from 'styled-components';
+import is from 'styled-is';
 import './follow.css';
 import ShowIf from '../Common/ShowIf';
-import {changeFollow} from '../../actions/userProfile';
+import {pushMessage} from '../../actions/pushMessage';
 import {changeUserSubscribe} from '../../actions/oneSignal';
 import {loadingEllipsis} from '../../utils/loadingEllipsis';
+import {changeFollowProfile} from '../../actions/userProfile';
+
+const WrapperFollow = styled.div`
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: flex-start;
+	
+	@media (min-width: 1023px) {
+		flex-direction: column;
+	}
+`;
+
+const bellVibration = keyframes`
+  0% {
+		transform: rotate(10grad);
+	}
+	50% {
+		transform: rotate(-20grad);
+	}
+	100% {
+		transform: rotate(10grad);
+	}
+`;
+
+const SubscribingBell = styled.div`
+	width: 40px;
+	height: 40px;
+	border-radius: 50%;
+	margin-left: 10px;
+	cursor: pointer;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background-size: 16px 18px;
+	border: solid 1px #e7e7e7;
+	background: url('/images/userProfile/subscribe.svg') no-repeat 10px 10px;
+	
+	${is('isSubscribed')`
+		background: url('/images/userProfile/subscribed.svg') no-repeat 9px 10px;
+	`}
+	
+	${is('changeSubscribe')`
+		animation-name: ${bellVibration};
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
+    animation-fill-mode: both;
+	`}
+	
+	@media (min-width: 1023px) {
+		margin: 10px 0 0 0;
+	}
+`;
 
 class Follow extends React.Component {
-
 	render() {
+    const {changingFollowProfile, profileUserName, isFollowed, notificationEnabled,
+			changeSubscribe, isSubscribed, changeFollowFunc, changeSubscribeFunc} = this.props;
+
 		return (
-			<div className="container_follow">
-				<ShowIf show={this.props.changingFollowProfile}>
+			<WrapperFollow>
+				<ShowIf show={changingFollowProfile}>
 					{loadingEllipsis('Pending', 'saving_follow')}
 				</ShowIf>
-				<ShowIf show={!this.props.changingFollowProfile}>
-					<div className={this.props.isFollowed ? 'btn btn-cancel' : 'btn btn-default'}
-					     onClick={() => this.props.changeFollowFunc(this.props.profileUserName, this.props.isFollowed)}>
-						{this.props.isFollowed ? 'Unfollow' : 'Follow'}
+				<ShowIf show={!changingFollowProfile}>
+					<div className={isFollowed ? 'btn btn-cancel' : 'btn btn-default'}
+					     onClick={() => changeFollowFunc(profileUserName, isFollowed)}>
+						{isFollowed ? 'Unfollow' : 'Follow'}
 					</div>
 				</ShowIf>
-				<ShowIf show={this.props.notificationEnabled}>
-					<ShowIf show={!this.props.changeSubscribe}>
-						<div className={this.props.isSubscribed ? 'unsubscribe_follow' : 'subscribe_follow'}
-						     onClick={this.props.changeSubscribeFunc}/>
+				<ShowIf show={notificationEnabled}>
+					<ShowIf show={!changeSubscribe}>
+						<SubscribingBell isSubscribed={isSubscribed}
+														 changeSubscribe={changeSubscribe}
+														 onClick={changeSubscribeFunc}/>
 					</ShowIf>
-					<ShowIf show={this.props.changeSubscribe}>
-						<div className="subscribing_follow"/>
+					<ShowIf show={changeSubscribe}>
+						<SubscribingBell isSubscribed={isSubscribed}
+														 changeSubscribe={changeSubscribe}/>
 					</ShowIf>
 				</ShowIf>
-			</div>
+			</WrapperFollow>
 		);
 	}
 }
@@ -48,10 +106,10 @@ const mapStateToProps = (state) => {
 	};
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
 	return {
 		changeFollowFunc: (followingName, followed) => {
-			dispatch(changeFollow(followingName, followed, 'PROFILE'))
+			dispatch(changeFollowProfile(followingName, followed))
 		},
 		pushMessage: (message) => {
 			dispatch(pushMessage(message))
