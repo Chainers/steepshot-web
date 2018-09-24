@@ -4,11 +4,13 @@ import './powerForm.css';
 import GrayInput from '../GrayInput/GrayInput';
 import Constants from '../../../common/constants';
 
-const PowerForm = ({amount, amountError, amountOnChange, tokensAmount, token, className}) => {
+const PowerForm = ({amount, amountError, amountOnChange, tokensAmount, token, delegated, received, className}) => {
 
 	function useMaxAmount() {
     if (className === 'form_power-down') {
-      tokensAmount = (tokensAmount - Constants.TRANSFER.MIN_LEAVE_STEEM_POWER).toFixed(3) / 1;
+    	let allowedPowerDownSP = tokensAmount - Constants.TRANSFER.MIN_LEAVE_STEEM_POWER - delegated - received;
+    	if (allowedPowerDownSP < 0) allowedPowerDownSP = 0;
+      tokensAmount = allowedPowerDownSP.toFixed(3) / 1;
     }
     amountOnChange(tokensAmount);
 	}

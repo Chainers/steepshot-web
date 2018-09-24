@@ -66,7 +66,9 @@ export function getAccountsSelectiveData() {
           sbd_rewards: sbdRewards,
           steem_rewards: steemRewards,
           steem_power_rewards: steemPowerRewards,
-          steem_power_rewards_in_vests: steemPowerRewardsInVests
+          steem_power_rewards_in_vests: steemPowerRewardsInVests,
+					sp_received_by_delegation: parseFloat(SteemService.vestsToSp(data['received_vesting_shares'])),
+					sp_delegated_to_someone: parseFloat(SteemService.vestsToSp(data['delegated_vesting_shares']))
         };
         dispatch(addDataToWallet(selectiveData));
       })
@@ -170,20 +172,20 @@ export function powerDown() {
 		}
 	}
 	return dispatch => {
-		let amountString = state.wallet.amount.toString();
+		const {amount, sp_received_by_delegation, sp_delegated_to_someone} = state.wallet;
+    const {total_steem_power_steem, total_steem_power_vests} = state.userProfile.profile;
+		let amountString = amount.toString();
     amountString = amountString.match(/\d+(\.\d+)?/);
 		if (amountString[0] !== amountString.input) {
       return dispatch(setErrorWithPushNotification('amountError', Constants.PROMOTE.INPUT_ERROR));
 		}
-    if (state.userProfile.profile.total_steem_power_steem - state.wallet.amount
-			< Constants.TRANSFER.MIN_LEAVE_STEEM_POWER) {
+    if (total_steem_power_steem - amount - sp_received_by_delegation - sp_delegated_to_someone <
+			Constants.TRANSFER.MIN_LEAVE_STEEM_POWER) {
       return dispatch(setErrorWithPushNotification('amountError',
-				`You should leave not less than ${Constants.TRANSFER.MIN_LEAVE_STEEM_POWER} steem power.`))
+				`You should leave not less than ${Constants.TRANSFER.MIN_LEAVE_STEEM_POWER} steem power (delegated consider).`))
     }
 		dispatch(actionLock());
 		dispatch(showBodyLoader());
-		const {amount} = state.wallet;
-		const {total_steem_power_steem, total_steem_power_vests} = state.userProfile.profile;
 		const amountVests = (amount / total_steem_power_steem) * total_steem_power_vests;
 		const {activeKey, saveKey} = state.activeKey;
 
