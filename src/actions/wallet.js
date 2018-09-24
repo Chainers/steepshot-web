@@ -182,7 +182,7 @@ export function powerDown() {
     if (total_steem_power_steem - amount - sp_received_by_delegation - sp_delegated_to_someone <
 			Constants.TRANSFER.MIN_LEAVE_STEEM_POWER) {
       return dispatch(setErrorWithPushNotification('amountError',
-				`You should leave not less than ${Constants.TRANSFER.MIN_LEAVE_STEEM_POWER} steem power (delegated consider).`))
+				`You should leave not less than ${Constants.TRANSFER.MIN_LEAVE_STEEM_POWER} steem power.`))
     }
 		dispatch(actionLock());
 		dispatch(showBodyLoader());
