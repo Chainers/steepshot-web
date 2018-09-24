@@ -137,7 +137,7 @@ class CancelPowerDown extends React.Component {
           </StyledLinkToUser>
         </Header>
         <AmountField>
-          Reqested
+          Requested
           <AmountSpan>
             {requestedPower} STEEM POWER
           </AmountSpan>
