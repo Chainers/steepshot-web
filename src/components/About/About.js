@@ -1,22 +1,18 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import HeadingLeadComponent from '../Atoms/HeadingLeadComponent';
 import { documentTitle } from '../../utils/documentTitle';
 
 const AboutContainer = styled.div`
   margin: 60px auto;
   max-width: 550px;
-  background: rgba(255, 255, 255, 1);
+  background: #fff;
   box-shadow: 0 30px 30px 0 rgba(204, 204, 204, 0.5);
   margin-bottom: 40px;
 
-  @media screen and (min-width: 320px) and (max-width: 420px) {
-    margin: 0 !important;
-  }
   @media (max-width: 815px) {
-    max-width: none !important;
-    margin: 0 !important;
+    max-width: none;
+    margin: 0;
   }
 `;
 
@@ -25,7 +21,7 @@ const AboutHeading = styled.div`
   text-align: center;
 `;
 
-const AboutListContainer = styled.div`
+const Rules = styled.div`
   padding: 0 3rem 2rem 3rem;
 `;
 
@@ -38,9 +34,10 @@ class About extends React.Component {
     return (
       <AboutContainer>
         <AboutHeading>
-          <HeadingLeadComponent text={<h2>Community guidelines</h2>} />
+          <h2>Community guidelines</h2>
+          <hr />
         </AboutHeading>
-        <AboutListContainer>
+        <Rules>
           <p>We encourage you to follow simple rules when publishing:</p>
           <ol>
             <li>
@@ -86,7 +83,7 @@ class About extends React.Component {
             allow ourselves to hide it. Also please direct users to the guidelines here if you find
             someone breaking them.
           </p>
-        </AboutListContainer>
+        </Rules>
       </AboutContainer>
     );
   }
