@@ -144,10 +144,6 @@ a {
     .g-content {
         padding: 22px 0 40px 0 !important;
     }
-
-    .card-field.about {
-        margin: 0 !important;
-    }
 }
 
 .nav-tabs {
@@ -802,10 +798,6 @@ input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer
 @media (max-width: 815px) {
     .body_modal .nav-tabs:not(.tabs-reset) {
         margin-right: 20px;
-    }
-    .card-field.about {
-        max-width: none !important;
-        margin: 0 !important;
     }
 }
 
@@ -1675,19 +1667,6 @@ input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer
 .pic {
     background-size: cover;
     background-position: center center;
-}
-
-.about {
-    margin: 60px auto;
-    max-width: 550px;
-}
-
-.about__heading {
-    padding: 1rem 2rem;
-}
-
-.about__list {
-    padding: 0 3rem 2rem 3rem;
 }
 
 .word-wrap_brake-word {
