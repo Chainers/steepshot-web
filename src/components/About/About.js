@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import { documentTitle } from '../../utils/documentTitle';
 
-const AboutContainer = styled.div`
+const Container = styled.div`
   margin: 60px auto;
   max-width: 550px;
   background: #fff;
@@ -16,7 +16,7 @@ const AboutContainer = styled.div`
   }
 `;
 
-const AboutHeading = styled.div`
+const Header = styled.div`
   padding: 1rem 2rem;
   text-align: center;
 `;
@@ -32,11 +32,11 @@ class About extends React.Component {
 
   render() {
     return (
-      <AboutContainer>
-        <AboutHeading>
+      <Container>
+        <Header>
           <h2>Community guidelines</h2>
           <hr />
-        </AboutHeading>
+        </Header>
         <Rules>
           <p>We encourage you to follow simple rules when publishing:</p>
           <ol>
@@ -84,7 +84,7 @@ class About extends React.Component {
             someone breaking them.
           </p>
         </Rules>
-      </AboutContainer>
+      </Container>
     );
   }
 }
