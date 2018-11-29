@@ -51,9 +51,9 @@ const SubscribingBell = styled.div`
 	
 	${is('changeSubscribe')`
 		animation-name: ${bellVibration};
-    animation-duration: 1s;
-    animation-iteration-count: infinite;
-    animation-fill-mode: both;
+        animation-duration: 1s;
+        animation-iteration-count: infinite;
+        animation-fill-mode: both;
 	`}
 	
 	@media (min-width: 1023px) {
@@ -80,12 +80,12 @@ class Follow extends React.Component {
 				<ShowIf show={notificationEnabled}>
 					<ShowIf show={!changeSubscribe}>
 						<SubscribingBell isSubscribed={isSubscribed}
-														 changeSubscribe={changeSubscribe}
-														 onClick={changeSubscribeFunc}/>
+						                 changeSubscribe={changeSubscribe}
+                                         onClick={changeSubscribeFunc}/>
 					</ShowIf>
 					<ShowIf show={changeSubscribe}>
 						<SubscribingBell isSubscribed={isSubscribed}
-														 changeSubscribe={changeSubscribe}/>
+						                 changeSubscribe={changeSubscribe}/>
 					</ShowIf>
 				</ShowIf>
 			</WrapperFollow>

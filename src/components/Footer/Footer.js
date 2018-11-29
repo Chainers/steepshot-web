@@ -19,7 +19,7 @@ class Footer extends React.Component {
 						   target="_blank"
 						   rel="noopener noreferrer"
 						   className="link-appstore_footer"> </a>
-						<a href="https://play.google.com/store/apps/details?id=com.droid.steepshot&rdid=com.droid.steepshot"
+						<a href="https://bit.ly/2FFvJVa"
 						   target="_blank"
 						   rel="noopener noreferrer"
 						   className="link-googleplay_footer"> </a>

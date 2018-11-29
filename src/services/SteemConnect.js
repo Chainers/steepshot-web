@@ -1,4 +1,4 @@
-import sc2 from 'sc2-sdk';
+import sc2 from 'sc2-sdk/lib/browser';
 import AuthService from './AuthService';
 import SteemService from './SteemService';
 
